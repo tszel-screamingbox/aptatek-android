@@ -12,7 +12,7 @@ public class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     private final ResourceInteractor resourceInteractor;
 
     @Inject
-    public MainActivityPresenter(ResourceInteractor resourceInteractor) {
+    MainActivityPresenter(ResourceInteractor resourceInteractor) {
         this.resourceInteractor = resourceInteractor;
     }
 
