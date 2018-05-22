@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Aptatek</string>
+    <!-- App Constants-->
+    <string name="app.name">Aptatek</string>
+
+    <!-- Main Activity -->
+    <string name="main.text">Hello Aptatek</string>
+    <string name="main.title">Main activity</string>
 </resources>
