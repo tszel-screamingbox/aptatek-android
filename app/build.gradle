@@ -1,7 +1,30 @@
+//buildscript {
+//    repositories {
+//        maven {
+//            url 'https://maven.fabric.io/public'
+//        }
+//    }
+//    dependencies {
+//        classpath 'io.fabric.tools:gradle:1.25.3'
+//    }
+//}
+
+repositories {
+
+    // required for SQL encryption
+    maven {
+        url "https://s3.amazonaws.com/repo.commonsware.com"
+    }
+}
+
+apply from: "${project.rootDir}/dependencies.gradle"
+apply from: "${project.rootDir}/signing/signing.gradle"
 apply plugin: 'com.android.application'
+//apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion versions.targetsdk
+    buildToolsVersion versions.buildToolsVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -10,53 +33,71 @@ android {
 
     defaultConfig {
         applicationId "com.aptatek.aptatek"
-        minSdkVersion 19
-        targetSdkVersion 27
+        minSdkVersion versions.minsdk
+        targetSdkVersion versions.targetsdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    // Support
+    implementation androidSupportDependencies.appcompat
+    implementation androidSupportDependencies.annotations
+    implementation androidSupportDependencies.recyclerview
+    implementation androidSupportDependencies.constraintLayout
+    implementation androidSupportDependencies.design
+    implementation androidSupportDependencies.multidex
 
     // MVP
-    implementation 'com.hannesdorfmann.mosby3:mvi:3.1.0'
-    implementation 'com.hannesdorfmann.mosby3:viewstate:3.1.0'
+    implementation mvpDependencies.mosby
+    implementation mvpDependencies.viewstate
 
     // View binding
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation butterknifeDependencies.butterknife
+    annotationProcessor butterknifeDependencies.compiler
 
-    // RXJava
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.13'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    // RX
+    implementation rxDependencies.rxjava
+    implementation rxDependencies.rxandroid
+    implementation rxDependencies.ixjava
 
     // Dagger
-    implementation 'com.google.dagger:dagger:2.11'
-    annotationProcessor "com.google.dagger:dagger-compiler:2.11"
-    compileOnly 'org.glassfish:javax.annotation:10.0-b28'
+    implementation daggerDependencies.dagger
+    annotationProcessor daggerDependencies.compiler
+    compileOnly daggerDependencies.annotations
 
-    // Stream
-    implementation 'info.android15.solid:streams:2.0.3'
-    implementation 'info.android15.solid:collections:2.0.3'
+    // Database
+    implementation databaseDependencies.room
+    annotationProcessor databaseDependencies.compiler
+    implementation databaseDependencies.rxjava
+    implementation databaseDependencies.sqlcipher
 
     // Logger framework
-    implementation 'com.jakewharton.timber:timber:4.7.0'
+    implementation appDependencies.timber
 
     // Tests
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation testDependencies.junit
+    testImplementation testDependencies.mockito
+    testImplementation databaseDependencies.testhelper
+    androidTestImplementation testDependencies.testrunner
+    androidTestImplementation testDependencies.testrules
+    androidTestImplementation testDependencies.hamcrest
+    androidTestImplementation(testDependencies.espresso, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }

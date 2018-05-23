@@ -1,0 +1,14 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    signingConfigs {
+        release {
+            keyAlias 'aptatekRelease'
+            keyPassword '4pt4t3kR3l34s3'
+            storeFile file("${project.rootDir}/signing/release.jks")
+            storePassword '4pt4t3kR3l34s3'
+        }
+    }
+
+}
