@@ -1,5 +1,19 @@
 # Aptatek-android
 
+
+### Rules
+  * If you need a new third party library don't forget to add [Dependencies](#dependencies) section with it's license reference
+  * Follow MVP architecture:
+    * Android framework related code can't be in the presenters
+    * Fragments and Activities are responsible for just UI and interaction handling
+  * Commit your work as often as a part of a task is ready
+  * Always check warnings before commit
+  * When you start a new task create a new branch from Development
+  * Before Pull Request always merge Development to your branch and resolve all conlficts
+  * When you receive a feedback to your PR handle it as a high priority task
+  * After an accepted PR delete your source branch
+  * We use CircleCI for continous integration
+  
 ### Conventions
   * Use only english notation on properties
   * Avoid member prefixes: ```mTitleTextView -> titleTextView```
@@ -9,19 +23,8 @@
   * Always format your code and remove unused imports
   * Never use hardcoded values in .xml files
   * Keep the alphatbetic order in ```strings.xml```
-
-### Rules
-  * If you need a new third party library don't forget to add [Dependencies](#dependencies) section with it's license reference
-  * Always check warnings before commit
-  * Follow MVP architecture:
-    * Android framework related code can't be in the presenters
-    * Fragments and Activities are responsible for just UI and interaction handling
-  * Commit your work as often as a part of a task is ready
-  * When you start a new task create a new branch from Dev
-  * Before Pull Request always merge Development to your branch and resolve all conlficts
-  * After an accepted PR delete your source branc
   
-  ### Dependencies
+### Dependencies
   * Mosby [License](https://github.com/sockeqwe/mosby/blob/master/LICENSE)
   * Butterknife [License](https://github.com/JakeWharton/butterknife/blob/master/LICENSE.txt)
   * RxJava [License](https://github.com/ReactiveX/RxJava/blob/2.x/LICENSE)
