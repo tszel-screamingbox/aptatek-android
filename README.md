@@ -11,7 +11,7 @@
   * Keep the alphatbetic order in ```strings.xml```
 
 ### Rules
-  * If you need a new third party library don't forget to add [Dependencies](#dependencies) section
+  * If you need a new third party library don't forget to add [Dependencies](#dependencies) section with it's license reference
   * Always check warnings before commit
   * Follow MVP architecture:
     * Android framework related code can't be in the presenters
