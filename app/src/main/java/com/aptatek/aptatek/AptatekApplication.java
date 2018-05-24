@@ -1,7 +1,6 @@
 package com.aptatek.aptatek;
 
 import android.content.Context;
-import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.aptatek.aptatek.injection.component.ApplicationComponent;
@@ -32,10 +31,6 @@ public class AptatekApplication extends MultiDexApplication {
         }
     }
 
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
 
     public ApplicationComponent getApplicationComponent() {
         return applicationComponent;

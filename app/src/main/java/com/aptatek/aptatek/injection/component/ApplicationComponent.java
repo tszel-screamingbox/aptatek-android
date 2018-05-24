@@ -3,14 +3,14 @@ package com.aptatek.aptatek.injection.component;
 import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.domain.ResourceInteractor;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
+import com.aptatek.aptatek.injection.module.DatabaseModule;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
-
 @Singleton
-@Component(modules = {ApplicationModule.class})
+@Component(modules = {ApplicationModule.class, DatabaseModule.class})
 public interface ApplicationComponent {
 
     // Application level injections should come here

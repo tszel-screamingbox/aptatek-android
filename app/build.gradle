@@ -39,6 +39,12 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -90,6 +96,10 @@ dependencies {
     // Logger framework
     implementation appDependencies.timber
 
+    // AutoValue
+    implementation autoValueDependencies.api
+    annotationProcessor autoValueDependencies.compiler
+
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito
@@ -100,4 +110,7 @@ dependencies {
     androidTestImplementation(testDependencies.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestAnnotationProcessor daggerDependencies.compiler
+    androidTestCompileOnly daggerDependencies.annotations
+    androidTestImplementation appDependencies.dataFactory
 }
