@@ -23,7 +23,6 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
 
     }
 
-
     void initView() {
         tickHandler = Observable.interval(DELAY_IN_MILLISEC, 1, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())

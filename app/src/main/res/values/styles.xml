@@ -13,4 +13,12 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="General.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_height">@dimen/general.button.height</item>
+        <item name="android:background">@drawable/general_button_background</item>
+        <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
+        <item name="android:textColor">@color/applicationWhite</item>
+    </style>
 </resources>
