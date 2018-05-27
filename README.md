@@ -23,6 +23,7 @@
   * Always format your code and remove unused imports
   * Never use hardcoded values in .xml files
   * Keep the alphatbetic order in ```strings.xml```
+  * Use styles.xml
   
 ### Dependencies
   * Mosby [License](https://github.com/sockeqwe/mosby/blob/master/LICENSE)
