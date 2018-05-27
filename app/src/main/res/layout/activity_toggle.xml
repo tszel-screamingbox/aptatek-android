@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.main.MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/general.distance.xsmall"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/toggleButton"
+            style="@style/General.Empty.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="@string/main.button.toggle" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/general.distance"
+            android:layout_marginStart="@dimen/general.distance"
+            android:layout_weight="0.25" />
+
+        <Button
+            android:id="@+id/settingsButton"
+            style="@style/General.Empty.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="@string/main.button.settings" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

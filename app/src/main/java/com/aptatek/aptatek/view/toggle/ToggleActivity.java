@@ -1,6 +1,5 @@
-package com.aptatek.aptatek.view.main;
+package com.aptatek.aptatek.view.toggle;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
@@ -8,22 +7,21 @@ import android.widget.Toast;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
-import com.aptatek.aptatek.view.toggle.ToggleActivity;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity<MainActivityView, MainActivityPresenter> implements MainActivityView {
+public class ToggleActivity extends BaseActivity<ToggleActivityView, ToggleActivityPresenter> implements ToggleActivityView {
 
     @Inject
-    MainActivityPresenter presenter;
+    ToggleActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_toggle);
         ButterKnife.bind(this);
     }
 
@@ -34,7 +32,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @NonNull
     @Override
-    public MainActivityPresenter createPresenter() {
+    public ToggleActivityPresenter createPresenter() {
         return presenter;
     }
 
@@ -46,13 +44,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.toggleButton)
     public void onToggleButtonClicked() {
-        Intent intent = new Intent(this, ToggleActivity.class);
-        launchActivity(intent, false, Animation.FADE);
-    }
-
-    @OnClick(R.id.newTestButton)
-    public void onNewTestButtonClicked() {
-        Toast.makeText(this, "New test should load", Toast.LENGTH_SHORT).show();
+        onBackPressed();
+        setTransitionAnimation(Animation.FADE);
     }
 
     @OnClick(R.id.settingsButton)
