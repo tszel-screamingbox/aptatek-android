@@ -39,12 +39,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
     }
 
     buildTypes {
@@ -87,12 +81,6 @@ dependencies {
     annotationProcessor daggerDependencies.compiler
     compileOnly daggerDependencies.annotations
 
-    // Database
-    implementation databaseDependencies.room
-    annotationProcessor databaseDependencies.compiler
-    implementation databaseDependencies.rxjava
-    implementation databaseDependencies.sqlcipher
-
     // Logger framework
     implementation appDependencies.timber
 
@@ -103,7 +91,6 @@ dependencies {
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito
-    testImplementation databaseDependencies.testhelper
     androidTestImplementation testDependencies.testrunner
     androidTestImplementation testDependencies.testrules
     androidTestImplementation testDependencies.hamcrest
