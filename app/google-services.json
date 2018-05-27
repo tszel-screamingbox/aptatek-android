@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "255384017007",
+    "firebase_url": "https://aptatek-b291d.firebaseio.com",
+    "project_id": "aptatek-b291d",
+    "storage_bucket": "aptatek-b291d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255384017007:android:e1e9363326ee1f27",
+        "android_client_info": {
+          "package_name": "com.aptatek.aptatek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255384017007-vvpsue9kpp8r9an8gt6i4b1fn1u0jdru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aptatek.aptatek",
+            "certificate_hash": "5cfc2bc41101a7fc57c124db89571d684ef743d0"
+          }
+        },
+        {
+          "client_id": "255384017007-0kpbajkpstcin2cvfbhuje89tnrts9e2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "255384017007-0kpbajkpstcin2cvfbhuje89tnrts9e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXgTkFn5CE3pIKlrlx0-Ll94oiTDJpzWc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255384017007-0kpbajkpstcin2cvfbhuje89tnrts9e2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255384017007:android:d7821b53ad919751",
+        "android_client_info": {
+          "package_name": "com.aptatek.aptatek.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255384017007-g9jntjntqmr2s23euvm2kqcjli1kr32f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aptatek.aptatek.debug",
+            "certificate_hash": "76480cc5dc64a8c4fd9d01ef90d96eaeaa278d86"
+          }
+        },
+        {
+          "client_id": "255384017007-0kpbajkpstcin2cvfbhuje89tnrts9e2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "255384017007-0kpbajkpstcin2cvfbhuje89tnrts9e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXgTkFn5CE3pIKlrlx0-Ll94oiTDJpzWc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255384017007-0kpbajkpstcin2cvfbhuje89tnrts9e2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

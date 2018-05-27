@@ -9,6 +9,10 @@
         android:label="@string/app.name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Permanently disable Firebase Analytics -->
+        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
+
         <activity android:name=".view.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

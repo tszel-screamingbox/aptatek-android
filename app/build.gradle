@@ -1,26 +1,16 @@
-//buildscript {
-//    repositories {
-//        maven {
-//            url 'https://maven.fabric.io/public'
-//        }
-//    }
-//    dependencies {
-//        classpath 'io.fabric.tools:gradle:1.25.3'
-//    }
-//}
-
-repositories {
-
-    // required for SQL encryption
-    maven {
-        url "https://s3.amazonaws.com/repo.commonsware.com"
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.25.4'
     }
 }
 
 apply from: "${project.rootDir}/dependencies.gradle"
 apply from: "${project.rootDir}/signing/signing.gradle"
 apply plugin: 'com.android.application'
-//apply plugin: 'io.fabric'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion versions.targetsdk
@@ -49,6 +39,7 @@ android {
         }
 
         debug {
+            signingConfig signingConfigs.debug
             applicationIdSuffix ".debug"
         }
     }
@@ -84,6 +75,9 @@ dependencies {
     // Logger framework
     implementation appDependencies.timber
 
+    // Crashlytics
+    implementation crashlyticsDependencies.crashlytics
+
     // AutoValue
     implementation autoValueDependencies.api
     annotationProcessor autoValueDependencies.compiler
@@ -101,3 +95,5 @@ dependencies {
     androidTestCompileOnly daggerDependencies.annotations
     androidTestImplementation appDependencies.dataFactory
 }
+
+apply plugin: 'com.google.gms.google-services'
