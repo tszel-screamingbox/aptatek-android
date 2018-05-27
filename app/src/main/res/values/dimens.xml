@@ -18,7 +18,7 @@
     <dimen name="general.distance.xxsmall">13dp</dimen>
     <dimen name="general.distance.xsmall">18dp</dimen>
     <dimen name="general.distance.small">20dp</dimen>
-    <dimen name="general.distance">35dp</dimen>
+    <dimen name="general.distance">30dp</dimen>
     <dimen name="general.distance.normal">40dp</dimen>
     <dimen name="general.distance.big">58dp</dimen>
     <dimen name="general.distance.xbig">70dp</dimen>

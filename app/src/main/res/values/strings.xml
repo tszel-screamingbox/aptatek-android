@@ -3,6 +3,7 @@
     <string name="app.name">Aptatek</string>
 
     <!-- Main Activity -->
-    <string name="main.text">Hello Aptatek</string>
-    <string name="main.title">Main activity</string>
+    <string name="main.button.new.test">New Test</string>
+    <string name="main.button.settings">Settings</string>
+    <string name="main.button.toggle">Toggle</string>
 </resources>

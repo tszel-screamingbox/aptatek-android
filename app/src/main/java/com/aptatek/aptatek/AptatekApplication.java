@@ -3,6 +3,7 @@ package com.aptatek.aptatek;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.aptatek.aptatek.injection.component.ApplicationComponent;
 import com.aptatek.aptatek.injection.component.DaggerApplicationComponent;
@@ -15,6 +16,10 @@ public class AptatekApplication extends MultiDexApplication {
 
     private ApplicationComponent applicationComponent;
     private static AptatekApplication application;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     @Override
     public void onCreate() {
