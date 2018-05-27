@@ -4,9 +4,10 @@
     <color name="colorPrimaryDark">@color/applicationGreen</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="applicationWhite">#FFFFFF</color>
+    <color name="applicationLightGray">#A6ABB0</color>
     <color name="applicationGray">#4A4A4A</color>
     <color name="applicationGreen">#4CD864</color>
+    <color name="applicationWhite">#FFFFFF</color>
 
 
 </resources>

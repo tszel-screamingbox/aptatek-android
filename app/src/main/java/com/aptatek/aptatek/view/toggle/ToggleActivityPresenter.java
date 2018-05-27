@@ -11,4 +11,14 @@ class ToggleActivityPresenter extends MvpBasePresenter<ToggleActivityView> {
     @Inject
     ToggleActivityPresenter() {
     }
+
+    void initView() {
+
+        // TODO: check bluetooth availibility
+        if (true) {
+            ifViewAttached(ToggleActivityView::cubeAvailable);
+        } else {
+            ifViewAttached(ToggleActivityView::cubeNotAvailable);
+        }
+    }
 }

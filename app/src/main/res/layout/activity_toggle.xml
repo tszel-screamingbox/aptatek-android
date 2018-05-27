@@ -3,23 +3,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity.vertical.margin"
+    android:layout_marginEnd="@dimen/activity.horizontal.margin"
+    android:layout_marginStart="@dimen/activity.horizontal.margin"
+    android:layout_marginTop="@dimen/activity.vertical.margin"
     tools:context=".view.main.MainActivity">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/bottomLayout"
+        android:layout_alignStart="@+id/bottomLayout"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/newTestButton"
+            style="@style/General.Green.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/general.button.height.big"
+            android:layout_marginBottom="@dimen/general.distance.small"
+            android:text="@string/toggle.button.new.test" />
+
+        <Button
+            android:id="@+id/connectCubeButton"
+            style="@style/General.Empty.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/general.button.height.big"
+            android:layout_marginBottom="@dimen/general.distance.small"
+            android:text="@string/toggle.button.connect" />
+
+        <Button
+            android:id="@+id/resultsButton"
+            style="@style/General.Empty.Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/general.button.height.big"
+            android:text="@string/toggle.button.result" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/general.distance.xsmall"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/toggleButton"
-            style="@style/General.Empty.Button"
+            style="@style/General.Text.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:text="@string/main.button.toggle" />
+            android:gravity="start|center"
+            android:text="@string/toggle.button.toggle" />
 
         <View
             android:layout_width="0dp"
@@ -30,11 +70,12 @@
 
         <Button
             android:id="@+id/settingsButton"
-            style="@style/General.Empty.Button"
+            style="@style/General.Text.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:text="@string/main.button.settings" />
+            android:gravity="end|center"
+            android:text="@string/toggle.button.settings" />
 
     </LinearLayout>
 

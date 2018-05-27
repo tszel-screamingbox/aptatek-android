@@ -27,6 +27,17 @@
 
     <style name="General.Empty.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height</item>
+        <item name="android:background">@drawable/general_button_empty_background</item>
+        <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
+        <item name="android:textColor">@color/applicationLightGray</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/font.size.normal</item>
+    </style>
+
+    <style name="General.Text.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_height">@dimen/general.button.height</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@color/applicationGray</item>
         <item name="android:textSize">@dimen/font.size.normal</item>
