@@ -25,6 +25,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        presenter.initView();
     }
 
     @Override

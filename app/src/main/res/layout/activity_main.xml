@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/activity.vertical.margin"
-    android:layout_marginEnd="@dimen/activity.horizontal.margin"
-    android:layout_marginStart="@dimen/activity.horizontal.margin"
-    android:layout_marginTop="@dimen/activity.vertical.margin"
     tools:context=".view.main.MainActivity">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_margin="16dp"
+        android:layout_marginBottom="@dimen/general.distance"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/toggleButton"
-            style="@style/General.Text.Button"
+            style="@style/General.Empty.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:gravity="start|center"
             android:text="@string/main.button.toggle" />
 
         <Button
@@ -33,20 +33,20 @@
             android:layout_marginEnd="@dimen/general.distance"
             android:layout_marginStart="@dimen/general.distance"
             android:layout_weight="0.25"
+
             android:paddingEnd="@dimen/general.distance.small"
             android:paddingStart="@dimen/general.distance.small"
             android:text="@string/main.button.new.test" />
 
         <Button
             android:id="@+id/settingsButton"
-            style="@style/General.Text.Button"
+            style="@style/General.Empty.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
-            android:gravity="end|center"
             android:text="@string/main.button.settings" />
 
     </LinearLayout>
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
