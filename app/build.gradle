@@ -25,6 +25,7 @@ android {
         applicationId "com.aptatek.aptatek"
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
