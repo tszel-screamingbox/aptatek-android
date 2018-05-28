@@ -9,6 +9,14 @@ android {
             storeFile file("${project.rootDir}/signing/release.jks")
             storePassword '4pt4t3kR3l34s3'
         }
+
+        // required to have the same debug config because of firebase
+        debug {
+            keyAlias 'AndroidDebugKey'
+            storePassword '4pt4t3kR3l34s3'
+            keyPassword 'd3bugK3y'
+            storeFile file("${project.rootDir}/signing/release.jks")
+        }
     }
 
 }

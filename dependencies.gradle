@@ -32,8 +32,11 @@ ext {
             // Leak
             leakcanary                  : '1.5.4',
 
-            // Analytics
-            crashlytics                 : '2.9.1',
+            // Firebase
+            firebase                    : '12.0.1',
+
+            // Crashlytics
+            crashlytics                 : '2.9.3',
 
             // AutoValue
             autoValue                   : '1.6',
