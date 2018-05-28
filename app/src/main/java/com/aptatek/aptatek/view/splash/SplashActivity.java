@@ -4,14 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.main.MainActivity;
 
 import javax.inject.Inject;
-
-import butterknife.ButterKnife;
 
 public class SplashActivity extends BaseActivity<SplashActivityView, SplashActivityPresenter> implements SplashActivityView {
 
@@ -22,11 +19,10 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
 
-        ButterKnife.bind(this);
-
-        presenter.initView();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -42,12 +38,7 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
 
     @Override
     public int getFrameLayoutId() {
-        return R.layout.activity_splash;
+        return 0;
     }
 
-    @Override
-    public void mainActivityShouldLoad() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
 }
