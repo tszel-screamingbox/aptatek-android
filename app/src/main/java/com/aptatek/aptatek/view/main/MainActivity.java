@@ -25,7 +25,6 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        presenter.initView();
     }
 
     @Override
@@ -43,7 +42,6 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     public int getFrameLayoutId() {
         return R.layout.activity_main;
     }
-
 
     @OnClick(R.id.toggleButton)
     public void onToggleButtonClicked() {

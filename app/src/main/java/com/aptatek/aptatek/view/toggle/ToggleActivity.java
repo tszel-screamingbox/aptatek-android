@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
@@ -27,6 +28,9 @@ public class ToggleActivity extends BaseActivity<ToggleActivityView, ToggleActiv
     @BindView(R.id.connectCubeButton)
     Button connectCubeButton;
 
+    @BindView(R.id.statusText)
+    TextView statusTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,14 +53,13 @@ public class ToggleActivity extends BaseActivity<ToggleActivityView, ToggleActiv
 
     @Override
     public int getFrameLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.activity_toggle;
     }
 
 
     @OnClick(R.id.toggleButton)
     public void onToggleButtonClicked() {
         onBackPressed();
-        setTransitionAnimation(Animation.FADE);
     }
 
     @OnClick(R.id.settingsButton)
@@ -83,11 +86,21 @@ public class ToggleActivity extends BaseActivity<ToggleActivityView, ToggleActiv
     public void cubeAvailable() {
         connectCubeButton.setVisibility(View.GONE);
         newTestButton.setVisibility(View.VISIBLE);
+        statusTextView.setText(getString(R.string.toggle_cube_connected));
+        statusTextView.setTextColor(getResources().getColor(R.color.applicationGreen));
     }
 
     @Override
     public void cubeNotAvailable() {
         connectCubeButton.setVisibility(View.VISIBLE);
         newTestButton.setVisibility(View.GONE);
+        statusTextView.setText(getString(R.string.toggle_cube_disconnected));
+        statusTextView.setTextColor(getResources().getColor(R.color.applicationPink));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setTransitionAnimation(Animation.FADE);
     }
 }

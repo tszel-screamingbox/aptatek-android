@@ -1,7 +1,7 @@
 <resources>
 
-    <dimen name="activity.horizontal.margin">28dp</dimen>
-    <dimen name="activity.vertical.margin">18dp</dimen>
+    <dimen name="activity.margin.horizontal">30dp</dimen>
+    <dimen name="activity.margin.vertical">18dp</dimen>
 
     <!-- General-->
     <dimen name="general.button.corner">25dp</dimen>

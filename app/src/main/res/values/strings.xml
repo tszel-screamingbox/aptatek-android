@@ -8,8 +8,8 @@
     <string name="main.button.toggle">Toggle</string>
 
     <!-- Toggle Activity -->
-    <string name="toggle.cube.connected">Cube Connected</string>
-    <string name="toggle.cube.disconnected">Cube Disconnected</string>
+    <string name="toggle.cube.connected">&#9679;&#160;Cube Connected</string>
+    <string name="toggle.cube.disconnected">&#9679;&#160;Cube Disconnected</string>
     <string name="toggle.button.connect">Connect Cube</string>
     <string name="toggle.button.new.test">New Test</string>
     <string name="toggle.button.result">Your Results</string>
