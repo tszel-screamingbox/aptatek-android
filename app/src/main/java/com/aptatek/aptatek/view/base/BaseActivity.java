@@ -1,12 +1,15 @@
 package com.aptatek.aptatek.view.base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+
 import com.aptatek.aptatek.AptatekApplication;
+import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.injection.component.DaggerActivityComponent;
 import com.aptatek.aptatek.injection.module.ActivityModule;
@@ -19,6 +22,8 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
 
 
     private ActivityComponent activityComponent;
+
+    protected enum Animation {FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT}
 
     /**
      * Handles the component to resolve the injection
@@ -48,6 +53,14 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
                     .build();
         }
         return activityComponent;
+    }
+
+    protected void launchActivity(Intent intent, boolean clearHistory, Animation changeAnimation) {
+        if (clearHistory) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        startActivity(intent);
+        setTransitionAnimation(changeAnimation);
     }
 
     public void switchToFragment(BaseFragment fragment) {
@@ -117,5 +130,22 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
     }
 
     public abstract int getFrameLayoutId();
+
+    protected void setTransitionAnimation(Animation animation) {
+        switch (animation) {
+            case FADE:
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case SLIDE:
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                break;
+            case RIGHT_TO_LEFT:
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
+                break;
+            case LEFT_TO_RIGHT:
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                break;
+        }
+    }
 
 }

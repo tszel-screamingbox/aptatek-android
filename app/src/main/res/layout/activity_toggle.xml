@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity.margin.vertical"
+    android:layout_marginEnd="@dimen/activity.margin.horizontal"
+    android:layout_marginStart="@dimen/activity.margin.horizontal"
+    android:layout_marginTop="@dimen/activity.margin.horizontal"
+    tools:context=".view.main.MainActivity">
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general.distance.xsmall"
+        android:gravity="center_horizontal"
+        android:text="@string/toggle.cube.disconnected"
+        android:textColor="@color/applicationGreen"
+        android:textSize="@dimen/font.size.normal"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/newTestButton"
+        style="@style/General.Green.Button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/general.button.height.big"
+        android:text="@string/toggle.button.new.test"
+        android:textSize="@dimen/font.size.xbig"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <Button
+        android:id="@+id/connectCubeButton"
+        style="@style/General.Grey.Button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/general.button.height.big"
+        android:text="@string/toggle.button.connect"
+        android:textSize="@dimen/font.size.xbig"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+
+    <Button
+        android:id="@+id/resultsButton"
+        style="@style/General.Grey.Button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginTop="@dimen/general.distance.large"
+        android:text="@string/toggle.button.result"
+        android:textSize="@dimen/font.size.xbig"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
+
+
+    <Button
+        android:id="@+id/toggleButton"
+        style="@style/General.Text.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start|center"
+        android:text="@string/main.button.toggle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/emptyView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/emptyView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main.button.new.test"
+        app:layout_constraintBaseline_toBaselineOf="@+id/toggleButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/toggleButton"
+        app:layout_constraintRight_toLeftOf="@+id/settingsButton"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/settingsButton"
+        style="@style/General.Text.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="end|center"
+        android:text="@string/main.button.settings"
+        app:layout_constraintBaseline_toBaselineOf="@+id/toggleButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/emptyView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <android.support.constraint.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="toggleButton,newTestButton, settingsButton" />
+
+</android.support.constraint.ConstraintLayout>

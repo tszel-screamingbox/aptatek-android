@@ -1,5 +1,6 @@
 package com.aptatek.aptatek.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
@@ -7,6 +8,7 @@ import android.widget.Toast;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.toggle.ToggleActivity;
 
 import javax.inject.Inject;
 
@@ -41,10 +43,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         return R.layout.activity_main;
     }
 
-
     @OnClick(R.id.toggleButton)
     public void onToggleButtonClicked() {
-        Toast.makeText(this, "Toggle should load", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ToggleActivity.class);
+        launchActivity(intent, false, Animation.FADE);
     }
 
     @OnClick(R.id.newTestButton)
@@ -56,5 +58,4 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     public void onSettingsButtonClicked() {
         Toast.makeText(this, "Settings should load", Toast.LENGTH_SHORT).show();
     }
-
 }
