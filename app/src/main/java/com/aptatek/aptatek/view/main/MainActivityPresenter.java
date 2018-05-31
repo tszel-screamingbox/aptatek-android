@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
 
-
     @Inject
     MainActivityPresenter() {
     }
