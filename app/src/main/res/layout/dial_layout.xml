@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/applicationSilver">
+
+    <TableRow android:layout_weight="1">
+
+        <Button
+            android:id="@+id/button1"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pin.button.1" />
+
+        <Button
+            android:id="@+id/button2"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pin.button.2" />
+
+        <Button
+            android:id="@+id/button3"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pin.button.3" />
+
+    </TableRow>
+
+    <TableRow android:layout_weight="1">
+
+        <Button
+            android:id="@+id/button4"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/applicationWhite"
+            android:text="@string/pin.button.4" />
+
+        <Button
+            android:id="@+id/button5"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pin.button.5" />
+
+        <Button
+            android:id="@+id/button6"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pin.button.6" />
+
+    </TableRow>
+
+    <TableRow android:layout_weight="1">
+
+        <Button
+            android:id="@+id/button7"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pin.button.7" />
+
+        <Button
+            android:id="@+id/button8"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pin.button.8" />
+
+        <Button
+            android:id="@+id/button9"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/applicationWhite"
+            android:text="@string/pin.button.9" />
+
+    </TableRow>
+
+    <TableRow android:layout_weight="1">
+
+        <Button
+            android:id="@+id/buttonDelete"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="D" />
+
+        <Button
+            android:id="@+id/button0"
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/pin.button.0" />
+
+        <Button
+            style="@style/Dial.Button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </TableRow>
+
+</TableLayout>
