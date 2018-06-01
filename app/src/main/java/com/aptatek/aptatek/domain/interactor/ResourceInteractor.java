@@ -19,11 +19,11 @@ import javax.inject.Inject;
 
 @SuppressWarnings("unused")
 public class ResourceInteractor {
-    private Context context;
-    private Resources resources;
+    private final Context context;
+    private final Resources resources;
 
     @Inject
-    public ResourceInteractor(@ApplicationContext Context context) {
+    public ResourceInteractor(@ApplicationContext final Context context) {
         this.context = context;
         this.resources = context.getResources();
     }
@@ -31,7 +31,7 @@ public class ResourceInteractor {
     /**
      * Convert dp to pixels according to the system display metrics
      */
-    public float convertDpToPixel(int dp) {
+    public float convertDpToPixel(final int dp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 
@@ -45,32 +45,8 @@ public class ResourceInteractor {
     /**
      * Return the string associated with the given resource id
      */
-    public String getStringResource(int resourceId) {
+    public String getStringResource(final int resourceId) {
         return getResources().getString(resourceId);
-    }
-
-    /**
-     * Return the string associated with the given resource id
-     */
-    public String getStringResource(int resourceId, Object... formatArgs) {
-        return getResources().getString(resourceId, formatArgs);
-    }
-
-    /**
-     * Return a formatted string associated with the given resource id, filled with the given parameters
-     *
-     * @param resourceId The id of the resource
-     * @param items      The fillable items
-     */
-    public String getFormattedString(int resourceId, Object... items) {
-        return String.format(getStringResource(resourceId), items);
-    }
-
-    /**
-     * Return the string associated with the given resource id by matching the correct plural form
-     */
-    public String getQuantityString(int quantity, int resourceId) {
-        return getResources().getQuantityString(resourceId, quantity);
     }
 
     /**
@@ -78,8 +54,8 @@ public class ResourceInteractor {
      *
      * @return The string if the value is presented, null otherwise
      */
-    public String getStringResource(String resourceName) {
-        int id = getResources().getIdentifier(
+    public String getStringResource(final String resourceName) {
+        final int id = getResources().getIdentifier(
                 resourceName,
                 "string", context.getPackageName());
         if (id == 0) {
@@ -90,11 +66,35 @@ public class ResourceInteractor {
     }
 
     /**
+     * Return the string associated with the given resource id
+     */
+    public String getStringResource(final int resourceId, final Object... formatArgs) {
+        return getResources().getString(resourceId, formatArgs);
+    }
+
+    /**
+     * Return a formatted string associated with the given resource id, filled with the given parameters
+     *
+     * @param resourceId The id of the resource
+     * @param items      The fillable items
+     */
+    public String getFormattedString(final int resourceId, final Object... items) {
+        return String.format(getStringResource(resourceId), items);
+    }
+
+    /**
+     * Return the string associated with the given resource id by matching the correct plural form
+     */
+    public String getQuantityString(final int quantity, final int resourceId) {
+        return getResources().getQuantityString(resourceId, quantity);
+    }
+
+    /**
      * Return an id for the given resource array name
      *
      * @return The valid id if the resource has found, 0 otherwise
      */
-    public int getArrayResourceIdentifier(String resourceName) {
+    public int getArrayResourceIdentifier(final String resourceName) {
         return getResources().getIdentifier(resourceName, "array", context.getPackageName());
     }
 
@@ -103,7 +103,7 @@ public class ResourceInteractor {
      *
      * @return The valid id if the resource has found, 0 otherwise
      */
-    public int getStringResourceIdentifier(String resourceName) {
+    public int getStringResourceIdentifier(final String resourceName) {
         return getResources().getIdentifier(resourceName, "string", context.getPackageName());
     }
 
@@ -112,7 +112,7 @@ public class ResourceInteractor {
      *
      * @return The valid id if the resource has found, 0 otherwise
      */
-    public int getDrawableResourceIdentifier(String resourceName) {
+    public int getDrawableResourceIdentifier(final String resourceName) {
         return getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
     }
 
@@ -121,7 +121,7 @@ public class ResourceInteractor {
      *
      * @return The valid id if the resource has found, 0 otherwise
      */
-    public int getLayoutResourceIdentifier(String resourceName) {
+    public int getLayoutResourceIdentifier(final String resourceName) {
         return getResources().getIdentifier(resourceName, "layout", context.getPackageName());
     }
 
@@ -130,7 +130,7 @@ public class ResourceInteractor {
      *
      * @return The valid id if the resource has found, 0 otherwise
      */
-    public int getViewIdResourceIdentifier(String resourceName) {
+    public int getViewIdResourceIdentifier(final String resourceName) {
         return getResources().getIdentifier(resourceName, "id", context.getPackageName());
     }
 
@@ -139,9 +139,9 @@ public class ResourceInteractor {
      *
      * @return The valid id if the resource has found, 0 otherwise
      */
-    public int getResId(String resourceName, Class<?> c) {
+    public int getResId(final String resourceName, final Class<?> c) {
         try {
-            Field idField = c.getDeclaredField(resourceName);
+            final Field idField = c.getDeclaredField(resourceName);
             return idField.getInt(idField);
         } catch (Exception e) {
             return 0; // No resource found for given name
@@ -151,49 +151,49 @@ public class ResourceInteractor {
     /**
      * Return a string array with the data of the given array id
      */
-    public String[] getStringArray(int arrayResourceId) {
+    public String[] getStringArray(final int arrayResourceId) {
         return getResources().getStringArray(arrayResourceId);
     }
 
     /**
      * Return an integer array with the data of the given array id
      */
-    public int[] getIntArray(int arrayResourceId) {
+    public int[] getIntArray(final int arrayResourceId) {
         return getResources().getIntArray(arrayResourceId);
     }
 
     /**
      * Return a raw typed array for the given resource
      */
-    public TypedArray getTypedArray(int arrayResourceId) {
+    public TypedArray getTypedArray(final int arrayResourceId) {
         return getResources().obtainTypedArray(arrayResourceId);
     }
 
     /**
      * Return a drawable associated with the given resource id
      */
-    public Drawable getDrawableResource(int resourceId) {
+    public Drawable getDrawableResource(final int resourceId) {
         return getResources().getDrawable(resourceId);
     }
 
     /**
      * Return a color associated with the given resource id
      */
-    public int getColorResource(int resourceId) {
+    public int getColorResource(final int resourceId) {
         return getResources().getColor(resourceId);
     }
 
     /**
      * Return a dimension associated with the given resource id
      */
-    public float getDimension(int resourceId) {
+    public float getDimension(final int resourceId) {
         return getResources().getDimension(resourceId);
     }
 
     /**
      * Return an integer associated with the given resource id
      */
-    public int getInteger(int resourceId) {
+    public int getInteger(final int resourceId) {
         return getResources().getInteger(resourceId);
     }
 }

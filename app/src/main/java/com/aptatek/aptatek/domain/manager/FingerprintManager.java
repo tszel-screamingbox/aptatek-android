@@ -31,35 +31,35 @@ public class FingerprintManager {
 
     private static final String KEY_NAME = "encryption_key";
 
-    private final FingerprintManagerCompat fingerprintManager;
+    private final FingerprintManagerCompat fingerprintManagerCompat;
     private KeyStore keyStore;
 
     @Inject
-    FingerprintManager(@ApplicationContext Context context) {
-        this.fingerprintManager = FingerprintManagerCompat.from(context);
+    FingerprintManager(@ApplicationContext final Context context) {
+        this.fingerprintManagerCompat = FingerprintManagerCompat.from(context);
     }
 
     public boolean hasEnrolledFingerprints() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && fingerprintManager.hasEnrolledFingerprints();
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && fingerprintManagerCompat.hasEnrolledFingerprints();
     }
 
     public boolean isFingerprintHadrwareDetected() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && fingerprintManager.isHardwareDetected();
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && fingerprintManagerCompat.isHardwareDetected();
     }
 
-    public void authenticate(FingerprintManagerCompat.AuthenticationCallback callback, CancellationSignal cancellationSignal) {
+    public void authenticate(final FingerprintManagerCompat.AuthenticationCallback callback, final CancellationSignal cancellationSignal) {
         generateKey();
         final FingerprintManagerCompat.CryptoObject cryptoObject = new FingerprintManagerCompat.CryptoObject(generateCipher());
-        fingerprintManager.authenticate(cryptoObject, 0, cancellationSignal, callback, null);
+        fingerprintManagerCompat.authenticate(cryptoObject, 0, cancellationSignal, callback, null);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
     private void generateKey() {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore");
-            KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
+            final KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
             keyStore.load(null);
-            KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(KEY_NAME, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
+            final KeyGenParameterSpec spec = new KeyGenParameterSpec.Builder(KEY_NAME, KeyProperties.PURPOSE_ENCRYPT | KeyProperties.PURPOSE_DECRYPT)
                     .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
                     .setUserAuthenticationRequired(true)
                     .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
@@ -76,10 +76,10 @@ public class FingerprintManager {
     @TargetApi(Build.VERSION_CODES.M)
     private Cipher generateCipher() {
         try {
-            Cipher cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/"
+            final Cipher cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/"
                     + KeyProperties.BLOCK_MODE_CBC + "/"
                     + KeyProperties.ENCRYPTION_PADDING_PKCS7);
-            SecretKey key = (SecretKey) keyStore.getKey(KEY_NAME, null);
+            final SecretKey key = (SecretKey) keyStore.getKey(KEY_NAME, null);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             return cipher;
         } catch (NoSuchAlgorithmException | UnrecoverableKeyException | KeyStoreException | NoSuchPaddingException | InvalidKeyException e) {

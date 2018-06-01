@@ -32,7 +32,7 @@ public class ToggleActivity extends BaseActivity<ToggleActivityView, ToggleActiv
     TextView statusTextView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toggle);
         ButterKnife.bind(this);
@@ -41,8 +41,8 @@ public class ToggleActivity extends BaseActivity<ToggleActivityView, ToggleActiv
     }
 
     @Override
-    protected void injectActivity(ActivityComponent activityComponent) {
-        activityComponent().inject(this);
+    protected void injectActivity(final ActivityComponent activityComponent) {
+        getActivityComponent().inject(this);
     }
 
     @NonNull

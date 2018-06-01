@@ -11,8 +11,10 @@ apply from: "${project.rootDir}/dependencies.gradle"
 apply from: "${project.rootDir}/signing/signing.gradle"
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
 apply plugin: 'findbugs'
+apply plugin: 'pmd'
 
 jacoco {
     toolVersion = "${versions.jacoco}"
@@ -194,6 +196,24 @@ task customFindBugs(type : FindBugs, dependsOn : 'assembleDebug') {
     }
 }
 
+task customPmd(type: Pmd, dependsOn: 'assembleDebug') {
+    ruleSetFiles = files("$rootProject.rootDir/quality/pmd.xml")
+    ignoreFailures = false
+    ruleSets = []
+
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "$project.buildDir/reports/pmd/pmd.html"
+        }
+    }
+}
+
 def coverageSourceDirs = [
         'src/main/java',
         'src/debug/java'
@@ -226,7 +246,10 @@ task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
                     '**/*Module_Provide*Factory.*',
                     '**/*_Factory.*',
                     '**/*_MembersInjector.*',
-                    '**/*_LifecycleAdapter.*'
+                    '**/*_ViewBinding*',
+                    '**/*_LifecycleAdapter.*',
+                    '**/base/**',
+                    '**/injection/**'
             ]
     )
 

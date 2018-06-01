@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-
 import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
@@ -18,12 +17,12 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 
-public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>> extends MvpActivity<V, P> implements IActivityComponentProvider {
+public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>> extends MvpActivity<V, P> implements IActivityComponentProvider {
 
 
     private ActivityComponent activityComponent;
 
-    protected enum Animation {FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT}
+    protected enum Animation { FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT }
 
     /**
      * Handles the component to resolve the injection
@@ -34,8 +33,8 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        injectActivity(activityComponent());
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
+        injectActivity(getActivityComponent());
         super.onCreate(savedInstanceState);
 
     }
@@ -45,7 +44,7 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
      *
      * @return The activity component. If not exists creates one.
      */
-    public ActivityComponent activityComponent() {
+    public ActivityComponent getActivityComponent() {
         if (activityComponent == null) {
             activityComponent = DaggerActivityComponent.builder()
                     .activityModule(new ActivityModule(this))
@@ -55,7 +54,7 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
         return activityComponent;
     }
 
-    protected void launchActivity(Intent intent, boolean clearHistory, Animation changeAnimation) {
+    protected void launchActivity(final Intent intent, final boolean clearHistory, final Animation changeAnimation) {
         if (clearHistory) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }
@@ -63,22 +62,22 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
         setTransitionAnimation(changeAnimation);
     }
 
-    public void switchToFragment(BaseFragment fragment) {
+    public void switchToFragment(final BaseFragment fragment) {
         switchToFragmentWithTransition(fragment, false, null);
     }
 
-    public void switchToFragment(BaseFragment fragment, boolean finishCurrentFragment) {
+    public void switchToFragment(final BaseFragment fragment, final boolean finishCurrentFragment) {
         switchToFragmentWithTransition(fragment, finishCurrentFragment, null);
     }
 
-    public void switchToFragment(BaseFragment fragment, String tag) {
+    public void switchToFragment(final BaseFragment fragment, final String tag) {
         switchToFragmentWithTransition(fragment, false, tag);
     }
 
-    public void switchToFragmentWithTransition(BaseFragment fragment, boolean finishCurrentFragment, String name) {
-        FragmentManager fm = getSupportFragmentManager();
+    public void switchToFragmentWithTransition(final BaseFragment fragment, final boolean finishCurrentFragment, final String name) {
+        final FragmentManager fm = getSupportFragmentManager();
 
-        String tag;
+        final String tag;
         if (name == null) {
             tag = fragment.getClass().getName();
         } else {
@@ -94,11 +93,11 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
             }
         }
 
-        boolean fragmentExists = fm.findFragmentByTag(tag) != null;
+        final boolean fragmentExists = fm.findFragmentByTag(tag) != null;
         if (fragmentExists) {
             fm.popBackStackImmediate(tag, 0);
         } else {
-            FragmentTransaction transaction = fm.beginTransaction();
+            final FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(getFrameLayoutId(), fragment, tag);
             transaction.addToBackStack(tag);
             transaction.commitAllowingStateLoss();
@@ -106,7 +105,7 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
     }
 
     public BaseFragment getActiveBaseFragment() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(getFrameLayoutId());
+        final Fragment fragment = getSupportFragmentManager().findFragmentById(getFrameLayoutId());
         if (fragment instanceof BaseFragment) {
             return (BaseFragment) fragment;
         }
@@ -115,7 +114,7 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
 
     @Override
     public void onBackPressed() {
-        BaseFragment currentFragment = getActiveBaseFragment();
+        final BaseFragment currentFragment = getActiveBaseFragment();
         if (currentFragment != null) {
             if (!currentFragment.onBackPressed()) {
                 if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
@@ -131,7 +130,7 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
 
     public abstract int getFrameLayoutId();
 
-    protected void setTransitionAnimation(Animation animation) {
+    protected void setTransitionAnimation(final Animation animation) {
         switch (animation) {
             case FADE:
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -144,6 +143,8 @@ public abstract class BaseActivity <V extends MvpView, P extends MvpPresenter<V>
                 break;
             case LEFT_TO_RIGHT:
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                break;
+            default:
                 break;
         }
     }
