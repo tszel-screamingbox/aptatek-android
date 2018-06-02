@@ -43,7 +43,7 @@ android {
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
         versionCode 1
-        versionName "1.0"
+        versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics : 'true'
         multiDexEnabled true
@@ -63,6 +63,22 @@ android {
             testCoverageEnabled true
             multiDexEnabled     true
         }
+    }
+
+    flavorDimensions "mock"
+
+    productFlavors {
+
+        mock {
+            applicationIdSuffix "mock"
+            versionNameSuffix "-mock"
+            dimension "mock"
+        }
+
+        prod {
+
+        }
+
     }
 
     testOptions {
@@ -117,7 +133,7 @@ dependencies {
     implementation appDependencies.timber
 
     // Crashlytics
-    implementation crashlyticsDependencies.crashlytics
+    prodImplementation crashlyticsDependencies.crashlytics
 
     // AutoValue
     implementation autoValueDependencies.api
@@ -149,7 +165,7 @@ configurations.all {
     }
 }
 
-task customCheckstyle(type : Checkstyle) {
+task customCheckstyle(type : Checkstyle, dependsOn: 'assembleProdDebug') {
     description    = 'Running Checkstyle'
     group          = 'verification'
     ignoreFailures = true
@@ -157,7 +173,7 @@ task customCheckstyle(type : Checkstyle) {
 
     configFile file("$rootProject.rootDir/quality/checkstyle.xml")
 
-    source  'src/main/java', 'src/debug/java'
+    source  'src/main/java', 'src/prod/java'
     include '**/*.java'
     exclude '**/*Test.java'
     exclude '**/gen/**'
@@ -174,13 +190,13 @@ task customCheckstyle(type : Checkstyle) {
     classpath = files()
 }
 
-task customFindBugs(type : FindBugs, dependsOn : 'assembleDebug') {
+task customFindBugs(type : FindBugs, dependsOn : 'assembleProdDebug') {
     description    = 'Runing FindBugs'
     group          = 'verification'
     effort         = 'max'
     reportLevel    = 'medium'
-    source         = fileTree('src/main/java')
-    classes        = fileTree('build/intermediates/classes/debug')
+    source        'src/main/java', 'src/prod/java'
+    classes        = fileTree('build/intermediates/classes/prod/debug')
     classpath      = files()
     ignoreFailures = true
 
@@ -196,14 +212,17 @@ task customFindBugs(type : FindBugs, dependsOn : 'assembleDebug') {
     }
 }
 
-task customPmd(type: Pmd, dependsOn: 'assembleDebug') {
+task customPmd(type: Pmd, dependsOn: 'assembleProdDebug') {
     ruleSetFiles = files("$rootProject.rootDir/quality/pmd.xml")
     ignoreFailures = false
     ruleSets = []
 
-    source 'src'
+    source  'src/main/java', 'src/prod/java'
     include '**/*.java'
+    exclude '**/*Test.java'
     exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
 
     reports {
         xml.enabled = false
@@ -216,14 +235,14 @@ task customPmd(type: Pmd, dependsOn: 'assembleDebug') {
 
 def coverageSourceDirs = [
         'src/main/java',
-        'src/debug/java'
+        'src/prod/java'
 ]
 
 tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
-task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
+task jacocoTestReport(type : JacocoReport, dependsOn : 'testProdDebugUnitTest') {
     description = 'Generate JaCoCo coverage reports'
     group       = 'Reporting'
 
@@ -233,7 +252,7 @@ task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
     }
 
     classDirectories = fileTree(
-            dir      : 'build/intermediates/classes/debug',
+            dir      : 'build/intermediates/classes/prod/debug',
             excludes : [
                     '**/R.class',
                     '**/R$*.class',
@@ -256,15 +275,21 @@ task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
     sourceDirectories = files(coverageSourceDirs)
     executionData     = fileTree(
             dir     : "$buildDir",
-            include : [ 'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec' ]
+            include : [ 'jacoco/testProdDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec' ]
     )
 
     doFirst {
-        files('build/intermediates/classes/debug').getFiles().each { file ->
+        files('build/intermediates/classes/prod/debug').getFiles().each { file ->
             if (file.name.contains('$$')) {
                 file.renameTo(file.path.replace('$$', '$'))
             }
         }
+    }
+}
+
+android.variantFilter { variant ->
+    if (variant.buildType.name == 'release' && variant.getFlavors().get(0).name == 'mock') {
+        variant.setIgnore(true)
     }
 }
 
