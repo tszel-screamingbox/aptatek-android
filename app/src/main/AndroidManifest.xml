@@ -23,6 +23,12 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
+            android:name=".view.pin.set.SetPinActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
             android:name=".view.splash.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"

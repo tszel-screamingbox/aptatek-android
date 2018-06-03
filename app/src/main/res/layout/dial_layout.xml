@@ -92,13 +92,14 @@
 
     <TableRow android:layout_weight="1">
 
-        <Button
+        <ImageButton
             android:id="@+id/buttonDelete"
             style="@style/Dial.Button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="D" />
+            android:scaleType="center"
+            android:src="@drawable/delete" />
 
         <Button
             android:id="@+id/button0"
