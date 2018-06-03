@@ -48,4 +48,14 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="Dial.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:background">@color/applicationWhite</item>
+        <item name="android:textColor">@color/dialButtonGrey</item>
+
+        <item name="android:textSize">31sp</item>
+
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">@dimen/general.distance.xxxxmini</item>
+    </style>
 </resources>
