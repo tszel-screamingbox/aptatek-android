@@ -29,7 +29,7 @@ public abstract class BasePinActivity extends BaseActivity implements IActivityC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        injectActivity(activityComponent());
+        injectActivity(getActivityComponent());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin);
 

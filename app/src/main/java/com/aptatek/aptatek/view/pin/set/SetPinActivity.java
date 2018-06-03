@@ -30,7 +30,7 @@ public class SetPinActivity extends BasePinActivity implements SetPinActivityVie
 
     @Override
     protected void injectActivity(ActivityComponent activityComponent) {
-        activityComponent().inject(this);
+        getActivityComponent().inject(this);
     }
 
     @NonNull
