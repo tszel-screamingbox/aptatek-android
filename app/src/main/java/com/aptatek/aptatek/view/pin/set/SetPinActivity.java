@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.data.PinCode;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.pin.BasePinActivity;
 
@@ -18,10 +19,13 @@ public class SetPinActivity extends BasePinActivity implements SetPinActivityVie
 
 
     @Override
+    protected void finishedTyping(PinCode pinCode) {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ButterKnife.bind(this);
     }
 
     @Override

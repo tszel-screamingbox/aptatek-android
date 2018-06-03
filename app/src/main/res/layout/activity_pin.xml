@@ -2,8 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
->
+    android:layout_height="match_parent">
 
     <android.support.constraint.Guideline
         android:id="@+id/headerGuideLine"
@@ -21,12 +20,79 @@
         app:layout_constraintTop_toBottomOf="@id/headerGuideLine" />
 
     <TextView
+        android:id="@+id/hintTextView"
         style="@style/General.Text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
+        android:layout_marginTop="@dimen/general.distance.xxxsmall"
         android:text="@string/set.pin.set.hint"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <LinearLayout
+        android:id="@+id/pinLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/general.distance"
+        android:layout_marginStart="@dimen/general.distance"
+        android:layout_marginTop="@dimen/general.distance.xsmall"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/hintTextView">
+
+        <ImageView
+            android:id="@+id/pin0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/pin_circle" />
+
+        <ImageView
+            android:id="@+id/pin1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/pin_circle" />
+
+        <ImageView
+            android:id="@+id/pin2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/pin_circle" />
+
+        <ImageView
+            android:id="@+id/pin3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/pin_circle" />
+
+        <ImageView
+            android:id="@+id/pin4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/pin_circle" />
+
+        <ImageView
+            android:id="@+id/pin5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/pin_circle" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textSize="@dimen/font.size.xxbig"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/buttonsGuideLine"
+        app:layout_constraintTop_toBottomOf="@+id/pinLayout" />
 
     <android.support.constraint.Guideline
         android:id="@+id/buttonsGuideLine"
@@ -34,7 +100,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.60" />
-
 
     <include
         layout="@layout/dial_layout"
