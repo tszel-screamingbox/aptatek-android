@@ -5,10 +5,12 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="applicationSilver">#D3DAE3</color>
+    <color name="applicationBlack">#34414A</color>
     <color name="applicationLightGray">#A6ABB0</color>
     <color name="applicationGray">#4A4A4A</color>
     <color name="applicationGreen">#4CD864</color>
     <color name="applicationPink">#EE21C2</color>
+    <color name="applicationSmoke">#D3DAE3</color>
     <color name="applicationWhite">#FFFFFF</color>
 
 
