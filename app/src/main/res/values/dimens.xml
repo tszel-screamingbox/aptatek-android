@@ -6,6 +6,7 @@
     <!-- General-->
     <dimen name="general.button.corner">25dp</dimen>
     <dimen name="general.button.corner.normal">16dp</dimen>
+    <dimen name="general.button.corner.round">60dp</dimen>
     <dimen name="general.button.height">50dp</dimen>
     <dimen name="general.button.height.big">60dp</dimen>
     <dimen name="general.button.height.medium">45dp</dimen>
@@ -36,7 +37,11 @@
     <dimen name="font.size.medium">16sp</dimen>
     <dimen name="font.size.big">18sp</dimen>
     <dimen name="font.size.xbig">20sp</dimen>
+    <dimen name="font.size.xxbig">21sp</dimen>
     <dimen name="font.size.large">22sp</dimen>
     <dimen name="font.size.xlarge">25sp</dimen>
+    <dimen name="font.size.xxlarge">45sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
+
+    <item name="alpha.general.text" format="float" type="dimen">0.5</item>
 </resources>
