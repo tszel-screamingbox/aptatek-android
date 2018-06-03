@@ -21,15 +21,15 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     MainActivityPresenter presenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
     }
 
     @Override
-    protected void injectActivity(ActivityComponent activityComponent) {
-        activityComponent().inject(this);
+    protected void injectActivity(final ActivityComponent activityComponent) {
+        getActivityComponent().inject(this);
     }
 
     @NonNull
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.toggleButton)
     public void onToggleButtonClicked() {
-        Intent intent = new Intent(this, ToggleActivity.class);
+        final Intent intent = new Intent(this, ToggleActivity.class);
         launchActivity(intent, false, Animation.FADE);
     }
 

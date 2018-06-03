@@ -17,17 +17,17 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = new Intent(this, MainActivity.class);
+        final Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
-    protected void injectActivity(ActivityComponent activityComponent) {
-        activityComponent().inject(this);
+    protected void injectActivity(final ActivityComponent activityComponent) {
+        getActivityComponent().inject(this);
     }
 
     @NonNull
