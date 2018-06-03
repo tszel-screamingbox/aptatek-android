@@ -3,12 +3,14 @@ package com.aptatek.aptatek.device;
 import com.aptatek.aptatek.domain.manager.FingerprintManager;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Helper for easy access device provided data
  */
 
-public class DeviceHelper {
+@Singleton
+public final class DeviceHelper {
 
     private final FingerprintManager fingerprintManager;
 

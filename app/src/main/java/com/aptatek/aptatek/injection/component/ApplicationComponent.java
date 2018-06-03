@@ -3,6 +3,7 @@ package com.aptatek.aptatek.injection.component;
 import android.content.Context;
 
 import com.aptatek.aptatek.AptatekApplication;
+import com.aptatek.aptatek.device.DeviceHelper;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
@@ -19,6 +20,8 @@ public interface ApplicationComponent {
     void inject(AptatekApplication application);
 
     ResourceInteractor resourceInteractor();
+
+    DeviceHelper deviceHelper();
 
     @ApplicationContext
     Context context();

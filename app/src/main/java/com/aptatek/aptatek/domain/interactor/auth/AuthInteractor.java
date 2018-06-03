@@ -47,7 +47,7 @@ public class AuthInteractor {
             super.onAuthenticationError(errMsgId, errString);
             Timber.d("Error occurred during fingerprint authentication: %s", errString.toString());
             if (callback != null) {
-                callback.errorOccurred(errString.toString());
+                callback.onErrorOccurred(errString.toString());
             }
         }
 
@@ -56,7 +56,7 @@ public class AuthInteractor {
             super.onAuthenticationHelp(helpMsgId, helpString);
             Timber.d("Help message for fingerprint authentication: %s", helpString.toString());
             if (callback != null) {
-                callback.errorOccurred(helpString.toString());
+                callback.onErrorOccurred(helpString.toString());
             }
         }
 
@@ -65,7 +65,7 @@ public class AuthInteractor {
             super.onAuthenticationSucceeded(result);
             Timber.d("Successfully authenticated");
             if (callback != null) {
-                callback.succeed();
+                callback.onSucceeded();
             }
         }
 
@@ -74,7 +74,7 @@ public class AuthInteractor {
             super.onAuthenticationFailed();
             Timber.d("Invalid fingerprint");
             if (callback != null) {
-                callback.invalidFingerprint();
+                callback.onInvalidFingerprintDetected();
             }
         }
     };

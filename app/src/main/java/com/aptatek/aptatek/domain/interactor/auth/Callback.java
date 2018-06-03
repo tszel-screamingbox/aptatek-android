@@ -1,10 +1,12 @@
 package com.aptatek.aptatek.domain.interactor.auth;
 
+import io.reactivex.annotations.NonNull;
+
 public interface Callback {
 
-    void succeed();
+    void onSucceeded();
 
-    void invalidFingerprint();
+    void onInvalidFingerprintDetected();
 
-    void errorOccurred(String message);
+    void onErrorOccurred(@NonNull String message);
 }
