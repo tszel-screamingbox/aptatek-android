@@ -48,7 +48,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/applicationWhite</item>
         <item name="android:textSize">@dimen/font.size.normal</item>
-        <item name="android:text">x</item>
     </style>
 
     <style name="General.Text.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">

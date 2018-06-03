@@ -42,7 +42,7 @@ public class ToggleActivity extends BaseActivity<ToggleActivityView, ToggleActiv
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        getActivityComponent().inject(this);
+        activityComponent.inject(this);
     }
 
     @NonNull

@@ -27,12 +27,10 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
+        injectFragment(getFragmentComponent());
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        injectFragment(getFragmentComponent());
     }
-
 
     /**
      * Returns with the associated activity component
