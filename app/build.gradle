@@ -11,6 +11,20 @@ apply from: "${project.rootDir}/dependencies.gradle"
 apply from: "${project.rootDir}/signing/signing.gradle"
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+
+jacoco {
+    toolVersion = "${versions.jacoco}"
+}
+
+checkstyle {
+    toolVersion "${versions.checkstyle}"
+}
+
+findbugs {
+    toolVersion "${versions.findbugs}"
+}
 
 android {
     compileSdkVersion versions.targetsdk
@@ -29,12 +43,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments disableAnalytics : 'true'
         multiDexEnabled true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled false // configure proguard and enable
+            shrinkResources false // configure proguard and enable
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -42,8 +58,30 @@ android {
         debug {
             signingConfig signingConfigs.debug
             applicationIdSuffix ".debug"
+            testCoverageEnabled true
+            multiDexEnabled     true
         }
     }
+
+    testOptions {
+        execution 'ANDROID_TEST_ORCHESTRATOR'
+        animationsDisabled true
+
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues     = true
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        disable     'MissingTranslation', 'RestrictedApi'
+    }
+}
+
+checkstyle {
+    configFile     rootProject.file('quality/checkstyle.xml')
+    showViolations true
 }
 
 dependencies {
@@ -83,9 +121,15 @@ dependencies {
     implementation autoValueDependencies.api
     annotationProcessor autoValueDependencies.compiler
 
+    // LeakCanary
+    debugImplementation leakDependencies.debug
+    releaseImplementation leakDependencies.release
+    testImplementation leakDependencies.release
+
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito
+    androidTestImplementation androidSupportDependencies.multidex
     androidTestImplementation testDependencies.testrunner
     androidTestImplementation testDependencies.testrules
     androidTestImplementation testDependencies.hamcrest
@@ -95,6 +139,110 @@ dependencies {
     androidTestAnnotationProcessor daggerDependencies.compiler
     androidTestCompileOnly daggerDependencies.annotations
     androidTestImplementation appDependencies.dataFactory
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.code.findbugs:jsr305:3.0.2'
+    }
+}
+
+task customCheckstyle(type : Checkstyle) {
+    description    = 'Running Checkstyle'
+    group          = 'verification'
+    ignoreFailures = true
+    showViolations = true
+
+    configFile file("$rootProject.rootDir/quality/checkstyle.xml")
+
+    source  'src/main/java', 'src/debug/java'
+    include '**/*.java'
+    exclude '**/*Test.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+
+    reports {
+        xml.enabled      = false
+        html.enabled     = true
+        xml.destination  file("$project.buildDir/reports/checkstyle/checkstyle-output.xml")
+        html.destination file("$project.buildDir/reports/checkstyle/checkstyle-output.html")
+    }
+
+    classpath = files()
+}
+
+task customFindBugs(type : FindBugs, dependsOn : 'assembleDebug') {
+    description    = 'Runing FindBugs'
+    group          = 'verification'
+    effort         = 'max'
+    reportLevel    = 'medium'
+    source         = fileTree('src/main/java')
+    classes        = fileTree('build/intermediates/classes/debug')
+    classpath      = files()
+    ignoreFailures = true
+
+    // Use this only if you want exclude some errors
+    excludeFilter = file("$rootProject.rootDir/quality/findbugs-exclude.xml")
+
+    reports {
+        xml.enabled      = false
+        xml.withMessages = true
+        html.enabled     = true
+        xml.destination  file("$project.buildDir/reports/findbugs/findbugs-output.xml")
+        html.destination file("$project.buildDir/reports/findbugs/findbugs-output.html")
+    }
+}
+
+def coverageSourceDirs = [
+        'src/main/java',
+        'src/debug/java'
+]
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
+task jacocoTestReport(type : JacocoReport, dependsOn : 'testDebugUnitTest') {
+    description = 'Generate JaCoCo coverage reports'
+    group       = 'Reporting'
+
+    reports {
+        xml.enabled  = true
+        html.enabled = true
+    }
+
+    classDirectories = fileTree(
+            dir      : 'build/intermediates/classes/debug',
+            excludes : [
+                    '**/R.class',
+                    '**/R$*.class',
+                    '**/*$ViewInjector*.*',
+                    '**/*$ViewBinder*.*',
+                    '**/BuildConfig.*',
+                    '**/Manifest*.*',
+                    '**/AutoValue_*.*',
+                    '**/Dagger*.*',
+                    '**/*Module_Provide*Factory.*',
+                    '**/*_Factory.*',
+                    '**/*_MembersInjector.*',
+                    '**/*_LifecycleAdapter.*'
+            ]
+    )
+
+    sourceDirectories = files(coverageSourceDirs)
+    executionData     = fileTree(
+            dir     : "$buildDir",
+            include : [ 'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec' ]
+    )
+
+    doFirst {
+        files('build/intermediates/classes/debug').getFiles().each { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
