@@ -14,7 +14,6 @@ import timber.log.Timber;
 public class AptatekApplication extends MultiDexApplication {
 
     private ApplicationComponent applicationComponent;
-    private static AptatekApplication application;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -23,8 +22,6 @@ public class AptatekApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        application = this;
 
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
@@ -41,11 +38,8 @@ public class AptatekApplication extends MultiDexApplication {
         return applicationComponent;
     }
 
-    public static AptatekApplication get(Context context) {
+    public static AptatekApplication get(final Context context) {
         return (AptatekApplication) context.getApplicationContext();
     }
 
-    public static AptatekApplication getApplication() {
-        return application;
-    }
 }

@@ -26,11 +26,11 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
     private FragmentComponent fragmentComponent;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
 
-        injectFragment(fragmentComponent());
+        injectFragment(getFragmentComponent());
     }
 
 
@@ -39,7 +39,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
      *
      * @return The activity component. If not exists creates one.
      */
-    protected FragmentComponent fragmentComponent() {
+    protected FragmentComponent getFragmentComponent() {
         if (fragmentComponent == null) {
             fragmentComponent = DaggerFragmentComponent.builder()
                     .fragmentModule(new FragmentModule(this))
@@ -51,14 +51,14 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutId(), container, false);
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        final View view = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initObjects(view);
     }
@@ -73,7 +73,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
      * @param fragment        The fragment to be load
      * @param containerViewId The if of the container
      */
-    protected void loadChildFragment(BaseFragment fragment, @IdRes int containerViewId) {
+    protected void loadChildFragment(final BaseFragment fragment, @IdRes final int containerViewId) {
         getChildFragmentManager()
                 .beginTransaction()
                 .replace(containerViewId, fragment)
@@ -87,7 +87,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
      * @param fragment        The fragment to be load
      * @param containerViewId The if of the container
      */
-    protected void loadChildFragmentWithoutSave(BaseFragment fragment, @IdRes int containerViewId) {
+    protected void loadChildFragmentWithoutSave(final BaseFragment fragment, @IdRes final int containerViewId) {
         getChildFragmentManager()
                 .beginTransaction()
                 .replace(containerViewId, fragment)
@@ -99,7 +99,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
      *
      * @param fragment The fragment to be removed
      */
-    protected void removeChildFragment(BaseFragment fragment) {
+    protected void removeChildFragment(final BaseFragment fragment) {
         getChildFragmentManager()
                 .beginTransaction()
                 .remove(fragment)
@@ -150,7 +150,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
      *
      * @param view Root view (which will be returned in onCreateView)
      */
-    protected abstract void initObjects(final View view);
+    protected abstract void initObjects(View view);
 
     /**
      * Handles the component to resolve the injection

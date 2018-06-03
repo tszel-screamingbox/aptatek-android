@@ -15,7 +15,7 @@ public final class DeviceHelper {
     private final FingerprintManager fingerprintManager;
 
     @Inject
-    public DeviceHelper(FingerprintManager fingerprintManager) {
+    public DeviceHelper(final FingerprintManager fingerprintManager) {
         this.fingerprintManager = fingerprintManager;
     }
 

@@ -1,6 +1,5 @@
 package com.aptatek.aptatek.view.toggle;
 
-
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
@@ -15,10 +14,10 @@ class ToggleActivityPresenter extends MvpBasePresenter<ToggleActivityView> {
     void initView() {
 
         // TODO: check bluetooth availibility
-        if (true) {
-            ifViewAttached(ToggleActivityView::cubeAvailable);
-        } else {
-            ifViewAttached(ToggleActivityView::cubeNotAvailable);
-        }
+        // if (true) {
+        ifViewAttached(ToggleActivityView::cubeAvailable);
+        // } else {
+        //     ifViewAttached(ToggleActivityView::cubeNotAvailable);
+        // }
     }
 }

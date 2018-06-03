@@ -5,15 +5,17 @@ import java.util.Collection;
 /**
  * Utility to provide mapping between data and domain layer.
  *
- * @param <DomainModel> The type of domain model
- * @param <DataModel> The type of data model
+ * @param <I> The type of domain model
+ * @param <O> The type of data model
  */
-public interface Mapper<DomainModel, DataModel> {
+public interface Mapper<I, O> {
 
-    Collection<DomainModel> mapListToDomain(Collection<DataModel> dataModels);
-    DomainModel mapToDomain(DataModel dataModel);
+    Collection<I> mapListToDomain(Collection<O> dataModels);
 
-    Collection<DataModel> mapListToData(Collection<DomainModel> domainModels);
-    DataModel mapToData(DomainModel domainModel);
+    I mapToDomain(O dataModel);
+
+    Collection<O> mapListToData(Collection<I> domainModels);
+
+    O mapToData(I domainModel);
 
 }
