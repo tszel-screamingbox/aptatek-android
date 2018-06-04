@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.data.PinCode;
@@ -17,13 +18,21 @@ import butterknife.OnClick;
 
 public abstract class BasePinActivity extends BaseActivity implements IActivityComponentProvider {
 
-    private static final int PIN_LENGTH = 6;
+    protected static final int PIN_LENGTH = 6;
 
     private String pin = "";
 
     @BindView(R.id.pinLayout)
     protected LinearLayout pinCircleLinearLayout;
 
+    @BindView(R.id.title)
+    protected TextView titleTextView;
+
+    @BindView(R.id.hintTextView)
+    protected TextView hintTextView;
+
+    @BindView(R.id.messageTextView)
+    protected TextView messageTextView;
 
     protected abstract void finishedTyping(PinCode pinCode);
 
@@ -44,11 +53,11 @@ public abstract class BasePinActivity extends BaseActivity implements IActivityC
         }
     }
 
-    private void fillCircle(int untilAt) {
+    protected void fillCircle(int untilAt, int resId) {
         clearCircles();
         for (int i = 0; i < untilAt; i++) {
             ImageView imageView = (ImageView) pinCircleLinearLayout.getChildAt(i);
-            imageView.setImageResource(R.drawable.pin_circle_filled);
+            imageView.setImageResource(resId);
         }
     }
 
@@ -60,7 +69,7 @@ public abstract class BasePinActivity extends BaseActivity implements IActivityC
     public void onPinButtonClicked(View v) {
         Button button = findViewById(v.getId());
         pin = pin + button.getText().toString();
-        fillCircle(pin.length());
+        fillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
 
         if (pin.length() == PIN_LENGTH) {
             PinCode pinCode = new PinCode(pin.getBytes());
@@ -73,7 +82,7 @@ public abstract class BasePinActivity extends BaseActivity implements IActivityC
     public void onDeleteButtonClicked() {
         if (pin.length() > 0) {
             pin = pin.substring(0, pin.length() - 1);
-            fillCircle(pin.length());
+            fillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
         }
     }
 }
