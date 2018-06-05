@@ -22,6 +22,8 @@ import javax.crypto.CipherOutputStream;
 import javax.inject.Inject;
 import javax.security.auth.x500.X500Principal;
 
+import timber.log.Timber;
+
 public class KeyStoreManager {
 
     private static final String ALIAS = "user_key";
@@ -88,8 +90,9 @@ public class KeyStoreManager {
             cipherInputStream.close();
             return new PinCode(bytes);
         } catch (Exception e) {
-            throw new RuntimeException("Error during decrypting", e.getCause());
+            Timber.e("Error during decrypting %s", e.getMessage());
         }
+        return null;
     }
 
     private void createNewKeys() {

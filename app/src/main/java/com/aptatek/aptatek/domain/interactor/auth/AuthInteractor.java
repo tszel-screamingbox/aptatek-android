@@ -2,29 +2,43 @@ package com.aptatek.aptatek.domain.interactor.auth;
 
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
+
+import com.aptatek.aptatek.data.PinCode;
 import com.aptatek.aptatek.domain.manager.FingerprintManager;
+import com.aptatek.aptatek.domain.manager.KeyStoreManager;
+import com.aptatek.aptatek.domain.manager.SharedPreferencesManager;
+
 import javax.inject.Inject;
+
 import timber.log.Timber;
 
 public class AuthInteractor {
 
     private final FingerprintManager fingerprintManager;
+    private final KeyStoreManager keyStoreManager;
+    private final SharedPreferencesManager sharedPreferencesManager;
+
     private CancellationSignal cancelSignal;
     private Callback callback;
 
     @Inject
-    AuthInteractor(final FingerprintManager fingerprintManager) {
+    AuthInteractor(final FingerprintManager fingerprintManager,
+                   final SharedPreferencesManager sharedPreferencesManager,
+                   final KeyStoreManager keyStoreManager) {
         this.fingerprintManager = fingerprintManager;
+        this.sharedPreferencesManager = sharedPreferencesManager;
+        this.keyStoreManager = keyStoreManager;
     }
 
 
-    public void setPinCode() {
-        //TODO: implement
+    public void setPinCode(final PinCode pinCode) {
+        final String encryptedPin = keyStoreManager.encrypt(pinCode);
+        sharedPreferencesManager.setEncryptedPin(encryptedPin);
     }
 
-    public boolean isValidPinCode() {
-        //TODO: implement
-        return true;
+    public boolean isValidPinCode(final PinCode pinCode) {
+        final PinCode storedPin = keyStoreManager.decrypt(sharedPreferencesManager.getEncryptedPin());
+        return storedPin != null && storedPin.isTheSame(pinCode);
     }
 
     public void changePinCode() {
