@@ -63,7 +63,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @OnClick(R.id.testCancelCircleButton)
     void onCancelClicked() {
-        Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
+        onBackPressed();
     }
 
     @OnClick(R.id.testNavigationButton)

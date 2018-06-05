@@ -1,23 +1,30 @@
 package com.aptatek.aptatek.view.test.takesample;
 
+import android.net.Uri;
+
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.VideoThumbnailInteractor;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
-class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
+public class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
 
     private final ResourceInteractor resourceInteractor;
+    private final VideoThumbnailInteractor videoThumbnailInteractor;
+
     private boolean showAdult;
 
     @Inject
-    TakeSamplePresenter(final ResourceInteractor resourceInteractor) {
+    public TakeSamplePresenter(final ResourceInteractor resourceInteractor,
+                        final VideoThumbnailInteractor videoThumbnailInteractor) {
         this.resourceInteractor = resourceInteractor;
+        this.videoThumbnailInteractor = videoThumbnailInteractor;
         showAdult = false;
     }
 
-    void initUi() {
+    public void initUi() {
         ifViewAttached(view -> {
             view.setTitle(resourceInteractor.getStringResource(R.string.test_takesample_title));
             view.setMessage(resourceInteractor.getStringResource(R.string.test_takesample_description));
@@ -29,10 +36,12 @@ class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
         onChangeAge();
     }
 
-    void onChangeAge() {
+    public void onChangeAge() {
         showAdult = !showAdult;
         ifViewAttached(view -> {
-            view.loadVideo("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+            final Uri uriForRawFile = resourceInteractor.getUriForRawFile(showAdult ? R.raw.big_buck_bunny : R.raw.big_buck_bunny);
+            view.showVideoThumbnail(videoThumbnailInteractor.createThumbnailForRawVideo(uriForRawFile));
+            view.loadVideo(uriForRawFile);
             view.showAgeSwitcherText(resourceInteractor.getStringResource(R.string.test_takesample_age_switch,
                     resourceInteractor.getStringResource(showAdult ? R.string.test_takesample_age_child : R.string.test_takesample_age_adult)));
         });

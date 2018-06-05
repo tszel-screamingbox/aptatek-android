@@ -20,7 +20,7 @@
     <string name="test.button.cancel">Cancel</string>
     <string name="test.takesample.button.start">Start timer (30min)</string>
     <string name="test.takesample.title">Take sample</string>
-    <string name="test.takesample.description">This video will guide you through taking a heel prick blood sample</string>
+    <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
     <string name="test.takesample.age.switch">I\'m taking a sample for %1$s</string>
     <string name="test.takesample.age.child">a child</string>
     <string name="test.takesample.age.adult">an adult</string>
