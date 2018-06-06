@@ -83,7 +83,7 @@ public class KeyStoreManager {
                 values.add((byte) nextByte);
             }
 
-            byte[] bytes = new byte[values.size()];
+            final byte[] bytes = new byte[values.size()];
             for (int i = 0; i < bytes.length; i++) {
                 bytes[i] = values.get(i);
             }
@@ -99,9 +99,10 @@ public class KeyStoreManager {
         try {
             Calendar start = Calendar.getInstance();
             Calendar end = Calendar.getInstance();
-            end.add(Calendar.YEAR, 1);
+            end.add(Calendar.YEAR, 10);
             KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context)
                     .setAlias(ALIAS)
+                    .setKeySize(2048)
                     .setSubject(new X500Principal("CN=Aptatek, O=Apatetek Android"))
                     .setSerialNumber(BigInteger.ONE)
                     .setStartDate(start.getTime())
@@ -110,7 +111,6 @@ public class KeyStoreManager {
             KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
             generator.initialize(spec);
             generator.generateKeyPair();
-
         } catch (Exception e) {
             throw new RuntimeException("Error while creating new keys", e.getCause());
         }
