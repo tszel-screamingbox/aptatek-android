@@ -39,3 +39,4 @@
   * Timber [License](https://github.com/JakeWharton/timber/blob/master/LICENSE.txt)
   * Datafactory [License](https://github.com/andygibson/datafactory/blob/master/license.txt)
   * Cwac-saferoom [License](https://github.com/commonsguy/cwac-saferoom/blob/master/LICENSE)
+  * ActivityStarter [License](https://github.com/MarcinMoskala/ActivityStarter/blob/master/LICENSE.txt)

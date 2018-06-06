@@ -19,13 +19,16 @@
     <string name="pin.button.8">8</string>
     <string name="pin.button.9">9</string>
 
+
+    <!-- ConfirmPin Fragment -->
+    <string name="confirm.pin.error">Incorrect PIN</string>
+    <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
+    <string name="confirm.pin.title">Confirm PIN</string>
+    <string name="confirm.pin.successful">PIN successfully set</string>
+
     <!-- Set PIN Activity -->
-    <string name="set.pin.confirm.error">Incorrect PIN</string>
-    <string name="set.pin.confirm.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
-    <string name="set.pin.confirm.title">Confirm PIN</string>
-    <string name="set.pin.set.hint">Set a code that you will use to\naccess the app</string>
-    <string name="set.pin.set.message">PIN successfully set</string>
-    <string name="set.pin.set.title">Set PIN</string>
+    <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
+    <string name="set.pin.title">Set PIN</string>
 
     <!-- Toggle Activity -->
     <string name="toggle.cube.connected">&#9679;&#160;Cube Connected</string>

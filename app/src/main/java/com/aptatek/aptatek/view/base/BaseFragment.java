@@ -27,12 +27,10 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
+        injectFragment(getFragmentComponent());
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        injectFragment(getFragmentComponent());
     }
-
 
     /**
      * Returns with the associated activity component
@@ -150,7 +148,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
      *
      * @param view Root view (which will be returned in onCreateView)
      */
-    protected abstract void initObjects(View view);
+    protected abstract void initObjects(final View view);
 
     /**
      * Handles the component to resolve the injection

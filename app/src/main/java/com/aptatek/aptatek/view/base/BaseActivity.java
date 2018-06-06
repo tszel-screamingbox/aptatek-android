@@ -22,7 +22,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
 
     private ActivityComponent activityComponent;
 
-    protected enum Animation { FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT }
+    public enum Animation {FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT}
 
     /**
      * Handles the component to resolve the injection
@@ -54,7 +54,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         return activityComponent;
     }
 
-    protected void launchActivity(final Intent intent, final boolean clearHistory, final Animation changeAnimation) {
+    public void launchActivity(final Intent intent, final boolean clearHistory, final Animation changeAnimation) {
         if (clearHistory) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }
@@ -62,19 +62,23 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         setTransitionAnimation(changeAnimation);
     }
 
+    public void slideToFragment(final BaseFragment fragment) {
+        switchToFragmentWithTransition(fragment, false, null, true);
+    }
+
     public void switchToFragment(final BaseFragment fragment) {
-        switchToFragmentWithTransition(fragment, false, null);
+        switchToFragmentWithTransition(fragment, false, null, false);
     }
 
     public void switchToFragment(final BaseFragment fragment, final boolean finishCurrentFragment) {
-        switchToFragmentWithTransition(fragment, finishCurrentFragment, null);
+        switchToFragmentWithTransition(fragment, finishCurrentFragment, null, false);
     }
 
     public void switchToFragment(final BaseFragment fragment, final String tag) {
-        switchToFragmentWithTransition(fragment, false, tag);
+        switchToFragmentWithTransition(fragment, false, tag, false);
     }
 
-    public void switchToFragmentWithTransition(final BaseFragment fragment, final boolean finishCurrentFragment, final String name) {
+    public void switchToFragmentWithTransition(final BaseFragment fragment, final boolean finishCurrentFragment, final String name, final boolean smoothly) {
         final FragmentManager fm = getSupportFragmentManager();
 
         final String tag;
@@ -98,6 +102,9 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
             fm.popBackStackImmediate(tag, 0);
         } else {
             final FragmentTransaction transaction = fm.beginTransaction();
+            if (smoothly) {
+                transaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_right_out);
+            }
             transaction.replace(getFrameLayoutId(), fragment, tag);
             transaction.addToBackStack(tag);
             transaction.commitAllowingStateLoss();
