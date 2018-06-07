@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.pin.set;
+package com.aptatek.aptatek.view.pin.request;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,28 +6,27 @@ import android.support.annotation.NonNull;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseRootFrameActivity;
+import com.aptatek.aptatek.view.pin.request.add.RequestPinFragment;
 import com.aptatek.aptatek.view.pin.set.add.AddPinFragment;
 
 import javax.inject.Inject;
 
-import activitystarter.ActivityStarter;
 import activitystarter.Arg;
 
 
-public class SetPinActivity extends BaseRootFrameActivity<SetPinActivityView, SetPinActivityPresenter> implements SetPinActivityView {
+public class RequestPinHostActivity extends BaseRootFrameActivity<RequestPinHostActivityView, RequestPinHostActivityPresenter> implements RequestPinHostActivityView {
 
     @Arg
     String as;
 
     @Inject
-    SetPinActivityPresenter presenter;
+    RequestPinHostActivityPresenter presenter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityStarter.fill(this, savedInstanceState);
-        switchToFragment(new AddPinFragment());
+        switchToFragment(new RequestPinFragment());
     }
 
     @Override
@@ -37,7 +36,7 @@ public class SetPinActivity extends BaseRootFrameActivity<SetPinActivityView, Se
 
     @NonNull
     @Override
-    public SetPinActivityPresenter createPresenter() {
+    public RequestPinHostActivityPresenter createPresenter() {
         return presenter;
     }
 

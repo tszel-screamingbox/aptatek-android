@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +46,16 @@ public class KeyStoreManager {
             keyStore = KeyStore.getInstance("AndroidKeyStore");
             keyStore.load(null);
         } catch (Exception e) {
-            throw new RuntimeException("Cannot load AndroidKeyStore", e.getCause());
+            throw new RuntimeException("Cannot load AndroidKeyStore", e);
+        }
+    }
+
+    public boolean aliasExists() {
+        try {
+            return keyStore.containsAlias(ALIAS);
+        } catch (KeyStoreException e) {
+            Timber.e("Error while checking keystore aliases %s", e.getMessage());
+            return false;
         }
     }
 
@@ -65,7 +75,7 @@ public class KeyStoreManager {
             final byte[] vals = outputStream.toByteArray();
             return Base64.encodeToString(vals, Base64.DEFAULT);
         } catch (Exception e) {
-            throw new RuntimeException("Error during encryption", e.getCause());
+            throw new RuntimeException("Error during encryption", e);
         }
     }
 
@@ -112,7 +122,7 @@ public class KeyStoreManager {
             generator.initialize(spec);
             generator.generateKeyPair();
         } catch (Exception e) {
-            throw new RuntimeException("Error while creating new keys", e.getCause());
+            throw new RuntimeException("Error while creating new keys", e);
         }
     }
 }

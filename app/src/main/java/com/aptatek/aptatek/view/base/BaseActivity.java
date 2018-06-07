@@ -103,7 +103,8 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         } else {
             final FragmentTransaction transaction = fm.beginTransaction();
             if (smoothly) {
-                transaction.setCustomAnimations(R.anim.push_left_in, R.anim.push_right_out);
+                transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                        android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
             transaction.replace(getFrameLayoutId(), fragment, tag);
             transaction.addToBackStack(tag);
@@ -137,7 +138,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
 
     public abstract int getFrameLayoutId();
 
-    protected void setTransitionAnimation(final Animation animation) {
+    public void setTransitionAnimation(final Animation animation) {
         switch (animation) {
             case FADE:
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -146,7 +147,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 break;
             case RIGHT_TO_LEFT:
-                overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
+                overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
                 break;
             case LEFT_TO_RIGHT:
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);

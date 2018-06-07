@@ -26,6 +26,10 @@
     <string name="confirm.pin.title">Confirm PIN</string>
     <string name="confirm.pin.successful">PIN successfully set</string>
 
+    <!-- Require PIN Activity -->
+    <string name="require.pin.message.invalid">Invalid PIN</string>
+    <string name="require.pin.title">Enter PIN</string>
+
     <!-- Set PIN Activity -->
     <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
     <string name="set.pin.title">Set PIN</string>

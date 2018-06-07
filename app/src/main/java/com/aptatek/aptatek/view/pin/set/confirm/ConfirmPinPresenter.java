@@ -15,8 +15,7 @@ import io.reactivex.disposables.Disposable;
 
 class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
 
-    private static final int TIMER_DELAY_IN_SEC = 1;
-    private static final int TIMER_PERIOD = 1;
+    private static final int TIMER_PERIOD_IN_SEC = 1;
 
     private final AuthInteractor authInteractor;
 
@@ -28,7 +27,7 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
     }
 
 
-    void verifyPin(final PinCode addedPin,final PinCode confirmationPin) {
+    void verifyPin(final PinCode addedPin, final PinCode confirmationPin) {
         if (addedPin.isTheSame(confirmationPin)) {
             setPinCode(confirmationPin);
         } else {
@@ -37,7 +36,7 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
     }
 
     private void setPinCode(final PinCode pin) {
-        disposable = Observable.interval(TIMER_DELAY_IN_SEC, TIMER_PERIOD, TimeUnit.SECONDS)
+        disposable = Observable.interval(TIMER_PERIOD_IN_SEC, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(value -> {
                     disposable.dispose();
@@ -48,7 +47,7 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
     }
 
     private void differentPins() {
-        disposable = Observable.interval(TIMER_DELAY_IN_SEC, TIMER_PERIOD, TimeUnit.SECONDS)
+        disposable = Observable.interval(TIMER_PERIOD_IN_SEC, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(value -> {
                     disposable.dispose();
