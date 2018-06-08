@@ -80,6 +80,26 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
         runOnTestActivityView(view -> view.setNavigationButtonText(buttonText));
     }
 
+    @Override
+    public void onNavigateBackPressed() {
+
+    }
+
+    @Override
+    public void onNavigateForwardPressed() {
+
+    }
+
+    @Override
+    public void navigateBack() {
+        runOnTestActivityView(TestActivityView::navigateBack);
+    }
+
+    @Override
+    public void navigateForward() {
+        runOnTestActivityView(TestActivityView::navigateForward);
+    }
+
     private void runOnTestActivityView(final TestActivityViewAction action) {
         if (getActivity() instanceof TestActivityView) {
             action.run((TestActivityView) getActivity());

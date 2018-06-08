@@ -37,7 +37,7 @@ public class TakeSamplePresenterTest {
         Mockito.when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt(), ArgumentMatchers.anyVararg())).thenReturn(TEST_STRING);
         Mockito.when(videoThumbnailInteractor.createThumbnailForRawVideo(ArgumentMatchers.any())).thenReturn(TEST_BITMAP);
 
-        presenter = new TakeSamplePresenter(resourceInteractor, videoThumbnailInteractor);
+        presenter = new TakeSamplePresenter(resourceInteractor, videoThumbnailInteractor, incubationInteractor);
         presenter.attachView(view);
     }
 

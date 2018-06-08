@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.VideoThumbnailInteractor;
+import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
@@ -13,14 +14,17 @@ public class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
 
     private final ResourceInteractor resourceInteractor;
     private final VideoThumbnailInteractor videoThumbnailInteractor;
+    private final IncubationInteractor incubationInteractor;
 
     private boolean showAdult;
 
     @Inject
     public TakeSamplePresenter(final ResourceInteractor resourceInteractor,
-                        final VideoThumbnailInteractor videoThumbnailInteractor) {
+                               final VideoThumbnailInteractor videoThumbnailInteractor,
+                               final IncubationInteractor incubationInteractor) {
         this.resourceInteractor = resourceInteractor;
         this.videoThumbnailInteractor = videoThumbnailInteractor;
+        this.incubationInteractor = incubationInteractor;
         showAdult = false;
     }
 
@@ -45,5 +49,9 @@ public class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
             view.showAgeSwitcherText(resourceInteractor.getStringResource(R.string.test_takesample_age_switch,
                     resourceInteractor.getStringResource(showAdult ? R.string.test_takesample_age_child : R.string.test_takesample_age_adult)));
         });
+    }
+
+    public void startIncubation() {
+        incubationInteractor.startIncubation().subscribe();
     }
 }

@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.base.BaseFragment;
+import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
+import com.aptatek.aptatek.view.test.incubation.IncubationFragment;
 import com.aptatek.aptatek.view.test.takesample.TakeSampleFragment;
 
 import javax.inject.Inject;
@@ -61,14 +63,14 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         return testActivityPresenter;
     }
 
-    @OnClick(R.id.testCancelCircleButton)
+    @OnClick({R.id.testCancelCircleButton, R.id.testCancelButton})
     void onCancelClicked() {
-        onBackPressed();
+        navigateBack();
     }
 
     @OnClick(R.id.testNavigationButton)
     void onNavigationClicked() {
-        Toast.makeText(this, "Navigation", Toast.LENGTH_SHORT).show();
+        navigateForward();
     }
 
     @Override
@@ -89,5 +91,25 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setNavigationButtonText(@NonNull final String buttonText) {
         navigationButton.setText(buttonText);
+    }
+
+    @Override
+    public void navigateBack() {
+        final BaseFragment activeBaseFragment = getActiveBaseFragment();
+        if (activeBaseFragment instanceof TestFragmentBaseView) {
+            ((TestFragmentBaseView) activeBaseFragment).onNavigateBackPressed();
+        }
+
+        onBackPressed();
+    }
+
+    @Override
+    public void navigateForward() {
+        final BaseFragment activeBaseFragment = getActiveBaseFragment();
+        if (activeBaseFragment instanceof TestFragmentBaseView) {
+            ((TestFragmentBaseView) activeBaseFragment).onNavigateForwardPressed();
+        }
+
+        switchToFragment(new IncubationFragment());
     }
 }

@@ -90,6 +90,11 @@ public class TakeSampleFragment extends TestBaseFragment<TakeSampleView, TakeSam
         videoView.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onNavigateForwardPressed() {
+        presenter.startIncubation();
+    }
+
     @NonNull
     @Override
     public TakeSamplePresenter createPresenter() {

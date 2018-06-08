@@ -25,4 +25,8 @@
     <string name="test.takesample.age.child">a child</string>
     <string name="test.takesample.age.adult">an adult</string>
 
+    <string name="test.incubation.title">Sample in incubation</string>
+    <string name="test.incubation.description">Let the sample stay in the tube until the timer goes off</string>
+    <string name="test.incubation.countdown.format">mm:ss</string>
+
 </resources>

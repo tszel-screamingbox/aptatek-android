@@ -14,6 +14,8 @@ public interface TestActivityView extends MvpView {
 
     void setNavigationButtonText(@NonNull String buttonText);
 
+    void navigateBack();
 
+    void navigateForward();
 
 }
