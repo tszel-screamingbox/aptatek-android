@@ -9,9 +9,11 @@ import android.widget.Button;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
+import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
+import com.aptatek.aptatek.view.test.canceltest.CancelTestFragment;
 import com.aptatek.aptatek.view.test.incubation.IncubationFragment;
 import com.aptatek.aptatek.view.test.takesample.TakeSampleFragment;
 
@@ -43,13 +45,19 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
+    }
 
-        switchToFragment(new TakeSampleFragment());
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.showProperScreen();
     }
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+        activityComponent.plus(new TestModule())
+                .inject(this);
     }
 
     @Override
@@ -94,22 +102,58 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     }
 
     @Override
-    public void navigateBack() {
-        final BaseFragment activeBaseFragment = getActiveBaseFragment();
-        if (activeBaseFragment instanceof TestFragmentBaseView) {
-            ((TestFragmentBaseView) activeBaseFragment).onNavigateBackPressed();
+    public void showScreen(@NonNull final TestScreens screen) {
+        final BaseFragment fragment;
+        final boolean clearStack;
+
+        switch (screen) {
+            case CANCEL: {
+                fragment = new CancelTestFragment();
+                clearStack = false;
+                break;
+            }
+            case INCUBATION: {
+                fragment = new IncubationFragment();
+                clearStack = false;
+                break;
+            }
+            case TAKE_SAMPLE:
+            default: {
+                fragment = new TakeSampleFragment();
+                clearStack = true;
+                break;
+            }
         }
 
-        onBackPressed();
+        if (clearStack) {
+            clearFragmentStack();
+        }
+        switchToFragment(fragment);
+    }
+
+    @Override
+    public void navigateBack() {
+        boolean navigationHandled = false;
+        final BaseFragment activeBaseFragment = getActiveBaseFragment();
+        if (activeBaseFragment instanceof TestFragmentBaseView) {
+            navigationHandled = ((TestFragmentBaseView) activeBaseFragment).onNavigateBackPressed();
+        }
+
+        if (!navigationHandled) {
+            onBackPressed();
+        }
     }
 
     @Override
     public void navigateForward() {
+        boolean navigationHandled = false;
         final BaseFragment activeBaseFragment = getActiveBaseFragment();
         if (activeBaseFragment instanceof TestFragmentBaseView) {
-            ((TestFragmentBaseView) activeBaseFragment).onNavigateForwardPressed();
+            navigationHandled = ((TestFragmentBaseView) activeBaseFragment).onNavigateForwardPressed();
         }
 
-        switchToFragment(new IncubationFragment());
+        if (!navigationHandled) {
+            finish();
+        }
     }
 }

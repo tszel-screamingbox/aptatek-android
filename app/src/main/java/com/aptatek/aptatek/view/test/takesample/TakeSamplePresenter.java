@@ -1,6 +1,7 @@
 package com.aptatek.aptatek.view.test.takesample;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
@@ -25,7 +26,13 @@ public class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
         this.resourceInteractor = resourceInteractor;
         this.videoThumbnailInteractor = videoThumbnailInteractor;
         this.incubationInteractor = incubationInteractor;
-        showAdult = false;
+    }
+
+    @Override
+    public void attachView(final @NonNull TakeSampleView view) {
+        super.attachView(view);
+
+        showAdult = true;
     }
 
     public void initUi() {

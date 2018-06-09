@@ -14,7 +14,7 @@ import com.aptatek.aptatek.domain.model.IncubationCountdown;
 import com.aptatek.aptatek.injection.component.test.DaggerTestServiceComponent;
 import com.aptatek.aptatek.injection.component.test.TestServiceComponent;
 import com.aptatek.aptatek.injection.module.ServiceModule;
-import com.aptatek.aptatek.injection.module.test.IncubationModule;
+import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.util.Constants;
 
 import javax.inject.Inject;
@@ -26,7 +26,9 @@ import timber.log.Timber;
 
 public class IncubationReminderService extends Service {
 
-    private static final int NOTIFICATION_ID = 462;
+    private static final int COUNTDOWN_NOTIFICATION_ID = 462;
+    private static final int FINISHED_NOTIFICATION_ID = 346;
+    private static final int ERROR_NOTIFICATION_ID = 377;
 
     @Inject
     IncubationInteractor incubationInteractor;
@@ -51,7 +53,7 @@ public class IncubationReminderService extends Service {
 
         final TestServiceComponent serviceComponent = DaggerTestServiceComponent.builder()
                 .applicationComponent(((AptatekApplication) getApplication()).getApplicationComponent())
-                .incubationModule(new IncubationModule())
+                .testModule(new TestModule())
                 .serviceModule(new ServiceModule(this))
                 .build();
         serviceComponent.inject(this);
@@ -62,25 +64,25 @@ public class IncubationReminderService extends Service {
                 .subscribe(
                     countdown -> {
                         Timber.d("Countdown: %s", countdown);
-                        notificationManager.notify(NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(countdown));
+                        notificationManager.notify(COUNTDOWN_NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(countdown));
                     },
                     error -> {
                         Timber.d("Countdown error: %s", error.toString());
-                        if (!(error instanceof IncubationNotRunningError)) {
-                            notificationManager.notify(NOTIFICATION_ID, incubationNotificationFactory.createErrorNotification(error));
-                        }
                         stopForeground(false);
+                        if (!(error instanceof IncubationNotRunningError)) {
+                            notificationManager.notify(ERROR_NOTIFICATION_ID, incubationNotificationFactory.createErrorNotification(error));
+                        }
                         stopSelf();
                     },
                     () -> {
                         Timber.d("Countdown complete");
-                        notificationManager.notify(NOTIFICATION_ID, incubationNotificationFactory.createFinishedNotification());
                         stopForeground(false);
+                        notificationManager.notify(FINISHED_NOTIFICATION_ID, incubationNotificationFactory.createFinishedNotification());
                         stopSelf();
                     });
 
 
-        startForeground(NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(
+        startForeground(COUNTDOWN_NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(
                 IncubationCountdown.builder()
                         .setRemainingFormattedText("30:00")
                         .setRemainingMillis(Constants.DEFAULT_INCUBATION_PERIOD)

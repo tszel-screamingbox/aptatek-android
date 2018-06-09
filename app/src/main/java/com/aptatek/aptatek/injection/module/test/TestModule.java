@@ -18,7 +18,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class IncubationModule {
+public class TestModule {
 
     @Provides
     IncubationNotificationFactory provideIncubationNotificationFactory(@ApplicationContext final Context context,

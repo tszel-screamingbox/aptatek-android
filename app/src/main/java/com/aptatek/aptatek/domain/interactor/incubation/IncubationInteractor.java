@@ -43,7 +43,7 @@ public class IncubationInteractor {
                                         Flowable.interval(Constants.COUNTDOWN_REFRESH_PERIOD, TimeUnit.MILLISECONDS)
                                                 .map(tick -> System.currentTimeMillis() - startTime)
                                                 .takeUntil(elapsed -> elapsed > Constants.DEFAULT_INCUBATION_PERIOD)
-                                                .map(elapsed -> Constants.DEFAULT_INCUBATION_PERIOD - elapsed)
+                                                .map(elapsed -> Math.max(0, Constants.DEFAULT_INCUBATION_PERIOD - elapsed))
                                                 .map(remaining -> IncubationCountdown.builder()
                                                         .setRemainingFormattedText(timeFormatter.getFormattedRemaining(remaining))
                                                         .setRemainingMillis(remaining)

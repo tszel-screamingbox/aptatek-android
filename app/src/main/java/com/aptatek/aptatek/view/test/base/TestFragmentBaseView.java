@@ -10,8 +10,8 @@ public interface TestFragmentBaseView extends TestActivityView {
 
     void setMessage(@NonNull String message);
 
-    void onNavigateBackPressed();
+    boolean onNavigateBackPressed();
 
-    void onNavigateForwardPressed();
+    boolean onNavigateForwardPressed();
 
 }

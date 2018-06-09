@@ -35,4 +35,8 @@
     <string name="test.incubation.notification.finished.title">Incubation complete</string>
     <string name="test.incubation.notification.finished.text">Tap to proceed</string>
 
+    <string name="test.cancel.title">Cancel test</string>
+    <string name="test.cancel.description">Are you sure you want to cancel this test?</string>
+    <string name="test.cancel.navigation.yes">Yes</string>
+
 </resources>

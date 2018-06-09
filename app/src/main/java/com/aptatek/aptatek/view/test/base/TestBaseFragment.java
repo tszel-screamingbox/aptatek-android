@@ -4,20 +4,20 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.Guideline;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.injection.component.test.DaggerTestFragmentComponent;
+import com.aptatek.aptatek.injection.component.FragmentComponent;
 import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
-import com.aptatek.aptatek.injection.module.FragmentModule;
-import com.aptatek.aptatek.injection.module.test.IncubationModule;
+import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.test.TestActivityView;
+import com.aptatek.aptatek.view.test.TestScreens;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 
 import butterknife.BindView;
@@ -34,24 +34,14 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     private TestFragmentComponent testFragmentComponent;
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        injectIncubationFragment(getTestFragmentComponent());
-        super.onCreate(savedInstanceState);
-    }
-
-    protected TestFragmentComponent getTestFragmentComponent() {
+    protected void injectFragment(@NonNull final FragmentComponent fragmentComponent) {
         if (testFragmentComponent == null) {
-            testFragmentComponent = DaggerTestFragmentComponent.builder()
-                    .fragmentModule(new FragmentModule(this))
-                    .incubationModule(new IncubationModule())
-                    .applicationComponent(AptatekApplication.get(getContext()).getApplicationComponent())
-                    .build();
+            testFragmentComponent = fragmentComponent.plus(new TestModule());
         }
-
-        return testFragmentComponent;
+        injectTestFragment(testFragmentComponent);
     }
 
-    protected abstract void injectIncubationFragment(TestFragmentComponent fragmentComponent);
+    protected abstract void injectTestFragment(TestFragmentComponent fragmentComponent);
 
     @Nullable
     @Override
@@ -73,7 +63,16 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     protected void initObjects(final View view) {
         final FrameLayout flContent = view.findViewById(R.id.testBaseContent);
         flContent.removeAllViews();
-        LayoutInflater.from(view.getContext()).inflate(getContentLayoutId(), flContent);
+
+        final Guideline guideline = view.findViewById(R.id.guideContent);
+
+        final int contentLayoutId = getContentLayoutId();
+        if (contentLayoutId != 0) {
+            LayoutInflater.from(view.getContext()).inflate(contentLayoutId, flContent);
+        } else {
+            guideline.setGuidelinePercent(1f);
+            flContent.setVisibility(View.GONE);
+        }
         ButterKnife.bind(this, view);
     }
 
@@ -108,13 +107,18 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     }
 
     @Override
-    public void onNavigateBackPressed() {
-
+    public boolean onNavigateBackPressed() {
+        return false;
     }
 
     @Override
-    public void onNavigateForwardPressed() {
+    public boolean onNavigateForwardPressed() {
+        return false;
+    }
 
+    @Override
+    public void showScreen(@NonNull final TestScreens screen) {
+        runOnTestActivityView(view -> view.showScreen(screen));
     }
 
     @Override

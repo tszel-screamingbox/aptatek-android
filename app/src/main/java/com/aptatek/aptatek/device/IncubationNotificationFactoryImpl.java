@@ -3,7 +3,10 @@ package com.aptatek.aptatek.device;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
@@ -14,6 +17,7 @@ import com.aptatek.aptatek.domain.interactor.incubation.IncubationNotificationFa
 import com.aptatek.aptatek.domain.model.IncubationCountdown;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 import com.aptatek.aptatek.util.Constants;
+import com.aptatek.aptatek.view.test.TestActivity;
 
 public class IncubationNotificationFactoryImpl implements IncubationNotificationFactory {
 
@@ -40,6 +44,7 @@ public class IncubationNotificationFactoryImpl implements IncubationNotification
                 .setSmallIcon(R.drawable.ic_play)
                 .setProgress(100, getIncubationProgress(countdown.getRemainingMillis()), false)
                 .setVibrate(new long[] {0L})
+                .setContentIntent(createContentIntent())
                 .build();
     }
 
@@ -54,6 +59,8 @@ public class IncubationNotificationFactoryImpl implements IncubationNotification
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_incubation_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_incubation_notification_finished_text))
                 .setSmallIcon(R.drawable.ic_play)
+                .setContentIntent(createContentIntent())
+                .setAutoCancel(true)
                 .build();
     }
 
@@ -64,7 +71,17 @@ public class IncubationNotificationFactoryImpl implements IncubationNotification
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_incubation_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_incubation_notification_finished_text))
                 .setSmallIcon(R.drawable.ic_play)
+                .setContentIntent(createContentIntent())
+                .setAutoCancel(true)
                 .build();
+    }
+
+    private PendingIntent createContentIntent() {
+        final Intent starter = TestActivity.createStarter(context);
+        final TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(starter);
+
+        return stackBuilder.getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
     private String createChannelId() {

@@ -3,16 +3,16 @@ package com.aptatek.aptatek.view.test.incubation;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.injection.component.FragmentComponent;
 import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
+import com.aptatek.aptatek.view.test.TestScreens;
 import com.aptatek.aptatek.view.test.base.TestBaseFragment;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import timber.log.Timber;
 
 public class IncubationFragment extends TestBaseFragment<IncubationView, IncubationPresenter>
     implements IncubationView {
@@ -36,11 +36,7 @@ public class IncubationFragment extends TestBaseFragment<IncubationView, Incubat
     }
 
     @Override
-    protected void injectFragment(@NonNull final FragmentComponent fragmentComponent) {
-    }
-
-    @Override
-    protected void injectIncubationFragment(@NonNull final TestFragmentComponent fragmentComponent) {
+    protected void injectTestFragment(@NonNull final TestFragmentComponent fragmentComponent) {
         fragmentComponent.inject(this);
     }
 
@@ -56,7 +52,17 @@ public class IncubationFragment extends TestBaseFragment<IncubationView, Incubat
     }
 
     @Override
-    public void onNavigateBackPressed() {
-        Toast.makeText(getActivity(), "Tuti megszakitod az incubationt?", Toast.LENGTH_SHORT).show();
+    public boolean onNavigateBackPressed() {
+        showScreen(TestScreens.CANCEL);
+
+        return true;
     }
+
+    @Override
+    public boolean onNavigateForwardPressed() {
+        Timber.d("onNavigateForwardPressed");
+
+        return false;
+    }
+
 }
