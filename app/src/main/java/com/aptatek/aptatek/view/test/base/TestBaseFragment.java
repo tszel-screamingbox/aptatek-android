@@ -10,7 +10,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.injection.component.test.DaggerTestFragmentComponent;
+import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
+import com.aptatek.aptatek.injection.module.FragmentModule;
+import com.aptatek.aptatek.injection.module.test.IncubationModule;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.test.TestActivityView;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
@@ -25,6 +30,28 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     TextView tvTitle;
     @BindView(R.id.testBaseMessage)
     TextView tvDescription;
+
+    private TestFragmentComponent testFragmentComponent;
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        injectIncubationFragment(getTestFragmentComponent());
+        super.onCreate(savedInstanceState);
+    }
+
+    protected TestFragmentComponent getTestFragmentComponent() {
+        if (testFragmentComponent == null) {
+            testFragmentComponent = DaggerTestFragmentComponent.builder()
+                    .fragmentModule(new FragmentModule(this))
+                    .incubationModule(new IncubationModule())
+                    .applicationComponent(AptatekApplication.get(getContext()).getApplicationComponent())
+                    .build();
+        }
+
+        return testFragmentComponent;
+    }
+
+    protected abstract void injectIncubationFragment(TestFragmentComponent fragmentComponent);
 
     @Nullable
     @Override

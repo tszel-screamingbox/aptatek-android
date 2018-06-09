@@ -44,6 +44,7 @@
             android:theme="@style/AppTheme.FullScreen"/>
 
 
+        <service android:name=".view.test.incubation.IncubationReminderService" />
     </application>
 
 </manifest>

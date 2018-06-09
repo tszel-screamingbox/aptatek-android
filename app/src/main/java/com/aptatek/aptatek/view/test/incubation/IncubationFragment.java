@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.FragmentComponent;
+import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
 import com.aptatek.aptatek.view.test.base.TestBaseFragment;
 
 import javax.inject.Inject;
@@ -36,6 +37,10 @@ public class IncubationFragment extends TestBaseFragment<IncubationView, Incubat
 
     @Override
     protected void injectFragment(@NonNull final FragmentComponent fragmentComponent) {
+    }
+
+    @Override
+    protected void injectIncubationFragment(@NonNull final TestFragmentComponent fragmentComponent) {
         fragmentComponent.inject(this);
     }
 

@@ -111,6 +111,10 @@ dependencies {
     implementation androidSupportDependencies.design
     implementation androidSupportDependencies.multidex
 
+    // ArchitectureComponents
+    implementation architectureComponentsDependencies.extensions
+    annotationProcessor architectureComponentsDependencies.compiler
+
     // MVP
     implementation mvpDependencies.mosby
     implementation mvpDependencies.viewstate

@@ -10,6 +10,9 @@ ext {
             constraintLayout            : '1.1.0',
             multidex                    : '1.0.3',
 
+            // ArchitectureComponents
+            lifecycle                   : '1.1.1',
+
             // Mosby
             mosby                       : '3.1.0',
 
@@ -73,6 +76,11 @@ ext {
             design          : "com.android.support:design:${versions.androidSupport}",
             multidex        : "com.android.support:multidex:${versions.multidex}",
             constraintLayout: "com.android.support.constraint:constraint-layout:${versions.constraintLayout}"
+    ]
+
+    architectureComponentsDependencies = [
+            extensions      : "android.arch.lifecycle:extensions:${versions.lifecycle}",
+            compiler        : "android.arch.lifecycle:compiler:${versions.lifecycle}"
     ]
 
     mvpDependencies = [
