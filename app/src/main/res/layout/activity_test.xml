@@ -3,39 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginBottom="56dp"
-    android:layout_marginEnd="31dp"
-    android:layout_marginStart="31dp">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/testContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/barrier3">
+        app:layout_constraintBottom_toTopOf="@+id/barrier3"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/topGuide">
 
     </FrameLayout>
 
     <Button
         android:id="@+id/testCancelCircleButton"
         style="@style/Grey.Cancel.Button"
-        android:layout_width="60dp"
+        android:layout_width="@dimen/general.button.height.big"
         android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/general.distance.mini"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuide"
         app:layout_constraintEnd_toStartOf="@+id/testNavigationButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/guideStart" />
 
     <Button
         android:id="@+id/testNavigationButton"
         style="@style/General.Green.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuide"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toEndOf="@+id/testCancelCircleButton" />
 
     <Button
@@ -43,11 +40,11 @@
         style="@style/General.Grey.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
-        android:visibility="gone"
         android:text="@string/test.button.cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottomGuide"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart" />
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier3"
@@ -55,5 +52,33 @@
         android:layout_height="wrap_content"
         app:barrierDirection="top"
         app:constraint_referenced_ids="testNavigationButton,testCancelCircleButton,testCancelButton" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/topGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.07" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/bottomGuide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.93" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
 </android.support.constraint.ConstraintLayout>
