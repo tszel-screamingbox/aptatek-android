@@ -27,7 +27,7 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        getActivityComponent().inject(this);
+        activityComponent.inject(this);
     }
 
     @NonNull
