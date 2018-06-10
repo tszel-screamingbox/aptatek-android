@@ -17,7 +17,7 @@ public class SharedPreferencesManager {
         static final String SHARED_PREFERENCES_NAME = "com.aptatek.aptatek";
     }
 
-    private final String PREF_PARAM_ENCRYPTED_PIN = "encrypted_pin";
+    public static final String PREF_PARAM_ENCRYPTED_PIN = "encrypted_pin";
 
     private SharedPreferences preferences;
 
