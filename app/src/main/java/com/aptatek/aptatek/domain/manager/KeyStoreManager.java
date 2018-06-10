@@ -59,6 +59,14 @@ public class KeyStoreManager {
         }
     }
 
+    public void deleteKeyStore() {
+        try {
+            keyStore.deleteEntry(ALIAS);
+        } catch (KeyStoreException e) {
+            Timber.e("Error while deleting keystore aliases %s", e.getMessage());
+        }
+    }
+
     public String encrypt(PinCode pinCode) {
         try {
             createNewKeys();
