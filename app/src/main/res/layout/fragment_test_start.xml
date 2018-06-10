@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <VideoView
+        android:id="@+id/takeSampleVideo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/general.distance.small"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/takeSampleAgeToggle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/takeSampleVideoThumbnail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/takeSampleVideo"
+        app:layout_constraintEnd_toEndOf="@+id/takeSampleVideo"
+        app:layout_constraintStart_toStartOf="@+id/takeSampleVideo"
+        app:layout_constraintTop_toTopOf="@+id/takeSampleVideo" />
+
+    <ImageView
+        android:id="@+id/takeSamplePlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/takeSampleVideo"
+        app:layout_constraintEnd_toEndOf="@+id/takeSampleVideo"
+        app:layout_constraintStart_toStartOf="@+id/takeSampleVideo"
+        app:layout_constraintTop_toTopOf="@+id/takeSampleVideo"
+        app:srcCompat="@drawable/ic_play" />
+
+    <TextView
+        android:id="@+id/takeSampleAgeToggle"
+        style="@style/General.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="@dimen/font.size.normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/takeSampleVideo"
+        tools:text="@string/test.takesample.age.switch" />
+
+</android.support.constraint.ConstraintLayout>

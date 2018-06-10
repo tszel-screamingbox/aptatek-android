@@ -51,6 +51,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
+        <activity android:name=".view.test.TestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
+
 
     </application>
 
