@@ -18,7 +18,7 @@ public class IncubationDataSourceImpl implements IncubationDataSource {
     public boolean hasRunningIncubation() {
         final long incubationStart = preferenceManager.getIncubationStart();
         return incubationStart > 0L
-                && Math.abs(System.currentTimeMillis() - incubationStart) <= Constants.DEFAULT_INCUBATION_PERIOD;
+                && System.currentTimeMillis() - incubationStart <= Constants.DEFAULT_INCUBATION_PERIOD;
     }
 
     @Override

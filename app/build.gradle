@@ -46,6 +46,7 @@ android {
         versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics : 'true'
+        testInstrumentationRunnerArguments clearPackageData: 'true'
         multiDexEnabled true
     }
 
@@ -161,6 +162,8 @@ dependencies {
     androidTestAnnotationProcessor daggerDependencies.compiler
     androidTestCompileOnly daggerDependencies.annotations
     androidTestImplementation appDependencies.dataFactory
+    androidTestUtil testDependencies.orchestrator
+
 }
 
 configurations.all {

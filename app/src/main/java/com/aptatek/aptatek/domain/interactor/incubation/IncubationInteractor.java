@@ -29,7 +29,7 @@ public class IncubationInteractor {
     }
 
     public Single<Boolean> hasRunningIncubation() {
-        return Single.just(dataSource.hasRunningIncubation());
+        return Single.fromCallable(dataSource::hasRunningIncubation);
     }
 
     public Flowable<IncubationCountdown> getIncubationCountdown() {
@@ -54,7 +54,7 @@ public class IncubationInteractor {
                     }
                 })
                 .onErrorResumeNext((Function<Throwable, Publisher<? extends IncubationCountdown>>) throwable ->
-                        Flowable.error(new IncubationError(throwable.getCause())));
+                        Flowable.error(throwable instanceof IncubationNotRunningError ? throwable : new IncubationError(throwable.getCause())));
     }
 
     public Completable startIncubation() {

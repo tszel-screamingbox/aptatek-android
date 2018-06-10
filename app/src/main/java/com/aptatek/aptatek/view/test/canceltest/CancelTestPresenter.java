@@ -16,7 +16,7 @@ public class CancelTestPresenter extends MvpBasePresenter<CancelTestView> {
     private final IncubationInteractor incubationInteractor;
 
     @Inject
-    CancelTestPresenter(final ResourceInteractor resourceInteractor, IncubationInteractor incubationInteractor) {
+    CancelTestPresenter(final ResourceInteractor resourceInteractor, final IncubationInteractor incubationInteractor) {
         this.resourceInteractor = resourceInteractor;
         this.incubationInteractor = incubationInteractor;
     }

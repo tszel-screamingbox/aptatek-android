@@ -32,7 +32,7 @@ public class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
     public void attachView(final @NonNull TakeSampleView view) {
         super.attachView(view);
 
-        showAdult = true;
+        showAdult = false;
     }
 
     public void initUi() {

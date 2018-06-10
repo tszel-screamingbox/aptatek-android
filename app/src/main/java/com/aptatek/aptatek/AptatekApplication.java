@@ -20,7 +20,7 @@ import timber.log.Timber;
 public class AptatekApplication extends MultiDexApplication implements LifecycleObserver {
 
     private ApplicationComponent applicationComponent;
-    private boolean isInForeground;
+    private boolean inForeground;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -44,14 +44,14 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void onMoveToForeground() {
-        isInForeground = true;
+        inForeground = true;
         Timber.d("Process.Lifecycle: foreground");
         stopService(new Intent(this, IncubationReminderService.class));
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     public void onMoveToBackground() {
-        isInForeground = false;
+        inForeground = false;
         Timber.d("Process.Lifecycle: background");
         startService(new Intent(this, IncubationReminderService.class));
     }
@@ -61,7 +61,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
     }
 
     public boolean isInForeground() {
-        return isInForeground;
+        return inForeground;
     }
 
     public static AptatekApplication get(final Context context) {
