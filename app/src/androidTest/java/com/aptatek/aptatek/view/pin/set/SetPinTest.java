@@ -88,11 +88,11 @@ public class SetPinTest {
 
 
     private void enterPin() {
-        onView(withId(R.id.button0)).perform(ViewActions.click());
         onView(withId(R.id.button1)).perform(ViewActions.click());
-        onView(withId(R.id.button2)).perform(ViewActions.click());
-        onView(withId(R.id.button3)).perform(ViewActions.click());
-        onView(withId(R.id.button4)).perform(ViewActions.click());
-        onView(withId(R.id.button5)).perform(ViewActions.click());
+        onView(withId(R.id.button1)).perform(ViewActions.click());
+        onView(withId(R.id.button1)).perform(ViewActions.click());
+        onView(withId(R.id.button1)).perform(ViewActions.click());
+        onView(withId(R.id.button1)).perform(ViewActions.click());
+        onView(withId(R.id.button1)).perform(ViewActions.click());
     }
 }
