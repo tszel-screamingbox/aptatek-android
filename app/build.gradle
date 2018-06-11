@@ -282,7 +282,7 @@ task jacocoTestReport(type : JacocoReport, dependsOn : 'testProdDebugUnitTest') 
     sourceDirectories = files(coverageSourceDirs)
     executionData     = fileTree(
             dir     : "$buildDir",
-            include : [ 'jacoco/testProdDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec' ]
+            include : [ 'jacoco/testProdDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec', '../../firebase/*coverage.ec' ]
     )
 
     doFirst {

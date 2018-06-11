@@ -41,7 +41,7 @@
     <dimen name="font.size.xlarge">25sp</dimen>
     <dimen name="font.size.xxlarge">45sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
-    <dimen name="font.size.incubation">130sp</dimen>
+    <dimen name="font.size.incubation">110sp</dimen>
 
     <item name="alpha.general.text" format="float" type="dimen">0.5</item>
     <item name="alpha.general.full" format="float" type="dimen">1.0</item>
