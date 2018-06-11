@@ -1,18 +1,20 @@
 <resources>
     <!-- App Constants-->
     <string name="app.name">Aptatek</string>
-
+    <!-- ConfirmPin Fragment -->
+    <string name="confirm.pin.error">Incorrect PIN</string>
+    <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
+    <string name="confirm.pin.successful">PIN successfully set</string>
+    <string name="confirm.pin.title">Confirm PIN</string>
     <!-- Fingerprint Activity -->
     <string name="fingerprint.message">Set up fingerprint access if desired.</string>
     <string name="fingerprint.option.disable">Disable Fingerprint</string>
-    <string name="fingerprint.option.enable">Enable Fingerrpint</string>
+    <string name="fingerprint.option.enable">Enable Fingerprint</string>
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
-
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>
     <string name="main.button.toggle">Toggle</string>
-
     <!-- Pin Activity -->
     <string name="pin.button.0">0</string>
     <string name="pin.button.1">1</string>
@@ -24,38 +26,26 @@
     <string name="pin.button.7">7</string>
     <string name="pin.button.8">8</string>
     <string name="pin.button.9">9</string>
-
-
-    <!-- ConfirmPin Fragment -->
-    <string name="confirm.pin.error">Incorrect PIN</string>
-    <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
-    <string name="confirm.pin.title">Confirm PIN</string>
-    <string name="confirm.pin.successful">PIN successfully set</string>
-
     <!-- Require PIN Activity -->
     <string name="require.pin.message.invalid">Invalid PIN</string>
     <string name="require.pin.title">Enter PIN</string>
-
     <!-- Set PIN Activity -->
     <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
     <string name="set.pin.title">Set PIN</string>
-
+    <!-- Test Activity -->
+    <string name="test.button.cancel">Cancel</string>
+    <string name="test.takesample.age.adult">an adult</string>
+    <string name="test.takesample.age.child">a child</string>
+    <string name="test.takesample.age.switch">I\'m taking a sample for %1$s</string>
+    <string name="test.takesample.button.start">Start timer (30min)</string>
+    <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
+    <string name="test.takesample.title">Take sample</string>
     <!-- Toggle Activity -->
-    <string name="toggle.cube.connected">&#9679;&#160;Cube Connected</string>
-    <string name="toggle.cube.disconnected">&#9679;&#160;Cube Disconnected</string>
     <string name="toggle.button.connect">Connect Cube</string>
     <string name="toggle.button.new.test">New Test</string>
     <string name="toggle.button.result">Your Results</string>
     <string name="toggle.button.settings">Settings</string>
     <string name="toggle.button.toggle">Toggle</string>
-
-    <!-- Test Activity -->
-    <string name="test.button.cancel">Cancel</string>
-    <string name="test.takesample.button.start">Start timer (30min)</string>
-    <string name="test.takesample.title">Take sample</string>
-    <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
-    <string name="test.takesample.age.switch">I\'m taking a sample for %1$s</string>
-    <string name="test.takesample.age.child">a child</string>
-    <string name="test.takesample.age.adult">an adult</string>
-
+    <string name="toggle.cube.connected">● Cube Connected</string>
+    <string name="toggle.cube.disconnected">● Cube Disconnected</string>
 </resources>

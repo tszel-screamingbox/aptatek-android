@@ -2,6 +2,7 @@ package com.aptatek.aptatek.view.fingerprint;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
@@ -10,6 +11,7 @@ import com.aptatek.aptatek.view.base.BaseActivity;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class FingerprintActivity extends BaseActivity<FingerprintActivityView, FingerprintActivityPresenter> implements FingerprintActivityView {
 
@@ -38,5 +40,16 @@ public class FingerprintActivity extends BaseActivity<FingerprintActivityView, F
     @Override
     public int getFrameLayoutId() {
         return R.layout.activity_fingerprint;
+    }
+
+
+    @OnClick(R.id.disableButton)
+    public void onEnableButtonClicked() {
+        Toast.makeText(this, "Enable clicked", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.disableButton)
+    public void onDisableButtonClicked() {
+        Toast.makeText(this, "Disable clicked", Toast.LENGTH_SHORT).show();
     }
 }
