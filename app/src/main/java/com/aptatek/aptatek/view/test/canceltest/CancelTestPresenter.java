@@ -4,13 +4,13 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.aptatek.view.test.TestScreens;
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.aptatek.aptatek.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
 
-public class CancelTestPresenter extends MvpBasePresenter<CancelTestView> {
+public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
 
     private final ResourceInteractor resourceInteractor;
     private final IncubationInteractor incubationInteractor;
@@ -21,6 +21,7 @@ public class CancelTestPresenter extends MvpBasePresenter<CancelTestView> {
         this.incubationInteractor = incubationInteractor;
     }
 
+    @Override
     public void initUi() {
         ifViewAttached(view -> {
             view.setNavigationButtonVisible(true);

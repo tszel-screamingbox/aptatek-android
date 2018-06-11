@@ -31,6 +31,10 @@
     <string name="test.incubation.notification.inprogress.title">Incubation in progress</string>
     <string name="test.incubation.notification.inprogress.textformat">Remaining time is %s</string>
 
+    <string name="test.insertcasette.title">Insert casette</string>
+    <string name="test.insertcasette.description">Insert the casette to the adapter from the bottom</string>
+    <string name="test.insertcasette.button.next">Next</string>
+
     <string name="test.takesample.age.switch">I\'m taking a sample for %1$s</string>
     <string name="test.takesample.age.child">a child</string>
     <string name="test.takesample.age.adult">an adult</string>

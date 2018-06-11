@@ -4,6 +4,7 @@ public enum TestScreens {
 
     TAKE_SAMPLE,
     INCUBATION,
-    CANCEL
+    CANCEL,
+    INSERT_CASSETTE
 
 }

@@ -6,7 +6,7 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.aptatek.view.test.TestActivityView;
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.aptatek.aptatek.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
 
@@ -15,7 +15,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class IncubationPresenter extends MvpBasePresenter<IncubationView> {
+public class IncubationPresenter extends TestBasePresenter<IncubationView> {
 
     private final ResourceInteractor resourceInteractor;
     private final IncubationInteractor incubationInteractor;
@@ -29,6 +29,7 @@ public class IncubationPresenter extends MvpBasePresenter<IncubationView> {
         this.incubationInteractor = incubationInteractor;
     }
 
+    @Override
     public void initUi() {
         ifViewAttached(view -> {
             view.setCancelBigVisible(false);

@@ -15,6 +15,7 @@ import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
 import com.aptatek.aptatek.view.test.canceltest.CancelTestFragment;
 import com.aptatek.aptatek.view.test.incubation.IncubationFragment;
+import com.aptatek.aptatek.view.test.insertcasette.InsertCasetteFragment;
 import com.aptatek.aptatek.view.test.takesample.TakeSampleFragment;
 
 import javax.inject.Inject;
@@ -105,22 +106,32 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     public void showScreen(@NonNull final TestScreens screen) {
         final BaseFragment fragment;
         final boolean clearStack;
+        final boolean persistCurrent;
 
         switch (screen) {
             case CANCEL: {
                 fragment = new CancelTestFragment();
                 clearStack = false;
+                persistCurrent = false;
                 break;
             }
             case INCUBATION: {
                 fragment = new IncubationFragment();
                 clearStack = false;
+                persistCurrent = false;
+                break;
+            }
+            case INSERT_CASSETTE: {
+                fragment = new InsertCasetteFragment();
+                clearStack = false;
+                persistCurrent = true;
                 break;
             }
             case TAKE_SAMPLE:
             default: {
                 fragment = new TakeSampleFragment();
                 clearStack = true;
+                persistCurrent = true;
                 break;
             }
         }
@@ -128,7 +139,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         if (clearStack) {
             clearFragmentStack();
         }
-        switchToFragment(fragment);
+        switchToFragment(fragment, persistCurrent);
     }
 
     @Override

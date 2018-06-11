@@ -12,7 +12,6 @@ import com.aptatek.aptatek.view.test.base.TestBaseFragment;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import timber.log.Timber;
 
 public class IncubationFragment extends TestBaseFragment<IncubationView, IncubationPresenter>
     implements IncubationView {
@@ -60,9 +59,9 @@ public class IncubationFragment extends TestBaseFragment<IncubationView, Incubat
 
     @Override
     public boolean onNavigateForwardPressed() {
-        Timber.d("onNavigateForwardPressed");
+        showScreen(TestScreens.INSERT_CASSETTE);
 
-        return false;
+        return true;
     }
 
 }
