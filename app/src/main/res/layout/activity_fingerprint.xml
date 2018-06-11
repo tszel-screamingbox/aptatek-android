@@ -57,7 +57,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/general.button.height.big"
         android:text="@string/fingerprint.option.enable"
-        android:textSize="@dimen/font.size.large"
         app:layout_constraintTop_toBottomOf="@+id/bottomLine" />
 
     <Button
@@ -67,7 +66,6 @@
         android:layout_height="@dimen/general.button.height.big"
         android:layout_marginTop="@dimen/general.distance.small"
         android:text="@string/fingerprint.option.disable"
-        android:textSize="@dimen/font.size.large"
         app:layout_constraintTop_toBottomOf="@+id/enableButton" />
 
 </android.support.constraint.ConstraintLayout>

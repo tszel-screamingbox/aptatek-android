@@ -43,7 +43,7 @@ public class FingerprintActivity extends BaseActivity<FingerprintActivityView, F
     }
 
 
-    @OnClick(R.id.disableButton)
+    @OnClick(R.id.enableButton)
     public void onEnableButtonClicked() {
         Toast.makeText(this, "Enable clicked", Toast.LENGTH_SHORT).show();
     }
