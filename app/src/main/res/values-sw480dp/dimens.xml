@@ -1,0 +1,6 @@
+<resources>
+
+    <!-- General-->
+    <dimen name="font.size.incubation">130sp</dimen>
+
+</resources>
