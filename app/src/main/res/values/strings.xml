@@ -2,6 +2,12 @@
     <!-- App Constants-->
     <string name="app.name">Aptatek</string>
 
+    <!-- Fingerprint Activity -->
+    <string name="fingerprint.message">Set up fingerprint access if desired.</string>
+    <string name="fingerprint.option.disable">Disable Fingerprint</string>
+    <string name="fingerprint.option.enable">Enable Fingerrpint</string>
+    <string name="fingerprint.title">Fingerprint\nAuthentication</string>
+
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>

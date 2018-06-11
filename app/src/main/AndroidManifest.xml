@@ -16,6 +16,10 @@
             android:name="firebase_analytics_collection_deactivated"
             android:value="true" />
 
+        <activity
+            android:name=".view.fingerprint.FingerprintActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
 
         <activity
             android:name=".view.main.MainActivity"
@@ -51,9 +55,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.TestActivity"
+        <activity
+            android:name=".view.test.TestActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:theme="@style/AppTheme.FullScreen" />
 
 
     </application>

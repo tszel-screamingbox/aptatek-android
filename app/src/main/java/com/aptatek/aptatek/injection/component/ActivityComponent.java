@@ -5,6 +5,7 @@ import android.content.Context;
 import com.aptatek.aptatek.injection.module.ActivityModule;
 import com.aptatek.aptatek.injection.qualifier.ActivityContext;
 import com.aptatek.aptatek.injection.scope.ActivityScope;
+import com.aptatek.aptatek.view.fingerprint.FingerprintActivity;
 import com.aptatek.aptatek.view.main.MainActivity;
 import com.aptatek.aptatek.view.pin.request.RequestPinHostActivity;
 import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
@@ -18,6 +19,8 @@ import dagger.Component;
 @ActivityScope
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
+
+    void inject(FingerprintActivity activity);
 
     void inject(MainActivity activity);
 
