@@ -19,7 +19,7 @@ public class SetPinHostActivity extends BaseRootFrameActivity<SetPinHostActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         switchToFragment(new AddPinFragment());
     }

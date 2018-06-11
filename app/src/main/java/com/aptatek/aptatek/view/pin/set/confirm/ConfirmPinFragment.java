@@ -61,7 +61,7 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
 
     @Override
     public void onMainActivityShouldLoad() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        final Intent intent = new Intent(getContext(), MainActivity.class);
         getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
     }
 

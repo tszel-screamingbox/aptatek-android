@@ -41,13 +41,13 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
 
     @Override
     public void onRequestPinActivityShouldLoad() {
-        Intent intent = new Intent(this, RequestPinHostActivity.class);
+        final Intent intent = new Intent(this, RequestPinHostActivity.class);
         launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
     }
 
     @Override
     public void onSetPinActivityShouldLoad() {
-        Intent intent = new Intent(this, SetPinHostActivity.class);
+        final Intent intent = new Intent(this, SetPinHostActivity.class);
         launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
     }
 }

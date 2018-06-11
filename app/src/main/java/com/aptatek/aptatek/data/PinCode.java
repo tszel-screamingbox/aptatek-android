@@ -41,7 +41,7 @@ public class PinCode {
         Arrays.fill(passwordChars, '*');
     }
 
-    public boolean isTheSame(PinCode pinCode) {
+    public boolean isTheSame(final PinCode pinCode) {
         return Arrays.equals(this.passwordBytes, pinCode.passwordBytes);
     }
 

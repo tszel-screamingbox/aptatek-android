@@ -28,7 +28,7 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         return inflater.inflate(getLayoutId(), container, false);
     }
 

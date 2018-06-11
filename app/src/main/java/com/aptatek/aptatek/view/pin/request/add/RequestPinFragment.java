@@ -57,7 +57,7 @@ public class RequestPinFragment extends BasePinFragment implements RequestPinVie
 
     @Override
     public void onMainActivityShouldLoad() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        final Intent intent = new Intent(getContext(), MainActivity.class);
         getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
     }
 
@@ -70,7 +70,7 @@ public class RequestPinFragment extends BasePinFragment implements RequestPinVie
     }
 
     @Override
-    public void onPinButtonClicked(View v) {
+    public void onPinButtonClicked(final View v) {
         if (messageTextView.getVisibility() == View.VISIBLE) {
             messageTextView.setVisibility(View.GONE);
         }

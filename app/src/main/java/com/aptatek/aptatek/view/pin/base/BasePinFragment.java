@@ -1,6 +1,7 @@
 package com.aptatek.aptatek.view.pin.base;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public abstract class BasePinFragment extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, view);
         ActivityStarter.fill(this, savedInstanceState);
@@ -51,15 +52,15 @@ public abstract class BasePinFragment extends BaseFragment {
 
     protected void clearCircles() {
         for (int i = 0; i < pinCircleLinearLayout.getChildCount(); i++) {
-            ImageView imageView = (ImageView) pinCircleLinearLayout.getChildAt(i);
+            final ImageView imageView = (ImageView) pinCircleLinearLayout.getChildAt(i);
             imageView.setImageResource(R.drawable.pin_circle);
         }
     }
 
-    protected void fillCircle(int untilAt, int resId) {
+    protected void fillCircle(final int untilAt, final int resId) {
         clearCircles();
         for (int i = 0; i < untilAt; i++) {
-            ImageView imageView = (ImageView) pinCircleLinearLayout.getChildAt(i);
+            final ImageView imageView = (ImageView) pinCircleLinearLayout.getChildAt(i);
             imageView.setImageResource(resId);
         }
     }
@@ -69,13 +70,13 @@ public abstract class BasePinFragment extends BaseFragment {
             R.id.button3, R.id.button4, R.id.button5,
             R.id.button6, R.id.button7, R.id.button8,
             R.id.button9})
-    public void onPinButtonClicked(View v) {
-        Button button = v.findViewById(v.getId());
+    public void onPinButtonClicked(final View v) {
+        final Button button = v.findViewById(v.getId());
         pin = pin + button.getText().toString();
         fillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
 
         if (pin.length() == PIN_LENGTH) {
-            PinCode pinCode = new PinCode(pin.getBytes());
+            final PinCode pinCode = new PinCode(pin.getBytes());
             finishedTyping(pinCode);
             pin = "";
         }

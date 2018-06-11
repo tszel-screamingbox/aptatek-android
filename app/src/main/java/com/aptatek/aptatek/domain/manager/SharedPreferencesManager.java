@@ -22,11 +22,11 @@ public class SharedPreferencesManager {
     private SharedPreferences preferences;
 
     @Inject
-    public SharedPreferencesManager(@ApplicationContext Context context) {
+    public SharedPreferencesManager(@ApplicationContext final Context context) {
         preferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    public void setEncryptedPin(String encryptedPin) {
+    public void setEncryptedPin(final String encryptedPin) {
         preferences.edit().putString(PREF_PARAM_ENCRYPTED_PIN, encryptedPin).apply();
     }
 
@@ -34,7 +34,7 @@ public class SharedPreferencesManager {
         return preferences.getString(PREF_PARAM_ENCRYPTED_PIN, null);
     }
 
-    public void clearPreference(String key) {
+    public void clearPreference(final String key) {
         preferences.edit().remove(key).apply();
     }
 

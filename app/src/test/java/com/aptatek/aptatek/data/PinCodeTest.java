@@ -18,13 +18,13 @@ public class PinCodeTest {
 
     @Test
     public void testPinsAreSame() {
-        PinCode samePin = new PinCode("pincode".getBytes());
+        final PinCode samePin = new PinCode("pincode".getBytes());
         assertTrue(pinCode.isTheSame(samePin));
     }
 
     @Test
     public void testPinsAreDifferent() {
-        PinCode differentPin = new PinCode("different".getBytes());
+        final PinCode differentPin = new PinCode("different".getBytes());
         assertTrue(!pinCode.isTheSame(differentPin));
     }
 

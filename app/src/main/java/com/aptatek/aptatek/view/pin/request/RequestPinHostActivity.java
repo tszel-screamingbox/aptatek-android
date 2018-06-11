@@ -7,7 +7,6 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseRootFrameActivity;
 import com.aptatek.aptatek.view.pin.request.add.RequestPinFragment;
-import com.aptatek.aptatek.view.pin.set.add.AddPinFragment;
 
 import javax.inject.Inject;
 
@@ -24,7 +23,7 @@ public class RequestPinHostActivity extends BaseRootFrameActivity<RequestPinHost
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         switchToFragment(new RequestPinFragment());
     }

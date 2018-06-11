@@ -45,7 +45,7 @@ public class KeyStoreManager {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore");
             keyStore.load(null);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException("Cannot load AndroidKeyStore", e);
         }
     }
@@ -53,7 +53,7 @@ public class KeyStoreManager {
     public boolean aliasExists() {
         try {
             return keyStore.containsAlias(ALIAS);
-        } catch (KeyStoreException e) {
+        } catch (final KeyStoreException e) {
             Timber.e("Error while checking keystore aliases %s", e.getMessage());
             return false;
         }
@@ -62,12 +62,12 @@ public class KeyStoreManager {
     public void deleteKeyStore() {
         try {
             keyStore.deleteEntry(ALIAS);
-        } catch (KeyStoreException e) {
+        } catch (final KeyStoreException e) {
             Timber.e("Error while deleting keystore aliases %s", e.getMessage());
         }
     }
 
-    public String encrypt(PinCode pinCode) {
+    public String encrypt(final PinCode pinCode) {
         try {
             createNewKeys();
             final KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS, null);
@@ -82,12 +82,12 @@ public class KeyStoreManager {
             cipherOutputStream.close();
             final byte[] vals = outputStream.toByteArray();
             return Base64.encodeToString(vals, Base64.DEFAULT);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException("Error during encryption", e);
         }
     }
 
-    public PinCode decrypt(String encryptedData) {
+    public PinCode decrypt(final String encryptedData) {
         try {
             final KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS, null);
             final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
@@ -107,7 +107,7 @@ public class KeyStoreManager {
             }
             cipherInputStream.close();
             return new PinCode(bytes);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Timber.e("Error during decrypting %s", e.getMessage());
         }
         return null;
@@ -115,10 +115,10 @@ public class KeyStoreManager {
 
     private void createNewKeys() {
         try {
-            Calendar start = Calendar.getInstance();
-            Calendar end = Calendar.getInstance();
+            final Calendar start = Calendar.getInstance();
+            final Calendar end = Calendar.getInstance();
             end.add(Calendar.YEAR, 10);
-            KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context)
+            final KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context)
                     .setAlias(ALIAS)
                     .setKeySize(2048)
                     .setSubject(new X500Principal("CN=Aptatek, O=Apatetek Android"))
@@ -126,10 +126,10 @@ public class KeyStoreManager {
                     .setStartDate(start.getTime())
                     .setEndDate(end.getTime())
                     .build();
-            KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
+            final KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "AndroidKeyStore");
             generator.initialize(spec);
             generator.generateKeyPair();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException("Error while creating new keys", e);
         }
     }

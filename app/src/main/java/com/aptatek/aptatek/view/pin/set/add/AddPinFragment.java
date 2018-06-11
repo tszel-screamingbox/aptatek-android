@@ -1,6 +1,5 @@
 package com.aptatek.aptatek.view.pin.set.add;
 
-
 import android.support.annotation.NonNull;
 import android.view.View;
 

@@ -148,7 +148,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
      *
      * @param view Root view (which will be returned in onCreateView)
      */
-    protected abstract void initObjects(final View view);
+    protected abstract void initObjects(View view);
 
     /**
      * Handles the component to resolve the injection

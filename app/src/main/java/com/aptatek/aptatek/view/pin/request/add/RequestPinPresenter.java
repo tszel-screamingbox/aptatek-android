@@ -17,7 +17,7 @@ class RequestPinPresenter extends MvpBasePresenter<RequestPinView> {
     }
 
 
-    void verifyPinCode(PinCode pinCode) {
+    void verifyPinCode(final PinCode pinCode) {
         if (authInteractor.isValidPinCode(pinCode)) {
             ifViewAttached(RequestPinView::onMainActivityShouldLoad);
         } else {
