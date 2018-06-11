@@ -33,9 +33,9 @@ public class RequestPinFragment extends BasePinFragment implements RequestPinVie
 
     @Override
     protected void initObjects(final View view) {
+        presenter.initView();
         clearCircles();
         titleTextView.setText(R.string.require_pin_title);
-        hintTextView.setVisibility(View.INVISIBLE);
         messageTextView.setVisibility(View.GONE);
     }
 
@@ -67,6 +67,16 @@ public class RequestPinFragment extends BasePinFragment implements RequestPinVie
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setTextColor(this.getResources().getColor(R.color.applicationRed));
         messageTextView.setText(R.string.require_pin_message_invalid);
+    }
+
+    @Override
+    public void onFingerprintEnable() {
+        hintTextView.setText(R.string.require_pin_hint_fingerprint);
+    }
+
+    @Override
+    public void onFingerprintDisabled() {
+        hintTextView.setText(R.string.require_pin_hint);
     }
 
     @Override

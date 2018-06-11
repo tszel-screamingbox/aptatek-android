@@ -12,4 +12,6 @@ interface ConfirmPinView extends MvpView {
     void onValidPinTyped();
 
     void onInvalidPinTyped();
+
+    void onFingerprintActivityShouldLoad();
 }

@@ -28,7 +28,9 @@
     <string name="pin.button.9">9</string>
     <!-- Require PIN Activity -->
     <string name="require.pin.message.invalid">Invalid PIN</string>
-    <string name="require.pin.title">Enter PIN</string>
+    <string name="require.pin.hint">Enter your PIN code</string>
+    <string name="require.pin.hint.fingerprint">Enter your PIN code or use your fingerprint</string>
+    <string name="require.pin.title">Authenticate</string>
     <!-- Set PIN Activity -->
     <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
     <string name="set.pin.title">Set PIN</string>

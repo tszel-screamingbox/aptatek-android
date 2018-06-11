@@ -9,6 +9,7 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.data.PinCode;
 import com.aptatek.aptatek.injection.component.FragmentComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.fingerprint.FingerprintActivity;
 import com.aptatek.aptatek.view.main.MainActivity;
 import com.aptatek.aptatek.view.pin.base.BasePinFragment;
 
@@ -84,5 +85,11 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setText(R.string.confirm_pin_error);
         messageTextView.setTextColor(getResources().getColor(R.color.applicationRed));
+    }
+
+    @Override
+    public void onFingerprintActivityShouldLoad() {
+        final Intent intent = new Intent(getContext(), FingerprintActivity.class);
+        getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
     }
 }

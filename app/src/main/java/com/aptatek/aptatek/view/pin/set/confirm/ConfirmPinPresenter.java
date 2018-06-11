@@ -1,6 +1,7 @@
 package com.aptatek.aptatek.view.pin.set.confirm;
 
 import com.aptatek.aptatek.data.PinCode;
+import com.aptatek.aptatek.device.DeviceHelper;
 import com.aptatek.aptatek.domain.interactor.auth.AuthInteractor;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -18,12 +19,15 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
     private static final int TIMER_PERIOD_IN_SEC = 1;
 
     private final AuthInteractor authInteractor;
+    private final DeviceHelper deviceHelper;
 
     private Disposable disposable;
 
     @Inject
-    ConfirmPinPresenter(final AuthInteractor authInteractor) {
+    ConfirmPinPresenter(final AuthInteractor authInteractor,
+                        final DeviceHelper deviceHelper) {
         this.authInteractor = authInteractor;
+        this.deviceHelper = deviceHelper;
     }
 
 
@@ -41,9 +45,17 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
                 .subscribe(value -> {
                     disposable.dispose();
                     authInteractor.setPinCode(pin);
-                    ifViewAttached(ConfirmPinView::onMainActivityShouldLoad);
+                    navigateForward();
                 });
         ifViewAttached(ConfirmPinView::onValidPinTyped);
+    }
+
+    private void navigateForward() {
+        if (deviceHelper.hasFingerprintHadrware() && deviceHelper.hasEnrolledFingerprints()) {
+            ifViewAttached(ConfirmPinView::onFingerprintActivityShouldLoad);
+        } else {
+            ifViewAttached(ConfirmPinView::onMainActivityShouldLoad);
+        }
     }
 
     private void differentPins() {

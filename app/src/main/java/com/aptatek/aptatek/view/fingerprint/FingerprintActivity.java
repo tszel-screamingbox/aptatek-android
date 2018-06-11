@@ -1,12 +1,13 @@
 package com.aptatek.aptatek.view.fingerprint;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -45,11 +46,15 @@ public class FingerprintActivity extends BaseActivity<FingerprintActivityView, F
 
     @OnClick(R.id.enableButton)
     public void onEnableButtonClicked() {
-        Toast.makeText(this, "Enable clicked", Toast.LENGTH_SHORT).show();
+        presenter.enableFingerprintScan();
+        final Intent intent = new Intent(this, MainActivity.class);
+        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
     }
 
     @OnClick(R.id.disableButton)
     public void onDisableButtonClicked() {
-        Toast.makeText(this, "Disable clicked", Toast.LENGTH_SHORT).show();
+        presenter.disableFingerprintScan();
+        final Intent intent = new Intent(this, MainActivity.class);
+        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
     }
 }

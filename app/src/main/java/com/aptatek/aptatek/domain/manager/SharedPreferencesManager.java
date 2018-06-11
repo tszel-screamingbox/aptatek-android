@@ -18,6 +18,7 @@ public class SharedPreferencesManager {
     }
 
     public static final String PREF_PARAM_ENCRYPTED_PIN = "encrypted_pin";
+    public static final String PREF_PARAM_FINGERPRINT_SCAN = "fingerprint_scan";
 
     private SharedPreferences preferences;
 
@@ -32,6 +33,14 @@ public class SharedPreferencesManager {
 
     public String getEncryptedPin() {
         return preferences.getString(PREF_PARAM_ENCRYPTED_PIN, null);
+    }
+
+    public void enableFingerprintScan(final boolean enable) {
+        preferences.edit().putBoolean(PREF_PARAM_FINGERPRINT_SCAN, enable).apply();
+    }
+
+    public boolean isFingerprintScanEnabled() {
+        return preferences.getBoolean(PREF_PARAM_FINGERPRINT_SCAN, false);
     }
 
     public void clearPreference(final String key) {

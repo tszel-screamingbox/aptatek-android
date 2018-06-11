@@ -8,4 +8,8 @@ interface RequestPinView extends MvpView {
     void onMainActivityShouldLoad();
 
     void onInvalidPinTyped();
+
+    void onFingerprintEnable();
+
+    void onFingerprintDisabled();
 }
