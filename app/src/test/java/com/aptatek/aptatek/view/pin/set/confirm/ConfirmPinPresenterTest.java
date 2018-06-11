@@ -52,13 +52,13 @@ public class ConfirmPinPresenterTest {
     public void testValidPin() {
         presenter.verifyPin(validPin, validPin);
         verify(view).onValidPinTyped();
-        verify(view, timeout(1000)).onMainActivityShouldLoad();
+        verify(view, timeout(5000)).onMainActivityShouldLoad();
     }
 
     @Test
     public void testInvalidPin() {
         presenter.verifyPin(validPin, invalidPin);
         verify(view).onInvalidPinTyped();
-        verify(view, timeout(1000)).onInvalidPinTyped();
+        verify(view, timeout(5000)).onInvalidPinTyped();
     }
 }
