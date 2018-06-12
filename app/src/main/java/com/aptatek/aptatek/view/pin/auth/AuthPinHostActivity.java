@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.pin.request;
+package com.aptatek.aptatek.view.pin.auth;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,21 +6,21 @@ import android.support.annotation.NonNull;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseRootFrameActivity;
-import com.aptatek.aptatek.view.pin.request.add.RequestPinFragment;
+import com.aptatek.aptatek.view.pin.auth.add.AuthPinFragment;
 
 import javax.inject.Inject;
 
 
-public class RequestPinHostActivity extends BaseRootFrameActivity<RequestPinHostActivityView, RequestPinHostActivityPresenter> implements RequestPinHostActivityView {
+public class AuthPinHostActivity extends BaseRootFrameActivity<AuthPinHostActivityView, AuthPinHostActivityPresenter> implements AuthPinHostActivityView {
 
     @Inject
-    RequestPinHostActivityPresenter presenter;
+    AuthPinHostActivityPresenter presenter;
 
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        switchToFragment(new RequestPinFragment());
+        switchToFragment(new AuthPinFragment());
     }
 
     @Override
@@ -30,7 +30,7 @@ public class RequestPinHostActivity extends BaseRootFrameActivity<RequestPinHost
 
     @NonNull
     @Override
-    public RequestPinHostActivityPresenter createPresenter() {
+    public AuthPinHostActivityPresenter createPresenter() {
         return presenter;
     }
 

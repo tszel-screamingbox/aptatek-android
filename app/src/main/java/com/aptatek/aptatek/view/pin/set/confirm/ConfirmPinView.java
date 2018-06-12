@@ -7,8 +7,6 @@ interface ConfirmPinView extends MvpView {
 
     void onMainActivityShouldLoad();
 
-    void onPinSetFragmentShouldLoad();
-
     void onValidPinTyped();
 
     void onInvalidPinTyped();

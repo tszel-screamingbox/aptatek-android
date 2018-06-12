@@ -1,5 +1,4 @@
-package com.aptatek.aptatek.view.pin.request.add;
-
+package com.aptatek.aptatek.view.pin.auth.add;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -15,10 +14,10 @@ import com.aptatek.aptatek.view.pin.base.BasePinFragment;
 import javax.inject.Inject;
 
 
-public class RequestPinFragment extends BasePinFragment implements RequestPinView {
+public class AuthPinFragment extends BasePinFragment implements AuthPinView {
 
     @Inject
-    RequestPinPresenter presenter;
+    AuthPinPresenter presenter;
 
 
     @Override
@@ -34,7 +33,6 @@ public class RequestPinFragment extends BasePinFragment implements RequestPinVie
     @Override
     protected void initObjects(final View view) {
         presenter.initView();
-        clearCircles();
         titleTextView.setText(R.string.require_pin_title);
         messageTextView.setVisibility(View.GONE);
     }
@@ -46,7 +44,7 @@ public class RequestPinFragment extends BasePinFragment implements RequestPinVie
 
     @NonNull
     @Override
-    public RequestPinPresenter createPresenter() {
+    public AuthPinPresenter createPresenter() {
         return presenter;
     }
 
@@ -56,26 +54,49 @@ public class RequestPinFragment extends BasePinFragment implements RequestPinVie
     }
 
     @Override
-    public void onMainActivityShouldLoad() {
-        final Intent intent = new Intent(getContext(), MainActivity.class);
-        getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
+    public void onValidPinTyped() {
+        fillCircle(R.drawable.pin_circle_filled_green, () -> {
+            final Intent intent = new Intent(getContext(), MainActivity.class);
+            getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
+        });
     }
 
     @Override
     public void onInvalidPinTyped() {
-        clearCircles();
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setTextColor(this.getResources().getColor(R.color.applicationRed));
         messageTextView.setText(R.string.require_pin_message_invalid);
+        fillCircle(R.drawable.pin_circle_filled_red, null);
     }
 
     @Override
-    public void onFingerprintEnable() {
+    public void onValidFingerprintDetected() {
+        messageTextView.setVisibility(View.VISIBLE);
+        messageTextView.setTextColor(this.getResources().getColor(R.color.applicationGreen));
+        messageTextView.setText(R.string.require_pin_hint_fingerprint);
+        fillCircle(R.drawable.pin_circle_filled_green, () -> {
+            final Intent intent = new Intent(getContext(), MainActivity.class);
+            getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
+        });
+    }
+
+    @Override
+    public void onInvalidFingerprintDetected(@NonNull String message) {
+        messageTextView.setVisibility(View.VISIBLE);
+        messageTextView.setTextColor(this.getResources().getColor(R.color.applicationRed));
+        messageTextView.setText(message);
+        fillCircle(R.drawable.pin_circle_filled_red, null);
+    }
+
+    @Override
+    public void onFingerprintAvailable() {
+        fingerprintImageView.setVisibility(View.VISIBLE);
         hintTextView.setText(R.string.require_pin_hint_fingerprint);
     }
 
     @Override
     public void onFingerprintDisabled() {
+        fingerprintImageView.setVisibility(View.GONE);
         hintTextView.setText(R.string.require_pin_hint);
     }
 
@@ -85,5 +106,17 @@ public class RequestPinFragment extends BasePinFragment implements RequestPinVie
             messageTextView.setVisibility(View.GONE);
         }
         super.onPinButtonClicked(v);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.startListening();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.stopListening();
     }
 }

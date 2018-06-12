@@ -17,18 +17,18 @@
             android:value="true" />
 
         <activity
+            android:name=".view.pin.auth.AuthPinHostActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
             android:name=".view.fingerprint.FingerprintActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
             android:name=".view.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
-
-        <activity
-            android:name=".view.pin.request.RequestPinHostActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
@@ -55,7 +55,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.TestActivity"
+        <activity
+            android:name=".view.test.TestActivity"
             android:parentActivityName=".view.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">

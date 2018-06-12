@@ -4,10 +4,9 @@ import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
 import com.aptatek.aptatek.injection.module.FragmentModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.injection.scope.FragmentScope;
-import com.aptatek.aptatek.view.pin.request.add.RequestPinFragment;
+import com.aptatek.aptatek.view.pin.auth.add.AuthPinFragment;
 import com.aptatek.aptatek.view.pin.set.add.AddPinFragment;
 import com.aptatek.aptatek.view.pin.set.confirm.ConfirmPinFragment;
-import com.aptatek.aptatek.view.test.takesample.TakeSampleFragment;
 
 import dagger.Component;
 
@@ -21,7 +20,7 @@ public interface FragmentComponent {
 
     void inject(ConfirmPinFragment confirmPinFragment);
 
-    void inject(RequestPinFragment requestPinFragment);
+    void inject(AuthPinFragment authPinFragment);
 
     TestFragmentComponent plus(TestModule module);
 

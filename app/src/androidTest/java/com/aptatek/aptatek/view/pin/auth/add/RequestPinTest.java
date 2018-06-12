@@ -1,11 +1,11 @@
-package com.aptatek.aptatek.view.pin.request.add;
+package com.aptatek.aptatek.view.pin.auth.add;
 
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.view.pin.request.RequestPinHostActivity;
+import com.aptatek.aptatek.view.pin.auth.AuthPinHostActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import static org.hamcrest.Matchers.not;
 public class RequestPinTest {
 
     @Rule
-    public ActivityTestRule<RequestPinHostActivity> activityRule = new ActivityTestRule<>(RequestPinHostActivity.class);
+    public ActivityTestRule<AuthPinHostActivity> activityRule = new ActivityTestRule<>(AuthPinHostActivity.class);
 
 
     @Test

@@ -27,6 +27,8 @@
     <string name="pin.button.8">8</string>
     <string name="pin.button.9">9</string>
     <!-- Require PIN Activity -->
+    <string name="require.pin.message.fingerprint.invalid">Invalid fingerprint</string>
+    <string name="require.pin.message.fingerprint.longer">Keep your finger on the reader for a bit longer</string>
     <string name="require.pin.message.invalid">Invalid PIN</string>
     <string name="require.pin.hint">Enter your PIN code</string>
     <string name="require.pin.hint.fingerprint">Enter your PIN code or use your fingerprint</string>
