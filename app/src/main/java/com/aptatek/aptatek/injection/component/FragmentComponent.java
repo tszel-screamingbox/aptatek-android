@@ -7,7 +7,6 @@ import com.aptatek.aptatek.injection.scope.FragmentScope;
 import com.aptatek.aptatek.view.pin.request.add.RequestPinFragment;
 import com.aptatek.aptatek.view.pin.set.add.AddPinFragment;
 import com.aptatek.aptatek.view.pin.set.confirm.ConfirmPinFragment;
-import com.aptatek.aptatek.view.test.takesample.TakeSampleFragment;
 
 import dagger.Component;
 

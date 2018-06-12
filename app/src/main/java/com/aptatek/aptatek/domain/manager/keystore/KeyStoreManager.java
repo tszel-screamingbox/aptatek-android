@@ -30,6 +30,7 @@ public class KeyStoreManager {
     private static final String ALIAS = "user_key";
 
     private static final String TRANSFORMATION = "RSA/ECB/PKCS1Padding";
+    private static final int KEY_SIZE = 2048;
 
 
     private KeyStore keyStore;
@@ -121,7 +122,7 @@ public class KeyStoreManager {
             end.add(Calendar.YEAR, 10);
             final KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context)
                     .setAlias(ALIAS)
-                    .setKeySize(2048)
+                    .setKeySize(KEY_SIZE)
                     .setSubject(new X500Principal("CN=Aptatek, O=Apatetek Android"))
                     .setSerialNumber(BigInteger.ONE)
                     .setStartDate(start.getTime())
