@@ -41,12 +41,10 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
                     authInteractor.setPinCode(pin);
+                    navigateForward();
                     ifViewAttached(ConfirmPinView::onMainActivityShouldLoad);
                 })
                 .subscribe();
-        ifViewAttached(ConfirmPinView::onValidPinTyped);
-                    navigateForward();
-                });
         ifViewAttached(ConfirmPinView::onValidPinTyped);
     }
 

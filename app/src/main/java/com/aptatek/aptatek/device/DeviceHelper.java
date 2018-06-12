@@ -1,7 +1,6 @@
 package com.aptatek.aptatek.device;
 
 import com.aptatek.aptatek.domain.manager.FingerprintManager;
-import com.aptatek.aptatek.domain.manager.SharedPreferencesManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,13 +13,13 @@ import javax.inject.Singleton;
 public final class DeviceHelper {
 
     private final FingerprintManager fingerprintManager;
-    private final SharedPreferencesManager sharedPreferencesManager;
+    private final PreferenceManager preferenceManager;
 
     @Inject
     public DeviceHelper(final FingerprintManager fingerprintManager,
-                        final SharedPreferencesManager sharedPreferencesManager) {
+                        final PreferenceManager preferenceManager) {
         this.fingerprintManager = fingerprintManager;
-        this.sharedPreferencesManager = sharedPreferencesManager;
+        this.preferenceManager = preferenceManager;
     }
 
     public boolean hasFingerprintHadrware() {
@@ -34,6 +33,6 @@ public final class DeviceHelper {
     public boolean isFingperprintAuthAvailable() {
         return hasEnrolledFingerprints() &&
                 hasEnrolledFingerprints() &&
-                sharedPreferencesManager.isFingerprintScanEnabled();
+                preferenceManager.isFingerprintScanEnabled();
     }
 }

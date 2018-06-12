@@ -1,17 +1,17 @@
 package com.aptatek.aptatek.view.fingerprint;
 
-import com.aptatek.aptatek.domain.manager.SharedPreferencesManager;
+import com.aptatek.aptatek.device.PreferenceManager;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
 class FingerprintActivityPresenter extends MvpBasePresenter<FingerprintActivityView> {
 
-    private final SharedPreferencesManager sharedPreferencesManager;
+    private final PreferenceManager sharedPreferencesManager;
 
 
     @Inject
-    FingerprintActivityPresenter(final SharedPreferencesManager sharedPreferencesManager) {
+    FingerprintActivityPresenter(final PreferenceManager sharedPreferencesManager) {
         this.sharedPreferencesManager = sharedPreferencesManager;
     }
 
