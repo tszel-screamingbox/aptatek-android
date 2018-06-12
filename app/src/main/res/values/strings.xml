@@ -17,12 +17,26 @@
     <string name="toggle.button.toggle">Toggle</string>
 
     <!-- Test Activity -->
-    <string name="test.button.cancel">Cancel</string>
-    <string name="test.takesample.button.start">Start timer (30min)</string>
-    <string name="test.takesample.title">Take sample</string>
-    <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
+    <string name="test.cancel.description">Are you sure you want to cancel this test?</string>
+    <string name="test.cancel.navigation.yes">Yes</string>
+    <string name="test.cancel.title">Cancel test</string>
+
+    <string name="test.incubation.button.next">Next</string>
+    <string name="test.incubation.countdown.format">mm:ss</string>
+    <string name="test.incubation.description">Let the sample stay in the tube until the timer goes off</string>
+    <string name="test.incubation.title">Sample in incubation</string>
+    <string name="test.incubation.notification.channel.name">Incubation</string>
+    <string name="test.incubation.notification.finished.title">Incubation complete</string>
+    <string name="test.incubation.notification.finished.text">Tap to proceed</string>
+    <string name="test.incubation.notification.inprogress.title">Incubation in progress</string>
+    <string name="test.incubation.notification.inprogress.textformat">Remaining time is %s</string>
+
     <string name="test.takesample.age.switch">I\'m taking a sample for %1$s</string>
     <string name="test.takesample.age.child">a child</string>
     <string name="test.takesample.age.adult">an adult</string>
+    <string name="test.takesample.button.start">Start timer (30min)</string>
+    <string name="test.button.cancel">Cancel</string>
+    <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
+    <string name="test.takesample.title">Take sample</string>
 
 </resources>

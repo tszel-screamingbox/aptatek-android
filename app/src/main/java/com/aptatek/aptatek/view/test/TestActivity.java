@@ -6,11 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
+import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.base.BaseFragment;
+import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
+import com.aptatek.aptatek.view.test.canceltest.CancelTestFragment;
+import com.aptatek.aptatek.view.test.incubation.IncubationFragment;
 import com.aptatek.aptatek.view.test.takesample.TakeSampleFragment;
 
 import javax.inject.Inject;
@@ -41,13 +45,19 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
+    }
 
-        switchToFragment(new TakeSampleFragment());
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.showProperScreen();
     }
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+        activityComponent.plus(new TestModule())
+                .inject(this);
     }
 
     @Override
@@ -61,14 +71,14 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         return testActivityPresenter;
     }
 
-    @OnClick(R.id.testCancelCircleButton)
+    @OnClick({R.id.testCancelCircleButton, R.id.testCancelButton})
     void onCancelClicked() {
-        onBackPressed();
+        navigateBack();
     }
 
     @OnClick(R.id.testNavigationButton)
     void onNavigationClicked() {
-        Toast.makeText(this, "Navigation", Toast.LENGTH_SHORT).show();
+        navigateForward();
     }
 
     @Override
@@ -89,5 +99,61 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setNavigationButtonText(@NonNull final String buttonText) {
         navigationButton.setText(buttonText);
+    }
+
+    @Override
+    public void showScreen(@NonNull final TestScreens screen) {
+        final BaseFragment fragment;
+        final boolean clearStack;
+
+        switch (screen) {
+            case CANCEL: {
+                fragment = new CancelTestFragment();
+                clearStack = false;
+                break;
+            }
+            case INCUBATION: {
+                fragment = new IncubationFragment();
+                clearStack = false;
+                break;
+            }
+            case TAKE_SAMPLE:
+            default: {
+                fragment = new TakeSampleFragment();
+                clearStack = true;
+                break;
+            }
+        }
+
+        if (clearStack) {
+            clearFragmentStack();
+        }
+        switchToFragment(fragment);
+    }
+
+    @Override
+    public void navigateBack() {
+        boolean navigationHandled = false;
+        final BaseFragment activeBaseFragment = getActiveBaseFragment();
+        if (activeBaseFragment instanceof TestFragmentBaseView) {
+            navigationHandled = ((TestFragmentBaseView) activeBaseFragment).onNavigateBackPressed();
+        }
+
+        if (!navigationHandled) {
+            onBackPressed();
+        }
+    }
+
+    @Override
+    public void navigateForward() {
+        boolean navigationHandled = false;
+        final BaseFragment activeBaseFragment = getActiveBaseFragment();
+        if (activeBaseFragment instanceof TestFragmentBaseView) {
+            navigationHandled = ((TestFragmentBaseView) activeBaseFragment).onNavigateForwardPressed();
+        }
+
+        if (!navigationHandled) {
+            finish();
+        }
     }
 }
