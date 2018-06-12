@@ -19,13 +19,13 @@ public class PinCodeTest {
     @Test
     public void testPinsAreSame() {
         final PinCode samePin = new PinCode("pincode".getBytes());
-        assertTrue(pinCode.isTheSame(samePin));
+        assertTrue(pinCode.equals(samePin));
     }
 
     @Test
     public void testPinsAreDifferent() {
         final PinCode differentPin = new PinCode("different".getBytes());
-        assertTrue(!pinCode.isTheSame(differentPin));
+        assertTrue(!pinCode.equals(differentPin));
     }
 
     @Test(expected = RuntimeException.class)

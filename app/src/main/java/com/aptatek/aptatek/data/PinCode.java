@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class PinCode {
 
@@ -41,10 +42,6 @@ public class PinCode {
         Arrays.fill(passwordChars, '*');
     }
 
-    public boolean isTheSame(final PinCode pinCode) {
-        return Arrays.equals(this.passwordBytes, pinCode.passwordBytes);
-    }
-
     private byte[] toBytes(final char[] chars) {
         final CharBuffer charBuffer = CharBuffer.wrap(chars);
         final ByteBuffer byteBuffer = Charset.forName("UTF-8").encode(charBuffer);
@@ -59,5 +56,21 @@ public class PinCode {
         final char[] chars = Arrays.copyOfRange(charBuffer.array(), charBuffer.position(), charBuffer.limit());
         Arrays.fill(charBuffer.array(), '*');
         return chars;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof PinCode)) {
+            return false;
+        }
+        PinCode pinCode = (PinCode) o;
+        return Arrays.equals(passwordBytes, pinCode.getBytes()) &&
+                Arrays.equals(passwordChars, pinCode.getChars());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(passwordBytes, passwordChars);
     }
 }

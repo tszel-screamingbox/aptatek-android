@@ -10,13 +10,8 @@ import com.aptatek.aptatek.view.pin.request.add.RequestPinFragment;
 
 import javax.inject.Inject;
 
-import activitystarter.Arg;
-
 
 public class RequestPinHostActivity extends BaseRootFrameActivity<RequestPinHostActivityView, RequestPinHostActivityPresenter> implements RequestPinHostActivityView {
-
-    @Arg
-    String as;
 
     @Inject
     RequestPinHostActivityPresenter presenter;

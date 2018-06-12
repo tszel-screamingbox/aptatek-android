@@ -55,12 +55,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity
-            android:name=".view.test.TestActivity"
+        <activity android:name=".view.test.TestActivity"
+            android:parentActivityName=".view.main.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
+            android:theme="@style/AppTheme.FullScreen">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.main.MainActivity" />
+
+        </activity>
 
 
+        <service android:name=".view.test.incubation.IncubationReminderService" />
     </application>
 
 </manifest>

@@ -3,12 +3,12 @@ package com.aptatek.aptatek.view.pin.base;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
@@ -27,7 +27,7 @@ public abstract class BasePinFragment extends BaseFragment {
     private String pin = "";
 
     @BindView(R.id.pinLayout)
-    protected LinearLayout pinCircleLinearLayout;
+    protected ConstraintLayout pinCircleConstrainLayout;
 
     @BindView(R.id.title)
     protected TextView titleTextView;
@@ -51,8 +51,8 @@ public abstract class BasePinFragment extends BaseFragment {
 
 
     protected void clearCircles() {
-        for (int i = 0; i < pinCircleLinearLayout.getChildCount(); i++) {
-            final ImageView imageView = (ImageView) pinCircleLinearLayout.getChildAt(i);
+        for (int i = 0; i < pinCircleConstrainLayout.getChildCount(); i++) {
+            final ImageView imageView = (ImageView) pinCircleConstrainLayout.getChildAt(i);
             imageView.setImageResource(R.drawable.pin_circle);
         }
     }
@@ -60,7 +60,7 @@ public abstract class BasePinFragment extends BaseFragment {
     protected void fillCircle(final int untilAt, final int resId) {
         clearCircles();
         for (int i = 0; i < untilAt; i++) {
-            final ImageView imageView = (ImageView) pinCircleLinearLayout.getChildAt(i);
+            final ImageView imageView = (ImageView) pinCircleConstrainLayout.getChildAt(i);
             imageView.setImageResource(resId);
         }
     }

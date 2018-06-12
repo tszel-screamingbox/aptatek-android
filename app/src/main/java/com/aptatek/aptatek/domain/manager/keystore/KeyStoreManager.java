@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.domain.manager;
+package com.aptatek.aptatek.domain.manager.keystore;
 
 import android.content.Context;
 import android.security.KeyPairGeneratorSpec;
@@ -67,7 +67,7 @@ public class KeyStoreManager {
         }
     }
 
-    public String encrypt(final PinCode pinCode) {
+    public String encrypt(final PinCode pinCode) throws KeyStoreError {
         try {
             createNewKeys();
             final KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS, null);
@@ -83,11 +83,12 @@ public class KeyStoreManager {
             final byte[] vals = outputStream.toByteArray();
             return Base64.encodeToString(vals, Base64.DEFAULT);
         } catch (final Exception e) {
-            throw new RuntimeException("Error during encryption", e);
+            Timber.e("Error during encrypting %s", e.getMessage());
+            throw new KeyStoreError(e.getCause());
         }
     }
 
-    public PinCode decrypt(final String encryptedData) {
+    public PinCode decrypt(final String encryptedData) throws KeyStoreError {
         try {
             final KeyStore.PrivateKeyEntry privateKeyEntry = (KeyStore.PrivateKeyEntry) keyStore.getEntry(ALIAS, null);
             final Cipher cipher = Cipher.getInstance(TRANSFORMATION);
@@ -109,8 +110,8 @@ public class KeyStoreManager {
             return new PinCode(bytes);
         } catch (final Exception e) {
             Timber.e("Error during decrypting %s", e.getMessage());
+            throw new KeyStoreError(e.getCause());
         }
-        return null;
     }
 
     private void createNewKeys() {

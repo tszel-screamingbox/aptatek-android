@@ -10,6 +10,9 @@ ext {
             constraintLayout            : '1.1.0',
             multidex                    : '1.0.3',
 
+            // ArchitectureComponents
+            lifecycle                   : '1.1.1',
+
             // Mosby
             mosby                       : '3.1.0',
 
@@ -60,7 +63,7 @@ ext {
             runner                      : '1.0.2',
             espresso                    : '3.0.2',
             hamcrest                    : '1.3',
-            orchestrator                : '1.0.2-alpha1',
+            orchestrator                : '1.0.2',
 
             // CodeQuality
             jacoco                      : '0.8.1',
@@ -76,6 +79,11 @@ ext {
             design          : "com.android.support:design:${versions.androidSupport}",
             multidex        : "com.android.support:multidex:${versions.multidex}",
             constraintLayout: "com.android.support.constraint:constraint-layout:${versions.constraintLayout}"
+    ]
+
+    architectureComponentsDependencies = [
+            extensions      : "android.arch.lifecycle:extensions:${versions.lifecycle}",
+            compiler        : "android.arch.lifecycle:compiler:${versions.lifecycle}"
     ]
 
     mvpDependencies = [
@@ -141,6 +149,7 @@ ext {
             testrunner      : "com.android.support.test:runner:${versions.runner}",
             testrules       : "com.android.support.test:rules:${versions.runner}",
             espresso        : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
-            hamcrest        : "org.hamcrest:hamcrest-library:${versions.hamcrest}"
+            hamcrest        : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
+            orchestrator    : "com.android.support.test:orchestrator:${versions.orchestrator}"
     ]
 }

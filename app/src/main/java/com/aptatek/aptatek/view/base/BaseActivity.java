@@ -112,6 +112,13 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         }
     }
 
+    protected void clearFragmentStack() {
+        final FragmentManager fm = getSupportFragmentManager();
+        while (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStackImmediate();
+        }
+    }
+
     public BaseFragment getActiveBaseFragment() {
         final Fragment fragment = getSupportFragmentManager().findFragmentById(getFrameLayoutId());
         if (fragment instanceof BaseFragment) {
