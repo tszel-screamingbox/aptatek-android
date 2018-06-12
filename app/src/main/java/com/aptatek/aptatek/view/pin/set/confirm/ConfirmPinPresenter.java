@@ -10,7 +10,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 
 
 class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
@@ -19,8 +18,6 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
 
     private final AuthInteractor authInteractor;
 
-    private Disposable disposable;
-
     @Inject
     ConfirmPinPresenter(final AuthInteractor authInteractor) {
         this.authInteractor = authInteractor;
@@ -28,7 +25,7 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
 
 
     void verifyPin(final PinCode addedPin, final PinCode confirmationPin) {
-        if (addedPin.isTheSame(confirmationPin)) {
+        if (addedPin.equals(confirmationPin)) {
             setPinCode(confirmationPin);
         } else {
             differentPins();
@@ -36,23 +33,21 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
     }
 
     private void setPinCode(final PinCode pin) {
-        disposable = Observable.interval(TIMER_PERIOD_IN_SEC, TimeUnit.SECONDS)
+        Observable.empty().delay(TIMER_PERIOD_IN_SEC, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(value -> {
-                    disposable.dispose();
+                .doOnComplete(() -> {
                     authInteractor.setPinCode(pin);
                     ifViewAttached(ConfirmPinView::onMainActivityShouldLoad);
-                });
+                })
+                .subscribe();
         ifViewAttached(ConfirmPinView::onValidPinTyped);
     }
 
     private void differentPins() {
-        disposable = Observable.interval(TIMER_PERIOD_IN_SEC, TimeUnit.SECONDS)
+        Observable.empty().delay(TIMER_PERIOD_IN_SEC, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(value -> {
-                    disposable.dispose();
-                    ifViewAttached(ConfirmPinView::onPinSetFragmentShouldLoad);
-                });
+                .doOnComplete(() -> ifViewAttached(ConfirmPinView::onPinSetFragmentShouldLoad))
+                .subscribe();
         ifViewAttached(ConfirmPinView::onInvalidPinTyped);
     }
 }

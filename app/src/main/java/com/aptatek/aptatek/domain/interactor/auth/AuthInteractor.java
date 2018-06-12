@@ -5,8 +5,9 @@ import android.support.v4.os.CancellationSignal;
 
 import com.aptatek.aptatek.data.PinCode;
 import com.aptatek.aptatek.domain.manager.FingerprintManager;
-import com.aptatek.aptatek.domain.manager.KeyStoreManager;
 import com.aptatek.aptatek.domain.manager.SharedPreferencesManager;
+import com.aptatek.aptatek.domain.manager.keystore.KeyStoreError;
+import com.aptatek.aptatek.domain.manager.keystore.KeyStoreManager;
 
 import javax.inject.Inject;
 
@@ -32,13 +33,22 @@ public class AuthInteractor {
 
 
     public void setPinCode(final PinCode pinCode) {
-        final String encryptedPin = keyStoreManager.encrypt(pinCode);
-        sharedPreferencesManager.setEncryptedPin(encryptedPin);
+        try {
+            final String encryptedPin = keyStoreManager.encrypt(pinCode);
+            sharedPreferencesManager.setEncryptedPin(encryptedPin);
+        } catch (KeyStoreError e) {
+            Timber.e(e, "Failed to set pincode");
+        }
     }
 
     public boolean isValidPinCode(final PinCode pinCode) {
-        final PinCode storedPin = keyStoreManager.decrypt(sharedPreferencesManager.getEncryptedPin());
-        return storedPin != null && storedPin.isTheSame(pinCode);
+        try {
+            final PinCode storedPin = keyStoreManager.decrypt(sharedPreferencesManager.getEncryptedPin());
+            return storedPin != null && storedPin.equals(pinCode);
+        } catch (KeyStoreError keyStoreError) {
+            Timber.e(keyStoreError.getCause());
+            return false;
+        }
     }
 
     public void changePinCode() {

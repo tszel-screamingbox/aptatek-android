@@ -15,7 +15,7 @@ import dagger.Component;
 @FragmentScope
 @Component(dependencies = ApplicationComponent.class, modules = FragmentModule.class)
 public interface FragmentComponent {
-    // Inject fragments, for example: void inject (Fragment fragment)
+    // Inject fragments, for example: void inject (Fragment fragment
 
     void inject(AddPinFragment addPinFragment);
 
@@ -23,7 +23,6 @@ public interface FragmentComponent {
 
     void inject(RequestPinFragment requestPinFragment);
 
-    void inject(TakeSampleFragment fragment);
     TestFragmentComponent plus(TestModule module);
 
 }

@@ -3,6 +3,8 @@ package com.aptatek.aptatek.domain.manager;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.aptatek.data.PinCode;
+import com.aptatek.aptatek.domain.manager.keystore.KeyStoreError;
+import com.aptatek.aptatek.domain.manager.keystore.KeyStoreManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,22 +27,22 @@ public class KeyStoreManagerTest {
     }
 
     @Test
-    public void testEncryptAndDecrypt() {
+    public void testEncryptAndDecrypt() throws KeyStoreError {
         final String encryptedPin = keyStoreManager.encrypt(originalPin);
         final PinCode decryptedPin = keyStoreManager.decrypt(encryptedPin);
-        assertTrue(originalPin.isTheSame(decryptedPin));
+        assertTrue(originalPin.equals(decryptedPin));
     }
 
 
     @Test
-    public void testAliasExists() {
+    public void testAliasExists() throws KeyStoreError {
         keyStoreManager.encrypt(originalPin);
         assertTrue(keyStoreManager.aliasExists());
     }
 
 
     @Test
-    public void testDeleteKeyStore() {
+    public void testDeleteKeyStore() throws KeyStoreError {
         keyStoreManager.encrypt(originalPin);
         keyStoreManager.deleteKeyStore();
         assertTrue(!keyStoreManager.aliasExists());
