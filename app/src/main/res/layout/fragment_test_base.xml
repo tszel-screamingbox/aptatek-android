@@ -13,12 +13,13 @@
         android:gravity="center"
         android:textSize="@dimen/font.size.xxlarge"
         android:textStyle="bold"
+        android:layout_marginBottom="@dimen/general.distance.small"
         app:layout_constraintBottom_toTopOf="@+id/testBaseMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="@string/test.takesample.title" />
 
     <TextView

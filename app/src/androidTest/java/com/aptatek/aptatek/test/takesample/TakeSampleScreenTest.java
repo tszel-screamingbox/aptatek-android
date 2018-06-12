@@ -65,7 +65,7 @@ public class TakeSampleScreenTest {
     @Test
     public void testNextNavigatesForward() throws Exception {
         onView(withId(R.id.testNavigationButton)).perform(ViewActions.click());
-        // TODO imlpement next screen and check
+        onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_incubation_title)));
     }
 
 

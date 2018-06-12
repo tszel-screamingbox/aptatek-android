@@ -13,7 +13,8 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.injection.component.FragmentComponent;
+import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
+import com.aptatek.aptatek.view.test.TestScreens;
 import com.aptatek.aptatek.view.test.base.TestBaseFragment;
 
 import java.util.Locale;
@@ -50,7 +51,7 @@ public class TakeSampleFragment extends TestBaseFragment<TakeSampleView, TakeSam
     }
 
     @Override
-    protected void injectFragment(final FragmentComponent fragmentComponent) {
+    protected void injectTestFragment(final TestFragmentComponent fragmentComponent) {
         fragmentComponent.inject(this);
     }
 
@@ -88,6 +89,14 @@ public class TakeSampleFragment extends TestBaseFragment<TakeSampleView, TakeSam
         videoThumbnail.setImageBitmap(thumbnail);
         videoThumbnail.setVisibility(View.VISIBLE);
         videoView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onNavigateForwardPressed() {
+        presenter.startIncubation();
+        showScreen(TestScreens.INCUBATION);
+
+        return true;
     }
 
     @NonNull

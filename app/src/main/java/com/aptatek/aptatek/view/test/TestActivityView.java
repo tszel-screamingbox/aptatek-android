@@ -14,6 +14,10 @@ public interface TestActivityView extends MvpView {
 
     void setNavigationButtonText(@NonNull String buttonText);
 
+    void showScreen(@NonNull TestScreens screen);
 
+    void navigateBack();
+
+    void navigateForward();
 
 }

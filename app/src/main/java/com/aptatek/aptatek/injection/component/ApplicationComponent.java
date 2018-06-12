@@ -1,9 +1,12 @@
 package com.aptatek.aptatek.injection.component;
 
+import android.app.NotificationManager;
 import android.content.Context;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.device.DeviceHelper;
+import com.aptatek.aptatek.device.PreferenceManager;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
@@ -22,6 +25,12 @@ public interface ApplicationComponent {
     ResourceInteractor resourceInteractor();
 
     DeviceHelper deviceHelper();
+
+    PreferenceManager preferenceManager();
+
+    NotificationManager notificationManager();
+
+    NotificationManagerCompat notificationManagerCompat();
 
     @ApplicationContext
     Context context();
