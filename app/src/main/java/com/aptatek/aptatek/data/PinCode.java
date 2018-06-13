@@ -59,14 +59,14 @@ public class PinCode {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == this) return true;
         if (!(o instanceof PinCode)) {
             return false;
         }
-        PinCode pinCode = (PinCode) o;
-        return Arrays.equals(passwordBytes, pinCode.getBytes()) &&
-                Arrays.equals(passwordChars, pinCode.getChars());
+        final PinCode pinCode = (PinCode) o;
+        return Arrays.equals(passwordBytes, pinCode.getBytes())
+                && Arrays.equals(passwordChars, pinCode.getChars());
     }
 
     @Override
