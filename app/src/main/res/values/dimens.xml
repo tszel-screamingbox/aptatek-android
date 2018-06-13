@@ -30,6 +30,10 @@
     <dimen name="general.distance.xxlarge">150dp</dimen>
     <dimen name="general.distance.xxxlarge">180dp</dimen>
 
+
+    <!-- Pin Circles-->
+    <dimen name="pin.circle.size">45dp</dimen>
+
     <dimen name="font.size.small">11sp</dimen>
     <dimen name="font.size.regular">12sp</dimen>
     <dimen name="font.size.normal">15sp</dimen>
@@ -38,7 +42,7 @@
     <dimen name="font.size.xbig">20sp</dimen>
     <dimen name="font.size.xxbig">21sp</dimen>
     <dimen name="font.size.large">22sp</dimen>
-    <dimen name="font.size.xlarge">25sp</dimen>
+    <dimen name="font.size.xlarge">31sp</dimen>
     <dimen name="font.size.xxlarge">45sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
     <dimen name="font.size.incubation">110sp</dimen>

@@ -6,7 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
-import com.aptatek.aptatek.view.main.MainActivity;
+import com.aptatek.aptatek.view.pin.request.RequestPinHostActivity;
+import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
 
 import javax.inject.Inject;
 
@@ -19,10 +20,7 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        final Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        presenter.switchToNextActivity();
     }
 
     @Override
@@ -41,4 +39,15 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
         return 0;
     }
 
+    @Override
+    public void onRequestPinActivityShouldLoad() {
+        final Intent intent = new Intent(this, RequestPinHostActivity.class);
+        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
+    }
+
+    @Override
+    public void onSetPinActivityShouldLoad() {
+        final Intent intent = new Intent(this, SetPinHostActivity.class);
+        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
+    }
 }

@@ -11,13 +11,19 @@ import javax.inject.Singleton;
 @Singleton
 public class PreferenceManager {
 
-    private static final String PREF_INCUBATION_START = "aptatek.test.incubation.start";
+    private static final class Constants {
+        static final String SHARED_PREFERENCES_NAME = "com.aptatek.aptatek";
+    }
+
+
+    public static final String PREF_INCUBATION_START = "aptatek.test.incubation.start";
+    public static final String PREF_ENCRYPTED_PIN = "aptatek.encrypted.pin";
 
     private final SharedPreferences sharedPreferences;
 
     @Inject
-    PreferenceManager(@ApplicationContext final Context applicationContext) {
-        this.sharedPreferences = android.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext);
+    public PreferenceManager(@ApplicationContext final Context applicationContext) {
+        sharedPreferences = applicationContext.getSharedPreferences(PreferenceManager.Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     public void setIncubationStart(final long timestamp) {
@@ -26,5 +32,21 @@ public class PreferenceManager {
 
     public long getIncubationStart() {
         return sharedPreferences.getLong(PREF_INCUBATION_START, 0L);
+    }
+
+    public void setEncryptedPin(final String encryptedPin) {
+        sharedPreferences.edit().putString(PREF_ENCRYPTED_PIN, encryptedPin).apply();
+    }
+
+    public String getEncryptedPin() {
+        return sharedPreferences.getString(PREF_ENCRYPTED_PIN, null);
+    }
+
+    public void clearPreference(final String key) {
+        sharedPreferences.edit().remove(key).apply();
+    }
+
+    public void clearAllPreference() {
+        sharedPreferences.edit().clear().apply();
     }
 }

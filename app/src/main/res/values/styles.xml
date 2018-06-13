@@ -59,6 +59,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Dial.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:background">@color/applicationWhite</item>
+        <item name="android:textColor">@color/dialButtonGrey</item>
+        <item name="android:textSize">@dimen/font.size.xlarge</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">@dimen/general.distance.xxxxmini</item>
+    </style>
+
     <style name="General.Empty.Background" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height</item>
         <item name="android:background">@drawable/empty_background</item>

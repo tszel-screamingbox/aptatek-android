@@ -54,6 +54,9 @@ ext {
             // Other
             dataFactory                 : '0.8',
 
+            // ActivityStarter
+            activityStarter                 : '1.11-beta',
+
             // Testing
             junit                       : '4.12',
             mockito                     : '2.8.9',
@@ -133,6 +136,11 @@ ext {
     appDependencies = [
             timber     : "com.jakewharton.timber:timber:${versions.timber}",
             dataFactory: "org.fluttercode.datafactory:datafactory:${versions.dataFactory}"
+    ]
+
+    activityStarterDependencies = [
+            activityStarter : "com.marcinmoskala.activitystarter:activitystarter:${versions.activityStarter}",
+            apt : "com.marcinmoskala.activitystarter:activitystarter-compiler:${versions.activityStarter}",
     ]
 
     testDependencies = [

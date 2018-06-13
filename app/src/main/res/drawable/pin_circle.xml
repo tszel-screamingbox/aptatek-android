@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <stroke
+                android:width="@dimen/general.distance.xxxmini"
+                android:color="@color/applicationSilver" />
+            <size
+                android:width="@dimen/pin.circle.size"
+                android:height="@dimen/pin.circle.size" />
+        </shape>
+    </item>
+</layer-list>

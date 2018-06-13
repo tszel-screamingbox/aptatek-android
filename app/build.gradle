@@ -144,6 +144,10 @@ dependencies {
     implementation autoValueDependencies.api
     annotationProcessor autoValueDependencies.compiler
 
+    // IntentBuilder
+    implementation activityStarterDependencies.activityStarter
+    annotationProcessor  activityStarterDependencies.apt
+
     // LeakCanary
     debugImplementation leakDependencies.debug
     releaseImplementation leakDependencies.release
