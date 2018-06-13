@@ -48,7 +48,7 @@ public class AuthPinScreenTest {
         onView(withId(R.id.button5)).perform(ViewActions.click());
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(hasChildCount(6)));
-        onView(withId(R.id.messageTextView)).check(matches(withText(R.string.require_pin_message_invalid)));
+        onView(withId(R.id.messageTextView)).check(matches(withText(R.string.auth_pin_message_invalid)));
         onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationRed)));
     }
 }

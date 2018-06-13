@@ -1,6 +1,14 @@
 <resources>
     <!-- App Constants-->
     <string name="app.name">Aptatek</string>
+    <!-- AuthPin Activity -->
+    <string name="auth.pin.hint">Enter your PIN code</string>
+    <string name="auth.pin.hint.fingerprint">Enter your PIN code or use your fingerprint</string>
+    <string name="auth.pin.message.fingerprint.invalid">Invalid fingerprint</string>
+    <string name="auth.pin.message.fingerprint.longer">Keep your finger on the reader for a bit longer</string>
+    <string name="auth.pin.message.invalid">Invalid PIN</string>
+    <string name="auth.pin.successful">Authentication successful</string>
+    <string name="auth.pin.title">Authenticate</string>
     <!-- ConfirmPin Fragment -->
     <string name="confirm.pin.error">Incorrect PIN</string>
     <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
@@ -26,13 +34,6 @@
     <string name="pin.button.7">7</string>
     <string name="pin.button.8">8</string>
     <string name="pin.button.9">9</string>
-    <!-- Require PIN Activity -->
-    <string name="require.pin.message.fingerprint.invalid">Invalid fingerprint</string>
-    <string name="require.pin.message.fingerprint.longer">Keep your finger on the reader for a bit longer</string>
-    <string name="require.pin.message.invalid">Invalid PIN</string>
-    <string name="require.pin.hint">Enter your PIN code</string>
-    <string name="require.pin.hint.fingerprint">Enter your PIN code or use your fingerprint</string>
-    <string name="require.pin.title">Authenticate</string>
     <!-- Set PIN Activity -->
     <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
     <string name="set.pin.title">Set PIN</string>

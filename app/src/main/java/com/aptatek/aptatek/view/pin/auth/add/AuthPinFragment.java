@@ -33,7 +33,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     protected void initObjects(final View view) {
         presenter.initView();
-        titleTextView.setText(R.string.require_pin_title);
+        titleTextView.setText(R.string.auth_pin_title);
         messageTextView.setVisibility(View.GONE);
     }
 
@@ -55,7 +55,9 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
 
     @Override
     public void onValidPinTyped() {
-        messageTextView.setVisibility(View.GONE);
+        messageTextView.setVisibility(View.VISIBLE);
+        messageTextView.setTextColor(this.getResources().getColor(R.color.applicationGreen));
+        messageTextView.setText(R.string.auth_pin_successful);
         fillCircle(R.drawable.pin_circle_filled_green, () -> {
             final Intent intent = new Intent(getContext(), MainActivity.class);
             getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
@@ -66,13 +68,15 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     public void onInvalidPinTyped() {
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setTextColor(this.getResources().getColor(R.color.applicationRed));
-        messageTextView.setText(R.string.require_pin_message_invalid);
+        messageTextView.setText(R.string.auth_pin_message_invalid);
         fillCircle(R.drawable.pin_circle_filled_red, null);
     }
 
     @Override
     public void onValidFingerprintDetected() {
-        messageTextView.setVisibility(View.GONE);
+        messageTextView.setVisibility(View.VISIBLE);
+        messageTextView.setTextColor(this.getResources().getColor(R.color.applicationGreen));
+        messageTextView.setText(R.string.auth_pin_successful);
         fillCircle(R.drawable.pin_circle_filled_green, () -> {
             final Intent intent = new Intent(getContext(), MainActivity.class);
             getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
@@ -90,13 +94,13 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     public void onFingerprintAvailable() {
         fingerprintImageView.setVisibility(View.VISIBLE);
-        hintTextView.setText(R.string.require_pin_hint_fingerprint);
+        hintTextView.setText(R.string.auth_pin_hint_fingerprint);
     }
 
     @Override
     public void onFingerprintDisabled() {
         fingerprintImageView.setVisibility(View.GONE);
-        hintTextView.setText(R.string.require_pin_hint);
+        hintTextView.setText(R.string.auth_pin_hint);
     }
 
     @Override
