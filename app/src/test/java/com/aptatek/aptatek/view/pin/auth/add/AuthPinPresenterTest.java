@@ -94,7 +94,7 @@ public class AuthPinPresenterTest {
 
     @Test
     public void testCantDetectFingerprint() {
-        final String error = "Cant read fingerprint";
+        final String error = "Can not read fingerprint";
         doAnswer(answerVoid((Callback callback) -> callback.onErrorOccurred(error)))
                 .when(authInteractor).listenFingerPrintScanner(any(Callback.class));
 
