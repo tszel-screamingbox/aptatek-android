@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.pin.auth.add;
+package com.aptatek.aptatek.view.pin;
 
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
@@ -21,7 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
-public class RequestPinTest {
+public class AuthPinScreenTest {
 
     @Rule
     public ActivityTestRule<AuthPinHostActivity> activityRule = new ActivityTestRule<>(AuthPinHostActivity.class);
@@ -29,8 +29,9 @@ public class RequestPinTest {
 
     @Test
     public void testInitialView() {
-        onView(withId(R.id.hintTextView)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.hintTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.fingerpintImage)).check(matches(not(isDisplayed())));
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(hasChildCount(6)));
@@ -38,6 +39,7 @@ public class RequestPinTest {
 
     @Test
     public void testEnterPin() {
+        onView(withId(R.id.fingerpintImage)).check(matches(not(isDisplayed())));
         onView(withId(R.id.button0)).perform(ViewActions.click());
         onView(withId(R.id.button1)).perform(ViewActions.click());
         onView(withId(R.id.button2)).perform(ViewActions.click());

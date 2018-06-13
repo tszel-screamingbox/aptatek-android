@@ -12,6 +12,7 @@
 
 
     <ImageView
+        android:id="@+id/fingerpintImage"
         android:layout_width="@dimen/general.distance.xlarge"
         android:layout_height="@dimen/general.distance.xlarge"
         android:layout_margin="@dimen/general.distance.small"
@@ -37,6 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
     <TextView
+        android:id="@+id/fingerprintMessage"
         style="@style/General.Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

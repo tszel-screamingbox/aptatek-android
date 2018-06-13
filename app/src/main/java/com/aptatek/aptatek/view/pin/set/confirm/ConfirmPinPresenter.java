@@ -10,8 +10,6 @@ import javax.inject.Inject;
 
 class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
 
-    private static final int TIMER_PERIOD_IN_SEC = 1;
-
     private final AuthInteractor authInteractor;
     private final DeviceHelper deviceHelper;
 

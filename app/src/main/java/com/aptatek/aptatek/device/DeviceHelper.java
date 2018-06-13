@@ -10,7 +10,7 @@ import javax.inject.Singleton;
  */
 
 @Singleton
-public final class DeviceHelper {
+public class DeviceHelper {
 
     private final FingerprintManager fingerprintManager;
     private final PreferenceManager preferenceManager;
