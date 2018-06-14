@@ -31,6 +31,18 @@
     <dimen name="general.distance.xxxlarge">180dp</dimen>
 
 
+    <!-- Graph-->
+    <dimen name="graph.bubble.margin">12dp</dimen>
+    <dimen name="graph.bubble.margins.side">22dp</dimen>
+    <dimen name="graph.bubble.size.big">82dp</dimen>
+    <dimen name="graph.bubble.size.small">50dp</dimen>
+    <dimen name="graph.bubble.radius">40dp</dimen>
+    <dimen name="graph.bubble.stroke.big">12dp</dimen>
+    <dimen name="graph.bubble.stroke.small">6dp</dimen>
+    <dimen name="graph.bubble.stroke.mini">3dp</dimen>
+    <dimen name="graph.bubble.cross.side">33dp</dimen>
+    <dimen name="graph.bubble.cross.bottom">-60dp</dimen>
+
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.header.margin.minimum">68dp</dimen>
