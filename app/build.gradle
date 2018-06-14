@@ -46,6 +46,7 @@ android {
         versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics : 'true'
+        testInstrumentationRunnerArguments clearPackageData: 'true'
         multiDexEnabled true
     }
 
@@ -111,6 +112,10 @@ dependencies {
     implementation androidSupportDependencies.design
     implementation androidSupportDependencies.multidex
 
+    // ArchitectureComponents
+    implementation architectureComponentsDependencies.extensions
+    annotationProcessor architectureComponentsDependencies.compiler
+
     // MVP
     implementation mvpDependencies.mosby
     implementation mvpDependencies.viewstate
@@ -139,6 +144,10 @@ dependencies {
     implementation autoValueDependencies.api
     annotationProcessor autoValueDependencies.compiler
 
+    // IntentBuilder
+    implementation activityStarterDependencies.activityStarter
+    annotationProcessor  activityStarterDependencies.apt
+
     // LeakCanary
     debugImplementation leakDependencies.debug
     releaseImplementation leakDependencies.release
@@ -157,6 +166,8 @@ dependencies {
     androidTestAnnotationProcessor daggerDependencies.compiler
     androidTestCompileOnly daggerDependencies.annotations
     androidTestImplementation appDependencies.dataFactory
+    androidTestUtil testDependencies.orchestrator
+
 }
 
 configurations.all {
@@ -275,7 +286,7 @@ task jacocoTestReport(type : JacocoReport, dependsOn : 'testProdDebugUnitTest') 
     sourceDirectories = files(coverageSourceDirs)
     executionData     = fileTree(
             dir     : "$buildDir",
-            include : [ 'jacoco/testProdDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec' ]
+            include : [ 'jacoco/testProdDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec', '../../firebase/*coverage.ec' ]
     )
 
     doFirst {

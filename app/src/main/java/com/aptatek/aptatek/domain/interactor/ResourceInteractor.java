@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.support.annotation.RawRes;
 import android.util.TypedValue;
 
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
@@ -143,7 +145,7 @@ public class ResourceInteractor {
         try {
             final Field idField = c.getDeclaredField(resourceName);
             return idField.getInt(idField);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return 0; // No resource found for given name
         }
     }
@@ -195,5 +197,9 @@ public class ResourceInteractor {
      */
     public int getInteger(final int resourceId) {
         return getResources().getInteger(resourceId);
+    }
+
+    public Uri getUriForRawFile(@RawRes final int id) {
+        return Uri.parse("android.resource://" + context.getPackageName() + "/" + id);
     }
 }

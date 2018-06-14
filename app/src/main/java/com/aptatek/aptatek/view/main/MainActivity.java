@@ -10,7 +10,7 @@ import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.settings.ReminderSettingsActivity;
 import com.aptatek.aptatek.view.toggle.ToggleActivity;
-
+import com.aptatek.aptatek.view.test.TestActivity;
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        getActivityComponent().inject(this);
+        activityComponent.inject(this);
     }
 
     @NonNull
@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.newTestButton)
     public void onNewTestButtonClicked() {
-        Toast.makeText(this, "New test should load", Toast.LENGTH_SHORT).show();
+        launchActivity(TestActivity.createStarter(this), false, Animation.FADE);
     }
 
     @OnClick(R.id.settingsButton)

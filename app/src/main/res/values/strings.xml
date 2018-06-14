@@ -7,6 +7,33 @@
     <string name="main.button.settings">Settings</string>
     <string name="main.button.toggle">Toggle</string>
 
+    <!-- Pin Activity -->
+    <string name="pin.button.0">0</string>
+    <string name="pin.button.1">1</string>
+    <string name="pin.button.2">2</string>
+    <string name="pin.button.3">3</string>
+    <string name="pin.button.4">4</string>
+    <string name="pin.button.5">5</string>
+    <string name="pin.button.6">6</string>
+    <string name="pin.button.7">7</string>
+    <string name="pin.button.8">8</string>
+    <string name="pin.button.9">9</string>
+
+
+    <!-- ConfirmPin Fragment -->
+    <string name="confirm.pin.error">Incorrect PIN</string>
+    <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
+    <string name="confirm.pin.title">Confirm PIN</string>
+    <string name="confirm.pin.successful">PIN successfully set</string>
+
+    <!-- Require PIN Activity -->
+    <string name="require.pin.message.invalid">Invalid PIN</string>
+    <string name="require.pin.title">Enter PIN</string>
+
+    <!-- Set PIN Activity -->
+    <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
+    <string name="set.pin.title">Set PIN</string>
+
     <!-- Toggle Activity -->
     <string name="toggle.cube.connected">&#9679;&#160;Cube Connected</string>
     <string name="toggle.cube.disconnected">&#9679;&#160;Cube Disconnected</string>
@@ -16,7 +43,30 @@
     <string name="toggle.button.settings">Settings</string>
     <string name="toggle.button.toggle">Toggle</string>
 
-    <!-- Reminder Settings Activity -->
+    <!-- Test Activity -->
+    <string name="test.cancel.description">Are you sure you want to cancel this test?</string>
+    <string name="test.cancel.navigation.yes">Yes</string>
+    <string name="test.cancel.title">Cancel test</string>
+
+    <string name="test.incubation.button.next">Next</string>
+    <string name="test.incubation.countdown.format">mm:ss</string>
+    <string name="test.incubation.description">Let the sample stay in the tube until the timer goes off</string>
+    <string name="test.incubation.title">Sample in incubation</string>
+    <string name="test.incubation.notification.channel.name">Incubation</string>
+    <string name="test.incubation.notification.finished.title">Incubation complete</string>
+    <string name="test.incubation.notification.finished.text">Tap to proceed</string>
+    <string name="test.incubation.notification.inprogress.title">Incubation in progress</string>
+    <string name="test.incubation.notification.inprogress.textformat">Remaining time is %s</string>
+
+    <string name="test.takesample.age.switch">I\'m taking a sample for %1$s</string>
+    <string name="test.takesample.age.child">a child</string>
+    <string name="test.takesample.age.adult">an adult</string>
+    <string name="test.takesample.button.start">Start timer (30min)</string>
+    <string name="test.button.cancel">Cancel</string>
+    <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
+    <string name="test.takesample.title">Take sample</string>
+
+ <!-- Reminder Settings Activity -->
     <string name="reminder.settings.toolbar.title">Reminders</string>
     <string name="reminder.settings.am">am</string>
     <string name="reminder.settings.pm">pm</string>
