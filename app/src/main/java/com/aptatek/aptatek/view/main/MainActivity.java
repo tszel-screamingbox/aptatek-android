@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.settings.ReminderSettingsActivity;
 import com.aptatek.aptatek.view.toggle.ToggleActivity;
 
 import javax.inject.Inject;
@@ -56,6 +57,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.settingsButton)
     public void onSettingsButtonClicked() {
-        Toast.makeText(this, "Settings should load", Toast.LENGTH_SHORT).show();
+        final Intent intent = new Intent(this, ReminderSettingsActivity.class);
+        launchActivity(intent, false, Animation.FADE);
     }
 }

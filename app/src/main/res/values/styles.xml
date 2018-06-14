@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -84,5 +84,26 @@
         <item name="android:textStyle">normal</item>
         <item name="android:alpha">@dimen/alpha.general.text</item>
         <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="General.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="General.TimePicker" parent="android:Widget.Material.Light.TimePicker" tools:targetApi="lollipop">
+        <item name="android:timePickerMode" tools:targetApi="lollipop">clock</item>
+        <item name="android:numbersSelectorColor">@color/applicationTimePickerSelector</item>
+        <item name="android:headerBackground">@android:color/white</item>
+        <item name="android:headerTimeTextAppearance">@style/General.HeaderTextStyle</item>
+        <item name="android:textAppearance">@style/General.ClockTextStyle</item>
+    </style>
+
+    <style name="General.HeaderTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/time_picker_header_color_selector</item>
+    </style>
+
+    <style name="General.ClockTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/applicationLightGray</item>
     </style>
 </resources>
