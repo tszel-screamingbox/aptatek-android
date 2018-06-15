@@ -5,6 +5,8 @@ public enum TestScreens {
     TAKE_SAMPLE,
     INCUBATION,
     CANCEL,
-    INSERT_CASSETTE
+    INSERT_CASSETTE,
+    ATTACH_CUBE,
+    INSERT_SAMPLE
 
 }

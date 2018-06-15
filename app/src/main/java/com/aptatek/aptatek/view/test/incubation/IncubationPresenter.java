@@ -35,7 +35,7 @@ public class IncubationPresenter extends TestBasePresenter<IncubationView> {
             view.setCancelBigVisible(false);
             view.setCircleCancelVisible(true);
             view.setNavigationButtonVisible(true);
-            view.setNavigationButtonText(resourceInteractor.getStringResource(R.string.test_incubation_button_next));
+            view.setNavigationButtonText(resourceInteractor.getStringResource(R.string.test_button_next));
             view.setTitle(resourceInteractor.getStringResource(R.string.test_incubation_title));
             view.setMessage(resourceInteractor.getStringResource(R.string.test_incubation_description));
         });

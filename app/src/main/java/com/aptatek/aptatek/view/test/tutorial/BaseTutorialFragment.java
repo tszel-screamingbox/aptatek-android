@@ -1,26 +1,17 @@
-package com.aptatek.aptatek.view.test.insertcasette;
+package com.aptatek.aptatek.view.test.tutorial;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
 import com.aptatek.aptatek.view.test.base.TestBaseFragment;
-
-import javax.inject.Inject;
+import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
+import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 
 import butterknife.BindView;
 
-public class InsertCasetteFragment extends TestBaseFragment<InsertCasetteView, InsertCasettePresenter>
-    implements InsertCasetteView {
-
-    private static final int[] IMAGES = new int[] {R.drawable.ic_casette_1, R.drawable.ic_casette_2};
-
-    @Inject
-    InsertCasettePresenter insertCasettePresenter;
+public abstract class BaseTutorialFragment<P extends MvpPresenter<V>, V extends TestFragmentBaseView> extends TestBaseFragment<V, P> {
 
     @BindView(R.id.insertcasetteImage)
     ImageView imageView;
@@ -30,25 +21,8 @@ public class InsertCasetteFragment extends TestBaseFragment<InsertCasetteView, I
     private volatile boolean shouldRunAnimation;
 
     @Override
-    protected void initObjects(final View view) {
-        super.initObjects(view);
-        presenter.initUi();
-    }
-
-    @Override
-    protected void injectTestFragment(@NonNull final TestFragmentComponent fragmentComponent) {
-        fragmentComponent.inject(this);
-    }
-
-    @Override
     protected int getContentLayoutId() {
-        return R.layout.fragment_insert_casette;
-    }
-
-    @NonNull
-    @Override
-    public InsertCasettePresenter createPresenter() {
-        return insertCasettePresenter;
+        return R.layout.fragment_tutorial_animation;
     }
 
     @Override
@@ -66,6 +40,8 @@ public class InsertCasetteFragment extends TestBaseFragment<InsertCasetteView, I
         shouldRunAnimation = false;
     }
 
+    protected abstract int[] getImages();
+
     private class ChangeSrcRunnable implements Runnable {
 
         private static final long DELAY_MILLIS = 500L;
@@ -73,9 +49,11 @@ public class InsertCasetteFragment extends TestBaseFragment<InsertCasetteView, I
         @Override
         public void run() {
             if (imageView != null && shouldRunAnimation) {
-                imageView.setImageResource(IMAGES[counter++ / IMAGES.length]);
+                final int[] images = getImages();
+                imageView.setImageResource(images[counter++ % images.length]);
                 animator.postDelayed(new ChangeSrcRunnable(), DELAY_MILLIS);
             }
         }
     }
+
 }
