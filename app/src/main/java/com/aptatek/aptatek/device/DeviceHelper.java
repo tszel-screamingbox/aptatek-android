@@ -10,13 +10,16 @@ import javax.inject.Singleton;
  */
 
 @Singleton
-public final class DeviceHelper {
+public class DeviceHelper {
 
     private final FingerprintManager fingerprintManager;
+    private final PreferenceManager preferenceManager;
 
     @Inject
-    public DeviceHelper(final FingerprintManager fingerprintManager) {
+    public DeviceHelper(final FingerprintManager fingerprintManager,
+                        final PreferenceManager preferenceManager) {
         this.fingerprintManager = fingerprintManager;
+        this.preferenceManager = preferenceManager;
     }
 
     public boolean hasFingerprintHadrware() {
@@ -25,5 +28,11 @@ public final class DeviceHelper {
 
     public boolean hasEnrolledFingerprints() {
         return fingerprintManager.hasEnrolledFingerprints();
+    }
+
+    public boolean isFingperprintAuthAvailable() {
+        return hasEnrolledFingerprints() &&
+                hasEnrolledFingerprints() &&
+                preferenceManager.isFingerprintScanEnabled();
     }
 }

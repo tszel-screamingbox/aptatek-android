@@ -1,9 +1,10 @@
-package com.aptatek.aptatek.view.pin.set;
+package com.aptatek.aptatek.view.pin;
 
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.not;
 
-public class SetPinTest {
+public class SetPinScreenTest {
 
     @Rule
     public ActivityTestRule<SetPinHostActivity> activityRule = new ActivityTestRule<>(SetPinHostActivity.class);
@@ -36,9 +37,10 @@ public class SetPinTest {
     }
 
     @Test
-    public void testEnterValidPin() {
+    public void testEnterValidPin() throws Exception {
         // SetPin
         enterPin();
+        sleep(1000);
         // ConfirmPin
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.title)).check(matches(withText(R.string.confirm_pin_title)));
@@ -57,7 +59,8 @@ public class SetPinTest {
     public void testEnterInvalidPinAndCorrectIt() throws Exception {
         // SetPin
         enterPin();
-        // ConfirmPin
+        sleep(1000);
+        // ConfirmPin View
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.title)).check(matches(withText(R.string.confirm_pin_title)));
         onView(withId(R.id.hintTextView)).check(matches(isDisplayed()));
@@ -74,9 +77,10 @@ public class SetPinTest {
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(withText(R.string.confirm_pin_error)));
         onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationRed)));
-        sleep(2500);
+        sleep(1000);
         // SetPin Again
         enterPin();
+        sleep(1000);
         // Confirm
         enterPin();
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
