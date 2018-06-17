@@ -11,7 +11,7 @@ import com.aptatek.aptatek.view.test.tutorial.BaseTutorialFragment;
 
 import javax.inject.Inject;
 
-public class AttachCubeFragment extends BaseTutorialFragment<AttachCubePresenter, TestFragmentBaseView>
+public class AttachCubeFragment extends BaseTutorialFragment<TestFragmentBaseView, AttachCubePresenter>
     implements TestFragmentBaseView {
 
     private static final int[] IMAGES = new int[]{R.drawable.attach_cube_1, R.drawable.attach_cube_2};

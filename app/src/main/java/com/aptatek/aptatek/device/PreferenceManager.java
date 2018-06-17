@@ -12,6 +12,7 @@ import javax.inject.Singleton;
 public class PreferenceManager {
 
     private static final String PREF_INCUBATION_START = "aptatek.test.incubation.start";
+    private static final String PREF_WETTING_START = "aptatek.test.wetting.start";
 
     private final SharedPreferences sharedPreferences;
 
@@ -26,5 +27,13 @@ public class PreferenceManager {
 
     public long getIncubationStart() {
         return sharedPreferences.getLong(PREF_INCUBATION_START, 0L);
+    }
+
+    public void setWettingStart(final long timestamp) {
+        sharedPreferences.edit().putLong(PREF_WETTING_START, timestamp).apply();
+    }
+
+    public long getWettingStart() {
+        return sharedPreferences.getLong(PREF_WETTING_START, 0L);
     }
 }

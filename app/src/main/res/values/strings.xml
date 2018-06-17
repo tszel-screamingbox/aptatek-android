@@ -17,8 +17,8 @@
     <string name="toggle.button.toggle">Toggle</string>
 
     <!-- Test Activity -->
-    <string name="test.attachcube.title">Attach cube</string>
     <string name="test.attachcube.description">Attach the cube over the top of the casette adapter</string>
+    <string name="test.attachcube.title">Attach cube</string>
 
     <string name="test.button.cancel">Cancel</string>
     <string name="test.button.next">Next</string>
@@ -27,7 +27,8 @@
     <string name="test.cancel.navigation.yes">Yes</string>
     <string name="test.cancel.title">Cancel test</string>
 
-    <string name="test.incubation.countdown.format">mm:ss</string>
+    <string name="test.countdown.format">mm:ss</string>
+
     <string name="test.incubation.description">Let the sample stay in the tube until the timer goes off</string>
     <string name="test.incubation.title">Sample in incubation</string>
     <string name="test.incubation.notification.channel.name">Incubation</string>
@@ -36,11 +37,11 @@
     <string name="test.incubation.notification.inprogress.title">Incubation in progress</string>
     <string name="test.incubation.notification.inprogress.textformat">Remaining time is %s</string>
 
-    <string name="test.insertcasette.title">Insert casette</string>
     <string name="test.insertcasette.description">Insert the casette to the adapter from the bottom</string>
+    <string name="test.insertcasette.title">Insert casette</string>
 
-    <string name="test.insertsample.title">Insert sample</string>
     <string name="test.insertsample.description">Insert the sample to the casette adapter and set the timer</string>
+    <string name="test.insertsample.title">Insert sample</string>
 
     <string name="test.takesample.age.switch">I\'m taking a sample for %1$s</string>
     <string name="test.takesample.age.child">a child</string>

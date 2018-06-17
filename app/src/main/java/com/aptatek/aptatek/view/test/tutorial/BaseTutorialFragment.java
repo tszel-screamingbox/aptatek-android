@@ -11,9 +11,9 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 
 import butterknife.BindView;
 
-public abstract class BaseTutorialFragment<P extends MvpPresenter<V>, V extends TestFragmentBaseView> extends TestBaseFragment<V, P> {
+public abstract class BaseTutorialFragment<V extends TestFragmentBaseView, P extends MvpPresenter<V>> extends TestBaseFragment<V, P> {
 
-    @BindView(R.id.insertcasetteImage)
+    @BindView(R.id.tutorialImage)
     ImageView imageView;
 
     private final Handler animator = new Handler(Looper.getMainLooper());

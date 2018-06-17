@@ -10,7 +10,7 @@ import com.aptatek.aptatek.view.test.tutorial.BaseTutorialFragment;
 
 import javax.inject.Inject;
 
-public class InsertSampleFragment extends BaseTutorialFragment<InsertSamplePresenter, TestFragmentBaseView>
+public class InsertSampleFragment extends BaseTutorialFragment<TestFragmentBaseView, InsertSamplePresenter>
         implements TestFragmentBaseView {
 
     private static final int[] IMAGES = new int[]{R.drawable.ic_casette_1, R.drawable.ic_casette_2};
@@ -39,5 +39,4 @@ public class InsertSampleFragment extends BaseTutorialFragment<InsertSamplePrese
     protected int[] getImages() {
         return IMAGES;
     }
-
 }

@@ -10,7 +10,7 @@ public class AttachCubePresenter extends BaseTutorialPresenter {
 
     @Inject
     public AttachCubePresenter(final ResourceInteractor resourceInteractor) {
-       super(resourceInteractor);
+        super(resourceInteractor);
     }
 
     @Override
