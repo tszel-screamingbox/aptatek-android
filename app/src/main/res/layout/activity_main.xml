@@ -30,6 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/main.button.new.test"
+        android:textSize="@dimen/font.size.normal"
         app:layout_constraintBaseline_toBaselineOf="@+id/toggleButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/toggleButton"

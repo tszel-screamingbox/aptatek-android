@@ -29,12 +29,12 @@ public class VideoThumbnailInteractor {
         try {
             retriever.setDataSource(context, uri);
             bitmap = retriever.getFrameAtTime(0);
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             Timber.d(ex, "Failed to create video thumbnail");
         } finally {
             try {
                 retriever.release();
-            } catch (RuntimeException ex) {
+            } catch (final RuntimeException ex) {
                 // Ignore failures while cleaning up.
             }
         }

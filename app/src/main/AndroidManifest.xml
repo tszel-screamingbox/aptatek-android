@@ -16,6 +16,16 @@
             android:name="firebase_analytics_collection_deactivated"
             android:value="true" />
 
+        <activity
+            android:name=".view.pin.auth.AuthPinHostActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
+            android:name=".view.fingerprint.FingerprintActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
 
         <activity
             android:name=".view.main.MainActivity"
@@ -23,10 +33,16 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
+            android:name=".view.pin.set.SetPinHostActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
             android:name=".view.splash.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +55,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.TestActivity"
+        <activity
+            android:name=".view.test.TestActivity"
             android:parentActivityName=".view.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">
