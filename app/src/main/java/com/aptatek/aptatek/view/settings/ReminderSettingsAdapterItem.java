@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-class ReminderSettingsAdapterItem {
+public class ReminderSettingsAdapterItem {
     private String id = UUID.randomUUID().toString();
     private String nameOfDay;
     private ArrayList<RemindersAdapterItem> reminders = new ArrayList<>();
     private Boolean active = false;
 
-    ReminderSettingsAdapterItem(String nameOfDay) {
+    public ReminderSettingsAdapterItem(String nameOfDay) {
         this.nameOfDay = nameOfDay;
     }
 

@@ -6,7 +6,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 import java.util.ArrayList;
 
-interface ReminderSettingsActivityView extends MvpView {
+public interface ReminderSettingsActivityView extends MvpView {
     void presentDays(@NonNull ArrayList<ReminderSettingsAdapterItem> data);
 
     void addReminder(@NonNull ReminderSettingsAdapterItem item);

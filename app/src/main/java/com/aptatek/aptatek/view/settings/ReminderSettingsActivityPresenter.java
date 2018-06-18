@@ -28,7 +28,7 @@ public class ReminderSettingsActivityPresenter extends MvpBasePresenter<Reminder
         super.destroy();
     }
 
-    void initView() {
+    public void initView() {
 
         ArrayList<ReminderSettingsAdapterItem> data = new ArrayList<>();
         data.add(new ReminderSettingsAdapterItem(resourceInteractor.getStringResource(R.string.reminder_settings_monday)));

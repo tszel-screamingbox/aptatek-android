@@ -10,7 +10,7 @@ public class RemindersAdapterItem {
     private int hour;
     private int minute;
 
-    RemindersAdapterItem(String time, boolean active, int hour, int minute) {
+    public RemindersAdapterItem(String time, boolean active, int hour, int minute) {
         this.time = time;
         this.active = active;
         this.hour = hour;
