@@ -50,4 +50,7 @@
     <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
     <string name="test.takesample.title">Take sample</string>
 
+    <string name="test.wetting.description">Let the sample wet into the tester stick</string>
+    <string name="test.wetting.title">Sample wetting</string>
+
 </resources>

@@ -39,4 +39,5 @@ public class InsertSampleFragment extends BaseTutorialFragment<TestFragmentBaseV
     protected int[] getImages() {
         return IMAGES;
     }
+
 }

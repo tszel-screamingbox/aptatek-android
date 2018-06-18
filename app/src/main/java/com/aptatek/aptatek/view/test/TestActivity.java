@@ -15,10 +15,11 @@ import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
 import com.aptatek.aptatek.view.test.canceltest.CancelTestFragment;
 import com.aptatek.aptatek.view.test.incubation.IncubationFragment;
-import com.aptatek.aptatek.view.test.takesample.TakeSampleFragment;
 import com.aptatek.aptatek.view.test.tutorial.attachcube.AttachCubeFragment;
 import com.aptatek.aptatek.view.test.tutorial.insertcasette.InsertCasetteFragment;
+import com.aptatek.aptatek.view.test.takesample.TakeSampleFragment;
 import com.aptatek.aptatek.view.test.tutorial.insertsample.InsertSampleFragment;
+import com.aptatek.aptatek.view.test.samplewetting.SampleWettingFragment;
 
 import javax.inject.Inject;
 
@@ -137,6 +138,12 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             }
             case INSERT_SAMPLE: {
                 fragment = new InsertSampleFragment();
+                clearStack = false;
+                persistCurrent = true;
+                break;
+            }
+            case SAMPLE_WETTING: {
+                fragment = new SampleWettingFragment();
                 clearStack = false;
                 persistCurrent = true;
                 break;

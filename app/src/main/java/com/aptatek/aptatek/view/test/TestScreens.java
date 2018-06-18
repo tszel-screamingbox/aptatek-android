@@ -7,6 +7,7 @@ public enum TestScreens {
     CANCEL,
     INSERT_CASSETTE,
     ATTACH_CUBE,
-    INSERT_SAMPLE
+    INSERT_SAMPLE,
+    SAMPLE_WETTING
 
 }
