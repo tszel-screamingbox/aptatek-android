@@ -10,54 +10,75 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 public class PreferencesManagerTest {
 
-    private PreferenceManager sharedPreferencesManager;
+    private PreferenceManager preferenceManager;
 
     private static final String TEST = "test_text";
     private static final long INCUBATION_START = 100;
 
     @Before
     public void setUp() {
-        sharedPreferencesManager = new PreferenceManager(getContext());
+        preferenceManager = new PreferenceManager(getContext());
     }
 
     @Test
     public void testPersistEnryptPin() {
-        sharedPreferencesManager.setEncryptedPin(TEST);
-        assertEquals(sharedPreferencesManager.getEncryptedPin(), TEST);
+        preferenceManager.setEncryptedPin(TEST);
+        assertEquals(preferenceManager.getEncryptedPin(), TEST);
     }
 
     @Test
     public void testGetDefaultValue() {
-        assertEquals(sharedPreferencesManager.getEncryptedPin(), null);
+        assertEquals(preferenceManager.getEncryptedPin(), null);
     }
 
     @Test
     public void testPersistIncubationStart() {
-        sharedPreferencesManager.setIncubationStart(INCUBATION_START);
-        assertEquals(sharedPreferencesManager.getIncubationStart(), INCUBATION_START);
+        preferenceManager.setIncubationStart(INCUBATION_START);
+        assertEquals(preferenceManager.getIncubationStart(), INCUBATION_START);
     }
 
+    @Test
+    public void testEnableFingerprint() {
+        preferenceManager.enableFingerprintScan(true);
+        assertTrue(preferenceManager.isFingerprintScanEnabled());
+    }
+
+    @Test
+    public void testDisableFingerprint() {
+        preferenceManager.enableFingerprintScan(false);
+        assertTrue(!preferenceManager.isFingerprintScanEnabled());
+    }
 
     @Test
     public void testClearByKey() {
-        sharedPreferencesManager.setEncryptedPin(TEST);
-        sharedPreferencesManager.setIncubationStart(INCUBATION_START);
-        sharedPreferencesManager.clearPreference(PreferenceManager.PREF_ENCRYPTED_PIN);
-        sharedPreferencesManager.clearPreference(PreferenceManager.PREF_INCUBATION_START);
-        assertEquals(sharedPreferencesManager.getEncryptedPin(), null);
-        assertEquals(sharedPreferencesManager.getIncubationStart(), 0L);
+        preferenceManager.setEncryptedPin(TEST);
+        preferenceManager.setIncubationStart(INCUBATION_START);
+        preferenceManager.enableFingerprintScan(true);
+
+        preferenceManager.clearPreference(PreferenceManager.PREF_ENCRYPTED_PIN);
+        preferenceManager.clearPreference(PreferenceManager.PREF_INCUBATION_START);
+        preferenceManager.clearPreference(PreferenceManager.PREF_FINGERPRINT_SCAN);
+
+        assertEquals(preferenceManager.getEncryptedPin(), null);
+        assertEquals(preferenceManager.getIncubationStart(), 0L);
+        assertTrue(!preferenceManager.isFingerprintScanEnabled());
     }
 
     @Test
     public void testClearAll() {
-        sharedPreferencesManager.setIncubationStart(INCUBATION_START);
-        sharedPreferencesManager.setEncryptedPin(TEST);
-        sharedPreferencesManager.clearAllPreference();
-        assertEquals(sharedPreferencesManager.getEncryptedPin(), null);
-        assertEquals(sharedPreferencesManager.getIncubationStart(), 0L);
+        preferenceManager.setIncubationStart(INCUBATION_START);
+        preferenceManager.setEncryptedPin(TEST);
+        preferenceManager.enableFingerprintScan(true);
+
+        preferenceManager.clearAllPreference();
+
+        assertEquals(preferenceManager.getEncryptedPin(), null);
+        assertEquals(preferenceManager.getIncubationStart(), 0L);
+        assertTrue(!preferenceManager.isFingerprintScanEnabled());
     }
 }

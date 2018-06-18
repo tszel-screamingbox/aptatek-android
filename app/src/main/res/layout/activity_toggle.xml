@@ -41,7 +41,6 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
         android:text="@string/toggle.button.connect"
-        android:textSize="@dimen/font.size.xbig"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -54,7 +53,6 @@
         android:layout_height="@dimen/general.button.height.big"
         android:layout_marginTop="@dimen/general.distance.large"
         android:text="@string/toggle.button.result"
-        android:textSize="@dimen/font.size.xbig"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline" />

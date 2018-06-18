@@ -15,14 +15,20 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.data.PinCode;
 import com.aptatek.aptatek.view.base.BaseFragment;
 
+import java.util.concurrent.TimeUnit;
+
 import activitystarter.ActivityStarter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public abstract class BasePinFragment extends BaseFragment {
 
     protected static final int PIN_LENGTH = 6;
+    private static final int DELAY_IN_MILLISEC = 500;
+
 
     private String pin = "";
 
@@ -38,6 +44,9 @@ public abstract class BasePinFragment extends BaseFragment {
     @BindView(R.id.messageTextView)
     protected TextView messageTextView;
 
+    @BindView(R.id.fingerpintImage)
+    protected ImageView fingerprintImageView;
+
     protected abstract void finishedTyping(PinCode pinCode);
 
     @Nullable
@@ -49,28 +58,29 @@ public abstract class BasePinFragment extends BaseFragment {
         return view;
     }
 
-
-    protected void clearCircles() {
-        for (int i = 0; i < pinCircleConstrainLayout.getChildCount(); i++) {
-            final ImageView imageView = (ImageView) pinCircleConstrainLayout.getChildAt(i);
-            imageView.setImageResource(R.drawable.pin_circle);
-        }
+    protected void fillCircle(final int resId, final AnimationCallback callback) {
+        fillCircle(PIN_LENGTH, resId);
+        Observable.empty().delay(DELAY_IN_MILLISEC, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> {
+                    clearCircles();
+                    pin = "";
+                    if (callback != null) {
+                        callback.animationEnd();
+                    }
+                })
+                .subscribe();
     }
-
-    protected void fillCircle(final int untilAt, final int resId) {
-        clearCircles();
-        for (int i = 0; i < untilAt; i++) {
-            final ImageView imageView = (ImageView) pinCircleConstrainLayout.getChildAt(i);
-            imageView.setImageResource(resId);
-        }
-    }
-
 
     @OnClick({R.id.button0, R.id.button1, R.id.button2,
             R.id.button3, R.id.button4, R.id.button5,
             R.id.button6, R.id.button7, R.id.button8,
             R.id.button9})
     public void onPinButtonClicked(final View v) {
+        if (pin.length() == PIN_LENGTH) {
+            return;
+        }
+
         final Button button = v.findViewById(v.getId());
         pin = pin + button.getText().toString();
         fillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
@@ -78,7 +88,6 @@ public abstract class BasePinFragment extends BaseFragment {
         if (pin.length() == PIN_LENGTH) {
             final PinCode pinCode = new PinCode(pin.getBytes());
             finishedTyping(pinCode);
-            pin = "";
         }
     }
 
@@ -87,6 +96,21 @@ public abstract class BasePinFragment extends BaseFragment {
         if (pin.length() > 0) {
             pin = pin.substring(0, pin.length() - 1);
             fillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
+        }
+    }
+
+    private void clearCircles() {
+        for (int i = 0; i < pinCircleConstrainLayout.getChildCount(); i++) {
+            final ImageView imageView = (ImageView) pinCircleConstrainLayout.getChildAt(i);
+            imageView.setImageResource(R.drawable.pin_circle);
+        }
+    }
+
+    private void fillCircle(final int untilAt, final int resId) {
+        clearCircles();
+        for (int i = 0; i < untilAt; i++) {
+            final ImageView imageView = (ImageView) pinCircleConstrainLayout.getChildAt(i);
+            imageView.setImageResource(resId);
         }
     }
 }

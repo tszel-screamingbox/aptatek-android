@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/activity.margin.vertical"
+    android:layout_marginEnd="@dimen/activity.margin.horizontal"
+    android:layout_marginStart="@dimen/activity.margin.horizontal"
+    android:layout_marginTop="@dimen/activity.margin.horizontal"
+    tools:context=".view.main.MainActivity">
+
+
+    <ImageView
+        android:id="@+id/fingerpintImage"
+        android:layout_width="@dimen/general.distance.xlarge"
+        android:layout_height="@dimen/general.distance.xlarge"
+        android:layout_margin="@dimen/general.distance.small"
+        android:src="@drawable/fingerprint"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.32" />
+
+    <TextView
+        android:id="@+id/fingerprintTitle"
+        style="@style/Header.Text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/fingerprint.title"
+        app:layout_constraintTop_toBottomOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/fingerprintMessage"
+        style="@style/General.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general.distance.xxxsmall"
+        android:text="@string/fingerprint.message"
+        app:layout_constraintTop_toBottomOf="@+id/fingerprintTitle" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/bottomLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <Button
+        android:id="@+id/enableButton"
+        style="@style/General.Green.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general.button.height.big"
+        android:text="@string/fingerprint.option.enable"
+        app:layout_constraintTop_toBottomOf="@+id/bottomLine" />
+
+    <Button
+        android:id="@+id/disableButton"
+        style="@style/General.Grey.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginTop="@dimen/general.distance.small"
+        android:text="@string/fingerprint.option.disable"
+        app:layout_constraintTop_toBottomOf="@+id/enableButton" />
+
+</android.support.constraint.ConstraintLayout>
