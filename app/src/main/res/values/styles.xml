@@ -93,7 +93,6 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
-
     <style name="Incubation.Green.Text" parent="General.Text">
         <item name="android:textColor">@color/applicationGreen</item>
         <item name="android:textSize">@dimen/font.size.incubation</item>
@@ -102,4 +101,11 @@
         <item name="android:alpha">@dimen/alpha.general.full</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
+
+    <style name="Parental.Title" parent="General.Text">
+        <item name="android:alpha">@dimen/alpha.general.full</item>
+        <item name="android:textSize">@dimen/font.size.xxlarge</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

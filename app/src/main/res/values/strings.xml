@@ -23,6 +23,17 @@
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>
     <string name="main.button.toggle">Toggle</string>
+    <!-- Parental Gate Activity -->
+    <string name="parental.verification.success.title">Thank you!</string>
+    <string name="parental.verification.success.message">Your age was verified</string>
+    <string name="parental.verification.failure.title">Not old enough</string>
+    <string name="parental.verification.failure.message.first">Sorry this entry does not match, please re-enter information</string>
+    <string name="parental.verification.failure.message">This app is made for users who are at least 13 years old, and the information entered does not allow use of the app. An adult user should try again.</string>
+    <string name="parental.verification.tryagain">Try Again</string>
+    <string name="parental.welcome.age.disclaimer">Age information is kept private and is only used to make sure this app is being used by an adult</string>
+    <string name="parental.welcome.description">We need to verify your age before you would start</string>
+    <string name="parental.welcome.enter.birthday">Enter your birthdate</string>
+    <string name="parental.welcome.title">Welcome</string>
     <!-- Pin Activity -->
     <string name="pin.button.0">0</string>
     <string name="pin.button.1">1</string>

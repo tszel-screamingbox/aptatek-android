@@ -15,6 +15,8 @@ class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView> {
     }
 
     void switchToNextActivity() {
+        // TODO check if parental gate passed
+
         if (keyStoreManager.aliasExists()) {
             ifViewAttached(SplashActivityView::onRequestPinActivityShouldLoad);
         } else {

@@ -16,7 +16,7 @@ public class PreferenceManager {
     }
 
 
-    public static final String PREF_INCUBATION_START = "aptatek.test.incubation.start";
+    public static final String PREF_INCUBATION_START = "aptatek.test.incubation.starter";
     public static final String PREF_ENCRYPTED_PIN = "aptatek.encrypted.pin";
     public static final String PREF_FINGERPRINT_SCAN = "aptatek.fingerprint.scan";
 

@@ -4,6 +4,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 interface SplashActivityView extends MvpView {
 
+    void onParentalGateShouldLoad();
+
     void onRequestPinActivityShouldLoad();
 
     void onSetPinActivityShouldLoad();

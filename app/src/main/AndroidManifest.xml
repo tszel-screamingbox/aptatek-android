@@ -67,6 +67,8 @@
 
         </activity>
 
+        <activity android:name=".view.parentalgate.ParentalGateActivity" />
+
 
         <service android:name=".view.test.incubation.IncubationReminderService" />
     </application>

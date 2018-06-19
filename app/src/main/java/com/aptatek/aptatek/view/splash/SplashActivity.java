@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.parentalgate.ParentalGateActivity;
 import com.aptatek.aptatek.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
 
@@ -37,6 +38,11 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
     @Override
     public int getFrameLayoutId() {
         return 0;
+    }
+
+    @Override
+    public void onParentalGateShouldLoad() {
+        launchActivity(ParentalGateActivity.starter(this), true, Animation.RIGHT_TO_LEFT);
     }
 
     @Override
