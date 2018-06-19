@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.widget.ImageView;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.view.test.TestScreens;
 import com.aptatek.aptatek.view.test.base.TestBaseFragment;
 import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
@@ -38,6 +39,13 @@ public abstract class BaseTutorialFragment<V extends TestFragmentBaseView, P ext
         super.onPause();
 
         shouldRunAnimation = false;
+    }
+
+    @Override
+    public boolean onNavigateBackPressed() {
+        showScreen(TestScreens.CANCEL);
+
+        return true;
     }
 
     protected abstract int[] getImages();

@@ -13,7 +13,7 @@ import javax.inject.Inject;
 public class InsertSampleFragment extends BaseTutorialFragment<TestFragmentBaseView, InsertSamplePresenter>
         implements TestFragmentBaseView {
 
-    private static final int[] IMAGES = new int[]{R.drawable.ic_casette_1, R.drawable.ic_casette_2};
+    private static final int[] IMAGES = new int[]{R.drawable.ic_insert_sample_1, R.drawable.ic_insert_sample_2};
 
     @Inject
     InsertSamplePresenter insertSamplePresenter;
