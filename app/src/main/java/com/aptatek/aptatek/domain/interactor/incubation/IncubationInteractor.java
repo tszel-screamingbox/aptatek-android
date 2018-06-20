@@ -2,12 +2,11 @@ package com.aptatek.aptatek.domain.interactor.incubation;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.aptatek.domain.model.IncubationCountdown;
+import com.aptatek.aptatek.domain.interactor.countdown.CountdownTimeFormatter;
+import com.aptatek.aptatek.domain.model.Countdown;
 import com.aptatek.aptatek.util.Constants;
 
 import org.reactivestreams.Publisher;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -19,11 +18,11 @@ import io.reactivex.functions.Function;
 public class IncubationInteractor {
 
     private final IncubationDataSource dataSource;
-    private final IncubationTimeFormatter timeFormatter;
+    private final CountdownTimeFormatter timeFormatter;
 
     @Inject
     public IncubationInteractor(@NonNull final IncubationDataSource dataSource,
-                                @NonNull final IncubationTimeFormatter timeFormatter) {
+                                @NonNull final CountdownTimeFormatter timeFormatter) {
         this.dataSource = dataSource;
         this.timeFormatter = timeFormatter;
     }
@@ -32,7 +31,7 @@ public class IncubationInteractor {
         return Single.fromCallable(dataSource::hasRunningIncubation);
     }
 
-    public Flowable<IncubationCountdown> getIncubationCountdown() {
+    public Flowable<Countdown> getIncubationCountdown() {
         return hasRunningIncubation()
                 .toFlowable()
                 .take(1)
@@ -40,11 +39,12 @@ public class IncubationInteractor {
                     if (value) {
                         return Flowable.just(dataSource.getIncubationStart())
                                 .flatMap(startTime ->
-                                        Flowable.interval(Constants.COUNTDOWN_REFRESH_PERIOD, TimeUnit.MILLISECONDS)
-                                                .map(tick -> System.currentTimeMillis() - startTime)
-                                                .takeUntil(elapsed -> elapsed > Constants.DEFAULT_INCUBATION_PERIOD)
-                                                .map(elapsed -> Math.max(0, Constants.DEFAULT_INCUBATION_PERIOD - elapsed))
-                                                .map(remaining -> IncubationCountdown.builder()
+                                        com.aptatek.aptatek.domain.interactor.countdown.Countdown.countdown(
+                                            Constants.COUNTDOWN_REFRESH_PERIOD,
+                                            tick -> System.currentTimeMillis() - startTime > Constants.DEFAULT_INCUBATION_PERIOD,
+                                            tick -> Math.max(0, Constants.DEFAULT_INCUBATION_PERIOD - (System.currentTimeMillis() - startTime))
+                                        )
+                                        .map(remaining -> Countdown.builder()
                                                         .setRemainingFormattedText(timeFormatter.getFormattedRemaining(remaining))
                                                         .setRemainingMillis(remaining)
                                                         .build())
@@ -53,7 +53,7 @@ public class IncubationInteractor {
                         return Flowable.error(new IncubationNotRunningError());
                     }
                 })
-                .onErrorResumeNext((Function<Throwable, Publisher<? extends IncubationCountdown>>) throwable ->
+                .onErrorResumeNext((Function<Throwable, Publisher<? extends Countdown>>) throwable ->
                         Flowable.error(throwable instanceof IncubationNotRunningError ? throwable : new IncubationError(throwable.getCause())));
     }
 

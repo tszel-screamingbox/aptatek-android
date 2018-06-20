@@ -14,7 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationNotificationFactory;
-import com.aptatek.aptatek.domain.model.IncubationCountdown;
+import com.aptatek.aptatek.domain.model.Countdown;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 import com.aptatek.aptatek.util.Constants;
 import com.aptatek.aptatek.view.test.TestActivity;
@@ -37,7 +37,7 @@ public class IncubationNotificationFactoryImpl implements IncubationNotification
 
     @NonNull
     @Override
-    public Notification createCountdownNotification(@NonNull final IncubationCountdown countdown) {
+    public Notification createCountdownNotification(@NonNull final Countdown countdown) {
         return new NotificationCompat.Builder(context, createChannelId())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_incubation_notification_inprogress_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_incubation_notification_inprogress_textformat, countdown.getRemainingFormattedText()))
