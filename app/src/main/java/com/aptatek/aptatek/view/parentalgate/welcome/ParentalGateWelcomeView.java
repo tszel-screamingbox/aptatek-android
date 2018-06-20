@@ -16,4 +16,10 @@ public interface ParentalGateWelcomeView extends MvpView {
 
     void showAgeField(boolean visible);
 
+    void showKeypad(boolean visible);
+
+    void setKeypadActionText(@NonNull String text);
+
+    void setKeypadActionEnabled(boolean enabled);
+
 }

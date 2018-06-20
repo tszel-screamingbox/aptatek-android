@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.base.BaseRootFrameActivity;
+import com.aptatek.aptatek.view.parentalgate.verification.ParentalGateVerificationFragment;
 import com.aptatek.aptatek.view.parentalgate.welcome.ParentalGateWelcomeFragment;
 
 import javax.inject.Inject;
@@ -47,12 +48,12 @@ public class ParentalGateActivity extends BaseRootFrameActivity<ParentalGateView
 
         switch (screen) {
             case RESULT: {
-                fragment = new ParentalGateWelcomeFragment();
+                fragment = new ParentalGateVerificationFragment();
                 break;
             }
             case AGE_CHECK:
             default: {
-                fragment = null;
+                fragment = new ParentalGateWelcomeFragment();
                 break;
             }
         }

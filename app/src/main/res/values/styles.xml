@@ -108,4 +108,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Parental.Input" parent="Widget.AppCompat.EditText">
+        <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/font.size.large</item>
+        <item name="android:background">@drawable/edittext_background</item>
+    </style>
+
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/keypad"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/applicationSilver">
@@ -110,6 +111,7 @@
             android:text="@string/pin.button.0" />
 
         <Button
+            android:id="@+id/buttonAction"
             style="@style/Dial.Button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

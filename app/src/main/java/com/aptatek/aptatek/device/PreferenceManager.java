@@ -2,6 +2,7 @@ package com.aptatek.aptatek.device;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 
@@ -15,10 +16,10 @@ public class PreferenceManager {
         static final String SHARED_PREFERENCES_NAME = "com.aptatek.aptatek";
     }
 
-
     public static final String PREF_INCUBATION_START = "aptatek.test.incubation.starter";
     public static final String PREF_ENCRYPTED_PIN = "aptatek.encrypted.pin";
     public static final String PREF_FINGERPRINT_SCAN = "aptatek.fingerprint.scan";
+    public static final String KEY_PREF_ENCRYPTED_BIRTH_DATE = "aptatek.encrypted.birthdate";
 
     private final SharedPreferences sharedPreferences;
 
@@ -49,6 +50,15 @@ public class PreferenceManager {
 
     public boolean isFingerprintScanEnabled() {
         return sharedPreferences.getBoolean(PREF_FINGERPRINT_SCAN, false);
+    }
+
+    public void setEncryptedBirthDate(final String encryptedBirthDate) {
+        sharedPreferences.edit().putString(KEY_PREF_ENCRYPTED_BIRTH_DATE, encryptedBirthDate).apply();
+    }
+
+    @Nullable
+    public String getEncryptedBirthDate() {
+        return sharedPreferences.getString(KEY_PREF_ENCRYPTED_BIRTH_DATE, null);
     }
 
     public void clearPreference(final String key) {
