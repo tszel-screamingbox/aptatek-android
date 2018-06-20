@@ -1,11 +1,11 @@
 package com.aptatek.aptatek.domain.interactor.test;
 
+import com.aptatek.aptatek.domain.interactor.countdown.CountdownTimeFormatter;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationDataSource;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationError;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationNotRunningError;
-import com.aptatek.aptatek.domain.interactor.incubation.IncubationTimeFormatter;
-import com.aptatek.aptatek.domain.model.IncubationCountdown;
+import com.aptatek.aptatek.domain.model.Countdown;
 import com.aptatek.aptatek.util.Constants;
 
 import org.junit.Before;
@@ -29,12 +29,12 @@ public class IncubationInteractorTest {
     IncubationDataSource incubationDataSource;
 
     @Mock
-    IncubationTimeFormatter incubationTimeFormatter;
+    CountdownTimeFormatter countdownTimeFormatter;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        incubationInteractor = new IncubationInteractor(incubationDataSource, incubationTimeFormatter);
+        incubationInteractor = new IncubationInteractor(incubationDataSource, countdownTimeFormatter);
     }
 
     @Test
@@ -118,7 +118,7 @@ public class IncubationInteractorTest {
     public void testCountdownTerminatesWhenNoIncubationIsRunning() throws Exception {
         when(incubationDataSource.hasRunningIncubation()).thenReturn(false);
 
-        final TestSubscriber<IncubationCountdown> test = incubationInteractor.getIncubationCountdown().test();
+        final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
         test.assertError(IncubationNotRunningError.class);
     }
 
@@ -127,9 +127,9 @@ public class IncubationInteractorTest {
         final String testValue = "test";
         when(incubationDataSource.hasRunningIncubation()).thenReturn(true);
         when(incubationDataSource.getIncubationStart()).thenReturn(System.currentTimeMillis() - Constants.DEFAULT_INCUBATION_PERIOD + 200L);
-        when(incubationTimeFormatter.getFormattedRemaining(ArgumentMatchers.anyLong())).thenReturn(testValue);
+        when(countdownTimeFormatter.getFormattedRemaining(ArgumentMatchers.anyLong())).thenReturn(testValue);
 
-        final TestSubscriber<IncubationCountdown> test = incubationInteractor.getIncubationCountdown().test();
+        final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
         test.await();
         test.assertNoErrors();
         test.assertComplete();
@@ -141,7 +141,7 @@ public class IncubationInteractorTest {
         final Throwable testError = new RuntimeException("hello");
         when(incubationDataSource.hasRunningIncubation()).thenThrow(testError);
 
-        final TestSubscriber<IncubationCountdown> test = incubationInteractor.getIncubationCountdown().test();
+        final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
         test.assertError(IncubationError.class);
     }
 
@@ -151,7 +151,7 @@ public class IncubationInteractorTest {
         when(incubationDataSource.hasRunningIncubation()).thenReturn(true);
         when(incubationDataSource.getIncubationStart()).thenThrow(testError);
 
-        final TestSubscriber<IncubationCountdown> test = incubationInteractor.getIncubationCountdown().test();
+        final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
         test.assertError(IncubationError.class);
     }
 
