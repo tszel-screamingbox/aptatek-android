@@ -92,7 +92,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         if (finishCurrentFragment && !isFinishing()) {
             try {
                 fm.popBackStackImmediate();
-            } catch (IllegalStateException e) {
+            } catch (final IllegalStateException e) {
                 return;
             }
         }

@@ -9,6 +9,11 @@
     <string name="auth.pin.message.invalid">Invalid PIN</string>
     <string name="auth.pin.successful">Authentication successful</string>
     <string name="auth.pin.title">Authenticate</string>
+    <!-- Chart Activity -->
+    <string name="chart.button.home">Home</string>
+    <string name="chart.button.last.filter">Start Date - End Date</string>
+    <string name="chart.button.last.week">Last Week</string>
+    <string name="chart.button.new.test">New Test</string>
     <!-- ConfirmPin Fragment -->
     <string name="confirm.pin.error">Incorrect PIN</string>
     <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>

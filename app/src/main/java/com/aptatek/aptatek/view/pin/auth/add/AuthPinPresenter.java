@@ -55,7 +55,7 @@ class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
             }
 
             @Override
-            public void onErrorOccurred(String message) {
+            public void onErrorOccurred(final String message) {
                 ifViewAttached(view -> view.onInvalidFingerprintDetected(message));
             }
         });

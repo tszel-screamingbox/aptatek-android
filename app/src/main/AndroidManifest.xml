@@ -23,6 +23,11 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
+            android:name=".view.chart.ChartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
             android:name=".view.fingerprint.FingerprintActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
