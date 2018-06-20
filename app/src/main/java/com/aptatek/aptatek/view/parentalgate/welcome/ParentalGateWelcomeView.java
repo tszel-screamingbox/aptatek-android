@@ -6,20 +6,24 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface ParentalGateWelcomeView extends MvpView {
 
-    void showButton(boolean visible);
+    void setShowButton(boolean visible);
 
     void setButtonText(@NonNull String text);
 
-    void showBirthDateField(boolean visible);
+    void showDatePicker();
+
+    void setShowBirthDateField(boolean visible);
 
     void setBirthDateText(@NonNull String text);
 
-    void showAgeField(boolean visible);
+    void setShowAgeField(boolean visible);
 
-    void showKeypad(boolean visible);
+    void setAgeText(@NonNull String text);
+
+    void setShowKeypad(boolean visible);
 
     void setKeypadActionText(@NonNull String text);
 
-    void setKeypadActionEnabled(boolean enabled);
+    void showResult(@NonNull AgeVerificationResult result);
 
 }

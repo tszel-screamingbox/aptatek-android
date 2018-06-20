@@ -110,12 +110,15 @@
             android:layout_weight="1"
             android:text="@string/pin.button.0" />
 
-        <Button
+        <TextView
             android:id="@+id/buttonAction"
-            style="@style/Dial.Button"
+            style="@style/General.Text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:alpha="@dimen/alpha.general.full"
+            android:background="@color/applicationWhite"
+            android:textColor="@color/applicationGreen" />
 
     </TableRow>
 

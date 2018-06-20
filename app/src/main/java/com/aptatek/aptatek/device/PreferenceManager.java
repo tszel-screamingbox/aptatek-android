@@ -2,7 +2,6 @@ package com.aptatek.aptatek.device;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 
@@ -19,7 +18,7 @@ public class PreferenceManager {
     public static final String PREF_INCUBATION_START = "aptatek.test.incubation.starter";
     public static final String PREF_ENCRYPTED_PIN = "aptatek.encrypted.pin";
     public static final String PREF_FINGERPRINT_SCAN = "aptatek.fingerprint.scan";
-    public static final String KEY_PREF_ENCRYPTED_BIRTH_DATE = "aptatek.encrypted.birthdate";
+    public static final String KEY_PREF_PARENTAL_GATE_PASSED = "aptatek.encrypted.parental.passed";
 
     private final SharedPreferences sharedPreferences;
 
@@ -52,13 +51,12 @@ public class PreferenceManager {
         return sharedPreferences.getBoolean(PREF_FINGERPRINT_SCAN, false);
     }
 
-    public void setEncryptedBirthDate(final String encryptedBirthDate) {
-        sharedPreferences.edit().putString(KEY_PREF_ENCRYPTED_BIRTH_DATE, encryptedBirthDate).apply();
+    public void setParentalPassed(final boolean parentalPassed) {
+        sharedPreferences.edit().putBoolean(KEY_PREF_PARENTAL_GATE_PASSED, parentalPassed).apply();
     }
 
-    @Nullable
-    public String getEncryptedBirthDate() {
-        return sharedPreferences.getString(KEY_PREF_ENCRYPTED_BIRTH_DATE, null);
+    public boolean getParentalPassed() {
+        return sharedPreferences.getBoolean(KEY_PREF_PARENTAL_GATE_PASSED, false);
     }
 
     public void clearPreference(final String key) {

@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.base.BaseRootFrameActivity;
-import com.aptatek.aptatek.view.parentalgate.verification.ParentalGateVerificationFragment;
 import com.aptatek.aptatek.view.parentalgate.welcome.ParentalGateWelcomeFragment;
 
 import javax.inject.Inject;
@@ -28,7 +27,7 @@ public class ParentalGateActivity extends BaseRootFrameActivity<ParentalGateView
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        showScreen(ParentalGateScreens.AGE_CHECK);
+        showScreen(new ParentalGateWelcomeFragment());
     }
 
     @Override
@@ -43,21 +42,12 @@ public class ParentalGateActivity extends BaseRootFrameActivity<ParentalGateView
     }
 
     @Override
-    public void showScreen(@NonNull final ParentalGateScreens screen) {
-        final BaseFragment fragment;
-
-        switch (screen) {
-            case RESULT: {
-                fragment = new ParentalGateVerificationFragment();
-                break;
-            }
-            case AGE_CHECK:
-            default: {
-                fragment = new ParentalGateWelcomeFragment();
-                break;
-            }
-        }
-
+    public void showScreen(@NonNull final BaseFragment fragment) {
         switchToFragment(fragment);
+    }
+
+    @Override
+    public void navigateBack() {
+        onBackPressed();
     }
 }

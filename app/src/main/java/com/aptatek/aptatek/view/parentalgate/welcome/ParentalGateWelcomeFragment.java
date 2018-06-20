@@ -1,5 +1,6 @@
 package com.aptatek.aptatek.view.parentalgate.welcome;
 
+import android.app.DatePickerDialog;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,10 @@ import android.widget.EditText;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.FragmentComponent;
 import com.aptatek.aptatek.view.base.BaseFragment;
+import com.aptatek.aptatek.view.parentalgate.ParentalGateView;
+import com.aptatek.aptatek.view.parentalgate.verification.ParentalGateVerificationFragment;
+
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -47,12 +52,12 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
     @Override
     protected void initObjects(final View view) {
-
+        presenter.initUi();
     }
 
     @Override
     protected void injectFragment(final FragmentComponent fragmentComponent) {
-
+        fragmentComponent.inject(this);
     }
 
     @NonNull
@@ -62,7 +67,14 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
     }
 
     @Override
-    public void showButton(final boolean visible) {
+    public void onDestroyView() {
+        presenter.onCleared();
+
+        super.onDestroyView();
+    }
+
+    @Override
+    public void setShowButton(final boolean visible) {
         btnControl.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
@@ -72,7 +84,28 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
     }
 
     @Override
-    public void showBirthDateField(final boolean visible) {
+    public void showDatePicker() {
+        final Calendar now = Calendar.getInstance();
+
+        new DatePickerDialog(getActivity(),
+            (view, year, month, dayOfMonth) -> {
+                final Calendar calendar = Calendar.getInstance();
+                calendar.clear();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                if (presenter != null) {
+                    presenter.onBirthDateSet(calendar.getTimeInMillis());
+                }
+            },
+            now.get(Calendar.YEAR),
+            now.get(Calendar.MONTH),
+            now.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    @Override
+    public void setShowBirthDateField(final boolean visible) {
         etBirthDate.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
@@ -82,12 +115,17 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
     }
 
     @Override
-    public void showAgeField(final boolean visible) {
+    public void setShowAgeField(final boolean visible) {
         etAge.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
-    public void showKeypad(final boolean visible) {
+    public void setAgeText(@NonNull final String text) {
+        etAge.setText(text);
+    }
+
+    @Override
+    public void setShowKeypad(final boolean visible) {
         keypad.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
@@ -97,13 +135,15 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
     }
 
     @Override
-    public void setKeypadActionEnabled(final boolean enabled) {
-        btnKeypadAction.setEnabled(enabled);
+    public void showResult(@NonNull final AgeVerificationResult result) {
+        if (getActivity() instanceof ParentalGateView) {
+            ((ParentalGateView) getActivity()).showScreen(ParentalGateVerificationFragment.createWithArguments(result));
+        }
     }
 
     @OnClick(R.id.parentalButton)
     public void onControlButtonClicked() {
-        // TODO check status and act accordingly
+        presenter.onButtonPress();
     }
 
     @OnClick({R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9, R.id.buttonDelete})
@@ -169,6 +209,6 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
     @OnClick(R.id.buttonAction)
     public void onNextClicked() {
-        // TODO verification
+        presenter.verifyAge(etAge.getText().toString());
     }
 }

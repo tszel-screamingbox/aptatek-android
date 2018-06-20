@@ -45,7 +45,7 @@ ext {
             autoValue                   : '1.6',
 
             // Parceler
-            parceler                    : '1.1.10',
+            parceler                    : '0.2.6',
 
             // Glide
             glide                       : '4.7.1',
@@ -116,12 +116,8 @@ ext {
 
     autoValueDependencies = [
             api     : "com.google.auto.value:auto-value-annotations:${versions.autoValue}",
-            compiler: "com.google.auto.value:auto-value:${versions.autoValue}"
-    ]
-
-    parcelerDependencies = [
-            api     : "org.parceler:parceler-api:${versions.parceler}",
-            compiler: "org.parceler:parceler:${versions.parceler}"
+            compiler: "com.google.auto.value:auto-value:${versions.autoValue}",
+            parceler: "com.ryanharter.auto.value:auto-value-parcel:${versions.parceler}"
     ]
 
     leakDependencies = [

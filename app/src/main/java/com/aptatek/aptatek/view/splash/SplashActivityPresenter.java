@@ -19,7 +19,7 @@ class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView> {
 
     void switchToNextActivity() {
         ifViewAttached(attachedView -> {
-            if (preferenceManager.getEncryptedBirthDate() == null) {
+            if (!preferenceManager.getParentalPassed()) {
                 attachedView.onParentalGateShouldLoad();
             } else if (keyStoreManager.aliasExists()) {
                 attachedView.onRequestPinActivityShouldLoad();

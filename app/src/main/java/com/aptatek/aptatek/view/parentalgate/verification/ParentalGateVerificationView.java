@@ -15,4 +15,6 @@ public interface ParentalGateVerificationView extends MvpView {
 
     void showButton(boolean visible);
 
+    void finishAfterDelay();
+
 }

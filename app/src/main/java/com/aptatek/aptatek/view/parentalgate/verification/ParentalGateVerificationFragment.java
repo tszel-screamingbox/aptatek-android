@@ -1,5 +1,7 @@
 package com.aptatek.aptatek.view.parentalgate.verification;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -9,14 +11,32 @@ import android.widget.TextView;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.FragmentComponent;
 import com.aptatek.aptatek.view.base.BaseFragment;
+import com.aptatek.aptatek.view.parentalgate.ParentalGateView;
+import com.aptatek.aptatek.view.parentalgate.welcome.AgeVerificationResult;
+import com.aptatek.aptatek.view.splash.SplashActivity;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Completable;
+import io.reactivex.disposables.Disposable;
 
 public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateVerificationView, ParentalGateVerificationPresenter>
         implements ParentalGateVerificationView {
+
+    private static final String KEY_RESULT = "com.aptatek.parentalgate.verification.result";
+
+    public static ParentalGateVerificationFragment createWithArguments(@NonNull final AgeVerificationResult ageVerificationResult) {
+        final Bundle bundle = new Bundle();
+        bundle.putParcelable(KEY_RESULT, ageVerificationResult);
+        final ParentalGateVerificationFragment fragment = new ParentalGateVerificationFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
+    }
 
     @Inject
     ParentalGateVerificationPresenter presenter;
@@ -33,6 +53,8 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
     @BindView(R.id.parentalVerificationButton)
     View btnTryAgain;
 
+    private Disposable disposable;
+
     @Override
     public String getTitle() {
         return null;
@@ -45,12 +67,22 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
 
     @Override
     protected void initObjects(final @NonNull View view) {
+        final AgeVerificationResult result;
 
+        if (getArguments() != null) {
+            result = getArguments().getParcelable(KEY_RESULT);
+        } else {
+            result = null;
+        }
+
+        if (result != null) {
+            presenter.initUi(result);
+        }
     }
 
     @Override
     protected void injectFragment(final FragmentComponent fragmentComponent) {
-
+        fragmentComponent.inject(this);
     }
 
     @Override
@@ -73,6 +105,26 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
         btnTryAgain.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public void finishAfterDelay() {
+        disposable = Completable.timer(2, TimeUnit.SECONDS).subscribe(() -> {
+            if (getActivity() != null) {
+
+                getActivity().startActivity(new Intent(getActivity(), SplashActivity.class));
+                getActivity().finish();
+            }
+        });
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+
+        super.onDestroyView();
+    }
+
     @NonNull
     @Override
     public ParentalGateVerificationPresenter createPresenter() {
@@ -81,6 +133,8 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
 
     @OnClick(R.id.parentalVerificationButton)
     public void onTryAgainClicked() {
-        // TODO navigate back
+        if (getActivity() instanceof ParentalGateView) {
+            ((ParentalGateView) getActivity()).navigateBack();
+        }
     }
 }
