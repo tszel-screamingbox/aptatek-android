@@ -2,7 +2,6 @@ package com.aptatek.aptatek.domain.model;
 
 import android.support.annotation.Nullable;
 
-import com.aptatek.aptatek.view.parentalgate.welcome.AutoValue_AgeCheckModel;
 import com.google.auto.value.AutoValue;
 
 @AutoValue

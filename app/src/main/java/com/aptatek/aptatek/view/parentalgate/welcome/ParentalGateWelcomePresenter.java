@@ -64,6 +64,7 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
                     ifViewAttached(attachedView -> {
                         attachedView.setShowBirthDateField(true);
                         attachedView.setBirthDateText(ageCheckModel.getBirthDateFormatted());
+                        attachedView.setAgeText("");
                     });
                 }));
     }

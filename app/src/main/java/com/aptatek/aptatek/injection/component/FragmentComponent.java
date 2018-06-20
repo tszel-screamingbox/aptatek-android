@@ -1,11 +1,12 @@
 package com.aptatek.aptatek.injection.component;
 
+import com.aptatek.aptatek.injection.component.parentalgate.ParentalGateFragmentComponent;
 import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
 import com.aptatek.aptatek.injection.module.FragmentModule;
+import com.aptatek.aptatek.injection.module.parentalgate.ParentalGateModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.injection.scope.FragmentScope;
 import com.aptatek.aptatek.view.parentalgate.verification.ParentalGateVerificationFragment;
-import com.aptatek.aptatek.view.parentalgate.welcome.ParentalGateWelcomeFragment;
 import com.aptatek.aptatek.view.pin.auth.add.AuthPinFragment;
 import com.aptatek.aptatek.view.pin.set.add.AddPinFragment;
 import com.aptatek.aptatek.view.pin.set.confirm.ConfirmPinFragment;
@@ -24,10 +25,10 @@ public interface FragmentComponent {
 
     void inject(AuthPinFragment authPinFragment);
 
-    void inject(ParentalGateWelcomeFragment parentalGateWelcomeFragment);
-
     void inject(ParentalGateVerificationFragment parentalGateVerificationFragment);
 
     TestFragmentComponent plus(TestModule module);
+
+    ParentalGateFragmentComponent plus(ParentalGateModule module);
 
 }

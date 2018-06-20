@@ -5,9 +5,11 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.FragmentComponent;
+import com.aptatek.aptatek.injection.module.parentalgate.ParentalGateModule;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.parentalgate.ParentalGateView;
 import com.aptatek.aptatek.view.parentalgate.verification.ParentalGateVerificationFragment;
@@ -38,7 +40,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
     View keypad;
 
     @BindView(R.id.buttonAction)
-    Button btnKeypadAction;
+    TextView btnKeypadAction;
 
     @Override
     public String getTitle() {
@@ -57,7 +59,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
     @Override
     protected void injectFragment(final FragmentComponent fragmentComponent) {
-        fragmentComponent.inject(this);
+        fragmentComponent.plus(new ParentalGateModule()).inject(this);
     }
 
     @NonNull
@@ -210,5 +212,10 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
     @OnClick(R.id.buttonAction)
     public void onNextClicked() {
         presenter.verifyAge(etAge.getText().toString());
+    }
+
+    @OnClick(R.id.parentalBirthDate)
+    public void onBirthDateClicked() {
+        showDatePicker();
     }
 }
