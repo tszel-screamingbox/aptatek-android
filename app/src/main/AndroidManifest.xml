@@ -60,7 +60,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.TestActivity"
+        <activity
+            android:name=".view.test.TestActivity"
             android:parentActivityName=".view.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">
@@ -71,7 +72,7 @@
 
         </activity>
 
-
+        <receiver android:name=".AlarmReceiver" />
         <service android:name=".view.test.incubation.IncubationReminderService" />
     </application>
 

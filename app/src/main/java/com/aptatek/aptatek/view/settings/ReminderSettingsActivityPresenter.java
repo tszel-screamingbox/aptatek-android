@@ -11,6 +11,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,6 +64,16 @@ public class ReminderSettingsActivityPresenter extends MvpBasePresenter<Reminder
 
         ifViewAttached(view -> view.addReminder(item));
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_WEEK, item.getWeekDay());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        reminderInteractor.setReminder(calendar.getTimeInMillis(), item.getWeekDay() + hour + minute);
+
         insertReminder(item, hour, minute, id);
     }
 
@@ -83,6 +94,8 @@ public class ReminderSettingsActivityPresenter extends MvpBasePresenter<Reminder
         ifViewAttached(view -> view.deleteReminder(reminderSettingsItem));
 
         deleteReminder(reminderItem);
+
+        reminderInteractor.deleteReminder(reminderSettingsItem.getWeekDay() + reminderItem.getHour() + reminderItem.getMinute());
     }
 
     public void modifyReminder(@NonNull ReminderSettingsAdapterItem reminderSettingsItem, @NonNull RemindersAdapterItem reminderItem, int hour, int minute) {
@@ -95,6 +108,16 @@ public class ReminderSettingsActivityPresenter extends MvpBasePresenter<Reminder
         ifViewAttached(view -> view.modifyReminder(reminderSettingsItem));
 
         updateReminder(reminderItem);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_WEEK, reminderSettingsItem.getWeekDay());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        reminderInteractor.updateReminder(calendar.getTimeInMillis(), reminderSettingsItem.getWeekDay() + reminderItem.getHour() + reminderItem.getMinute());
     }
 
     private void insertReminder(@NonNull ReminderSettingsAdapterItem item, int hour, int minute, String id) {

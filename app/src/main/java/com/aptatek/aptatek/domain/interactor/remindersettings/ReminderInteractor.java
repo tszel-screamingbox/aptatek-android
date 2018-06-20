@@ -5,6 +5,7 @@ import com.aptatek.aptatek.data.dao.ReminderDao;
 import com.aptatek.aptatek.data.dao.ReminderDayDao;
 import com.aptatek.aptatek.data.mapper.ReminderDayMapper;
 import com.aptatek.aptatek.data.mapper.ReminderMapper;
+import com.aptatek.aptatek.device.AlarmManager;
 import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.domain.model.ReminderDay;
 
@@ -22,13 +23,15 @@ public class ReminderInteractor {
     private final ReminderDao reminderDao;
     private final ReminderDayMapper reminderDayMapper;
     private final ReminderMapper reminderMapper;
+    private final AlarmManager alarmManager;
 
     @Inject
-    public ReminderInteractor(AptatekDatabase aptatekDatabase, ReminderDayMapper reminderDayMapper, ReminderMapper reminderMapper) {
+    public ReminderInteractor(AptatekDatabase aptatekDatabase, ReminderDayMapper reminderDayMapper, ReminderMapper reminderMapper, AlarmManager alarmManager) {
         this.reminderDayDao = aptatekDatabase.getReminderDayDao();
         this.reminderDayMapper = reminderDayMapper;
         this.reminderMapper = reminderMapper;
         this.reminderDao = aptatekDatabase.getReminderDao();
+        this.alarmManager = alarmManager;
     }
 
     public Single<List<ReminderDay>> listReminderDays() {
@@ -66,5 +69,17 @@ public class ReminderInteractor {
 
     public Completable deleteReminder(String id) {
         return Completable.fromAction(() -> reminderDao.deleteReminder(id));
+    }
+
+    public void setReminder(Long timestamp, int requestCode) {
+        alarmManager.setReminder(timestamp, requestCode);
+    }
+
+    public void deleteReminder(int requestCode) {
+        alarmManager.deleteReminder(requestCode);
+    }
+
+    public void updateReminder(Long timestamp, int requestCode) {
+        alarmManager.updateReminder(timestamp, requestCode);
     }
 }
