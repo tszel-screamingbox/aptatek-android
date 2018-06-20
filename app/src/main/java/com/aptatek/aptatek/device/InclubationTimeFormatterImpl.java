@@ -3,7 +3,7 @@ package com.aptatek.aptatek.device;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationTimeFormatter;
 
 import java.text.SimpleDateFormat;

@@ -1,7 +1,7 @@
 package com.aptatek.aptatek.view.test.canceltest;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.aptatek.view.test.TestScreens;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;

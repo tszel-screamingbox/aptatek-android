@@ -79,6 +79,7 @@
     <string name="reminder.settings.friday">Friday</string>
 
     <!-- Reminder Time Picker Dialog -->
+    <string name="reminder.time.picker.delete">Delete</string>
     <string name="reminder.time.picker.cancel">Cancel</string>
     <string name="reminder.time.picker.add">Add</string>
     <string name="reminder.settings.already.has.reminder">You already have the same reminder on the given day.</string>

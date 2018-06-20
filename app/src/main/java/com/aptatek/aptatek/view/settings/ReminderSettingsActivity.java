@@ -127,11 +127,19 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActiv
 
     @NonNull
     private TimePickerDialog.TimePickerDialogCallback getTimePickerDialogCallback(@NonNull ReminderSettingsAdapterItem reminderSettingsAdapterItem, @Nullable RemindersAdapterItem remindersAdapterItem) {
-        return (hourOfDay, minute) -> {
-            if (remindersAdapterItem != null) {
-                presenter.modifyReminder(reminderSettingsAdapterItem, remindersAdapterItem, hourOfDay, minute);
-            } else {
-                presenter.addNewReminder(reminderSettingsAdapterItem, hourOfDay, minute);
+        return new TimePickerDialog.TimePickerDialogCallback() {
+            @Override
+            public void done(int hourOfDay, int minute) {
+                if (remindersAdapterItem != null) {
+                    presenter.modifyReminder(reminderSettingsAdapterItem, remindersAdapterItem, hourOfDay, minute);
+                } else {
+                    presenter.addNewReminder(reminderSettingsAdapterItem, hourOfDay, minute);
+                }
+            }
+
+            @Override
+            public void delete() {
+                presenter.deleteReminder(reminderSettingsAdapterItem, remindersAdapterItem);
             }
         };
     }

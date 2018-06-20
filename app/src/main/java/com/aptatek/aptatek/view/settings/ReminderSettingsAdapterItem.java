@@ -2,16 +2,26 @@ package com.aptatek.aptatek.view.settings;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.UUID;
 
 public class ReminderSettingsAdapterItem {
-    private String id = UUID.randomUUID().toString();
     private String nameOfDay;
-    private ArrayList<RemindersAdapterItem> reminders = new ArrayList<>();
-    private Boolean active = false;
+    private ArrayList<RemindersAdapterItem> reminders;
+    private Boolean active;
+    private int weekDay;
 
-    public ReminderSettingsAdapterItem(String nameOfDay) {
+    public ReminderSettingsAdapterItem(int weekDay, String nameOfDay, Boolean active, ArrayList<RemindersAdapterItem> reminders) {
+        this.reminders = reminders;
         this.nameOfDay = nameOfDay;
+        this.active = active;
+        this.weekDay = weekDay;
+    }
+
+    public int getWeekDay() {
+        return weekDay;
+    }
+
+    public void setWeekDay(int weekDay) {
+        this.weekDay = weekDay;
     }
 
     public void setNameOfDay(String nameOfDay) {
@@ -43,7 +53,7 @@ public class ReminderSettingsAdapterItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReminderSettingsAdapterItem that = (ReminderSettingsAdapterItem) o;
-        return Objects.equals(id, that.id) &&
+        return weekDay == that.weekDay &&
                 Objects.equals(nameOfDay, that.nameOfDay) &&
                 Objects.equals(reminders, that.reminders) &&
                 Objects.equals(active, that.active);
@@ -52,6 +62,6 @@ public class ReminderSettingsAdapterItem {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, nameOfDay, reminders, active);
+        return Objects.hash(nameOfDay, reminders, active, weekDay);
     }
 }

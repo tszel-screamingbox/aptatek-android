@@ -14,7 +14,6 @@ import com.aptatek.aptatek.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class TimePickerDialog extends DialogFragment {
 
@@ -23,6 +22,8 @@ public class TimePickerDialog extends DialogFragment {
 
     interface TimePickerDialogCallback {
         void done(int hourOfDay, int minute);
+
+        void delete();
     }
 
     public static TimePickerDialog starter(@NonNull TimePickerDialogCallback callback) {
@@ -48,6 +49,9 @@ public class TimePickerDialog extends DialogFragment {
     @BindView(R.id.buttonDone)
     Button buttonDone;
 
+    @BindView(R.id.buttonDelete)
+    Button buttonDelete;
+
     @Nullable
     private TimePickerDialogCallback callback;
 
@@ -66,23 +70,33 @@ public class TimePickerDialog extends DialogFragment {
         timePicker.setIs24HourView(false);
 
         if (getArguments() != null) {
+            buttonDelete.setText(R.string.reminder_time_picker_delete);
             timePicker.setCurrentHour(getArguments().getInt(hourArgumentKey));
             timePicker.setCurrentMinute(getArguments().getInt(minuteArgumentKey));
+        } else {
+            buttonDelete.setText(R.string.reminder_time_picker_cancel);
         }
 
         buttonDone.setOnClickListener(v -> {
             if (callback != null && getArguments() == null) {
-                callback.done(timePicker.getCurrentHour(), timePicker.getCurrentHour());
+                callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 dismiss();
             } else if (callback != null && getArguments() != null) {
-                callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                if (getArguments().getInt(hourArgumentKey) != timePicker.getCurrentHour()
+                        || getArguments().getInt(minuteArgumentKey) != timePicker.getCurrentMinute()) {
+                    callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                }
                 dismiss();
             }
         });
-    }
 
-    @OnClick(R.id.buttonDelete)
-    public void onButtonDeleteClicked() {
-        dismiss();
+        buttonDelete.setOnClickListener(v -> {
+            if (callback != null && getArguments() == null) {
+                dismiss();
+            } else if (callback != null && getArguments() != null) {
+                callback.delete();
+                dismiss();
+            }
+        });
     }
 }

@@ -12,7 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationNotificationFactory;
 import com.aptatek.aptatek.domain.model.IncubationCountdown;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;

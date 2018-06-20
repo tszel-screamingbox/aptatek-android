@@ -8,7 +8,7 @@ import com.aptatek.aptatek.data.IncubationDataSourceImpl;
 import com.aptatek.aptatek.device.InclubationTimeFormatterImpl;
 import com.aptatek.aptatek.device.IncubationNotificationFactoryImpl;
 import com.aptatek.aptatek.device.PreferenceManager;
-import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationDataSource;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationNotificationFactory;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationTimeFormatter;

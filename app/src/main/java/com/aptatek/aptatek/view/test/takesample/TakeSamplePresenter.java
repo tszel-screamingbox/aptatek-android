@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.VideoThumbnailInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;

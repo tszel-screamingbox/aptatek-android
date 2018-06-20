@@ -1,20 +1,24 @@
 package com.aptatek.aptatek.view.settings;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class RemindersAdapterItem {
-    private String id = UUID.randomUUID().toString();
+    private String id;
     private String time;
     private Boolean active;
     private int hour;
     private int minute;
 
-    public RemindersAdapterItem(String time, boolean active, int hour, int minute) {
+    public RemindersAdapterItem(String id, String time, boolean active, int hour, int minute) {
+        this.id = id;
         this.time = time;
         this.active = active;
         this.hour = hour;
         this.minute = minute;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getHour() {
