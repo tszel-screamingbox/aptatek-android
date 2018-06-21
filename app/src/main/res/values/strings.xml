@@ -38,6 +38,7 @@
     <string name="parental.welcome.keypad.next">Next</string>
     <string name="parental.welcome.description">We need to verify your age before you would start</string>
     <string name="parental.welcome.enter.birthday">Enter your birthdate</string>
+    <string name="parental.welcome.how.old.are.you">How old are you?</string>
     <string name="parental.welcome.title">Welcome</string>
     <!-- Pin Activity -->
     <string name="pin.button.0">0</string>

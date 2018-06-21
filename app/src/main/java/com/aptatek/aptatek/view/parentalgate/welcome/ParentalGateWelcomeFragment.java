@@ -207,7 +207,9 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
             }
         }
 
-        etAge.setText(newAge);
+        if (newAge.length() <= 2) {
+            etAge.setText(newAge);
+        }
     }
 
     @OnClick(R.id.buttonAction)

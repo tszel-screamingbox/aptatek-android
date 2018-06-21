@@ -20,7 +20,7 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
     private CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject
-    ParentalGateWelcomePresenter(final ResourceInteractor resourceInteractor, final ParentalGateInteractor parentalGateInteractor) {
+    public ParentalGateWelcomePresenter(final ResourceInteractor resourceInteractor, final ParentalGateInteractor parentalGateInteractor) {
         this.resourceInteractor = resourceInteractor;
         this.parentalGateInteractor = parentalGateInteractor;
     }
@@ -67,6 +67,7 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
                         attachedView.setShowBirthDateField(true);
                         attachedView.setBirthDateText(ageCheckModel.getBirthDateFormatted());
                         attachedView.setAgeText("");
+                        attachedView.setButtonText(resourceInteractor.getStringResource(R.string.parental_welcome_how_old_are_you));
                     });
                 }));
     }
