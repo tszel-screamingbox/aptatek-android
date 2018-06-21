@@ -149,6 +149,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
         presenter.onButtonPress();
     }
 
+    @SuppressWarnings("cyclomaticComplexity")
     @OnClick({R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9, R.id.buttonDelete})
     public void onKeypadClicked(final View receiver) {
         final String currentAge = etAge.getText().toString();
@@ -207,7 +208,9 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
             }
         }
 
-        etAge.setText(newAge);
+        if (newAge.length() <= 2) {
+            etAge.setText(newAge);
+        }
     }
 
     @OnClick(R.id.buttonAction)

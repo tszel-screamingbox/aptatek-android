@@ -55,7 +55,7 @@ public class PreferenceManager {
         sharedPreferences.edit().putBoolean(KEY_PREF_PARENTAL_GATE_PASSED, parentalPassed).apply();
     }
 
-    public boolean getParentalPassed() {
+    public boolean isParentalPassed() {
         return sharedPreferences.getBoolean(KEY_PREF_PARENTAL_GATE_PASSED, false);
     }
 

@@ -13,11 +13,11 @@ public class ParentalGateVerificationPresenter extends MvpBasePresenter<Parental
     private final PreferenceManager preferenceManager;
 
     @Inject
-    ParentalGateVerificationPresenter(PreferenceManager preferenceManager) {
+    public ParentalGateVerificationPresenter(final PreferenceManager preferenceManager) {
         this.preferenceManager = preferenceManager;
     }
 
-    void initUi(@NonNull final AgeVerificationResult result) {
+    public void initUi(@NonNull final AgeVerificationResult result) {
         ifViewAttached(attachedView -> {
             attachedView.showImage(result.getIconRes());
             attachedView.showTitle(result.getTitle());

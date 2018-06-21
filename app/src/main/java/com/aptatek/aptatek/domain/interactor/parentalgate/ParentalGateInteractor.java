@@ -12,6 +12,7 @@ import io.reactivex.Single;
 
 public class ParentalGateInteractor {
 
+    private static final int MIN_AGE = 13;
     private final BirthDateFormatter birthDateFormatter;
 
     @Inject
@@ -26,7 +27,11 @@ public class ParentalGateInteractor {
 
     @NonNull
     public Single<Boolean> verify(@NonNull final AgeCheckModel ageCheckModel) {
-        return Single.fromCallable(() -> calculateAge(ageCheckModel.getBirthDate()) == ageCheckModel.getAge());
+        return Single.fromCallable(() -> {
+            final int calculatedAge = calculateAge(ageCheckModel.getBirthDate());
+
+            return ageCheckModel.getAge() > MIN_AGE && calculatedAge == ageCheckModel.getAge();
+        });
     }
 
     private int calculateAge(final long timestamp) {
