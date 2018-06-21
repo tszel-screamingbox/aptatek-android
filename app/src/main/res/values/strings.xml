@@ -1,4 +1,7 @@
 <resources>
+    <!-- AlertDialog strings -->
+    <string name="alertdialog.button.no">No</string>
+    <string name="alertdialog.button.yes">Yes</string>
     <!-- App Constants-->
     <string name="app.name">Aptatek</string>
     <!-- AuthPin Activity -->
@@ -59,7 +62,8 @@
     <string name="test.cancel.navigation.yes">Yes</string>
     <string name="test.cancel.title">Cancel test</string>
     <string name="test.countdown.format">mm:ss</string>
-    <string name="test.incubation.button.next">Next</string>
+    <string name="test.incubation.alertdialog.message">Are your sure the blood has finished soaking for the whole 30 minutes?</string>
+    <string name="test.incubation.alertdialog.title">Please confirm</string>
     <string name="test.incubation.countdown.format">mm:ss</string>
     <string name="test.incubation.description">Blood needs to stay in the tube for 30 full minutes</string>
     <string name="test.incubation.notification.channel.name">Incubation</string>

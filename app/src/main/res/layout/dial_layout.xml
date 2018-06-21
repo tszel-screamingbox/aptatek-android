@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/keypad"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -110,17 +111,13 @@
             android:layout_weight="1"
             android:text="@string/pin.button.0" />
 
-        <TextView
+        <Button
             android:id="@+id/buttonAction"
-            style="@style/General.Text"
-            android:textStyle="bold"
+            style="@style/Parental.Keypad.Next"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_weight="1"
-            android:alpha="@dimen/alpha.general.full"
-            android:background="@color/applicationWhite"
-            android:textColor="@color/applicationGreen" />
+            tools:text="Next" />
 
     </TableRow>
 

@@ -26,7 +26,9 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
     }
 
     public void initUi() {
-        ageCheckModel = AgeCheckModel.builder().build();
+        ageCheckModel = AgeCheckModel.builder()
+                .setFailCount(ageCheckModel == null ? 0 : ageCheckModel.getFailCount())
+                .build();
 
         ifViewAttached(attachedView -> {
             attachedView.setShowAgeField(false);
@@ -78,14 +80,26 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
                     .build();
 
             disposables.add(parentalGateInteractor.verify(ageCheckModel)
+                    .onErrorReturn(throwable -> false)
                     .subscribe(ageCorrect ->
-                        ifViewAttached(attached ->
+                        ifViewAttached(attached -> {
+                                ageCheckModel = ageCheckModel.toBuilder()
+                                        .setFailCount(ageCheckModel.getFailCount() + (ageCorrect ? 0 : 1))
+                                        .build();
+
                                 attached.showResult(AgeVerificationResult.builder()
                                         .setIconRes(ageCorrect ? R.drawable.ic_age_verified : R.drawable.ic_age_not_verified)
-                                        .setTitle(resourceInteractor.getStringResource(ageCorrect ? R.string.parental_verification_success_title : R.string.parental_verification_failure_title))
-                                        .setMessage(resourceInteractor.getStringResource(ageCorrect ? R.string.parental_verification_success_message : R.string.parental_verification_failure_message))
+                                        .setTitle(resourceInteractor.getStringResource(ageCorrect
+                                                ? R.string.parental_verification_success_title
+                                                : R.string.parental_verification_failure_title))
+                                        .setMessage(resourceInteractor.getStringResource(ageCorrect
+                                                ? R.string.parental_verification_success_message
+                                                : ageCheckModel.getFailCount() > 1
+                                                    ? R.string.parental_verification_failure_message
+                                                    : R.string.parental_verification_failure_message_first))
                                         .setShowButton(!ageCorrect)
-                                        .build())
+                                        .build());
+                                }
                         )
                     )
             );
