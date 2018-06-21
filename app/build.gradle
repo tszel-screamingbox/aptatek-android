@@ -164,6 +164,14 @@ dependencies {
     androidTestImplementation(testDependencies.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    androidTestCompile(testDependencies.espressocontrib) {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'recyclerview-v7'
+        exclude module: 'appcompat-v7'
+    }
     androidTestAnnotationProcessor daggerDependencies.compiler
     androidTestCompileOnly daggerDependencies.annotations
     androidTestImplementation appDependencies.dataFactory
