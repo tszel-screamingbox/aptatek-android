@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.settings;
+package com.aptatek.aptatek.view.settings.reminder;
 
 import java.util.ArrayList;
 import java.util.Objects;

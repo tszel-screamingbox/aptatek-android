@@ -84,4 +84,9 @@
     <string name="reminder.time.picker.add">Add</string>
     <string name="reminder.settings.already.has.reminder">You already have the same reminder on the given day.</string>
     <string name="reminder.notification.title">Now might be a great time to check Phe level!</string>
+    <string name="settings.title">Settings</string>
+    <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
+    <string name="settings.daily.reminders">Daily reminders</string>
+    <string name="settings.fingerprint.description">Turn the switch off for PIN only. Turns on your passcode you use for your device.</string>
+    <string name="settings.daily.reminder.description">You can set up multiple reminders for every day in the week</string>
 </resources>

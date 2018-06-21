@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.settings;
+package com.aptatek.aptatek.view.settings.reminder;
 
 import android.support.annotation.NonNull;
 
@@ -24,14 +24,14 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class ReminderSettingsActivityPresenter extends MvpBasePresenter<ReminderSettingsActivityView> {
+public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettingsView> {
 
     private ResourceInteractor resourceInteractor;
     private ReminderInteractor reminderInteractor;
 
     @Inject
-    public ReminderSettingsActivityPresenter(final ResourceInteractor resourceInteractor,
-                                             final ReminderInteractor reminderInteractor) {
+    public ReminderSettingsPresenter(final ResourceInteractor resourceInteractor,
+                                     final ReminderInteractor reminderInteractor) {
         this.resourceInteractor = resourceInteractor;
         this.reminderInteractor = reminderInteractor;
     }
@@ -246,7 +246,7 @@ public class ReminderSettingsActivityPresenter extends MvpBasePresenter<Reminder
     private boolean checkReminderExistence(@NonNull final ReminderSettingsAdapterItem item, final int hour, final int minute) {
         for (RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
             if (remindersAdapterItem.getHour() == hour && remindersAdapterItem.getMinute() == minute) {
-                ifViewAttached(ReminderSettingsActivityView::alreadyHasReminderError);
+                ifViewAttached(ReminderSettingsView::alreadyHasReminderError);
                 return true;
             }
         }

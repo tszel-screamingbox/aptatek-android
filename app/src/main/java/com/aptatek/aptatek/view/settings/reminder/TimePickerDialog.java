@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.settings;
+package com.aptatek.aptatek.view.settings.reminder;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

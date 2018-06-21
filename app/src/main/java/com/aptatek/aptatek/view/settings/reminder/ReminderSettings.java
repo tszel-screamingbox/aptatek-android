@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.settings;
+package com.aptatek.aptatek.view.settings.reminder;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,11 +19,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActivityView, ReminderSettingsActivityPresenter>
-        implements ReminderSettingsActivityView {
+public class ReminderSettings extends BaseActivity<ReminderSettingsView, ReminderSettingsPresenter>
+        implements ReminderSettingsView {
 
     @Inject
-    ReminderSettingsActivityPresenter presenter;
+    ReminderSettingsPresenter presenter;
 
     @Inject
     ReminderSettingsItemDecoration itemDecoration;
@@ -49,7 +49,7 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActiv
 
     @NonNull
     @Override
-    public ReminderSettingsActivityPresenter createPresenter() {
+    public ReminderSettingsPresenter createPresenter() {
         return presenter;
     }
 

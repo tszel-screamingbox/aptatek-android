@@ -3,14 +3,14 @@ package com.aptatek.aptatek.view.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
-import com.aptatek.aptatek.view.settings.ReminderSettingsActivity;
-import com.aptatek.aptatek.view.toggle.ToggleActivity;
+import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
+import com.aptatek.aptatek.view.toggle.ToggleActivity;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -57,7 +57,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.settingsButton)
     public void onSettingsButtonClicked() {
-        final Intent intent = new Intent(this, ReminderSettingsActivity.class);
+        final Intent intent = new Intent(this, SettingsActivity.class);
         launchActivity(intent, false, Animation.FADE);
     }
 }
