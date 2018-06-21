@@ -12,6 +12,7 @@ ext {
 
             // ArchitectureComponents
             lifecycle                   : '1.1.1',
+            work                        : '1.0.0-alpha01',
 
             // Mosby
             mosby                       : '3.1.0',
@@ -87,7 +88,8 @@ ext {
 
     architectureComponentsDependencies = [
             extensions      : "android.arch.lifecycle:extensions:${versions.lifecycle}",
-            compiler        : "android.arch.lifecycle:compiler:${versions.lifecycle}"
+            compiler        : "android.arch.lifecycle:compiler:${versions.lifecycle}",
+            work        : "android.arch.work:work-runtime:${versions.work}"
     ]
 
     mvpDependencies = [

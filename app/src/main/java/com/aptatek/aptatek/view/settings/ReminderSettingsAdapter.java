@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.util.Constants;
 
 import java.util.ArrayList;
 
@@ -31,29 +32,29 @@ class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapt
     ReminderSettingsAdapter() {
     }
 
-    public void setData(@NonNull ArrayList<ReminderSettingsAdapterItem> mData) {
+    public void setData(@NonNull final ArrayList<ReminderSettingsAdapterItem> mData) {
         data.clear();
         data.addAll(mData);
         notifyDataSetChanged();
     }
 
-    public void changeAdapterItem(@NonNull ReminderSettingsAdapterItem item) {
-        int index = data.indexOf(item);
+    public void changeAdapterItem(@NonNull final ReminderSettingsAdapterItem item) {
+        final int index = data.indexOf(item);
         notifyItemChanged(index);
     }
 
-    public void setCallback(@NonNull ReminderSettingsAdapterCallback callback) {
+    public void setCallback(@NonNull final ReminderSettingsAdapterCallback callback) {
         this.callback = callback;
     }
 
     @NonNull
     @Override
-    public ReminderSettingsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ReminderSettingsViewHolder onCreateViewHolder(@NonNull final ViewGroup parent,final int viewType) {
         return new ReminderSettingsViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_daily_reminder_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReminderSettingsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ReminderSettingsViewHolder holder,final int position) {
         holder.bind(data.get(holder.getAdapterPosition()));
     }
 
@@ -78,21 +79,21 @@ class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapt
 
         private RemindersAdapter adapter = new RemindersAdapter();
 
-        ReminderSettingsViewHolder(View itemView) {
+        ReminderSettingsViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             recyclerViewReminders.setAdapter(adapter);
-            recyclerViewReminders.setLayoutManager(new GridLayoutManager(itemView.getContext(), 3));
+            recyclerViewReminders.setLayoutManager(new GridLayoutManager(itemView.getContext(), Constants.REMINDER_SPAN_COUNT));
             recyclerViewReminders.addItemDecoration(new ReminderItemDecoration());
             adapter.setCallback(this);
         }
 
-        void bind(ReminderSettingsAdapterItem item) {
+        void bind(final ReminderSettingsAdapterItem item) {
             textViewDayName.setText(item.getNameOfDay());
-            switchActivate.setChecked(item.getActive());
-            textViewDayName.setEnabled(item.getActive());
+            switchActivate.setChecked(item.isActive());
+            textViewDayName.setEnabled(item.isActive());
 
-            if (item.getActive()) {
+            if (item.isActive()) {
                 imageAddNewReminder.setVisibility(View.VISIBLE);
             } else {
                 imageAddNewReminder.setVisibility(View.GONE);
@@ -107,14 +108,14 @@ class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapt
             });
 
             switchActivate.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (callback != null && data.get(getAdapterPosition()).getActive() != isChecked) {
+                if (callback != null && data.get(getAdapterPosition()).isActive() != isChecked) {
                     callback.changeActiveState(data.get(getAdapterPosition()), isChecked);
                 }
             });
         }
 
         @Override
-        public void modifyReminderTime(@NonNull RemindersAdapterItem item) {
+        public void modifyReminderTime(@NonNull final RemindersAdapterItem item) {
             if (callback != null) {
                 callback.modifyReminderTime(data.get(getAdapterPosition()), item);
             }

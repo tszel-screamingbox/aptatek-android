@@ -9,6 +9,7 @@ import com.aptatek.aptatek.device.AlarmManager;
 import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.domain.model.ReminderDay;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,7 +27,7 @@ public class ReminderInteractor {
     private final AlarmManager alarmManager;
 
     @Inject
-    public ReminderInteractor(AptatekDatabase aptatekDatabase, ReminderDayMapper reminderDayMapper, ReminderMapper reminderMapper, AlarmManager alarmManager) {
+    public ReminderInteractor(final AptatekDatabase aptatekDatabase, final ReminderDayMapper reminderDayMapper, final ReminderMapper reminderMapper, final AlarmManager alarmManager) {
         this.reminderDayDao = aptatekDatabase.getReminderDayDao();
         this.reminderDayMapper = reminderDayMapper;
         this.reminderMapper = reminderMapper;
@@ -49,37 +50,53 @@ public class ReminderInteractor {
                 .toList();
     }
 
-    public Observable<List<Reminder>> listReminders(int weekDay) {
+    public Completable updateReminderDayActiveState(final int id, final Boolean active) {
+        return Completable.fromAction(() -> reminderDayDao.updateReminderDayActiveState(id, active));
+    }
+
+    public Completable insertReminder(final Reminder reminder) {
+        return Completable.fromAction(() -> reminderDao.insert(reminderMapper.toData(reminder)));
+    }
+
+    public Completable updateReminder(final String id, final int hour, final int minute) {
+        return Completable.fromAction(() -> reminderDao.updateReminder(id, hour, minute));
+    }
+
+    public Completable deleteReminder(final String id) {
+        return Completable.fromAction(() -> reminderDao.deleteReminder(id));
+    }
+
+    public void setReminder(final int weekDay, final int hour, final int minute) {
+        alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute);
+    }
+
+    public void deleteReminder(final int weekDay, final int hour, final int minute) {
+        alarmManager.deleteReminder(weekDay + hour + minute);
+    }
+
+    public void updateReminder(final int weekDay, final int hour, final int minute) {
+        alarmManager.updateReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute);
+    }
+
+    private Observable<List<Reminder>> listReminders(final int weekDay) {
         return reminderDao.getReminders(weekDay)
                 .map(reminderMapper::toDomainList)
                 .toObservable();
     }
 
-    public Completable updateReminderDayActiveState(int id, Boolean active) {
-        return Completable.fromAction(() -> reminderDayDao.updateReminderDayActiveState(id, active));
-    }
+    private long getReminderTimeStamp(final int weekDay, final int hour, final int minute) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+        calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+        calendar.set(Calendar.DAY_OF_WEEK, weekDay);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
 
-    public Completable insertReminder(Reminder reminder) {
-        return Completable.fromAction(() -> reminderDao.insert(reminderMapper.toData(reminder)));
-    }
+        if (Calendar.getInstance().getTimeInMillis() > calendar.getTimeInMillis()) {
+            calendar.set(Calendar.WEEK_OF_MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 1);
+        }
 
-    public Completable updateReminder(String id, int hour, int minute) {
-        return Completable.fromAction(() -> reminderDao.updateReminder(id, hour, minute));
-    }
-
-    public Completable deleteReminder(String id) {
-        return Completable.fromAction(() -> reminderDao.deleteReminder(id));
-    }
-
-    public void setReminder(Long timestamp, int requestCode) {
-        alarmManager.setReminder(timestamp, requestCode);
-    }
-
-    public void deleteReminder(int requestCode) {
-        alarmManager.deleteReminder(requestCode);
-    }
-
-    public void updateReminder(Long timestamp, int requestCode) {
-        alarmManager.updateReminder(timestamp, requestCode);
+        return calendar.getTimeInMillis();
     }
 }

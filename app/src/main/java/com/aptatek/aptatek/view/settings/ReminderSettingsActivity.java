@@ -38,7 +38,7 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActiv
     RecyclerView recyclerViewDays;
 
     @Override
-    protected void injectActivity(ActivityComponent activityComponent) {
+    protected void injectActivity(final ActivityComponent activityComponent) {
         getActivityComponent().inject(this);
     }
 
@@ -60,7 +60,7 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActiv
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder_settings);
         ButterKnife.bind(this);
@@ -77,17 +77,17 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActiv
 
         adapter.setCallback(new ReminderSettingsAdapter.ReminderSettingsAdapterCallback() {
             @Override
-            public void onAddReminderClicked(@NonNull ReminderSettingsAdapterItem item) {
+            public void onAddReminderClicked(@NonNull final ReminderSettingsAdapterItem item) {
                 TimePickerDialog.starter(getTimePickerDialogCallback(item, null)).show(getSupportFragmentManager(), "");
             }
 
             @Override
-            public void changeActiveState(@NonNull ReminderSettingsAdapterItem item, boolean isActive) {
+            public void changeActiveState(@NonNull final ReminderSettingsAdapterItem item, final boolean isActive) {
                 presenter.changeActiveState(item, isActive);
             }
 
             @Override
-            public void modifyReminderTime(@NonNull ReminderSettingsAdapterItem reminderSettingsItem, @NonNull RemindersAdapterItem reminderItem) {
+            public void modifyReminderTime(@NonNull final ReminderSettingsAdapterItem reminderSettingsItem, final @NonNull RemindersAdapterItem reminderItem) {
                 TimePickerDialog.starter(reminderItem.getHour(), reminderItem.getMinute(), getTimePickerDialogCallback(reminderSettingsItem, reminderItem)).show(getSupportFragmentManager(), "");
             }
         });
@@ -96,27 +96,27 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActiv
     }
 
     @Override
-    public void presentDays(@NonNull ArrayList<ReminderSettingsAdapterItem> data) {
+    public void presentDays(@NonNull final ArrayList<ReminderSettingsAdapterItem> data) {
         adapter.setData(data);
     }
 
     @Override
-    public void addReminder(@NonNull ReminderSettingsAdapterItem item) {
+    public void addReminder(@NonNull final ReminderSettingsAdapterItem item) {
         adapter.changeAdapterItem(item);
     }
 
     @Override
-    public void changeActiveState(@NonNull ReminderSettingsAdapterItem item) {
+    public void changeActiveState(@NonNull final ReminderSettingsAdapterItem item) {
         adapter.changeAdapterItem(item);
     }
 
     @Override
-    public void deleteReminder(@NonNull ReminderSettingsAdapterItem item) {
+    public void deleteReminder(@NonNull final ReminderSettingsAdapterItem item) {
         adapter.changeAdapterItem(item);
     }
 
     @Override
-    public void modifyReminder(@NonNull ReminderSettingsAdapterItem item) {
+    public void modifyReminder(@NonNull final ReminderSettingsAdapterItem item) {
         adapter.changeAdapterItem(item);
     }
 
@@ -126,10 +126,10 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActiv
     }
 
     @NonNull
-    private TimePickerDialog.TimePickerDialogCallback getTimePickerDialogCallback(@NonNull ReminderSettingsAdapterItem reminderSettingsAdapterItem, @Nullable RemindersAdapterItem remindersAdapterItem) {
+    private TimePickerDialog.TimePickerDialogCallback getTimePickerDialogCallback(@NonNull final ReminderSettingsAdapterItem reminderSettingsAdapterItem, @Nullable final RemindersAdapterItem remindersAdapterItem) {
         return new TimePickerDialog.TimePickerDialogCallback() {
             @Override
-            public void done(int hourOfDay, int minute) {
+            public void done(final int hourOfDay, final int minute) {
                 if (remindersAdapterItem != null) {
                     presenter.modifyReminder(reminderSettingsAdapterItem, remindersAdapterItem, hourOfDay, minute);
                 } else {
@@ -139,7 +139,9 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsActiv
 
             @Override
             public void delete() {
-                presenter.deleteReminder(reminderSettingsAdapterItem, remindersAdapterItem);
+                if (remindersAdapterItem != null) {
+                    presenter.deleteReminder(reminderSettingsAdapterItem, remindersAdapterItem);
+                }
             }
         };
     }

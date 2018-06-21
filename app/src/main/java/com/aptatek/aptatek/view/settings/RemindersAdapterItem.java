@@ -9,7 +9,7 @@ public class RemindersAdapterItem {
     private int hour;
     private int minute;
 
-    public RemindersAdapterItem(String id, String time, boolean active, int hour, int minute) {
+    public RemindersAdapterItem(final String id,final String time, final boolean active,final int hour,final int minute) {
         this.id = id;
         this.time = time;
         this.active = active;
@@ -25,7 +25,7 @@ public class RemindersAdapterItem {
         return hour;
     }
 
-    public void setHour(int hour) {
+    public void setHour(final int hour) {
         this.hour = hour;
     }
 
@@ -33,7 +33,7 @@ public class RemindersAdapterItem {
         return minute;
     }
 
-    public void setMinute(int minute) {
+    public void setMinute(final int minute) {
         this.minute = minute;
     }
 
@@ -41,7 +41,7 @@ public class RemindersAdapterItem {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(final String time) {
         this.time = time;
     }
 
@@ -49,15 +49,15 @@ public class RemindersAdapterItem {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(final Boolean active) {
         this.active = active;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RemindersAdapterItem that = (RemindersAdapterItem) o;
+        final RemindersAdapterItem that = (RemindersAdapterItem) o;
         return hour == that.hour &&
                 minute == that.minute &&
                 Objects.equals(id, that.id) &&

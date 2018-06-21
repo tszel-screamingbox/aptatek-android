@@ -24,9 +24,8 @@ class ReminderSettingsItemDecoration extends RecyclerView.ItemDecoration {
         outRect.bottom = parent.getContext().getResources().getDimensionPixelOffset(R.dimen.general_distance_small);
     }
 
-
     @Override
-    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         int left = parent.getPaddingLeft() + parent.getContext().getResources().getDimensionPixelOffset(R.dimen.general_distance_small);
         int right = parent.getWidth() - parent.getPaddingRight();
         Drawable divider = ContextCompat.getDrawable(parent.getContext(), R.drawable.reminder_settings_divider);

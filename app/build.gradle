@@ -121,6 +121,7 @@ dependencies {
     // ArchitectureComponents
     implementation architectureComponentsDependencies.extensions
     annotationProcessor architectureComponentsDependencies.compiler
+    implementation architectureComponentsDependencies.work
 
     // MVP
     implementation mvpDependencies.mosby

@@ -11,14 +11,12 @@ import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.util.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimePickerDialog extends DialogFragment {
-
-    private static final String hourArgumentKey = "hour";
-    private static final String minuteArgumentKey = "minute";
 
     interface TimePickerDialogCallback {
         void done(int hourOfDay, int minute);
@@ -26,18 +24,18 @@ public class TimePickerDialog extends DialogFragment {
         void delete();
     }
 
-    public static TimePickerDialog starter(@NonNull TimePickerDialogCallback callback) {
-        TimePickerDialog dialog = new TimePickerDialog();
+    public static TimePickerDialog starter(@NonNull final TimePickerDialogCallback callback) {
+        final TimePickerDialog dialog = new TimePickerDialog();
         dialog.callback = callback;
         return dialog;
     }
 
-    public static TimePickerDialog starter(int hour, int minute, @NonNull TimePickerDialogCallback callback) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(hourArgumentKey, hour);
-        bundle.putInt(minuteArgumentKey, minute);
+    public static TimePickerDialog starter(final int hour, final int minute, @NonNull final TimePickerDialogCallback callback) {
+        final Bundle bundle = new Bundle();
+        bundle.putInt(Constants.TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY, hour);
+        bundle.putInt(Constants.TIME_PCIKER_DIALOG_MINUTE_ARGUMENT_KEY, minute);
 
-        TimePickerDialog dialog = new TimePickerDialog();
+        final TimePickerDialog dialog = new TimePickerDialog();
         dialog.setArguments(bundle);
         dialog.callback = callback;
         return dialog;
@@ -57,22 +55,22 @@ public class TimePickerDialog extends DialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_time_picker, container, false);
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.dialog_time_picker, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         timePicker.setIs24HourView(false);
 
         if (getArguments() != null) {
             buttonDelete.setText(R.string.reminder_time_picker_delete);
-            timePicker.setCurrentHour(getArguments().getInt(hourArgumentKey));
-            timePicker.setCurrentMinute(getArguments().getInt(minuteArgumentKey));
+            timePicker.setCurrentHour(getArguments().getInt(Constants.TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY));
+            timePicker.setCurrentMinute(getArguments().getInt(Constants.TIME_PCIKER_DIALOG_MINUTE_ARGUMENT_KEY));
         } else {
             buttonDelete.setText(R.string.reminder_time_picker_cancel);
         }
@@ -82,8 +80,8 @@ public class TimePickerDialog extends DialogFragment {
                 callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 dismiss();
             } else if (callback != null && getArguments() != null) {
-                if (getArguments().getInt(hourArgumentKey) != timePicker.getCurrentHour()
-                        || getArguments().getInt(minuteArgumentKey) != timePicker.getCurrentMinute()) {
+                if (getArguments().getInt(Constants.TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY) != timePicker.getCurrentHour()
+                        || getArguments().getInt(Constants.TIME_PCIKER_DIALOG_MINUTE_ARGUMENT_KEY) != timePicker.getCurrentMinute()) {
                     callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 }
                 dismiss();

@@ -15,7 +15,7 @@ public class ReminderMapper {
     public ReminderMapper() {
     }
 
-    public Reminder toDomain(ReminderDataModel reminderDataModel) {
+    public Reminder toDomain(final ReminderDataModel reminderDataModel) {
         return Reminder.builder()
                 .setId(reminderDataModel.getId())
                 .setHour(reminderDataModel.getHour())
@@ -24,8 +24,8 @@ public class ReminderMapper {
                 .build();
     }
 
-    public ReminderDataModel toData(Reminder reminder) {
-        ReminderDataModel reminderDataModel = new ReminderDataModel();
+    public ReminderDataModel toData(final Reminder reminder) {
+        final ReminderDataModel reminderDataModel = new ReminderDataModel();
         reminderDataModel.setId(reminder.getId());
         reminderDataModel.setWeekDay(reminder.getWeekDay());
         reminderDataModel.setHour(reminder.getHour());
@@ -33,7 +33,7 @@ public class ReminderMapper {
         return reminderDataModel;
     }
 
-    public List<Reminder> toDomainList(List<ReminderDataModel> reminderDataModels) {
+    public List<Reminder> toDomainList(final List<ReminderDataModel> reminderDataModels) {
         return Ix.from(reminderDataModels).map(this::toDomain).toList();
     }
 }

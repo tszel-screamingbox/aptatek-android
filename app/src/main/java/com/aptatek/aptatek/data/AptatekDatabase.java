@@ -22,9 +22,9 @@ public abstract class AptatekDatabase extends RoomDatabase {
 
     private static AptatekDatabase INSTANCE;
 
-    public synchronized static AptatekDatabase getInstance(String databaseName,
-                                                           Context context,
-                                                           SafeHelperFactory safeHelperFactory) {
+    public synchronized static AptatekDatabase getInstance(final String databaseName,
+                                                           final Context context,
+                                                           final SafeHelperFactory safeHelperFactory) {
         if (INSTANCE == null) {
             INSTANCE = creator(databaseName, context, safeHelperFactory);
         }
@@ -37,9 +37,9 @@ public abstract class AptatekDatabase extends RoomDatabase {
 
     public abstract ReminderDayDao getReminderDayDao();
 
-    private static AptatekDatabase creator(String databaseName,
-                                           Context context,
-                                           SafeHelperFactory safeHelperFactory) {
+    private static AptatekDatabase creator(final String databaseName,
+                                           final Context context,
+                                           final SafeHelperFactory safeHelperFactory) {
         return Room.databaseBuilder(
                 context,
                 AptatekDatabase.class,

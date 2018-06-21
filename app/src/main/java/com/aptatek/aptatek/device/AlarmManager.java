@@ -6,36 +6,36 @@ import android.content.Intent;
 
 import com.aptatek.aptatek.AlarmReceiver;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
+import com.aptatek.aptatek.util.Constants;
 
 import javax.inject.Inject;
 
-import timber.log.Timber;
-
-public class AlarmManager {
+public final class AlarmManager {
 
     private android.app.AlarmManager alarmManager;
     private Context context;
 
     @Inject
-    public AlarmManager(@ApplicationContext Context context) {
+    public AlarmManager(@ApplicationContext final Context context) {
         this.alarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.context = context;
     }
 
-    public void setReminder(Long timestamp, int requestCode) {
-        Timber.d("reminder timestamp : " + timestamp);
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
+    public void setReminder(final long timestamp, final int requestCode) {
+        final Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra(Constants.REMINDER_TIMESTAMP_INTENT_KEY, timestamp);
+        intent.putExtra(Constants.REMINDER_REQUEST_CODE_INTENT_KEY, requestCode);
+        final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.setExact(android.app.AlarmManager.RTC_WAKEUP, timestamp, pendingIntent);
     }
 
-    public void deleteReminder(int requestCode) {
-        Intent intent = new Intent(context, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, 0);
+    public void deleteReminder(final int requestCode) {
+        final Intent intent = new Intent(context, AlarmReceiver.class);
+        final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
     }
 
-    public void updateReminder(Long timestamp, int requestCode) {
+    public void updateReminder(final long timestamp, final int requestCode) {
         setReminder(timestamp, requestCode);
     }
 }

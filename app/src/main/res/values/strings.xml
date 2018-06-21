@@ -83,4 +83,5 @@
     <string name="reminder.time.picker.cancel">Cancel</string>
     <string name="reminder.time.picker.add">Add</string>
     <string name="reminder.settings.already.has.reminder">You already have the same reminder on the given day.</string>
+    <string name="reminder.notification.title">Now might be a great time to check Phe level!</string>
 </resources>

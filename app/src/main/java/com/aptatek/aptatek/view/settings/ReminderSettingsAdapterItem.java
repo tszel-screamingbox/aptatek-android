@@ -28,7 +28,7 @@ public class ReminderSettingsAdapterItem {
         this.nameOfDay = nameOfDay;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
     }
 

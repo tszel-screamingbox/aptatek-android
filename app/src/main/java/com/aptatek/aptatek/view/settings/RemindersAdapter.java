@@ -3,7 +3,6 @@ package com.aptatek.aptatek.view.settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,18 +23,11 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
     @Nullable
     private ReminderAdapterCallback callback;
 
-    public void setCallback(@Nullable ReminderAdapterCallback callback) {
+    public void setCallback(@Nullable final ReminderAdapterCallback callback) {
         this.callback = callback;
     }
 
-    public void update(ArrayList<RemindersAdapterItem> mData) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new RemindersDiffUtil(data, mData));
-        this.data.clear();
-        this.data.addAll(mData);
-        diffResult.dispatchUpdatesTo(this);
-    }
-
-    public void setData(ArrayList<RemindersAdapterItem> mData) {
+    public void setData(final ArrayList<RemindersAdapterItem> mData) {
         data.clear();
         data.addAll(mData);
         notifyDataSetChanged();
@@ -43,12 +35,12 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
 
     @NonNull
     @Override
-    public RemindersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RemindersViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         return new RemindersViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_reminder_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RemindersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final RemindersViewHolder holder,final int position) {
         holder.bind(data.get(holder.getAdapterPosition()));
     }
 
@@ -65,12 +57,12 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         @BindView(R.id.containerLayoutReminder)
         ConstraintLayout constraintLayoutReminder;
 
-        RemindersViewHolder(View itemView) {
+        RemindersViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(RemindersAdapterItem item) {
+        void bind(final RemindersAdapterItem item) {
             textViewTime.setText(item.getTime());
 
             itemView.setOnLongClickListener(v -> {
@@ -85,36 +77,6 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
             } else {
                 constraintLayoutReminder.setBackgroundResource(R.drawable.reminder_item_inactive_background);
             }
-        }
-    }
-
-    class RemindersDiffUtil extends android.support.v7.util.DiffUtil.Callback {
-        private ArrayList<RemindersAdapterItem> oldList;
-        private ArrayList<RemindersAdapterItem> newList;
-
-        RemindersDiffUtil(ArrayList<RemindersAdapterItem> oldList, ArrayList<RemindersAdapterItem> newList) {
-            this.oldList = oldList;
-            this.newList = newList;
-        }
-
-        @Override
-        public int getOldListSize() {
-            return oldList.size();
-        }
-
-        @Override
-        public int getNewListSize() {
-            return newList.size();
-        }
-
-        @Override
-        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
-        }
-
-        @Override
-        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-            return oldList.get(oldItemPosition).equals(newList.get(newItemPosition));
         }
     }
 
