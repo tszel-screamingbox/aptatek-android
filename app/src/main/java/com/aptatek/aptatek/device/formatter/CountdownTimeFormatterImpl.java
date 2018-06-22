@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.device;
+package com.aptatek.aptatek.device.formatter;
 
 import android.support.annotation.NonNull;
 

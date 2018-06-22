@@ -10,6 +10,7 @@ import com.aptatek.aptatek.injection.scope.ActivityScope;
 import com.aptatek.aptatek.view.chart.ChartActivity;
 import com.aptatek.aptatek.view.fingerprint.FingerprintActivity;
 import com.aptatek.aptatek.view.main.MainActivity;
+import com.aptatek.aptatek.view.parentalgate.ParentalGateActivity;
 import com.aptatek.aptatek.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
 import com.aptatek.aptatek.view.splash.SplashActivity;
@@ -35,6 +36,8 @@ public interface ActivityComponent {
     void inject(SplashActivity activity);
 
     void inject(ToggleActivity activity);
+
+    void inject(ParentalGateActivity activity);
 
     // Activities injections should be come here
     @ActivityContext

@@ -19,14 +19,19 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
         this.incubationInteractor = incubationInteractor;
     }
 
-    public void showProperScreen() {
+    public void showProperScreen(final boolean otherScreenDisplayed) {
         disposable = incubationInteractor.hasRunningIncubation()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     value ->
-                        ifViewAttached(attachedView ->
-                                attachedView.showScreen(value ? TestScreens.INCUBATION : TestScreens.TAKE_SAMPLE))
-        );
+                        ifViewAttached(attachedView -> {
+                            if (value) {
+                                attachedView.showScreen(TestScreens.INCUBATION);
+                            } else if (!otherScreenDisplayed) {
+                                attachedView.showScreen(TestScreens.TAKE_SAMPLE);
+                            }
+                        })
+                    );
     }
 
     @Override
