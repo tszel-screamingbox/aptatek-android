@@ -45,7 +45,7 @@ public class IncubationScreenTest {
     public void testInitialUiValues() throws Exception {
         onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_incubation_title)));
         onView(withId(R.id.testBaseMessage)).check(matches(withText(R.string.test_incubation_description)));
-        onView(withId(R.id.testNavigationButton)).check(matches(withText(R.string.test_incubation_button_next)));
+        onView(withId(R.id.testNavigationButton)).check(matches(withText(R.string.test_button_next)));
 
         Thread.sleep(2000L);
 

@@ -10,7 +10,7 @@ import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationNotRunningError;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationNotificationFactory;
-import com.aptatek.aptatek.domain.model.IncubationCountdown;
+import com.aptatek.aptatek.domain.model.Countdown;
 import com.aptatek.aptatek.injection.component.test.DaggerTestServiceComponent;
 import com.aptatek.aptatek.injection.component.test.TestServiceComponent;
 import com.aptatek.aptatek.injection.module.ServiceModule;
@@ -83,7 +83,7 @@ public class IncubationReminderService extends Service {
 
 
         startForeground(COUNTDOWN_NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(
-                IncubationCountdown.builder()
+                Countdown.builder()
                         .setRemainingFormattedText("30:00")
                         .setRemainingMillis(Constants.DEFAULT_INCUBATION_PERIOD)
                         .build()));

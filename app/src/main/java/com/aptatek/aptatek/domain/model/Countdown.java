@@ -5,14 +5,14 @@ import android.support.annotation.NonNull;
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public abstract class IncubationCountdown {
+public abstract class Countdown {
 
     public abstract String getRemainingFormattedText();
 
     public abstract long getRemainingMillis();
 
     public static Builder builder() {
-        return new AutoValue_IncubationCountdown.Builder();
+        return new AutoValue_Countdown.Builder();
     }
 
     @AutoValue.Builder
@@ -22,7 +22,7 @@ public abstract class IncubationCountdown {
 
         public abstract Builder setRemainingMillis(long remainingMillis);
 
-        public abstract IncubationCountdown build();
+        public abstract Countdown build();
 
     }
 }

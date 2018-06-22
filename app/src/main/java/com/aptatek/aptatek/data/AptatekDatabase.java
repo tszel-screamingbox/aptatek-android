@@ -20,15 +20,15 @@ import java.util.concurrent.Executors;
 @Database(entities = {ReadingDataModel.class, ReminderDayDataModel.class, ReminderDataModel.class}, version = 1)
 public abstract class AptatekDatabase extends RoomDatabase {
 
-    private static AptatekDatabase INSTANCE;
+    private static volatile AptatekDatabase instance;
 
-    public synchronized static AptatekDatabase getInstance(final String databaseName,
+    public static synchronized AptatekDatabase getInstance(final String databaseName,
                                                            final Context context,
                                                            final SafeHelperFactory safeHelperFactory) {
-        if (INSTANCE == null) {
-            INSTANCE = creator(databaseName, context, safeHelperFactory);
+        if (instance == null) {
+            instance = creator(databaseName, context, safeHelperFactory);
         }
-        return INSTANCE;
+        return instance;
     }
 
     public abstract ReadingDao getReadingDao();

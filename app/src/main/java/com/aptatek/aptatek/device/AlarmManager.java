@@ -12,12 +12,12 @@ import javax.inject.Inject;
 
 public final class AlarmManager {
 
-    private android.app.AlarmManager alarmManager;
+    private android.app.AlarmManager systemAlarmManager;
     private Context context;
 
     @Inject
     public AlarmManager(@ApplicationContext final Context context) {
-        this.alarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        this.systemAlarmManager = (android.app.AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         this.context = context;
     }
 
@@ -26,13 +26,13 @@ public final class AlarmManager {
         intent.putExtra(Constants.REMINDER_TIMESTAMP_INTENT_KEY, timestamp);
         intent.putExtra(Constants.REMINDER_REQUEST_CODE_INTENT_KEY, requestCode);
         final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(android.app.AlarmManager.RTC_WAKEUP, timestamp, pendingIntent);
+        systemAlarmManager.setExact(android.app.AlarmManager.RTC_WAKEUP, timestamp, pendingIntent);
     }
 
     public void deleteReminder(final int requestCode) {
         final Intent intent = new Intent(context, AlarmReceiver.class);
         final PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.cancel(pendingIntent);
+        systemAlarmManager.cancel(pendingIntent);
     }
 
     public void updateReminder(final long timestamp, final int requestCode) {

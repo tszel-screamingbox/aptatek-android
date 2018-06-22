@@ -45,7 +45,7 @@ android {
         versionCode 1
         versionName "0.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments disableAnalytics : 'true'
+        testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
         multiDexEnabled true
 
@@ -68,7 +68,7 @@ android {
             signingConfig signingConfigs.debug
             applicationIdSuffix ".debug"
             testCoverageEnabled true
-            multiDexEnabled     true
+            multiDexEnabled true
         }
     }
 
@@ -94,18 +94,18 @@ android {
 
         unitTests {
             includeAndroidResources = true
-            returnDefaultValues     = true
+            returnDefaultValues = true
         }
     }
 
     lintOptions {
         abortOnError false
-        disable     'MissingTranslation', 'RestrictedApi'
+        disable 'MissingTranslation', 'RestrictedApi'
     }
 }
 
 checkstyle {
-    configFile     rootProject.file('quality/checkstyle.xml')
+    configFile rootProject.file('quality/checkstyle.xml')
     showViolations true
 }
 
@@ -159,7 +159,7 @@ dependencies {
 
     // IntentBuilder
     implementation activityStarterDependencies.activityStarter
-    annotationProcessor  activityStarterDependencies.apt
+    annotationProcessor activityStarterDependencies.apt
 
     // LeakCanary
     debugImplementation leakDependencies.debug
@@ -170,7 +170,7 @@ dependencies {
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito
     androidTestImplementation androidSupportDependencies.multidex
-testImplementation databaseDependencies.testhelper
+    testImplementation databaseDependencies.testhelper
     androidTestImplementation testDependencies.testrunner
     androidTestImplementation testDependencies.testrules
     androidTestImplementation testDependencies.hamcrest
@@ -190,15 +190,15 @@ configurations.all {
     }
 }
 
-task customCheckstyle(type : Checkstyle, dependsOn: 'assembleProdDebug') {
-    description    = 'Running Checkstyle'
-    group          = 'verification'
+task customCheckstyle(type: Checkstyle, dependsOn: 'assembleProdDebug') {
+    description = 'Running Checkstyle'
+    group = 'verification'
     ignoreFailures = true
     showViolations = true
 
     configFile file("$rootProject.rootDir/quality/checkstyle.xml")
 
-    source  'src/main/java', 'src/prod/java'
+    source 'src/main/java', 'src/prod/java'
     include '**/*.java'
     exclude '**/*Test.java'
     exclude '**/gen/**'
@@ -206,33 +206,33 @@ task customCheckstyle(type : Checkstyle, dependsOn: 'assembleProdDebug') {
     exclude '**/BuildConfig.java'
 
     reports {
-        xml.enabled      = false
-        html.enabled     = true
-        xml.destination  file("$project.buildDir/reports/checkstyle/checkstyle-output.xml")
+        xml.enabled = false
+        html.enabled = true
+        xml.destination file("$project.buildDir/reports/checkstyle/checkstyle-output.xml")
         html.destination file("$project.buildDir/reports/checkstyle/checkstyle-output.html")
     }
 
     classpath = files()
 }
 
-task customFindBugs(type : FindBugs, dependsOn : 'assembleProdDebug') {
-    description    = 'Runing FindBugs'
-    group          = 'verification'
-    effort         = 'max'
-    reportLevel    = 'medium'
-    source        'src/main/java', 'src/prod/java'
-    classes        = fileTree('build/intermediates/classes/prod/debug')
-    classpath      = files()
+task customFindBugs(type: FindBugs, dependsOn: 'assembleProdDebug') {
+    description = 'Runing FindBugs'
+    group = 'verification'
+    effort = 'max'
+    reportLevel = 'medium'
+    source 'src/main/java', 'src/prod/java'
+    classes = fileTree('build/intermediates/classes/prod/debug')
+    classpath = files()
     ignoreFailures = true
 
     // Use this only if you want exclude some errors
     excludeFilter = file("$rootProject.rootDir/quality/findbugs-exclude.xml")
 
     reports {
-        xml.enabled      = false
+        xml.enabled = false
         xml.withMessages = true
-        html.enabled     = true
-        xml.destination  file("$project.buildDir/reports/findbugs/findbugs-output.xml")
+        html.enabled = true
+        xml.destination file("$project.buildDir/reports/findbugs/findbugs-output.xml")
         html.destination file("$project.buildDir/reports/findbugs/findbugs-output.html")
     }
 }
@@ -242,7 +242,7 @@ task customPmd(type: Pmd, dependsOn: 'assembleProdDebug') {
     ignoreFailures = false
     ruleSets = []
 
-    source  'src/main/java', 'src/prod/java'
+    source 'src/main/java', 'src/prod/java'
     include '**/*.java'
     exclude '**/*Test.java'
     exclude '**/gen/**'
@@ -267,18 +267,18 @@ tasks.withType(Test) {
     jacoco.includeNoLocationClasses = true
 }
 
-task jacocoTestReport(type : JacocoReport, dependsOn : 'testProdDebugUnitTest') {
+task jacocoTestReport(type: JacocoReport, dependsOn: 'testProdDebugUnitTest') {
     description = 'Generate JaCoCo coverage reports'
-    group       = 'Reporting'
+    group = 'Reporting'
 
     reports {
-        xml.enabled  = true
+        xml.enabled = true
         html.enabled = true
     }
 
     classDirectories = fileTree(
-            dir      : 'build/intermediates/classes/prod/debug',
-            excludes : [
+            dir: 'build/intermediates/classes/prod/debug',
+            excludes: [
                     '**/R.class',
                     '**/R$*.class',
                     '**/*$ViewInjector*.*',
@@ -298,9 +298,9 @@ task jacocoTestReport(type : JacocoReport, dependsOn : 'testProdDebugUnitTest') 
     )
 
     sourceDirectories = files(coverageSourceDirs)
-    executionData     = fileTree(
-            dir     : "$buildDir",
-            include : [ 'jacoco/testProdDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec', '../../firebase/*coverage.ec' ]
+    executionData = fileTree(
+            dir: "$buildDir",
+            include: ['jacoco/testProdDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec', '../../firebase/*coverage.ec']
     )
 
     doFirst {

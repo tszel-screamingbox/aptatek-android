@@ -7,11 +7,11 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.VideoThumbnailInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.aptatek.aptatek.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
 
-public class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
+public class TakeSamplePresenter extends TestBasePresenter<TakeSampleView> {
 
     private final ResourceInteractor resourceInteractor;
     private final VideoThumbnailInteractor videoThumbnailInteractor;
@@ -35,6 +35,7 @@ public class TakeSamplePresenter extends MvpBasePresenter<TakeSampleView> {
         showAdult = false;
     }
 
+    @Override
     public void initUi() {
         ifViewAttached(view -> {
             view.setTitle(resourceInteractor.getStringResource(R.string.test_takesample_title));

@@ -1,8 +1,8 @@
 package com.aptatek.aptatek.presenter.test.incubation;
 
-import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
-import com.aptatek.aptatek.domain.model.IncubationCountdown;
+import com.aptatek.aptatek.domain.model.Countdown;
 import com.aptatek.aptatek.view.test.incubation.IncubationPresenter;
 import com.aptatek.aptatek.view.test.incubation.IncubationView;
 
@@ -38,7 +38,7 @@ public class IncubationPresenterTest {
 
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt())).thenReturn(TEST_STRING);
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt(), ArgumentMatchers.anyVararg())).thenReturn(TEST_STRING);
-        when(incubationInteractor.getIncubationCountdown()).thenReturn(Flowable.just(IncubationCountdown.builder().setRemainingFormattedText("").setRemainingMillis(0L).build()));
+        when(incubationInteractor.getIncubationCountdown()).thenReturn(Flowable.just(Countdown.builder().setRemainingFormattedText("").setRemainingMillis(0L).build()));
 
         presenter = new IncubationPresenter(resourceInteractor, incubationInteractor);
         presenter.attachView(view);

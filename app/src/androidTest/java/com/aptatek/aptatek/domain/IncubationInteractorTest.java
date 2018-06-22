@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
-import com.aptatek.aptatek.domain.model.IncubationCountdown;
+import com.aptatek.aptatek.domain.model.Countdown;
 import com.aptatek.aptatek.injection.component.DaggerTestComponent;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
@@ -61,7 +61,7 @@ public class IncubationInteractorTest {
     @Test
     public void testCountdown() throws Exception {
         interactor.startIncubation().test();
-        final TestSubscriber<IncubationCountdown> test = interactor.getIncubationCountdown().test();
+        final TestSubscriber<Countdown> test = interactor.getIncubationCountdown().test();
 
         test.await(5, TimeUnit.SECONDS);
 

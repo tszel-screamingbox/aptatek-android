@@ -4,18 +4,18 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.ResourceInteractor;
-import com.aptatek.aptatek.domain.interactor.incubation.IncubationTimeFormatter;
+import com.aptatek.aptatek.domain.interactor.countdown.CountdownTimeFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class InclubationTimeFormatterImpl implements IncubationTimeFormatter {
+public class CountdownTimeFormatterImpl implements CountdownTimeFormatter {
 
     private final SimpleDateFormat dateFormat;
 
-    public InclubationTimeFormatterImpl(@NonNull final ResourceInteractor resourceInteractor) {
-        dateFormat = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.test_incubation_countdown_format), Locale.getDefault());
+    public CountdownTimeFormatterImpl(@NonNull final ResourceInteractor resourceInteractor) {
+        dateFormat = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.test_countdown_format), Locale.getDefault());
     }
 
     @Override
@@ -23,3 +23,4 @@ public class InclubationTimeFormatterImpl implements IncubationTimeFormatter {
         return dateFormat.format(new Date(remaining));
     }
 }
+
