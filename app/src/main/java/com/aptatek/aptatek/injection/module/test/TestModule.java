@@ -28,7 +28,7 @@ public class TestModule {
     }
 
     @Provides
-    CountdownTimeFormatter provideIncubationTimeFormatter(@NonNull final ResourceInteractor resourceInteractor) {
+    CountdownTimeFormatter provideCountdownTimeFormatter(@NonNull final ResourceInteractor resourceInteractor) {
         return new CountdownTimeFormatterImpl(resourceInteractor);
     }
 
