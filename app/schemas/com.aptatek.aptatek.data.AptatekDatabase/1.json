@@ -2,33 +2,59 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2961dba13f6cfdd7de60d44c0525501e",
+    "identityHash": "704dfa74b849b331fe036cc436f60970",
     "entities": [
       {
-        "tableName": "readings",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `milligram_per_deciliter` REAL NOT NULL, `micromol` INTEGER NOT NULL)",
+        "tableName": "reminderDays",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`weekDay` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `active` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "weekDay",
+            "columnName": "weekDay",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "active",
+            "columnName": "active",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "weekDay"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "reminders",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `weekDay` INTEGER NOT NULL, `hour` INTEGER NOT NULL, `minute` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weekDay",
+            "columnName": "weekDay",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "timestamp",
-            "columnName": "timestamp",
+            "fieldPath": "hour",
+            "columnName": "hour",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "mgPerDlValue",
-            "columnName": "milligram_per_deciliter",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "microMolValue",
-            "columnName": "micromol",
+            "fieldPath": "minute",
+            "columnName": "minute",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -37,7 +63,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -45,7 +71,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2961dba13f6cfdd7de60d44c0525501e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"704dfa74b849b331fe036cc436f60970\")"
     ]
   }
 }

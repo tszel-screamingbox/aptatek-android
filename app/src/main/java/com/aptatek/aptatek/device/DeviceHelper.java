@@ -31,8 +31,8 @@ public class DeviceHelper {
     }
 
     public boolean isFingperprintAuthAvailable() {
-        return hasEnrolledFingerprints() &&
-                hasEnrolledFingerprints() &&
-                preferenceManager.isFingerprintScanEnabled();
+        return hasEnrolledFingerprints()
+                && hasEnrolledFingerprints()
+                && preferenceManager.isFingerprintScanEnabled();
     }
 }
