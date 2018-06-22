@@ -5,10 +5,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.data.IncubationDataSourceImpl;
-import com.aptatek.aptatek.device.CountdownTimeFormatterImpl;
+import com.aptatek.aptatek.device.formatter.CountdownTimeFormatterImpl;
 import com.aptatek.aptatek.device.IncubationNotificationFactoryImpl;
 import com.aptatek.aptatek.device.PreferenceManager;
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.countdown.CountdownTimeFormatter;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationDataSource;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationNotificationFactory;

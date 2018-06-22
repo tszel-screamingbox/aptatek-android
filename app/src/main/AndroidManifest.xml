@@ -78,6 +78,10 @@
 
         </activity>
 
+        <activity android:name=".view.parentalgate.ParentalGateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
+
         <receiver android:name=".AlarmReceiver" />
         <service android:name=".view.test.incubation.IncubationReminderService" />
     </application>

@@ -2,7 +2,7 @@ package com.aptatek.aptatek.view.pin.auth.add;
 
 import com.aptatek.aptatek.data.PinCode;
 import com.aptatek.aptatek.device.DeviceHelper;
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.auth.AuthInteractor;
 import com.aptatek.aptatek.domain.interactor.auth.Callback;
 

@@ -1,7 +1,7 @@
 package com.aptatek.aptatek.view.test.tutorial.insertcasette;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.view.test.tutorial.BaseTutorialPresenter;
 
 import javax.inject.Inject;

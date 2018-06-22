@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.test.incubation;
+package com.aptatek.aptatek.view.test.takesample;
 
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
@@ -21,14 +21,14 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
-public class IncubationScreenTest {
+public class TakeSampleScreenTest {
 
     @Rule
     public ActivityTestRule<TestActivity> activityRule = new ActivityTestRule<>(TestActivity.class);
 
     @Before
     public void setUp() throws Exception {
-        onView(withId(R.id.testNavigationButton)).perform(ViewActions.click());
+
     }
 
     @Test
@@ -38,32 +38,36 @@ public class IncubationScreenTest {
         onView(withId(R.id.testCancelCircleButton)).check(matches(isDisplayed()));
         onView(withId(R.id.testNavigationButton)).check(matches(isDisplayed()));
         onView(withId(R.id.testCancelButton)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.incubationCounter)).check(matches(isDisplayed()));
+        onView(withId(R.id.takeSampleAgeToggle)).check(matches(isDisplayed()));
+        onView(withId(R.id.takeSampleVideo)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testInitialUiValues() throws Exception {
-        onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_incubation_title)));
-        onView(withId(R.id.testBaseMessage)).check(matches(withText(R.string.test_incubation_description)));
-        onView(withId(R.id.testNavigationButton)).check(matches(withText(R.string.test_button_next)));
-
-        Thread.sleep(2000L);
-
-        onView(withId(R.id.incubationCounter)).check(matches(withText(StringContains.containsString("29:"))));
+        onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_takesample_title)));
+        onView(withId(R.id.testBaseMessage)).check(matches(withText(R.string.test_takesample_description)));
+        onView(withId(R.id.testNavigationButton)).check(matches(withText(R.string.test_takesample_button_start)));
+        onView(withId(R.id.takeSampleAgeToggle)).check(matches(withText(StringContains.containsString("child"))));
     }
 
     @Test
-    public void testBackNavigation() throws Exception {
+    public void testCancelNavigatesBack() throws Exception {
         onView(withId(R.id.testCancelCircleButton)).perform(ViewActions.click());
-        onView(withId(R.id.testNavigationButton)).check(matches(withText(R.string.test_cancel_navigation_yes)));
-        onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_cancel_title)));
-        onView(withId(R.id.testBaseMessage)).check(matches(withText(R.string.test_cancel_description)));
+        assert(activityRule.getActivity().isFinishing());
     }
 
     @Test
-    public void testForwardNavigation() throws Exception {
-        onView(withId(R.id.testNavigationButton)).perform(ViewActions.click());
-        // TODO implement next screen
+    public void testAgeSwitch() throws Exception {
+        onView(withId(R.id.takeSampleAgeToggle)).perform(ViewActions.click());
+        onView(withId(R.id.takeSampleAgeToggle)).check(matches(withText(StringContains.containsString("adult"))));
     }
+
+    @Test
+    public void testNextNavigatesForward() throws Exception {
+        onView(withId(R.id.testNavigationButton)).perform(ViewActions.click());
+        onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_incubation_title)));
+    }
+
+
 
 }

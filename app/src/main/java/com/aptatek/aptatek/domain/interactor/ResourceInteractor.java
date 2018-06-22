@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.domain;
+package com.aptatek.aptatek.domain.interactor;
 
 import android.content.Context;
 import android.content.res.Resources;

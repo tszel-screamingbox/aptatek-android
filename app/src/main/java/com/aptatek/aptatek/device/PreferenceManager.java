@@ -18,6 +18,7 @@ public class PreferenceManager {
     public static final String PREF_INCUBATION_START = "aptatek.test.incubation.start";
     public static final String PREF_ENCRYPTED_PIN = "aptatek.encrypted.pin";
     public static final String PREF_FINGERPRINT_SCAN = "aptatek.fingerprint.scan";
+    public static final String KEY_PREF_PARENTAL_GATE_PASSED = "aptatek.encrypted.parental.passed";
 
     private final SharedPreferences sharedPreferences;
 
@@ -48,6 +49,14 @@ public class PreferenceManager {
 
     public boolean isFingerprintScanEnabled() {
         return sharedPreferences.getBoolean(PREF_FINGERPRINT_SCAN, false);
+    }
+
+    public void setParentalPassed(final boolean parentalPassed) {
+        sharedPreferences.edit().putBoolean(KEY_PREF_PARENTAL_GATE_PASSED, parentalPassed).apply();
+    }
+
+    public boolean isParentalPassed() {
+        return sharedPreferences.getBoolean(KEY_PREF_PARENTAL_GATE_PASSED, false);
     }
 
     public void clearPreference(final String key) {

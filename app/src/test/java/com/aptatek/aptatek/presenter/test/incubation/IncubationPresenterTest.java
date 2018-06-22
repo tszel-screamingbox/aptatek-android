@@ -1,6 +1,6 @@
 package com.aptatek.aptatek.presenter.test.incubation;
 
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.aptatek.domain.model.Countdown;
 import com.aptatek.aptatek.view.test.incubation.IncubationPresenter;

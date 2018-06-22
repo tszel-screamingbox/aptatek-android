@@ -5,7 +5,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.domain.model.AlertDialogModel;
 import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
+import com.aptatek.aptatek.view.dialog.AlertDialogDecisionListener;
+import com.aptatek.aptatek.view.dialog.AlertDialogDecisions;
+import com.aptatek.aptatek.view.dialog.AlertDialogFragment;
 import com.aptatek.aptatek.view.test.TestScreens;
 import com.aptatek.aptatek.view.test.base.TestBaseFragment;
 
@@ -14,8 +18,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class IncubationFragment extends TestBaseFragment<IncubationView, IncubationPresenter>
-    implements IncubationView {
+    implements IncubationView, AlertDialogDecisionListener {
 
+    public static final String TAG_ALERT_DIALOG = "com.aptatek.incubation.dialog";
     @Inject
     IncubationPresenter presenter;
 
@@ -59,9 +64,21 @@ public class IncubationFragment extends TestBaseFragment<IncubationView, Incubat
 
     @Override
     public boolean onNavigateForwardPressed() {
-        showScreen(TestScreens.INSERT_CASSETTE);
+        presenter.onClickNext();
 
         return true;
     }
 
+    @Override
+    public void showAlertDialog(@NonNull final AlertDialogModel model) {
+        AlertDialogFragment.create(model, this).show(getChildFragmentManager(), TAG_ALERT_DIALOG);
+    }
+
+    @Override
+    public void onDecision(@NonNull final AlertDialogDecisions decision) {
+        if (decision == AlertDialogDecisions.POSITIVE) {
+            presenter.stopIncubation();
+            showScreen(TestScreens.INSERT_CASSETTE);
+        }
+    }
 }

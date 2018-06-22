@@ -1,9 +1,9 @@
-package com.aptatek.aptatek.device;
+package com.aptatek.aptatek.device.formatter;
 
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.countdown.CountdownTimeFormatter;
 
 import java.text.SimpleDateFormat;

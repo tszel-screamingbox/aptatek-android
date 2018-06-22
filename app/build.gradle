@@ -155,6 +155,7 @@ dependencies {
     // AutoValue
     implementation autoValueDependencies.api
     annotationProcessor autoValueDependencies.compiler
+    annotationProcessor autoValueDependencies.parceler
 
     // IntentBuilder
     implementation activityStarterDependencies.activityStarter

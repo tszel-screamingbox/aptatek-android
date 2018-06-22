@@ -3,7 +3,7 @@ package com.aptatek.aptatek.view.test.tutorial;
 import android.support.annotation.StringRes;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.view.test.base.TestBasePresenter;
 import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
 

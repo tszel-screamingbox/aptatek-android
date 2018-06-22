@@ -3,7 +3,7 @@ package com.aptatek.aptatek.view.settings.reminder;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.domain.model.ReminderDay;

@@ -2,7 +2,7 @@ package com.aptatek.aptatek.presenter.test.takesample;
 
 import android.graphics.Bitmap;
 
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.VideoThumbnailInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.aptatek.view.test.takesample.TakeSamplePresenter;

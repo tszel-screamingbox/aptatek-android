@@ -1,6 +1,6 @@
 package com.aptatek.aptatek.presenter.test.remindersettings;
 
-import com.aptatek.aptatek.domain.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsAdapterItem;
 import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsPresenter;
