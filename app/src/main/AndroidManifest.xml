@@ -62,7 +62,7 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
-            android:name=".view.settings.reminder.ReminderSettings"
+            android:name=".view.settings.reminder.ReminderSettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 

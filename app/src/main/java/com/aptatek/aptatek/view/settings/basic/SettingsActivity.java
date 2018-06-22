@@ -1,5 +1,6 @@
 package com.aptatek.aptatek.view.settings.basic;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
-import com.aptatek.aptatek.view.settings.reminder.ReminderSettings;
+import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsActivity;
 
 import javax.inject.Inject;
 
@@ -17,7 +18,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresenter> {
+public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresenter> implements SettingsView {
+
+    public static Intent starter(@NonNull final Context context) {
+        return new Intent(context, SettingsActivity.class);
+    }
 
     @Inject
     SettingsPresenter presenter;
@@ -32,7 +37,7 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
 
     @Override
     public int getFrameLayoutId() {
-        return R.layout.activity_settings;
+        return 0;
     }
 
     @NonNull
@@ -45,6 +50,7 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
         ButterKnife.bind(this);
 
         toolbar.setNavigationIcon(R.drawable.ic_close);
@@ -55,9 +61,9 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
+
     @OnClick(R.id.textViewDailyReminders)
     public void onTextViewDailyRemindersClicked() {
-        final Intent intent = new Intent(this, ReminderSettings.class);
-        launchActivity(intent, false, Animation.FADE);
+        launchActivity(ReminderSettingsActivity.starter(this), false, Animation.FADE);
     }
 }

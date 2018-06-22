@@ -22,7 +22,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
 
     private ActivityComponent activityComponent;
 
-    public enum Animation {FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT}
+    public enum Animation { FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT }
 
     /**
      * Handles the component to resolve the injection

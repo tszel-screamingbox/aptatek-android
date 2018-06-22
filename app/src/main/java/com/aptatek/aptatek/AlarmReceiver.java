@@ -17,22 +17,28 @@ import javax.inject.Inject;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
+    private static final int NOTIFICATION_ID = 999;
+
     @Inject
     AlarmManager alarmManager;
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-        DaggerBroadcastReceiverComponent.builder().applicationModule(new ApplicationModule(((AptatekApplication) context.getApplicationContext()))).build().inject(this);
+        DaggerBroadcastReceiverComponent.builder()
+                .applicationModule(new ApplicationModule((AptatekApplication) context.getApplicationContext()))
+                .build()
+                .inject(this);
 
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
+        // TODO would-be-nice: domain interface NotificationBuilder which takes a domain model (NotificationModel) and creates the notification. Should be implemented in device layer
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "CHANNEL_ID")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(context.getString(R.string.reminder_notification_title))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
 
-        notificationManager.notify(999, mBuilder.build());
+        notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
         final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(intent.getLongExtra(Constants.REMINDER_TIMESTAMP_INTENT_KEY, 0));

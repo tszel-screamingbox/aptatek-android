@@ -16,13 +16,14 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.verify;
 
-public class ReminderSettingsPresenterTest {
+public class ReminderSettingsActivityPresenterTest {
 
     @Mock
     private ResourceInteractor resourceInteractor;
 
     @Mock
     private ReminderInteractor reminderInteractor;
+
     @Mock
     ReminderSettingsView view;
 
@@ -42,6 +43,6 @@ public class ReminderSettingsPresenterTest {
         ReminderSettingsAdapterItem reminderSettingsAdapterItem = new ReminderSettingsAdapterItem(5, "Friday", true, new ArrayList<>());
         reminderSettingsAdapterItem.getReminders().add(remindersAdapterItem);
         presenter.modifyReminder(reminderSettingsAdapterItem, remindersAdapterItem, 10, 30);
-        verify(view).alreadyHasReminderError();
+        verify(view).showAlreadyHasReminderError();
     }
 }

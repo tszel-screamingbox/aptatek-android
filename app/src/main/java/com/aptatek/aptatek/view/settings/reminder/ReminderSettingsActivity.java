@@ -1,5 +1,7 @@
 package com.aptatek.aptatek.view.settings.reminder;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,8 +21,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReminderSettings extends BaseActivity<ReminderSettingsView, ReminderSettingsPresenter>
+public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView, ReminderSettingsPresenter>
         implements ReminderSettingsView {
+
+    public static Intent starter(@NonNull final Context context) {
+        return new Intent(context, ReminderSettingsActivity.class);
+    }
 
     @Inject
     ReminderSettingsPresenter presenter;
@@ -78,7 +84,7 @@ public class ReminderSettings extends BaseActivity<ReminderSettingsView, Reminde
         adapter.setCallback(new ReminderSettingsAdapter.ReminderSettingsAdapterCallback() {
             @Override
             public void onAddReminderClicked(@NonNull final ReminderSettingsAdapterItem item) {
-                TimePickerDialog.starter(getTimePickerDialogCallback(item, null)).show(getSupportFragmentManager(), "");
+                TimePickerDialog.create(getTimePickerDialogCallback(item, null)).show(getSupportFragmentManager(), "");
             }
 
             @Override
@@ -88,7 +94,7 @@ public class ReminderSettings extends BaseActivity<ReminderSettingsView, Reminde
 
             @Override
             public void modifyReminderTime(@NonNull final ReminderSettingsAdapterItem reminderSettingsItem, final @NonNull RemindersAdapterItem reminderItem) {
-                TimePickerDialog.starter(reminderItem.getHour(), reminderItem.getMinute(), getTimePickerDialogCallback(reminderSettingsItem, reminderItem)).show(getSupportFragmentManager(), "");
+                TimePickerDialog.create(reminderItem.getHour(), reminderItem.getMinute(), getTimePickerDialogCallback(reminderSettingsItem, reminderItem)).show(getSupportFragmentManager(), "");
             }
         });
 
@@ -121,7 +127,7 @@ public class ReminderSettings extends BaseActivity<ReminderSettingsView, Reminde
     }
 
     @Override
-    public void alreadyHasReminderError() {
+    public void showAlreadyHasReminderError() {
         Toast.makeText(this, R.string.reminder_settings_already_has_reminder, Toast.LENGTH_LONG).show();
     }
 

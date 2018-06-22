@@ -27,7 +27,10 @@ public class ReminderInteractor {
     private final AlarmManager alarmManager;
 
     @Inject
-    public ReminderInteractor(final AptatekDatabase aptatekDatabase, final ReminderDayMapper reminderDayMapper, final ReminderMapper reminderMapper, final AlarmManager alarmManager) {
+    public ReminderInteractor(final AptatekDatabase aptatekDatabase,
+                              final ReminderDayMapper reminderDayMapper,
+                              final ReminderMapper reminderMapper,
+                              final AlarmManager alarmManager) {
         this.reminderDayDao = aptatekDatabase.getReminderDayDao();
         this.reminderDayMapper = reminderDayMapper;
         this.reminderMapper = reminderMapper;
@@ -62,20 +65,25 @@ public class ReminderInteractor {
         return Completable.fromAction(() -> reminderDao.updateReminder(id, hour, minute));
     }
 
+    public Completable updateReminder(final int weekDay, final int hour, final int minute) {
+        return Completable.fromAction(() ->
+                alarmManager.updateReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute)
+        );
+    }
+
     public Completable deleteReminder(final String id) {
         return Completable.fromAction(() -> reminderDao.deleteReminder(id));
     }
 
-    public void setReminder(final int weekDay, final int hour, final int minute) {
-        alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute);
+    public Completable deleteReminder(final int weekDay, final int hour, final int minute) {
+        return Completable.fromAction(() ->
+                alarmManager.deleteReminder(weekDay + hour + minute)
+        );
     }
 
-    public void deleteReminder(final int weekDay, final int hour, final int minute) {
-        alarmManager.deleteReminder(weekDay + hour + minute);
-    }
-
-    public void updateReminder(final int weekDay, final int hour, final int minute) {
-        alarmManager.updateReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute);
+    public Completable setReminder(final int weekDay, final int hour, final int minute) {
+        return Completable.fromAction(() ->
+                alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute));
     }
 
     private Observable<List<Reminder>> listReminders(final int weekDay) {

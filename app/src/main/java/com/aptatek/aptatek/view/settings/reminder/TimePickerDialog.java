@@ -24,14 +24,15 @@ public class TimePickerDialog extends DialogFragment {
         void delete();
     }
 
-    public static TimePickerDialog starter(@NonNull final TimePickerDialogCallback callback) {
+    public static TimePickerDialog create(@NonNull final TimePickerDialogCallback callback) {
         final TimePickerDialog dialog = new TimePickerDialog();
         dialog.callback = callback;
         return dialog;
     }
 
-    public static TimePickerDialog starter(final int hour, final int minute, @NonNull final TimePickerDialogCallback callback) {
+    public static TimePickerDialog create(final int hour, final int minute, @NonNull final TimePickerDialogCallback callback) {
         final Bundle bundle = new Bundle();
+        // TODO Extract from Constants, they could be private final constants instead. No need to expose them.
         bundle.putInt(Constants.TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY, hour);
         bundle.putInt(Constants.TIME_PCIKER_DIALOG_MINUTE_ARGUMENT_KEY, minute);
 
@@ -76,6 +77,7 @@ public class TimePickerDialog extends DialogFragment {
         }
 
         buttonDone.setOnClickListener(v -> {
+            // TODO this IF could be simpler: move callback != null outside
             if (callback != null && getArguments() == null) {
                 callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 dismiss();
@@ -89,6 +91,7 @@ public class TimePickerDialog extends DialogFragment {
         });
 
         buttonDelete.setOnClickListener(v -> {
+            // TODO this IF could be simpler: move callback != null outside
             if (callback != null && getArguments() == null) {
                 dismiss();
             } else if (callback != null && getArguments() != null) {

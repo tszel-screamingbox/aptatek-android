@@ -12,8 +12,8 @@ import javax.inject.Inject;
 
 public final class AlarmManager {
 
-    private android.app.AlarmManager systemAlarmManager;
-    private Context context;
+    private final android.app.AlarmManager systemAlarmManager;
+    private final Context context;
 
     @Inject
     public AlarmManager(@ApplicationContext final Context context) {

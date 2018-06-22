@@ -11,7 +11,7 @@
   * When you start a new task create a new branch from Development
   * Before Pull Request always merge Development to your branch and resolve all conlficts
   * When you receive a feedback to your PR handle it as a high priority task
-  * After an accepted PR cancel your source branch
+  * After an accepted PR delete your source branch
   * We use CircleCI for continous integration
   
 ### Conventions

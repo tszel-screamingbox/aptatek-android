@@ -10,6 +10,7 @@ import javax.inject.Inject;
 
 import ix.Ix;
 
+// TODO figure out a base class / interface for these mappers.
 public class ReminderDayMapper {
 
     @Inject

@@ -12,13 +12,15 @@ import android.widget.TextView;
 import com.aptatek.aptatek.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// TODO base adapter which utilizes DiffUtil!
 public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.RemindersViewHolder> {
 
-    private ArrayList<RemindersAdapterItem> data = new ArrayList<>();
+    private final List<RemindersAdapterItem> data = new ArrayList<>();
 
     @Nullable
     private ReminderAdapterCallback callback;
@@ -27,7 +29,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         this.callback = callback;
     }
 
-    public void setData(final ArrayList<RemindersAdapterItem> mData) {
+    public void setData(final List<RemindersAdapterItem> mData) {
         data.clear();
         data.addAll(mData);
         notifyDataSetChanged();
@@ -49,6 +51,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         return data.size();
     }
 
+    // TODO static/dedicated class would be nice(r), dedicated class could go in a separate package (adapter)
     class RemindersViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.textViewTime)
@@ -80,6 +83,7 @@ public class RemindersAdapter extends RecyclerView.Adapter<RemindersAdapter.Remi
         }
     }
 
+    // TODO move outside
     interface ReminderAdapterCallback {
         void modifyReminderTime(@NonNull RemindersAdapterItem item);
     }

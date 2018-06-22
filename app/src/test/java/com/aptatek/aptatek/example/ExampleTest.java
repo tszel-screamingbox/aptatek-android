@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 
+// TODO english comments?
+
 /**
  * @test.layer melyik retegebe tartozik az arhitekturanak
  * @test.feature melyik featurehoz tartozik a test

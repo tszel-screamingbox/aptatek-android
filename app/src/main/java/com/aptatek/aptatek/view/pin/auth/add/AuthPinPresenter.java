@@ -15,7 +15,6 @@ import timber.log.Timber;
 
 class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
 
-
     private final AuthInteractor authInteractor;
     private final DeviceHelper deviceHelper;
     private final ResourceInteractor resourceInteractor;
@@ -55,7 +54,7 @@ class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
             }
 
             @Override
-            public void onErrorOccurred(String message) {
+            public void onErrorOccurred(final String message) {
                 ifViewAttached(view -> view.onInvalidFingerprintDetected(message));
             }
         });

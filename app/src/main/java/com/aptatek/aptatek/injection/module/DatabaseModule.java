@@ -29,14 +29,14 @@ public class DatabaseModule {
     }
 
     @Provides
-    public SafeHelperFactory provideSafeHelperFactory(@Named("databasePassPhrase") char[] pass) {
+    public SafeHelperFactory provideSafeHelperFactory(@Named("databasePassPhrase") final char[] pass) {
         return new SafeHelperFactory(pass);
     }
 
     @Provides
-    public AptatekDatabase provideDatabase(@Named("databaseName") String databaseName,
-                                           @ApplicationContext Context context,
-                                           SafeHelperFactory safeHelperFactory) {
+    public AptatekDatabase provideDatabase(@Named("databaseName") final String databaseName,
+                                           @ApplicationContext final Context context,
+                                           final SafeHelperFactory safeHelperFactory) {
         return AptatekDatabase.getInstance(databaseName, context, safeHelperFactory);
     }
 

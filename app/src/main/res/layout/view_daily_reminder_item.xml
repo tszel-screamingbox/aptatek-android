@@ -20,7 +20,7 @@
         android:textColor="@color/reminder_settings_day_color_selector"
         android:textSize="@dimen/font.size.xbig"
         app:layout_constraintBottom_toBottomOf="@+id/switchActivate"
-        app:layout_constraintLeft_toRightOf="@+id/switchActivate"
+        app:layout_constraintStart_toEndOf="@+id/switchActivate"
         app:layout_constraintTop_toTopOf="@id/switchActivate" />
 
     <ImageView
@@ -31,7 +31,7 @@
         android:src="@drawable/ic_add"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/textViewDayName"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/textViewDayName" />
 
     <android.support.v7.widget.RecyclerView

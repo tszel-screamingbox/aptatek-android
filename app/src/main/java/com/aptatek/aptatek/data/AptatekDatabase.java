@@ -7,17 +7,16 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.aptatek.aptatek.data.dao.ReadingDao;
 import com.aptatek.aptatek.data.dao.ReminderDao;
 import com.aptatek.aptatek.data.dao.ReminderDayDao;
-import com.aptatek.aptatek.data.model.ReadingDataModel;
-import com.aptatek.aptatek.data.model.ReminderDayDataModel;
 import com.aptatek.aptatek.data.model.ReminderDataModel;
+import com.aptatek.aptatek.data.model.ReminderDayDataModel;
 import com.commonsware.cwac.saferoom.SafeHelperFactory;
 
-import java.util.concurrent.Executors;
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
 
-@Database(entities = {ReadingDataModel.class, ReminderDayDataModel.class, ReminderDataModel.class}, version = 1)
+@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class}, version = 1)
 public abstract class AptatekDatabase extends RoomDatabase {
 
     private static volatile AptatekDatabase instance;
@@ -30,8 +29,6 @@ public abstract class AptatekDatabase extends RoomDatabase {
         }
         return instance;
     }
-
-    public abstract ReadingDao getReadingDao();
 
     public abstract ReminderDao getReminderDao();
 
@@ -47,10 +44,13 @@ public abstract class AptatekDatabase extends RoomDatabase {
                 .openHelperFactory(safeHelperFactory)
                 .addCallback(new RoomDatabase.Callback() {
                     @Override
-                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                    public void onCreate(@NonNull final SupportSQLiteDatabase db) {
                         super.onCreate(db);
-                        Executors.newSingleThreadScheduledExecutor().execute(() ->
-                                getInstance(databaseName, context, safeHelperFactory).getReminderDayDao().insertAll(ReminderDayDataModel.creator()));
+
+                            Completable.fromAction(() ->
+                                    getInstance(databaseName, context, safeHelperFactory).getReminderDayDao()
+                                        .insertAll(ReminderDayDataModel.creator())
+                            ).subscribeOn(Schedulers.newThread()).subscribe();
                     }
                 })
                 .build();

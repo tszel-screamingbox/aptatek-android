@@ -60,7 +60,7 @@ ext {
             dataFactory                 : '0.8',
 
             // ActivityStarter
-            activityStarter                 : '1.11-beta',
+            activityStarter             : '1.11-beta',
 
             // Testing
             junit                       : '4.12',
@@ -89,7 +89,6 @@ ext {
     architectureComponentsDependencies = [
             extensions      : "android.arch.lifecycle:extensions:${versions.lifecycle}",
             compiler        : "android.arch.lifecycle:compiler:${versions.lifecycle}",
-            work        : "android.arch.work:work-runtime:${versions.work}"
     ]
 
     mvpDependencies = [

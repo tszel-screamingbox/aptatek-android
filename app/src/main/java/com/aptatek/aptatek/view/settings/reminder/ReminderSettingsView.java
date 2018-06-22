@@ -17,5 +17,5 @@ public interface ReminderSettingsView extends MvpView {
 
     void modifyReminder(@NonNull ReminderSettingsAdapterItem item);
 
-    void alreadyHasReminderError();
+    void showAlreadyHasReminderError();
 }

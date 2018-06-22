@@ -2,6 +2,7 @@ package com.aptatek.aptatek.view.settings.reminder;
 
 import java.util.Objects;
 
+// TODO refactor to IMMUTABLE. Use AutoValue
 public class RemindersAdapterItem {
     private String id;
     private String time;
@@ -58,16 +59,15 @@ public class RemindersAdapterItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         final RemindersAdapterItem that = (RemindersAdapterItem) o;
-        return hour == that.hour &&
-                minute == that.minute &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(time, that.time) &&
-                Objects.equals(active, that.active);
+        return hour == that.hour
+                && minute == that.minute
+                && Objects.equals(id, that.id)
+                && Objects.equals(time, that.time)
+                && Objects.equals(active, that.active);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, time, active, hour, minute);
     }
 }

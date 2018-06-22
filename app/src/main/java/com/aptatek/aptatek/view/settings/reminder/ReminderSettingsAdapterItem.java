@@ -3,6 +3,7 @@ package com.aptatek.aptatek.view.settings.reminder;
 import java.util.ArrayList;
 import java.util.Objects;
 
+// TODO make it IMMUTABLE
 public class ReminderSettingsAdapterItem {
     private String nameOfDay;
     private ArrayList<RemindersAdapterItem> reminders;

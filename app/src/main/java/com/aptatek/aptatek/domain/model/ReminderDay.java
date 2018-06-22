@@ -13,7 +13,7 @@ public abstract class ReminderDay {
 
     public abstract List<Reminder> getReminders();
 
-    public static ReminderDay.Builder builder(){
+    public static ReminderDay.Builder builder() {
         return new AutoValue_ReminderDay.Builder();
     }
 

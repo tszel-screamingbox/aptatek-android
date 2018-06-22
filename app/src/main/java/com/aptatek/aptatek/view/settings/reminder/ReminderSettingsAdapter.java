@@ -15,15 +15,17 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.util.Constants;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+// TODO base class with DiffUtils
 class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapter.ReminderSettingsViewHolder> {
 
-    private ArrayList<ReminderSettingsAdapterItem> data = new ArrayList<>();
+    private final List<ReminderSettingsAdapterItem> data = new ArrayList<>();
 
     @Nullable
     private ReminderSettingsAdapterCallback callback;
@@ -32,7 +34,7 @@ class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapt
     ReminderSettingsAdapter() {
     }
 
-    public void setData(@NonNull final ArrayList<ReminderSettingsAdapterItem> mData) {
+    public void setData(@NonNull final List<ReminderSettingsAdapterItem> mData) {
         data.clear();
         data.addAll(mData);
         notifyDataSetChanged();
@@ -43,7 +45,7 @@ class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapt
         notifyItemChanged(index);
     }
 
-    public void setCallback(@NonNull final ReminderSettingsAdapterCallback callback) {
+    public void setCallback(@Nullable final ReminderSettingsAdapterCallback callback) {
         this.callback = callback;
     }
 
@@ -63,6 +65,7 @@ class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapt
         return data.size();
     }
 
+    // TODO static/dedicated class -> adapter package
     class ReminderSettingsViewHolder extends RecyclerView.ViewHolder implements RemindersAdapter.ReminderAdapterCallback {
 
         @BindView(R.id.textViewDayName)
@@ -77,7 +80,7 @@ class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapt
         @BindView(R.id.recyclerViewReminders)
         RecyclerView recyclerViewReminders;
 
-        private RemindersAdapter adapter = new RemindersAdapter();
+        private final RemindersAdapter adapter = new RemindersAdapter();
 
         ReminderSettingsViewHolder(final View itemView) {
             super(itemView);
@@ -123,6 +126,7 @@ class ReminderSettingsAdapter extends RecyclerView.Adapter<ReminderSettingsAdapt
         }
     }
 
+    // TODO move outside
     interface ReminderSettingsAdapterCallback {
         void onAddReminderClicked(@NonNull ReminderSettingsAdapterItem item);
 

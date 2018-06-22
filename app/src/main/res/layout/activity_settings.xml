@@ -8,6 +8,8 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
+    <!-- TODO vertical constraints for ALL VIEWS -->
+
     <TextView
         android:id="@+id/textViewTitle"
         android:layout_width="match_parent"

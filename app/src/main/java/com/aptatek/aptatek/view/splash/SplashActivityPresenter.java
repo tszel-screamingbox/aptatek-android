@@ -18,6 +18,7 @@ class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView> {
                             final AptatekDatabase aptatekDatabase) {
         this.keyStoreManager = keyStoreManager;
         //TODO hotfix, find the exact cause of issue
+        // TODO add disposable and in switchToNextActivity, check if stream is completed. Don't navigate while it's still doing its work.
         aptatekDatabase.getReminderDayDao()
                 .getReminderDays().observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

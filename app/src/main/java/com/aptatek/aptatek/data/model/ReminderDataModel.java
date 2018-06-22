@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "reminders")
 public class ReminderDataModel {
 
+    // TODO test if it can work: make if final and init it in ctor.
     @PrimaryKey
     @NonNull
     private String id;
@@ -28,7 +29,7 @@ public class ReminderDataModel {
         return weekDay;
     }
 
-    public void setWeekDay(int weekDay) {
+    public void setWeekDay(final int weekDay) {
         this.weekDay = weekDay;
     }
 
@@ -37,7 +38,7 @@ public class ReminderDataModel {
         return id;
     }
 
-    public void setId(@NonNull String id) {
+    public void setId(@NonNull final String id) {
         this.id = id;
     }
 
@@ -45,7 +46,7 @@ public class ReminderDataModel {
         return hour;
     }
 
-    public void setHour(int hour) {
+    public void setHour(final int hour) {
         this.hour = hour;
     }
 
@@ -53,7 +54,7 @@ public class ReminderDataModel {
         return minute;
     }
 
-    public void setMinute(int minute) {
+    public void setMinute(final int minute) {
         this.minute = minute;
     }
 }
