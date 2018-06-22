@@ -13,37 +13,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <android.support.constraint.Guideline
         android:id="@+id/halfGuide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.32" />
+        app:layout_constraintGuide_percent="0.37" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/graph.height"
         android:alpha="0.2"
         android:background="@color/applicationBlue"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/bottomChart"
         app:layout_constraintTop_toBottomOf="@id/halfGuide" />
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
+    <com.yarolegovich.discretescrollview.DiscreteScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/bottomChart"
+        android:layout_height="@dimen/graph.height"
         app:layout_constraintTop_toBottomOf="@id/halfGuide" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/bottomChart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
 
     <TextView
         style="@style/Header.Text"

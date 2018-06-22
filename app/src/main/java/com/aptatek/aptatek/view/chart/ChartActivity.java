@@ -7,9 +7,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.data.ChartVM;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
-import com.github.mikephil.charting.charts.LineChart;
+import com.aptatek.aptatek.view.chart.adapter.ChartAdapter;
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,23 +28,31 @@ public class ChartActivity extends BaseActivity<ChartActivityView, ChartActivity
     @Inject
     ChartActivityPresenter presenter;
 
+    @Inject
+    ChartAdapter chartAdapter;
+
+
+    @BindView(R.id.scrollView)
+    DiscreteScrollView bubbleScrollView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
         ButterKnife.bind(this);
-    }
 
-    private Bitmap getBitmap(final int drawableRes) {
-        final Drawable drawable = getResources().getDrawable(drawableRes);
-        final Canvas canvas = new Canvas();
-        final Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(bitmap);
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        drawable.draw(canvas);
+        List<ChartVM> chartVMList = new ArrayList<>();
+        for (int i = 0; i < 40; i++) {
+            chartVMList.add(new ChartVM(null));
+        }
 
-        return bitmap;
+        chartAdapter.setItems(chartVMList);
+
+        bubbleScrollView.setAdapter(chartAdapter);
+        bubbleScrollView.setSlideOnFling(true);
+        bubbleScrollView.setOverScrollEnabled(true);
+        bubbleScrollView.setOffscreenItems(2);
+        bubbleScrollView.setSlideOnFlingThreshold(700);
     }
 
     @Override

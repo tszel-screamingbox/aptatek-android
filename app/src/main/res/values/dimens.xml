@@ -29,9 +29,10 @@
     <dimen name="general.distance.xlarge">110dp</dimen>
     <dimen name="general.distance.xxlarge">130dp</dimen>
     <dimen name="general.distance.xxxlarge">180dp</dimen>
+    <dimen name="general.distance.enorme">250dp</dimen>
 
 
-    <!-- Graph-->
+    <!-- Chart-->
     <dimen name="graph.bubble.margin">12dp</dimen>
     <dimen name="graph.bubble.margins.side">22dp</dimen>
     <dimen name="graph.bubble.size.big">82dp</dimen>
@@ -42,6 +43,7 @@
     <dimen name="graph.bubble.stroke.mini">3dp</dimen>
     <dimen name="graph.bubble.cross.side">33dp</dimen>
     <dimen name="graph.bubble.cross.bottom">-60dp</dimen>
+    <dimen name="graph.height">220dp</dimen>
 
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>

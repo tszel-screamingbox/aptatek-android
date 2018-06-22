@@ -55,7 +55,10 @@ ext {
             dataFactory                 : '0.8',
 
             // ActivityStarter
-            activityStarter                 : '1.11-beta',
+            activityStarter             : '1.11-beta',
+
+            // DiscreteScrollView
+            discreteScrollView          : '1.4.7',
 
             // Testing
             junit                       : '4.12',
@@ -141,6 +144,10 @@ ext {
     activityStarterDependencies = [
             activityStarter : "com.marcinmoskala.activitystarter:activitystarter:${versions.activityStarter}",
             apt : "com.marcinmoskala.activitystarter:activitystarter-compiler:${versions.activityStarter}",
+    ]
+
+    scrollView = [
+            discreteScrollView : "com.yarolegovich:discrete-scrollview:${versions.discreteScrollView}",
     ]
 
     testDependencies = [
