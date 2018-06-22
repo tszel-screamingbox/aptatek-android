@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/parentalWelcomeTitle"
+        style="@style/Parental.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/parental.welcome.title"
+        app:layout_constraintBottom_toTopOf="@+id/parentalWelcomeDescription"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/guideTop"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/parentalWelcomeDescription"
+        style="@style/General.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/general.distance.xxsmall"
+        android:layout_marginStart="@dimen/general.distance.xxsmall"
+        android:text="@string/parental.welcome.description"
+        app:layout_constraintBottom_toTopOf="@+id/parentalBirthDate"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/parentalWelcomeTitle" />
+
+    <EditText
+        android:id="@+id/parentalBirthDate"
+        style="@style/Parental.Input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/general.distance.mini"
+        android:layout_marginEnd="@dimen/general.distance.xxsmall"
+        android:layout_marginStart="@dimen/general.distance.xxsmall"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/parentalAge"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/guideTop"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="11/11/1984" />
+
+    <EditText
+        android:id="@+id/parentalAge"
+        style="@style/Parental.Input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/general.distance.mini"
+        android:layout_marginEnd="@dimen/general.distance.xxsmall"
+        android:layout_marginStart="@dimen/general.distance.xxsmall"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/guideKeypad"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/parentalBirthDate"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="11" />
+
+    <Button
+        android:id="@+id/parentalButton"
+        style="@style/General.Green.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/general.distance.xxsmall"
+        android:layout_marginStart="@dimen/general.distance.xxsmall"
+        android:layout_marginTop="@dimen/general.distance.mini"
+        app:layout_constraintBottom_toTopOf="@+id/guideKeypad"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/parentalBirthDate"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="@string/parental.welcome.enter.birthday" />
+
+    <TextView
+        android:id="@+id/parentalDisclaimer"
+        style="@style/General.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/parental.welcome.age.disclaimer"
+        android:textSize="@dimen/font.size.normal"
+        app:layout_constraintBottom_toTopOf="@+id/guideBottom"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintStart_toStartOf="@+id/guideStart" />
+
+    <include
+        layout="@layout/dial_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideKeypad" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideKeypad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.07" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.96" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.96" />
+
+</android.support.constraint.ConstraintLayout>

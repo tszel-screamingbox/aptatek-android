@@ -54,7 +54,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     protected void onStart() {
         super.onStart();
 
-        presenter.showProperScreen();
+        presenter.showProperScreen(getActiveBaseFragment() != null);
     }
 
     @Override
