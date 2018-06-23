@@ -25,8 +25,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/graph.height"
-        android:alpha="0.2"
-        android:background="@color/applicationBlue"
+        android:background="@color/chartBackrgroundBlue"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/halfGuide" />
 

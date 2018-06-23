@@ -2,10 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bubbleLayout"
     android:layout_width="@dimen/general.distance.xlarge"
-    android:background="#ffff00"
     android:layout_height="@dimen/graph.height"
     android:gravity="center_horizontal">
 
+    <TextureView
+        android:id="@+id/textureView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <TextView
         android:id="@+id/infoText"
