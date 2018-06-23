@@ -9,7 +9,6 @@ class FingerprintActivityPresenter extends MvpBasePresenter<FingerprintActivityV
 
     private final PreferenceManager sharedPreferencesManager;
 
-
     @Inject
     FingerprintActivityPresenter(final PreferenceManager sharedPreferencesManager) {
         this.sharedPreferencesManager = sharedPreferencesManager;

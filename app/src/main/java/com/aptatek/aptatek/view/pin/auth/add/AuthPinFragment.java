@@ -19,7 +19,6 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Inject
     AuthPinPresenter presenter;
 
-
     @Override
     public String getTitle() {
         return null;

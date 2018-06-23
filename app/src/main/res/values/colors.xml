@@ -19,4 +19,6 @@
     <color name="chartBackrgroundBlue">#DBF9FE</color>
 
     <color name="dialButtonGrey">#8034414A</color>
+<color name="applicationGainsBoroGray">#F2F2F2</color>
+    <color name="applicationTimePickerSelector">#33b5e5</color>
 </resources>

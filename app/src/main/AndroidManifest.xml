@@ -28,6 +28,12 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
+            android:name=".view.settings.basic.SettingsActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
             android:name=".view.fingerprint.FingerprintActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
@@ -61,6 +67,11 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
+            android:name=".view.settings.reminder.ReminderSettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
             android:name=".view.test.TestActivity"
             android:parentActivityName=".view.main.MainActivity"
             android:screenOrientation="portrait"
@@ -76,7 +87,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen"/>
 
-
+        <receiver android:name=".AlarmReceiver" />
         <service android:name=".view.test.incubation.IncubationReminderService" />
     </application>
 

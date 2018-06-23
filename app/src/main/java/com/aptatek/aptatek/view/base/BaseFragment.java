@@ -22,7 +22,6 @@ import butterknife.ButterKnife;
 
 public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>> extends MvpFragment<V, P> implements IFragmentFactory {
 
-
     private FragmentComponent fragmentComponent;
 
     @Override

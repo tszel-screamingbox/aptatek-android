@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Objects;
 
+// TODO why not in domain?
 public class PinCode {
 
     private final char[] passwordChars;

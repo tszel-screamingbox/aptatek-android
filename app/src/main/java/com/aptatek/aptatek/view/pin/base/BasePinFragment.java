@@ -15,6 +15,7 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.data.PinCode;
 import com.aptatek.aptatek.view.base.BaseFragment;
 
+import java.io.UnsupportedEncodingException;
 import java.util.concurrent.TimeUnit;
 
 import activitystarter.ActivityStarter;
@@ -23,12 +24,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 public abstract class BasePinFragment extends BaseFragment {
 
     protected static final int PIN_LENGTH = 6;
     private static final int DELAY_IN_MILLISEC = 500;
-
 
     private String pin = "";
 
@@ -59,7 +60,7 @@ public abstract class BasePinFragment extends BaseFragment {
     }
 
     protected void fillCircle(final int resId, final AnimationCallback callback) {
-        fillCircle(PIN_LENGTH, resId);
+        innerFillCircle(PIN_LENGTH, resId);
         Observable.empty().delay(DELAY_IN_MILLISEC, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
@@ -83,11 +84,15 @@ public abstract class BasePinFragment extends BaseFragment {
 
         final Button button = v.findViewById(v.getId());
         pin = pin + button.getText().toString();
-        fillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
+        innerFillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
 
         if (pin.length() == PIN_LENGTH) {
-            final PinCode pinCode = new PinCode(pin.getBytes());
-            finishedTyping(pinCode);
+            try {
+                final PinCode pinCode = new PinCode(pin.getBytes("UTF-8"));
+                finishedTyping(pinCode);
+            } catch (UnsupportedEncodingException e) {
+                Timber.e(e);
+            }
         }
     }
 
@@ -95,7 +100,7 @@ public abstract class BasePinFragment extends BaseFragment {
     public void onDeleteButtonClicked() {
         if (pin.length() > 0) {
             pin = pin.substring(0, pin.length() - 1);
-            fillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
+            innerFillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
         }
     }
 
@@ -106,7 +111,7 @@ public abstract class BasePinFragment extends BaseFragment {
         }
     }
 
-    private void fillCircle(final int untilAt, final int resId) {
+    private void innerFillCircle(final int untilAt, final int resId) {
         clearCircles();
         for (int i = 0; i < untilAt; i++) {
             final ImageView imageView = (ImageView) pinCircleConstrainLayout.getChildAt(i);

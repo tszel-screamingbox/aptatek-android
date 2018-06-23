@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="@dimen/general.distance.small" />
+    <solid android:color="@color/applicationBlack" />
+    <padding
+        android:bottom="@dimen/general.distance.xmini"
+        android:left="@dimen/general.distance.mini"
+        android:right="@dimen/general.distance.mini"
+        android:top="@dimen/general.distance.xmini" />
+</shape>

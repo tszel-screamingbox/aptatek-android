@@ -15,7 +15,7 @@ public class PreferenceManager {
         static final String SHARED_PREFERENCES_NAME = "com.aptatek.aptatek";
     }
 
-    public static final String PREF_INCUBATION_START = "aptatek.test.incubation.starter";
+    public static final String PREF_INCUBATION_START = "aptatek.test.incubation.start";
     public static final String PREF_ENCRYPTED_PIN = "aptatek.encrypted.pin";
     public static final String PREF_FINGERPRINT_SCAN = "aptatek.fingerprint.scan";
     public static final String KEY_PREF_PARENTAL_GATE_PASSED = "aptatek.encrypted.parental.passed";

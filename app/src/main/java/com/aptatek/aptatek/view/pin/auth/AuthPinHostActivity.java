@@ -16,7 +16,6 @@ public class AuthPinHostActivity extends BaseRootFrameActivity<AuthPinHostActivi
     @Inject
     AuthPinHostActivityPresenter presenter;
 
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

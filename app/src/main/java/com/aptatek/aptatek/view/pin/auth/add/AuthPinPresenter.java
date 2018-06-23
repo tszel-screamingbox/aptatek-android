@@ -15,7 +15,6 @@ import timber.log.Timber;
 
 class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
 
-
     private final AuthInteractor authInteractor;
     private final DeviceHelper deviceHelper;
     private final ResourceInteractor resourceInteractor;
