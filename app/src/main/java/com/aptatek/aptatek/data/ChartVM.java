@@ -26,13 +26,19 @@ public class ChartVM implements IListTypeProvider {
     private void initFromDB(final CubeData cubeData) {
         this.id = 0;
         this.date = "1\nJan";
-        this.maxPhenylalanineLevel = 420;
         this.unit = "5.6 mg/dl";
         this.numberOfMeasures = 2;
 
         Random r = new Random();
         int i = r.nextInt(100);
         this.bubbleYAxis = (float) i / 100;
+
+        if (i < 50) {
+            this.maxPhenylalanineLevel = -1;
+        } else {
+            this.maxPhenylalanineLevel = 450;
+        }
+
         this.startLineYAxis = 80;
         this.endLineYAxis = 80;
     }

@@ -62,12 +62,18 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
     @Override
     public void bind(final ChartVM data) {
         chartVM = data;
-        bubbleY = (viewHeight - bubbleHeight) * chartVM.getBubbleYAxis();
         itemTextureView.setSurfaceTextureListener(this);
+
+        bubbleY = (viewHeight - bubbleHeight) * chartVM.getBubbleYAxis();
+
         infoTextView.setText(data.getDate());
         infoTextView.setY(bubbleY);
         infoTextView.setX(bubbleX);
         infoTextView.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
+
+        if (data.getMaxPhenylalanineLevel() < 0) {
+            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
+        }
     }
 
 
@@ -76,22 +82,37 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         this.onItemClickedListener = onItemClickedListener;
     }
 
-    @Override
-    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        final Canvas canvas = itemTextureView.lockCanvas();
+    public void hideDetails() {
+        infoTextView.animate().scaleX(0.9f).scaleY(0.9f)
+                .setDuration(200)
+                .start();
+    }
 
+    public void showDetails() {
+        infoTextView.animate().scaleX(2f).scaleY(2f)
+                .setDuration(200)
+                .start();
+    }
+
+    @Override
+    public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height) {
+        final Canvas canvas = itemTextureView.lockCanvas();
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         canvas.drawColor(context.getResources().getColor(R.color.chartBackrgroundBlue));
         final float middleY = bubbleY + bubbleHeight / 2;
-
         final Paint linePaint = new Paint();
         linePaint.setColor(context.getResources().getColor(R.color.applicationBlue));
         linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         linePaint.setStrokeWidth(STROKE_WIDTH);
         linePaint.setPathEffect(new DashPathEffect(new float[]{30, 15, 30, 15}, 0));
 
-        canvas.drawLine(0, chartVM.getStartLineYAxis(), middleX, middleY, linePaint);
-        canvas.drawLine(middleX, middleY, viewWidth, chartVM.getEndLineYAxis(), linePaint);
+        if (chartVM.getStartLineYAxis() >= 0) {
+            canvas.drawLine(0, chartVM.getStartLineYAxis(), middleX, middleY, linePaint);
+        }
+
+        if (chartVM.getEndLineYAxis() >= 0) {
+            canvas.drawLine(middleX, middleY, viewWidth, chartVM.getEndLineYAxis(), linePaint);
+        }
         itemTextureView.unlockCanvasAndPost(canvas);
     }
 

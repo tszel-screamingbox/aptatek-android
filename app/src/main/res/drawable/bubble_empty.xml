@@ -3,14 +3,14 @@
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/graph.bubble.radius" />
 
-            <solid android:color="@color/applicationBlue" />
+            <solid android:color="@color/chartBubbleEmpty" />
             <size
                 android:width="@dimen/graph.bubble.size.big"
                 android:height="@dimen/graph.bubble.size.big" />
 
             <stroke
                 android:width="@dimen/graph.bubble.stroke.small"
-                android:color="@color/applicationWhite" />
+                android:color="@color/transparent" />
 
         </shape>
     </item>
