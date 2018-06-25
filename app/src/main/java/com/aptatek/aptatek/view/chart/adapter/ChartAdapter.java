@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aptatek.aptatek.data.ChartVM;
+import com.aptatek.aptatek.device.animation.AnimationHelper;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 import com.aptatek.aptatek.view.base.list.adapter.BaseAdapter;
 import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
@@ -18,6 +19,8 @@ public class ChartAdapter extends BaseAdapter<ChartVM> {
 
     private ChartAdapterViewHolder.OnItemClickedListener onItemClickedListener;
 
+    @Inject
+    AnimationHelper animationHelper;
 
     @Inject
     ChartAdapter(@ApplicationContext final Context context) {
@@ -29,7 +32,7 @@ public class ChartAdapter extends BaseAdapter<ChartVM> {
     public ChartAdapterViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         final View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
 
-        final ChartAdapterViewHolder chartAdapterViewHolder = new ChartAdapterViewHolder(view, context);
+        final ChartAdapterViewHolder chartAdapterViewHolder = new ChartAdapterViewHolder(view, context, animationHelper);
         prepareItemOnClick(chartAdapterViewHolder);
         return chartAdapterViewHolder;
     }

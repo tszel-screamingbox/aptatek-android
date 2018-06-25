@@ -8,6 +8,7 @@ import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.data.AptatekDatabase;
 import com.aptatek.aptatek.device.DeviceHelper;
 import com.aptatek.aptatek.device.PreferenceManager;
+import com.aptatek.aptatek.device.animation.AnimationHelper;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.injection.module.DatabaseModule;
@@ -23,6 +24,8 @@ public interface ApplicationComponent {
 
     // Application level injections should come here
     void inject(AptatekApplication application);
+
+    AnimationHelper animationHelper();
 
     ResourceInteractor resourceInteractor();
 

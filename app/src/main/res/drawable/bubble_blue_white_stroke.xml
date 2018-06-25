@@ -2,13 +2,16 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/graph.bubble.radius.small" />
-            <solid android:color="@color/chartBubbleEmpty" />
+
+            <solid android:color="@color/applicationBlue" />
             <size
                 android:width="@dimen/graph.bubble.size"
                 android:height="@dimen/graph.bubble.size" />
+
             <stroke
                 android:width="@dimen/graph.bubble.stroke.small"
-                android:color="@color/transparent" />
+                android:color="@color/applicationWhite" />
+
         </shape>
     </item>
 </layer-list>

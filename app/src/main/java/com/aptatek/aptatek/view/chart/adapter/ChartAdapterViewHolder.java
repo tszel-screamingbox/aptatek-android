@@ -7,6 +7,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.SurfaceTexture;
+import android.support.constraint.ConstraintLayout;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.data.ChartVM;
+import com.aptatek.aptatek.device.animation.AnimationHelper;
 import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
 
 import butterknife.BindView;
@@ -24,17 +26,25 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     private static final float STROKE_WIDTH = 10f;
 
-    @BindView(R.id.infoText)
-    TextView infoTextView;
 
     @BindView(R.id.bubbleLayout)
-    RelativeLayout itemLayout;
+    ConstraintLayout itemLayout;
+
+    @BindView(R.id.infoText)
+    TextView infoTextView;
 
     @BindView(R.id.textureView)
     TextureView itemTextureView;
 
+    @BindView(R.id.badge)
+    TextView badgeTextView;
+
+    @BindView(R.id.bubbleContainer)
+    RelativeLayout bubbleContainerLayout;
+
     private OnItemClickedListener onItemClickedListener;
     private final Context context;
+    private final AnimationHelper animationHelper;
 
     private final float viewWidth;
     private final float viewHeight;
@@ -46,9 +56,10 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     private ChartVM chartVM;
 
-    ChartAdapterViewHolder(final View view, final Context context) {
+    ChartAdapterViewHolder(final View view, final Context context, final AnimationHelper animationHelper) {
         super(view, context);
         this.context = context;
+        this.animationHelper = animationHelper;
         ButterKnife.bind(this, view);
 
         viewWidth = itemLayout.getLayoutParams().width;
@@ -65,17 +76,16 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         itemTextureView.setSurfaceTextureListener(this);
 
         bubbleY = (viewHeight - bubbleHeight) * chartVM.getBubbleYAxis();
-
-        infoTextView.setText(data.getDate());
-        infoTextView.setY(bubbleY);
-        infoTextView.setX(bubbleX);
-        infoTextView.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
-
         if (data.getMaxPhenylalanineLevel() < 0) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         }
-    }
 
+        infoTextView.setText(data.getDate());
+        bubbleContainerLayout.setY(bubbleY);
+        bubbleContainerLayout.setX(bubbleX);
+        infoTextView.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
+
+    }
 
 
     void setOnItemClickedListener(final OnItemClickedListener onItemClickedListener) {
@@ -83,15 +93,20 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
     }
 
     public void hideDetails() {
-        infoTextView.animate().scaleX(0.9f).scaleY(0.9f)
-                .setDuration(200)
-                .start();
+        animationHelper.zoomOut(bubbleContainerLayout, () -> {
+            badgeTextView.setVisibility(View.GONE);
+            infoTextView.setTextColor(context.getResources().getColor(R.color.applicationWhite));
+            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_blue_white_stroke));
+        });
     }
 
     public void showDetails() {
-        infoTextView.animate().scaleX(2f).scaleY(2f)
-                .setDuration(200)
-                .start();
+        animationHelper.zoomIn(bubbleContainerLayout, () -> {
+            badgeTextView.setText("10");
+            badgeTextView.setVisibility(View.VISIBLE);
+            infoTextView.setTextColor(context.getResources().getColor(R.color.applicationBlue));
+            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_big_detail));
+        });
     }
 
     @Override
