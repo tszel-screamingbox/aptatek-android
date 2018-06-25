@@ -2,21 +2,20 @@ package com.aptatek.aptatek.data;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.view.base.list.IListTypeProvider;
+import com.aptatek.aptatek.view.chart.StringUtils;
 
 import java.util.Random;
 
 public class ChartVM implements IListTypeProvider {
 
     private long id;
-
     private String date;
-    private int maxPhenylalanineLevel;
-    private String unit;
+    private CharSequence details;
     private int numberOfMeasures;
-
     private float bubbleYAxis;
     private float startLineYAxis;
     private float endLineYAxis;
+    private boolean isEmpty = false;
 
 
     public ChartVM(final CubeData cubeData) {
@@ -26,7 +25,7 @@ public class ChartVM implements IListTypeProvider {
     private void initFromDB(final CubeData cubeData) {
         this.id = 0;
         this.date = "1\nJan";
-        this.unit = "5.6 mg/dl";
+        this.details = StringUtils.highlightWord("450", "35,6 mg/dl");
         this.numberOfMeasures = 2;
 
         Random r = new Random();
@@ -34,9 +33,7 @@ public class ChartVM implements IListTypeProvider {
         this.bubbleYAxis = (float) i / 100;
 
         if (i < 50) {
-            this.maxPhenylalanineLevel = -1;
-        } else {
-            this.maxPhenylalanineLevel = 450;
+            isEmpty = true;
         }
 
         this.startLineYAxis = 80;
@@ -51,12 +48,8 @@ public class ChartVM implements IListTypeProvider {
         return date;
     }
 
-    public int getMaxPhenylalanineLevel() {
-        return maxPhenylalanineLevel;
-    }
-
-    public String getUnit() {
-        return unit;
+    public CharSequence getDetails() {
+        return details;
     }
 
     public int getNumberOfMeasures() {
@@ -73,6 +66,10 @@ public class ChartVM implements IListTypeProvider {
 
     public float getEndLineYAxis() {
         return endLineYAxis;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty;
     }
 
     @Override

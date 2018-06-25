@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.data.ChartVM;
-import com.aptatek.aptatek.device.animation.AnimationHelper;
+import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
 
 import butterknife.BindView;
@@ -48,13 +48,12 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     private final float viewWidth;
     private final float viewHeight;
-    private final float bubbleWidth;
     private final float bubbleHeight;
     private final float middleX;
     private final float bubbleX;
     private float bubbleY;
 
-    private ChartVM chartVM;
+    private ChartVM currentData;
 
     ChartAdapterViewHolder(final View view, final Context context, final AnimationHelper animationHelper) {
         super(view, context);
@@ -65,26 +64,19 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         viewWidth = itemLayout.getLayoutParams().width;
         viewHeight = itemLayout.getLayoutParams().height;
         bubbleHeight = infoTextView.getLayoutParams().height;
-        bubbleWidth = infoTextView.getLayoutParams().width;
         middleX = viewWidth / 2;
-        bubbleX = middleX - bubbleWidth / 2;
+        bubbleX = middleX - infoTextView.getLayoutParams().width / 2;
     }
 
     @Override
     public void bind(final ChartVM data) {
-        chartVM = data;
+        currentData = data;
+        bubbleY = (viewHeight - bubbleHeight) * currentData.getBubbleYAxis();
         itemTextureView.setSurfaceTextureListener(this);
-
-        bubbleY = (viewHeight - bubbleHeight) * chartVM.getBubbleYAxis();
-        if (data.getMaxPhenylalanineLevel() < 0) {
-            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
-        }
-
-        infoTextView.setText(data.getDate());
         bubbleContainerLayout.setY(bubbleY);
         bubbleContainerLayout.setX(bubbleX);
         infoTextView.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
-
+        resetBubble();
     }
 
 
@@ -93,20 +85,34 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
     }
 
     public void hideDetails() {
-        animationHelper.zoomOut(bubbleContainerLayout, () -> {
-            badgeTextView.setVisibility(View.GONE);
-            infoTextView.setTextColor(context.getResources().getColor(R.color.applicationWhite));
-            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_blue_white_stroke));
-        });
+        animationHelper.zoomOut(bubbleContainerLayout, this::resetBubble);
     }
 
     public void showDetails() {
         animationHelper.zoomIn(bubbleContainerLayout, () -> {
-            badgeTextView.setText("10");
-            badgeTextView.setVisibility(View.VISIBLE);
-            infoTextView.setTextColor(context.getResources().getColor(R.color.applicationBlue));
-            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_big_detail));
+            if (currentData.isEmpty()) {
+                infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
+            } else {
+                infoTextView.setTextColor(context.getResources().getColor(R.color.applicationBlue));
+                infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_big_detail));
+                infoTextView.setText(currentData.getDetails());
+                if (currentData.getNumberOfMeasures() > 1) {
+                    badgeTextView.setText(String.valueOf(currentData.getNumberOfMeasures()));
+                    badgeTextView.setVisibility(View.VISIBLE);
+                }
+            }
         });
+    }
+
+    private void resetBubble() {
+        badgeTextView.setVisibility(View.GONE);
+        infoTextView.setText(currentData.getDate());
+        infoTextView.setTextColor(context.getResources().getColor(R.color.applicationWhite));
+        if (currentData.isEmpty()) {
+            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
+        } else {
+            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_blue_white_stroke));
+        }
     }
 
     @Override
@@ -121,12 +127,12 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         linePaint.setStrokeWidth(STROKE_WIDTH);
         linePaint.setPathEffect(new DashPathEffect(new float[]{30, 15, 30, 15}, 0));
 
-        if (chartVM.getStartLineYAxis() >= 0) {
-            canvas.drawLine(0, chartVM.getStartLineYAxis(), middleX, middleY, linePaint);
+        if (currentData.getStartLineYAxis() >= 0) {
+            canvas.drawLine(0, currentData.getStartLineYAxis(), middleX, middleY, linePaint);
         }
 
-        if (chartVM.getEndLineYAxis() >= 0) {
-            canvas.drawLine(middleX, middleY, viewWidth, chartVM.getEndLineYAxis(), linePaint);
+        if (currentData.getEndLineYAxis() >= 0) {
+            canvas.drawLine(middleX, middleY, viewWidth, currentData.getEndLineYAxis(), linePaint);
         }
         itemTextureView.unlockCanvasAndPost(canvas);
     }

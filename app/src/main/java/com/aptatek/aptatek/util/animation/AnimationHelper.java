@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.device.animation;
+package com.aptatek.aptatek.util.animation;
 
 import android.animation.Animator;
 import android.view.View;

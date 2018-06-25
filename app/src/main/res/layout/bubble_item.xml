@@ -29,8 +29,8 @@
 
         <TextView
             android:id="@+id/badge"
-            android:layout_width="@dimen/general.distance.xsmall"
-            android:layout_height="@dimen/general.distance.xsmall"
+            android:layout_width="@dimen/graph.bubble.size.small"
+            android:layout_height="@dimen/graph.bubble.size.small"
             android:layout_alignEnd="@+id/infoText"
             android:layout_alignTop="@+id/infoText"
             android:background="@drawable/bubble_full_blue"
