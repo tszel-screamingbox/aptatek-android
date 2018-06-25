@@ -84,7 +84,8 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
         adapter.setCallback(new ReminderSettingsAdapter.ReminderSettingsAdapterCallback() {
             @Override
             public void onAddReminderClicked(@NonNull final ReminderSettingsAdapterItem item) {
-                TimePickerDialog.create(getTimePickerDialogCallback(item, null)).show(getSupportFragmentManager(), "");
+                TimePickerDialog.create(getTimePickerDialogCallback(item, null))
+                        .show(getSupportFragmentManager(), "");
             }
 
             @Override
@@ -94,7 +95,8 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
 
             @Override
             public void modifyReminderTime(@NonNull final ReminderSettingsAdapterItem reminderSettingsItem, final @NonNull RemindersAdapterItem reminderItem) {
-                TimePickerDialog.create(reminderItem.getHour(), reminderItem.getMinute(), getTimePickerDialogCallback(reminderSettingsItem, reminderItem)).show(getSupportFragmentManager(), "");
+                TimePickerDialog.createForEdit(reminderItem.getHour(), reminderItem.getMinute(), getTimePickerDialogCallback(reminderSettingsItem, reminderItem))
+                        .show(getSupportFragmentManager(), "");
             }
         });
 
