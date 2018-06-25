@@ -11,12 +11,15 @@ import android.widget.Button;
 import android.widget.TimePicker;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.util.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class TimePickerDialog extends DialogFragment {
+
+    private static final String TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY = "com.aptatek.remider.dialog.hour";
+    private static final String TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY = "com.aptatek.remider.dialog.minute";
+    private static final String TIME_PICKER_DIALOG_EDIT_KEY = "com.aptatek.remider.dialog.edit";
 
     interface TimePickerDialogCallback {
         void done(int hourOfDay, int minute);
@@ -30,11 +33,11 @@ public class TimePickerDialog extends DialogFragment {
         return dialog;
     }
 
-    public static TimePickerDialog create(final int hour, final int minute, @NonNull final TimePickerDialogCallback callback) {
+    public static TimePickerDialog createForEdit(final int hour, final int minute, @NonNull final TimePickerDialogCallback callback) {
         final Bundle bundle = new Bundle();
-        // TODO Extract from Constants, they could be private final constants instead. No need to expose them.
-        bundle.putInt(Constants.TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY, hour);
-        bundle.putInt(Constants.TIME_PCIKER_DIALOG_MINUTE_ARGUMENT_KEY, minute);
+        bundle.putInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY, hour);
+        bundle.putInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY, minute);
+        bundle.putBoolean(TIME_PICKER_DIALOG_EDIT_KEY, true);
 
         final TimePickerDialog dialog = new TimePickerDialog();
         dialog.setArguments(bundle);
@@ -70,8 +73,12 @@ public class TimePickerDialog extends DialogFragment {
 
         if (getArguments() != null) {
             buttonDelete.setText(R.string.reminder_time_picker_delete);
-            timePicker.setCurrentHour(getArguments().getInt(Constants.TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY));
-            timePicker.setCurrentMinute(getArguments().getInt(Constants.TIME_PCIKER_DIALOG_MINUTE_ARGUMENT_KEY));
+            buttonDone.setText(getArguments().getBoolean(TIME_PICKER_DIALOG_EDIT_KEY, false)
+                    ? R.string.reminder_time_picker_update
+                    : R.string.reminder_time_picker_add);
+
+            timePicker.setCurrentHour(getArguments().getInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY));
+            timePicker.setCurrentMinute(getArguments().getInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY));
         } else {
             buttonDelete.setText(R.string.reminder_time_picker_cancel);
         }
@@ -82,8 +89,8 @@ public class TimePickerDialog extends DialogFragment {
                 callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 dismiss();
             } else if (callback != null && getArguments() != null) {
-                if (getArguments().getInt(Constants.TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY) != timePicker.getCurrentHour()
-                        || getArguments().getInt(Constants.TIME_PCIKER_DIALOG_MINUTE_ARGUMENT_KEY) != timePicker.getCurrentMinute()) {
+                if (getArguments().getInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY) != timePicker.getCurrentHour()
+                        || getArguments().getInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY) != timePicker.getCurrentMinute()) {
                     callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                 }
                 dismiss();

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 
 import com.aptatek.aptatek.R;
@@ -29,6 +30,9 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.switchFingerprint)
+    SwitchCompat switchFingerPrint;
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -59,11 +63,31 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         setSupportActionBar(toolbar);
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+        switchFingerPrint.setOnCheckedChangeListener((buttonView, isChecked) ->
+            presenter.setFingerprintEnabled(isChecked)
+        );
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.checkFingerprintSettings();
+    }
 
     @OnClick(R.id.textViewDailyReminders)
     public void onTextViewDailyRemindersClicked() {
         launchActivity(ReminderSettingsActivity.starter(this), false, Animation.FADE);
+    }
+
+    @Override
+    public void showFingerprintAuthChecked(final boolean isChecked) {
+        switchFingerPrint.setChecked(isChecked);
+    }
+
+    @Override
+    public void showFingerprintAuthEnabled(final boolean isEnabled) {
+        switchFingerPrint.setEnabled(isEnabled);
     }
 }
