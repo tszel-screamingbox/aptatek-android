@@ -143,12 +143,13 @@
         <item name="android:textColor">@color/applicationGreen</item>
         <item name="android:textAllCaps">false</item>
     </style>
+    
+    <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
+        <item name="android:datePickerStyle">@style/Parental.DatePicker</item>
+    </style>
 
-    <style name="Dialog.DatePicker" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="showTitle">false</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
-        <item name="android:headerBackground">@color/colorAccent</item>
+    <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker" tools:targetApi="lollipop">
+        <item name="android:datePickerMode">spinner</item>
     </style>
 
 </resources>

@@ -57,7 +57,6 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.settingsButton)
     public void onSettingsButtonClicked() {
-        final Intent intent = new Intent(this, SettingsActivity.class);
-        launchActivity(intent, false, Animation.FADE);
+        launchActivity(SettingsActivity.starter(this), false, Animation.FADE);
     }
 }

@@ -14,6 +14,5 @@ public final class Constants {
     public static final int REMINDER_HALF_DAY = 12;
     public static final int REMINDER_AM_OR_PM = 11;
     public static final int REMINDER_SPAN_COUNT = 3;
-    public static final String TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY = "hour";
-    public static final String TIME_PCIKER_DIALOG_MINUTE_ARGUMENT_KEY = "minute";
+
 }
