@@ -23,11 +23,6 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
-            android:name=".view.chart.ChartActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
-
-        <activity
             android:name=".view.settings.basic.SettingsActivity"
             android:parentActivityName=".view.main.MainActivity"
             android:screenOrientation="portrait"

@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.chart;
+package com.aptatek.aptatek.util;
 
 import android.text.SpannableString;
 import android.text.TextUtils;

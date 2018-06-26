@@ -2,7 +2,7 @@ package com.aptatek.aptatek.data;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.view.base.list.IListTypeProvider;
-import com.aptatek.aptatek.view.chart.StringUtils;
+import com.aptatek.aptatek.util.StringUtils;
 
 import java.util.Random;
 

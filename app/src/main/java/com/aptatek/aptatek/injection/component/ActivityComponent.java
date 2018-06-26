@@ -7,7 +7,6 @@ import com.aptatek.aptatek.injection.module.ActivityModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.injection.qualifier.ActivityContext;
 import com.aptatek.aptatek.injection.scope.ActivityScope;
-import com.aptatek.aptatek.view.chart.ChartActivity;
 import com.aptatek.aptatek.view.fingerprint.FingerprintActivity;
 import com.aptatek.aptatek.view.main.MainActivity;
 import com.aptatek.aptatek.view.parentalgate.ParentalGateActivity;
@@ -26,8 +25,6 @@ import dagger.Component;
 public interface ActivityComponent {
 
     void inject(AuthPinHostActivity activity);
-
-    void inject(ChartActivity activity);
 
     void inject(FingerprintActivity activity);
 

@@ -1,7 +1,7 @@
 <resources>
 
     <dimen name="activity.margin.horizontal">30dp</dimen>
-    <dimen name="activity.margin.vertical">18dp</dimen>
+    <dimen name="activity.margin.vertical">20dp</dimen>
 
     <!-- General-->
     <dimen name="general.button.corner">25dp</dimen>
@@ -43,7 +43,7 @@
     <dimen name="graph.bubble.stroke.mini">3dp</dimen>
     <dimen name="graph.bubble.cross.side">33dp</dimen>
     <dimen name="graph.bubble.cross.bottom">-60dp</dimen>
-    <dimen name="graph.height">220dp</dimen>
+    <dimen name="graph.height">200dp</dimen>
 
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>

@@ -50,6 +50,16 @@
         <item name="android:textSize">@dimen/font.size.normal</item>
     </style>
 
+    <style name="Grey.Settings.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:background">@drawable/settings_button_background</item>
+        <item name="android:layout_width">@dimen/general.button.height</item>
+        <item name="android:layout_height">@dimen/general.button.height</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/applicationWhite</item>
+        <item name="android:textSize">@dimen/font.size.normal</item>
+    </style>
+
     <style name="General.Text.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height</item>
         <item name="android:background">@android:color/transparent</item>

@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.chart.adapter;
+package com.aptatek.aptatek.view.main.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
