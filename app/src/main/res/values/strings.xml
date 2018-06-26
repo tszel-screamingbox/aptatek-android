@@ -23,6 +23,8 @@
     <string name="fingerprint.option.enable">Enable Fingerprint</string>
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
     <!-- Main Activity -->
+    <string name="main.placeholder.title">Home Screen</string>
+    <string name="main.placeholder.chart">Result Chart\nUnder Construction</string>
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>
     <string name="main.button.toggle">Toggle</string>
