@@ -89,22 +89,23 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
     public void showDatePicker() {
         final Calendar now = Calendar.getInstance();
 
-        new DatePickerDialog(getActivity(),
-            R.style.Dialog_DatePicker,
-            (view, year, month, dayOfMonth) -> {
-                final Calendar calendar = Calendar.getInstance();
-                calendar.clear();
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                R.style.Parental_Dialog_DatePicker,
+                (view, year, month, dayOfMonth) -> {
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.clear();
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                if (presenter != null) {
-                    presenter.onBirthDateSet(calendar.getTimeInMillis());
-                }
-            },
-            now.get(Calendar.YEAR),
-            now.get(Calendar.MONTH),
-            now.get(Calendar.DAY_OF_MONTH)).show();
+                    if (presenter != null) {
+                        presenter.onBirthDateSet(calendar.getTimeInMillis());
+                    }
+                },
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
     }
 
     @Override
@@ -149,6 +150,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
         presenter.onButtonPress();
     }
 
+    @SuppressWarnings("cyclomaticComplexity")
     @OnClick({R.id.button0, R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8, R.id.button9, R.id.buttonDelete})
     public void onKeypadClicked(final View receiver) {
         final String currentAge = etAge.getText().toString();

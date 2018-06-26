@@ -23,6 +23,8 @@
     <string name="fingerprint.option.enable">Enable Fingerprint</string>
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
     <!-- Main Activity -->
+    <string name="main.placeholder.title">Home Screen</string>
+    <string name="main.placeholder.chart">Result Chart\nUnder Construction</string>
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>
     <string name="main.button.toggle">Toggle</string>
@@ -33,7 +35,7 @@
     <string name="parental.verification.failure.message.first">Sorry this entry does not match, please re-enter information</string>
     <string name="parental.verification.failure.message">This app is made for users who are at least 13 years old, and the information entered does not allow use of the app. An adult user should try again.</string>
     <string name="parental.verification.tryagain">Try Again</string>
-    <string name="parental.welcome.age.disclaimer">Age information is kept private and is only used to make sure this app is being used by an adult</string>
+    <string name="parental.welcome.age.disclaimer">Regulations in the U.S. and other territories require us to verify that users are at least 13 years old before using this application; we respect your privacy and this information is not stored.</string>
     <string name="parental.welcome.birthday.format">dd/MM/yyyy</string>
     <string name="parental.welcome.keypad.next">Next</string>
     <string name="parental.welcome.description">We need to verify your age before you would start</string>
@@ -91,4 +93,29 @@
     <string name="toggle.button.toggle">Toggle</string>
     <string name="toggle.cube.connected">● Cube Connected</string>
     <string name="toggle.cube.disconnected">● Cube Disconnected</string>
+<!-- Reminder Settings Activity -->
+    <string name="reminder.settings.toolbar.title">Reminders</string>
+    <string name="reminder.settings.am">am</string>
+    <string name="reminder.settings.pm">pm</string>
+    <string name="reminder.settings.reminder.item.time.format">%1$s:%2$s%3$s</string>
+    <string name="reminder.settings.monday">Monday</string>
+    <string name="reminder.settings.saturday">Saturday</string>
+    <string name="reminder.settings.sunday">Sunday</string>
+    <string name="reminder.settings.tuesday">Tuesday</string>
+    <string name="reminder.settings.wednesday">Wednesday</string>
+    <string name="reminder.settings.thursday">Thursday</string>
+    <string name="reminder.settings.friday">Friday</string>
+
+    <!-- Reminder Time Picker Dialog -->
+    <string name="settings.daily.reminder.description">You can set up multiple reminders for every day in the week</string>
+    <string name="settings.daily.reminders">Daily reminders</string>
+    <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
+    <string name="settings.fingerprint.description">Turn the switch off for PIN only. Turns on your passcode you use for your device.</string>
+    <string name="reminder.notification.title">Now might be a great time to check Phe level!</string>
+    <string name="reminder.settings.already.has.reminder">You already have the same reminder on the given day.</string>
+    <string name="reminder.time.picker.add">Add</string>
+    <string name="reminder.time.picker.cancel">Cancel</string>
+    <string name="reminder.time.picker.delete">Delete</string>
+    <string name="reminder.time.picker.update">Update</string>
+    <string name="settings.title">Settings</string>
 </resources>

@@ -3,11 +3,11 @@ package com.aptatek.aptatek.view.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
 import com.aptatek.aptatek.view.toggle.ToggleActivity;
 
@@ -57,6 +57,6 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.settingsButton)
     public void onSettingsButtonClicked() {
-        Toast.makeText(this, "Settings should load", Toast.LENGTH_SHORT).show();
+        launchActivity(SettingsActivity.starter(this), false, Animation.FADE);
     }
 }

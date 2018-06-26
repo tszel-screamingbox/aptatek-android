@@ -18,7 +18,7 @@ public class AlertDialogFragment extends DialogFragment {
     private AlertDialogDecisionListener listener;
     private AlertDialogDecisions decision;
 
-    public static AlertDialogFragment create(@NonNull final AlertDialogModel model, @Nullable AlertDialogDecisionListener listener) {
+    public static AlertDialogFragment create(@NonNull final AlertDialogModel model, @Nullable final AlertDialogDecisionListener listener) {
         final AlertDialogFragment alertDialogFragment = new AlertDialogFragment();
         final Bundle args = new Bundle();
         args.putParcelable(KEY_MODEL, model);

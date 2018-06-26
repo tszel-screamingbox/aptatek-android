@@ -19,7 +19,6 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Inject
     AuthPinPresenter presenter;
 
-
     @Override
     public String getTitle() {
         return null;
@@ -84,7 +83,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     }
 
     @Override
-    public void onInvalidFingerprintDetected(@NonNull String message) {
+    public void onInvalidFingerprintDetected(@NonNull final String message) {
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setTextColor(this.getResources().getColor(R.color.applicationRed));
         messageTextView.setText(message);
