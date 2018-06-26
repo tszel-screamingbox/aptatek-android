@@ -14,7 +14,9 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -30,7 +32,7 @@ public class ParentalGateTest {
     @Test
     public void testInitialViewsVisible() {
         onView(withId(R.id.parentalWelcomeTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalWelcomeDescription)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.parentalWelcomeDescription)).check(matches(isDisplayed()));
         onView(withId(R.id.parentalButton)).check(matches(isDisplayed()));
         onView(withId(R.id.parentalDisclaimer)).check(matches(isDisplayed()));
         onView(withId(R.id.parentalAge)).check(matches(not(isDisplayed())));
@@ -50,12 +52,11 @@ public class ParentalGateTest {
     public void testHappyCase() throws Exception {
         onView(withId(R.id.parentalButton)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2000, 1, 1));
-
-        Thread.sleep(2000L);
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
 
         onView(withId(R.id.parentalButton)).check(matches(withText(R.string.parental_welcome_how_old_are_you)));
-        onView(withText(R.id.parentalBirthDate)).check(matches(isDisplayed()));
-        onView(withText(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("1/1/2000"))));
+        onView(withId(R.id.parentalBirthDate)).check(matches(isDisplayed()));
+        onView(withId(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("01/01/2000"))));
 
         onView(withId(R.id.parentalButton)).perform(click());
         onView(withId(R.id.parentalButton)).check(matches(not(isDisplayed())));
@@ -64,7 +65,7 @@ public class ParentalGateTest {
         onView(withId(R.id.button1)).perform(click());
         onView(withId(R.id.parentalAge)).check(matches(withText("1")));
         onView(withId(R.id.button8)).perform(click());
-        onView(withId(R.id.parentalAge)).check(matches(withText("8")));
+        onView(withId(R.id.parentalAge)).check(matches(withText("18")));
         onView(withId(R.id.buttonAction)).perform(click());
 
         onView(withId(R.id.parentalVerificationImage)).check(matches(isDisplayed()));
@@ -76,16 +77,17 @@ public class ParentalGateTest {
 
         Thread.sleep(3000L);
 
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.parentalVerificationTitle)).check(doesNotExist());
     }
 
     @Test
     public void testHappyFailureWithRetry() throws Exception {
         onView(withId(R.id.parentalButton)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2000, 1, 1));
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
         onView(withId(R.id.parentalButton)).check(matches(withText(R.string.parental_welcome_how_old_are_you)));
-        onView(withText(R.id.parentalBirthDate)).check(matches(isDisplayed()));
-        onView(withText(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("1/1/2000"))));
+        onView(withId(R.id.parentalBirthDate)).check(matches(isDisplayed()));
+        onView(withId(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("01/01/2000"))));
 
         onView(withId(R.id.parentalButton)).perform(click());
         onView(withId(R.id.parentalButton)).check(matches(not(isDisplayed())));
@@ -94,7 +96,7 @@ public class ParentalGateTest {
         onView(withId(R.id.button1)).perform(click());
         onView(withId(R.id.parentalAge)).check(matches(withText("1")));
         onView(withId(R.id.button1)).perform(click());
-        onView(withId(R.id.parentalAge)).check(matches(withText("1")));
+        onView(withId(R.id.parentalAge)).check(matches(withText("11")));
         onView(withId(R.id.buttonAction)).perform(click());
 
         onView(withId(R.id.parentalVerificationImage)).check(matches(isDisplayed()));
@@ -105,15 +107,16 @@ public class ParentalGateTest {
         onView(withId(R.id.parentalVerificationTitle)).check(matches(withText(R.string.parental_verification_failure_title)));
         onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_failure_message_first)));
 
-        Thread.sleep(3000L);
+        Thread.sleep(1000L);
 
         onView(withId(R.id.parentalVerificationButton)).perform(click());
 
         onView(withId(R.id.parentalButton)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2000, 1, 1));
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
         onView(withId(R.id.parentalButton)).check(matches(withText(R.string.parental_welcome_how_old_are_you)));
-        onView(withText(R.id.parentalBirthDate)).check(matches(isDisplayed()));
-        onView(withText(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("1/1/2000"))));
+        onView(withId(R.id.parentalBirthDate)).check(matches(isDisplayed()));
+        onView(withId(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("01/01/2000"))));
 
         onView(withId(R.id.parentalButton)).perform(click());
         onView(withId(R.id.parentalButton)).check(matches(not(isDisplayed())));
@@ -122,7 +125,7 @@ public class ParentalGateTest {
         onView(withId(R.id.button2)).perform(click());
         onView(withId(R.id.parentalAge)).check(matches(withText("2")));
         onView(withId(R.id.button4)).perform(click());
-        onView(withId(R.id.parentalAge)).check(matches(withText("4")));
+        onView(withId(R.id.parentalAge)).check(matches(withText("24")));
         onView(withId(R.id.buttonAction)).perform(click());
 
         onView(withId(R.id.parentalVerificationImage)).check(matches(isDisplayed()));
