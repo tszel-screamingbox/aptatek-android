@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aptatek.aptatek.data.ChartVM;
 import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 import com.aptatek.aptatek.view.base.list.adapter.BaseAdapter;

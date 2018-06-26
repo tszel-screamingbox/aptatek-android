@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.data;
+package com.aptatek.aptatek.data.chart;
 
 public class Measure {
 

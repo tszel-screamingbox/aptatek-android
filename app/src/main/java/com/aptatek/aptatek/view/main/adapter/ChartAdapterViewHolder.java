@@ -14,7 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.data.ChartVM;
 import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
 

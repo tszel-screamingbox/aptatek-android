@@ -33,16 +33,11 @@
 
 
     <!-- Chart-->
-    <dimen name="graph.bubble.margin">12dp</dimen>
-    <dimen name="graph.bubble.margins.side">22dp</dimen>
     <dimen name="graph.bubble.size">50dp</dimen>
     <dimen name="graph.bubble.size.small">15dp</dimen>
     <dimen name="graph.bubble.radius.small">40dp</dimen>
     <dimen name="graph.bubble.stroke.big">8dp</dimen>
     <dimen name="graph.bubble.stroke.small">4dp</dimen>
-    <dimen name="graph.bubble.stroke.mini">3dp</dimen>
-    <dimen name="graph.bubble.cross.side">33dp</dimen>
-    <dimen name="graph.bubble.cross.bottom">-60dp</dimen>
     <dimen name="graph.height">200dp</dimen>
 
     <!-- Pin -->

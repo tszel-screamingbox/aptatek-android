@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.data.ChartVM;
+import com.aptatek.aptatek.view.main.adapter.ChartVM;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapter;
