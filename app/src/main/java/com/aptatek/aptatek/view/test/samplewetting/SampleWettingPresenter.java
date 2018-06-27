@@ -65,16 +65,19 @@ public class SampleWettingPresenter extends TestBasePresenter<SampleWettingView>
         disposables.add(sampleWettingInteractor.getWettingStatus()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(status -> {
+                .subscribe(progress -> {
                     final @DrawableRes int drawableRes;
-                    switch (status) {
-                        case SECOND_THIRD:
+
+                    final int thirds = (1 - progress) / 33;
+
+                    switch (thirds) {
+                        case 1:
                             drawableRes = R.drawable.ic_wetting_2;
                             break;
-                        case THIRD_THIRD:
+                        case 2:
                             drawableRes = R.drawable.ic_wetting_3;
                             break;
-                        case FIRST_THIRD:
+                        case 0:
                         default:
                             drawableRes = R.drawable.ic_wetting_1;
                             break;

@@ -52,6 +52,13 @@ public class SampleWettingFragment extends TestBaseFragment<SampleWettingView, S
     }
 
     @Override
+    public boolean onBackPressed() {
+        showScreen(TestScreens.CANCEL);
+
+        return true;
+    }
+
+    @Override
     protected int getContentLayoutId() {
         return R.layout.fragment_sample_wetting;
     }

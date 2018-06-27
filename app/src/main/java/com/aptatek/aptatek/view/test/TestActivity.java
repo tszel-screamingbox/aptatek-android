@@ -138,8 +138,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             }
             case SAMPLE_WETTING: {
                 fragment = new SampleWettingFragment();
-                clearStack = false;
-                persistCurrent = true;
+                clearStack = true;
                 break;
             }
             case TAKE_SAMPLE:

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.domain.interactor.countdown.CountdownTimeFormatter;
 import com.aptatek.aptatek.domain.model.Countdown;
-import com.aptatek.aptatek.domain.model.WettingStatus;
 import com.aptatek.aptatek.util.Constants;
 
 import org.reactivestreams.Publisher;
@@ -21,7 +20,7 @@ public class SampleWettingInteractor {
 
     private final WettingDataSource wettingDataSource;
     private final CountdownTimeFormatter timeFormatter;
-    private final BehaviorProcessor<WettingStatus> wettingStatus;
+    private final BehaviorProcessor<Integer> wettingStatus;
 
     @Inject
     public SampleWettingInteractor(@NonNull final WettingDataSource wettingDataSource,
@@ -49,25 +48,9 @@ public class SampleWettingInteractor {
                                             tick -> Math.max(0, Constants.DEFAULT_WETTING_PERIOD - (System.currentTimeMillis() - startTime))
                                         )
                                         .map(remaining -> {
-                                            final int thirdPeriod = (int) Constants.DEFAULT_WETTING_PERIOD / 3;
-                                            final int currentProgress = (int) (remaining % thirdPeriod);
+                                            final int currentProgress = (int) (remaining / (float) Constants.DEFAULT_WETTING_PERIOD * 100);
 
-                                            final WettingStatus currentStatus;
-
-                                            switch (currentProgress) {
-                                                case 1:
-                                                    currentStatus = WettingStatus.SECOND_THIRD;
-                                                    break;
-                                                case 2:
-                                                    currentStatus = WettingStatus.THIRD_THIRD;
-                                                    break;
-                                                case 0:
-                                                default:
-                                                    currentStatus = WettingStatus.FIRST_THIRD;
-                                                    break;
-                                            }
-
-                                            wettingStatus.onNext(currentStatus);
+                                            wettingStatus.onNext(currentProgress);
 
                                             return Countdown.builder()
                                                 .setRemainingFormattedText(timeFormatter.getFormattedRemaining(remaining))
@@ -83,7 +66,7 @@ public class SampleWettingInteractor {
                         Flowable.error(throwable instanceof WettingNotRunningError ? throwable : new WettingError(throwable.getCause())));
     }
 
-    public Flowable<WettingStatus> getWettingStatus() {
+    public Flowable<Integer> getWettingStatus() {
         return wettingStatus;
     }
 
