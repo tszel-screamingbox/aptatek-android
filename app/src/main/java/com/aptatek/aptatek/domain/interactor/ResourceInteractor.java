@@ -145,7 +145,7 @@ public class ResourceInteractor {
         try {
             final Field idField = c.getDeclaredField(resourceName);
             return idField.getInt(idField);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return 0; // No resource found for given name
         }
     }

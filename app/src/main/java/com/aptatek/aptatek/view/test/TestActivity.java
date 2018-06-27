@@ -55,7 +55,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     protected void onStart() {
         super.onStart();
 
-        presenter.showProperScreen();
+        presenter.showProperScreen(getActiveBaseFragment() != null);
     }
 
     @Override
@@ -109,37 +109,31 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     public void showScreen(@NonNull final TestScreens screen) {
         final BaseFragment fragment;
         final boolean clearStack;
-        final boolean persistCurrent;
 
         switch (screen) {
             case CANCEL: {
                 fragment = new CancelTestFragment();
                 clearStack = false;
-                persistCurrent = false;
                 break;
             }
             case INCUBATION: {
                 fragment = new IncubationFragment();
                 clearStack = false;
-                persistCurrent = false;
                 break;
             }
             case INSERT_CASSETTE: {
                 fragment = new InsertCasetteFragment();
                 clearStack = false;
-                persistCurrent = true;
                 break;
             }
             case ATTACH_CUBE: {
                 fragment = new AttachCubeFragment();
                 clearStack = false;
-                persistCurrent = true;
                 break;
             }
             case INSERT_SAMPLE: {
                 fragment = new InsertSampleFragment();
                 clearStack = false;
-                persistCurrent = true;
                 break;
             }
             case SAMPLE_WETTING: {
@@ -152,7 +146,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             default: {
                 fragment = new TakeSampleFragment();
                 clearStack = true;
-                persistCurrent = true;
                 break;
             }
         }
@@ -160,7 +153,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         if (clearStack) {
             clearFragmentStack();
         }
-        switchToFragment(fragment, persistCurrent);
+
+        switchToFragment(fragment);
     }
 
     @Override

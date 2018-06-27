@@ -16,6 +16,28 @@
             android:name="firebase_analytics_collection_deactivated"
             android:value="true" />
 
+        <activity
+            android:name=".view.pin.auth.AuthPinHostActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
+            android:name=".view.settings.basic.SettingsActivity"
+            android:parentActivityName=".view.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.main.MainActivity" />
+
+        </activity>
+
+        <activity
+            android:name=".view.fingerprint.FingerprintActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
 
         <activity
             android:name=".view.main.MainActivity"
@@ -23,10 +45,16 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
+            android:name=".view.pin.set.SetPinHostActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
             android:name=".view.splash.SplashActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +67,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.TestActivity"
+        <activity
+            android:name=".view.settings.reminder.ReminderSettingsActivity"
+            android:parentActivityName=".view.settings.basic.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".view.settings.basic.SettingsActivity" />
+        </activity>
+
+        <activity
+            android:name=".view.test.TestActivity"
             android:parentActivityName=".view.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">
@@ -50,7 +90,12 @@
 
         </activity>
 
+        <activity
+            android:name=".view.parentalgate.ParentalGateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
 
+        <receiver android:name=".AlarmReceiver" />
         <service android:name=".view.test.incubation.IncubationReminderService" />
     </application>
 

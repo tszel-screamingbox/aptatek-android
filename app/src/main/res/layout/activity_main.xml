@@ -10,6 +10,38 @@
     android:layout_marginTop="@dimen/activity.margin.horizontal"
     tools:context=".view.main.MainActivity">
 
+    <!-- PLACEHOLDERS -->
+    <TextView
+        android:id="@+id/mainPlaceholderTitle"
+        style="@style/General.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:alpha="@dimen/alpha.general.full"
+        android:gravity="center"
+        android:text="@string/main.placeholder.title"
+        android:textSize="@dimen/font.size.xxlarge"
+        app:layout_constraintBottom_toTopOf="@+id/mainPlaceholderChart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mainPlaceholderChart"
+        style="@style/General.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:alpha="@dimen/alpha.general.full"
+        android:background="@drawable/edittext_background"
+        android:gravity="center"
+        android:paddingBottom="@dimen/general.distance"
+        android:paddingTop="@dimen/general.distance"
+        android:text="@string/main.placeholder.chart"
+        android:textSize="@dimen/font.size.large"
+        app:layout_constraintBottom_toTopOf="@+id/barrierBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/toggleButton"
@@ -30,6 +62,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/main.button.new.test"
+        android:textSize="@dimen/font.size.normal"
         app:layout_constraintBaseline_toBaselineOf="@+id/toggleButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/toggleButton"
@@ -52,6 +85,7 @@
 
 
     <android.support.constraint.Barrier
+        android:id="@+id/barrierBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"

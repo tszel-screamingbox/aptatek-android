@@ -2,29 +2,53 @@ package com.aptatek.aptatek.domain.interactor.auth;
 
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
+
+import com.aptatek.aptatek.data.PinCode;
+import com.aptatek.aptatek.device.PreferenceManager;
 import com.aptatek.aptatek.domain.manager.FingerprintManager;
+import com.aptatek.aptatek.domain.manager.keystore.KeyStoreError;
+import com.aptatek.aptatek.domain.manager.keystore.KeyStoreManager;
+
 import javax.inject.Inject;
+
 import timber.log.Timber;
 
 public class AuthInteractor {
 
     private final FingerprintManager fingerprintManager;
+    private final KeyStoreManager keyStoreManager;
+    private final PreferenceManager preferencesManager;
+
     private CancellationSignal cancelSignal;
     private Callback callback;
 
     @Inject
-    AuthInteractor(final FingerprintManager fingerprintManager) {
+    AuthInteractor(final FingerprintManager fingerprintManager,
+                   final PreferenceManager preferencesManager,
+                   final KeyStoreManager keyStoreManager) {
         this.fingerprintManager = fingerprintManager;
+        this.preferencesManager = preferencesManager;
+        this.keyStoreManager = keyStoreManager;
     }
 
 
-    public void setPinCode() {
-        //TODO: implement
+    public void setPinCode(final PinCode pinCode) {
+        try {
+            final String encryptedPin = keyStoreManager.encrypt(pinCode);
+            preferencesManager.setEncryptedPin(encryptedPin);
+        } catch (KeyStoreError e) {
+            Timber.e(e, "Failed to set pincode");
+        }
     }
 
-    public boolean isValidPinCode() {
-        //TODO: implement
-        return true;
+    public boolean isValidPinCode(final PinCode pinCode) {
+        try {
+            final PinCode storedPin = keyStoreManager.decrypt(preferencesManager.getEncryptedPin());
+            return storedPin != null && storedPin.equals(pinCode);
+        } catch (KeyStoreError keyStoreError) {
+            Timber.e(keyStoreError.getCause());
+            return false;
+        }
     }
 
     public void changePinCode() {

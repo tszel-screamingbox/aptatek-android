@@ -14,7 +14,7 @@ import javax.inject.Inject;
 public class AttachCubeFragment extends BaseTutorialFragment<TestFragmentBaseView, AttachCubePresenter>
     implements TestFragmentBaseView {
 
-    private static final int[] IMAGES = new int[]{R.drawable.attach_cube_1, R.drawable.attach_cube_2};
+    private static final int[] IMAGES = new int[]{R.drawable.ic_attach_cube_1, R.drawable.ic_attach_cube_2};
 
     @Inject
     AttachCubePresenter attachCubePresenter;
@@ -47,4 +47,5 @@ public class AttachCubeFragment extends BaseTutorialFragment<TestFragmentBaseVie
 
         return true;
     }
+
 }

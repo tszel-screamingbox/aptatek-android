@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -26,7 +26,7 @@
         <item name="android:textColor">@color/applicationWhite</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/font.size.normal</item>
+        <item name="android:textSize">@dimen/font.size.large</item>
     </style>
 
     <style name="General.Grey.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -37,7 +37,7 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/applicationWhite</item>
-        <item name="android:textSize">@dimen/font.size.normal</item>
+        <item name="android:textSize">@dimen/font.size.large</item>
     </style>
 
     <style name="Grey.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -57,6 +57,14 @@
         <item name="android:textSize">@dimen/font.size.normal</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Dial.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:background">@color/applicationWhite</item>
+        <item name="android:textColor">@color/dialButtonGrey</item>
+        <item name="android:textSize">@dimen/font.size.xlarge</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">@dimen/general.distance.xxxxmini</item>
     </style>
 
     <style name="General.Empty.Background" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -85,6 +93,27 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
+    <style name="General.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="General.TimePicker" parent="android:Widget.Material.Light.TimePicker" tools:targetApi="lollipop">
+        <item name="android:timePickerMode" tools:targetApi="lollipop">clock</item>
+        <item name="android:numbersSelectorColor">@color/applicationTimePickerSelector</item>
+        <item name="android:headerBackground">@android:color/white</item>
+        <item name="android:headerTimeTextAppearance">@style/General.HeaderTextStyle</item>
+        <item name="android:textAppearance">@style/General.ClockTextStyle</item>
+    </style>
+
+    <style name="General.HeaderTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/time_picker_header_color_selector</item>
+    </style>
+
+    <style name="General.ClockTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/applicationLightGray</item>
+    </style>
+
     <style name="Incubation.Green.Text" parent="General.Text">
         <item name="android:textColor">@color/applicationGreen</item>
         <item name="android:textSize">@dimen/font.size.incubation</item>
@@ -93,4 +122,34 @@
         <item name="android:alpha">@dimen/alpha.general.full</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
+
+    <style name="Parental.Title" parent="General.Text">
+        <item name="android:alpha">@dimen/alpha.general.full</item>
+        <item name="android:textSize">@dimen/font.size.xxlarge</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Parental.Input" parent="Widget.AppCompat.EditText">
+        <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/font.size.large</item>
+        <item name="android:background">@drawable/edittext_background</item>
+    </style>
+
+    <style name="Parental.Keypad.Next" parent="Dial.Button">
+        <item name="android:textColor">@color/applicationGreen</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+    
+    <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
+        <item name="android:datePickerStyle">@style/Parental.DatePicker</item>
+    </style>
+
+    <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker" tools:targetApi="lollipop">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
 </resources>

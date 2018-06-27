@@ -12,6 +12,7 @@ ext {
 
             // ArchitectureComponents
             lifecycle                   : '1.1.1',
+            work                        : '1.0.0-alpha01',
 
             // Mosby
             mosby                       : '3.1.0',
@@ -25,6 +26,10 @@ ext {
             // RX
             rxjava                      : '2.1.13',
             rxandroid                   : '2.0.2',
+
+            // Database
+            room                        : '1.1.0',
+            sqlcipher                   : '0.4.1',
 
             // IX
             ixjava                      : '1.0.0',
@@ -45,7 +50,7 @@ ext {
             autoValue                   : '1.6',
 
             // Parceler
-            parceler                    : '1.1.10',
+            parceler                    : '0.2.6',
 
             // Glide
             glide                       : '4.7.1',
@@ -53,6 +58,9 @@ ext {
 
             // Other
             dataFactory                 : '0.8',
+
+            // ActivityStarter
+            activityStarter             : '1.11-beta',
 
             // Testing
             junit                       : '4.12',
@@ -80,7 +88,7 @@ ext {
 
     architectureComponentsDependencies = [
             extensions      : "android.arch.lifecycle:extensions:${versions.lifecycle}",
-            compiler        : "android.arch.lifecycle:compiler:${versions.lifecycle}"
+            compiler        : "android.arch.lifecycle:compiler:${versions.lifecycle}",
     ]
 
     mvpDependencies = [
@@ -105,6 +113,18 @@ ext {
             ixjava   : "com.github.akarnokd:ixjava:${versions.ixjava}"
     ]
 
+    databaseDependencies = [
+            room        : "android.arch.persistence.room:runtime:${versions.room}",
+            compiler    : "android.arch.persistence.room:compiler:${versions.room}",
+            testhelper  : "android.arch.persistence.room:testing:${versions.room}",
+
+            // https://github.com/commonsguy/cwac-saferoom
+            sqlcipher   : "com.commonsware.cwac:saferoom:${versions.sqlcipher}",
+
+            // optional - RxJava support for Room
+            rxjava      : "android.arch.persistence.room:rxjava2:${versions.room}"
+    ]
+
     glideDependencies = [
             glide      : "com.github.bumptech.glide:glide:${versions.glide}",
             integration: "com.github.bumptech.glide:okhttp3-integration:${versions.glideOkhttp}@aar",
@@ -113,12 +133,8 @@ ext {
 
     autoValueDependencies = [
             api     : "com.google.auto.value:auto-value-annotations:${versions.autoValue}",
-            compiler: "com.google.auto.value:auto-value:${versions.autoValue}"
-    ]
-
-    parcelerDependencies = [
-            api     : "org.parceler:parceler-api:${versions.parceler}",
-            compiler: "org.parceler:parceler:${versions.parceler}"
+            compiler: "com.google.auto.value:auto-value:${versions.autoValue}",
+            parceler: "com.ryanharter.auto.value:auto-value-parcel:${versions.parceler}"
     ]
 
     leakDependencies = [
@@ -135,13 +151,19 @@ ext {
             dataFactory: "org.fluttercode.datafactory:datafactory:${versions.dataFactory}"
     ]
 
+    activityStarterDependencies = [
+            activityStarter : "com.marcinmoskala.activitystarter:activitystarter:${versions.activityStarter}",
+            apt : "com.marcinmoskala.activitystarter:activitystarter-compiler:${versions.activityStarter}",
+    ]
+
     testDependencies = [
-            junit           : "junit:junit:${versions.junit}",
-            mockito         : "org.mockito:mockito-core:${versions.mockito}",
-            testrunner      : "com.android.support.test:runner:${versions.runner}",
-            testrules       : "com.android.support.test:rules:${versions.runner}",
-            espresso        : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
-            hamcrest        : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
-            orchestrator    : "com.android.support.test:orchestrator:${versions.orchestrator}"
+            junit               : "junit:junit:${versions.junit}",
+            mockito             : "org.mockito:mockito-core:${versions.mockito}",
+            testrunner          : "com.android.support.test:runner:${versions.runner}",
+            testrules           : "com.android.support.test:rules:${versions.runner}",
+            espresso            : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
+            espressocontrib     : "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
+            hamcrest            : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
+            orchestrator        : "com.android.support.test:orchestrator:${versions.orchestrator}"
     ]
 }
