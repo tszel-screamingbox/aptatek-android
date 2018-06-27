@@ -20,7 +20,7 @@ import com.aptatek.aptatek.util.Constants;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -39,7 +39,7 @@ public class IncubationReminderService extends Service {
     @Inject
     NotificationManagerCompat notificationManager;
 
-    private Disposable disposable;
+    private CompositeDisposable disposables;
 
     @Nullable
     @Override
@@ -51,6 +51,8 @@ public class IncubationReminderService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        disposables = new CompositeDisposable();
+
         final TestServiceComponent serviceComponent = DaggerTestServiceComponent.builder()
                 .applicationComponent(((AptatekApplication) getApplication()).getApplicationComponent())
                 .testModule(new TestModule())
@@ -58,41 +60,58 @@ public class IncubationReminderService extends Service {
                 .build();
         serviceComponent.inject(this);
 
-        disposable = incubationInteractor.getIncubationCountdown()
+        disposables.add(incubationInteractor.hasRunningIncubation()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    countdown -> {
-                        Timber.d("Countdown: %s", countdown);
-                        notificationManager.notify(COUNTDOWN_NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(countdown));
-                    },
-                    error -> {
-                        Timber.d("Countdown error: %s", error.toString());
-                        stopForeground(false);
-                        if (!(error instanceof IncubationNotRunningError)) {
-                            notificationManager.notify(ERROR_NOTIFICATION_ID, incubationNotificationFactory.createErrorNotification(error));
-                        }
+                .subscribe(running -> {
+
+                    if (running) {
+                        startForeground(COUNTDOWN_NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(
+                                Countdown.builder()
+                                        .setRemainingFormattedText("30:00")
+                                        .setRemainingMillis(Constants.DEFAULT_INCUBATION_PERIOD)
+                                        .build()));
+                        startCountdown();
+                    } else {
                         stopSelf();
-                    },
-                    () -> {
-                        Timber.d("Countdown complete");
-                        stopForeground(false);
-                        notificationManager.notify(FINISHED_NOTIFICATION_ID, incubationNotificationFactory.createFinishedNotification());
-                        stopSelf();
-                    });
+                    }
 
 
-        startForeground(COUNTDOWN_NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(
-                Countdown.builder()
-                        .setRemainingFormattedText("30:00")
-                        .setRemainingMillis(Constants.DEFAULT_INCUBATION_PERIOD)
-                        .build()));
+                })
+        );
+
+    }
+
+    private void startCountdown() {
+        disposables.add(incubationInteractor.getIncubationCountdown()
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                countdown -> {
+                    Timber.d("Countdown: %s", countdown);
+                    notificationManager.notify(COUNTDOWN_NOTIFICATION_ID, incubationNotificationFactory.createCountdownNotification(countdown));
+                },
+                error -> {
+                    Timber.d("Countdown error: %s", error.toString());
+                    stopForeground(false);
+                    if (!(error instanceof IncubationNotRunningError)) {
+                        notificationManager.notify(ERROR_NOTIFICATION_ID, incubationNotificationFactory.createErrorNotification(error));
+                    }
+                    stopSelf();
+                },
+                () -> {
+                    Timber.d("Countdown complete");
+                    stopForeground(false);
+                    notificationManager.notify(FINISHED_NOTIFICATION_ID, incubationNotificationFactory.createFinishedNotification());
+                    stopSelf();
+                })
+        );
     }
 
     @Override
     public void onDestroy() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
+        if (disposables != null && !disposables.isDisposed()) {
+            disposables.dispose();
         }
 
         super.onDestroy();
