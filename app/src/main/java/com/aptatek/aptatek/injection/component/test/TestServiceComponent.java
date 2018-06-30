@@ -5,6 +5,7 @@ import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.injection.module.ServiceModule;
 import com.aptatek.aptatek.injection.scope.ServiceScope;
 import com.aptatek.aptatek.view.test.incubation.IncubationReminderService;
+import com.aptatek.aptatek.view.test.samplewetting.SampleWettingReminderService;
 
 import dagger.Component;
 
@@ -13,5 +14,7 @@ import dagger.Component;
 public interface TestServiceComponent {
 
     void inject(IncubationReminderService service);
+
+    void inject(SampleWettingReminderService service);
 
 }

@@ -3,7 +3,7 @@ package com.aptatek.aptatek.data;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.device.PreferenceManager;
-import com.aptatek.aptatek.domain.interactor.wetting.WettingDataSource;
+import com.aptatek.aptatek.domain.interactor.samplewetting.WettingDataSource;
 import com.aptatek.aptatek.util.Constants;
 
 public class WettingDataSourceImpl implements WettingDataSource {

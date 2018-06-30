@@ -30,8 +30,23 @@ import butterknife.OnClick;
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
     implements TestActivityView {
 
+    private static final String KEY_INCUBATION_FINISHED = "com.aptatek.incubation.finished";
+    private static final String KEY_SAMPLE_WETTING_FINISHED = "com.aptatek.samplewetting.finished";
+
     public static Intent createStarter(@NonNull final Context context) {
         return new Intent(context, TestActivity.class);
+    }
+
+    public static Bundle createForIncubationFinishedIntent() {
+        final Bundle bundle = new Bundle();
+        bundle.putBoolean(KEY_INCUBATION_FINISHED, true);
+        return bundle;
+    }
+
+    public static Bundle createForSampleWettingFinishedIntent() {
+        final Bundle bundle = new Bundle();
+        bundle.putBoolean(KEY_SAMPLE_WETTING_FINISHED, true);
+        return bundle;
     }
 
     @Inject
@@ -49,6 +64,12 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
+
+        if (getIntent().getBooleanExtra(KEY_INCUBATION_FINISHED, false)) {
+            showScreen(TestScreens.INSERT_CASSETTE);
+        } else if (getIntent().getBooleanExtra(KEY_SAMPLE_WETTING_FINISHED, false)) {
+            showScreen(TestScreens.CANCEL); // TODO implement start test screen
+        }
     }
 
     @Override

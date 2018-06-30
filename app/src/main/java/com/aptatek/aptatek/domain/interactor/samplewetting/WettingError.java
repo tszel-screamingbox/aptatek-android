@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.domain.interactor.wetting;
+package com.aptatek.aptatek.domain.interactor.samplewetting;
 
 import android.support.annotation.NonNull;
 

@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.domain.interactor.wetting;
+package com.aptatek.aptatek.domain.interactor.samplewetting;
 
 import android.support.annotation.NonNull;
 
@@ -66,7 +66,7 @@ public class SampleWettingInteractor {
                         Flowable.error(throwable instanceof WettingNotRunningError ? throwable : new WettingError(throwable.getCause())));
     }
 
-    public Flowable<Integer> getWettingStatus() {
+    public Flowable<Integer> getWettingProgress() {
         return wettingStatus;
     }
 

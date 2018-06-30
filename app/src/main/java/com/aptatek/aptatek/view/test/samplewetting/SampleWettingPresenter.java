@@ -4,7 +4,7 @@ import android.support.annotation.DrawableRes;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
-import com.aptatek.aptatek.domain.interactor.wetting.SampleWettingInteractor;
+import com.aptatek.aptatek.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.aptatek.view.test.TestActivityView;
 import com.aptatek.aptatek.view.test.base.TestBasePresenter;
 
@@ -20,21 +20,20 @@ public class SampleWettingPresenter extends TestBasePresenter<SampleWettingView>
     private final ResourceInteractor resourceInteractor;
     private final SampleWettingInteractor sampleWettingInteractor;
 
-    private final CompositeDisposable disposables;
+    private CompositeDisposable disposables;
 
     @Inject
     public SampleWettingPresenter(final ResourceInteractor resourceInteractor,
                                   final SampleWettingInteractor sampleWettingInteractor) {
         this.resourceInteractor = resourceInteractor;
         this.sampleWettingInteractor = sampleWettingInteractor;
-        disposables = new CompositeDisposable();
     }
 
     @Override
     public void initUi() {
         ifViewAttached(activeView -> {
-            activeView.setTitle(resourceInteractor.getStringResource(R.string.test_wetting_title));
-            activeView.setMessage(resourceInteractor.getStringResource(R.string.test_wetting_description));
+            activeView.setTitle(resourceInteractor.getStringResource(R.string.test_samplewetting_title));
+            activeView.setMessage(resourceInteractor.getStringResource(R.string.test_samplewetting_description));
             activeView.setNavigationButtonVisible(false);
             activeView.setCircleCancelVisible(false);
             activeView.setCancelBigVisible(true);
@@ -44,6 +43,8 @@ public class SampleWettingPresenter extends TestBasePresenter<SampleWettingView>
     @Override
     public void attachView(final SampleWettingView view) {
         super.attachView(view);
+
+        disposables = new CompositeDisposable();
 
         disposables.add(sampleWettingInteractor.getWettingCountdown()
                 .subscribeOn(Schedulers.computation())
@@ -62,7 +63,8 @@ public class SampleWettingPresenter extends TestBasePresenter<SampleWettingView>
                             ifViewAttached(TestActivityView::navigateForward);
                         }
                 ));
-        disposables.add(sampleWettingInteractor.getWettingStatus()
+
+        disposables.add(sampleWettingInteractor.getWettingProgress()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(progress -> {
@@ -88,7 +90,7 @@ public class SampleWettingPresenter extends TestBasePresenter<SampleWettingView>
 
     @Override
     public void detachView() {
-        if (!disposables.isDisposed()) {
+        if (disposables != null && !disposables.isDisposed()) {
             disposables.dispose();
         }
 

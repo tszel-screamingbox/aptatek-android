@@ -2,7 +2,7 @@ package com.aptatek.aptatek.view.test.tutorial.insertsample;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
-import com.aptatek.aptatek.domain.interactor.wetting.SampleWettingInteractor;
+import com.aptatek.aptatek.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.aptatek.view.test.tutorial.BaseTutorialPresenter;
 
 import javax.inject.Inject;
@@ -12,7 +12,8 @@ public class InsertSamplePresenter extends BaseTutorialPresenter {
     private final SampleWettingInteractor sampleWettingInteractor;
 
     @Inject
-    public InsertSamplePresenter(final ResourceInteractor resourceInteractor, final SampleWettingInteractor sampleWettingInteractor) {
+    public InsertSamplePresenter(final ResourceInteractor resourceInteractor,
+                                 final SampleWettingInteractor sampleWettingInteractor) {
         super(resourceInteractor);
         this.sampleWettingInteractor = sampleWettingInteractor;
     }
