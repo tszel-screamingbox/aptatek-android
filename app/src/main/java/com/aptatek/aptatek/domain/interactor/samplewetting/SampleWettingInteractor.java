@@ -28,6 +28,7 @@ public class SampleWettingInteractor {
         this.wettingDataSource = wettingDataSource;
         this.timeFormatter = timeFormatter;
         wettingStatus = BehaviorProcessor.create();
+        wettingStatus.onNext(0);
     }
 
     public Single<Boolean> hasRunningWetting() {
@@ -40,7 +41,7 @@ public class SampleWettingInteractor {
                 .take(1)
                 .flatMap(value -> {
                     if (value) {
-                        return Flowable.just(wettingDataSource.getWettingStart())
+                        return Flowable.fromCallable(wettingDataSource::getWettingStart)
                                 .flatMap(startTime ->
                                         com.aptatek.aptatek.domain.interactor.countdown.Countdown.countdown(
                                             Constants.COUNTDOWN_REFRESH_PERIOD,

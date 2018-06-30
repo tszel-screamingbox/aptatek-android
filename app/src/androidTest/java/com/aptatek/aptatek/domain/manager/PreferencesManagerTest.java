@@ -81,4 +81,22 @@ public class PreferencesManagerTest {
         assertEquals(preferenceManager.getIncubationStart(), 0L);
         assertTrue(!preferenceManager.isFingerprintScanEnabled());
     }
+
+    @Test
+    public void testSetParentalPassed() {
+        preferenceManager.setParentalPassed(true);
+        assertEquals(preferenceManager.isParentalPassed(), true);
+    }
+
+    @Test
+    public void testWettingStartSet() {
+        final long now = System.currentTimeMillis();
+        preferenceManager.setWettingStart(now);
+        assertEquals(preferenceManager.getWettingStart(), now);
+    }
+
+    @Test
+    public void testWettingStartDefault() {
+        assertEquals(preferenceManager.getWettingStart(), 0L);
+    }
 }

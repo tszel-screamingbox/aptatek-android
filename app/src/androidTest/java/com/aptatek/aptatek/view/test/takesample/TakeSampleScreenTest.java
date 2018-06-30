@@ -68,6 +68,4 @@ public class TakeSampleScreenTest {
         onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_incubation_title)));
     }
 
-
-
 }
