@@ -49,7 +49,7 @@ public class SampleWettingInteractor {
                                             tick -> Math.max(0, Constants.DEFAULT_WETTING_PERIOD - (System.currentTimeMillis() - startTime))
                                         )
                                         .map(remaining -> {
-                                            final int currentProgress = (int) (remaining / (float) Constants.DEFAULT_WETTING_PERIOD * 100);
+                                            final int currentProgress = (int) (remaining / (float) Constants.DEFAULT_WETTING_PERIOD * Constants.HUNDRED_PERCENT);
 
                                             wettingStatus.onNext(currentProgress);
 

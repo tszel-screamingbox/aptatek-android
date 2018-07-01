@@ -32,7 +32,7 @@ public class IncubationCountdownNotificationFactory extends BaseCountdownNotific
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_incubation_notification_inprogress_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_incubation_notification_inprogress_textformat, countdown.getRemainingFormattedText()))
                 .setSmallIcon(R.drawable.ic_play)
-                .setProgress(100, getIncubationProgress(countdown.getRemainingMillis()), false)
+                .setProgress(Constants.HUNDRED_PERCENT, getIncubationProgress(countdown.getRemainingMillis()), false)
                 .setVibrate(new long[] {0L})
                 .setSound(null)
                 .setDefaults(0)
@@ -41,7 +41,7 @@ public class IncubationCountdownNotificationFactory extends BaseCountdownNotific
     }
 
     private int getIncubationProgress(final long remainingMillis) {
-        return 100 - (int) ((remainingMillis / (float) Constants.DEFAULT_INCUBATION_PERIOD) * 100);
+        return Constants.HUNDRED_PERCENT - (int) ((remainingMillis / (float) Constants.DEFAULT_INCUBATION_PERIOD) * Constants.HUNDRED_PERCENT);
     }
 
     @Nullable

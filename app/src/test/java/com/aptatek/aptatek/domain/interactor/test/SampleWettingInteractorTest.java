@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -108,9 +109,14 @@ public class SampleWettingInteractorTest {
     @Test
     public void testCountdownCallsDataSourceMethods() throws Exception {
         when(wettingDataSource.hasRunningWetting()).thenReturn(true);
-        when(wettingDataSource.getWettingStart()).thenReturn(System.currentTimeMillis());
+        when(wettingDataSource.getWettingStart()).thenReturn(System.currentTimeMillis() - 1000L);
 
-        interactor.getWettingCountdown().test();
+        final TestSubscriber<Countdown> test = interactor.getWettingCountdown().test();
+        test.assertNoErrors();
+        test.assertNotComplete();
+
+        Thread.sleep(1000L);
+
         verify(wettingDataSource).hasRunningWetting();
         verify(wettingDataSource).getWettingStart();
     }
@@ -128,7 +134,7 @@ public class SampleWettingInteractorTest {
         final String testValue = "test";
         when(wettingDataSource.hasRunningWetting()).thenReturn(true);
         when(wettingDataSource.getWettingStart()).thenReturn(System.currentTimeMillis() - Constants.DEFAULT_WETTING_PERIOD + 200L);
-        when(timeFormatter.getFormattedRemaining(ArgumentMatchers.anyLong())).thenReturn(testValue);
+        doReturn(testValue).when(timeFormatter).getFormattedRemaining(ArgumentMatchers.anyLong());
 
         final TestSubscriber<Countdown> test = interactor.getWettingCountdown().test();
         test.await();

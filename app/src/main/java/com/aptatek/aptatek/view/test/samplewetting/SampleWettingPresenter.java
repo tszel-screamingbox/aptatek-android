@@ -5,6 +5,7 @@ import android.support.annotation.DrawableRes;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.aptatek.util.Constants;
 import com.aptatek.aptatek.view.test.TestActivityView;
 import com.aptatek.aptatek.view.test.base.TestBasePresenter;
 
@@ -70,7 +71,7 @@ public class SampleWettingPresenter extends TestBasePresenter<SampleWettingView>
                 .subscribe(progress -> {
                     final @DrawableRes int drawableRes;
 
-                    final int thirds = (1 - progress) / 33;
+                    final int thirds = (1 - progress) / (Constants.HUNDRED_PERCENT / 3);
 
                     switch (thirds) {
                         case 1:

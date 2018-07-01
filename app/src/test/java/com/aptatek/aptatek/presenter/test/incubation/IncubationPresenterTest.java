@@ -8,6 +8,7 @@ import com.aptatek.aptatek.domain.model.Countdown;
 import com.aptatek.aptatek.view.test.incubation.IncubationPresenter;
 import com.aptatek.aptatek.view.test.incubation.IncubationView;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,11 +62,16 @@ public class IncubationPresenterTest {
             }
         };
 
-        RxJavaPlugins.setInitIoSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitComputationSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitNewThreadSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setInitSingleSchedulerHandler(scheduler -> immediate);
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setNewThreadSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setSingleSchedulerHandler(scheduler -> immediate);
+        RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
+    }
+
+    @AfterClass
+    public static void afterClass() throws Exception {
+        RxJavaPlugins.reset();
     }
 
     @Before
