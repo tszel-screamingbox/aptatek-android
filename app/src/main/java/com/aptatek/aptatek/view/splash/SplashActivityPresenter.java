@@ -10,13 +10,13 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView> {
+public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView> {
 
     private final KeyStoreManager keyStoreManager;
     private final PreferenceManager preferenceManager;
 
     @Inject
-    SplashActivityPresenter(final KeyStoreManager keyStoreManager,
+    public SplashActivityPresenter(final KeyStoreManager keyStoreManager,
                             final AptatekDatabase aptatekDatabase,
                             final PreferenceManager preferenceManager) {
         this.keyStoreManager = keyStoreManager;
@@ -29,7 +29,7 @@ class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView> {
                 .subscribe();
     }
 
-    void switchToNextActivity() {
+    public void switchToNextActivity() {
         ifViewAttached(attachedView -> {
             if (!preferenceManager.isParentalPassed()) {
                 attachedView.onParentalGateShouldLoad();

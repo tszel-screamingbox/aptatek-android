@@ -157,12 +157,13 @@ ext {
     ]
 
     testDependencies = [
-            junit           : "junit:junit:${versions.junit}",
-            mockito         : "org.mockito:mockito-core:${versions.mockito}",
-            testrunner      : "com.android.support.test:runner:${versions.runner}",
-            testrules       : "com.android.support.test:rules:${versions.runner}",
-            espresso        : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
-            hamcrest        : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
-            orchestrator    : "com.android.support.test:orchestrator:${versions.orchestrator}"
+            junit               : "junit:junit:${versions.junit}",
+            mockito             : "org.mockito:mockito-core:${versions.mockito}",
+            testrunner          : "com.android.support.test:runner:${versions.runner}",
+            testrules           : "com.android.support.test:rules:${versions.runner}",
+            espresso            : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
+            espressocontrib     : "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
+            hamcrest            : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
+            orchestrator        : "com.android.support.test:orchestrator:${versions.orchestrator}"
     ]
 }
