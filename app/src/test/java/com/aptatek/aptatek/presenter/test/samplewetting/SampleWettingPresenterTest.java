@@ -1,12 +1,12 @@
-package com.aptatek.aptatek.presenter.test.incubation;
+package com.aptatek.aptatek.presenter.test.samplewetting;
 
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
-import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
+import com.aptatek.aptatek.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.aptatek.domain.model.Countdown;
-import com.aptatek.aptatek.view.test.incubation.IncubationPresenter;
-import com.aptatek.aptatek.view.test.incubation.IncubationView;
+import com.aptatek.aptatek.view.test.samplewetting.SampleWettingPresenter;
+import com.aptatek.aptatek.view.test.samplewetting.SampleWettingView;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -29,22 +29,23 @@ import io.reactivex.processors.FlowableProcessor;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class IncubationPresenterTest {
+public class SampleWettingPresenterTest {
 
-    private static final String TEST_STRING = "test";
-
-    @Mock
-    IncubationInteractor incubationInteractor;
+    private final String TEST_STRING = "hello";
 
     @Mock
     ResourceInteractor resourceInteractor;
 
     @Mock
-    IncubationView view;
+    SampleWettingInteractor sampleWettingInteractor;
 
-    private IncubationPresenter presenter;
+    @Mock
+    SampleWettingView view;
+
+    private SampleWettingPresenter presenter;
 
     private final FlowableProcessor<Countdown> countdownProcessor = BehaviorProcessor.create();
+    private final FlowableProcessor<Integer> progressProcessor = BehaviorProcessor.create();
 
     @BeforeClass
     public static void beforeClass() throws Exception {
@@ -80,9 +81,10 @@ public class IncubationPresenterTest {
 
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt())).thenReturn(TEST_STRING);
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt(), ArgumentMatchers.anyVararg())).thenReturn(TEST_STRING);
-        when(incubationInteractor.getIncubationCountdown()).thenReturn(countdownProcessor);
+        when(sampleWettingInteractor.getWettingCountdown()).thenReturn(countdownProcessor);
+        when(sampleWettingInteractor.getWettingProgress()).thenReturn(progressProcessor);
 
-        presenter = new IncubationPresenter(resourceInteractor, incubationInteractor);
+        presenter = new SampleWettingPresenter(resourceInteractor, sampleWettingInteractor);
         presenter.attachView(view);
     }
 
@@ -90,24 +92,35 @@ public class IncubationPresenterTest {
     public void testInitUi() throws Exception {
         presenter.initUi();
 
+        verify(view).setCancelBigVisible(true);
+        verify(view).setCircleCancelVisible(false);
+        verify(view).setNavigationButtonVisible(false);
         verify(view).setTitle(TEST_STRING);
         verify(view).setMessage(TEST_STRING);
-        verify(view).setNavigationButtonVisible(true);
-        verify(view).setNavigationButtonText(TEST_STRING);
-        verify(view).setCircleCancelVisible(true);
-        verify(view).setCancelBigVisible(false);
     }
 
     @Test
     public void testAttachViewCallsInteractor() throws Exception {
-        verify(incubationInteractor).getIncubationCountdown();
+        verify(sampleWettingInteractor).getWettingCountdown();
+        verify(sampleWettingInteractor).getWettingProgress();
     }
 
     @Test
-    public void testUpdateCountdown() throws Exception {
-        countdownProcessor.onNext(Countdown.builder().setRemainingFormattedText(TEST_STRING).setRemainingMillis(0L).build());
+    public void testCountdownUpdateCallsView() throws Exception {
+        countdownProcessor.onNext(Countdown.builder().setRemainingFormattedText(TEST_STRING).setRemainingMillis(1000L).build());
 
-        verify(view).showCountdownText(TEST_STRING);
+        Thread.sleep(1000L);
+
+        verify(view).showCountdown(TEST_STRING);
+    }
+
+    @Test
+    public void testProgressUpdateCallsView() throws Exception {
+        progressProcessor.onNext(30);
+
+        Thread.sleep(1000L);
+
+        verify(view).showImage(ArgumentMatchers.anyInt());
     }
 
 }

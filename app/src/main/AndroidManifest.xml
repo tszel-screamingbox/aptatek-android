@@ -97,6 +97,7 @@
 
         <receiver android:name=".AlarmReceiver" />
         <service android:name=".view.test.incubation.IncubationReminderService" />
+        <service android:name=".view.test.samplewetting.SampleWettingReminderService" />
     </application>
 
 </manifest>

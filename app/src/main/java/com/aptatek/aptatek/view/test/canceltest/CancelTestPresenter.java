@@ -1,24 +1,35 @@
 package com.aptatek.aptatek.view.test.canceltest;
 
+import android.util.Pair;
+
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.incubation.IncubationInteractor;
+import com.aptatek.aptatek.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.aptatek.view.test.TestScreens;
 import com.aptatek.aptatek.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
 
 public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
 
     private final ResourceInteractor resourceInteractor;
     private final IncubationInteractor incubationInteractor;
+    private final SampleWettingInteractor sampleWettingInteractor;
+
+    private Disposable disposable;
 
     @Inject
-    CancelTestPresenter(final ResourceInteractor resourceInteractor, final IncubationInteractor incubationInteractor) {
+    CancelTestPresenter(final ResourceInteractor resourceInteractor,
+                        final IncubationInteractor incubationInteractor,
+                        final SampleWettingInteractor sampleWettingInteractor) {
         this.resourceInteractor = resourceInteractor;
         this.incubationInteractor = incubationInteractor;
+        this.sampleWettingInteractor = sampleWettingInteractor;
     }
 
     @Override
@@ -34,15 +45,29 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
     }
 
     public void stopTest() {
-        incubationInteractor.hasRunningIncubation()
-                .flatMapCompletable(value -> {
-                    if (value) {
-                        return incubationInteractor.stopIncubation();
-                    } else {
-                        return Completable.complete();
-                    }
-                })
-                .andThen(Completable.fromAction(() -> ifViewAttached(attachedView -> attachedView.showScreen(TestScreens.TAKE_SAMPLE))))
-                .subscribe();
+        disposable = Single.zip(
+                incubationInteractor.hasRunningIncubation(),
+                sampleWettingInteractor.hasRunningWetting(),
+                Pair::new
+        ).flatMapCompletable(value -> {
+            if (value.first) {
+                return incubationInteractor.stopIncubation();
+            } else if (value.second) {
+                return sampleWettingInteractor.stopWetting();
+            } else {
+                return Completable.complete();
+            }
+        })
+        .andThen(Completable.fromAction(() -> ifViewAttached(attachedView -> attachedView.showScreen(TestScreens.TAKE_SAMPLE))))
+        .subscribe();
+    }
+
+    @Override
+    public void detachView() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+
+        super.detachView();
     }
 }
