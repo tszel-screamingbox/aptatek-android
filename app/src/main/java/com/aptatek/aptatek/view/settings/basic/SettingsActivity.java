@@ -54,7 +54,6 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-
         ButterKnife.bind(this);
 
         toolbar.setNavigationIcon(R.drawable.ic_close);

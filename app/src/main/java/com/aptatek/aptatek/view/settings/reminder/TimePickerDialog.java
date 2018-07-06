@@ -1,13 +1,23 @@
 package com.aptatek.aptatek.view.settings.reminder;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.aptatek.aptatek.R;
@@ -20,6 +30,11 @@ public class TimePickerDialog extends DialogFragment {
     private static final String TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY = "com.aptatek.remider.dialog.hour";
     private static final String TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY = "com.aptatek.remider.dialog.minute";
     private static final String TIME_PICKER_DIALOG_EDIT_KEY = "com.aptatek.remider.dialog.edit";
+    public static final float GUIDELINE_EXPANDED_PERCENT = 0.7f;
+    public static final float GUIDELINE_COLLAPSED_PERCENT = 0.5f;
+    public static final int ANIMATION_DURATION = 300;
+    public static final float ALPHA_MIN = 0f;
+    public static final float ALPHA_MAX = 1f;
 
     interface TimePickerDialogCallback {
         void done(int hourOfDay, int minute);
@@ -48,11 +63,26 @@ public class TimePickerDialog extends DialogFragment {
     @BindView(R.id.timePicker)
     TimePicker timePicker;
 
-    @BindView(R.id.buttonDone)
-    Button buttonDone;
+    @BindView(R.id.layoutDone)
+    FrameLayout layoutDone;
 
-    @BindView(R.id.buttonDelete)
-    Button buttonDelete;
+    @BindView(R.id.layoutDelete)
+    FrameLayout layoutDelete;
+
+    @BindView(R.id.textViewDone)
+    TextView textViewDone;
+
+    @BindView(R.id.textViewDelete)
+    TextView textViewDelete;
+
+    @BindView(R.id.textViewConfirm)
+    TextView textViewConfirm;
+
+    @BindView(R.id.textViewCancel)
+    TextView textViewCancel;
+
+    @BindView(R.id.constraintLayout)
+    ConstraintLayout constraintLayout;
 
     @Nullable
     private TimePickerDialogCallback callback;
@@ -72,39 +102,107 @@ public class TimePickerDialog extends DialogFragment {
         timePicker.setIs24HourView(false);
 
         if (getArguments() != null) {
-            buttonDelete.setText(R.string.reminder_time_picker_delete);
-            buttonDone.setText(getArguments().getBoolean(TIME_PICKER_DIALOG_EDIT_KEY, false)
+            textViewDelete.setText(R.string.reminder_time_picker_delete);
+            textViewDone.setText(getArguments().getBoolean(TIME_PICKER_DIALOG_EDIT_KEY, false)
                     ? R.string.reminder_time_picker_update
                     : R.string.reminder_time_picker_add);
 
             timePicker.setCurrentHour(getArguments().getInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY));
             timePicker.setCurrentMinute(getArguments().getInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY));
         } else {
-            buttonDelete.setText(R.string.reminder_time_picker_cancel);
+            textViewDelete.setText(R.string.reminder_time_picker_cancel);
         }
 
-        buttonDone.setOnClickListener(v -> {
-            // TODO this IF could be simpler: move callback != null outside
-            if (callback != null && getArguments() == null) {
-                callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
-                dismiss();
-            } else if (callback != null && getArguments() != null) {
-                if (getArguments().getInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY) != timePicker.getCurrentHour()
-                        || getArguments().getInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY) != timePicker.getCurrentMinute()) {
+        layoutDone.setOnClickListener(v -> {
+            if (callback != null) {
+                if (getArguments() == null) {
                     callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                    dismiss();
+                } else if (getArguments() != null) {
+                    if (textViewCancel.getVisibility() == View.VISIBLE && textViewConfirm.getVisibility() == View.VISIBLE) {
+                        animateGuideline(GUIDELINE_COLLAPSED_PERCENT);
+
+                        animateDoneButtonBackgroundColor(R.color.applicationLightGray, R.color.applicationGreen);
+
+                        showAnimation(textViewDone);
+                        showAnimation(textViewDelete);
+                        hideAnimation(textViewCancel);
+                        hideAnimation(textViewConfirm);
+                    } else {
+                        if (getArguments().getInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY) != timePicker.getCurrentHour()
+                                || getArguments().getInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY) != timePicker.getCurrentMinute()) {
+                            callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                        }
+                        dismiss();
+                    }
                 }
-                dismiss();
             }
         });
 
-        buttonDelete.setOnClickListener(v -> {
-            // TODO this IF could be simpler: move callback != null outside
-            if (callback != null && getArguments() == null) {
-                dismiss();
-            } else if (callback != null && getArguments() != null) {
-                callback.delete();
+        layoutDelete.setOnClickListener(v -> {
+            if (getArguments() != null) {
+                if (textViewCancel.getVisibility() == View.VISIBLE && textViewConfirm.getVisibility() == View.VISIBLE) {
+                    if (callback != null) {
+                        callback.delete();
+                        dismiss();
+                    }
+                } else {
+                    animateGuideline(GUIDELINE_EXPANDED_PERCENT);
+
+                    animateDoneButtonBackgroundColor(R.color.applicationGreen, R.color.applicationLightGray);
+
+                    showAnimation(textViewCancel);
+                    showAnimation(textViewConfirm);
+                    hideAnimation(textViewDone);
+                    hideAnimation(textViewDelete);
+                }
+            } else {
                 dismiss();
             }
         });
+    }
+
+    private void animateDoneButtonBackgroundColor(@ColorRes final int applicationGreen, @ColorRes final int applicationLightGray) {
+        final ValueAnimator anim = new ValueAnimator();
+        anim.setIntValues(
+                ContextCompat.getColor(requireContext(), applicationGreen),
+                ContextCompat.getColor(requireContext(), applicationLightGray));
+        anim.setEvaluator(new ArgbEvaluator());
+        anim.addUpdateListener(valueAnimator -> layoutDone.setBackgroundColor((Integer) valueAnimator.getAnimatedValue()));
+
+        anim.setDuration(ANIMATION_DURATION);
+        anim.start();
+    }
+
+    private void animateGuideline(final float percent) {
+        final ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.setGuidelinePercent(R.id.guideline2, percent);
+        TransitionManager.beginDelayedTransition(constraintLayout);
+        constraintSet.applyTo(constraintLayout);
+    }
+
+    private void showAnimation(final View view) {
+        view.animate()
+                .alpha(ALPHA_MAX)
+                .setDuration(ANIMATION_DURATION)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(final Animator animation) {
+                        view.setVisibility(View.VISIBLE);
+                    }
+                });
+    }
+
+    private void hideAnimation(final View view) {
+        view.animate()
+                .alpha(ALPHA_MIN)
+                .setDuration(ANIMATION_DURATION)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(final Animator animation) {
+                        view.setVisibility(View.GONE);
+                    }
+                });
     }
 }

@@ -13,9 +13,7 @@
     <color name="applicationPink">#EE21C2</color>
     <color name="applicationSmoke">#D3DAE3</color>
     <color name="applicationWhite">#FFFFFF</color>
-
-
     <color name="dialButtonGrey">#8034414A</color>
-<color name="applicationGainsBoroGray">#F2F2F2</color>
+    <color name="applicationGainsBoroGray">#F2F2F2</color>
     <color name="applicationTimePickerSelector">#33b5e5</color>
 </resources>

@@ -105,6 +105,7 @@
     <string name="reminder.settings.wednesday">Wednesday</string>
     <string name="reminder.settings.thursday">Thursday</string>
     <string name="reminder.settings.friday">Friday</string>
+    <string name="reminder.notification.channel.name">Reminder</string>
 
     <!-- Reminder Time Picker Dialog -->
     <string name="settings.daily.reminder.description">You can set up multiple reminders for every day in the week</string>
