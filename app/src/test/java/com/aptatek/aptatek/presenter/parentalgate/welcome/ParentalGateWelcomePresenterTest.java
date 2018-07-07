@@ -3,6 +3,7 @@ package com.aptatek.aptatek.presenter.parentalgate.welcome;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.parentalgate.ParentalGateInteractor;
 import com.aptatek.aptatek.domain.model.AgeCheckModel;
+import com.aptatek.aptatek.domain.model.AgeCheckResult;
 import com.aptatek.aptatek.view.parentalgate.welcome.AgeVerificationResult;
 import com.aptatek.aptatek.view.parentalgate.welcome.ParentalGateWelcomePresenter;
 import com.aptatek.aptatek.view.parentalgate.welcome.ParentalGateWelcomeView;
@@ -82,7 +83,7 @@ public class ParentalGateWelcomePresenterTest {
     public void testOnAgeEntered() throws Exception {
         presenter.initUi();
 
-        when(parentalGateInteractor.verify(ArgumentMatchers.any(AgeCheckModel.class))).thenReturn(Single.just(false));
+        when(parentalGateInteractor.verify(ArgumentMatchers.any(AgeCheckModel.class))).thenReturn(Single.just(AgeCheckResult.NotOldEnough));
 
         presenter.onBirthDateSet(System.currentTimeMillis());
         presenter.verifyAge("11");
