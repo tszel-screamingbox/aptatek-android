@@ -10,6 +10,7 @@ import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.domain.model.ReminderDay;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -40,7 +41,7 @@ public class ReminderInteractor {
 
     public Single<List<ReminderDay>> listReminderDays() {
         return reminderDayDao.getReminderDays()
-                .map(reminderDayMapper::toDomainList)
+                .map(reminderDayMapper::mapListToDomain)
                 .toObservable()
                 .flatMapIterable(data -> data)
                 .flatMap(reminderDay -> listReminders(reminderDay.getWeekDay())
@@ -58,7 +59,7 @@ public class ReminderInteractor {
     }
 
     public Completable insertReminder(final Reminder reminder) {
-        return Completable.fromAction(() -> reminderDao.insert(reminderMapper.toData(reminder)));
+        return Completable.fromAction(() -> reminderDao.insert(reminderMapper.mapToData(reminder)));
     }
 
     public Completable updateReminder(final String id, final int hour, final int minute) {
@@ -86,9 +87,9 @@ public class ReminderInteractor {
                 alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute));
     }
 
-    private Observable<List<Reminder>> listReminders(final int weekDay) {
+    private Observable<Collection<Reminder>> listReminders(final int weekDay) {
         return reminderDao.getReminders(weekDay)
-                .map(reminderMapper::toDomainList)
+                .map(reminderMapper::mapListToDomain)
                 .toObservable();
     }
 

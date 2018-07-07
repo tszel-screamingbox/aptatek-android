@@ -2,10 +2,10 @@ package com.aptatek.aptatek.presenter.test.remindersettings;
 
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.remindersettings.ReminderInteractor;
-import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsAdapterItem;
+import com.aptatek.aptatek.view.settings.reminder.adapter.ReminderSettingsAdapterItem;
 import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsPresenter;
 import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsView;
-import com.aptatek.aptatek.view.settings.reminder.RemindersAdapterItem;
+import com.aptatek.aptatek.view.settings.reminder.adapter.RemindersAdapterItem;
 
 import org.junit.Before;
 import org.junit.Test;

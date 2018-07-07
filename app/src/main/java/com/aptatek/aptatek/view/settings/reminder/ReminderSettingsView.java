@@ -2,20 +2,22 @@ package com.aptatek.aptatek.view.settings.reminder;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.aptatek.view.settings.reminder.adapter.ReminderSettingsAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ReminderSettingsView extends MvpView {
     void presentDays(@NonNull ArrayList<ReminderSettingsAdapterItem> data);
 
-    void addReminder(@NonNull ReminderSettingsAdapterItem item);
+    void addReminder(@NonNull List<ReminderSettingsAdapterItem> data);
 
-    void changeActiveState(@NonNull ReminderSettingsAdapterItem item);
+    void changeActiveState(@NonNull List<ReminderSettingsAdapterItem> data);
 
-    void deleteReminder(@NonNull ReminderSettingsAdapterItem item);
+    void deleteReminder(@NonNull List<ReminderSettingsAdapterItem> data);
 
-    void modifyReminder(@NonNull ReminderSettingsAdapterItem item);
+    void modifyReminder(@NonNull List<ReminderSettingsAdapterItem> data);
 
     void showAlreadyHasReminderError();
 }

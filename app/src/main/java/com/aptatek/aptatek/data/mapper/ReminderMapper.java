@@ -1,39 +1,47 @@
 package com.aptatek.aptatek.data.mapper;
 
 import com.aptatek.aptatek.data.model.ReminderDataModel;
+import com.aptatek.aptatek.domain.base.Mapper;
 import com.aptatek.aptatek.domain.model.Reminder;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
 import ix.Ix;
 
-public class ReminderMapper {
+public class ReminderMapper implements Mapper<Reminder, ReminderDataModel> {
 
     @Inject
     public ReminderMapper() {
     }
 
-    public Reminder toDomain(final ReminderDataModel reminderDataModel) {
+    @Override
+    public Collection<Reminder> mapListToDomain(final Collection<ReminderDataModel> dataModels) {
+        return Ix.from(dataModels).map(this::mapToDomain).toList();
+    }
+
+    @Override
+    public Reminder mapToDomain(final ReminderDataModel dataModel) {
         return Reminder.builder()
-                .setId(reminderDataModel.getId())
-                .setHour(reminderDataModel.getHour())
-                .setMinute(reminderDataModel.getMinute())
-                .setWeekDay(reminderDataModel.getWeekDay())
+                .setId(dataModel.getId())
+                .setHour(dataModel.getHour())
+                .setMinute(dataModel.getMinute())
+                .setWeekDay(dataModel.getWeekDay())
                 .build();
     }
 
-    public ReminderDataModel toData(final Reminder reminder) {
-        final ReminderDataModel reminderDataModel = new ReminderDataModel();
-        reminderDataModel.setId(reminder.getId());
-        reminderDataModel.setWeekDay(reminder.getWeekDay());
-        reminderDataModel.setHour(reminder.getHour());
-        reminderDataModel.setMinute(reminder.getMinute());
-        return reminderDataModel;
+    @Override
+    public Collection<ReminderDataModel> mapListToData(final Collection<Reminder> domainModels) {
+        return Ix.from(domainModels).map(this::mapToData).toList();
     }
 
-    public List<Reminder> toDomainList(final List<ReminderDataModel> reminderDataModels) {
-        return Ix.from(reminderDataModels).map(this::toDomain).toList();
+    @Override
+    public ReminderDataModel mapToData(final Reminder domainModel) {
+        final ReminderDataModel reminderDataModel = new ReminderDataModel(domainModel.getId());
+        reminderDataModel.setWeekDay(domainModel.getWeekDay());
+        reminderDataModel.setHour(domainModel.getHour());
+        reminderDataModel.setMinute(domainModel.getMinute());
+        return reminderDataModel;
     }
 }

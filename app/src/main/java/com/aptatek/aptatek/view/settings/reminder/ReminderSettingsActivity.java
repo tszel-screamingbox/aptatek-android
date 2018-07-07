@@ -13,8 +13,14 @@ import android.widget.Toast;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.settings.reminder.adapter.ReminderSettingsAdapter;
+import com.aptatek.aptatek.view.settings.reminder.adapter.ReminderSettingsAdapterCallback;
+import com.aptatek.aptatek.view.settings.reminder.adapter.ReminderSettingsAdapterItem;
+import com.aptatek.aptatek.view.settings.reminder.adapter.ReminderSettingsItemDecoration;
+import com.aptatek.aptatek.view.settings.reminder.adapter.RemindersAdapterItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -80,8 +86,9 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
         recyclerViewDays.setAdapter(adapter);
         recyclerViewDays.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewDays.addItemDecoration(itemDecoration);
+        recyclerViewDays.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
-        adapter.setCallback(new ReminderSettingsAdapter.ReminderSettingsAdapterCallback() {
+        adapter.setCallback(new ReminderSettingsAdapterCallback() {
             @Override
             public void onAddReminderClicked(@NonNull final ReminderSettingsAdapterItem item) {
                 TimePickerDialog.create(getTimePickerDialogCallback(item, null))
@@ -90,7 +97,7 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
 
             @Override
             public void changeActiveState(@NonNull final ReminderSettingsAdapterItem item, final boolean isActive) {
-                presenter.changeActiveState(item, isActive);
+                presenter.changeActiveState(adapter.getData(), item, isActive);
             }
 
             @Override
@@ -109,24 +116,25 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
     }
 
     @Override
-    public void addReminder(@NonNull final ReminderSettingsAdapterItem item) {
-        adapter.changeAdapterItem(item);
+    public void addReminder(@NonNull List<ReminderSettingsAdapterItem> data) {
+        adapter.setData(data);
     }
 
     @Override
-    public void changeActiveState(@NonNull final ReminderSettingsAdapterItem item) {
-        adapter.changeAdapterItem(item);
+    public void changeActiveState(@NonNull final List<ReminderSettingsAdapterItem> data) {
+        adapter.setData(data);
     }
 
     @Override
-    public void deleteReminder(@NonNull final ReminderSettingsAdapterItem item) {
-        adapter.changeAdapterItem(item);
+    public void deleteReminder(@NonNull List<ReminderSettingsAdapterItem> data) {
+        adapter.setData(data);
     }
 
     @Override
-    public void modifyReminder(@NonNull final ReminderSettingsAdapterItem item) {
-        adapter.changeAdapterItem(item);
+    public void modifyReminder(@NonNull List<ReminderSettingsAdapterItem> data) {
+        adapter.setData(data);
     }
+
 
     @Override
     public void showAlreadyHasReminderError() {
@@ -139,16 +147,16 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
             @Override
             public void done(final int hourOfDay, final int minute) {
                 if (remindersAdapterItem != null) {
-                    presenter.modifyReminder(reminderSettingsAdapterItem, remindersAdapterItem, hourOfDay, minute);
+                    presenter.modifyReminder(adapter.getData(), reminderSettingsAdapterItem, remindersAdapterItem, hourOfDay, minute);
                 } else {
-                    presenter.addNewReminder(reminderSettingsAdapterItem, hourOfDay, minute);
+                    presenter.addNewReminder(adapter.getData(), reminderSettingsAdapterItem, hourOfDay, minute);
                 }
             }
 
             @Override
             public void delete() {
                 if (remindersAdapterItem != null) {
-                    presenter.deleteReminder(reminderSettingsAdapterItem, remindersAdapterItem);
+                    presenter.deleteReminder(adapter.getData(), reminderSettingsAdapterItem, remindersAdapterItem);
                 }
             }
         };

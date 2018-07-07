@@ -6,15 +6,16 @@ import android.support.annotation.NonNull;
 
 @Entity(tableName = "reminders")
 public class ReminderDataModel {
-    // TODO test if it can work: make if final and init it in ctor.
+
     @PrimaryKey
     @NonNull
-    private String id;
+    private final String id;
     private int weekDay;
     private int hour;
     private int minute;
 
-    public ReminderDataModel() {
+    public ReminderDataModel(final String id) {
+        this.id = id;
     }
 
     public int getWeekDay() {
@@ -28,10 +29,6 @@ public class ReminderDataModel {
     @NonNull
     public String getId() {
         return id;
-    }
-
-    public void setId(@NonNull final String id) {
-        this.id = id;
     }
 
     public int getHour() {

@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.settings.reminder;
+package com.aptatek.aptatek.view.settings.reminder.adapter;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -12,7 +12,7 @@ import com.aptatek.aptatek.R;
 import javax.inject.Inject;
 
 // TODO alternative: DividerItemDecoration isn't good enough for us?
-class ReminderSettingsItemDecoration extends RecyclerView.ItemDecoration {
+public class ReminderSettingsItemDecoration extends RecyclerView.ItemDecoration {
 
     @Inject
     ReminderSettingsItemDecoration() {
