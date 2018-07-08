@@ -13,6 +13,7 @@ import com.aptatek.aptatek.injection.component.ApplicationComponent;
 import com.aptatek.aptatek.injection.component.DaggerApplicationComponent;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.view.test.incubation.IncubationReminderService;
+import com.aptatek.aptatek.view.test.samplewetting.SampleWettingReminderService;
 
 import timber.log.Timber;
 
@@ -47,6 +48,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         inForeground = true;
         Timber.d("Process.Lifecycle: foreground");
         stopService(new Intent(this, IncubationReminderService.class));
+        stopService(new Intent(this, SampleWettingReminderService.class));
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -54,6 +56,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         inForeground = false;
         Timber.d("Process.Lifecycle: background");
         startService(new Intent(this, IncubationReminderService.class));
+        startService(new Intent(this, SampleWettingReminderService.class));
     }
 
     public ApplicationComponent getApplicationComponent() {

@@ -1,6 +1,5 @@
 package com.aptatek.aptatek.view.test.incubation;
 
-import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -14,7 +13,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -28,7 +29,7 @@ public class IncubationScreenTest {
 
     @Before
     public void setUp() throws Exception {
-        onView(withId(R.id.testNavigationButton)).perform(ViewActions.click());
+        onView(withId(R.id.testNavigationButton)).perform(click());
     }
 
     @Test
@@ -54,7 +55,7 @@ public class IncubationScreenTest {
 
     @Test
     public void testBackNavigation() throws Exception {
-        onView(withId(R.id.testCancelCircleButton)).perform(ViewActions.click());
+        onView(withId(R.id.testCancelCircleButton)).perform(click());
         onView(withId(R.id.testNavigationButton)).check(matches(withText(R.string.test_cancel_navigation_yes)));
         onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_cancel_title)));
         onView(withId(R.id.testBaseMessage)).check(matches(withText(R.string.test_cancel_description)));
@@ -62,8 +63,21 @@ public class IncubationScreenTest {
 
     @Test
     public void testForwardNavigation() throws Exception {
-        onView(withId(R.id.testNavigationButton)).perform(ViewActions.click());
-        // TODO implement next screen
+        onView(withId(R.id.testNavigationButton)).perform(click());
+
+        onView(withText(R.string.test_incubation_alertdialog_title)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withText(R.string.test_incubation_alertdialog_message)).inRoot(isDialog()).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button2)).inRoot(isDialog()).perform(click());
+
+        onView(withId(R.id.testNavigationButton)).perform(click());
+
+        onView(withText(R.string.test_incubation_alertdialog_title)).inRoot(isDialog()).check(matches(isDisplayed()));
+        onView(withText(R.string.test_incubation_alertdialog_message)).inRoot(isDialog()).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
+
+        onView(withText(R.string.test_insertcasette_title)).check(matches(isDisplayed()));
     }
 
 }

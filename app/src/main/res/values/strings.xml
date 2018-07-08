@@ -23,6 +23,8 @@
     <string name="fingerprint.option.enable">Enable Fingerprint</string>
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
     <!-- Main Activity -->
+    <string name="main.placeholder.title">Home Screen</string>
+    <string name="main.placeholder.chart">Result Chart\nUnder Construction</string>
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.result">Result Summary</string>
     <string name="main.button.settings">Settings</string>
@@ -68,11 +70,11 @@
     <string name="test.incubation.alertdialog.title">Please confirm</string>
     <string name="test.incubation.countdown.format">mm:ss</string>
     <string name="test.incubation.description">Blood needs to stay in the tube for 30 full minutes</string>
-    <string name="test.incubation.notification.channel.name">Incubation</string>
+    <string name="test.countdown.notification.channel.name">Incubation</string>
     <string name="test.incubation.notification.finished.text">Tap to proceed</string>
     <string name="test.incubation.notification.finished.title">Incubation complete</string>
     <string name="test.incubation.notification.inprogress.textformat">Remaining time is %s</string>
-    <string name="test.incubation.notification.inprogress.title">Incubation in progress</string>
+    <string name="test.incubation.notification.inprogress.title">Blood is Processing</string>
     <string name="test.incubation.title">Blood is Processing</string>
     <string name="test.insertcasette.description">Insert the casette to the adapter from the bottom</string>
     <string name="test.insertcasette.title">Insert casette</string>
@@ -84,6 +86,12 @@
     <string name="test.takesample.button.start">Start timer (30min)</string>
     <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
     <string name="test.takesample.title">Take sample</string>
+    <string name="test.samplewetting.description">Let the sample wet into the tester stick</string>
+    <string name="test.samplewetting.notification.finished.text">Tap to proceed</string>
+    <string name="test.samplewetting.notification.finished.title">Sample wetting complete</string>
+    <string name="test.samplewetting.notification.inprogress.textformat">Remaining time is %s</string>
+    <string name="test.samplewetting.notification.inprogress.title">Sample wetting in progress</string>
+    <string name="test.samplewetting.title">Sample wetting</string>
     <!-- Toggle Activity -->
     <string name="toggle.button.connect">Connect Cube</string>
     <string name="toggle.button.new.test">New Test</string>
@@ -92,7 +100,7 @@
     <string name="toggle.button.toggle">Toggle</string>
     <string name="toggle.cube.connected">● Cube Connected</string>
     <string name="toggle.cube.disconnected">● Cube Disconnected</string>
-<!-- Reminder Settings Activity -->
+    <!-- Reminder Settings Activity -->
     <string name="reminder.settings.toolbar.title">Reminders</string>
     <string name="reminder.settings.am">am</string>
     <string name="reminder.settings.pm">pm</string>
@@ -104,7 +112,6 @@
     <string name="reminder.settings.wednesday">Wednesday</string>
     <string name="reminder.settings.thursday">Thursday</string>
     <string name="reminder.settings.friday">Friday</string>
-
     <!-- Reminder Time Picker Dialog -->
     <string name="settings.daily.reminder.description">You can set up multiple reminders for every day in the week</string>
     <string name="settings.daily.reminders">Daily reminders</string>
