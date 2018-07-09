@@ -55,7 +55,7 @@ public class ParentalGateInteractorTest {
                 .build()
         ).test()
         .assertNoErrors()
-        .assertValue(AgeCheckResult.ValidAge)
+        .assertValue(AgeCheckResult.VALID_AGE)
         .assertComplete();
     }
 
@@ -68,7 +68,7 @@ public class ParentalGateInteractorTest {
                 .build()
         ).test()
         .assertNoErrors()
-        .assertValue(AgeCheckResult.NotOldEnough)
+        .assertValue(AgeCheckResult.NOT_OLD_ENOUGH)
         .assertComplete();
     }
 
@@ -81,7 +81,7 @@ public class ParentalGateInteractorTest {
                 .build()
         ).test()
         .assertNoErrors()
-        .assertValue(AgeCheckResult.AgeNotMatch)
+        .assertValue(AgeCheckResult.AGE_NOT_MATCH)
         .assertComplete();
     }
 

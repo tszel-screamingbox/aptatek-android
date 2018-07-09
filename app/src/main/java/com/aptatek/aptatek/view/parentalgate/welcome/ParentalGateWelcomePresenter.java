@@ -80,23 +80,23 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
                     .build();
 
             disposables.add(parentalGateInteractor.verify(ageCheckModel)
-                    .onErrorReturn(throwable -> AgeCheckResult.NotOldEnough)
+                    .onErrorReturn(throwable -> AgeCheckResult.NOT_OLD_ENOUGH)
                     .subscribe(result ->
                             ifViewAttached(attached -> attached.showResult(AgeVerificationResult.builder()
-                                    .setIconRes(result == AgeCheckResult.ValidAge
+                                    .setIconRes(result == AgeCheckResult.VALID_AGE
                                             ? R.drawable.ic_age_verified
                                             : R.drawable.ic_age_not_verified)
-                                    .setTitle(resourceInteractor.getStringResource(result == AgeCheckResult.ValidAge
+                                    .setTitle(resourceInteractor.getStringResource(result == AgeCheckResult.VALID_AGE
                                             ? R.string.parental_verification_success_title
-                                            : result == AgeCheckResult.NotOldEnough
-                                            ? R.string.parental_verification_failure_title
-                                            : R.string.parental_verification_failure_title_first))
-                                    .setMessage(resourceInteractor.getStringResource(result == AgeCheckResult.ValidAge
+                                            : result == AgeCheckResult.NOT_OLD_ENOUGH
+                                            ? R.string.parental_verification_failure_not_old_enough_title
+                                            : R.string.parental_verification_failure_age_not_match_title))
+                                    .setMessage(resourceInteractor.getStringResource(result == AgeCheckResult.VALID_AGE
                                             ? R.string.parental_verification_success_message
-                                            : result == AgeCheckResult.NotOldEnough
-                                            ? R.string.parental_verification_failure_message
-                                            : R.string.parental_verification_failure_message_first))
-                                    .setShowButton(result != AgeCheckResult.ValidAge)
+                                            : result == AgeCheckResult.NOT_OLD_ENOUGH
+                                            ? R.string.parental_verification_failure_not_old_enough_message
+                                            : R.string.parental_verification_failure_age_not_match_message))
+                                    .setShowButton(result != AgeCheckResult.VALID_AGE)
                                     .build())
                             )
                     )

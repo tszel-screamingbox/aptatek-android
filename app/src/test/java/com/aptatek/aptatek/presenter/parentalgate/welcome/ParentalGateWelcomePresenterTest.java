@@ -83,7 +83,7 @@ public class ParentalGateWelcomePresenterTest {
     public void testOnAgeEntered() throws Exception {
         presenter.initUi();
 
-        when(parentalGateInteractor.verify(ArgumentMatchers.any(AgeCheckModel.class))).thenReturn(Single.just(AgeCheckResult.NotOldEnough));
+        when(parentalGateInteractor.verify(ArgumentMatchers.any(AgeCheckModel.class))).thenReturn(Single.just(AgeCheckResult.NOT_OLD_ENOUGH));
 
         presenter.onBirthDateSet(System.currentTimeMillis());
         presenter.verifyAge("11");

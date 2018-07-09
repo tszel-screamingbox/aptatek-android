@@ -31,12 +31,12 @@ public class ParentalGateInteractor {
         return Single.fromCallable(() -> {
             final int calculatedAge = calculateAge(ageCheckModel.getBirthDate());
 
-            if (ageCheckModel.getAge() < MIN_AGE) {
-                return AgeCheckResult.NotOldEnough;
+            if (calculatedAge < MIN_AGE) {
+                return AgeCheckResult.NOT_OLD_ENOUGH;
             } else if (calculatedAge != ageCheckModel.getAge()) {
-                return AgeCheckResult.AgeNotMatch;
+                return AgeCheckResult.AGE_NOT_MATCH;
             } else {
-                return AgeCheckResult.ValidAge;
+                return AgeCheckResult.VALID_AGE;
             }
         });
     }
