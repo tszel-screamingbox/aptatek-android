@@ -86,7 +86,6 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
         recyclerViewDays.setAdapter(adapter);
         recyclerViewDays.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewDays.addItemDecoration(itemDecoration);
-        recyclerViewDays.getRecycledViewPool().setMaxRecycledViews(0, 0);
 
         adapter.setCallback(new ReminderSettingsAdapterCallback() {
             @Override

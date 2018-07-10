@@ -58,19 +58,18 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
         @BindView(R.id.recyclerViewReminders)
         RecyclerView recyclerViewReminders;
 
-        private final RemindersAdapter adapter = new RemindersAdapter();
-
         ReminderSettingsViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            recyclerViewReminders.setAdapter(adapter);
             recyclerViewReminders.setLayoutManager(new GridLayoutManager(itemView.getContext(), Constants.REMINDER_SPAN_COUNT));
             recyclerViewReminders.addItemDecoration(new ReminderItemDecoration());
-            adapter.setCallback(this);
         }
 
         void bind(final ReminderSettingsAdapterItem item) {
-            adapter.setData(item.getReminders());
+            final RemindersAdapter remindersAdapter = new RemindersAdapter();
+            recyclerViewReminders.setAdapter(remindersAdapter);
+            remindersAdapter.setCallback(this);
+            remindersAdapter.setData(item.getReminders());
 
             textViewDayName.setText(item.getNameOfDay());
             switchActivate.setChecked(item.isActive());

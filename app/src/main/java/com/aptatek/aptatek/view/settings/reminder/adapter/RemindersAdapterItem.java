@@ -15,6 +15,8 @@ public abstract class RemindersAdapterItem implements AdapterItem {
 
     public abstract int getMinute();
 
+    public abstract Builder toBuilder();
+
     public static Builder builder() {
         return new AutoValue_RemindersAdapterItem.Builder();
     }

@@ -96,7 +96,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                                   @NonNull final ReminderSettingsAdapterItem item,
                                   final boolean isActive) {
 
-        final ReminderSettingsAdapterItem.Builder settingsAdapterItemBuilder = ReminderSettingsAdapterItem.builder();
+        final ReminderSettingsAdapterItem.Builder settingsAdapterItemBuilder = item.toBuilder();
         settingsAdapterItemBuilder.setActive(isActive);
 
         final List<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
@@ -118,17 +118,11 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
             remindersAdapterItems.set(
                     remindersAdapterItems.indexOf(reminderItem),
-                    RemindersAdapterItem.builder()
-                            .setId(reminderItem.getId())
-                            .setTime(reminderItem.getTime())
+                    reminderItem.toBuilder()
                             .setActive(isActive)
-                            .setHour(reminderItem.getHour())
-                            .setMinute(reminderItem.getMinute())
                             .build());
         }
 
-        settingsAdapterItemBuilder.setNameOfDay(item.getNameOfDay());
-        settingsAdapterItemBuilder.setWeekDay(item.getWeekDay());
         settingsAdapterItemBuilder.setReminders(remindersAdapterItems);
 
         reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(item), settingsAdapterItemBuilder.build());
@@ -148,11 +142,8 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         remindersAdapterItems.remove(reminderItem);
 
         reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(reminderSettingsItem),
-                ReminderSettingsAdapterItem.builder()
-                        .setActive(reminderSettingsItem.isActive())
+                reminderSettingsItem.toBuilder()
                         .setReminders(remindersAdapterItems)
-                        .setNameOfDay(reminderSettingsItem.getNameOfDay())
-                        .setWeekDay(reminderSettingsItem.getWeekDay())
                         .build());
 
         ifViewAttached(view -> view.deleteReminder(reminderSettingsAdapterItems));
@@ -184,20 +175,16 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         remindersAdapterItems.set(
                 reminderSettingsItem.getReminders().indexOf(reminderItem),
-                RemindersAdapterItem.builder()
-                        .setId(reminderItem.getId())
-                        .setActive(reminderItem.isActive())
-                        .setTime(getReminderTime(hour, minute))
+                reminderItem.toBuilder()
                         .setHour(hour)
                         .setMinute(minute)
+                        .setTime(getReminderTime(hour, minute))
                         .build());
 
         reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(reminderSettingsItem),
-                ReminderSettingsAdapterItem.builder()
+                reminderSettingsItem
+                        .toBuilder()
                         .setReminders(remindersAdapterItems)
-                        .setActive(reminderSettingsItem.isActive())
-                        .setNameOfDay(reminderSettingsItem.getNameOfDay())
-                        .setWeekDay(reminderSettingsItem.getWeekDay())
                         .build());
 
         ifViewAttached(view -> view.modifyReminder(reminderSettingsAdapterItems));

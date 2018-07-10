@@ -16,6 +16,8 @@ public abstract class ReminderSettingsAdapterItem implements AdapterItem {
 
     public abstract int getWeekDay();
 
+    public abstract ReminderSettingsAdapterItem.Builder toBuilder();
+
     public static Builder builder() {
         return new AutoValue_ReminderSettingsAdapterItem.Builder();
     }
