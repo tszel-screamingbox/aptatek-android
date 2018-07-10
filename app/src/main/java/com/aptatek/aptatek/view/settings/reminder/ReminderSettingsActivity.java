@@ -115,7 +115,7 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
     }
 
     @Override
-    public void addReminder(@NonNull List<ReminderSettingsAdapterItem> data) {
+    public void addReminder(@NonNull final List<ReminderSettingsAdapterItem> data) {
         adapter.setData(data);
     }
 
@@ -125,12 +125,12 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
     }
 
     @Override
-    public void deleteReminder(@NonNull List<ReminderSettingsAdapterItem> data) {
+    public void deleteReminder(@NonNull final List<ReminderSettingsAdapterItem> data) {
         adapter.setData(data);
     }
 
     @Override
-    public void modifyReminder(@NonNull List<ReminderSettingsAdapterItem> data) {
+    public void modifyReminder(@NonNull final List<ReminderSettingsAdapterItem> data) {
         adapter.setData(data);
     }
 

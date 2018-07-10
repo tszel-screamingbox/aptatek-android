@@ -14,7 +14,6 @@ import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.parentalgate.ParentalGateView;
 import com.aptatek.aptatek.view.parentalgate.welcome.AgeVerificationResult;
 import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
-import com.aptatek.aptatek.view.splash.SplashActivity;
 
 import java.util.concurrent.TimeUnit;
 

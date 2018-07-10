@@ -173,7 +173,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         if (checkReminderExistence(reminderSettingsItem, hour, minute)) return;
 
-        RemindersAdapterItem reminderItemCopy = reminderItem.toBuilder()
+        final RemindersAdapterItem reminderItemCopy = reminderItem.toBuilder()
                 .setHour(hour)
                 .setMinute(minute)
                 .setTime(getReminderTime(hour, minute))

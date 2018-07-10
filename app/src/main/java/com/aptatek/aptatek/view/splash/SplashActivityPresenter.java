@@ -2,7 +2,6 @@ package com.aptatek.aptatek.view.splash;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.aptatek.data.AptatekDatabase;
 import com.aptatek.aptatek.device.PreferenceManager;
 import com.aptatek.aptatek.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.aptatek.domain.manager.keystore.KeyStoreManager;
@@ -10,11 +9,8 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
-import io.reactivex.CompletableObserver;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView> {
