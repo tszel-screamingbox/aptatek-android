@@ -8,6 +8,8 @@ import com.aptatek.aptatek.domain.interactor.remindersettings.ReminderInteractor
 import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.domain.model.ReminderDay;
 import com.aptatek.aptatek.util.Constants;
+import com.aptatek.aptatek.view.settings.reminder.adapter.ReminderSettingsAdapterItem;
+import com.aptatek.aptatek.view.settings.reminder.adapter.RemindersAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.text.DateFormatSymbols;
@@ -17,9 +19,9 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import io.reactivex.CompletableObserver;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -28,9 +30,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
     private final ResourceInteractor resourceInteractor;
     private final ReminderInteractor reminderInteractor;
-
-    // TODO CompositeDisposable + add every subscription !!!
-    // TODO dont forget to dispose!
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     public ReminderSettingsPresenter(final ResourceInteractor resourceInteractor,
@@ -39,94 +39,170 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         this.reminderInteractor = reminderInteractor;
     }
 
+    @Override
+    public void detachView() {
+        if (!compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+        }
+
+        super.detachView();
+    }
+
     public void initView() {
         listReminderDays();
     }
 
-    public void addNewReminder(@NonNull final ReminderSettingsAdapterItem item, final int hour, final int minute) {
+    public void addNewReminder(@NonNull final List<ReminderSettingsAdapterItem> data,
+                               @NonNull final ReminderSettingsAdapterItem item,
+                               final int hour,
+                               final int minute) {
+
+        final List<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
+        final List<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(item.getReminders());
+
         if (checkReminderExistence(item, hour, minute)) return;
 
         final String id = UUID.randomUUID().toString();
         final String reminderTime = getReminderTime(hour, minute);
-        item.getReminders().add(new RemindersAdapterItem(
-                id,
-                reminderTime,
-                true,
-                hour,
-                minute));
 
-        ifViewAttached(view -> view.addReminder(item));
+        remindersAdapterItems.add(
+                RemindersAdapterItem.builder()
+                        .setId(id)
+                        .setTime(reminderTime)
+                        .setActive(true)
+                        .setHour(hour)
+                        .setMinute(minute)
+                        .build());
 
-        reminderInteractor.setReminder(item.getWeekDay(), hour, minute).subscribe();
+        reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(item),
+                ReminderSettingsAdapterItem.builder()
+                        .setWeekDay(item.getWeekDay())
+                        .setNameOfDay(item.getNameOfDay())
+                        .setActive(item.isActive())
+                        .setReminders(remindersAdapterItems)
+                        .build());
+
+        ifViewAttached(view -> view.addReminder(reminderSettingsAdapterItems));
+
+        compositeDisposable.add(
+                reminderInteractor
+                        .setReminder(item.getWeekDay(), hour, minute)
+                        .subscribe());
 
         insertReminder(item, hour, minute, id);
     }
 
-    public void changeActiveState(@NonNull final ReminderSettingsAdapterItem item, final boolean isActive) {
-        item.setActive(isActive);
+    public void changeActiveState(@NonNull final List<ReminderSettingsAdapterItem> data,
+                                  @NonNull final ReminderSettingsAdapterItem item,
+                                  final boolean isActive) {
 
-        for (RemindersAdapterItem reminderItem : item.getReminders()) {
-            reminderItem.setActive(isActive);
+        final ReminderSettingsAdapterItem.Builder settingsAdapterItemBuilder = item.toBuilder();
+        settingsAdapterItemBuilder.setActive(isActive);
+
+        final List<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
+        final List<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(item.getReminders());
+
+        for (RemindersAdapterItem reminderItem : remindersAdapterItems) {
 
             if (item.isActive()) {
-                reminderInteractor.setReminder(item.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute()).subscribe();
+                compositeDisposable.add(
+                        reminderInteractor
+                                .setReminder(item.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute())
+                                .subscribe());
             } else {
-                reminderInteractor.deleteReminder(item.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute()).subscribe();
+                compositeDisposable.add(
+                        reminderInteractor
+                                .deleteReminder(item.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute())
+                                .subscribe());
             }
+
+            remindersAdapterItems.set(
+                    remindersAdapterItems.indexOf(reminderItem),
+                    reminderItem.toBuilder()
+                            .setActive(isActive)
+                            .build());
         }
 
-        ifViewAttached(view -> view.changeActiveState(item));
+        settingsAdapterItemBuilder.setReminders(remindersAdapterItems);
 
-        updateReminderDayActiveState(item, isActive);
+        reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(item), settingsAdapterItemBuilder.build());
+
+        ifViewAttached(view -> view.changeActiveState(reminderSettingsAdapterItems));
+
+        updateReminderDayActiveState(settingsAdapterItemBuilder.build(), isActive);
     }
 
-    public void deleteReminder(@NonNull final ReminderSettingsAdapterItem reminderSettingsItem, final @NonNull RemindersAdapterItem reminderItem) {
-        reminderSettingsItem.getReminders().remove(reminderItem);
-        ifViewAttached(view -> view.deleteReminder(reminderSettingsItem));
+    public void deleteReminder(@NonNull final List<ReminderSettingsAdapterItem> data,
+                               @NonNull final ReminderSettingsAdapterItem reminderSettingsItem,
+                               @NonNull final RemindersAdapterItem reminderItem) {
+
+        final List<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
+        final List<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(reminderSettingsItem.getReminders());
+
+        remindersAdapterItems.remove(reminderItem);
+
+        reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(reminderSettingsItem),
+                reminderSettingsItem.toBuilder()
+                        .setReminders(remindersAdapterItems)
+                        .build());
+
+        ifViewAttached(view -> view.deleteReminder(reminderSettingsAdapterItems));
 
         deleteReminder(reminderItem);
 
-        reminderInteractor.deleteReminder(reminderSettingsItem.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute()).subscribe();
+        compositeDisposable.add(reminderInteractor
+                .deleteReminder(reminderSettingsItem.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute())
+                .subscribe());
     }
 
     private void deleteReminder(@NonNull final RemindersAdapterItem reminderItem) {
-        reminderInteractor.deleteReminder(reminderItem.getId())
+        compositeDisposable.add(reminderInteractor.deleteReminder(reminderItem.getId())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(final Disposable d) {
-                        Timber.d("");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Timber.d("");
-                    }
-
-                    @Override
-                    public void onError(final Throwable e) {
-                        Timber.d("");
-                    }
-                });
+                .subscribe());
     }
 
-    public void modifyReminder(@NonNull final ReminderSettingsAdapterItem reminderSettingsItem, final @NonNull RemindersAdapterItem reminderItem, final int hour, final int minute) {
+    public void modifyReminder(@NonNull final List<ReminderSettingsAdapterItem> data,
+                               @NonNull final ReminderSettingsAdapterItem reminderSettingsItem,
+                               final @NonNull RemindersAdapterItem reminderItem,
+                               final int hour,
+                               final int minute) {
+
+        final ArrayList<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
+        final ArrayList<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(reminderSettingsItem.getReminders());
+
         if (checkReminderExistence(reminderSettingsItem, hour, minute)) return;
 
-        reminderItem.setTime(getReminderTime(hour, minute));
-        reminderItem.setHour(hour);
-        reminderItem.setMinute(minute);
-        reminderSettingsItem.getReminders().set(reminderSettingsItem.getReminders().indexOf(reminderItem), reminderItem);
-        ifViewAttached(view -> view.modifyReminder(reminderSettingsItem));
+        final RemindersAdapterItem reminderItemCopy = reminderItem.toBuilder()
+                .setHour(hour)
+                .setMinute(minute)
+                .setTime(getReminderTime(hour, minute))
+                .build();
 
-        updateReminder(reminderItem);
+        remindersAdapterItems.set(
+                reminderSettingsItem.getReminders().indexOf(reminderItem),
+                reminderItemCopy);
 
-        reminderInteractor.updateReminder(reminderSettingsItem.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute()).subscribe();
+        reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(reminderSettingsItem),
+                reminderSettingsItem
+                        .toBuilder()
+                        .setReminders(remindersAdapterItems)
+                        .build());
+
+        ifViewAttached(view -> view.modifyReminder(reminderSettingsAdapterItems));
+
+        updateReminder(reminderItemCopy);
+
+        compositeDisposable.add(reminderInteractor
+                .updateReminder(reminderSettingsItem.getWeekDay(), reminderItemCopy.getHour(), reminderItemCopy.getMinute())
+                .subscribe());
     }
 
-    private void insertReminder(@NonNull final ReminderSettingsAdapterItem item, final int hour, final int minute, final String id) {
-        reminderInteractor.insertReminder(Reminder.builder()
+    private void insertReminder(@NonNull final ReminderSettingsAdapterItem item,
+                                final int hour,
+                                final int minute,
+                                final String id) {
+        compositeDisposable.add(reminderInteractor.insertReminder(Reminder.builder()
                 .setId(id)
                 .setHour(hour)
                 .setMinute(minute)
@@ -134,66 +210,22 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                 .build())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(final Disposable d) {
-                        Timber.d("");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Timber.d("");
-                    }
-
-                    @Override
-                    public void onError(final Throwable e) {
-                        Timber.d("");
-                    }
-                });
+                .subscribe());
     }
 
-    private void updateReminderDayActiveState(@NonNull final ReminderSettingsAdapterItem item, final boolean isActive) {
-        reminderInteractor.updateReminderDayActiveState(item.getWeekDay(), isActive)
+    private void updateReminderDayActiveState(@NonNull final ReminderSettingsAdapterItem item,
+                                              final boolean isActive) {
+        compositeDisposable.add(reminderInteractor.updateReminderDayActiveState(item.getWeekDay(), isActive)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(final Disposable d) {
-                        Timber.d("");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Timber.d("");
-                    }
-
-                    @Override
-                    public void onError(final Throwable e) {
-                        Timber.d("");
-                    }
-                });
+                .subscribe());
     }
 
     private void updateReminder(@NonNull final RemindersAdapterItem reminderItem) {
-        reminderInteractor.updateReminder(reminderItem.getId(), reminderItem.getHour(), reminderItem.getMinute())
+        compositeDisposable.add(reminderInteractor.updateReminder(reminderItem.getId(), reminderItem.getHour(), reminderItem.getMinute())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new CompletableObserver() {
-                    @Override
-                    public void onSubscribe(final Disposable d) {
-                        Timber.d("");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Timber.d("");
-                    }
-
-                    @Override
-                    public void onError(final Throwable e) {
-                        Timber.d("");
-                    }
-                });
+                .subscribe());
     }
 
     private void listReminderDays() {
@@ -203,7 +235,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                 .subscribe(new SingleObserver<List<ReminderDay>>() {
                     @Override
                     public void onSubscribe(final Disposable d) {
-                        Timber.d("");
+                        compositeDisposable.add(d);
                     }
 
                     @Override
@@ -214,20 +246,22 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
                             for (Reminder reminder : reminderDay.getReminders()) {
                                 remindersAdapterItems.add(
-                                        new RemindersAdapterItem(
-                                                reminder.getId(),
-                                                getReminderTime(reminder.getHour(), reminder.getMinute()),
-                                                reminderDay.isActive(),
-                                                reminder.getHour(),
-                                                reminder.getMinute()));
+                                        RemindersAdapterItem.builder()
+                                                .setId(reminder.getId())
+                                                .setTime(getReminderTime(reminder.getHour(), reminder.getMinute()))
+                                                .setActive(reminderDay.isActive())
+                                                .setHour(reminder.getHour())
+                                                .setMinute(reminder.getMinute())
+                                                .build());
                             }
 
                             data.add(
-                                    new ReminderSettingsAdapterItem(
-                                            reminderDay.getWeekDay(),
-                                            new DateFormatSymbols().getWeekdays()[reminderDay.getWeekDay()],
-                                            reminderDay.isActive(),
-                                            remindersAdapterItems));
+                                    ReminderSettingsAdapterItem.builder()
+                                            .setWeekDay(reminderDay.getWeekDay())
+                                            .setNameOfDay(new DateFormatSymbols().getWeekdays()[reminderDay.getWeekDay()])
+                                            .setReminders(remindersAdapterItems)
+                                            .setActive(reminderDay.isActive())
+                                            .build());
                         }
 
                         ifViewAttached(view -> view.presentDays(data));
@@ -240,7 +274,9 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                 });
     }
 
-    private boolean checkReminderExistence(@NonNull final ReminderSettingsAdapterItem item, final int hour, final int minute) {
+    private boolean checkReminderExistence(@NonNull final ReminderSettingsAdapterItem item,
+                                           final int hour,
+                                           final int minute) {
         for (RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
             if (remindersAdapterItem.getHour() == hour && remindersAdapterItem.getMinute() == minute) {
                 ifViewAttached(ReminderSettingsView::showAlreadyHasReminderError);
@@ -250,7 +286,8 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         return false;
     }
 
-    private String getReminderTime(final int hour, final int minute) {
+    private String getReminderTime(final int hour,
+                                   final int minute) {
         final String timePeriod;
 
         if (hour > Constants.REMINDER_AM_OR_PM) {

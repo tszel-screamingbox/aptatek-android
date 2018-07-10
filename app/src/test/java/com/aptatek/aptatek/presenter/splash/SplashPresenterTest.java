@@ -3,7 +3,9 @@ package com.aptatek.aptatek.presenter.splash;
 import com.aptatek.aptatek.data.AptatekDatabase;
 import com.aptatek.aptatek.data.dao.ReminderDayDao;
 import com.aptatek.aptatek.device.PreferenceManager;
+import com.aptatek.aptatek.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.aptatek.domain.manager.keystore.KeyStoreManager;
+import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.view.splash.SplashActivityPresenter;
 import com.aptatek.aptatek.view.splash.SplashActivityView;
 
@@ -14,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 import static org.mockito.Mockito.verify;
@@ -28,10 +31,7 @@ public class SplashPresenterTest {
     PreferenceManager preferenceManager;
 
     @Mock
-    AptatekDatabase aptatekDatabase;
-
-    @Mock
-    ReminderDayDao reminderDao;
+    ReminderInteractor reminderInteractor;
 
     @Mock
     SplashActivityView view;
@@ -41,18 +41,15 @@ public class SplashPresenterTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        when(reminderInteractor.initializeDays()).thenReturn(Completable.complete());
 
-        when(reminderDao.getReminderDays()).thenReturn(Single.just(Collections.emptyList()));
-        when(aptatekDatabase.getReminderDayDao()).thenReturn(reminderDao);
-
-        presenter = new SplashActivityPresenter(keyStoreManager, aptatekDatabase, preferenceManager);
+        presenter = new SplashActivityPresenter(keyStoreManager, reminderInteractor, preferenceManager);
         presenter.attachView(view);
     }
 
     @Test
     public void testNavigationToParentalGate() throws Exception {
         when(preferenceManager.isParentalPassed()).thenReturn(false);
-
         presenter.switchToNextActivity();
         verify(view).onParentalGateShouldLoad();
     }

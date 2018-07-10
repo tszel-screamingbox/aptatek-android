@@ -1,6 +1,5 @@
 package com.aptatek.aptatek.data.model;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -8,21 +7,15 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "reminders")
 public class ReminderDataModel {
 
-    // TODO test if it can work: make if final and init it in ctor.
     @PrimaryKey
     @NonNull
-    private String id;
-
-    @ColumnInfo(name = "weekDay")
+    private final String id;
     private int weekDay;
-
-    @ColumnInfo(name = "hour")
     private int hour;
-
-    @ColumnInfo(name = "minute")
     private int minute;
 
-    public ReminderDataModel() {
+    public ReminderDataModel(final String id) {
+        this.id = id;
     }
 
     public int getWeekDay() {
@@ -36,10 +29,6 @@ public class ReminderDataModel {
     @NonNull
     public String getId() {
         return id;
-    }
-
-    public void setId(@NonNull final String id) {
-        this.id = id;
     }
 
     public int getHour() {
