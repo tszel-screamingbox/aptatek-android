@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/parentalWelcomeTitle"
-        style="@style/Parental.Title"
+        style="@style/General.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/parental.welcome.title"

@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.data;
+package com.aptatek.aptatek.data.datasource;
 
 import android.support.annotation.NonNull;
 

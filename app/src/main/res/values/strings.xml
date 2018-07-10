@@ -126,4 +126,19 @@
     <string name="reminder.time.picker.delete">Delete</string>
     <string name="reminder.time.picker.update">Update</string>
     <string name="settings.title">Settings</string>
+
+    <!-- RangeInfo -->
+    <string name="rangeinfo.units.format">Units are in %s</string>
+    <string name="rangeinfo.veryhigh.value.prefix">over</string>
+    <string name="rangeinfo.low.value.prefix">under</string>
+    <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
+    <string name="rangeinfo.pkulevel.mg">mg/dl</string>
+    <string name="rangeinfo.edit.level.preferences">Edit Level Preferences</string>
+    <string name="rangeinfo.back">Back</string>
+    <string name="rangeinfo.very.high">Very High</string>
+    <string name="rangeinfo.hight">High</string>
+    <string name="rangeinfo.normal">Normal</string>
+    <string name="rangeinfo.low">Low</string>
+    <string name="rangeinfo.title">Range info</string>
+    <string name="rangeinfo.message">To stay healthy your blood levels of phenylalanine should remain within these ranges</string>
 </resources>

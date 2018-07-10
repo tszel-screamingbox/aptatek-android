@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
 import com.aptatek.aptatek.view.toggle.ToggleActivity;
@@ -46,8 +47,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.toggleButton)
     public void onToggleButtonClicked() {
-        final Intent intent = new Intent(this, ToggleActivity.class);
-        launchActivity(intent, false, Animation.FADE);
+//        final Intent intent = new Intent(this, ToggleActivity.class);
+//        launchActivity(intent, false, Animation.FADE);
+
+        launchActivity(RangeInfoActivity.starter(this), false, Animation.FADE);
     }
 
     @OnClick(R.id.newTestButton)

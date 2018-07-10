@@ -16,4 +16,10 @@
     <color name="dialButtonGrey">#8034414A</color>
     <color name="applicationGainsBoroGray">#F2F2F2</color>
     <color name="applicationTimePickerSelector">#33b5e5</color>
+
+    <color name="pkuLevelVeryHigh">#B2004B</color>
+    <color name="pkuLevelHigh">#F65196</color>
+    <color name="pkuLevelNormal">@color/applicationGreen</color>
+    <color name="pkuLevelLow">#4AE1F8</color>
+
 </resources>

@@ -3,6 +3,7 @@ package com.aptatek.aptatek.device;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 
 import javax.inject.Inject;
@@ -19,7 +20,10 @@ public class PreferenceManager {
     public static final String PREF_WETTING_START = "aptatek.test.wetting.start";
     public static final String PREF_ENCRYPTED_PIN = "aptatek.encrypted.pin";
     public static final String PREF_FINGERPRINT_SCAN = "aptatek.fingerprint.scan";
-    public static final String KEY_PREF_PARENTAL_GATE_PASSED = "aptatek.encrypted.parental.passed";
+    public static final String PREF_PARENTAL_GATE_PASSED = "aptatek.encrypted.parental.passed";
+    public static final String PREF_PKU_RANGE_NORMAL_CEIL = "aptatek.range.normal.ceil";
+    public static final String PREF_PKU_RANGE_NORMAL_FLOOR = "aptatek.range.normal.floor";
+    public static final String PREF_PKU_RANGE_UNIT = "aptatek.range.unit";
 
     private final SharedPreferences sharedPreferences;
 
@@ -53,11 +57,11 @@ public class PreferenceManager {
     }
 
     public void setParentalPassed(final boolean parentalPassed) {
-        sharedPreferences.edit().putBoolean(KEY_PREF_PARENTAL_GATE_PASSED, parentalPassed).apply();
+        sharedPreferences.edit().putBoolean(PREF_PARENTAL_GATE_PASSED, parentalPassed).apply();
     }
 
     public boolean isParentalPassed() {
-        return sharedPreferences.getBoolean(KEY_PREF_PARENTAL_GATE_PASSED, false);
+        return sharedPreferences.getBoolean(PREF_PARENTAL_GATE_PASSED, false);
     }
 
     public void setWettingStart(final long timestamp) {
@@ -66,6 +70,31 @@ public class PreferenceManager {
 
     public long getWettingStart() {
         return sharedPreferences.getLong(PREF_WETTING_START, 0L);
+    }
+
+    public void setPkuRangeNormalCeil(float value) {
+        sharedPreferences.edit().putFloat(PREF_PKU_RANGE_NORMAL_CEIL, value).apply();
+    }
+
+    public float getPkuRangeNormalCeil() {
+        return sharedPreferences.getFloat(PREF_PKU_RANGE_NORMAL_CEIL, -1f);
+    }
+
+    public void setPkuRangeNormalFloor(float value) {
+        sharedPreferences.edit().putFloat(PREF_PKU_RANGE_NORMAL_FLOOR, value).apply();
+    }
+
+    public float getPkuRangeNormalFloor() {
+        return sharedPreferences.getFloat(PREF_PKU_RANGE_NORMAL_FLOOR, -1f);
+    }
+
+    public void setPkuRangeUnit(PkuLevelUnits unit) {
+        sharedPreferences.edit().putInt(PREF_PKU_RANGE_UNIT, unit.ordinal()).apply();
+    }
+
+    public PkuLevelUnits getPkuRangeUnit() {
+        final int ordinal = sharedPreferences.getInt(PREF_PKU_RANGE_UNIT, -1);
+        return ordinal != -1 ? PkuLevelUnits.values()[ordinal] : null;
     }
 
     public void clearPreference(final String key) {
