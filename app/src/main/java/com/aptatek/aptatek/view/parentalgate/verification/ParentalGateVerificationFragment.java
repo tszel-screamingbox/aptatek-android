@@ -13,7 +13,7 @@ import com.aptatek.aptatek.injection.component.FragmentComponent;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.aptatek.aptatek.view.parentalgate.ParentalGateView;
 import com.aptatek.aptatek.view.parentalgate.welcome.AgeVerificationResult;
-import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
+import com.aptatek.aptatek.view.splash.SplashActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -110,7 +110,7 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
         disposable = Completable.timer(2, TimeUnit.SECONDS).subscribe(() -> {
             if (getActivity() != null) {
 
-                getActivity().startActivity(new Intent(getActivity(), SetPinHostActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), SplashActivity.class));
                 getActivity().finish();
             }
         });

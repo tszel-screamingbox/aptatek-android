@@ -11,18 +11,18 @@ import java.util.List;
 public abstract class BaseAdapter<V extends RecyclerView.ViewHolder, I extends AdapterItem> extends RecyclerView.Adapter<V> {
 
     protected final AsyncListDiffer<I> data =
-            new AsyncListDiffer<>(this,
-                    new DiffUtil.ItemCallback<I>() {
-                        @Override
-                        public boolean areItemsTheSame(final I oldItem, final I newItem) {
-                            return oldItem.uniqueIdentifier().equals(newItem.uniqueIdentifier());
-                        }
+        new AsyncListDiffer<>(this,
+            new DiffUtil.ItemCallback<I>() {
+                @Override
+                public boolean areItemsTheSame(final I oldItem, final I newItem) {
+                    return oldItem.uniqueIdentifier().equals(newItem.uniqueIdentifier());
+                }
 
-                        @Override
-                        public boolean areContentsTheSame(final I oldItem, final I newItem) {
-                            return oldItem.equals(newItem);
-                        }
-                    });
+                @Override
+                public boolean areContentsTheSame(final I oldItem, final I newItem) {
+                    return oldItem.equals(newItem);
+                }
+            });
 
     public void setData(final List<I> mData) {
         data.submitList(mData);

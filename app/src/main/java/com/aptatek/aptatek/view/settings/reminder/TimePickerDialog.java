@@ -87,6 +87,9 @@ public class TimePickerDialog extends DialogFragment {
     @Nullable
     private TimePickerDialogCallback callback;
 
+    private final ValueAnimator anim = new ValueAnimator();
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
@@ -162,14 +165,23 @@ public class TimePickerDialog extends DialogFragment {
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        textViewCancel.clearAnimation();
+        textViewConfirm.clearAnimation();
+        textViewDone.clearAnimation();
+        textViewDelete.clearAnimation();
+        anim.removeAllUpdateListeners();
+        super.onDestroyView();
+    }
+
     private void animateDoneButtonBackgroundColor(@ColorRes final int applicationGreen, @ColorRes final int applicationLightGray) {
-        final ValueAnimator anim = new ValueAnimator();
         anim.setIntValues(
                 ContextCompat.getColor(requireContext(), applicationGreen),
                 ContextCompat.getColor(requireContext(), applicationLightGray));
         anim.setEvaluator(new ArgbEvaluator());
+        anim.removeAllUpdateListeners();
         anim.addUpdateListener(valueAnimator -> layoutDone.setBackgroundColor((Integer) valueAnimator.getAnimatedValue()));
-
         anim.setDuration(ANIMATION_DURATION);
         anim.start();
     }

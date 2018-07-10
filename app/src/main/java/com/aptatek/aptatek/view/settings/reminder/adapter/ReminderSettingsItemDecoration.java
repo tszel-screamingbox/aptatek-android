@@ -11,7 +11,6 @@ import com.aptatek.aptatek.R;
 
 import javax.inject.Inject;
 
-// TODO alternative: DividerItemDecoration isn't good enough for us?
 public class ReminderSettingsItemDecoration extends RecyclerView.ItemDecoration {
 
     @Inject
@@ -31,7 +30,6 @@ public class ReminderSettingsItemDecoration extends RecyclerView.ItemDecoration 
         final int right = parent.getWidth() - parent.getPaddingRight();
         final Drawable divider = ContextCompat.getDrawable(parent.getContext(), R.drawable.reminder_settings_divider);
 
-        // TODO think this over, every single time when the recyclerview is invalidated, it loops over on every children :| Maybe we could optimise this somehow.
         for (int i = 0; i < parent.getChildCount() - 1; i++) {
             final View child = parent.getChildAt(i);
 
