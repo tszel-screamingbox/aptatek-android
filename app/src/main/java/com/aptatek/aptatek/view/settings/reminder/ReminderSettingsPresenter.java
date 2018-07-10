@@ -173,13 +173,15 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         if (checkReminderExistence(reminderSettingsItem, hour, minute)) return;
 
+        RemindersAdapterItem reminderItemCopy = reminderItem.toBuilder()
+                .setHour(hour)
+                .setMinute(minute)
+                .setTime(getReminderTime(hour, minute))
+                .build();
+
         remindersAdapterItems.set(
                 reminderSettingsItem.getReminders().indexOf(reminderItem),
-                reminderItem.toBuilder()
-                        .setHour(hour)
-                        .setMinute(minute)
-                        .setTime(getReminderTime(hour, minute))
-                        .build());
+                reminderItemCopy);
 
         reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(reminderSettingsItem),
                 reminderSettingsItem
@@ -189,10 +191,10 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         ifViewAttached(view -> view.modifyReminder(reminderSettingsAdapterItems));
 
-        updateReminder(reminderItem);
+        updateReminder(reminderItemCopy);
 
         compositeDisposable.add(reminderInteractor
-                .updateReminder(reminderSettingsItem.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute())
+                .updateReminder(reminderSettingsItem.getWeekDay(), reminderItemCopy.getHour(), reminderItemCopy.getMinute())
                 .subscribe());
     }
 

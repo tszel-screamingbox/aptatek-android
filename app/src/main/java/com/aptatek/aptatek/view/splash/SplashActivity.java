@@ -3,6 +3,7 @@ package com.aptatek.aptatek.view.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
@@ -12,17 +13,12 @@ import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 public class SplashActivity extends BaseActivity<SplashActivityView, SplashActivityPresenter> implements SplashActivityView {
 
     @Inject
     SplashActivityPresenter presenter;
-
-
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        presenter.switchToNextActivity();
-    }
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -33,6 +29,12 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
     @Override
     public SplashActivityPresenter createPresenter() {
         return presenter;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Timber.d("");
     }
 
     @Override

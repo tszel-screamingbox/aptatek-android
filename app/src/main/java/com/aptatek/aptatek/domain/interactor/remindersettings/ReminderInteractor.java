@@ -5,6 +5,7 @@ import com.aptatek.aptatek.data.dao.ReminderDao;
 import com.aptatek.aptatek.data.dao.ReminderDayDao;
 import com.aptatek.aptatek.data.mapper.ReminderDayMapper;
 import com.aptatek.aptatek.data.mapper.ReminderMapper;
+import com.aptatek.aptatek.data.model.ReminderDayDataModel;
 import com.aptatek.aptatek.device.AlarmManager;
 import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.domain.model.ReminderDay;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.functions.Action;
 
 public class ReminderInteractor {
 
@@ -52,6 +54,14 @@ public class ReminderInteractor {
                                         .setWeekDay(reminderDay.getWeekDay())
                                         .build()))
                 .toList();
+    }
+
+    public Completable initializeDays() {
+        return Completable.fromAction(() -> {
+            if (reminderDayDao.getReminderDaysCount() == 0) {
+                reminderDayDao.insertAll(ReminderDayDataModel.creator());
+            }
+        });
     }
 
     public Completable updateReminderDayActiveState(final int id, final Boolean active) {

@@ -42,17 +42,6 @@ public abstract class AptatekDatabase extends RoomDatabase {
                 AptatekDatabase.class,
                 databaseName)
                 .openHelperFactory(safeHelperFactory)
-                .addCallback(new RoomDatabase.Callback() {
-                    @Override
-                    public void onCreate(@NonNull final SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-
-                            Completable.fromAction(() ->
-                                    getInstance(databaseName, context, safeHelperFactory).getReminderDayDao()
-                                        .insertAll(ReminderDayDataModel.creator())
-                            ).subscribeOn(Schedulers.newThread()).subscribe();
-                    }
-                })
                 .build();
     }
 }
