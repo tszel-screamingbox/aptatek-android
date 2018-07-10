@@ -1,6 +1,7 @@
 package com.aptatek.aptatek.domain.interactor.parentalgate;
 
 import com.aptatek.aptatek.domain.model.AgeCheckModel;
+import com.aptatek.aptatek.domain.model.AgeCheckResult;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +55,7 @@ public class ParentalGateInteractorTest {
                 .build()
         ).test()
         .assertNoErrors()
-        .assertValue(true)
+        .assertValue(AgeCheckResult.VALID_AGE)
         .assertComplete();
     }
 
@@ -67,7 +68,7 @@ public class ParentalGateInteractorTest {
                 .build()
         ).test()
         .assertNoErrors()
-        .assertValue(false)
+        .assertValue(AgeCheckResult.NOT_OLD_ENOUGH)
         .assertComplete();
     }
 
@@ -80,7 +81,7 @@ public class ParentalGateInteractorTest {
                 .build()
         ).test()
         .assertNoErrors()
-        .assertValue(false)
+        .assertValue(AgeCheckResult.AGE_NOT_MATCH)
         .assertComplete();
     }
 

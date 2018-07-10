@@ -1,6 +1,7 @@
 package com.aptatek.aptatek.presenter.test.tutorial.insertsample;
 
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
 import com.aptatek.aptatek.view.test.tutorial.insertsample.InsertSamplePresenter;
 
@@ -21,6 +22,9 @@ public class InsertSamplePresenterTest {
     ResourceInteractor resourceInteractor;
 
     @Mock
+    SampleWettingInteractor sampleWettingInteractor;
+
+    @Mock
     TestFragmentBaseView view;
 
     private InsertSamplePresenter presenter;
@@ -31,7 +35,7 @@ public class InsertSamplePresenterTest {
 
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt())).thenReturn(TEST_TEXT);
 
-        presenter = new InsertSamplePresenter(resourceInteractor);
+        presenter = new InsertSamplePresenter(resourceInteractor, sampleWettingInteractor);
         presenter.attachView(view);
     }
 

@@ -83,11 +83,11 @@ public class ParentalGateTest {
     @Test
     public void testHappyFailureWithRetry() throws Exception {
         onView(withId(R.id.parentalButton)).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2000, 1, 1));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2010, 1, 1));
         onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
         onView(withId(R.id.parentalButton)).check(matches(withText(R.string.parental_welcome_how_old_are_you)));
         onView(withId(R.id.parentalBirthDate)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("01/01/2000"))));
+        onView(withId(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("01/01/2010"))));
 
         onView(withId(R.id.parentalButton)).perform(click());
         onView(withId(R.id.parentalButton)).check(matches(not(isDisplayed())));
@@ -104,8 +104,8 @@ public class ParentalGateTest {
         onView(withId(R.id.parentalVerificationMessage)).check(matches(isDisplayed()));
         onView(withId(R.id.parentalVerificationButton)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(withText(R.string.parental_verification_failure_title)));
-        onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_failure_message_first)));
+        onView(withId(R.id.parentalVerificationTitle)).check(matches(withText(R.string.parental_verification_failure_not_old_enough_title)));
+        onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_failure_not_old_enough_message)));
 
         Thread.sleep(1000L);
 
@@ -133,8 +133,8 @@ public class ParentalGateTest {
         onView(withId(R.id.parentalVerificationMessage)).check(matches(isDisplayed()));
         onView(withId(R.id.parentalVerificationButton)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(withText(R.string.parental_verification_failure_title)));
-        onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_failure_message)));
+        onView(withId(R.id.parentalVerificationTitle)).check(matches(withText(R.string.parental_verification_failure_age_not_match_title)));
+        onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_failure_age_not_match_message)));
     }
 
 }

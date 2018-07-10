@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -107,9 +108,14 @@ public class IncubationInteractorTest {
     @Test
     public void testCountdownCallsDataSourceMethods() throws Exception {
         when(incubationDataSource.hasRunningIncubation()).thenReturn(true);
-        when(incubationDataSource.getIncubationStart()).thenReturn(System.currentTimeMillis());
+        doReturn(System.currentTimeMillis() - 1000L).when(incubationDataSource).getIncubationStart();
 
-        incubationInteractor.getIncubationCountdown().test();
+        final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
+        test.assertNoErrors();
+        test.assertNotComplete();
+
+        Thread.sleep(1000L);
+
         verify(incubationDataSource).hasRunningIncubation();
         verify(incubationDataSource).getIncubationStart();
     }
@@ -126,8 +132,8 @@ public class IncubationInteractorTest {
     public void testCountdownTerminatesOnIncubationFinish() throws Exception {
         final String testValue = "test";
         when(incubationDataSource.hasRunningIncubation()).thenReturn(true);
-        when(incubationDataSource.getIncubationStart()).thenReturn(System.currentTimeMillis() - Constants.DEFAULT_INCUBATION_PERIOD + 200L);
-        when(countdownTimeFormatter.getFormattedRemaining(ArgumentMatchers.anyLong())).thenReturn(testValue);
+        doReturn(System.currentTimeMillis() - Constants.DEFAULT_INCUBATION_PERIOD + 200L).when(incubationDataSource).getIncubationStart();
+        doReturn(testValue).when(countdownTimeFormatter).getFormattedRemaining(ArgumentMatchers.anyLong());
 
         final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
         test.await();

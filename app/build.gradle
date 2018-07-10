@@ -326,4 +326,12 @@ android.variantFilter { variant ->
     }
 }
 
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "started", "skipped", "passed", "failed"
+        showStandardStreams true
+    }
+}
+
 apply plugin: 'com.google.gms.google-services'

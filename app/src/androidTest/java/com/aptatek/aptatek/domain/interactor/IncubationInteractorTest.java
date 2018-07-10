@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.domain;
+package com.aptatek.aptatek.domain.interactor;
 
 import android.app.Application;
 import android.support.test.InstrumentationRegistry;
@@ -32,8 +32,8 @@ public class IncubationInteractorTest {
     public void setUp() throws Exception {
         DaggerTestComponent.builder()
                 .applicationModule(new ApplicationModule(((Application) InstrumentationRegistry.getTargetContext().getApplicationContext())))
+                .testModule(new TestModule())
                 .build()
-                .plus(new TestModule())
                 .inject(this);
     }
 
