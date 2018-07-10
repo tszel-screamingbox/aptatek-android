@@ -18,7 +18,7 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
-    <style name="General.Green.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+    <style name="General.Blue.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height</item>
         <item name="android:background">@drawable/general_button_background</item>
         <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>

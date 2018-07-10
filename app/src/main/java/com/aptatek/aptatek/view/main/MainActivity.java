@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.view.main.adapter.ChartVM;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapter;
@@ -16,9 +15,6 @@ import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
 import com.aptatek.aptatek.view.toggle.ToggleActivity;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -44,11 +40,6 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        List<ChartVM> chartVMList = new ArrayList<>();
-        for (int i = 0; i < 40; i++) {
-            chartVMList.add(new ChartVM(null));
-        }
-
         bubbleScrollView.setAdapter(chartAdapter);
         bubbleScrollView.setSlideOnFling(true);
         bubbleScrollView.setOverScrollEnabled(true);
@@ -62,7 +53,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
             }
         });
 
-        chartAdapter.setItems(chartVMList);
+        chartAdapter.setItems(presenter.fakeData());
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);

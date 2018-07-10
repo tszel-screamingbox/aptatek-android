@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.data.chart;
+package com.aptatek.aptatek.domain.respository.chart;
 
 import java.util.Date;
 

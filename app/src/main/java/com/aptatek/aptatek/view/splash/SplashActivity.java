@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.main.MainActivity;
 import com.aptatek.aptatek.view.parentalgate.ParentalGateActivity;
 import com.aptatek.aptatek.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
@@ -47,7 +48,8 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
 
     @Override
     public void onRequestPinActivityShouldLoad() {
-        final Intent intent = new Intent(this, AuthPinHostActivity.class);
+//        final Intent intent = new Intent(this, AuthPinHostActivity.class);
+        final Intent intent = new Intent(this, MainActivity.class);
         launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
     }
 

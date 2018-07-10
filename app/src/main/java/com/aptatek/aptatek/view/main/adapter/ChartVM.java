@@ -1,8 +1,8 @@
 package com.aptatek.aptatek.view.main.adapter;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.data.chart.ChartDTO;
-import com.aptatek.aptatek.data.chart.Measure;
+import com.aptatek.aptatek.domain.respository.chart.ChartDTO;
+import com.aptatek.aptatek.domain.respository.chart.Measure;
 import com.aptatek.aptatek.util.StringUtils;
 import com.aptatek.aptatek.view.base.list.IListTypeProvider;
 
@@ -20,20 +20,15 @@ public class ChartVM implements IListTypeProvider {
     private float bubbleYAxis;
     private float startLineYAxis;
     private float endLineYAxis;
-    private float minYAxis;
-    private float maxYAxis;
-
 
     public ChartVM(final ChartDTO chartDTO) {
         this.id = chartDTO.getId();
         this.date = StringUtils.getFormattedDate(chartDTO.getDate());
-        this.details = details(chartDTO.getMeasureList());
         this.numberOfMeasures = chartDTO.getMeasureList().size();
+        this.details = details(chartDTO.getMeasureList());
         this.bubbleYAxis = chartDTO.getBubbleYAxis();
         this.startLineYAxis = chartDTO.getStartLineYAxis();
         this.endLineYAxis = chartDTO.getEndLineYAxis();
-        this.minYAxis = chartDTO.getMinYAxis();
-        this.maxYAxis = chartDTO.getMaxYAxis();
     }
 
     private CharSequence details(final List<Measure> measureList) {
@@ -47,7 +42,7 @@ public class ChartVM implements IListTypeProvider {
 
         return StringUtils.highlightWord(
                 String.valueOf(highest.getPhenylalanineLevel()),
-                String.valueOf(highest.getUnit()));
+                String.valueOf(highest.getUnit()) + " mg/dl");
     }
 
     public long getId() {
@@ -76,14 +71,6 @@ public class ChartVM implements IListTypeProvider {
 
     public float getEndLineYAxis() {
         return endLineYAxis;
-    }
-
-    public float getMinYAxis() {
-        return minYAxis;
-    }
-
-    public float getMaxYAxis() {
-        return maxYAxis;
     }
 
     public boolean isEmpty() {

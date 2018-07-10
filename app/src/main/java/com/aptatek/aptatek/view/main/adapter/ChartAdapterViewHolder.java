@@ -69,9 +69,9 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     @Override
     public void bind(final ChartVM data) {
-        currentData = data;
-        bubbleY = (viewHeight - bubbleHeight) * currentData.getBubbleYAxis();
         itemTextureView.setSurfaceTextureListener(this);
+        currentData = data;
+        bubbleY = (viewHeight) * currentData.getBubbleYAxis();
         bubbleContainerLayout.setY(bubbleY);
         bubbleContainerLayout.setX(bubbleX);
         infoTextView.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
@@ -92,7 +92,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
             if (currentData.isEmpty()) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
             } else {
-                infoTextView.setTextColor(context.getResources().getColor(R.color.applicationBlue));
+                infoTextView.setTextColor(context.getResources().getColor(R.color.applicationGreen));
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_big_detail));
                 infoTextView.setText(currentData.getDetails());
                 if (currentData.getNumberOfMeasures() > 1) {
@@ -110,7 +110,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         if (currentData.isEmpty()) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         } else {
-            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_blue_white_stroke));
+            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_green));
         }
     }
 
@@ -124,14 +124,17 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         linePaint.setColor(context.getResources().getColor(R.color.applicationBlue));
         linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         linePaint.setStrokeWidth(STROKE_WIDTH);
-        linePaint.setPathEffect(new DashPathEffect(new float[]{30, 15, 30, 15}, 0));
+        linePaint.setPathEffect(new DashPathEffect(new float[]{7, 7, 7, 7}, 0));
 
+        final float offSet = (bubbleHeight / 2) / viewHeight;
         if (currentData.getStartLineYAxis() >= 0) {
-            canvas.drawLine(0, currentData.getStartLineYAxis(), middleX, middleY, linePaint);
+            final float startY = (currentData.getStartLineYAxis() + offSet) * viewHeight;
+            canvas.drawLine(0, startY, middleX, middleY, linePaint);
         }
 
         if (currentData.getEndLineYAxis() >= 0) {
-            canvas.drawLine(middleX, middleY, viewWidth, currentData.getEndLineYAxis(), linePaint);
+            final float stopY = (currentData.getEndLineYAxis() + offSet) * viewHeight;
+            canvas.drawLine(middleX, middleY, viewWidth, stopY, linePaint);
         }
         itemTextureView.unlockCanvasAndPost(canvas);
     }

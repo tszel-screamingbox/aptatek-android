@@ -1,8 +1,8 @@
-package com.aptatek.aptatek.domain.respository;
+package com.aptatek.aptatek.domain.respository.manager;
 
 import android.support.annotation.Nullable;
 
-import com.aptatek.aptatek.data.chart.CubeData;
+import com.aptatek.aptatek.domain.respository.chart.CubeData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,7 +12,7 @@ import java.util.Random;
 
 import javax.inject.Inject;
 
-public class FakeCubeDataManager implements ICubeDataManager {
+public class FakeCubeDataManager implements ICubeDataRepository {
 
     private List<CubeData> cubeDataList = new ArrayList<>();
 
@@ -22,16 +22,19 @@ public class FakeCubeDataManager implements ICubeDataManager {
     }
 
     private void init() {
-        for (int i = 0; i < 100; i++) {
-            if (i % 10 != 0) {
-                final Random random = new Random();
-                final CubeData cubeData = new CubeData(i,
-                        generateDescendingDateList(i),
-                        random.nextInt(500),
-                        random.nextInt(100) / 10);
-                cubeDataList.add(cubeData);
-            }
+        for (int i = 0; i < 60; i++) {
+            final Random random = new Random();
+            final CubeData cubeData;
+            final int level = random.nextInt(500) - 100;
+            final double unit = (double) random.nextInt(500) / 100;
+            cubeData = new CubeData(i, descendingDateList(i), level, unit);
+            cubeDataList.add(cubeData);
         }
+    }
+
+    public static void main(String[] args) {
+        final Random random = new Random();
+        System.out.println("asas " + random.nextInt(500) / 100);
     }
 
     @Nullable
@@ -66,11 +69,7 @@ public class FakeCubeDataManager implements ICubeDataManager {
         cubeDataList.clear();
     }
 
-    private Date generateDescendingDateList(int index) {
-        if (index % 4 == 0) {
-            index = index - 1; // more measure on the same date
-        }
-
+    private Date descendingDateList(int index) {
         Date dt = new Date();
         final Calendar c = Calendar.getInstance();
         c.setTime(dt);

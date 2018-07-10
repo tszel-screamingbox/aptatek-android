@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.data.chart;
+package com.aptatek.aptatek.domain.respository.chart;
 
 import java.util.Date;
 import java.util.List;
@@ -11,8 +11,6 @@ public class ChartDTO {
     private final float bubbleYAxis;
     private final float startLineYAxis;
     private final float endLineYAxis;
-    private final float minYAxis;
-    private final float maxYAxis;
 
     public ChartDTO(final long id, final Date date, final List<Measure> measureList, final float bubbleYAxis, final float startLineYAxis, final float endLineYAxis) {
         this.id = id;
@@ -21,8 +19,6 @@ public class ChartDTO {
         this.bubbleYAxis = bubbleYAxis;
         this.startLineYAxis = startLineYAxis;
         this.endLineYAxis = endLineYAxis;
-        this.minYAxis = 0f;
-        this.maxYAxis = 100f;
     }
 
     public long getId() {
@@ -47,13 +43,5 @@ public class ChartDTO {
 
     public float getEndLineYAxis() {
         return endLineYAxis;
-    }
-
-    public float getMinYAxis() {
-        return minYAxis;
-    }
-
-    public float getMaxYAxis() {
-        return maxYAxis;
     }
 }
