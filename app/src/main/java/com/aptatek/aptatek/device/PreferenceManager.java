@@ -72,7 +72,7 @@ public class PreferenceManager {
         return sharedPreferences.getLong(PREF_WETTING_START, 0L);
     }
 
-    public void setPkuRangeNormalCeil(float value) {
+    public void setPkuRangeNormalCeil(final float value) {
         sharedPreferences.edit().putFloat(PREF_PKU_RANGE_NORMAL_CEIL, value).apply();
     }
 
@@ -80,7 +80,7 @@ public class PreferenceManager {
         return sharedPreferences.getFloat(PREF_PKU_RANGE_NORMAL_CEIL, -1f);
     }
 
-    public void setPkuRangeNormalFloor(float value) {
+    public void setPkuRangeNormalFloor(final float value) {
         sharedPreferences.edit().putFloat(PREF_PKU_RANGE_NORMAL_FLOOR, value).apply();
     }
 
@@ -88,7 +88,7 @@ public class PreferenceManager {
         return sharedPreferences.getFloat(PREF_PKU_RANGE_NORMAL_FLOOR, -1f);
     }
 
-    public void setPkuRangeUnit(PkuLevelUnits unit) {
+    public void setPkuRangeUnit(final PkuLevelUnits unit) {
         sharedPreferences.edit().putInt(PREF_PKU_RANGE_UNIT, unit.ordinal()).apply();
     }
 

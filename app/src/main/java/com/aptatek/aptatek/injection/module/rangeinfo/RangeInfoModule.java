@@ -21,7 +21,7 @@ public class RangeInfoModule {
     }
 
     @Provides
-    PkuValueFormatter providePkuValueFormatter(@NonNull ResourceInteractor resourceInteractor) {
+    PkuValueFormatter providePkuValueFormatter(@NonNull final ResourceInteractor resourceInteractor) {
         return new PkuValueFormatterImpl(resourceInteractor);
     }
 
