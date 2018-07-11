@@ -2,18 +2,12 @@ package com.aptatek.aptatek.injection.component;
 
 import com.aptatek.aptatek.domain.interactor.IncubationInteractorTest;
 import com.aptatek.aptatek.domain.interactor.SampleWettingInteractorTest;
-import com.aptatek.aptatek.injection.module.ApplicationModule;
-import com.aptatek.aptatek.injection.module.DataFactoryModule;
-import com.aptatek.aptatek.injection.module.DatabaseModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
 
-import javax.inject.Singleton;
+import dagger.Subcomponent;
 
-import dagger.Component;
-
-@Singleton
-@Component(modules = {ApplicationModule.class, DataFactoryModule.class, DatabaseModule.class, TestModule.class})
-public interface TestComponent extends ApplicationComponent {
+@Subcomponent(modules = TestModule.class)
+public interface TestComponent {
 
     void inject(IncubationInteractorTest test);
 

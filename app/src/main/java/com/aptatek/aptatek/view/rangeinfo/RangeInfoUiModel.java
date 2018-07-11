@@ -31,7 +31,7 @@ public abstract class RangeInfoUiModel {
         public abstract Builder setNormalValue(@NonNull String value);
 
         public abstract Builder setLowValue(@NonNull String value);
-        
+
         public abstract Builder setUnitValue(@NonNull String value);
 
         public abstract RangeInfoUiModel build();

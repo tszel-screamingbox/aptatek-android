@@ -4,13 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import com.aptatek.aptatek.data.AptatekDatabase;
-import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 import com.commonsware.cwac.saferoom.SafeHelperFactory;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import dagger.Module;
 
 public class TestDatabaseModule extends DatabaseModule {
 

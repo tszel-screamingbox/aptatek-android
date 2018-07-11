@@ -15,7 +15,7 @@ public class PkuRangeInteractor {
     private final PkuRangeDataSource dataSource;
 
     @Inject
-    public PkuRangeInteractor(PkuRangeDataSource dataSource) {
+    public PkuRangeInteractor(final PkuRangeDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -32,7 +32,7 @@ public class PkuRangeInteractor {
         });
     }
 
-    private float getValueInUnit(float value, PkuLevelUnits unit) {
+    private float getValueInUnit(final float value, final PkuLevelUnits unit) {
         if (unit == PkuLevelUnits.MICRO_MOL) {
             return value;
         }
