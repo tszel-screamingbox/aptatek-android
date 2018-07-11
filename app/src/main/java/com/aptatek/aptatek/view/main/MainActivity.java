@@ -57,7 +57,9 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);
+            //TODO: show Details
         });
+        bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
     }
 
     @Override

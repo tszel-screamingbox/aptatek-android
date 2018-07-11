@@ -50,6 +50,8 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
     private final float bubbleHeight;
     private final float middleX;
     private final float bubbleX;
+    private final float marginY;
+
     private float bubbleY;
 
     private ChartVM currentData;
@@ -60,9 +62,10 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         this.animationHelper = animationHelper;
         ButterKnife.bind(this, view);
 
-        viewWidth = itemLayout.getLayoutParams().width;
-        viewHeight = itemLayout.getLayoutParams().height;
         bubbleHeight = infoTextView.getLayoutParams().height;
+        viewWidth = itemLayout.getLayoutParams().width;
+        marginY = bubbleHeight * 0.5f;
+        viewHeight = itemLayout.getLayoutParams().height - bubbleHeight * 2f;
         middleX = viewWidth / 2;
         bubbleX = middleX - infoTextView.getLayoutParams().width / 2;
     }
@@ -71,7 +74,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
     public void bind(final ChartVM data) {
         itemTextureView.setSurfaceTextureListener(this);
         currentData = data;
-        bubbleY = (viewHeight) * currentData.getBubbleYAxis();
+        bubbleY = viewHeight * currentData.getBubbleYAxis() + marginY;
         bubbleContainerLayout.setY(bubbleY);
         bubbleContainerLayout.setX(bubbleX);
         infoTextView.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
@@ -124,16 +127,16 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         linePaint.setColor(context.getResources().getColor(R.color.applicationBlue));
         linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         linePaint.setStrokeWidth(STROKE_WIDTH);
-        linePaint.setPathEffect(new DashPathEffect(new float[]{7, 7, 7, 7}, 0));
+        linePaint.setPathEffect(new DashPathEffect(new float[]{5, 5, 5, 5}, 0));
 
         final float offSet = (bubbleHeight / 2) / viewHeight;
         if (currentData.getStartLineYAxis() >= 0) {
-            final float startY = (currentData.getStartLineYAxis() + offSet) * viewHeight;
+            final float startY = (currentData.getStartLineYAxis() + offSet) * viewHeight + marginY;
             canvas.drawLine(0, startY, middleX, middleY, linePaint);
         }
 
         if (currentData.getEndLineYAxis() >= 0) {
-            final float stopY = (currentData.getEndLineYAxis() + offSet) * viewHeight;
+            final float stopY = (currentData.getEndLineYAxis() + offSet) * viewHeight + marginY;
             canvas.drawLine(middleX, middleY, viewWidth, stopY, linePaint);
         }
         itemTextureView.unlockCanvasAndPost(canvas);

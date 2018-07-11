@@ -22,19 +22,15 @@ public class FakeCubeDataManager implements ICubeDataRepository {
     }
 
     private void init() {
-        for (int i = 0; i < 60; i++) {
+        for (int i = 60; i >= 0; i--) {
             final Random random = new Random();
             final CubeData cubeData;
             final int level = random.nextInt(500) - 100;
             final double unit = (double) random.nextInt(500) / 100;
-            cubeData = new CubeData(i, descendingDateList(i), level, unit);
+            final Date date = descendingDateList(i);
+            cubeData = new CubeData(i, date, level, unit);
             cubeDataList.add(cubeData);
         }
-    }
-
-    public static void main(String[] args) {
-        final Random random = new Random();
-        System.out.println("asas " + random.nextInt(500) / 100);
     }
 
     @Nullable
