@@ -4,8 +4,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.aptatek.aptatek.data.IncubationDataSourceImpl;
-import com.aptatek.aptatek.data.WettingDataSourceImpl;
+import com.aptatek.aptatek.data.datasource.IncubationDataSourceImpl;
+import com.aptatek.aptatek.data.datasource.WettingDataSourceImpl;
 import com.aptatek.aptatek.device.notifications.IncubationCountdownNotificationFactory;
 import com.aptatek.aptatek.device.PreferenceManager;
 import com.aptatek.aptatek.device.formatter.CountdownTimeFormatterImpl;

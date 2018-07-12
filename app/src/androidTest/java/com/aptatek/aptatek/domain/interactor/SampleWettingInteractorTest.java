@@ -6,7 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.aptatek.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.aptatek.domain.model.Countdown;
-import com.aptatek.aptatek.injection.component.DaggerTestComponent;
+import com.aptatek.aptatek.injection.component.DaggerAndroidTestComponent;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
 
@@ -30,10 +30,10 @@ public class SampleWettingInteractorTest {
 
     @Before
     public void setUp() throws Exception {
-        DaggerTestComponent.builder()
+        DaggerAndroidTestComponent.builder()
                 .applicationModule(new ApplicationModule(((Application) InstrumentationRegistry.getTargetContext().getApplicationContext())))
-                .testModule(new TestModule())
                 .build()
+                .plus(new TestModule())
                 .inject(this);
     }
 

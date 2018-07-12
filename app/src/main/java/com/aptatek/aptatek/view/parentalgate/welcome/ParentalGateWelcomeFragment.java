@@ -91,17 +91,17 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(requireActivity(),
                 R.style.Parental_Dialog_DatePicker,
-                (view, year, month, dayOfMonth) -> {
-                    final Calendar calendar = Calendar.getInstance();
-                    calendar.clear();
-                    calendar.set(Calendar.YEAR, year);
-                    calendar.set(Calendar.MONTH, month);
-                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            (view, year, month, dayOfMonth) -> {
+                final Calendar calendar = Calendar.getInstance();
+                calendar.clear();
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                    if (presenter != null) {
-                        presenter.onBirthDateSet(calendar.getTimeInMillis());
-                    }
-                },
+                if (presenter != null) {
+                    presenter.onBirthDateSet(calendar.getTimeInMillis());
+                }
+            },
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));

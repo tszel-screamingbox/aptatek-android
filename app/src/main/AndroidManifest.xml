@@ -95,6 +95,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
+        <activity android:name=".view.rangeinfo.RangeInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
+
         <receiver android:name=".AlarmReceiver" />
         <service android:name=".view.test.incubation.IncubationReminderService" />
         <service android:name=".view.test.samplewetting.SampleWettingReminderService" />

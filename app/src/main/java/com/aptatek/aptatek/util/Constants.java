@@ -1,5 +1,7 @@
 package com.aptatek.aptatek.util;
 
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
+
 public final class Constants {
 
     private Constants() {
@@ -8,6 +10,11 @@ public final class Constants {
 
     public static final long DEFAULT_INCUBATION_PERIOD = 1000 * 60 * 30L;
     public static final long DEFAULT_WETTING_PERIOD = 1000 * 60 * 10L;
+    public static final float DEFAULT_PKU_NORMAL_FLOOR = 100f;
+    public static final float DEFAULT_PKU_NORMAL_CEIL = 350f;
+    public static final float DEFAULT_PKU_HIGH_CEIL = 500f;
+    public static final PkuLevelUnits DEFAULT_PKU_LEVEL = PkuLevelUnits.MICRO_MOL;
+
     public static final int DAYS_OF_WEEK = 7;
     public static final long COUNTDOWN_REFRESH_PERIOD = 500L;
     public static final String REMINDER_TIMESTAMP_INTENT_KEY = "reminderTimestampIntentKey";

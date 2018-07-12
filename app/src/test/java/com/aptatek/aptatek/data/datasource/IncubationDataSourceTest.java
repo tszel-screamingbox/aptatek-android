@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.data;
+package com.aptatek.aptatek.data.datasource;
 
 import com.aptatek.aptatek.device.PreferenceManager;
 import com.aptatek.aptatek.util.Constants;
