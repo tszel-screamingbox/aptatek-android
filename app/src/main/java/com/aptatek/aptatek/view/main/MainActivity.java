@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
@@ -30,9 +33,14 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @Inject
     ChartAdapter chartAdapter;
 
-
     @BindView(R.id.scrollView)
     DiscreteScrollView bubbleScrollView;
+
+    @BindView(R.id.titleText)
+    TextView titleTextView;
+
+    @BindView(R.id.subTitleText)
+    TextView subTitleTextView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -40,26 +48,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        bubbleScrollView.setAdapter(chartAdapter);
-        bubbleScrollView.setSlideOnFling(true);
-        bubbleScrollView.setOverScrollEnabled(true);
-        bubbleScrollView.setSlideOnFlingThreshold(500);
-        bubbleScrollView.setItemTransitionTimeMillis(200);
-        bubbleScrollView.addScrollStateChangeListener(this);
-        bubbleScrollView.addOnItemChangedListener((viewHolder, adapterPosition) -> {
-            final ChartAdapterViewHolder holder = (ChartAdapterViewHolder) viewHolder;
-            if (holder != null) {
-                holder.showDetails();
-            }
-        });
-
-        chartAdapter.setItems(presenter.fakeData());
-        chartAdapter.setOnItemClickListener(chartVM -> {
-            final int selectedIndex = chartAdapter.getItemPosition(chartVM);
-            bubbleScrollView.smoothScrollToPosition(selectedIndex);
-            //TODO: show Details
-        });
-        bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
+        initAdapter();
+        bubbleScrollView.setVisibility(View.GONE); //TODO: later, check if DB is empty or not
     }
 
     @Override
@@ -108,5 +98,40 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @OnClick(R.id.settingsButton)
     public void onSettingsButtonClicked() {
         launchActivity(SettingsActivity.starter(this), false, Animation.FADE);
+    }
+
+    @OnClick(R.id.playIcon)
+    public void onPlayIconClicked(final ImageView icon) {
+        bubbleScrollView.setVisibility(View.VISIBLE);
+        icon.setVisibility(View.GONE);
+        chartAdapter.setItems(presenter.fakeData());
+        bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
+    }
+
+    private void initAdapter() {
+        bubbleScrollView.setAdapter(chartAdapter);
+        bubbleScrollView.setSlideOnFling(true);
+        bubbleScrollView.setOverScrollEnabled(true);
+        bubbleScrollView.setSlideOnFlingThreshold(500);
+        bubbleScrollView.setItemTransitionTimeMillis(200);
+        bubbleScrollView.addScrollStateChangeListener(this);
+        bubbleScrollView.addOnItemChangedListener((viewHolder, adapterPosition) -> {
+            final ChartAdapterViewHolder holder = (ChartAdapterViewHolder) viewHolder;
+            if (holder != null) {
+                holder.showDetails();
+            }
+            presenter.itemChanged(chartAdapter.getItem(adapterPosition));
+        });
+        chartAdapter.setOnItemClickListener(chartVM -> {
+            final int selectedIndex = chartAdapter.getItemPosition(chartVM);
+            bubbleScrollView.smoothScrollToPosition(selectedIndex);
+            //TODO: show Details
+        });
+    }
+
+    @Override
+    public void updateTitles(String title, String subTitle) {
+        titleTextView.setText(title);
+        subTitleTextView.setText(subTitle);
     }
 }

@@ -4,10 +4,6 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 public class StringUtils {
@@ -20,9 +16,5 @@ public class StringUtils {
         final SpannableString span2 = new SpannableString(text);
         span2.setSpan(new RelativeSizeSpan(0.5f), 0, text.length(), SPAN_INCLUSIVE_INCLUSIVE);
         return TextUtils.concat(span1, "\n", span2);
-    }
-
-    public static String getFormattedDate(final Date date) {
-        return new SimpleDateFormat("dd\nMMM", Locale.ENGLISH).format(date.getTime());
     }
 }

@@ -12,12 +12,9 @@ public interface ICubeDataRepository {
     @Nullable
     CubeData loadById(final long id);
 
-    @Nullable
     List<CubeData> loadByDate(final Date date);
 
-    List<CubeData> listAllItems();
-
-    List<CubeData> filterByDate(final Date startDate, final Date endDate);
+    List<CubeData> listAll();
 
     void removeById(final long id);
 

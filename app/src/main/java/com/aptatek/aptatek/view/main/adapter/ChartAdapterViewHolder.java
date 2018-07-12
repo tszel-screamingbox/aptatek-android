@@ -108,7 +108,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     private void resetBubble() {
         badgeTextView.setVisibility(View.GONE);
-        infoTextView.setText(currentData.getDate());
+        infoTextView.setText(currentData.getFormattedDate());
         infoTextView.setTextColor(context.getResources().getColor(R.color.applicationWhite));
         if (currentData.isEmpty()) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));

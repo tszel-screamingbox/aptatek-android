@@ -3,18 +3,22 @@ package com.aptatek.aptatek.view.main.adapter;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.respository.chart.ChartDTO;
 import com.aptatek.aptatek.domain.respository.chart.Measure;
+import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.StringUtils;
 import com.aptatek.aptatek.view.base.list.IListTypeProvider;
 
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import ix.Ix;
 
 public class ChartVM implements IListTypeProvider {
 
+    private static final String PATTERN = "dd\nMMM";
+
     private long id;
-    private String date;
+    private Date date;
     private CharSequence details;
     private int numberOfMeasures;
     private float bubbleYAxis;
@@ -23,7 +27,7 @@ public class ChartVM implements IListTypeProvider {
 
     public ChartVM(final ChartDTO chartDTO) {
         this.id = chartDTO.getId();
-        this.date = StringUtils.getFormattedDate(chartDTO.getDate());
+        this.date = chartDTO.getDate();
         this.numberOfMeasures = chartDTO.getMeasureList().size();
         this.details = details(chartDTO.getMeasureList());
         this.bubbleYAxis = chartDTO.getBubbleYAxis();
@@ -49,7 +53,11 @@ public class ChartVM implements IListTypeProvider {
         return id;
     }
 
-    public String getDate() {
+    public String getFormattedDate() {
+        return CalendarUtils.formatDate(date, PATTERN);
+    }
+
+    public Date getDate() {
         return date;
     }
 
