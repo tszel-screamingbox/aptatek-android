@@ -38,10 +38,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         notificationManager.notify(NOTIFICATION_ID, reminderNotificationFactory.createReminderNotification());
 
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(intent.getLongExtra(Constants.REMINDER_TIMESTAMP_INTENT_KEY, 0));
-        calendar.set(Calendar.WEEK_OF_MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 1);
+        if (intent.getBooleanExtra(Constants.REMINDER_RE_SCHEDULE_INTENT_KEY, false)) {
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(intent.getLongExtra(Constants.REMINDER_TIMESTAMP_INTENT_KEY, 0));
+            calendar.set(Calendar.WEEK_OF_MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 1);
 
-        alarmManager.setReminder(calendar.getTimeInMillis(), intent.getIntExtra(Constants.REMINDER_REQUEST_CODE_INTENT_KEY, 0));
+            alarmManager.setReminder(calendar.getTimeInMillis(), intent.getIntExtra(Constants.REMINDER_REQUEST_CODE_INTENT_KEY, 0), true);
+        }
     }
 }

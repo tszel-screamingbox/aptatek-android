@@ -93,7 +93,7 @@ public class ReminderInteractor {
 
     public Completable setReminder(final int weekDay, final int hour, final int minute) {
         return Completable.fromAction(() ->
-                alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute));
+                alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute, true));
     }
 
     private Observable<Collection<Reminder>> listReminders(final int weekDay) {

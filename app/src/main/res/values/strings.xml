@@ -119,13 +119,19 @@
     <string name="settings.daily.reminders">Daily reminders</string>
     <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
     <string name="settings.fingerprint.description">Turn the switch off for PIN only. Turns on your passcode you use for your device.</string>
-    <string name="reminder.notification.title">Now might be a great time to check Phe level!</string>
     <string name="reminder.settings.already.has.reminder">You already have the same reminder on the given day.</string>
     <string name="reminder.time.picker.add">Add</string>
     <string name="reminder.time.picker.cancel">Cancel</string>
     <string name="reminder.time.picker.delete">Delete</string>
     <string name="reminder.time.picker.update">Update</string>
     <string name="settings.title">Settings</string>
+
+    <!-- Reminder Notification-->
+    <string name="reminder.notification.title">Time for Blood Test</string>
+    <string name="reminder.notification.message">Don’t forget to take your blood test!</string>
+    <string name="reminder.notification.now">Now</string>
+    <string name="reminder.notification.quarter.hour">15min</string>
+    <string name="reminder.notification.half.hour">30min</string>
 
     <!-- RangeInfo -->
     <string name="rangeinfo.units.format">Units are in %s</string>
