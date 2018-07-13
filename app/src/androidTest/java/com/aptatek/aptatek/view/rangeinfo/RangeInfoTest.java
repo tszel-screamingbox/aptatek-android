@@ -78,7 +78,7 @@ public class RangeInfoTest {
         onView(withId(R.id.rangeinfo_back)).check(matches(withText(R.string.rangeinfo_back)));
         onView(withId(R.id.rangeinfo_edit)).check(matches(withText(R.string.rangeinfo_edit_level_preferences)));
         onView(withId(R.id.rangeinfo_units)).check(matches(withText(formatter.formatUnits(pkuInfo))));
-        onView(withId(R.id.rangeinfo_high_label)).check(matches(withText(R.string.rangeinfo_hight)));
+        onView(withId(R.id.rangeinfo_high_label)).check(matches(withText(R.string.rangeinfo_high)));
         onView(withId(R.id.rangeinfo_high)).check(matches(withText(formatter.formatHigh(pkuInfo))));
         onView(withId(R.id.rangeinfo_veryhigh_label)).check(matches(withText(R.string.rangeinfo_very_high)));
         onView(withId(R.id.rangeinfo_veryhigh)).check(matches(withText(formatter.formatVeryHigh(pkuInfo))));

@@ -5,12 +5,13 @@ import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class PkuRangeInteractor {
 
     // TODO get the exact ratio
-    private static final int MOL_TO_GRAM_CONVERSION_RATIO = 60;
+    private static final float MOL_TO_GRAM_CONVERSION_RATIO = 60f;
 
     private final PkuRangeDataSource dataSource;
 
@@ -22,22 +23,50 @@ public class PkuRangeInteractor {
     public Single<PkuRangeInfo> getInfo() {
         return Single.fromCallable(() -> {
             final PkuLevelUnits displayUnit = dataSource.getDisplayUnit();
-
-            return PkuRangeInfo.builder()
-                    .setPkuLevelUnit(displayUnit)
-                    .setHighCeilValue(getValueInUnit(dataSource.getHighCeilValue(), displayUnit))
-                    .setNormalCeilValue(getValueInUnit(dataSource.getNormalCeilValue(), displayUnit))
-                    .setNormalFloorValue(getValueInUnit(dataSource.getNormalFloorValue(), displayUnit))
-                    .build();
+            return getInfoInUnit(displayUnit);
         });
     }
 
-    private float getValueInUnit(final float value, final PkuLevelUnits unit) {
-        if (unit == PkuLevelUnits.MICRO_MOL) {
+    public Single<PkuRangeInfo> getInfo(final PkuLevelUnits units) {
+        return Single.fromCallable(() -> getInfoInUnit(units));
+    }
+
+    public Completable saveNormalRange(final float floorValue, final float ceilValue, final PkuLevelUnits unit) {
+        return Completable.fromAction(() -> {
+            dataSource.setDisplayUnit(unit);
+            dataSource.setNormalFloorValue(getValueInUnit(floorValue, unit, PkuLevelUnits.MICRO_MOL));
+            dataSource.setNormalCeilValue(getValueInUnit(ceilValue, unit, PkuLevelUnits.MICRO_MOL));
+        });
+    }
+
+    private PkuRangeInfo getInfoInUnit(final PkuLevelUnits unit) {
+        return PkuRangeInfo.builder()
+                .setPkuLevelUnit(unit)
+                .setHighCeilValue(getValueInUnit(dataSource.getHighCeilValue(), PkuLevelUnits.MICRO_MOL, unit))
+                .setNormalCeilValue(getValueInUnit(dataSource.getNormalCeilValue(), PkuLevelUnits.MICRO_MOL, unit))
+                .setNormalFloorValue(getValueInUnit(dataSource.getNormalFloorValue(),  PkuLevelUnits.MICRO_MOL,unit))
+                .build();
+    }
+
+    private float getValueInUnit(final float value,
+                                 final PkuLevelUnits originalUnit,
+                                 final PkuLevelUnits targetUnit) {
+        if (originalUnit == targetUnit) {
             return value;
         }
 
-        return value * MOL_TO_GRAM_CONVERSION_RATIO;
+        final float ratio;
+
+        if (originalUnit == PkuLevelUnits.MICRO_MOL) {
+            ratio = 1 / MOL_TO_GRAM_CONVERSION_RATIO;
+        } else {
+            ratio = MOL_TO_GRAM_CONVERSION_RATIO;
+        }
+
+
+        return value * ratio;
     }
+
+
 
 }

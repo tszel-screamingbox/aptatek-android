@@ -126,6 +126,15 @@
     <string name="reminder.time.picker.delete">Delete</string>
     <string name="reminder.time.picker.update">Update</string>
     <string name="settings.title">Settings</string>
+    <string name="settings.units">Phe Preferences &amp; Units</string>
+    <string name="settings.units.description">You can set your Phe levels and the units</string>
+    <string name="settings.units.title">Your Phe Target Range</string>
+    <string name="settings.units.range.format">From %s to %s %s</string>
+    <string name="settings.units.range.over.format">Over %s %s</string>
+    <string name="settings.units.normal.description">Talk with your medical team about how you can customize your \"Target Phe level range\" so that the app can give you customized feedback about how closely you\'re meeting those goals</string>
+    <string name="settings.units.label">Units</string>
+    <string name="settings.units.confirmation.title">Ranges Changed</string>
+    <string name="settings.units.confirmation.message">Do you want to save these changes?</string>
 
     <!-- RangeInfo -->
     <string name="rangeinfo.units.format">Units are in %s</string>
@@ -136,7 +145,7 @@
     <string name="rangeinfo.edit.level.preferences">Edit Level Preferences</string>
     <string name="rangeinfo.back">Back</string>
     <string name="rangeinfo.very.high">Very High</string>
-    <string name="rangeinfo.hight">High</string>
+    <string name="rangeinfo.high">High</string>
     <string name="rangeinfo.normal">Normal</string>
     <string name="rangeinfo.low">Low</string>
     <string name="rangeinfo.title">Range info</string>

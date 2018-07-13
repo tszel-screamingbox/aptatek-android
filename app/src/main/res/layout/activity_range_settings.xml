@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <TextView
+            android:id="@+id/rangeSettingsLowLabel"
+            style="@style/Settings.Range.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance"
+            android:text="@string/rangeinfo.low"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsLowIndicator"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <TextView
+            android:id="@+id/rangeSettingsLowDescription"
+            style="@style/Settings.Range.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsLowIndicator"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsLowLabel"
+            tools:text="From 0 to 119 mmol/L" />
+
+        <com.aptatek.aptatek.widget.LevelIndicatorView
+            android:id="@+id/rangeSettingsLowIndicator"
+            android:layout_width="@dimen/general.distance"
+            android:layout_height="@dimen/general.distance"
+            app:indicatorColor="@color/pkuLevelLow"
+            app:layout_constraintBottom_toBottomOf="@+id/rangeSettingsLowDescription"
+            app:layout_constraintEnd_toEndOf="@id/guideEnd"
+            app:layout_constraintTop_toTopOf="@+id/rangeSettingsLowLabel"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <View
+            android:id="@+id/rangeSettingsSeparatorLow"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/general.distance.xxxxmini"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:background="@color/applicationLightGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsLowDescription" />
+
+        <TextView
+            android:id="@+id/rangeSettingsHighLabel"
+            style="@style/Settings.Range.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:text="@string/rangeinfo.high"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsHighIndicator"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@id/rangeSettingsSeparatorLow" />
+
+        <TextView
+            android:id="@+id/rangeSettingsHighDescription"
+            style="@style/Settings.Range.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsHighIndicator"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsHighLabel"
+            tools:text="From 361 to 510 mmol/L" />
+
+        <com.aptatek.aptatek.widget.LevelIndicatorView
+            android:id="@+id/rangeSettingsHighIndicator"
+            android:layout_width="@dimen/general.distance"
+            android:layout_height="@dimen/general.distance"
+            app:indicatorColor="@color/pkuLevelHigh"
+            app:layout_constraintBottom_toBottomOf="@+id/rangeSettingsHighDescription"
+            app:layout_constraintEnd_toEndOf="@id/guideEnd"
+            app:layout_constraintTop_toTopOf="@+id/rangeSettingsHighLabel"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <View
+            android:id="@+id/rangeSettingsSeparatorHigh"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/general.distance.xxxxmini"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:background="@color/applicationLightGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@id/rangeSettingsHighDescription" />
+
+        <TextView
+            android:id="@+id/rangeSettingsVeryHighLabel"
+            style="@style/Settings.Range.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:text="@string/rangeinfo.very.high"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsVeryHighIndicator"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsSeparatorHigh" />
+
+        <TextView
+            android:id="@+id/rangeSettingsVeryHighDescription"
+            style="@style/Settings.Range.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsVeryHighIndicator"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsVeryHighLabel"
+            tools:text="Over 511 mmol/L" />
+
+        <com.aptatek.aptatek.widget.LevelIndicatorView
+            android:id="@+id/rangeSettingsVeryHighIndicator"
+            android:layout_width="@dimen/general.distance"
+            android:layout_height="@dimen/general.distance"
+            app:indicatorColor="@color/pkuLevelVeryHigh"
+            app:layout_constraintBottom_toBottomOf="@+id/rangeSettingsVeryHighDescription"
+            app:layout_constraintEnd_toEndOf="@id/guideEnd"
+            app:layout_constraintTop_toTopOf="@+id/rangeSettingsVeryHighLabel"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <View
+            android:id="@+id/rangeSettingsSeparatorVeryHigh"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/general.distance.xxxxmini"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:background="@color/applicationLightGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsVeryHighDescription" />
+
+        <TextView
+            android:id="@+id/rangeSettingsUnitLabel"
+            style="@style/Settings.Range.Label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:text="@string/settings.units.label"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsVeryHighIndicator"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsSeparatorVeryHigh" />
+
+        <RadioGroup
+            android:id="@+id/rangeSettingsUnitsGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsUnitLabel">
+
+            <RadioButton
+                android:id="@+id/rangeSettingsUnitMicroMol"
+                style="@style/Settings.Range.Units.Radio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/rangeinfo.pkulevel.mmol" />
+
+            <RadioButton
+                android:id="@+id/rangeSettingsUnitMilliGram"
+                style="@style/Settings.Range.Units.Radio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/rangeinfo.pkulevel.mg" />
+
+        </RadioGroup>
+
+        <View
+            android:id="@+id/rangeSettingsSeparatorUnits"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/general.distance.xxxxmini"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:background="@color/applicationLightGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsUnitsGroup" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
