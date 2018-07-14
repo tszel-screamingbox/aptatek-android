@@ -7,7 +7,9 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <include
             android:id="@+id/toolbar"
@@ -69,6 +71,89 @@
             app:layout_constraintTop_toBottomOf="@+id/rangeSettingsLowDescription" />
 
         <TextView
+            android:id="@+id/rangeSettingsNormalLabel"
+            style="@style/Settings.Range.Label.Active"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:text="@string/rangeinfo.normal"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsNormalFloor"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsSeparatorLow" />
+
+        <EditText
+            android:id="@+id/rangeSettingsNormalFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/settings.units.normal.floor.hint"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:maxEms="3"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rangeSettingsNormalLabel"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsNormalDash"
+            app:layout_constraintStart_toEndOf="@+id/rangeSettingsNormalLabel" />
+
+        <TextView
+            android:id="@+id/rangeSettingsNormalDash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/general.distance.xxxmini"
+            android:layout_marginStart="@dimen/general.distance.xxxmini"
+            android:text="-"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rangeSettingsNormalFloor"
+            app:layout_constraintEnd_toStartOf="@+id/rangeSettingsNormalCeil"
+            app:layout_constraintStart_toEndOf="@+id/rangeSettingsNormalFloor" />
+
+        <EditText
+            android:id="@+id/rangeSettingsNormalCeil"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/settings.units.normal.ceil.hint"
+            android:imeOptions="actionDone"
+            android:inputType="numberDecimal"
+            android:lines="1"
+            android:maxEms="3"
+            app:layout_constraintBaseline_toBaselineOf="@+id/rangeSettingsNormalDash"
+            app:layout_constraintEnd_toEndOf="@id/guideEnd"
+            app:layout_constraintStart_toEndOf="@+id/rangeSettingsNormalDash" />
+
+        <com.appyvet.materialrangebar.RangeBar
+            android:id="@+id/rangeSettingsRangeBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            app:layout_constraintEnd_toEndOf="@id/guideEnd"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsNormalLabel"
+            app:mrb_connectingLineColor="@color/pkuLevelNormal"
+            app:mrb_rangeBarColor="@color/pkuLevelNormal"
+            app:mrb_selectorColor="@color/pkuLevelNormal"
+            app:mrb_selectorSize="10dp"
+            app:mrb_temporaryPins="true" />
+
+        <TextView
+            android:id="@+id/rangeSettingsNormalDescription"
+            style="@style/Settings.Range.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:text="@string/settings.units.normal.description"
+            app:layout_constraintEnd_toEndOf="@id/guideEnd"
+            app:layout_constraintStart_toStartOf="@id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsRangeBar" />
+
+        <View
+            android:id="@+id/rangeSettingsSeparatorNormal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/general.distance.xxxxmini"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:background="@color/applicationLightGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideStart"
+            app:layout_constraintTop_toBottomOf="@+id/rangeSettingsNormalDescription" />
+
+        <TextView
             android:id="@+id/rangeSettingsHighLabel"
             style="@style/Settings.Range.Label"
             android:layout_width="0dp"
@@ -77,7 +162,7 @@
             android:text="@string/rangeinfo.high"
             app:layout_constraintEnd_toStartOf="@+id/rangeSettingsHighIndicator"
             app:layout_constraintStart_toStartOf="@id/guideStart"
-            app:layout_constraintTop_toBottomOf="@id/rangeSettingsSeparatorLow" />
+            app:layout_constraintTop_toBottomOf="@id/rangeSettingsSeparatorNormal" />
 
         <TextView
             android:id="@+id/rangeSettingsHighDescription"

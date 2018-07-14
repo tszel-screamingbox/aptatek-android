@@ -8,13 +8,13 @@ public abstract class RangeSettingsModel {
 
     public abstract String getLowText();
 
-    public abstract float getNormalFloorValue();
+    public abstract float getNormalFloorMMolValue();
 
-    public abstract float getNormalCeilValue();
+    public abstract float getNormalCeilMMolValue();
 
-    public abstract float getNormalAbsoluteFloorValue();
+    public abstract float getNormalAbsoluteFloorMMolValue();
 
-    public abstract float getNormalAbsoluteCeilValue();
+    public abstract float getNormalAbsoluteCeilMMolValue();
 
     public abstract String getHighText();
 
@@ -35,13 +35,13 @@ public abstract class RangeSettingsModel {
 
         public abstract Builder setVeryHighText(String value);
 
-        public abstract Builder setNormalFloorValue(float value);
+        public abstract Builder setNormalFloorMMolValue(float value);
 
-        public abstract Builder setNormalCeilValue(float value);
+        public abstract Builder setNormalCeilMMolValue(float value);
 
-        public abstract Builder setNormalAbsoluteFloorValue(float value);
+        public abstract Builder setNormalAbsoluteFloorMMolValue(float value);
 
-        public abstract Builder setNormalAbsoluteCeilValue(float value);
+        public abstract Builder setNormalAbsoluteCeilMMolValue(float value);
 
         public abstract Builder setSelectedUnit(PkuLevelUnits value);
 

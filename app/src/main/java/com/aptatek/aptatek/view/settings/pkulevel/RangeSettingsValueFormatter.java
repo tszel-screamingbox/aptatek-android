@@ -1,5 +1,6 @@
 package com.aptatek.aptatek.view.settings.pkulevel;
 
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 
 public interface RangeSettingsValueFormatter {
@@ -9,5 +10,7 @@ public interface RangeSettingsValueFormatter {
     String getFormattedHigh(PkuRangeInfo info);
 
     String getFormattedVeryHigh(PkuRangeInfo info);
+
+    String formatRegularValue(float value, PkuLevelUnits unit);
 
 }

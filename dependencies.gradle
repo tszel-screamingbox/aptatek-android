@@ -73,7 +73,10 @@ ext {
             // CodeQuality
             jacoco                      : '0.8.1',
             findbugs                    : '3.0.1',
-            checkstyle                  : '8.10'
+            checkstyle                  : '8.10',
+
+            // UI
+            rangebar                    : '1.4.3',
 
     ]
 
@@ -165,5 +168,9 @@ ext {
             espressocontrib     : "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
             hamcrest            : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
             orchestrator        : "com.android.support.test:orchestrator:${versions.orchestrator}"
+    ]
+
+    uiDependencies = [
+            rangebar            : "com.appyvet:materialrangebar:$versions.rangebar"
     ]
 }

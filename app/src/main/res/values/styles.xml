@@ -192,6 +192,7 @@
 
     <style name="Settings.Range.Label.Active">
         <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:alpha">@dimen/alpha.general.full</item>
     </style>
 
     <style name="Settings.Range.Units.Radio" parent="Widget.AppCompat.CompoundButton.RadioButton">

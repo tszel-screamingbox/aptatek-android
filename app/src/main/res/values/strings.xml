@@ -3,7 +3,7 @@
     <string name="alertdialog.button.no">No</string>
     <string name="alertdialog.button.yes">Yes</string>
     <!-- App Constants-->
-    <string name="app.name">Aptatek</string>
+    <string name="application.name">Aptatek</string>
     <!-- AuthPin Activity -->
     <string name="auth.pin.hint">Enter your PIN code</string>
     <string name="auth.pin.hint.fingerprint">Enter your PIN code or use your fingerprint</string>
@@ -135,6 +135,8 @@
     <string name="settings.units.label">Units</string>
     <string name="settings.units.confirmation.title">Ranges Changed</string>
     <string name="settings.units.confirmation.message">Do you want to save these changes?</string>
+    <string name="settings.units.normal.floor.hint">Floor</string>
+    <string name="settings.units.normal.ceil.hint">Ceil</string>
 
     <!-- RangeInfo -->
     <string name="rangeinfo.units.format">Units are in %s</string>

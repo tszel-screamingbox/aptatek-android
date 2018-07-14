@@ -14,46 +14,56 @@ public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormat
 
     private static final String FORMAT_MILLI_GRAM = "%.1f";
     private static final String FORMAT_MICRO_MOL = "%.0f";
+    private static final float OFFSET_MICRO_MOL = 1f;
+    private static final float OFFSET_MILLI_GRAM = 0.1f;
 
     private final ResourceInteractor resourceInteractor;
 
-    public RangeSettingsValueFormatterImpl(ResourceInteractor resourceInteractor) {
+    public RangeSettingsValueFormatterImpl(final ResourceInteractor resourceInteractor) {
         this.resourceInteractor = resourceInteractor;
     }
 
     @NonNull
-    private String getProperFormat(final PkuRangeInfo info) {
-        return info.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? FORMAT_MICRO_MOL : FORMAT_MILLI_GRAM;
+    private String getProperFormat(final PkuLevelUnits units) {
+        return units == PkuLevelUnits.MICRO_MOL ? FORMAT_MICRO_MOL : FORMAT_MILLI_GRAM;
     }
 
     private String getProperUnits(final PkuRangeInfo info) {
-        return resourceInteractor.getStringResource(info.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? R.string.rangeinfo_pkulevel_mmol : R.string.rangeinfo_pkulevel_mg);
+        return resourceInteractor.getStringResource(info.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                ? R.string.rangeinfo_pkulevel_mmol
+                : R.string.rangeinfo_pkulevel_mg);
     }
 
-    private float getProperOffset(final PkuRangeInfo info) {
-        return info.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? 1f : 0.1f;
+    private float getProperOffset(final PkuLevelUnits units) {
+        return units == PkuLevelUnits.MICRO_MOL ? OFFSET_MICRO_MOL : OFFSET_MILLI_GRAM;
     }
 
     @Override
-    public String getFormattedLow(PkuRangeInfo info) {
+    public String getFormattedLow(final PkuRangeInfo info) {
         return resourceInteractor.getStringResource(R.string.settings_units_range_format,
                 "0",
-                String.format(Locale.getDefault(), getProperFormat(info), info.getNormalFloorValue() - getProperOffset(info)),
+                formatRegularValue(info.getNormalFloorValue() - getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
                 getProperUnits(info));
     }
 
     @Override
-    public String getFormattedHigh(PkuRangeInfo info) {
+    public String getFormattedHigh(final PkuRangeInfo info) {
         return resourceInteractor.getStringResource(R.string.settings_units_range_format,
-                String.format(Locale.getDefault(), getProperFormat(info), info.getNormalCeilValue() + getProperOffset(info)),
-                String.format(Locale.getDefault(), getProperFormat(info), info.getHighCeilValue()),
+                formatRegularValue(info.getNormalCeilValue() + getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
+                formatRegularValue(info.getHighCeilValue(), info.getPkuLevelUnit()),
                 getProperUnits(info));
     }
 
     @Override
-    public String getFormattedVeryHigh(PkuRangeInfo info) {
+    public String getFormattedVeryHigh(final PkuRangeInfo info) {
         return resourceInteractor.getStringResource(R.string.settings_units_range_over_format,
-                String.format(Locale.getDefault(), getProperFormat(info), info.getHighCeilValue() + getProperOffset(info)),
+                formatRegularValue(info.getHighCeilValue() + getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
                 getProperUnits(info));
     }
+
+    @Override
+    public String formatRegularValue(final float value, final PkuLevelUnits unit) {
+        return String.format(Locale.getDefault(), getProperFormat(unit), value);
+    }
+
 }

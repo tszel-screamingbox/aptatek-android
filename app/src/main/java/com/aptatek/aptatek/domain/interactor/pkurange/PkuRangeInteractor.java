@@ -31,11 +31,10 @@ public class PkuRangeInteractor {
         return Single.fromCallable(() -> getInfoInUnit(units));
     }
 
-    public Completable saveNormalRange(final float floorValue, final float ceilValue, final PkuLevelUnits unit) {
+    public Completable saveNormalRangeMMol(final float floorValue, final float ceilValue) {
         return Completable.fromAction(() -> {
-            dataSource.setDisplayUnit(unit);
-            dataSource.setNormalFloorValue(getValueInUnit(floorValue, unit, PkuLevelUnits.MICRO_MOL));
-            dataSource.setNormalCeilValue(getValueInUnit(ceilValue, unit, PkuLevelUnits.MICRO_MOL));
+            dataSource.setNormalFloorValue(floorValue);
+            dataSource.setNormalCeilValue(ceilValue);
         });
     }
 
@@ -48,7 +47,7 @@ public class PkuRangeInteractor {
                 .build();
     }
 
-    private float getValueInUnit(final float value,
+    public float getValueInUnit(final float value,
                                  final PkuLevelUnits originalUnit,
                                  final PkuLevelUnits targetUnit) {
         if (originalUnit == targetUnit) {
