@@ -1,4 +1,4 @@
-package com.aptatek.aptatek.view.settings.reminder;
+package com.aptatek.aptatek.view.settings.reminder.adapter;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

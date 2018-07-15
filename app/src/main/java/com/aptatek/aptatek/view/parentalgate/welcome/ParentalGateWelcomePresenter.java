@@ -4,6 +4,7 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.parentalgate.ParentalGateInteractor;
 import com.aptatek.aptatek.domain.model.AgeCheckModel;
+import com.aptatek.aptatek.domain.model.AgeCheckResult;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
@@ -26,9 +27,7 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
     }
 
     public void initUi() {
-        ageCheckModel = AgeCheckModel.builder()
-                .setFailCount(ageCheckModel == null ? 0 : ageCheckModel.getFailCount())
-                .build();
+        ageCheckModel = AgeCheckModel.builder().build();
 
         ifViewAttached(attachedView -> {
             attachedView.setShowAgeField(false);
@@ -81,27 +80,25 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
                     .build();
 
             disposables.add(parentalGateInteractor.verify(ageCheckModel)
-                    .onErrorReturn(throwable -> false)
-                    .subscribe(ageCorrect ->
-                        ifViewAttached(attached -> {
-                                ageCheckModel = ageCheckModel.toBuilder()
-                                        .setFailCount(ageCheckModel.getFailCount() + (ageCorrect ? 0 : 1))
-                                        .build();
-
-                                attached.showResult(AgeVerificationResult.builder()
-                                        .setIconRes(ageCorrect ? R.drawable.ic_age_verified : R.drawable.ic_age_not_verified)
-                                        .setTitle(resourceInteractor.getStringResource(ageCorrect
-                                                ? R.string.parental_verification_success_title
-                                                : R.string.parental_verification_failure_title))
-                                        .setMessage(resourceInteractor.getStringResource(ageCorrect
-                                                ? R.string.parental_verification_success_message
-                                                : ageCheckModel.getFailCount() > 1
-                                                    ? R.string.parental_verification_failure_message
-                                                    : R.string.parental_verification_failure_message_first))
-                                        .setShowButton(!ageCorrect)
-                                        .build());
-                                }
-                        )
+                    .onErrorReturn(throwable -> AgeCheckResult.NOT_OLD_ENOUGH)
+                    .subscribe(result ->
+                            ifViewAttached(attached -> attached.showResult(AgeVerificationResult.builder()
+                                    .setIconRes(result == AgeCheckResult.VALID_AGE
+                                            ? R.drawable.ic_age_verified
+                                            : R.drawable.ic_age_not_verified)
+                                    .setTitle(resourceInteractor.getStringResource(result == AgeCheckResult.VALID_AGE
+                                            ? R.string.parental_verification_success_title
+                                            : result == AgeCheckResult.NOT_OLD_ENOUGH
+                                            ? R.string.parental_verification_failure_not_old_enough_title
+                                            : R.string.parental_verification_failure_age_not_match_title))
+                                    .setMessage(resourceInteractor.getStringResource(result == AgeCheckResult.VALID_AGE
+                                            ? R.string.parental_verification_success_message
+                                            : result == AgeCheckResult.NOT_OLD_ENOUGH
+                                            ? R.string.parental_verification_failure_not_old_enough_message
+                                            : R.string.parental_verification_failure_age_not_match_message))
+                                    .setShowButton(result != AgeCheckResult.VALID_AGE)
+                                    .build())
+                            )
                     )
             );
         } catch (final NumberFormatException e) {

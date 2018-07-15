@@ -2,10 +2,10 @@ package com.aptatek.aptatek.presenter.test.remindersettings;
 
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.remindersettings.ReminderInteractor;
-import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsAdapterItem;
+import com.aptatek.aptatek.view.settings.reminder.adapter.ReminderSettingsAdapterItem;
 import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsPresenter;
 import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsView;
-import com.aptatek.aptatek.view.settings.reminder.RemindersAdapterItem;
+import com.aptatek.aptatek.view.settings.reminder.adapter.RemindersAdapterItem;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,10 +39,24 @@ public class ReminderSettingsActivityPresenterTest {
 
     @Test
     public void testModifyAlreadyHasReminder() {
-        final RemindersAdapterItem remindersAdapterItem = new RemindersAdapterItem("test", "10:30am", true, 10, 30);
-        final ReminderSettingsAdapterItem reminderSettingsAdapterItem = new ReminderSettingsAdapterItem(5, "Friday", true, new ArrayList<>());
+
+        RemindersAdapterItem remindersAdapterItem = RemindersAdapterItem.builder()
+                .setId("test")
+                .setTime("10:30am")
+                .setActive(true)
+                .setHour(10)
+                .setMinute(30)
+                .build();
+
+        ReminderSettingsAdapterItem reminderSettingsAdapterItem = ReminderSettingsAdapterItem.builder()
+                .setWeekDay(5)
+                .setNameOfDay("Friday")
+                .setActive(true)
+                .setReminders(new ArrayList<>())
+                .build();
+
         reminderSettingsAdapterItem.getReminders().add(remindersAdapterItem);
-        presenter.modifyReminder(reminderSettingsAdapterItem, remindersAdapterItem, 10, 30);
+        presenter.modifyReminder(new ArrayList<>(), reminderSettingsAdapterItem, remindersAdapterItem, 10, 30);
         verify(view).showAlreadyHasReminderError();
     }
 }

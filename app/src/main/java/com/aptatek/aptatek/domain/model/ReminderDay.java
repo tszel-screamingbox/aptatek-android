@@ -2,7 +2,7 @@ package com.aptatek.aptatek.domain.model;
 
 import com.google.auto.value.AutoValue;
 
-import java.util.List;
+import java.util.Collection;
 
 @AutoValue
 public abstract class ReminderDay {
@@ -11,7 +11,7 @@ public abstract class ReminderDay {
 
     public abstract boolean isActive();
 
-    public abstract List<Reminder> getReminders();
+    public abstract Collection<Reminder> getReminders();
 
     public static ReminderDay.Builder builder() {
         return new AutoValue_ReminderDay.Builder();
@@ -23,7 +23,7 @@ public abstract class ReminderDay {
 
         public abstract Builder setActive(boolean active);
 
-        public abstract Builder setReminders(List<Reminder> reminders);
+        public abstract Builder setReminders(Collection<Reminder> reminders);
 
         public abstract ReminderDay build();
     }

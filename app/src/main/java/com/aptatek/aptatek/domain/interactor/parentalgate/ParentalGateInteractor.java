@@ -3,6 +3,7 @@ package com.aptatek.aptatek.domain.interactor.parentalgate;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.domain.model.AgeCheckModel;
+import com.aptatek.aptatek.domain.model.AgeCheckResult;
 
 import java.util.Calendar;
 
@@ -26,11 +27,17 @@ public class ParentalGateInteractor {
     }
 
     @NonNull
-    public Single<Boolean> verify(@NonNull final AgeCheckModel ageCheckModel) {
+    public Single<AgeCheckResult> verify(@NonNull final AgeCheckModel ageCheckModel) {
         return Single.fromCallable(() -> {
             final int calculatedAge = calculateAge(ageCheckModel.getBirthDate());
 
-            return ageCheckModel.getAge() > MIN_AGE && calculatedAge == ageCheckModel.getAge();
+            if (calculatedAge < MIN_AGE) {
+                return AgeCheckResult.NOT_OLD_ENOUGH;
+            } else if (calculatedAge != ageCheckModel.getAge()) {
+                return AgeCheckResult.AGE_NOT_MATCH;
+            } else {
+                return AgeCheckResult.VALID_AGE;
+            }
         });
     }
 

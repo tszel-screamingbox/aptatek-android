@@ -1,6 +1,5 @@
 package com.aptatek.aptatek.view.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +13,7 @@ import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapter;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapterViewHolder;
+import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
 import com.aptatek.aptatek.view.toggle.ToggleActivity;
@@ -86,8 +86,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.resultButton)
     public void onToggleButtonClicked() {
-        final Intent intent = new Intent(this, ToggleActivity.class);
-        launchActivity(intent, false, Animation.FADE);
+        // final Intent intent = new Intent(this, ToggleActivity.class);
+        // launchActivity(intent, false, Animation.FADE);
+
+        launchActivity(RangeInfoActivity.starter(this), false, Animation.FADE);
     }
 
     @OnClick(R.id.newTestButton)

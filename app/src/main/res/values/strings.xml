@@ -34,9 +34,10 @@
     <!-- Parental Gate Activity -->
     <string name="parental.verification.success.title">Thank you!</string>
     <string name="parental.verification.success.message">Your age was verified</string>
-    <string name="parental.verification.failure.title">Not old enough</string>
-    <string name="parental.verification.failure.message.first">Sorry this entry does not match, please re-enter information</string>
-    <string name="parental.verification.failure.message">This app is made for users who are at least 13 years old, and the information entered does not allow use of the app. An adult user should try again.</string>
+    <string name="parental.verification.failure.not.old.enough.title">Not old enough</string>
+    <string name="parental.verification.failure.age.not.match.title">Your Age Doesn\'t Match</string>
+    <string name="parental.verification.failure.age.not.match.message">Sorry this entry does not match, please re-enter information</string>
+    <string name="parental.verification.failure.not.old.enough.message">This app is made for users who are at least 13 years old, and the information entered does not allow use of the app. An adult user should try again.</string>
     <string name="parental.verification.tryagain">Try Again</string>
     <string name="parental.welcome.age.disclaimer">Regulations in the U.S. and other territories require us to verify that users are at least 13 years old before using this application; we respect your privacy and this information is not stored.</string>
     <string name="parental.welcome.birthday.format">dd/MM/yyyy</string>
@@ -114,6 +115,8 @@
     <string name="reminder.settings.wednesday">Wednesday</string>
     <string name="reminder.settings.thursday">Thursday</string>
     <string name="reminder.settings.friday">Friday</string>
+    <string name="reminder.notification.channel.name">Reminder</string>
+
     <!-- Reminder Time Picker Dialog -->
     <string name="settings.daily.reminder.description">You can set up multiple reminders for every day in the week</string>
     <string name="settings.daily.reminders">Daily reminders</string>
@@ -126,4 +129,19 @@
     <string name="reminder.time.picker.delete">Delete</string>
     <string name="reminder.time.picker.update">Update</string>
     <string name="settings.title">Settings</string>
+
+    <!-- RangeInfo -->
+    <string name="rangeinfo.units.format">Units are in %s</string>
+    <string name="rangeinfo.veryhigh.value.prefix">over</string>
+    <string name="rangeinfo.low.value.prefix">under</string>
+    <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
+    <string name="rangeinfo.pkulevel.mg">mg/dl</string>
+    <string name="rangeinfo.edit.level.preferences">Edit Level Preferences</string>
+    <string name="rangeinfo.back">Back</string>
+    <string name="rangeinfo.very.high">Very High</string>
+    <string name="rangeinfo.hight">High</string>
+    <string name="rangeinfo.normal">Normal</string>
+    <string name="rangeinfo.low">Low</string>
+    <string name="rangeinfo.title">Range info</string>
+    <string name="rangeinfo.message">To stay healthy your blood levels of phenylalanine should remain within these ranges</string>
 </resources>

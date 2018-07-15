@@ -3,6 +3,8 @@ package com.aptatek.aptatek.domain.manager;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.aptatek.device.PreferenceManager;
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
+import com.aptatek.aptatek.util.Constants;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +12,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.InstrumentationRegistry.getContext;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
@@ -59,14 +62,29 @@ public class PreferencesManagerTest {
         preferenceManager.setEncryptedPin(TEST);
         preferenceManager.setIncubationStart(INCUBATION_START);
         preferenceManager.enableFingerprintScan(true);
+        preferenceManager.setWettingStart(INCUBATION_START);
+        preferenceManager.setParentalPassed(true);
+        preferenceManager.setPkuRangeNormalFloor(Constants.DEFAULT_PKU_NORMAL_FLOOR);
+        preferenceManager.setPkuRangeNormalCeil(Constants.DEFAULT_PKU_NORMAL_CEIL);
+        preferenceManager.setPkuRangeUnit(Constants.DEFAULT_PKU_LEVEL);
 
         preferenceManager.clearPreference(PreferenceManager.PREF_ENCRYPTED_PIN);
         preferenceManager.clearPreference(PreferenceManager.PREF_INCUBATION_START);
         preferenceManager.clearPreference(PreferenceManager.PREF_FINGERPRINT_SCAN);
+        preferenceManager.clearPreference(PreferenceManager.PREF_WETTING_START);
+        preferenceManager.clearPreference(PreferenceManager.PREF_PARENTAL_GATE_PASSED);
+        preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_NORMAL_CEIL);
+        preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_NORMAL_FLOOR);
+        preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_UNIT);
 
         assertEquals(preferenceManager.getEncryptedPin(), null);
         assertEquals(preferenceManager.getIncubationStart(), 0L);
-        assertTrue(!preferenceManager.isFingerprintScanEnabled());
+        assertFalse(preferenceManager.isFingerprintScanEnabled());
+        assertEquals(preferenceManager.getWettingStart(), 0L);
+        assertFalse(preferenceManager.isParentalPassed());
+        assertEquals(preferenceManager.getPkuRangeNormalCeil(), -1f, 0.1f);
+        assertEquals(preferenceManager.getPkuRangeNormalFloor(), -1f, 0.1f);
+        assertEquals(preferenceManager.getPkuRangeUnit(), null);
     }
 
     @Test
@@ -99,4 +117,41 @@ public class PreferencesManagerTest {
     public void testWettingStartDefault() {
         assertEquals(preferenceManager.getWettingStart(), 0L);
     }
+
+    @Test
+    public void testPkuNormalFloorSet() {
+        final float value = 310;
+        preferenceManager.setPkuRangeNormalFloor(value);
+        assertEquals(preferenceManager.getPkuRangeNormalFloor(), value, 0.1f);
+    }
+
+    @Test
+    public void testPkuNormalFloorDefault() {
+        assertEquals(preferenceManager.getPkuRangeNormalFloor(), -1f, 0.1f);
+    }
+
+    @Test
+    public void testPkuNormalCeilSet() {
+        final float value = 550;
+        preferenceManager.setPkuRangeNormalCeil(value);
+        assertEquals(preferenceManager.getPkuRangeNormalCeil(), value, 0.1f);
+    }
+
+    @Test
+    public void testPkuNormalCeilDefault() {
+        assertEquals(preferenceManager.getPkuRangeNormalCeil(), -1f, 0.1f);
+    }
+
+    @Test
+    public void testPkuUnitSet() {
+        final PkuLevelUnits milliGram = PkuLevelUnits.MILLI_GRAM;
+        preferenceManager.setPkuRangeUnit(milliGram);
+        assertEquals(preferenceManager.getPkuRangeUnit(), milliGram);
+    }
+
+    @Test
+    public void testPkuUnitDefault() {
+        assertEquals(preferenceManager.getPkuRangeUnit(), null);
+    }
+
 }

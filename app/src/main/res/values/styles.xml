@@ -133,7 +133,7 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
-    <style name="Parental.Title" parent="General.Text">
+    <style name="General.Title" parent="General.Text">
         <item name="android:alpha">@dimen/alpha.general.full</item>
         <item name="android:textSize">@dimen/font.size.xxlarge</item>
         <item name="android:textStyle">bold</item>
@@ -160,6 +160,24 @@
 
     <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker" tools:targetApi="lollipop">
         <item name="android:datePickerMode">spinner</item>
+    </style>
+
+    <style name="RangeInfo.VeryHigh" parent="General.Title">
+        <item name="android:textSize">@dimen/font.size.xlarge</item>
+        <item name="android:textColor">@color/pkuLevelVeryHigh</item>
+    </style>
+
+    <style name="RangeInfo.High" parent="General.Title">
+        <item name="android:textSize">@dimen/font.size.xlarge</item>
+        <item name="android:textColor">@color/pkuLevelHigh</item>
+    </style>
+    <style name="RangeInfo.Normal" parent="General.Title">
+        <item name="android:textSize">@dimen/font.size.xxlarge</item>
+        <item name="android:textColor">@color/pkuLevelNormal</item>
+    </style>
+    <style name="RangeInfo.Low" parent="General.Title">
+        <item name="android:textSize">@dimen/font.size.xlarge</item>
+        <item name="android:textColor">@color/pkuLevelLow</item>
     </style>
 
 </resources>

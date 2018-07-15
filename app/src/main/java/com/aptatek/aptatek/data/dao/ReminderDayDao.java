@@ -19,6 +19,9 @@ public interface ReminderDayDao {
     @Query("SELECT * FROM reminderDays")
     Single<List<ReminderDayDataModel>> getReminderDays();
 
+    @Query("SELECT COUNT(*) FROM reminderDays")
+    int getReminderDaysCount();
+
     @Query("UPDATE reminderDays SET active = :active WHERE weekDay = :id")
     void updateReminderDayActiveState(int id, boolean active);
 }
