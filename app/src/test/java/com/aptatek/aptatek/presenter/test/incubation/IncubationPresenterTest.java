@@ -51,7 +51,7 @@ public class IncubationPresenterTest {
         final Scheduler immediate = new Scheduler() {
 
             @Override
-            public Disposable scheduleDirect(@NonNull Runnable run, long delay, @NonNull TimeUnit unit) {
+            public Disposable scheduleDirect(@NonNull final Runnable run, final long delay, @NonNull final TimeUnit unit) {
                 // this prevents StackOverflowErrors when scheduling with a delay
                 return super.scheduleDirect(run, 0, unit);
             }

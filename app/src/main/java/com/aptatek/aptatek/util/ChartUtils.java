@@ -1,5 +1,6 @@
 package com.aptatek.aptatek.util;
 
+import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.respository.chart.ChartDTO;
 import com.aptatek.aptatek.domain.respository.chart.CubeData;
 import com.aptatek.aptatek.domain.respository.chart.Measure;
@@ -15,6 +16,11 @@ import javax.inject.Inject;
 
 import ix.Ix;
 
+import static com.aptatek.aptatek.util.ChartUtils.State.HIGH;
+import static com.aptatek.aptatek.util.ChartUtils.State.LOW;
+import static com.aptatek.aptatek.util.ChartUtils.State.NORMAL;
+import static com.aptatek.aptatek.util.ChartUtils.State.VERY_HIGH;
+
 public class ChartUtils {
 
     private static final int RANGE = 10;
@@ -23,6 +29,8 @@ public class ChartUtils {
     private float minLevel;
     private float delta;
 
+
+    public enum State {LOW, NORMAL, HIGH, VERY_HIGH}
 
     @Inject
     public ChartUtils() {
@@ -36,7 +44,7 @@ public class ChartUtils {
             return null;
         }
 
-        float maxLevel = Ix.from(inputList)
+        final float maxLevel = Ix.from(inputList)
                 .filter(cubeData -> cubeData.getMeasuredLevel() >= 0)
                 .max(comp)
                 .first()
@@ -52,14 +60,14 @@ public class ChartUtils {
             final CubeData cubeData = inputList.get(i);
             float startY = -1;
             float endY = -1;
-            float bubbleY = getY(cubeData);
+            final float bubbleY = getY(cubeData);
 
             if (i > 0 && inputList.get(i - 1) != null) {
                 startY = chartDTOList.get(i - 1).getEndLineYAxis();
             }
 
             if (inputList.size() - 1 != i) {
-                float nextBubbleY;
+                final float nextBubbleY;
                 if (inputList.get(i + 1).getMeasuredLevel() >= 0) {
                     nextBubbleY = getY(inputList.get(i + 1));
                 } else {
@@ -80,6 +88,64 @@ public class ChartUtils {
         return Ix.from(chartDTOList)
                 .map(ChartVM::new)
                 .toList();
+    }
+
+    public static State getState(final int phenylalanineLevel) {
+        if (0 <= phenylalanineLevel && phenylalanineLevel < 100) {
+            return LOW;
+        } else if (100 <= phenylalanineLevel && phenylalanineLevel < 350) {
+            return NORMAL;
+        } else if (350 <= phenylalanineLevel && phenylalanineLevel < 500) {
+            return HIGH;
+        } else if (500 <= phenylalanineLevel) {
+            return VERY_HIGH;
+        }
+        return NORMAL;
+    }
+
+    public static int smallBubbleBackground(final State state) {
+        switch (state) {
+            case LOW:
+                return R.drawable.bubble_full_low;
+            case NORMAL:
+                return R.drawable.bubble_full_normal;
+            case HIGH:
+                return R.drawable.bubble_full_high;
+            case VERY_HIGH:
+                return R.drawable.bubble_full_very_high;
+            default:
+                return R.drawable.bubble_full_normal;
+        }
+    }
+
+    public static int stateColor(final State state) {
+        switch (state) {
+            case LOW:
+                return R.color.chartBubbleLow;
+            case NORMAL:
+                return R.color.chartBubbleNormal;
+            case HIGH:
+                return R.color.chartBubbleHigh;
+            case VERY_HIGH:
+                return R.color.chartBubbleVeryHigh;
+            default:
+                return R.color.chartBubbleNormal;
+        }
+    }
+
+    public static int bigBubbleBackground(final State state) {
+        switch (state) {
+            case LOW:
+                return R.drawable.bubble_big_low;
+            case NORMAL:
+                return R.drawable.bubble_big_normal;
+            case HIGH:
+                return R.drawable.bubble_big_high;
+            case VERY_HIGH:
+                return R.drawable.bubble_big_very_high;
+            default:
+                return R.drawable.bubble_big_normal;
+        }
     }
 
 

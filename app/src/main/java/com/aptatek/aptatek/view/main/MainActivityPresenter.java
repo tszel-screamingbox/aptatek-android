@@ -42,7 +42,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     void itemChanged(final ChartVM chartVM) {
         final Date date = chartVM.getDate();
         final String subTitle = formatDate(date, chartVM.isEmpty() ? PATTERN_DAY : PATTERN_WITH_TIME);
-        String title;
+        final String title;
 
         if (DateUtils.isToday(date.getTime())) {
             title = resourceInteractor.getStringResource(R.string.main_title_today);

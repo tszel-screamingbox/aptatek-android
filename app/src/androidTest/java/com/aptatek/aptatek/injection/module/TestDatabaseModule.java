@@ -15,9 +15,9 @@ import dagger.Module;
 public class TestDatabaseModule extends DatabaseModule {
 
     @Override
-    public AptatekDatabase provideDatabase(String databaseName,
-                                           Context context,
-                                           SafeHelperFactory safeHelperFactory) {
+    public AptatekDatabase provideDatabase(final String databaseName,
+                                           final Context context,
+                                           final SafeHelperFactory safeHelperFactory) {
         return Room.inMemoryDatabaseBuilder(context, AptatekDatabase.class).build();
     }
 

@@ -30,22 +30,22 @@ public final class AnimationHelper {
                 .setDuration(DURATION_MILLISEC)
                 .setListener(new Animator.AnimatorListener() {
                     @Override
-                    public void onAnimationStart(Animator animation) {
+                    public void onAnimationStart(final Animator animation) {
 
                     }
 
                     @Override
-                    public void onAnimationEnd(Animator animation) {
+                    public void onAnimationEnd(final Animator animation) {
                         callback.animationEnd();
                     }
 
                     @Override
-                    public void onAnimationCancel(Animator animation) {
+                    public void onAnimationCancel(final Animator animation) {
 
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animator animation) {
+                    public void onAnimationRepeat(final Animator animation) {
 
                     }
                 })

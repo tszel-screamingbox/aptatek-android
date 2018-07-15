@@ -39,8 +39,8 @@ public class ReminderSettingsActivityPresenterTest {
 
     @Test
     public void testModifyAlreadyHasReminder() {
-        RemindersAdapterItem remindersAdapterItem = new RemindersAdapterItem("test", "10:30am", true, 10, 30);
-        ReminderSettingsAdapterItem reminderSettingsAdapterItem = new ReminderSettingsAdapterItem(5, "Friday", true, new ArrayList<>());
+        final RemindersAdapterItem remindersAdapterItem = new RemindersAdapterItem("test", "10:30am", true, 10, 30);
+        final ReminderSettingsAdapterItem reminderSettingsAdapterItem = new ReminderSettingsAdapterItem(5, "Friday", true, new ArrayList<>());
         reminderSettingsAdapterItem.getReminders().add(remindersAdapterItem);
         presenter.modifyReminder(reminderSettingsAdapterItem, remindersAdapterItem, 10, 30);
         verify(view).showAlreadyHasReminderError();

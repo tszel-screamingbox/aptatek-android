@@ -21,6 +21,7 @@ public class ChartVM implements IListTypeProvider {
     private Date date;
     private CharSequence details;
     private int numberOfMeasures;
+    private int maxPhenylalanineLevel;
     private float bubbleYAxis;
     private float startLineYAxis;
     private float endLineYAxis;
@@ -43,10 +44,15 @@ public class ChartVM implements IListTypeProvider {
         final Measure highest = Ix.from(measureList)
                 .max(comp)
                 .first();
+        maxPhenylalanineLevel = highest.getPhenylalanineLevel();
 
         return StringUtils.highlightWord(
                 String.valueOf(highest.getPhenylalanineLevel()),
                 String.valueOf(highest.getUnit()) + " mg/dl");
+    }
+
+    public int getMaxPhenylalanineLevel() {
+        return maxPhenylalanineLevel;
     }
 
     public long getId() {

@@ -17,7 +17,11 @@
     <color name="transparent">#00FFFFFF</color>
 
     <color name="chartBackrgroundBlue">#DBF9FE</color>
-    <color name="chartBubbleEmpty">#92ECFA</color>
+
+    <color name="chartBubbleLow">#4AE1F8</color>
+    <color name="chartBubbleNormal">#4CD864</color>
+    <color name="chartBubbleHigh">#F65196</color>
+    <color name="chartBubbleVeryHigh">#F25555</color>
 
     <color name="dialButtonGrey">#8034414A</color>
     <color name="applicationGainsBoroGray">#F2F2F2</color>

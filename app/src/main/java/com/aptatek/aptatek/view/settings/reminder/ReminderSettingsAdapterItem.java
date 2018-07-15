@@ -10,7 +10,7 @@ public class ReminderSettingsAdapterItem {
     private Boolean active;
     private int weekDay;
 
-    public ReminderSettingsAdapterItem(int weekDay, String nameOfDay, Boolean active, ArrayList<RemindersAdapterItem> reminders) {
+    public ReminderSettingsAdapterItem(final int weekDay, final String nameOfDay, final Boolean active, final ArrayList<RemindersAdapterItem> reminders) {
         this.reminders = reminders;
         this.nameOfDay = nameOfDay;
         this.active = active;
@@ -21,11 +21,11 @@ public class ReminderSettingsAdapterItem {
         return weekDay;
     }
 
-    public void setWeekDay(int weekDay) {
+    public void setWeekDay(final int weekDay) {
         this.weekDay = weekDay;
     }
 
-    public void setNameOfDay(String nameOfDay) {
+    public void setNameOfDay(final String nameOfDay) {
         this.nameOfDay = nameOfDay;
     }
 
@@ -33,7 +33,7 @@ public class ReminderSettingsAdapterItem {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(final Boolean active) {
         this.active = active;
     }
 
@@ -45,15 +45,15 @@ public class ReminderSettingsAdapterItem {
         return reminders;
     }
 
-    public void setReminders(ArrayList<RemindersAdapterItem> reminders) {
+    public void setReminders(final ArrayList<RemindersAdapterItem> reminders) {
         this.reminders = reminders;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ReminderSettingsAdapterItem that = (ReminderSettingsAdapterItem) o;
+        final ReminderSettingsAdapterItem that = (ReminderSettingsAdapterItem) o;
         return weekDay == that.weekDay &&
                 Objects.equals(nameOfDay, that.nameOfDay) &&
                 Objects.equals(reminders, that.reminders) &&

@@ -69,18 +69,18 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     }
 
     @Override
-    public void onScrollStart(@NonNull RecyclerView.ViewHolder currentItemHolder, int adapterPosition) {
+    public void onScrollStart(@NonNull final RecyclerView.ViewHolder currentItemHolder, final int adapterPosition) {
         final ChartAdapterViewHolder viewHolder = (ChartAdapterViewHolder) currentItemHolder;
         viewHolder.hideDetails();
     }
 
     @Override
-    public void onScrollEnd(@NonNull RecyclerView.ViewHolder currentItemHolder, int adapterPosition) {
+    public void onScrollEnd(@NonNull final RecyclerView.ViewHolder currentItemHolder, final int adapterPosition) {
 
     }
 
     @Override
-    public void onScroll(float scrollPosition, int currentPosition, int newPosition, @Nullable RecyclerView.ViewHolder currentHolder, @Nullable RecyclerView.ViewHolder newCurrent) {
+    public void onScroll(final float scrollPosition, final int currentPosition, final int newPosition, @Nullable final RecyclerView.ViewHolder currentHolder, @Nullable final RecyclerView.ViewHolder newCurrent) {
 
     }
 
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     }
 
     @Override
-    public void updateTitles(String title, String subTitle) {
+    public void updateTitles(final String title, final String subTitle) {
         titleTextView.setText(title);
         subTitleTextView.setText(subTitle);
     }

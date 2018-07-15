@@ -20,6 +20,12 @@ import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.aptatek.aptatek.util.ChartUtils.State;
+import static com.aptatek.aptatek.util.ChartUtils.bigBubbleBackground;
+import static com.aptatek.aptatek.util.ChartUtils.getState;
+import static com.aptatek.aptatek.util.ChartUtils.smallBubbleBackground;
+import static com.aptatek.aptatek.util.ChartUtils.stateColor;
+
 
 public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements TextureView.SurfaceTextureListener {
 
@@ -95,10 +101,12 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
             if (currentData.isEmpty()) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
             } else {
-                infoTextView.setTextColor(context.getResources().getColor(R.color.applicationGreen));
-                infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_big_detail));
+                final State state = getState(currentData.getMaxPhenylalanineLevel());
+                infoTextView.setBackground(context.getResources().getDrawable(bigBubbleBackground(state)));
+                infoTextView.setTextColor(context.getResources().getColor(stateColor(state)));
                 infoTextView.setText(currentData.getDetails());
                 if (currentData.getNumberOfMeasures() > 1) {
+                    badgeTextView.setBackground(context.getResources().getDrawable(smallBubbleBackground(state)));
                     badgeTextView.setText(String.valueOf(currentData.getNumberOfMeasures()));
                     badgeTextView.setVisibility(View.VISIBLE);
                 }
@@ -113,7 +121,8 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         if (currentData.isEmpty()) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         } else {
-            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_green));
+            final State state = getState(currentData.getMaxPhenylalanineLevel());
+            infoTextView.setBackground(context.getResources().getDrawable(smallBubbleBackground(state)));
         }
     }
 
@@ -143,17 +152,17 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
     }
 
     @Override
-    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+    public void onSurfaceTextureSizeChanged(final SurfaceTexture surface, final int width, final int height) {
 
     }
 
     @Override
-    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+    public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
         return false;
     }
 
     @Override
-    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+    public void onSurfaceTextureUpdated(final SurfaceTexture surface) {
 
     }
 

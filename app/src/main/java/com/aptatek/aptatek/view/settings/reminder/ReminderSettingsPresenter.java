@@ -65,7 +65,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
     public void changeActiveState(@NonNull final ReminderSettingsAdapterItem item, final boolean isActive) {
         item.setActive(isActive);
 
-        for (RemindersAdapterItem reminderItem : item.getReminders()) {
+        for (final RemindersAdapterItem reminderItem : item.getReminders()) {
             reminderItem.setActive(isActive);
 
             if (item.isActive()) {
@@ -209,10 +209,10 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                     @Override
                     public void onSuccess(final List<ReminderDay> reminderDays) {
                         final ArrayList<ReminderSettingsAdapterItem> data = new ArrayList<>();
-                        for (ReminderDay reminderDay : reminderDays) {
+                        for (final ReminderDay reminderDay : reminderDays) {
                             final ArrayList<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>();
 
-                            for (Reminder reminder : reminderDay.getReminders()) {
+                            for (final Reminder reminder : reminderDay.getReminders()) {
                                 remindersAdapterItems.add(
                                         new RemindersAdapterItem(
                                                 reminder.getId(),
@@ -241,7 +241,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
     }
 
     private boolean checkReminderExistence(@NonNull final ReminderSettingsAdapterItem item, final int hour, final int minute) {
-        for (RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
+        for (final RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
             if (remindersAdapterItem.getHour() == hour && remindersAdapterItem.getMinute() == minute) {
                 ifViewAttached(ReminderSettingsView::showAlreadyHasReminderError);
                 return true;

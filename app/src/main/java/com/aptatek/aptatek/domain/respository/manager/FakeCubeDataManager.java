@@ -17,6 +17,7 @@ import ix.Ix;
 
 public class FakeCubeDataManager implements ICubeDataRepository {
 
+    private static final int SIZE = 60;
     private List<CubeData> cubeDataList = new ArrayList<>();
 
     @Inject
@@ -29,20 +30,16 @@ public class FakeCubeDataManager implements ICubeDataRepository {
     }
 
     private void init() {
-        for (int i = 60; i >= 0; i--) {
-            final Random random = new Random();
-            final CubeData cubeData;
-            final int level = random.nextInt(500) - 100;
-            final double unit = (double) random.nextInt(500) / 100;
-            final Date date = descendingDateList(i);
-            cubeData = new CubeData(i, date, level, unit);
-            cubeDataList.add(cubeData);
-        }
+        final Random random = new Random();
+        cubeDataList = Ix.range(0, SIZE)
+                .map(x -> new CubeData(x, date(x), random.nextInt(650) - 100, (double) random.nextInt(500) / 100))
+                .reverse()
+                .toList();
     }
 
     @Nullable
     @Override
-    public CubeData loadById(long id) {
+    public CubeData loadById(final long id) {
         return Ix.from(cubeDataList)
                 .filter(cubeData -> cubeData.getId() == id)
                 .first(null);
@@ -61,7 +58,7 @@ public class FakeCubeDataManager implements ICubeDataRepository {
     }
 
     @Override
-    public void removeById(long id) {
+    public void removeById(final long id) {
         Ix.from(cubeDataList)
                 .remove(cubeData -> cubeData.getId() == id)
                 .toList();
@@ -72,7 +69,7 @@ public class FakeCubeDataManager implements ICubeDataRepository {
         Ix.from(cubeDataList).removeAll();
     }
 
-    private Date descendingDateList(int index) {
+    private Date date(final int index) {
         final Date dt = new Date();
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(dt);

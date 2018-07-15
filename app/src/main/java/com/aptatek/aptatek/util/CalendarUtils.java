@@ -24,7 +24,7 @@ public class CalendarUtils {
      *
      * @return True if the dates are on the same day, false otherwise
      */
-    public static boolean isSameDay(Date date, Date otherDate) {
+    public static boolean isSameDay(final Date date, final Date otherDate) {
         final Calendar calendar1 = Calendar.getInstance();
         final Calendar calendar2 = Calendar.getInstance();
         calendar1.setTime(date);
