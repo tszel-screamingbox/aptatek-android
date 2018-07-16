@@ -18,8 +18,8 @@ import javax.inject.Inject;
 
 class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
 
-    private static final String PATTERN_DAY = "MMM dd";
-    private static final String PATTERN_WITH_TIME = "MMM dd - hh:mm a";
+    public static final String PATTERN_DAY = "MMM dd";
+    public static final String PATTERN_WITH_TIME = "MMM dd - hh:mm a";
 
     private final FakeCubeDataManager fakeCubeDataManager;
     private final ChartUtils chartUtils;

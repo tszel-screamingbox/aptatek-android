@@ -51,7 +51,7 @@ public class MainActivityPresenterTest {
         presenter.itemChanged(emptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, "MMM dd"));
+        verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_DAY));
     }
 
     @Test
@@ -59,6 +59,6 @@ public class MainActivityPresenterTest {
         presenter.itemChanged(notEmptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, "MMM dd - hh:mm a"));
+        verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_WITH_TIME));
     }
 }
