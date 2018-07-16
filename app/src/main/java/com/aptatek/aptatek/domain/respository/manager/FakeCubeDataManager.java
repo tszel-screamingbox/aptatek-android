@@ -18,6 +18,8 @@ import ix.Ix;
 public class FakeCubeDataManager implements ICubeDataRepository {
 
     private static final int SIZE = 60;
+    private static final int RANGE = 650;
+    private static final int OFFSET = 100;
     private List<CubeData> cubeDataList = new ArrayList<>();
 
     @Inject
@@ -32,7 +34,7 @@ public class FakeCubeDataManager implements ICubeDataRepository {
     private void init() {
         final Random random = new Random();
         cubeDataList = Ix.range(0, SIZE)
-                .map(x -> new CubeData(x, date(x), random.nextInt(650) - 100, (double) random.nextInt(500) / 100))
+                .map(x -> new CubeData(x, date(x), random.nextInt(RANGE) - OFFSET, (double) random.nextInt(RANGE) / OFFSET))
                 .reverse()
                 .toList();
     }

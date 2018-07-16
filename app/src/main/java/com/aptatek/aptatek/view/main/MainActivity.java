@@ -16,7 +16,6 @@ import com.aptatek.aptatek.view.main.adapter.ChartAdapterViewHolder;
 import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
-import com.aptatek.aptatek.view.toggle.ToggleActivity;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import javax.inject.Inject;
@@ -26,6 +25,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity<MainActivityView, MainActivityPresenter> implements MainActivityView, DiscreteScrollView.ScrollStateChangeListener {
+
+    private static final int TRESHOLD = 500;
+    private static final int TRANSITION_TIME = 200;
 
     @Inject
     MainActivityPresenter presenter;
@@ -114,8 +116,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         bubbleScrollView.setAdapter(chartAdapter);
         bubbleScrollView.setSlideOnFling(true);
         bubbleScrollView.setOverScrollEnabled(true);
-        bubbleScrollView.setSlideOnFlingThreshold(500);
-        bubbleScrollView.setItemTransitionTimeMillis(200);
+        bubbleScrollView.setSlideOnFlingThreshold(TRESHOLD);
+        bubbleScrollView.setItemTransitionTimeMillis(TRANSITION_TIME);
         bubbleScrollView.addScrollStateChangeListener(this);
         bubbleScrollView.addOnItemChangedListener((viewHolder, adapterPosition) -> {
             final ChartAdapterViewHolder holder = (ChartAdapterViewHolder) viewHolder;

@@ -5,6 +5,7 @@ import android.text.format.DateUtils;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
+import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
@@ -14,8 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import static com.aptatek.aptatek.util.CalendarUtils.*;
 
 class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
 
@@ -41,7 +40,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
 
     void itemChanged(final ChartVM chartVM) {
         final Date date = chartVM.getDate();
-        final String subTitle = formatDate(date, chartVM.isEmpty() ? PATTERN_DAY : PATTERN_WITH_TIME);
+        final String subTitle = CalendarUtils.formatDate(date, chartVM.isEmpty() ? PATTERN_DAY : PATTERN_WITH_TIME);
         final String title;
 
         if (DateUtils.isToday(date.getTime())) {
@@ -51,7 +50,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         } else {
             final Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            title = dayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
+            title = CalendarUtils.dayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
         }
 
         ifViewAttached(view -> view.updateTitles(title, subTitle));

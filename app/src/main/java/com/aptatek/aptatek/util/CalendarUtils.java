@@ -30,8 +30,8 @@ public class CalendarUtils {
         calendar1.setTime(date);
         calendar2.setTime(otherDate);
 
-        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
-                calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR);
+        return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)
+                && calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR);
     }
 
     public static String formatDate(final Date date, final String pattern) {

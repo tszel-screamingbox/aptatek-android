@@ -16,14 +16,13 @@ import javax.inject.Inject;
 
 import ix.Ix;
 
-import static com.aptatek.aptatek.util.ChartUtils.State.HIGH;
-import static com.aptatek.aptatek.util.ChartUtils.State.LOW;
-import static com.aptatek.aptatek.util.ChartUtils.State.NORMAL;
-import static com.aptatek.aptatek.util.ChartUtils.State.VERY_HIGH;
-
 public class ChartUtils {
 
+    private static final int SIZE = 10;
     private static final int RANGE = 10;
+    private static final int NORMAL = 100;
+    private static final int HIGH = 350;
+    private static final int VERY_HIGH = 500;
 
     private final List<ChartDTO> chartDTOList;
     private float minLevel;
@@ -91,16 +90,16 @@ public class ChartUtils {
     }
 
     public static State getState(final int phenylalanineLevel) {
-        if (0 <= phenylalanineLevel && phenylalanineLevel < 100) {
-            return LOW;
-        } else if (100 <= phenylalanineLevel && phenylalanineLevel < 350) {
-            return NORMAL;
-        } else if (350 <= phenylalanineLevel && phenylalanineLevel < 500) {
-            return HIGH;
-        } else if (500 <= phenylalanineLevel) {
-            return VERY_HIGH;
+        if (0 <= phenylalanineLevel && phenylalanineLevel < NORMAL) {
+            return State.LOW;
+        } else if (NORMAL <= phenylalanineLevel && phenylalanineLevel < HIGH) {
+            return State.NORMAL;
+        } else if (HIGH <= phenylalanineLevel && phenylalanineLevel < VERY_HIGH) {
+            return State.HIGH;
+        } else if (VERY_HIGH <= phenylalanineLevel) {
+            return State.VERY_HIGH;
         }
-        return NORMAL;
+        return State.NORMAL;
     }
 
     public static int smallBubbleBackground(final State state) {
@@ -151,8 +150,8 @@ public class ChartUtils {
 
     private List<Measure> randomMeasureList(final CubeData cubeData) {
         final Random random = new Random();
-        final int chance = random.nextInt(10);
-        if (chance > 5) {
+        final int chance = random.nextInt(SIZE);
+        if (chance > SIZE / 2) {
             final List<Measure> measureList = new ArrayList<>();
             for (int i = 0; i < RANGE - chance; i++) {
                 measureList.add(new Measure(cubeData.getMeasuredLevel() - i, cubeData.getUnit()));

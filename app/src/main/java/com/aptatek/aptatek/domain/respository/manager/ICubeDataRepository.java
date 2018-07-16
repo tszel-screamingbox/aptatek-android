@@ -10,13 +10,13 @@ import java.util.List;
 public interface ICubeDataRepository {
 
     @Nullable
-    CubeData loadById(final long id);
+    CubeData loadById(long id);
 
-    List<CubeData> loadByDate(final Date date);
+    List<CubeData> loadByDate(Date date);
 
     List<CubeData> listAll();
 
-    void removeById(final long id);
+    void removeById(long id);
 
     void removeAll();
 }

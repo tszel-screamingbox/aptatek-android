@@ -12,13 +12,13 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
 
     /**
      * List item click listener interface
-     *
      */
     public interface OnItemClickListener {
 
         /**
          * A list item is clicked on the list
-         * @param v The parent view is clicked
+         *
+         * @param v        The parent view is clicked
          * @param position The clicked item position
          */
         void listItemClicked(View v, int position);
@@ -34,7 +34,7 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
 
     private View clickableView; // The view which can be clicked on the list
 
-    public void setClickableView(final View view){
+    public void setClickableView(final View view) {
         this.clickableView = view;
     }
 

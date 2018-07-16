@@ -14,22 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.util.ChartUtils;
 import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.aptatek.aptatek.util.ChartUtils.State;
-import static com.aptatek.aptatek.util.ChartUtils.bigBubbleBackground;
-import static com.aptatek.aptatek.util.ChartUtils.getState;
-import static com.aptatek.aptatek.util.ChartUtils.smallBubbleBackground;
-import static com.aptatek.aptatek.util.ChartUtils.stateColor;
-
-
 public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements TextureView.SurfaceTextureListener {
 
     private static final float STROKE_WIDTH = 10f;
+    private static final float INTERVAL = 5;
 
 
     @BindView(R.id.bubbleLayout)
@@ -101,12 +96,12 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
             if (currentData.isEmpty()) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
             } else {
-                final State state = getState(currentData.getMaxPhenylalanineLevel());
-                infoTextView.setBackground(context.getResources().getDrawable(bigBubbleBackground(state)));
-                infoTextView.setTextColor(context.getResources().getColor(stateColor(state)));
+                final ChartUtils.State state = ChartUtils.getState(currentData.getMaxPhenylalanineLevel());
+                infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.bigBubbleBackground(state)));
+                infoTextView.setTextColor(context.getResources().getColor(ChartUtils.stateColor(state)));
                 infoTextView.setText(currentData.getDetails());
                 if (currentData.getNumberOfMeasures() > 1) {
-                    badgeTextView.setBackground(context.getResources().getDrawable(smallBubbleBackground(state)));
+                    badgeTextView.setBackground(context.getResources().getDrawable(ChartUtils.smallBubbleBackground(state)));
                     badgeTextView.setText(String.valueOf(currentData.getNumberOfMeasures()));
                     badgeTextView.setVisibility(View.VISIBLE);
                 }
@@ -121,8 +116,8 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         if (currentData.isEmpty()) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         } else {
-            final State state = getState(currentData.getMaxPhenylalanineLevel());
-            infoTextView.setBackground(context.getResources().getDrawable(smallBubbleBackground(state)));
+            final ChartUtils.State state = ChartUtils.getState(currentData.getMaxPhenylalanineLevel());
+            infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.smallBubbleBackground(state)));
         }
     }
 
@@ -136,7 +131,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         linePaint.setColor(context.getResources().getColor(R.color.applicationBlue));
         linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         linePaint.setStrokeWidth(STROKE_WIDTH);
-        linePaint.setPathEffect(new DashPathEffect(new float[]{5, 5, 5, 5}, 0));
+        linePaint.setPathEffect(new DashPathEffect(new float[]{INTERVAL, INTERVAL, INTERVAL, INTERVAL}, 0));
 
         final float offSet = (bubbleHeight / 2) / viewHeight;
         if (currentData.getStartLineYAxis() >= 0) {
@@ -167,6 +162,6 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
     }
 
     public interface OnItemClickedListener {
-        void onItemClicked(final ChartVM chartVM);
+        void onItemClicked(ChartVM chartVM);
     }
 }
