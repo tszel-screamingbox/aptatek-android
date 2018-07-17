@@ -55,14 +55,19 @@ public class ReminderNotificationFactoryImpl implements ReminderNotificationFact
                 .setAutoCancel(true)
                 .addAction(0,
                         resourceInteractor.getStringResource(R.string.reminder_notification_now),
-                        PendingIntent.getBroadcast(context, REMINDER_ACTION_NOW_REQUEST_CODE, nowIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                        PendingIntent.getBroadcast(context, REMINDER_ACTION_NOW_REQUEST_CODE, nowIntent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .addAction(0,
                         resourceInteractor.getStringResource(R.string.reminder_notification_quarter_hour),
-                        PendingIntent.getBroadcast(context, REMINDER_ACTION_QUARTER_HOUR_CODE, quarterHourIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                        PendingIntent.getBroadcast(context, REMINDER_ACTION_QUARTER_HOUR_CODE, quarterHourIntent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .addAction(0,
                         resourceInteractor.getStringResource(R.string.reminder_notification_half_hour),
-                        PendingIntent.getBroadcast(context, REMINDER_ACTION_HALF_HOUR_REQUEST_CODE, halfHourIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                        PendingIntent.getBroadcast(context, REMINDER_ACTION_HALF_HOUR_REQUEST_CODE, halfHourIntent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
+    }
+
+    @Override
+    public void cancelNotification(final int notificationId) {
+        notificationManager.cancel(notificationId);
     }
 
     private String createChannelId() {

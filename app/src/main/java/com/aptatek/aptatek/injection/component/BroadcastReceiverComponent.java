@@ -1,6 +1,6 @@
 package com.aptatek.aptatek.injection.component;
 
-import com.aptatek.aptatek.AlarmReceiver;
+import com.aptatek.aptatek.device.AlarmReceiver;
 import com.aptatek.aptatek.device.ReminderActionReceiver;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.injection.module.ReminderModule;

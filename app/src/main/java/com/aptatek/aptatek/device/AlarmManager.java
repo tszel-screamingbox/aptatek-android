@@ -4,14 +4,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.aptatek.aptatek.AlarmReceiver;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 import com.aptatek.aptatek.util.Constants;
+
+import java.util.Calendar;
 
 import javax.inject.Inject;
 
 public final class AlarmManager {
 
+    private static final int REMINDER_SNOOZE_REQUEST_KEY = 923;
     private final android.app.AlarmManager systemAlarmManager;
     private final Context context;
 
@@ -38,5 +40,11 @@ public final class AlarmManager {
 
     public void updateReminder(final long timestamp, final int requestCode) {
         setReminder(timestamp, requestCode, true);
+    }
+
+    public void scheduleSnooze(final int time) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + time);
+        setReminder(calendar.getTimeInMillis(), REMINDER_SNOOZE_REQUEST_KEY, false);
     }
 }
