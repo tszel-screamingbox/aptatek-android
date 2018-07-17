@@ -151,7 +151,6 @@ public class ChartUtils {
         }
     }
 
-
     private List<Measure> randomMeasureList(final CubeData cubeData) {
         //Generates random measue data for a given day
         final Random random = new Random();

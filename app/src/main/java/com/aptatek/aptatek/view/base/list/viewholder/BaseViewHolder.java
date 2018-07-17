@@ -42,5 +42,5 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
         return clickableView;
     }
 
-    abstract public void bind(T data);
+    public abstract void bind(T data);
 }

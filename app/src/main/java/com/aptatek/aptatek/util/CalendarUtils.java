@@ -11,6 +11,14 @@ import java.util.Locale;
 
 public class CalendarUtils {
 
+    private static final int FIRST = 1;
+    private static final int SECOND = 2;
+    private static final int THIRD = 3;
+    private static final int FOURTH = 4;
+    private static final int FIFTH = 5;
+    private static final int SIXTH = 6;
+    private static final int SEVENTH = 7;
+
     private static final String SUN = "Sunday";
     private static final String MON = "Monday";
     private static final String TUE = "Tuesday";
@@ -41,19 +49,19 @@ public class CalendarUtils {
 
     public static String dayOfWeek(final int dayOfWeek) {
         switch (dayOfWeek) {
-            case 1:
+            case FIRST:
                 return SUN;
-            case 2:
+            case SECOND:
                 return MON;
-            case 3:
+            case THIRD:
                 return TUE;
-            case 4:
+            case FOURTH:
                 return WED;
-            case 5:
+            case FIFTH:
                 return THU;
-            case 6:
+            case SIXTH:
                 return FRI;
-            case 7:
+            case SEVENTH:
                 return SAT;
             default:
                 return null;
