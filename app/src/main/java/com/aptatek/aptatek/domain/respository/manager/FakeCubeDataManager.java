@@ -33,8 +33,9 @@ public class FakeCubeDataManager implements ICubeDataRepository {
 
     private void init() {
         final Random random = new Random();
+
         cubeDataList = Ix.range(0, SIZE)
-                .map(x -> new CubeData(x, date(x), random.nextInt(RANGE) - OFFSET, (double) random.nextInt(RANGE) / OFFSET))
+                .map(x -> CubeData.create(x, date(x), random.nextInt(RANGE) - OFFSET, (double) random.nextInt(RANGE) / OFFSET))
                 .reverse()
                 .toList();
     }

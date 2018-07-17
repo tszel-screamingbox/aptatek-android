@@ -65,9 +65,12 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
         bubbleHeight = infoTextView.getLayoutParams().height;
         viewWidth = itemLayout.getLayoutParams().width;
+        // need a margin, because of the zooming animation
         marginY = bubbleHeight * 0.5f;
         viewHeight = itemLayout.getLayoutParams().height - bubbleHeight * 2f;
+        // get the middle of the cell
         middleX = viewWidth / 2;
+        // calculate the X-coordinate of the bubble, taking care of the bubble width
         bubbleX = middleX - infoTextView.getLayoutParams().width / 2;
     }
 
@@ -75,6 +78,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
     public void bind(final ChartVM data) {
         itemTextureView.setSurfaceTextureListener(this);
         currentData = data;
+        // set coordinates for the bubble
         bubbleY = viewHeight * currentData.getBubbleYAxis() + marginY;
         bubbleContainerLayout.setY(bubbleY);
         bubbleContainerLayout.setX(bubbleX);
@@ -123,24 +127,33 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     @Override
     public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height) {
+        // canvas for drawing
         final Canvas canvas = itemTextureView.lockCanvas();
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         canvas.drawColor(context.getResources().getColor(R.color.chartBackrgroundBlue));
+        // calculate the start-line ending Y-height, and the end-line start Y-height
         final float middleY = bubbleY + bubbleHeight / 2;
+        // create Paint for the start-line and end-line
         final Paint linePaint = new Paint();
         linePaint.setColor(context.getResources().getColor(R.color.applicationBlue));
         linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         linePaint.setStrokeWidth(STROKE_WIDTH);
         linePaint.setPathEffect(new DashPathEffect(new float[]{INTERVAL, INTERVAL, INTERVAL, INTERVAL}, 0));
 
+        // calculate offset, it's necessary: the lines Y-coordinates not equals with the bubble Y-height
         final float offSet = (bubbleHeight / 2) / viewHeight;
+        // if the current item is not the first
         if (currentData.getStartLineYAxis() >= 0) {
+            // calculate start-line starting Y-height
             final float startY = (currentData.getStartLineYAxis() + offSet) * viewHeight + marginY;
+            // draw the start-line: from the left side of the item cell to the middle
             canvas.drawLine(0, startY, middleX, middleY, linePaint);
         }
-
+        // if the current item is not the last
         if (currentData.getEndLineYAxis() >= 0) {
+            // calculate end-line ending Y-height
             final float stopY = (currentData.getEndLineYAxis() + offSet) * viewHeight + marginY;
+            // draw the end-line: from the middle of the cell to the end of its
             canvas.drawLine(middleX, middleY, viewWidth, stopY, linePaint);
         }
         itemTextureView.unlockCanvasAndPost(canvas);

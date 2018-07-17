@@ -1,47 +1,26 @@
 package com.aptatek.aptatek.domain.respository.chart;
 
+import com.google.auto.value.AutoValue;
+
 import java.util.Date;
 import java.util.List;
 
-public class ChartDTO {
+@AutoValue
+public abstract class ChartDTO {
 
-    private final long id;
-    private final Date date;
-    private final List<Measure> measureList;
-    private final float bubbleYAxis;
-    private final float startLineYAxis;
-    private final float endLineYAxis;
+    public abstract long getId();
 
-    public ChartDTO(final long id, final Date date, final List<Measure> measureList, final float bubbleYAxis, final float startLineYAxis, final float endLineYAxis) {
-        this.id = id;
-        this.date = date;
-        this.measureList = measureList;
-        this.bubbleYAxis = bubbleYAxis;
-        this.startLineYAxis = startLineYAxis;
-        this.endLineYAxis = endLineYAxis;
-    }
+    public abstract Date getDate();
 
-    public long getId() {
-        return id;
-    }
+    public abstract List<Measure> getMeasureList();
 
-    public Date getDate() {
-        return date;
-    }
+    public abstract float getBubbleYAxis();
 
-    public List<Measure> getMeasureList() {
-        return measureList;
-    }
+    public abstract float getStartLineYAxis();
 
-    public float getBubbleYAxis() {
-        return bubbleYAxis;
-    }
+    public abstract float getEndLineYAxis();
 
-    public float getStartLineYAxis() {
-        return startLineYAxis;
-    }
-
-    public float getEndLineYAxis() {
-        return endLineYAxis;
+    public static ChartDTO create(final long id, final Date date, final List<Measure> measureList, final float bubbleYAxis, final float startLineYAxis, final float endLineYAxis) {
+        return new AutoValue_ChartDTO(id, date, measureList, bubbleYAxis, startLineYAxis, endLineYAxis);
     }
 }

@@ -65,11 +65,11 @@ public class ChartUtilsTest {
     @Test
     public void testChartCoordinates() {
         final List<CubeData> cubeDataList = new ArrayList<>();
-        cubeDataList.add(new CubeData(0, new Date(), 0, 0));
-        cubeDataList.add(new CubeData(0, new Date(), 100, 0));
-        cubeDataList.add(new CubeData(0, new Date(), 100, 0));
-        cubeDataList.add(new CubeData(0, new Date(), 50, 0));
-        cubeDataList.add(new CubeData(0, new Date(), -1, 0));
+        cubeDataList.add(CubeData.create(0, new Date(), 0, 0));
+        cubeDataList.add(CubeData.create(0, new Date(), 100, 0));
+        cubeDataList.add(CubeData.create(0, new Date(), 100, 0));
+        cubeDataList.add(CubeData.create(0, new Date(), 50, 0));
+        cubeDataList.add(CubeData.create(0, new Date(), -1, 0));
 
         final List<ChartVM> chartVMList = chartUtils.asChartVMList(cubeDataList);
         assertEquals(-1, chartVMList.get(0).getStartLineYAxis(),0);

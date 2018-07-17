@@ -18,8 +18,8 @@ import ix.Ix;
 
 public class ChartUtils {
 
-    private static final int SIZE = 10;
-    private static final int RANGE = 10;
+    private static final int RANGE = 5;
+    // Default measure levels
     private static final int NORMAL = 100;
     private static final int HIGH = 350;
     private static final int VERY_HIGH = 500;
@@ -57,31 +57,35 @@ public class ChartUtils {
 
         for (int i = 0; i < inputList.size(); i++) {
             final CubeData cubeData = inputList.get(i);
-            float startY = -1;
-            float endY = -1;
-            final float bubbleY = getY(cubeData);
+            float startY = -1; // start Y-axis of dashed-line on chart,  if less than 0, won't be drawn
+            float endY = -1; // end Y-axis of dashed-line on chart,  if less than 0, won't be drawn
+            final float bubbleY = getY(cubeData); // Y-axis of bubble
 
             if (i > 0 && inputList.get(i - 1) != null) {
+                // if there were previously calculated element, than set its end-line Y-height to the next item start-line Y-height
                 startY = chartDTOList.get(i - 1).getEndLineYAxis();
             }
 
-            if (inputList.size() - 1 != i) {
+            if (inputList.size() - 1 != i) { // if it's not the last item in the list
                 final float nextBubbleY;
                 if (inputList.get(i + 1).getMeasuredLevel() >= 0) {
+                    //calculate the next bubble Y-height
                     nextBubbleY = getY(inputList.get(i + 1));
                 } else {
+                    // if there is no measure on the next day, set Y-height to half of the Y-axis
                     nextBubbleY = 0.5f;
                 }
-
+                // calculate the current item end-line Y-height with the current and next item Y-height
                 endY = (bubbleY + nextBubbleY) / 2;
             }
 
             final List<Measure> measureList = new ArrayList<>();
             if (cubeData.getMeasuredLevel() >= 0) {
+                // if the item has one measure at least, generate a random sized list
                 measureList.addAll(randomMeasureList(cubeData));
             }
 
-            chartDTOList.add(new ChartDTO(cubeData.getId(), cubeData.getDate(), measureList, bubbleY, startY, endY));
+            chartDTOList.add(ChartDTO.create(cubeData.getId(), cubeData.getDate(), measureList, bubbleY, startY, endY));
         }
 
         return Ix.from(chartDTOList)
@@ -149,24 +153,27 @@ public class ChartUtils {
 
 
     private List<Measure> randomMeasureList(final CubeData cubeData) {
+        //Generates random measue data for a given day
         final Random random = new Random();
-        final int chance = random.nextInt(SIZE);
-        if (chance > SIZE / 2) {
+        if (random.nextBoolean()) {
+            // 2 or more measure on the same day
             final List<Measure> measureList = new ArrayList<>();
-            for (int i = 0; i < RANGE - chance; i++) {
-                measureList.add(new Measure(cubeData.getMeasuredLevel() - i, cubeData.getUnit()));
+            for (int i = 0; i < random.nextInt(RANGE); i++) {
+                measureList.add(Measure.create(cubeData.getMeasuredLevel() - i, cubeData.getUnit()));
             }
             return measureList;
         } else {
-            return Collections.singletonList(new Measure(cubeData.getMeasuredLevel(), cubeData.getUnit()));
+            return Collections.singletonList(Measure.create(cubeData.getMeasuredLevel(), cubeData.getUnit()));
         }
     }
 
 
     private float getY(final CubeData cubeData) {
         if (cubeData.getMeasuredLevel() >= 0 && delta > 0) {
+            // calculate the Y percentage of the bubble
             return (1 - (cubeData.getMeasuredLevel() - minLevel) / delta);
         } else {
+            // if there is no measure on the givan day, set Y to half of the Y-axis
             return 0.5f;
         }
     }

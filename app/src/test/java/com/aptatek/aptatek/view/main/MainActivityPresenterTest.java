@@ -42,8 +42,8 @@ public class MainActivityPresenterTest {
         MockitoAnnotations.initMocks(this);
         presenter = new MainActivityPresenter(fakeCubeDataManager, chartUtils, resourceInteractor);
         presenter.attachView(view);
-        emptyItem = new ChartVM(new ChartDTO(0, date, new ArrayList<>(), 0, 0, 0));
-        notEmptyItem = new ChartVM(new ChartDTO(1, date, Collections.singletonList(new Measure(20, 20)), 0, 0, 0));
+        emptyItem = new ChartVM(ChartDTO.create(0, date, new ArrayList<>(), 0, 0, 0));
+        notEmptyItem = new ChartVM(ChartDTO.create(1, date, Collections.singletonList(Measure.create(20, 20)), 0, 0, 0));
     }
 
     @Test

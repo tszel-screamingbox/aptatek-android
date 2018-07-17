@@ -1,34 +1,21 @@
 package com.aptatek.aptatek.domain.respository.chart;
 
+import com.google.auto.value.AutoValue;
+
 import java.util.Date;
 
-public class CubeData {
+@AutoValue
+public abstract class CubeData {
 
-    private final long id;
-    private final Date date;
-    private final int measuredLevel;
-    private final double unit;
+    public abstract long getId();
 
-    public CubeData(final long id, final Date date, final int measuredLevel, final double unit) {
-        this.id = id;
-        this.date = date;
-        this.measuredLevel = measuredLevel;
-        this.unit = unit;
-    }
+    public abstract Date getDate();
 
-    public long getId() {
-        return id;
-    }
+    public abstract int getMeasuredLevel();
 
-    public Date getDate() {
-        return date;
-    }
+    public abstract double getUnit();
 
-    public int getMeasuredLevel() {
-        return measuredLevel;
-    }
-
-    public double getUnit() {
-        return unit;
+    public static CubeData create(final long id, final Date date, final int level, final double unit) {
+        return new AutoValue_CubeData(id, date, level, unit);
     }
 }

@@ -24,7 +24,7 @@ public class FakeCubeDataManagerTest {
     @Before
     public void setUp() {
         cubeDataList = Ix.range(0, SIZE)
-                .map(x -> new CubeData(x, date(x), x * 10, x * 20))
+                .map(x -> CubeData.create(x, date(x), x * 10, x * 20))
                 .toList();
         fakeCubeDataManager = new FakeCubeDataManager(cubeDataList);
     }

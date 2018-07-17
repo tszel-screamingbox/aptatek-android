@@ -1,21 +1,15 @@
 package com.aptatek.aptatek.domain.respository.chart;
 
-public class Measure {
+import com.google.auto.value.AutoValue;
 
-    private final int phenylalanineLevel;
-    private final double unit;
+@AutoValue
+public abstract class Measure {
 
+    public abstract int getPhenylalanineLevel();
 
-    public Measure(final int phenylalanineLevel, final double unit) {
-        this.phenylalanineLevel = phenylalanineLevel;
-        this.unit = unit;
-    }
+    public abstract double getUnit();
 
-    public int getPhenylalanineLevel() {
-        return phenylalanineLevel;
-    }
-
-    public double getUnit() {
-        return unit;
+    public static Measure create(final int level, final double unit) {
+        return new AutoValue_Measure(level, unit);
     }
 }
