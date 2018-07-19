@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/general.distance.xxxsmall"
+    android:layout_marginTop="@dimen/general.distance.xxxsmall">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/General.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/weekly.title"
+        android:textSize="@dimen/font.size.weekly.title" />
+
+    <TextView
+        android:id="@+id/dateText"
+        style="@style/General.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="here comes the date"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <com.github.mikephil.charting.charts.BubbleChart
+        android:id="@+id/weeklyChart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#ff0000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateText">
+    </com.github.mikephil.charting.charts.BubbleChart>
+
+    <ImageView
+        android:id="@+id/playIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_measure"/>
+    
+</android.support.constraint.ConstraintLayout>

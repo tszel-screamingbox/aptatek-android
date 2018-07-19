@@ -62,6 +62,9 @@ ext {
             // ActivityStarter
             activityStarter             : '1.11-beta',
 
+            // MpAndroidChart
+            chart             : 'v3.0.3',
+
             // Testing
             junit                       : '4.12',
             mockito                     : '2.8.9',
@@ -154,6 +157,10 @@ ext {
     activityStarterDependencies = [
             activityStarter : "com.marcinmoskala.activitystarter:activitystarter:${versions.activityStarter}",
             apt : "com.marcinmoskala.activitystarter:activitystarter-compiler:${versions.activityStarter}",
+    ]
+
+    mpAndroidChartDependencies = [
+            androidChart : "com.github.PhilJay:MPAndroidChart:${versions.chart}"
     ]
 
     testDependencies = [
