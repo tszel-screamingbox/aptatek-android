@@ -169,6 +169,9 @@ dependencies {
     // DiscrateScrollView
     implementation scrollView.discreteScrollView
 
+    // MpAndroidChart
+    implementation mpAndroidChartDependencies.androidChart
+
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito

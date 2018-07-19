@@ -41,3 +41,4 @@
   * Cwac-saferoom [License](https://github.com/commonsguy/cwac-saferoom/blob/master/LICENSE)
   * ActivityStarter [License](https://github.com/MarcinMoskala/ActivityStarter/blob/master/LICENSE.txt)
   * DiscreteScrollView [License](https://github.com/yarolegovich/DiscreteScrollView#license)
+  * MpAndroidChart [License](https://github.com/PhilJay/MPAndroidChart/blob/master/LICENSE)

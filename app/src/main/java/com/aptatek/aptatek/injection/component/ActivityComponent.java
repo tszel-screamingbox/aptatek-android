@@ -18,6 +18,7 @@ import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsActivity;
 import com.aptatek.aptatek.view.splash.SplashActivity;
 import com.aptatek.aptatek.view.toggle.ToggleActivity;
+import com.aptatek.aptatek.view.weekly.WeeklyResultActivity;
 
 import dagger.Component;
 
@@ -43,6 +44,8 @@ public interface ActivityComponent {
     void inject(ReminderSettingsActivity activity);
 
     void inject(SettingsActivity activity);
+
+    void inject(WeeklyResultActivity activity);
 
     // Activities injections should be come here
     @ActivityContext
