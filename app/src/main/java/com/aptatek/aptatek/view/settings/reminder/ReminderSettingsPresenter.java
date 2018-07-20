@@ -86,7 +86,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         compositeDisposable.add(
                 reminderInteractor
-                        .setReminder(item.getWeekDay(), hour, minute)
+                        .insertReminder(item.getWeekDay(), hour, minute)
                         .subscribe());
 
         insertReminder(item, hour, minute, id);
@@ -107,7 +107,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
             if (item.isActive()) {
                 compositeDisposable.add(
                         reminderInteractor
-                                .setReminder(item.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute())
+                                .insertReminder(item.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute())
                                 .subscribe());
             } else {
                 compositeDisposable.add(

@@ -42,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    private void showNotification(final Context context, final Intent intent) {
+    public void showNotification(final Context context, final Intent intent) {
         final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
         notificationManager.notify(Constants.REMINDER_NOTIFICATION_ID, reminderNotificationFactory.createReminderNotification());
