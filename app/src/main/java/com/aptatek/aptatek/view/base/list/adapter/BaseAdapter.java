@@ -16,6 +16,7 @@ import java.util.List;
  * BaseAdapter for handling data in lists
  */
 @SuppressWarnings("unused")
+//TODO: merge with the another adapter
 public abstract class BaseAdapter<T extends IListTypeProvider>
         extends RecyclerView.Adapter<BaseViewHolder<T>>
         implements View.OnClickListener {

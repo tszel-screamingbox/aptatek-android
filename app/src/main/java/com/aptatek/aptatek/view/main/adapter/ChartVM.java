@@ -30,13 +30,13 @@ public class ChartVM implements IListTypeProvider {
         this.id = chartDTO.getId();
         this.date = chartDTO.getDate();
         this.numberOfMeasures = chartDTO.getMeasureList().size();
-        this.details = details(chartDTO.getMeasureList());
+        this.details = bubbleDetails(chartDTO.getMeasureList());
         this.bubbleYAxis = chartDTO.getBubbleYAxis();
         this.startLineYAxis = chartDTO.getStartLineYAxis();
         this.endLineYAxis = chartDTO.getEndLineYAxis();
     }
 
-    private CharSequence details(final List<Measure> measureList) {
+    private CharSequence bubbleDetails(final List<Measure> measureList) {
         if (numberOfMeasures == 0) {
             return null;
         }
@@ -48,7 +48,7 @@ public class ChartVM implements IListTypeProvider {
 
         return StringUtils.highlightWord(
                 String.valueOf(highest.getPhenylalanineLevel()),
-                String.valueOf(highest.getUnit()) + " mg/dl");
+                String.valueOf(highest.getUnit())) + " mg/dl";
     }
 
     public int getMaxPhenylalanineLevel() {
