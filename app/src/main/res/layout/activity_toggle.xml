@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/newTestButton"
-        style="@style/General.Green.Button"
+        style="@style/General.Blue.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
         android:text="@string/toggle.button.new.test"

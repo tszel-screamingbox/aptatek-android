@@ -26,11 +26,11 @@ import dagger.Component;
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
 
+    void inject(AuthPinHostActivity activity);
+
     void inject(FingerprintActivity activity);
 
     void inject(MainActivity activity);
-
-    void inject(AuthPinHostActivity activity);
 
     void inject(SetPinHostActivity activity);
 

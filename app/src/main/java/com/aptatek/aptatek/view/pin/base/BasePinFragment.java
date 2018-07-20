@@ -90,7 +90,7 @@ public abstract class BasePinFragment extends BaseFragment {
             try {
                 final PinCode pinCode = new PinCode(pin.getBytes("UTF-8"));
                 finishedTyping(pinCode);
-            } catch (UnsupportedEncodingException e) {
+            } catch (final UnsupportedEncodingException e) {
                 Timber.e(e);
             }
         }

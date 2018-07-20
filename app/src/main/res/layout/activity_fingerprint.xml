@@ -55,7 +55,7 @@
 
     <Button
         android:id="@+id/enableButton"
-        style="@style/General.Green.Button"
+        style="@style/General.Blue.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/general.button.height.big"
         android:text="@string/fingerprint.option.enable"

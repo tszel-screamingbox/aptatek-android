@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/graph.bubble.radius.small" />
+
+            <solid android:color="@color/applicationGreen" />
+            <size
+                android:width="@dimen/graph.bubble.size"
+                android:height="@dimen/graph.bubble.size" />
+        </shape>
+    </item>
+</layer-list>
