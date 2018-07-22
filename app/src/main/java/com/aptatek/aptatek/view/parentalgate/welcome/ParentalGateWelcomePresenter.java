@@ -101,7 +101,7 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
                             )
                     )
             );
-        } catch (NumberFormatException e) {
+        } catch (final NumberFormatException e) {
             Timber.e(e);
         }
     }

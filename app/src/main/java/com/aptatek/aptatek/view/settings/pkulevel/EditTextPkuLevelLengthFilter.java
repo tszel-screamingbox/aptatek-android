@@ -27,10 +27,8 @@ public class EditTextPkuLevelLengthFilter implements InputFilter {
                                final int dstart,
                                final int dend) {
         // no decimals are allowed in case of micro mols
-        if (currentUnit == PkuLevelUnits.MICRO_MOL) {
-            if (source.toString().contains(".") || source.toString().contains(",")) {
-                return "";
-            }
+        if (currentUnit == PkuLevelUnits.MICRO_MOL && (source.toString().contains(".") || source.toString().contains(","))) {
+            return "";
         }
 
         int keep = LEVEL_MAX_LENGTH - (dest.length() - (dend - dstart));

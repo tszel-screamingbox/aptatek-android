@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;

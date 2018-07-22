@@ -1,7 +1,7 @@
 <resources>
 
     <dimen name="activity.margin.horizontal">30dp</dimen>
-    <dimen name="activity.margin.vertical">18dp</dimen>
+    <dimen name="activity.margin.vertical">20dp</dimen>
 
     <!-- General-->
     <dimen name="general.button.corner">25dp</dimen>
@@ -29,12 +29,22 @@
     <dimen name="general.distance.xlarge">110dp</dimen>
     <dimen name="general.distance.xxlarge">130dp</dimen>
     <dimen name="general.distance.xxxlarge">180dp</dimen>
+    <dimen name="general.distance.enorme">250dp</dimen>
 
+
+    <!-- Chart-->
+    <dimen name="graph.bubble.size">50dp</dimen>
+    <dimen name="graph.bubble.size.small">15dp</dimen>
+    <dimen name="graph.bubble.radius.small">40dp</dimen>
+    <dimen name="graph.bubble.stroke.big">8dp</dimen>
+    <dimen name="graph.bubble.stroke.small">4dp</dimen>
+    <dimen name="graph.height">200dp</dimen>
 
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.header.margin.minimum">68dp</dimen>
 
+    <dimen name="font.size.mini">10sp</dimen>
     <dimen name="font.size.small">11sp</dimen>
     <dimen name="font.size.regular">12sp</dimen>
     <dimen name="font.size.normal">15sp</dimen>

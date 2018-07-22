@@ -171,6 +171,9 @@ dependencies {
     releaseImplementation leakDependencies.release
     testImplementation leakDependencies.release
 
+    // DiscrateScrollView
+    implementation scrollView.discreteScrollView
+
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito

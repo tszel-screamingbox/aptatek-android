@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">@color/applicationGreen</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="applicationBlue">#4AE1F8</color>
     <color name="applicationSilver">#D3DAE3</color>
     <color name="applicationBlack">#34414A</color>
     <color name="applicationLightGray">#A6ABB0</color>
@@ -13,6 +14,15 @@
     <color name="applicationPink">#EE21C2</color>
     <color name="applicationSmoke">#D3DAE3</color>
     <color name="applicationWhite">#FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="chartBackrgroundBlue">#DBF9FE</color>
+
+    <color name="chartBubbleLow">#4AE1F8</color>
+    <color name="chartBubbleNormal">#4CD864</color>
+    <color name="chartBubbleHigh">#F65196</color>
+    <color name="chartBubbleVeryHigh">#F25555</color>
+
     <color name="dialButtonGrey">#8034414A</color>
     <color name="applicationGainsBoroGray">#F2F2F2</color>
     <color name="applicationTimePickerSelector">#33b5e5</color>

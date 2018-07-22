@@ -36,7 +36,7 @@ public class AuthInteractor {
         try {
             final String encryptedPin = keyStoreManager.encrypt(pinCode);
             preferencesManager.setEncryptedPin(encryptedPin);
-        } catch (KeyStoreError e) {
+        } catch (final KeyStoreError e) {
             Timber.e(e, "Failed to set pincode");
         }
     }
@@ -45,7 +45,7 @@ public class AuthInteractor {
         try {
             final PinCode storedPin = keyStoreManager.decrypt(preferencesManager.getEncryptedPin());
             return storedPin != null && storedPin.equals(pinCode);
-        } catch (KeyStoreError keyStoreError) {
+        } catch (final KeyStoreError keyStoreError) {
             Timber.e(keyStoreError.getCause());
             return false;
         }

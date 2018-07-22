@@ -1,7 +1,6 @@
 package com.aptatek.aptatek.view.settings.pkulevel;
 
 import com.aptatek.aptatek.domain.model.PkuLevel;
-import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 
 public interface RangeSettingsValueFormatter {
