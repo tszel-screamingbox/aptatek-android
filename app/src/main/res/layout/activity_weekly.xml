@@ -28,9 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/general.distance.xxsmall"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateText">
-    </com.github.mikephil.charting.charts.BubbleChart>
+        app:layout_constraintBottom_toTopOf="@id/label"
+        app:layout_constraintTop_toBottomOf="@id/dateText" />
 
     <android.support.constraint.Group
         android:id="@+id/emptyGroup"
@@ -66,4 +65,13 @@
         android:text="@string/weekly.empty.subtitle"
         app:layout_constraintTop_toBottomOf="@+id/emptyTitle" />
 
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/General.Text"
+        android:textSize="@dimen/font.size.normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/weekly.chart.label"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>

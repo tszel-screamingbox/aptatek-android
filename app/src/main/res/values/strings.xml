@@ -143,6 +143,7 @@
     <string name="toggle.cube.connected">● Cube Connected</string>
     <string name="toggle.cube.disconnected">● Cube Disconnected</string>
     <!-- WeeklyResult Activity -->
+    <string name="weekly.chart.label">Phe levels are in mmol/L</string>
     <string name="weekly.empty.subtitle">Take your first test</string>
     <string name="weekly.empty.title">No results</string>
     <string name="weekly.title">Weekly Results</string>
