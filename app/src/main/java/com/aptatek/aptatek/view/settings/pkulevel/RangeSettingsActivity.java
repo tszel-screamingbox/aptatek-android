@@ -22,6 +22,7 @@ import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
+import com.aptatek.aptatek.util.Constants;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.dialog.AlertDialogDecisions;
 import com.aptatek.aptatek.view.dialog.AlertDialogFragment;
@@ -40,7 +41,6 @@ import timber.log.Timber;
 public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, RangeSettingsPresenter> implements RangeSettingsView {
 
     private static final String TAG_CONFIRM_DIALOG = "aptatek.settings.range.confirmdialog";
-    private static final float FLOAT_ERROR_LIMIT = 0.001f;
     private static final long DEBOUNCE = 500L;
 
     public static Intent starter(final Context context) {
@@ -112,8 +112,8 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
             etNormalCeil.setText(rightPinValue);
 
             if (rangeSet && lastModel != null
-                    && (Math.abs(lastModel.getNormalFloorMMolValue() - mmolFloor) > FLOAT_ERROR_LIMIT
-                    || Math.abs(lastModel.getNormalCeilMMolValue() - mmolCeil) > FLOAT_ERROR_LIMIT)) {
+                    && (Math.abs(lastModel.getNormalFloorMMolValue() - mmolFloor) > Constants.FLOAT_COMPARSION_ERROR_MARGIN
+                    || Math.abs(lastModel.getNormalCeilMMolValue() - mmolCeil) > Constants.FLOAT_COMPARSION_ERROR_MARGIN)) {
 
                 changeProcessor.onNext(new Object());
             }
@@ -137,7 +137,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
 
                 rbRange.setRangePinsByValue(validValue, topLimit);
 
-                if (Math.abs(validValue - mmolValue) > FLOAT_ERROR_LIMIT) {
+                if (Math.abs(validValue - mmolValue) > Constants.FLOAT_COMPARSION_ERROR_MARGIN) {
                     etNormalFloor.setText(presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(validValue, PkuLevelUnits.MICRO_MOL), getSelectedUnit())));
                 }
 
@@ -169,7 +169,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
 
                 rbRange.setRangePinsByValue(bottomLimit, validValue);
 
-                if (Math.abs(validValue - mmolValue) > FLOAT_ERROR_LIMIT) {
+                if (Math.abs(validValue - mmolValue) > Constants.FLOAT_COMPARSION_ERROR_MARGIN) {
                     etNormalCeil.setText(presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(validValue, PkuLevelUnits.MICRO_MOL), getSelectedUnit())));
                 }
 

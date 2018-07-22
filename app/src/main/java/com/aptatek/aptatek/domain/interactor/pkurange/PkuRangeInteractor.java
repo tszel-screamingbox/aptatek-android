@@ -39,6 +39,10 @@ public class PkuRangeInteractor {
                 throw new IllegalArgumentException("ceil value cannot be greater than " + Constants.DEFAULT_PKU_HIGHEST_VALUE);
             }
 
+            if (floorMMol.getValue() > ceilMMol.getValue()) {
+                throw new IllegalArgumentException("floor must be larger than ceil");
+            }
+
             dataSource.setNormalFloorValueMMol(floorMMol.getValue());
             dataSource.setNormalCeilValueMMol(ceilMMol.getValue());
         });

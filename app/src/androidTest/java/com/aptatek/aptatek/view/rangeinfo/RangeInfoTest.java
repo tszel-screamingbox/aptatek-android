@@ -45,8 +45,6 @@ public class RangeInfoTest {
                 .inject(this);
     }
 
-
-
     @Test
     public void testInitialViewsVisible() {
         onView(withId(R.id.rangeinfo_title)).check(matches(isDisplayed()));
@@ -67,10 +65,12 @@ public class RangeInfoTest {
     @Test
     public void testInitialUiValues() {
         final PkuRangeInfo pkuInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_HIGH_RANGE)
+                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
                 .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
                 .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
+                .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
+                .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .build();
 
         onView(withId(R.id.rangeinfo_title)).check(matches(withText(R.string.rangeinfo_title)));
@@ -97,9 +97,8 @@ public class RangeInfoTest {
 
     @Test
     public void testUnitClickTakesToSettings() throws Exception {
-        // TODO test edit
         onView(withId(R.id.rangeinfo_edit)).perform(click());
-        assert true;
+        onView(withId(R.id.rangeSettingsLowLabel)).check(matches(isDisplayed()));
     }
 
 }
