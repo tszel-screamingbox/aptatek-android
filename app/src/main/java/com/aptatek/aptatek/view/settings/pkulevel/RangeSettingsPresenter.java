@@ -2,7 +2,9 @@ package com.aptatek.aptatek.view.settings.pkulevel;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 import com.aptatek.aptatek.util.Constants;
@@ -16,10 +18,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> {
-
-    private static final float RANGE_BORDER = 2f;
-    private static final float RATIO_MG = 0.1f;
-    private static final float RATIO_MMOL = 1f;
 
     private final PkuRangeInteractor pkuRangeInteractor;
     private final RangeSettingsValueFormatter rangeSettingsValueFormatter;
@@ -65,8 +63,8 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                 .setVeryHighText(rangeSettingsValueFormatter.getFormattedVeryHigh(info))
                 .setNormalFloorMMolValue(convertValue(info.getNormalFloorValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL))
                 .setNormalCeilMMolValue(convertValue(info.getNormalCeilValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL))
-                .setNormalAbsoluteFloorMMolValue(RANGE_BORDER * getRangeOffsetForUnit(PkuLevelUnits.MICRO_MOL))
-                .setNormalAbsoluteCeilMMolValue(convertValue(info.getHighCeilValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL) - (RANGE_BORDER * getRangeOffsetForUnit(PkuLevelUnits.MICRO_MOL)))
+                .setNormalAbsoluteFloorMMolValue(convertValue(info.getNormalAbsoluteMinValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL))
+                .setNormalAbsoluteCeilMMolValue(convertValue(info.getNormalAbsoluteMaxValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL))
                 .setSelectedUnit(info.getPkuLevelUnit())
                 .build();
     }
@@ -74,13 +72,19 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
     public void changeValues(final float mmolFloor, final float mmolCeil, final @NonNull PkuLevelUnits displayUnit) {
         compositeDisposable.add(
                 Single.just(PkuRangeInfo.builder()
-                        .setHighCeilValue(convertValue(Constants.DEFAULT_PKU_HIGH_CEIL, PkuLevelUnits.MICRO_MOL, displayUnit))
-                        .setNormalFloorValue(convertValue(mmolFloor, PkuLevelUnits.MICRO_MOL, displayUnit))
+                        .setHighCeilValue(convertValue(mmolCeil + Constants.DEFAULT_PKU_HIGH_RANGE, PkuLevelUnits.MICRO_MOL, displayUnit))
+                        .setNormalFloorValue(Math.max(displayUnit == PkuLevelUnits.MILLI_GRAM ? 0.2f : 2f, convertValue(mmolFloor, PkuLevelUnits.MICRO_MOL, displayUnit)))
                         .setNormalCeilValue(convertValue(mmolCeil, PkuLevelUnits.MICRO_MOL, displayUnit))
+                        .setNormalAbsoluteMinValue(convertValue(Constants.DEFAULT_PKU_LOWEST_VALUE, PkuLevelUnits.MICRO_MOL, displayUnit))
+                        .setNormalAbsoluteMaxValue(convertValue(Constants.DEFAULT_PKU_HIGHEST_VALUE, PkuLevelUnits.MICRO_MOL, displayUnit))
                         .setPkuLevelUnit(displayUnit)
                         .build()
                 )
                 .map(this::buildSettingsModel)
+                .flatMap(rangeSettingsModel ->
+                    pkuRangeInteractor.saveDisplayUnit(displayUnit)
+                        .andThen(Single.just(rangeSettingsModel))
+                )
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(model -> ifViewAttached(attachedView ->
@@ -88,23 +92,21 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                 )));
     }
 
-    public void saveNormalRange(final float floor, final float ceil) {
-        compositeDisposable.add(pkuRangeInteractor.saveNormalRangeMMol(floor, ceil)
+    public void saveNormalRange(final float mmolFloor, final float mmolCeil) {
+        compositeDisposable.add(pkuRangeInteractor.saveNormalRange(
+                PkuLevel.create(mmolFloor, PkuLevelUnits.MICRO_MOL),
+                PkuLevel.create(mmolCeil, PkuLevelUnits.MICRO_MOL))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe());
+                .subscribe(() -> ifViewAttached(RangeSettingsView::finish)));
     }
 
-    public float convertValue(final float value, final PkuLevelUnits originalUnit, final PkuLevelUnits target) {
-        return pkuRangeInteractor.getValueInUnit(value, originalUnit, target);
+    public String formatValue(final PkuLevel pkuLevel) {
+        return rangeSettingsValueFormatter.formatRegularValue(pkuLevel);
     }
 
-    public String formatValue(final float value, final PkuLevelUnits unit) {
-        return rangeSettingsValueFormatter.formatRegularValue(value, unit);
-    }
-
-    private float getRangeOffsetForUnit(final PkuLevelUnits units) {
-        return units == PkuLevelUnits.MICRO_MOL ? RATIO_MMOL : RATIO_MG;
+    private float convertValue(final float value, final PkuLevelUnits currentUnit, final PkuLevelUnits targetUnit) {
+        return PkuLevelConverter.convertTo(PkuLevel.create(value, currentUnit), targetUnit).getValue();
     }
 
 }

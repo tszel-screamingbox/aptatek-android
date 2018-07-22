@@ -8,4 +8,6 @@ public interface RangeSettingsView extends MvpView {
 
     void displayRangeSettings(@NonNull RangeSettingsModel model);
 
+    void finish();
+
 }

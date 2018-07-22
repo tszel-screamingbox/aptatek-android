@@ -67,10 +67,10 @@ public class RangeInfoTest {
     @Test
     public void testInitialUiValues() {
         final PkuRangeInfo pkuInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_HIGH_CEIL)
+                .setHighCeilValue(Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
                 .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
-                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL)
+                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
                 .build();
 
         onView(withId(R.id.rangeinfo_title)).check(matches(withText(R.string.rangeinfo_title)));

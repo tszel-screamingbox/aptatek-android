@@ -13,6 +13,7 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.settings.pkulevel.RangeSettingsActivity;
 
 import javax.inject.Inject;
 
@@ -93,6 +94,6 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
 
     @OnClick(R.id.rangeinfo_edit)
     public void onClickEdit() {
-        Toast.makeText(this, "TODO: EDIT", Toast.LENGTH_SHORT).show();
+        launchActivity(RangeSettingsActivity.starter(this), false, Animation.FADE);
     }
 }

@@ -33,16 +33,16 @@ public class PkuRangeInteractorTest {
 
     @Test
     public void testGetInfoCallsDataSource() throws Exception {
-        when(dataSource.getHighCeilValue()).thenReturn(1f);
-        when(dataSource.getNormalCeilValue()).thenReturn(1f);
-        when(dataSource.getNormalFloorValue()).thenReturn(1f);
+        when(dataSource.getHighCeilValueMMol()).thenReturn(1f);
+        when(dataSource.getNormalCeilValueMMol()).thenReturn(1f);
+        when(dataSource.getNormalFloorValueMMol()).thenReturn(1f);
         when(dataSource.getDisplayUnit()).thenReturn(PkuLevelUnits.MICRO_MOL);
 
         final TestObserver<PkuRangeInfo> test = interactor.getInfo().test();
 
-        verify(dataSource).getHighCeilValue();
-        verify(dataSource).getNormalCeilValue();
-        verify(dataSource).getNormalFloorValue();
+        verify(dataSource).getHighCeilValueMMol();
+        verify(dataSource).getNormalCeilValueMMol();
+        verify(dataSource).getNormalFloorValueMMol();
         verify(dataSource).getDisplayUnit();
 
         test.assertComplete();
@@ -64,9 +64,9 @@ public class PkuRangeInteractorTest {
         final float normalCeilValue = 350f;
         final float normalFloorValue = 100f;
         when(dataSource.getDisplayUnit()).thenReturn(PkuLevelUnits.MILLI_GRAM);
-        when(dataSource.getHighCeilValue()).thenReturn(highCeilValue);
-        when(dataSource.getNormalCeilValue()).thenReturn(normalCeilValue);
-        when(dataSource.getNormalFloorValue()).thenReturn(normalFloorValue);
+        when(dataSource.getHighCeilValueMMol()).thenReturn(highCeilValue);
+        when(dataSource.getNormalCeilValueMMol()).thenReturn(normalCeilValue);
+        when(dataSource.getNormalFloorValueMMol()).thenReturn(normalFloorValue);
 
         final TestObserver<PkuRangeInfo> test = interactor.getInfo().test();
         test.await(1, TimeUnit.SECONDS);

@@ -37,19 +37,19 @@ public class PkuRangeDataSourceTest {
         dataSource.getDisplayUnit();
         verify(preferenceManager).getPkuRangeUnit();
 
-        dataSource.getNormalCeilValue();
+        dataSource.getNormalCeilValueMMol();
         verify(preferenceManager).getPkuRangeNormalCeil();
 
-        dataSource.getNormalFloorValue();
+        dataSource.getNormalFloorValueMMol();
         verify(preferenceManager).getPkuRangeNormalFloor();
 
         dataSource.setDisplayUnit(PkuLevelUnits.MICRO_MOL);
         verify(preferenceManager).setPkuRangeUnit(PkuLevelUnits.MICRO_MOL);
 
-        dataSource.setNormalCeilValue(300f);
+        dataSource.setNormalCeilValueMMol(300f);
         verify(preferenceManager).setPkuRangeNormalCeil(300f);
 
-        dataSource.setNormalFloorValue(300f);
+        dataSource.setNormalFloorValueMMol(300f);
         verify(preferenceManager).setPkuRangeNormalFloor(300f);
     }
 
@@ -59,10 +59,10 @@ public class PkuRangeDataSourceTest {
         doReturn(-1f).when(preferenceManager).getPkuRangeNormalCeil();
         doReturn(null).when(preferenceManager).getPkuRangeUnit();
 
-        assertTrue(dataSource.getNormalFloorValue() == Constants.DEFAULT_PKU_NORMAL_FLOOR);
-        assertTrue(dataSource.getNormalCeilValue() == Constants.DEFAULT_PKU_NORMAL_CEIL);
-        assertTrue(dataSource.getDisplayUnit() == Constants.DEFAULT_PKU_LEVEL);
-        assertTrue(dataSource.getHighCeilValue() == Constants.DEFAULT_PKU_HIGH_CEIL);
+        assertTrue(dataSource.getNormalFloorValueMMol() == Constants.DEFAULT_PKU_NORMAL_FLOOR);
+        assertTrue(dataSource.getNormalCeilValueMMol() == Constants.DEFAULT_PKU_NORMAL_CEIL);
+        assertTrue(dataSource.getDisplayUnit() == Constants.DEFAULT_PKU_LEVEL_UNIT);
+        assertTrue(dataSource.getHighCeilValueMMol() == Constants.DEFAULT_PKU_HIGH_RANGE);
     }
 
 }

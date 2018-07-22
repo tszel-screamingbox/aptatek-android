@@ -66,7 +66,7 @@ public class PreferencesManagerTest {
         preferenceManager.setParentalPassed(true);
         preferenceManager.setPkuRangeNormalFloor(Constants.DEFAULT_PKU_NORMAL_FLOOR);
         preferenceManager.setPkuRangeNormalCeil(Constants.DEFAULT_PKU_NORMAL_CEIL);
-        preferenceManager.setPkuRangeUnit(Constants.DEFAULT_PKU_LEVEL);
+        preferenceManager.setPkuRangeUnit(Constants.DEFAULT_PKU_LEVEL_UNIT);
 
         preferenceManager.clearPreference(PreferenceManager.PREF_ENCRYPTED_PIN);
         preferenceManager.clearPreference(PreferenceManager.PREF_INCUBATION_START);

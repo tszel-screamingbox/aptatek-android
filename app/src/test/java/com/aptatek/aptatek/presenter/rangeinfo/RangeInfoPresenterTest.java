@@ -83,10 +83,10 @@ public class RangeInfoPresenterTest {
     @Test
     public void testRefreshCallsInteractorAndFormatter() {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_HIGH_CEIL)
+                .setHighCeilValue(Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
                 .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
-                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL)
+                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
                 .build();
         doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
         final String testValue = "hello";

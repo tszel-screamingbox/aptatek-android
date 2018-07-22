@@ -47,10 +47,10 @@ public class PkuRangeInteractorTest {
         test.assertNoErrors();
         test.assertComplete();
         test.assertValueAt(0, value -> {
-            assertTrue(value.getHighCeilValue() == Constants.DEFAULT_PKU_HIGH_CEIL);
+            assertTrue(value.getHighCeilValue() == Constants.DEFAULT_PKU_HIGH_RANGE);
             assertTrue(value.getNormalCeilValue() == Constants.DEFAULT_PKU_NORMAL_CEIL);
             assertTrue(value.getNormalFloorValue() == Constants.DEFAULT_PKU_NORMAL_FLOOR);
-            assertTrue(value.getPkuLevelUnit() == Constants.DEFAULT_PKU_LEVEL);
+            assertTrue(value.getPkuLevelUnit() == Constants.DEFAULT_PKU_LEVEL_UNIT);
 
             return true;
         });
@@ -72,7 +72,7 @@ public class PkuRangeInteractorTest {
             assertTrue(value.getPkuLevelUnit() == unit);
             assertTrue(value.getNormalFloorValue() == floor);
             assertTrue(value.getNormalCeilValue() == ceil);
-            assertTrue(value.getHighCeilValue() == Constants.DEFAULT_PKU_HIGH_CEIL);
+            assertTrue(value.getHighCeilValue() == Constants.DEFAULT_PKU_HIGH_RANGE);
             return true;
         });
     }

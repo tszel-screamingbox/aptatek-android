@@ -4,17 +4,21 @@ import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 
 public interface PkuRangeDataSource {
 
-    void setNormalFloorValue(float value);
+    void setNormalFloorValueMMol(float value);
 
-    void setNormalCeilValue(float value);
+    void setNormalCeilValueMMol(float value);
 
     void setDisplayUnit(PkuLevelUnits unit);
 
-    float getNormalFloorValue();
+    float getNormalFloorValueMMol();
 
-    float getNormalCeilValue();
+    float getNormalCeilValueMMol();
 
-    float getHighCeilValue();
+    float getHighCeilValueMMol();
+
+    float getNormalCeilAbsoluteMaxMMol();
+
+    float getNormalFloorAbsoluteMinMMol();
 
     PkuLevelUnits getDisplayUnit();
 }

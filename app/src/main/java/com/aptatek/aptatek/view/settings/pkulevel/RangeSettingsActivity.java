@@ -1,19 +1,24 @@
 package com.aptatek.aptatek.view.settings.pkulevel;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.appyvet.materialrangebar.RangeBar;
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.aptatek.domain.model.AlertDialogModel;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
@@ -67,6 +72,12 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
     private RangeSettingsModel lastModel;
 
     @Inject
+    EditTextPkuLevelLengthFilter floorFilter;
+
+    @Inject
+    EditTextPkuLevelLengthFilter ceilFilter;
+
+    @Inject
     RangeSettingsPresenter presenter;
 
     @Override
@@ -88,17 +99,17 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         });
 
         rbRange.setPinTextListener((rangeBar, tickIndex) ->
-            presenter.formatValue(presenter.convertValue(getValueFromRangeBar(tickIndex), PkuLevelUnits.MICRO_MOL, getSelectedUnit()), getSelectedUnit())
+            presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(getValueFromRangeBar(tickIndex), PkuLevelUnits.MICRO_MOL), getSelectedUnit()))
         );
 
         rbRange.setOnRangeBarChangeListener((rangeBar, leftPinIndex, rightPinIndex, leftPinValue, rightPinValue) -> {
             Timber.d("rangeBarChange: " + leftPinIndex + ", " + rightPinIndex);
 
-            etNormalFloor.setText(leftPinValue);
-            etNormalCeil.setText(rightPinValue);
-
             final float mmolFloor = getValueFromRangeBar(leftPinIndex);
             final float mmolCeil = getValueFromRangeBar(rightPinIndex);
+
+            etNormalFloor.setText(leftPinValue);
+            etNormalCeil.setText(rightPinValue);
 
             if (rangeSet && lastModel != null
                     && (Math.abs(lastModel.getNormalFloorMMolValue() - mmolFloor) > FLOAT_ERROR_LIMIT
@@ -112,26 +123,66 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         etNormalFloor.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 final float newValue = Float.parseFloat(v.getText().toString());
-                final float mmolValue = presenter.convertValue(newValue, getSelectedUnit(), PkuLevelUnits.MICRO_MOL);
-                rbRange.setRangePinsByValue(mmolValue, getValueFromRangeBar(rbRange.getRightIndex()));
+                final float mmolValue = PkuLevelConverter.convertTo(PkuLevel.create(newValue, getSelectedUnit()), PkuLevelUnits.MICRO_MOL).getValue();
+                final float topLimit = getValueFromRangeBar(rbRange.getRightIndex());
+                final float validValue;
+
+                if (mmolValue < rbRange.getTickStart()) {
+                    validValue = rbRange.getTickStart();
+                } else if (mmolValue >= topLimit) {
+                    validValue = topLimit - 1;
+                } else {
+                    validValue = mmolValue;
+                }
+
+                rbRange.setRangePinsByValue(validValue, topLimit);
+
+                if (Math.abs(validValue - mmolValue) > FLOAT_ERROR_LIMIT) {
+                    etNormalFloor.setText(presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(validValue, PkuLevelUnits.MICRO_MOL), getSelectedUnit())));
+                }
+
+                final InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                v.clearFocus();
 
                 return true;
             }
 
             return false;
         });
+        etNormalFloor.setFilters(new InputFilter[] { floorFilter });
 
         etNormalCeil.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 final float newValue = Float.parseFloat(v.getText().toString());
-                final float mmolValue = presenter.convertValue(newValue, getSelectedUnit(), PkuLevelUnits.MICRO_MOL);
-                rbRange.setRangePinsByValue(getValueFromRangeBar(rbRange.getLeftIndex()), mmolValue);
+                final float mmolValue = PkuLevelConverter.convertTo(PkuLevel.create(newValue, getSelectedUnit()), PkuLevelUnits.MICRO_MOL).getValue();
+                final float bottomLimit = getValueFromRangeBar(rbRange.getLeftIndex());
+                final float validValue;
+
+                if (mmolValue <= bottomLimit) {
+                    validValue = bottomLimit + 1;
+                } else if (mmolValue > rbRange.getTickEnd()) {
+                    validValue = rbRange.getTickEnd();
+                } else {
+                    validValue = mmolValue;
+                }
+
+                rbRange.setRangePinsByValue(bottomLimit, validValue);
+
+                if (Math.abs(validValue - mmolValue) > FLOAT_ERROR_LIMIT) {
+                    etNormalCeil.setText(presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(validValue, PkuLevelUnits.MICRO_MOL), getSelectedUnit())));
+                }
+
+                final InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                v.clearFocus();
 
                 return true;
             }
 
             return false;
         });
+        etNormalCeil.setFilters(new InputFilter[] { ceilFilter });
     }
 
     private float getValueFromRangeBar(final int tickIndex) {
@@ -215,14 +266,16 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         rbRange.setTickStart(model.getNormalAbsoluteFloorMMolValue());
         rbRange.setTickEnd(model.getNormalAbsoluteCeilMMolValue());
 
+        floorFilter.setCurrentUnit(model.getSelectedUnit());
+        ceilFilter.setCurrentUnit(model.getSelectedUnit());
+
         if (!rangeSet) {
             rangeSet = true;
             rbRange.setRangePinsByValue(model.getNormalFloorMMolValue(), model.getNormalCeilMMolValue());
         }
 
-        etNormalFloor.setText(presenter.formatValue(presenter.convertValue(model.getNormalFloorMMolValue(), PkuLevelUnits.MICRO_MOL, model.getSelectedUnit()), model.getSelectedUnit()));
-        etNormalCeil.setText(presenter.formatValue(presenter.convertValue(model.getNormalCeilMMolValue(), PkuLevelUnits.MICRO_MOL, model.getSelectedUnit()), model.getSelectedUnit()));
-
+        etNormalFloor.setText(presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(model.getNormalFloorMMolValue(), PkuLevelUnits.MICRO_MOL), model.getSelectedUnit())));
+        etNormalCeil.setText(presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(model.getNormalCeilMMolValue(), PkuLevelUnits.MICRO_MOL), model.getSelectedUnit())));
     }
 
     @NonNull

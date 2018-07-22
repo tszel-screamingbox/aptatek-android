@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 import com.aptatek.aptatek.view.settings.pkulevel.RangeSettingsValueFormatter;
@@ -28,8 +29,8 @@ public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormat
         return units == PkuLevelUnits.MICRO_MOL ? FORMAT_MICRO_MOL : FORMAT_MILLI_GRAM;
     }
 
-    private String getProperUnits(final PkuRangeInfo info) {
-        return resourceInteractor.getStringResource(info.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+    private String getProperUnits(final PkuLevelUnits units) {
+        return resourceInteractor.getStringResource(units == PkuLevelUnits.MICRO_MOL
                 ? R.string.rangeinfo_pkulevel_mmol
                 : R.string.rangeinfo_pkulevel_mg);
     }
@@ -43,7 +44,7 @@ public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormat
         return resourceInteractor.getStringResource(R.string.settings_units_range_format,
                 "0",
                 formatRegularValue(info.getNormalFloorValue() - getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
-                getProperUnits(info));
+                getProperUnits(info.getPkuLevelUnit()));
     }
 
     @Override
@@ -51,19 +52,23 @@ public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormat
         return resourceInteractor.getStringResource(R.string.settings_units_range_format,
                 formatRegularValue(info.getNormalCeilValue() + getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
                 formatRegularValue(info.getHighCeilValue(), info.getPkuLevelUnit()),
-                getProperUnits(info));
+                getProperUnits(info.getPkuLevelUnit()));
     }
 
     @Override
     public String getFormattedVeryHigh(final PkuRangeInfo info) {
         return resourceInteractor.getStringResource(R.string.settings_units_range_over_format,
                 formatRegularValue(info.getHighCeilValue() + getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
-                getProperUnits(info));
+                getProperUnits(info.getPkuLevelUnit()));
+    }
+
+    private String formatRegularValue(final float value, final PkuLevelUnits unit) {
+        return formatRegularValue(PkuLevel.create(value, unit));
     }
 
     @Override
-    public String formatRegularValue(final float value, final PkuLevelUnits unit) {
-        return String.format(Locale.getDefault(), getProperFormat(unit), value);
+    public String formatRegularValue(final PkuLevel level) {
+        return String.format(Locale.getDefault(), getProperFormat(level.getUnit()), level.getValue());
     }
 
 }
