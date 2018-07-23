@@ -126,13 +126,6 @@
     <string name="reminder.time.picker.update">Update</string>
     <string name="settings.title">Settings</string>
 
-    <!-- Reminder Notification-->
-    <string name="reminder.notification.title">Time for Blood Test</string>
-    <string name="reminder.notification.message">Don’t forget to take your blood test!</string>
-    <string name="reminder.notification.now">Now</string>
-    <string name="reminder.notification.quarter.hour">15min</string>
-    <string name="reminder.notification.half.hour">30min</string>
-
     <!-- RangeInfo -->
     <string name="rangeinfo.units.format">Units are in %s</string>
     <string name="rangeinfo.veryhigh.value.prefix">over</string>
@@ -147,4 +140,11 @@
     <string name="rangeinfo.low">Low</string>
     <string name="rangeinfo.title">Range info</string>
     <string name="rangeinfo.message">To stay healthy your blood levels of phenylalanine should remain within these ranges</string>
+
+    <!-- Reminder Notification-->
+    <string name="reminder.notification.title">Time for Phe Check!</string>
+    <string name="reminder.notification.message">Now is a good time to test!</string>
+    <string name="reminder.notification.now">Now</string>
+    <string name="reminder.notification.quarter.hour">15min</string>
+    <string name="reminder.notification.half.hour">30min</string>
 </resources>
