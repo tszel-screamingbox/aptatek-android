@@ -1,7 +1,6 @@
 package com.aptatek.aptatek.view.weekly;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
@@ -10,17 +9,19 @@ import android.view.View;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.weekly.format.ValueFormatter;
 import com.github.mikephil.charting.charts.BubbleChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -77,24 +78,29 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     private void addEntry() {
         final BubbleData data = weeklyBubbleChart.getBubbleData();
 
-
         final ArrayList<BubbleEntry> entries = new ArrayList<>();
-        entries.add(new BubbleEntry(0, 0, 0.1f, "test"));
-        entries.add(new BubbleEntry(0, 13, 0.1f, "10"));
-        entries.add(new BubbleEntry(1, 7, 0.1f, "50"));
-        entries.add(new BubbleEntry(1, 10, 0.1f, "30"));
-        entries.add(new BubbleEntry(2, 8, 0.1f, "10"));
-        entries.add(new BubbleEntry(2, 12, 0.1f, "10"));
-        entries.add(new BubbleEntry(3, 20, 0.1f, "20"));
-        entries.add(new BubbleEntry(4, 23, 0.1f, "15"));
+        entries.add(new BubbleEntry(0, 0, 0.1f));
+        entries.add(new BubbleEntry(0, 13, 0.1f));
+        entries.add(new BubbleEntry(1, 7, 0.1f));
+        entries.add(new BubbleEntry(1, 10, 0.1f));
+        entries.add(new BubbleEntry(2, 8, 0.1f));
+        entries.add(new BubbleEntry(2, 12, 0.1f));
+        entries.add(new BubbleEntry(3, 20, 0.1f));
+        entries.add(new BubbleEntry(4, 23, 0.1f));
 //        entries.add(new BubbleEntry(5, 22, 0.1f));
         entries.add(new BubbleEntry(6, 23, 0.1f));
         entries.add(new BubbleEntry(6, 11, 0.1f));
 
+
         final BubbleDataSet dataSet = new BubbleDataSet(entries, null);
         dataSet.setColors(Color.RED, Color.GRAY, Color.GREEN);
-
         data.addDataSet(dataSet);
+        final Map<Entry, String> labels = new HashMap<>();
+        for (final BubbleEntry bubbleEntry : entries) {
+            labels.put(bubbleEntry, "123");
+        }
+        dataSet.setValueFormatter(new ValueFormatter(labels));
+
         data.notifyDataChanged();
         weeklyBubbleChart.invalidate();
     }
