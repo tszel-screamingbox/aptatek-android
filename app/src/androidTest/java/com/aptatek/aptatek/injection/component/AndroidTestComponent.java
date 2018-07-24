@@ -3,6 +3,7 @@ package com.aptatek.aptatek.injection.component;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.injection.module.DataFactoryModule;
 import com.aptatek.aptatek.injection.module.DatabaseModule;
+import com.aptatek.aptatek.injection.module.ReminderModule;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
 
@@ -18,4 +19,5 @@ public interface AndroidTestComponent extends ApplicationComponent {
 
     RangeInfoComponent plus(RangeInfoModule module);
 
+    ReminderTestComponent plus(ReminderModule reminderModule);
 }

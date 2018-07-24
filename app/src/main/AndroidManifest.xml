@@ -99,7 +99,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen"/>
 
-        <receiver android:name=".AlarmReceiver" />
+        <receiver android:name=".device.AlarmReceiver" />
+        <receiver android:name=".device.ReminderActionReceiver"/>
         <service android:name=".view.test.incubation.IncubationReminderService" />
         <service android:name=".view.test.samplewetting.SampleWettingReminderService" />
     </application>

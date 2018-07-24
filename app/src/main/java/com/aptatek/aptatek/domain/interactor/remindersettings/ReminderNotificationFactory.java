@@ -7,4 +7,6 @@ public interface ReminderNotificationFactory {
 
     @NonNull
     Notification createReminderNotification();
+
+    void cancelNotification(int notificationId);
 }

@@ -1,28 +1,68 @@
 package com.aptatek.aptatek.view.base;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.domain.model.AlertDialogModel;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.injection.component.DaggerActivityComponent;
 import com.aptatek.aptatek.injection.module.ActivityModule;
+import com.aptatek.aptatek.util.Constants;
+import com.aptatek.aptatek.view.dialog.AlertDialogDecisionListener;
+import com.aptatek.aptatek.view.dialog.AlertDialogDecisions;
+import com.aptatek.aptatek.view.dialog.AlertDialogFragment;
+import com.aptatek.aptatek.view.test.TestActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
+public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>> extends MvpActivity<V, P> implements IActivityComponentProvider, AlertDialogDecisionListener {
 
-public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>> extends MvpActivity<V, P> implements IActivityComponentProvider {
-
-
+    private static final String ALERT_DIALOG_FRAGMENT_TAG = "alertDialogFragmentTag";
     private ActivityComponent activityComponent;
 
-    public enum Animation { FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT }
+    private BroadcastReceiver reminderDialogBroadcast = new BroadcastReceiver() {
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            AlertDialogFragment.create(AlertDialogModel.builder()
+                    .setPositiveButtonText(getString(R.string.reminder_notification_half_hour))
+                    .setNegativeButtonText(getString(R.string.reminder_notification_quarter_hour))
+                    .setNeutralButtonText(getString(R.string.reminder_notification_now))
+                    .setMessage(getString(R.string.reminder_notification_message))
+                    .setTitle(getString(R.string.reminder_notification_title))
+                    .setTheme(R.style.ReminderSnoozeDialogTheme)
+                    .setPositiveButtonTextColor(R.color.applicationPink)
+                    .setNegativeButtonTextColor(R.color.applicationPink)
+                    .setNeutralButtonTextColor(R.color.applicationPink)
+                    .setCancelable(true)
+                    .build(), BaseActivity.this).show(getSupportFragmentManager(), ALERT_DIALOG_FRAGMENT_TAG);
+        }
+    };
+
+    @Override
+    public void onDecision(@NonNull final AlertDialogDecisions decision) {
+        if (decision == AlertDialogDecisions.NEUTRAL) {
+            startActivity(TestActivity.createStarter(this));
+        } else if (decision == AlertDialogDecisions.POSITIVE) {
+            AptatekApplication.get(this).getAlarmManager().scheduleSnooze(30);
+        } else {
+            AptatekApplication.get(this).getAlarmManager().scheduleSnooze(15);
+        }
+    }
+
+
+    public enum Animation {FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT}
 
     /**
      * Handles the component to resolve the injection
@@ -31,12 +71,25 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
      */
     protected abstract void injectActivity(ActivityComponent activityComponent);
 
-
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         injectActivity(getActivityComponent());
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(reminderDialogBroadcast, new IntentFilter(Constants.REMINDER_DIALOG_BROADCAST_NAME));
+    }
+
+    @Override
+    protected void onStop() {
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(reminderDialogBroadcast);
+        super.onStop();
     }
 
     /**

@@ -153,7 +153,7 @@
         <item name="android:textColor">@color/applicationGreen</item>
         <item name="android:textAllCaps">false</item>
     </style>
-    
+
     <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
         <item name="android:datePickerStyle">@style/Parental.DatePicker</item>
     </style>
@@ -171,13 +171,21 @@
         <item name="android:textSize">@dimen/font.size.xlarge</item>
         <item name="android:textColor">@color/pkuLevelHigh</item>
     </style>
+
     <style name="RangeInfo.Normal" parent="General.Title">
         <item name="android:textSize">@dimen/font.size.xxlarge</item>
         <item name="android:textColor">@color/pkuLevelNormal</item>
     </style>
+
     <style name="RangeInfo.Low" parent="General.Title">
         <item name="android:textSize">@dimen/font.size.xlarge</item>
         <item name="android:textColor">@color/pkuLevelLow</item>
     </style>
 
+    <style name="DefaultDialogTheme" parent="ThemeOverlay.AppCompat.Dialog" />
+
+    <style name="ReminderSnoozeDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorPrimary">@color/applicationLightGray</item>
+    </style>
 </resources>

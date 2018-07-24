@@ -9,11 +9,14 @@ import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.aptatek.aptatek.device.AlarmManager;
 import com.aptatek.aptatek.injection.component.ApplicationComponent;
 import com.aptatek.aptatek.injection.component.DaggerApplicationComponent;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.view.test.incubation.IncubationReminderService;
 import com.aptatek.aptatek.view.test.samplewetting.SampleWettingReminderService;
+
+import javax.inject.Inject;
 
 import timber.log.Timber;
 
@@ -22,6 +25,9 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
     private ApplicationComponent applicationComponent;
     private boolean inForeground;
+
+    @Inject
+    AlarmManager alarmManager;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -67,8 +73,11 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         return inForeground;
     }
 
+    public AlarmManager getAlarmManager() {
+        return alarmManager;
+    }
+
     public static AptatekApplication get(final Context context) {
         return (AptatekApplication) context.getApplicationContext();
     }
-
 }

@@ -71,6 +71,11 @@ public class ReminderInteractor {
         return Completable.fromAction(() -> reminderDao.insert(reminderMapper.mapToData(reminder)));
     }
 
+    public Completable insertReminder(final int weekDay, final int hour, final int minute) {
+        return Completable.fromAction(() ->
+                alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute, true));
+    }
+
     public Completable updateReminder(final String id, final int hour, final int minute) {
         return Completable.fromAction(() -> reminderDao.updateReminder(id, hour, minute));
     }
@@ -91,12 +96,7 @@ public class ReminderInteractor {
         );
     }
 
-    public Completable setReminder(final int weekDay, final int hour, final int minute) {
-        return Completable.fromAction(() ->
-                alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute));
-    }
-
-    private Observable<Collection<Reminder>> listReminders(final int weekDay) {
+    public Observable<Collection<Reminder>> listReminders(final int weekDay) {
         return reminderDao.getReminders(weekDay)
                 .map(reminderMapper::mapListToDomain)
                 .toObservable();
