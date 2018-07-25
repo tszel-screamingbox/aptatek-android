@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static android.support.v4.util.Preconditions.checkArgument;
+
 /**
  * Utility for calendar
  */
@@ -65,6 +67,23 @@ public class CalendarUtils {
                 return SAT;
             default:
                 return null;
+        }
+    }
+
+    public static String dayNumberSuffix(final int n) {
+        checkArgument(n >= 1 && n <= 31, "Illegal day of month: " + n);
+        if (n >= 11 && n <= 13) {
+            return "th";
+        }
+        switch (n % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
         }
     }
 }
