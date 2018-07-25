@@ -74,7 +74,7 @@
         android:layout_marginEnd="@dimen/general.distance.small"
         android:layout_marginStart="@dimen/general.distance.small"
         android:layout_marginTop="@dimen/general.distance.small"
-        android:drawableEnd="@drawable/ic_left_arrow"
+        android:drawableEnd="@drawable/ic_right_arrow"
         android:text="@string/settings.daily.reminders"
         android:textColor="@android:color/black"
         android:textSize="@dimen/font.size.xbig"

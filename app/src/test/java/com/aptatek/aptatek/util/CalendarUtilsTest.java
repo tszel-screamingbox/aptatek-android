@@ -63,4 +63,35 @@ public class CalendarUtilsTest {
         cal.setTime(now);
         assertEquals(year, String.valueOf(cal.get(Calendar.YEAR)));
     }
+
+    @Test
+    public void testDayNumberSuffix() {
+        assertEquals(CalendarUtils.dayNumberSuffix(1), "st");
+        assertEquals(CalendarUtils.dayNumberSuffix(2), "nd");
+        assertEquals(CalendarUtils.dayNumberSuffix(3), "rd");
+        assertEquals(CalendarUtils.dayNumberSuffix(4), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(10), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(11), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(12), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(13), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(21), "st");
+        assertEquals(CalendarUtils.dayNumberSuffix(22), "nd");
+        assertEquals(CalendarUtils.dayNumberSuffix(23), "rd");
+        assertEquals(CalendarUtils.dayNumberSuffix(31), "st");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalDayNumberSuffix() throws Exception {
+        CalendarUtils.dayNumberSuffix(32);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDayNumberSuffixWithZero() throws Exception {
+        CalendarUtils.dayNumberSuffix(0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDayNumberSuffixWithNegative() throws Exception {
+        CalendarUtils.dayNumberSuffix(-1);
+    }
 }
