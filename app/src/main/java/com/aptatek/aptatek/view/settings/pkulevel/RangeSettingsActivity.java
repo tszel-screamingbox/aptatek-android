@@ -103,6 +103,8 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         );
 
         rbRange.setOnRangeBarChangeListener((rangeBar, leftPinIndex, rightPinIndex, leftPinValue, rightPinValue) -> {
+            // called when the range bar's values change.
+            // we convert MicoMol values from the pin indexes, update the editTexts, and emit a signal to update other texts on screen.
             Timber.d("rangeBarChange: " + leftPinIndex + ", " + rightPinIndex);
 
             final float mmolFloor = getValueFromRangeBar(leftPinIndex);
