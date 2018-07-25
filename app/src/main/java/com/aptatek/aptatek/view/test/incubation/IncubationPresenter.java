@@ -44,11 +44,14 @@ public class IncubationPresenter extends TestBasePresenter<IncubationView> {
 
     public void onClickNext() {
         ifViewAttached(attachedView ->
-            attachedView.showAlertDialog(AlertDialogModel.create(
-                    resourceInteractor.getStringResource(R.string.test_incubation_alertdialog_title),
-                    resourceInteractor.getStringResource(R.string.test_incubation_alertdialog_message
+                attachedView.showAlertDialog(AlertDialogModel.builder()
+                        .setTitle(resourceInteractor.getStringResource(R.string.test_incubation_alertdialog_title))
+                        .setMessage(resourceInteractor.getStringResource(R.string.test_incubation_alertdialog_message))
+                        .setPositiveButtonText(resourceInteractor.getStringResource(R.string.alertdialog_button_yes))
+                        .setNegativeButtonText(resourceInteractor.getStringResource(R.string.alertdialog_button_no))
+                        .setCancelable(true)
+                        .build()
                 )
-            ))
         );
     }
 

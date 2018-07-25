@@ -1,5 +1,7 @@
 package com.aptatek.aptatek.domain.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.auto.value.AutoValue;
 
 import java.util.Collection;
@@ -11,6 +13,7 @@ public abstract class ReminderDay {
 
     public abstract boolean isActive();
 
+    @Nullable
     public abstract Collection<Reminder> getReminders();
 
     public static ReminderDay.Builder builder() {

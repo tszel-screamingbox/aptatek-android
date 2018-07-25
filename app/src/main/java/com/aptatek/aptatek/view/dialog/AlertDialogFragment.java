@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
-import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.model.AlertDialogModel;
 
 public class AlertDialogFragment extends DialogFragment {
@@ -43,33 +43,45 @@ public class AlertDialogFragment extends DialogFragment {
             return super.onCreateDialog(savedInstanceState);
         }
 
-        final DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE: {
-                        decision = AlertDialogDecisions.POSITIVE;
-                        break;
-                    }
-                    case DialogInterface.BUTTON_NEGATIVE: {
-                        decision = AlertDialogDecisions.NEGATIVE;
-                        break;
-                    }
-                    default: {
-                        decision = null;
-                        break;
-                    }
+        final DialogInterface.OnClickListener clickListener = (dialog, which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE: {
+                    decision = AlertDialogDecisions.POSITIVE;
+                    break;
+                }
+                case DialogInterface.BUTTON_NEGATIVE: {
+                    decision = AlertDialogDecisions.NEGATIVE;
+                    break;
+                }
+                case DialogInterface.BUTTON_NEUTRAL: {
+                    decision = AlertDialogDecisions.NEUTRAL;
+                    break;
+                }
+                default: {
+                    decision = null;
+                    break;
                 }
             }
         };
 
-        return new AlertDialog.Builder(getActivity())
-                .setCancelable(false)
+        final AlertDialog alertDialog = new AlertDialog.Builder(requireActivity(), alertDialogModel.getTheme())
+                .setCancelable(alertDialogModel.isCancelable())
                 .setTitle(alertDialogModel.getTitle())
                 .setMessage(alertDialogModel.getMessage())
-                .setNegativeButton(R.string.alertdialog_button_no, clickListener)
-                .setPositiveButton(R.string.alertdialog_button_yes, clickListener)
+                .setNegativeButton(alertDialogModel.getNegativeButtonText(), clickListener)
+                .setPositiveButton(alertDialogModel.getPositiveButtonText(), clickListener)
+                .setNeutralButton(alertDialogModel.getNeutralButtonText(), clickListener)
                 .create();
+
+        alertDialog.setOnShowListener(dialog -> {
+            alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(requireContext(), alertDialogModel.getNegativeButtonTextColor()));
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(requireContext(), alertDialogModel.getPositiveButtonTextColor()));
+            alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+                    .setTextColor(ContextCompat.getColor(requireContext(), alertDialogModel.getNeutralButtonTextColor()));
+        });
+        return alertDialog;
     }
 
     @Override
