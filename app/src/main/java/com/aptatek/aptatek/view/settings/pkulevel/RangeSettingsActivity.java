@@ -222,18 +222,31 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
             return;
         }
 
+        presenter.onBackPressed(getValueFromRangeBar(rbRange.getLeftIndex()),
+                getValueFromRangeBar(rbRange.getRightIndex()));
+    }
+
+    @Override
+    public void showSaveChangesDialog() {
+        final AlertDialogModel model = AlertDialogModel.builder()
+                .setCancelable(false)
+                .setTitle(getString(R.string.settings_units_confirmation_title))
+                .setMessage(getString(R.string.settings_units_confirmation_message))
+                .setNegativeButtonText(getString(R.string.settings_units_confirmation_button_cancel))
+                .setPositiveButtonText(getString(R.string.settings_units_confirmation_button_save))
+                .build();
         final AlertDialogFragment alertDialogFragment = AlertDialogFragment.create(
-                AlertDialogModel.create(getString(R.string.settings_units_confirmation_title), getString(R.string.settings_units_confirmation_message)),
-            decision -> {
-                if (decision == AlertDialogDecisions.POSITIVE) {
-                    presenter.saveNormalRange(
-                            getValueFromRangeBar(rbRange.getLeftIndex()),
-                            getValueFromRangeBar(rbRange.getRightIndex())
-                    );
-                } else {
-                    finish();
-                }
-            });
+                model,
+                decision -> {
+                    if (decision == AlertDialogDecisions.POSITIVE) {
+                        presenter.saveNormalRange(
+                                getValueFromRangeBar(rbRange.getLeftIndex()),
+                                getValueFromRangeBar(rbRange.getRightIndex())
+                        );
+                    } else {
+                        finish();
+                    }
+                });
         alertDialogFragment.show(getSupportFragmentManager(), TAG_CONFIRM_DIALOG);
     }
 

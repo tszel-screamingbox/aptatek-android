@@ -180,4 +180,38 @@ public class RangeSettingsPresenterTest {
         verify(view).finish();
     }
 
+    @Test
+    public void testOnBackDoesntPopDialog() throws Exception {
+        final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
+                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
+                .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
+                .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
+                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
+                .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
+                .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
+                .build();
+        doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
+
+        presenter.onBackPressed(Constants.DEFAULT_PKU_NORMAL_FLOOR, Constants.DEFAULT_PKU_NORMAL_CEIL);
+
+        verify(view).finish();
+    }
+
+    @Test
+    public void testOnBackPopsDialog() throws Exception {
+        final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
+                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
+                .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
+                .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
+                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
+                .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
+                .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
+                .build();
+        doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
+
+        presenter.onBackPressed(234f, 555f);
+
+        verify(view).showSaveChangesDialog();
+    }
+
 }

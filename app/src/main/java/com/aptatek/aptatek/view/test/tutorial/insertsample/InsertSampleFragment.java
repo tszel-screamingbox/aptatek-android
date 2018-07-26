@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
-import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.aptatek.view.test.TestScreens;
 import com.aptatek.aptatek.view.test.base.TestFragmentBaseView;
 import com.aptatek.aptatek.view.test.tutorial.BaseTutorialFragment;
@@ -39,7 +38,8 @@ public class InsertSampleFragment extends BaseTutorialFragment<TestFragmentBaseV
 
     @Override
     public boolean onNavigateForwardPressed() {
-        getActivity().startActivity(RangeInfoActivity.starter(getActivity()));
+        insertSamplePresenter.startSampleWetting();
+        showScreen(TestScreens.SAMPLE_WETTING);
 
         return true;
     }

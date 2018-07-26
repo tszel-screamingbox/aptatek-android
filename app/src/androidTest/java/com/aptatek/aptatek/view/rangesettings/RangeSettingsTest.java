@@ -1,12 +1,16 @@
 package com.aptatek.aptatek.view.rangesettings;
 
 import android.app.Application;
+import android.inputmethodservice.Keyboard;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.EspressoKey;
+import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.aptatek.aptatek.R;
@@ -36,6 +40,7 @@ import javax.inject.Inject;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -109,12 +114,27 @@ public class RangeSettingsTest {
     }
 
     @Test
-    public void testBackPopsDialogFinishesActivity() throws Exception {
+    public void testBackDoesntPopDialogFinishesActivity() throws Exception {
+        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
+
+        Assert.assertTrue(activityRule.getActivity().isFinishing());
+    }
+
+    @Test
+    public void testBackPopsDialogAndFinishesActivity() throws Exception {
+        onView(withId(R.id.rangeSettingsNormalCeil)).perform(click());
+
+        Thread.sleep(1000L);
+
+        onView(withId(R.id.rangeSettingsNormalCeil)).perform(ViewActions.replaceText("999"), pressImeActionButton());
+
+        Thread.sleep(1000L);
+
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
 
         onView(withText(R.string.settings_units_confirmation_title)).check(matches(isDisplayed()));
         onView(withText(R.string.settings_units_confirmation_message)).check(matches(isDisplayed()));
-        onView(withText(R.string.alertdialog_button_no)).perform(click());
+        onView(withText(R.string.settings_units_confirmation_button_cancel)).perform(click());
 
         Assert.assertTrue(activityRule.getActivity().isFinishing());
     }

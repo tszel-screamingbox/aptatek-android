@@ -12,6 +12,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -99,6 +100,28 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> ifViewAttached(RangeSettingsView::finish)));
+    }
+
+    public void onBackPressed(final float floorMMol, final float ceilMMol) {
+        compositeDisposable.add(pkuRangeInteractor.getInfo()
+                .flatMapCompletable(info -> {
+                    final float savedFloorMMol;
+                    final float savedCeilMMol;
+
+                    if (info.getPkuLevelUnit() != PkuLevelUnits.MICRO_MOL) {
+                        savedFloorMMol = convertValue(info.getNormalFloorValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL);
+                        savedCeilMMol = convertValue(info.getNormalCeilValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL);
+                    } else {
+                        savedFloorMMol = info.getNormalFloorValue();
+                        savedCeilMMol = info.getNormalCeilValue();
+                    }
+
+                    if (Math.abs(floorMMol - savedFloorMMol) > Constants.FLOAT_COMPARSION_ERROR_MARGIN || Math.abs(ceilMMol - savedCeilMMol) > Constants.FLOAT_COMPARSION_ERROR_MARGIN) {
+                        return Completable.fromAction(() -> ifViewAttached(RangeSettingsView::showSaveChangesDialog));
+                    } else {
+                        return Completable.fromAction(() -> ifViewAttached(RangeSettingsView::finish));
+                    }
+                }).subscribe());
     }
 
     public String formatValue(final PkuLevel pkuLevel) {
