@@ -46,9 +46,10 @@ public class ChartVM implements IListTypeProvider {
                 .first();
         maxPhenylalanineLevel = highest.getPhenylalanineLevel();
 
+        final String unit = highest.getUnit() + " mg/dl";
         return StringUtils.highlightWord(
                 String.valueOf(highest.getPhenylalanineLevel()),
-                String.valueOf(highest.getUnit())) + " mg/dl";
+                String.valueOf(unit));
     }
 
     public int getMaxPhenylalanineLevel() {
