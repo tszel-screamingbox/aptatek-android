@@ -17,6 +17,7 @@ import com.aptatek.aptatek.view.main.adapter.ChartAdapterViewHolder;
 import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
 import com.aptatek.aptatek.view.weekly.WeeklyResultActivity;
+import com.aptatek.aptatek.view.toggle.ToggleActivity;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import javax.inject.Inject;

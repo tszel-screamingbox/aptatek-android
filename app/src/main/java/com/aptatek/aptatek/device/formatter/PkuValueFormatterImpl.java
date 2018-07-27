@@ -21,9 +21,14 @@ public class PkuValueFormatterImpl implements PkuValueFormatter {
         this.interactor = interactor;
     }
 
+    private float getProperOffset(final PkuRangeInfo info) {
+        return info.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? 1f : 0.1f;
+    }
+
+
     @Override
     public String formatVeryHigh(final PkuRangeInfo info) {
-        return String.format(Locale.getDefault(), getProperFormat(info), info.getHighCeilValue() + 1f);
+        return String.format(Locale.getDefault(), getProperFormat(info), info.getHighCeilValue() + getProperOffset(info));
     }
 
     @NonNull
@@ -33,7 +38,7 @@ public class PkuValueFormatterImpl implements PkuValueFormatter {
 
     @Override
     public String formatHigh(final PkuRangeInfo info) {
-        final String floor = String.format(Locale.getDefault(), getProperFormat(info), info.getNormalCeilValue() + 1f);
+        final String floor = String.format(Locale.getDefault(), getProperFormat(info), info.getNormalCeilValue() + getProperOffset(info));
         final String ceil = String.format(Locale.getDefault(), getProperFormat(info), info.getHighCeilValue());
         return floor + "-" + ceil;
     }
@@ -47,7 +52,7 @@ public class PkuValueFormatterImpl implements PkuValueFormatter {
 
     @Override
     public String formatLow(final PkuRangeInfo info) {
-        return String.format(Locale.getDefault(), getProperFormat(info), info.getNormalFloorValue() - 1f);
+        return String.format(Locale.getDefault(), getProperFormat(info), info.getNormalFloorValue() - getProperOffset(info));
     }
 
     @Override

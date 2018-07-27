@@ -54,4 +54,5 @@ public interface ActivityComponent {
     TestActivityComponent plus(TestModule module);
 
     RangeInfoActivityComponent plus(RangeInfoModule module);
+
 }
