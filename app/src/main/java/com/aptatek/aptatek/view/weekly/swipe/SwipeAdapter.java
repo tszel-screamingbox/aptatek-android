@@ -4,25 +4,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.aptatek.aptatek.view.weekly.chart.WeeklyChartFragment;
+import com.aptatek.aptatek.view.weekly.chart.WeeklyChartFragmentStarter;
+
+import java.util.List;
 
 public class SwipeAdapter extends FragmentStatePagerAdapter {
 
-    private boolean isSwipeDisabled = false;
-    private final int size;
+    private final List<Integer> weeks;
 
-    public SwipeAdapter(final FragmentManager fm, final int size) {
+    public SwipeAdapter(final FragmentManager fm, final List<Integer> validWeeks) {
         super(fm);
-        this.size = size;
+        this.weeks = validWeeks;
     }
 
     @Override
     public Fragment getItem(final int position) {
-        return new WeeklyChartFragment();
+        return WeeklyChartFragmentStarter.newInstance(weeks.get(position));
     }
 
     @Override
     public int getCount() {
-        return size;
+        return weeks.size();
     }
 }

@@ -12,6 +12,7 @@ import static android.support.v4.util.Preconditions.checkArgument;
  */
 
 public class CalendarUtils {
+    private static final int WEEK_IN_DAYS = 7;
 
     private static final int FIRST = 1;
     private static final int SECOND = 2;
@@ -47,6 +48,40 @@ public class CalendarUtils {
     public static String formatDate(final Date date, final String pattern) {
         final SimpleDateFormat sdf = new SimpleDateFormat(pattern, Locale.ENGLISH);
         return sdf.format(date);
+    }
+
+    //TODO: test
+    public static Date dateBefore(final int numberOfWeek) {
+        final Date date = new Date();
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, -WEEK_IN_DAYS * numberOfWeek);
+        return calendar.getTime();
+    }
+
+    //TODO: test
+    public static Date thisMonday(final Date date) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.clear(Calendar.MINUTE);
+        calendar.clear(Calendar.SECOND);
+        calendar.clear(Calendar.MILLISECOND);
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+        return calendar.getTime();
+    }
+
+    //TODO: test
+    public static Date nextMonday(final Date date) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.clear(Calendar.MINUTE);
+        calendar.clear(Calendar.SECOND);
+        calendar.clear(Calendar.MILLISECOND);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        calendar.add(Calendar.DATE, 1);
+        return calendar.getTime();
     }
 
     public static String dayOfWeek(final int dayOfWeek) {

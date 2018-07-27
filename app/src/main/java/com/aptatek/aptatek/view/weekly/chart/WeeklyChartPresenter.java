@@ -2,12 +2,8 @@ package com.aptatek.aptatek.view.weekly.chart;
 
 import android.graphics.Color;
 
-import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.data.PinCode;
-import com.aptatek.aptatek.device.DeviceHelper;
-import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
-import com.aptatek.aptatek.domain.interactor.auth.AuthInteractor;
-import com.aptatek.aptatek.domain.interactor.auth.Callback;
+import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
+import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.view.weekly.format.ValueFormatter;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
@@ -15,19 +11,28 @@ import com.github.mikephil.charting.data.Entry;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import timber.log.Timber;
-
 
 class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
 
-    @Inject
-    WeeklyChartPresenter() {
+    private final FakeCubeDataManager fakeCubeDataManager;
 
+    @Inject
+    WeeklyChartPresenter(final FakeCubeDataManager fakeCubeDataManager) {
+        this.fakeCubeDataManager = fakeCubeDataManager;
+    }
+
+    void fillDataSet(final int weekBefore) {
+        final Date firstDayOfWeek;
+        final Date lastDayOfWeek;
+        final Date date = CalendarUtils.dateBefore(weekBefore);
+
+        //fakeCubeDataManager.loadByDate(firstDayOfWeek, nextMonday);
     }
 
     BubbleDataSet generateDataset() {

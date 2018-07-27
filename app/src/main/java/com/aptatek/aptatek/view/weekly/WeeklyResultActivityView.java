@@ -6,9 +6,9 @@ interface WeeklyResultActivityView extends MvpView {
 
     void onSubtitleChanged(final String subtitle);
 
-    void onLastPageReached();
+    void onUpdateRightArrow(final boolean isVisible);
 
-    void onFirstPageReached();
+    void onUpdateLeftArrow(final boolean isVisible);
 
     void onLoadNextPage(final int page);
 }

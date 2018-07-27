@@ -56,6 +56,17 @@ public class FakeCubeDataManager implements ICubeDataRepository {
     }
 
     @Override
+    public List<CubeData> loadByDate(final Date startDate, final Date endDate) {
+        if (!startDate.before(endDate)) {
+            throw new IllegalArgumentException("Start date must be earlier than end date!");
+        }
+
+        return Ix.from(cubeDataList)
+                .filter(cubeData -> startDate.before(cubeData.getDate()) && endDate.after(cubeData.getDate()))
+                .toList();
+    }
+
+    @Override
     public List<CubeData> listAll() {
         return cubeDataList;
     }

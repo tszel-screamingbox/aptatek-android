@@ -6,8 +6,10 @@ import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -15,36 +17,46 @@ import static com.aptatek.aptatek.util.CalendarUtils.dayNumberSuffix;
 
 public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResultActivityView> {
 
-    private static final int WEEK_IN_DAYS = 7;
-
     private final FakeCubeDataManager fakeCubeDataManager;
     private final ResourceInteractor resourceInteractor;
+    private List<Integer> weekList = new ArrayList<>();
 
     @Inject
     public WeeklyResultActivityPresenter(final FakeCubeDataManager fakeCubeDataManager,
                                          final ResourceInteractor resourceInteractor) {
         this.fakeCubeDataManager = fakeCubeDataManager;
         this.resourceInteractor = resourceInteractor;
+
+        weekList.add(0);
+        weekList.add(1);
+        weekList.add(2);
+        weekList.add(10);
+        weekList.add(14);
     }
 
-    int numberOfWeeks() {
-        return 12;
+    //TODO: filter for valid weeks
+
+    List<Integer> validWeekList() {
+        return weekList;
     }
 
-    void subTitle(final int week) {
-        final Date date = new Date();
+    void subTitle(final int page) {
+        final Date actualDate = CalendarUtils.dateBefore(weekList.get(page));
         final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DATE, -WEEK_IN_DAYS * week);
-        calendar.getTime();
+        calendar.setTime(actualDate);
         final String pattern = resourceInteractor.getStringResource(R.string.weekly_subtitle_dateformat, dayNumberSuffix(calendar.get(Calendar.DAY_OF_MONTH)));
-        final String formatDate = CalendarUtils.formatDate(calendar.getTime(), pattern);
+        final String formatDate = CalendarUtils.formatDate(actualDate, pattern);
         final String subtitle = resourceInteractor.getStringResource(R.string.weekly_subtitle, formatDate);
         ifViewAttached(view -> view.onSubtitleChanged(subtitle));
     }
 
     void showPage(final int pageNum) {
+        ifViewAttached(view -> view.onLoadNextPage(pageNum));
+        updateArrows(pageNum);
+    }
 
-
+    void updateArrows(final int page) {
+        ifViewAttached(view -> view.onUpdateLeftArrow(page != 0));
+        ifViewAttached(view -> view.onUpdateRightArrow(page != validWeekList().size() - 1));
     }
 }

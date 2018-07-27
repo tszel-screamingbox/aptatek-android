@@ -1,16 +1,12 @@
 package com.aptatek.aptatek.view.weekly.chart;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.data.PinCode;
 import com.aptatek.aptatek.injection.component.FragmentComponent;
-import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.base.BaseFragment;
-import com.aptatek.aptatek.view.main.MainActivity;
-import com.aptatek.aptatek.view.pin.base.BasePinFragment;
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -19,6 +15,8 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import javax.inject.Inject;
 
+import activitystarter.ActivityStarter;
+import activitystarter.Arg;
 import butterknife.BindView;
 
 
@@ -27,6 +25,9 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     private static final float MIN_X = -0.5f;
     private static final float MAX_X = 6.5f;
     private static final float OFFSET = 2f;
+
+    @Arg
+    int weekBefore;
 
     @Inject
     WeeklyChartPresenter presenter;
@@ -45,8 +46,15 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     }
 
     @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActivityStarter.fill(this, savedInstanceState);
+    }
+
+    @Override
     protected void initObjects(final View view) {
         initChart();
+        presenter.fillDataSet(weekBefore);
     }
 
     @Override

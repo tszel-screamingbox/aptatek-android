@@ -72,6 +72,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     public void onPlayButtonClicked() {
         emptyGroup.setVisibility(View.GONE);
         chartViewPager.disableSwipe(false);
+        chartViewPager.setCurrentItem(presenter.validWeekList().size() - 1);
     }
 
     @OnClick(R.id.leftArrow)
@@ -87,16 +88,15 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     }
 
     private void initAdapter() {
-        final int pageSize = presenter.numberOfWeeks();
-        final SwipeAdapter swipeAdapter = new SwipeAdapter(getSupportFragmentManager(), pageSize);
+        final SwipeAdapter swipeAdapter = new SwipeAdapter(getSupportFragmentManager(), presenter.validWeekList());
         chartViewPager.setAdapter(swipeAdapter);
         chartViewPager.disableSwipe(true);
-        presenter.showPage(pageSize - 1);
     }
 
     @OnPageChange(R.id.viewpager)
     public void onPageChanged(final int state) {
-        presenter.subTitle(presenter.numberOfWeeks() - state - 1);
+        presenter.subTitle(presenter.validWeekList().size() - state - 1);
+        presenter.updateArrows(state);
     }
 
     @Override
@@ -105,17 +105,17 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     }
 
     @Override
-    public void onLastPageReached() {
-        rightArrowImageView.setVisibility(View.INVISIBLE);
+    public void onUpdateRightArrow(final boolean isVisible) {
+        rightArrowImageView.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
-    public void onFirstPageReached() {
-        leftArrowImageView.setVisibility(View.INVISIBLE);
+    public void onUpdateLeftArrow(final boolean isVisible) {
+        leftArrowImageView.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
     }
 
     @Override
     public void onLoadNextPage(final int page) {
-        chartViewPager.setCurrentItem(page);
+        chartViewPager.setCurrentItem(page, true);
     }
 }
