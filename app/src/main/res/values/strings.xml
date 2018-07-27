@@ -3,7 +3,7 @@
     <string name="alertdialog.button.no">No</string>
     <string name="alertdialog.button.yes">Yes</string>
     <!-- App Constants-->
-    <string name="app.name">Aptatek</string>
+    <string name="application.name">Aptatek</string>
     <!-- AuthPin Activity -->
     <string name="auth.pin.hint">Enter your PIN code</string>
     <string name="auth.pin.hint.fingerprint">Enter your PIN code or use your fingerprint</string>
@@ -128,6 +128,19 @@
     <string name="reminder.time.picker.delete">Delete</string>
     <string name="reminder.time.picker.update">Update</string>
     <string name="settings.title">Settings</string>
+    <string name="settings.units">Phe Preferences &amp; Units</string>
+    <string name="settings.units.description">You can set your Phe levels and the units</string>
+    <string name="settings.units.title">Your Phe Target Range</string>
+    <string name="settings.units.range.format">From %s to %s %s</string>
+    <string name="settings.units.range.over.format">Over %s %s</string>
+    <string name="settings.units.normal.description">Talk with your medical team about how you can customize your \"Target Phe level range\" so that the app can give you customized feedback about how closely you\'re meeting those goals</string>
+    <string name="settings.units.label">Units</string>
+    <string name="settings.units.confirmation.title">Ranges Changed</string>
+    <string name="settings.units.confirmation.button.cancel">Cancel</string>
+    <string name="settings.units.confirmation.button.save">Save</string>
+    <string name="settings.units.confirmation.message">Do you want to save these changes?</string>
+    <string name="settings.units.normal.floor.hint">Floor</string>
+    <string name="settings.units.normal.ceil.hint">Ceil</string>
 
     <!-- RangeInfo -->
     <string name="rangeinfo.units.format">Units are in %s</string>
@@ -138,7 +151,7 @@
     <string name="rangeinfo.edit.level.preferences">Edit Level Preferences</string>
     <string name="rangeinfo.back">Back</string>
     <string name="rangeinfo.very.high">Very High</string>
-    <string name="rangeinfo.hight">High</string>
+    <string name="rangeinfo.high">High</string>
     <string name="rangeinfo.normal">Normal</string>
     <string name="rangeinfo.low">Low</string>
     <string name="rangeinfo.title">Range info</string>

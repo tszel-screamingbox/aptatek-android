@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
+import com.aptatek.aptatek.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.aptatek.view.settings.reminder.ReminderSettingsActivity;
 
 import javax.inject.Inject;
@@ -78,6 +79,11 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     @OnClick(R.id.textViewDailyReminders)
     public void onTextViewDailyRemindersClicked() {
         launchActivity(ReminderSettingsActivity.starter(this), false, Animation.FADE);
+    }
+
+    @OnClick(R.id.settingsUnitsLabel)
+    public void onUnitsClicked() {
+        launchActivity(RangeSettingsActivity.starter(this), false, Animation.FADE);
     }
 
     @Override

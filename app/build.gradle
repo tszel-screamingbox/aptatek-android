@@ -161,6 +161,11 @@ dependencies {
     implementation activityStarterDependencies.activityStarter
     annotationProcessor activityStarterDependencies.apt
 
+    // UI
+    implementation (uiDependencies.rangebar) {
+        exclude module: 'support-compat'
+    }
+
     // LeakCanary
     debugImplementation leakDependencies.debug
     releaseImplementation leakDependencies.release

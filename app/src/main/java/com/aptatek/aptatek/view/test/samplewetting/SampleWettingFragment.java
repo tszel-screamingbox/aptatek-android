@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
+import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.aptatek.view.test.TestScreens;
 import com.aptatek.aptatek.view.test.base.TestBaseFragment;
 
@@ -56,6 +57,13 @@ public class SampleWettingFragment extends TestBaseFragment<SampleWettingView, S
         showScreen(TestScreens.CANCEL);
 
         return true;
+    }
+
+    @Override
+    public void navigateForward() {
+        super.navigateForward();
+
+        getActivity().startActivity(RangeInfoActivity.starter(getActivity()));
     }
 
     @Override

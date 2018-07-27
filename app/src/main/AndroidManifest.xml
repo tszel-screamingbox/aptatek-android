@@ -8,7 +8,7 @@
         android:name=".AptatekApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app.name"
+        android:label="@string/application.name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -99,8 +99,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen"/>
 
+        <activity android:name=".view.settings.pkulevel.RangeSettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
+
         <receiver android:name=".device.AlarmReceiver" />
         <receiver android:name=".device.ReminderActionReceiver"/>
+
         <service android:name=".view.test.incubation.IncubationReminderService" />
         <service android:name=".view.test.samplewetting.SampleWettingReminderService" />
     </application>

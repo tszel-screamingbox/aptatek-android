@@ -1,12 +1,15 @@
 package com.aptatek.aptatek.domain.interactor.rangeinfo;
 
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeDataSource;
 import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -33,16 +36,16 @@ public class PkuRangeInteractorTest {
 
     @Test
     public void testGetInfoCallsDataSource() throws Exception {
-        when(dataSource.getHighCeilValue()).thenReturn(1f);
-        when(dataSource.getNormalCeilValue()).thenReturn(1f);
-        when(dataSource.getNormalFloorValue()).thenReturn(1f);
+        when(dataSource.getHighCeilValueMMol()).thenReturn(1f);
+        when(dataSource.getNormalCeilValueMMol()).thenReturn(1f);
+        when(dataSource.getNormalFloorValueMMol()).thenReturn(1f);
         when(dataSource.getDisplayUnit()).thenReturn(PkuLevelUnits.MICRO_MOL);
 
         final TestObserver<PkuRangeInfo> test = interactor.getInfo().test();
 
-        verify(dataSource).getHighCeilValue();
-        verify(dataSource).getNormalCeilValue();
-        verify(dataSource).getNormalFloorValue();
+        verify(dataSource).getHighCeilValueMMol();
+        verify(dataSource).getNormalCeilValueMMol();
+        verify(dataSource).getNormalFloorValueMMol();
         verify(dataSource).getDisplayUnit();
 
         test.assertComplete();
@@ -64,16 +67,45 @@ public class PkuRangeInteractorTest {
         final float normalCeilValue = 350f;
         final float normalFloorValue = 100f;
         when(dataSource.getDisplayUnit()).thenReturn(PkuLevelUnits.MILLI_GRAM);
-        when(dataSource.getHighCeilValue()).thenReturn(highCeilValue);
-        when(dataSource.getNormalCeilValue()).thenReturn(normalCeilValue);
-        when(dataSource.getNormalFloorValue()).thenReturn(normalFloorValue);
+        when(dataSource.getHighCeilValueMMol()).thenReturn(highCeilValue);
+        when(dataSource.getNormalCeilValueMMol()).thenReturn(normalCeilValue);
+        when(dataSource.getNormalFloorValueMMol()).thenReturn(normalFloorValue);
 
         final TestObserver<PkuRangeInfo> test = interactor.getInfo().test();
         test.await(1, TimeUnit.SECONDS);
         test.assertNoErrors();
         test.assertComplete();
 
-        // TODO get exact conversion and validate it here...
-        test.assertValueAt(0, value -> value.getHighCeilValue() != highCeilValue);
+        test.assertValueAt(0, value -> value.getNormalCeilValue() == PkuLevelConverter.convertTo(PkuLevel.create(normalCeilValue, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
+    }
+
+    @Test
+    public void testSaveDisplayUnitCallsDataSource() throws Exception {
+        final PkuLevelUnits unit = PkuLevelUnits.MICRO_MOL;
+        final TestObserver<Void> test = interactor.saveDisplayUnit(unit).test();
+        test.assertComplete();
+        test.assertNoErrors();
+
+        verify(dataSource).setDisplayUnit(unit);
+    }
+
+    @Test
+    public void testSaveNormalRangeCallsDataSource() throws Exception {
+        final PkuLevel floor = PkuLevel.create(3f, PkuLevelUnits.MILLI_GRAM);
+        final PkuLevel ceil = PkuLevel.create(17.2f, PkuLevelUnits.MILLI_GRAM);
+        final TestObserver<Void> test = interactor.saveNormalRange(floor, ceil).test();
+        test.assertComplete();
+        test.assertNoErrors();
+
+        verify(dataSource).setNormalFloorValueMMol(PkuLevelConverter.convertTo(floor, PkuLevelUnits.MICRO_MOL).getValue());
+        verify(dataSource).setNormalCeilValueMMol(PkuLevelConverter.convertTo(ceil, PkuLevelUnits.MICRO_MOL).getValue());
+    }
+
+    @Test
+    public void testSaveNormalRangeError() throws Exception {
+        final PkuLevel floor = PkuLevel.create(-1f, PkuLevelUnits.MILLI_GRAM);
+        final PkuLevel ceil = PkuLevel.create(200.f, PkuLevelUnits.MILLI_GRAM);
+        final TestObserver<Void> test = interactor.saveNormalRange(floor, ceil).test();
+        test.assertError(error -> error instanceof IllegalArgumentException);
     }
 }

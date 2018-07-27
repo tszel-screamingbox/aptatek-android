@@ -1,5 +1,5 @@
 <resources>
     <!-- App Constants-->
-    <string name="app.name">Aptatek-DEV</string>
+    <string name="application.name">Aptatek-DEV</string>
 	
 </resources>

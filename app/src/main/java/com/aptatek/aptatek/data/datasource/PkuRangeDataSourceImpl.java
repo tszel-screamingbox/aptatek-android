@@ -14,12 +14,12 @@ public class PkuRangeDataSourceImpl implements PkuRangeDataSource {
     }
 
     @Override
-    public void setNormalFloorValue(final float value) {
+    public void setNormalFloorValueMMol(final float value) {
         preferenceManager.setPkuRangeNormalFloor(value);
     }
 
     @Override
-    public void setNormalCeilValue(final float value) {
+    public void setNormalCeilValueMMol(final float value) {
         preferenceManager.setPkuRangeNormalCeil(value);
     }
 
@@ -29,25 +29,35 @@ public class PkuRangeDataSourceImpl implements PkuRangeDataSource {
     }
 
     @Override
-    public float getNormalFloorValue() {
+    public float getNormalFloorValueMMol() {
         final float pkuRangeNormalFloor = preferenceManager.getPkuRangeNormalFloor();
         return pkuRangeNormalFloor == -1 ? Constants.DEFAULT_PKU_NORMAL_FLOOR : pkuRangeNormalFloor;
     }
 
     @Override
-    public float getNormalCeilValue() {
+    public float getNormalCeilValueMMol() {
         final float pkuRangeNormalCeil = preferenceManager.getPkuRangeNormalCeil();
         return pkuRangeNormalCeil == -1 ? Constants.DEFAULT_PKU_NORMAL_CEIL : pkuRangeNormalCeil;
     }
 
     @Override
-    public float getHighCeilValue() {
-        return Constants.DEFAULT_PKU_HIGH_CEIL;
+    public float getHighCeilValueMMol() {
+        return getNormalCeilValueMMol() + Constants.DEFAULT_PKU_HIGH_RANGE;
+    }
+
+    @Override
+    public float getNormalCeilAbsoluteMaxMMol() {
+        return Constants.DEFAULT_PKU_HIGHEST_VALUE;
+    }
+
+    @Override
+    public float getNormalFloorAbsoluteMinMMol() {
+        return Constants.DEFAULT_PKU_LOWEST_VALUE;
     }
 
     @Override
     public PkuLevelUnits getDisplayUnit() {
         final PkuLevelUnits pkuRangeUnit = preferenceManager.getPkuRangeUnit();
-        return pkuRangeUnit == null ? Constants.DEFAULT_PKU_LEVEL : pkuRangeUnit;
+        return pkuRangeUnit == null ? Constants.DEFAULT_PKU_LEVEL_UNIT : pkuRangeUnit;
     }
 }

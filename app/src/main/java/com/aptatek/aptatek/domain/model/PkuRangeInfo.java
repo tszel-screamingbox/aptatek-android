@@ -11,6 +11,10 @@ public abstract class PkuRangeInfo {
 
     public abstract float getHighCeilValue();
 
+    public abstract float getNormalAbsoluteMinValue();
+
+    public abstract float getNormalAbsoluteMaxValue();
+
     public abstract PkuLevelUnits getPkuLevelUnit();
 
     public static PkuRangeInfo.Builder builder() {
@@ -24,6 +28,10 @@ public abstract class PkuRangeInfo {
         public abstract Builder setNormalCeilValue(float ceilValue);
 
         public abstract Builder setHighCeilValue(float ceilValue);
+
+        public abstract Builder setNormalAbsoluteMinValue(float minValue);
+
+        public abstract Builder setNormalAbsoluteMaxValue(float maxValue);
 
         public abstract Builder setPkuLevelUnit(PkuLevelUnits unit);
 

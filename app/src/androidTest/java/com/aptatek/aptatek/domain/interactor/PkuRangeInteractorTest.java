@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.aptatek.device.PreferenceManager;
 import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 import com.aptatek.aptatek.injection.component.DaggerAndroidTestComponent;
@@ -47,10 +48,10 @@ public class PkuRangeInteractorTest {
         test.assertNoErrors();
         test.assertComplete();
         test.assertValueAt(0, value -> {
-            assertTrue(value.getHighCeilValue() == Constants.DEFAULT_PKU_HIGH_CEIL);
+            assertTrue(value.getHighCeilValue() == Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE);
             assertTrue(value.getNormalCeilValue() == Constants.DEFAULT_PKU_NORMAL_CEIL);
             assertTrue(value.getNormalFloorValue() == Constants.DEFAULT_PKU_NORMAL_FLOOR);
-            assertTrue(value.getPkuLevelUnit() == Constants.DEFAULT_PKU_LEVEL);
+            assertTrue(value.getPkuLevelUnit() == Constants.DEFAULT_PKU_LEVEL_UNIT);
 
             return true;
         });
@@ -72,9 +73,52 @@ public class PkuRangeInteractorTest {
             assertTrue(value.getPkuLevelUnit() == unit);
             assertTrue(value.getNormalFloorValue() == floor);
             assertTrue(value.getNormalCeilValue() == ceil);
-            assertTrue(value.getHighCeilValue() == Constants.DEFAULT_PKU_HIGH_CEIL);
+            assertTrue(value.getHighCeilValue() == ceil + Constants.DEFAULT_PKU_HIGH_RANGE);
             return true;
         });
+    }
+
+    @Test
+    public void testSaveDisplayUnit() throws Exception {
+        final TestObserver<PkuRangeInfo> test = interactor.saveDisplayUnit(PkuLevelUnits.MILLI_GRAM)
+                .andThen(interactor.getInfo()).test();
+        test.assertComplete();
+        test.assertNoErrors();
+        test.assertValueAt(0, value -> value.getPkuLevelUnit() == PkuLevelUnits.MILLI_GRAM);
+    }
+
+    @Test
+    public void testSaveValues() throws Exception {
+        final float ceil = 500f;
+        final float floor = 50f;
+        final TestObserver<PkuRangeInfo> test = interactor.saveNormalRange(PkuLevel.create(floor, PkuLevelUnits.MICRO_MOL), PkuLevel.create(ceil, PkuLevelUnits.MICRO_MOL))
+                .andThen(interactor.getInfo())
+                .test();
+        test.assertNoErrors();
+        test.assertComplete();
+        test.assertValueAt(0, value -> value.getNormalFloorValue() == floor && value.getNormalCeilValue() == ceil);
+    }
+
+    @Test
+    public void testSaveValuesInRange() throws Exception {
+        final float invalidFloor = -1f;
+        final float invalidCeil = 40000f;
+
+        final TestObserver<Void> test = interactor.saveNormalRange(PkuLevel.create(invalidFloor, PkuLevelUnits.MICRO_MOL), PkuLevel.create(invalidCeil, PkuLevelUnits.MICRO_MOL))
+                .test();
+
+        test.assertError(error -> error instanceof IllegalArgumentException);
+    }
+
+    @Test
+    public void testSaveValuesRange() throws Exception {
+        final float floor = 200f;
+        final float ceil = 5f;
+
+        final TestObserver<Void> test = interactor.saveNormalRange(PkuLevel.create(floor, PkuLevelUnits.MICRO_MOL), PkuLevel.create(ceil, PkuLevelUnits.MICRO_MOL))
+                .test();
+
+        test.assertError(error -> error instanceof IllegalArgumentException);
     }
 
 }
