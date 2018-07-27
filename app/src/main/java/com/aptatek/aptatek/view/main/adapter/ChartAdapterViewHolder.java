@@ -93,9 +93,11 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     public void hideDetails() {
         animationHelper.zoomOut(bubbleContainerLayout, this::resetBubble);
+        currentData.setZoomed(false);
     }
 
     public void showDetails() {
+        currentData.setZoomed(true);
         animationHelper.zoomIn(bubbleContainerLayout, () -> {
             if (currentData.isEmpty()) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));

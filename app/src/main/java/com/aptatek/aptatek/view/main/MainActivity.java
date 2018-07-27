@@ -1,9 +1,10 @@
 package com.aptatek.aptatek.view.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +15,14 @@ import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapter;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapterViewHolder;
+import com.aptatek.aptatek.view.main.adapter.DailyResultAdapterItem;
+import com.aptatek.aptatek.view.main.adapter.DailyResultsAdapter;
+import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
-import com.aptatek.aptatek.view.toggle.ToggleActivity;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -34,7 +39,13 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     MainActivityPresenter presenter;
 
     @Inject
+    DailyResultItemDecorator dailyResultItemDecorator;
+
+    @Inject
     ChartAdapter chartAdapter;
+
+    @Inject
+    DailyResultsAdapter dailyResultsAdapter;
 
     @BindView(R.id.scrollView)
     DiscreteScrollView bubbleScrollView;
@@ -45,6 +56,12 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @BindView(R.id.subTitleText)
     TextView subTitleTextView;
 
+    @BindView(R.id.resultListContainer)
+    ConstraintLayout resultListContainer;
+
+    @BindView(R.id.recyclerViewDailyResults)
+    RecyclerView recyclerViewDailyResults;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +70,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
         initAdapter();
         bubbleScrollView.setVisibility(View.GONE); //TODO: later, check if DB is empty or not
+
+        recyclerViewDailyResults.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewDailyResults.setAdapter(dailyResultsAdapter);
+        recyclerViewDailyResults.addItemDecoration(dailyResultItemDecorator);
     }
 
     @Override
@@ -89,8 +110,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.resultButton)
     public void onToggleButtonClicked() {
-         final Intent intent = new Intent(this, ToggleActivity.class);
-         launchActivity(intent, false, Animation.FADE);
+        // final Intent intent = new Intent(this, ToggleActivity.class);
+        // launchActivity(intent, false, Animation.FADE);
+
+        launchActivity(RangeInfoActivity.starter(this), false, Animation.FADE);
     }
 
     @OnClick(R.id.newTestButton)
@@ -111,6 +134,11 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
     }
 
+    @OnClick(R.id.imgCloseResults)
+    public void onCloseResultsClicked() {
+        resultListContainer.setVisibility(View.GONE);
+    }
+
     private void initAdapter() {
         bubbleScrollView.setAdapter(chartAdapter);
         bubbleScrollView.setSlideOnFling(true);
@@ -128,7 +156,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);
-            //TODO: show Details
+            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && resultListContainer.getVisibility() == View.GONE) {
+                resultListContainer.setVisibility(View.VISIBLE);
+                presenter.measureListToAdapterList(chartVM.getMeasures());
+            }
         });
     }
 
@@ -136,5 +167,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     public void updateTitles(final String title, final String subTitle) {
         titleTextView.setText(title);
         subTitleTextView.setText(subTitle);
+    }
+
+    @Override
+    public void setMeasureList(final List<DailyResultAdapterItem> data) {
+        dailyResultsAdapter.setData(data);
     }
 }

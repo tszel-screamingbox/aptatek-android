@@ -4,12 +4,16 @@ import android.text.format.DateUtils;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.respository.chart.Measure;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
+import com.aptatek.aptatek.util.StringUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
+import com.aptatek.aptatek.view.main.adapter.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -54,5 +58,20 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         }
 
         ifViewAttached(view -> view.updateTitles(title, subTitle));
+    }
+
+    void measureListToAdapterList(final List<Measure> measures) {
+        final List<DailyResultAdapterItem> dailyResultAdapterItems = new ArrayList<>();
+
+        for (Measure measure : measures) {
+            dailyResultAdapterItems.add(DailyResultAdapterItem.create(
+                    StringUtils.highlightWord(
+                            String.valueOf(measure.getPhenylalanineLevel()),
+                            String.valueOf(measure.getUnit() + " mg/dl")),
+                    System.currentTimeMillis(),
+                    ChartUtils.getState(measure.getPhenylalanineLevel())));
+        }
+
+        ifViewAttached(view -> view.setMeasureList(dailyResultAdapterItems));
     }
 }

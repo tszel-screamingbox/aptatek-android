@@ -1,5 +1,8 @@
 package com.aptatek.aptatek.util;
 
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.respository.chart.ChartDTO;
 import com.aptatek.aptatek.domain.respository.chart.CubeData;
@@ -106,6 +109,7 @@ public class ChartUtils {
         return State.NORMAL;
     }
 
+    @DrawableRes
     public static int smallBubbleBackground(final State state) {
         switch (state) {
             case LOW:
@@ -121,6 +125,7 @@ public class ChartUtils {
         }
     }
 
+    @ColorRes
     public static int stateColor(final State state) {
         switch (state) {
             case LOW:
@@ -136,6 +141,7 @@ public class ChartUtils {
         }
     }
 
+    @DrawableRes
     public static int bigBubbleBackground(final State state) {
         switch (state) {
             case LOW:

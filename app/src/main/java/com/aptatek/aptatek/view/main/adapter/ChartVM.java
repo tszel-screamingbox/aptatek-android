@@ -25,6 +25,8 @@ public class ChartVM implements IListTypeProvider {
     private float bubbleYAxis;
     private float startLineYAxis;
     private float endLineYAxis;
+    private boolean zoomed;
+    private List<Measure> measures;
 
     public ChartVM(final ChartDTO chartDTO) {
         this.id = chartDTO.getId();
@@ -34,6 +36,7 @@ public class ChartVM implements IListTypeProvider {
         this.bubbleYAxis = chartDTO.getBubbleYAxis();
         this.startLineYAxis = chartDTO.getStartLineYAxis();
         this.endLineYAxis = chartDTO.getEndLineYAxis();
+        this.measures = chartDTO.getMeasureList();
     }
 
     private CharSequence bubbleDetails(final List<Measure> measureList) {
@@ -50,6 +53,18 @@ public class ChartVM implements IListTypeProvider {
         return StringUtils.highlightWord(
                 String.valueOf(highest.getPhenylalanineLevel()),
                 String.valueOf(unit));
+    }
+
+    public List<Measure> getMeasures() {
+        return measures;
+    }
+
+    public boolean isZoomed() {
+        return zoomed;
+    }
+
+    public void setZoomed(final boolean zoomed) {
+        this.zoomed = zoomed;
     }
 
     public int getMaxPhenylalanineLevel() {
