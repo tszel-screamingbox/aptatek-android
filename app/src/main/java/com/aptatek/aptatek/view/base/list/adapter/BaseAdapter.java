@@ -22,7 +22,7 @@ public abstract class BaseAdapter<T extends IListTypeProvider>
         implements View.OnClickListener {
 
     protected Context context;
-    private List<T> items;
+    protected List<T> items;
     private BaseViewHolder.OnItemClickListener onClickListener;
 
     /**

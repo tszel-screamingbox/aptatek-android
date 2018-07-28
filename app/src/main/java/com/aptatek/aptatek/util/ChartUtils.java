@@ -92,7 +92,27 @@ public class ChartUtils {
         }
 
         return Ix.from(chartDTOList)
-                .map(ChartVM::new)
+                .map(chartDTO -> {
+                    Measure highest = null;
+                    if (chartDTO.getMeasureList() != null && !chartDTO.getMeasureList().isEmpty()) {
+                        final Comparator<Measure> comp1 = (p1, p2) -> Integer.compare(p1.getPhenylalanineLevel(), p2.getPhenylalanineLevel());
+                        highest = Ix.from(chartDTO.getMeasureList())
+                                .max(comp1)
+                                .first();
+                    }
+
+                    return ChartVM.builder()
+                            .setId(chartDTO.getId())
+                            .setDate(chartDTO.getDate())
+                            .setHighestMeasure(highest)
+                            .setBubbleYAxis(chartDTO.getBubbleYAxis())
+                            .setStartLineYAxis(chartDTO.getStartLineYAxis())
+                            .setEndLineYAxis(chartDTO.getEndLineYAxis())
+                            .setNumberOfMeasures(chartDTO.getMeasureList() != null ? chartDTO.getMeasureList().size() : 0)
+                            .setMeasures(chartDTO.getMeasureList())
+                            .setZoomed(false)
+                            .build();
+                })
                 .toList();
     }
 

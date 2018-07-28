@@ -49,4 +49,11 @@ public class ChartAdapter extends BaseAdapter<ChartVM> {
     public void setOnItemClickListener(@NonNull final ChartAdapterViewHolder.OnItemClickedListener onItemClickedListener) {
         this.onItemClickedListener = onItemClickedListener;
     }
+
+    public void updateWithoutNotify(final ChartVM oldItem, final ChartVM newItem) {
+        if (items.contains(oldItem)) {
+            final int position = items.indexOf(oldItem);
+            items.set(position, newItem);
+        }
+    }
 }

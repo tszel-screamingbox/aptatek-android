@@ -2,6 +2,8 @@ package com.aptatek.aptatek.domain.respository.manager;
 
 import android.support.annotation.Nullable;
 
+import com.aptatek.aptatek.domain.model.PkuLevel;
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.respository.chart.CubeData;
 import com.aptatek.aptatek.util.CalendarUtils;
 
@@ -35,9 +37,10 @@ public class FakeCubeDataManager implements ICubeDataRepository {
         final Random random = new Random();
 
         cubeDataList = Ix.range(0, SIZE)
-                .map(x -> CubeData.create(x, date(x), random.nextInt(RANGE) - OFFSET, (double) random.nextInt(RANGE) / OFFSET))
-                .reverse()
-                .toList();
+                .map(x -> CubeData.create(x, date(x), random.nextInt(RANGE) - OFFSET,
+                        PkuLevel.create((float) random.nextInt(RANGE) / OFFSET, PkuLevelUnits.MICRO_MOL)))
+                        .reverse()
+                        .toList();
     }
 
     @Nullable

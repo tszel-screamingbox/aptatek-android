@@ -14,18 +14,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
+import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
+import com.aptatek.aptatek.util.StringUtils;
 import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements TextureView.SurfaceTextureListener {
+public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private static final float STROKE_WIDTH = 10f;
     private static final float INTERVAL = 5;
-
+    private static final String PATTERN = "dd\nMMM";
 
     @BindView(R.id.bubbleLayout)
     ConstraintLayout itemLayout;
@@ -55,8 +58,6 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     private float bubbleY;
 
-    private ChartVM currentData;
-
     ChartAdapterViewHolder(final View view, final Context context, final AnimationHelper animationHelper) {
         super(view, context);
         this.context = context;
@@ -76,14 +77,72 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
 
     @Override
     public void bind(final ChartVM data) {
-        itemTextureView.setSurfaceTextureListener(this);
-        currentData = data;
+        itemTextureView.setSurfaceTextureListener(getSurfaceTextureListener(data));
         // set coordinates for the bubble
-        bubbleY = viewHeight * currentData.getBubbleYAxis() + marginY;
+        bubbleY = viewHeight * data.getBubbleYAxis() + marginY;
         bubbleContainerLayout.setY(bubbleY);
         bubbleContainerLayout.setX(bubbleX);
         infoTextView.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
-        resetBubble();
+        resetBubble(data);
+
+        if (data.isZoomed()) {
+            showDetails(data);
+        } else {
+            hideDetails(data);
+        }
+    }
+
+    private TextureView.SurfaceTextureListener getSurfaceTextureListener(final ChartVM currentData) {
+        return new TextureView.SurfaceTextureListener() {
+            @Override
+            public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height) {
+                // canvas for drawing
+                final Canvas canvas = itemTextureView.lockCanvas();
+                canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                canvas.drawColor(context.getResources().getColor(R.color.chartBackrgroundBlue));
+                // calculate the start-line ending Y-height, and the end-line start Y-height
+                final float middleY = bubbleY + bubbleHeight / 2;
+                // create Paint for the start-line and end-line
+                final Paint linePaint = new Paint();
+                linePaint.setColor(context.getResources().getColor(R.color.applicationBlue));
+                linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
+                linePaint.setStrokeWidth(STROKE_WIDTH);
+                linePaint.setPathEffect(new DashPathEffect(new float[]{INTERVAL, INTERVAL, INTERVAL, INTERVAL}, 0));
+
+                // calculate offset, it's necessary: the lines Y-coordinates not equals with the bubble Y-height
+                final float offSet = (bubbleHeight / 2) / viewHeight;
+                // if the current item is not the first
+                if (currentData.getStartLineYAxis() >= 0) {
+                    // calculate start-line starting Y-height
+                    final float startY = (currentData.getStartLineYAxis() + offSet) * viewHeight + marginY;
+                    // draw the start-line: from the left side of the item cell to the middle
+                    canvas.drawLine(0, startY, middleX, middleY, linePaint);
+                }
+                // if the current item is not the last
+                if (currentData.getEndLineYAxis() >= 0) {
+                    // calculate end-line ending Y-height
+                    final float stopY = (currentData.getEndLineYAxis() + offSet) * viewHeight + marginY;
+                    // draw the end-line: from the middle of the cell to the end of its
+                    canvas.drawLine(middleX, middleY, viewWidth, stopY, linePaint);
+                }
+                itemTextureView.unlockCanvasAndPost(canvas);
+            }
+
+            @Override
+            public void onSurfaceTextureSizeChanged(final SurfaceTexture surface, final int width, final int height) {
+
+            }
+
+            @Override
+            public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
+                return false;
+            }
+
+            @Override
+            public void onSurfaceTextureUpdated(final SurfaceTexture surface) {
+
+            }
+        };
     }
 
 
@@ -91,21 +150,29 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         this.onItemClickedListener = onItemClickedListener;
     }
 
-    public void hideDetails() {
-        animationHelper.zoomOut(bubbleContainerLayout, this::resetBubble);
-        currentData.setZoomed(false);
+    private void hideDetails(final ChartVM currentData) {
+        animationHelper.zoomOut(bubbleContainerLayout, () -> resetBubble(currentData));
     }
 
-    public void showDetails() {
-        currentData.setZoomed(true);
+    private void showDetails(final ChartVM currentData) {
         animationHelper.zoomIn(bubbleContainerLayout, () -> {
-            if (currentData.isEmpty()) {
+            if (currentData.getHighestMeasure() == null) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
             } else {
-                final ChartUtils.State state = ChartUtils.getState(currentData.getMaxPhenylalanineLevel());
+                final ChartUtils.State state = ChartUtils.getState(currentData.getHighestMeasure().getPhenylalanineLevel());
                 infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.bigBubbleBackground(state)));
                 infoTextView.setTextColor(context.getResources().getColor(ChartUtils.stateColor(state)));
-                infoTextView.setText(currentData.getDetails());
+
+                final String unit = String.valueOf(currentData.getHighestMeasure().getUnit().getValue())
+                        + (currentData.getHighestMeasure().getUnit().getUnit() == PkuLevelUnits.MICRO_MOL
+                        ? context.getString(R.string.rangeinfo_pkulevel_mmol)
+                        : context.getString(R.string.rangeinfo_pkulevel_mg));
+
+                final CharSequence details = StringUtils.highlightWord(
+                        String.valueOf(currentData.getHighestMeasure().getPhenylalanineLevel()),
+                        String.valueOf(unit));
+
+                infoTextView.setText(details);
                 if (currentData.getNumberOfMeasures() > 1) {
                     badgeTextView.setBackground(context.getResources().getDrawable(ChartUtils.smallBubbleBackground(state)));
                     badgeTextView.setText(String.valueOf(currentData.getNumberOfMeasures()));
@@ -115,65 +182,16 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> implements T
         });
     }
 
-    private void resetBubble() {
+    private void resetBubble(final ChartVM currentData) {
         badgeTextView.setVisibility(View.GONE);
-        infoTextView.setText(currentData.getFormattedDate());
+        infoTextView.setText(CalendarUtils.formatDate(currentData.getDate(), PATTERN));
         infoTextView.setTextColor(context.getResources().getColor(R.color.applicationWhite));
-        if (currentData.isEmpty()) {
+        if (currentData.getHighestMeasure() == null) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         } else {
-            final ChartUtils.State state = ChartUtils.getState(currentData.getMaxPhenylalanineLevel());
+            final ChartUtils.State state = ChartUtils.getState(currentData.getHighestMeasure().getPhenylalanineLevel());
             infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.smallBubbleBackground(state)));
         }
-    }
-
-    @Override
-    public void onSurfaceTextureAvailable(final SurfaceTexture surface, final int width, final int height) {
-        // canvas for drawing
-        final Canvas canvas = itemTextureView.lockCanvas();
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        canvas.drawColor(context.getResources().getColor(R.color.chartBackrgroundBlue));
-        // calculate the start-line ending Y-height, and the end-line start Y-height
-        final float middleY = bubbleY + bubbleHeight / 2;
-        // create Paint for the start-line and end-line
-        final Paint linePaint = new Paint();
-        linePaint.setColor(context.getResources().getColor(R.color.applicationBlue));
-        linePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        linePaint.setStrokeWidth(STROKE_WIDTH);
-        linePaint.setPathEffect(new DashPathEffect(new float[]{INTERVAL, INTERVAL, INTERVAL, INTERVAL}, 0));
-
-        // calculate offset, it's necessary: the lines Y-coordinates not equals with the bubble Y-height
-        final float offSet = (bubbleHeight / 2) / viewHeight;
-        // if the current item is not the first
-        if (currentData.getStartLineYAxis() >= 0) {
-            // calculate start-line starting Y-height
-            final float startY = (currentData.getStartLineYAxis() + offSet) * viewHeight + marginY;
-            // draw the start-line: from the left side of the item cell to the middle
-            canvas.drawLine(0, startY, middleX, middleY, linePaint);
-        }
-        // if the current item is not the last
-        if (currentData.getEndLineYAxis() >= 0) {
-            // calculate end-line ending Y-height
-            final float stopY = (currentData.getEndLineYAxis() + offSet) * viewHeight + marginY;
-            // draw the end-line: from the middle of the cell to the end of its
-            canvas.drawLine(middleX, middleY, viewWidth, stopY, linePaint);
-        }
-        itemTextureView.unlockCanvasAndPost(canvas);
-    }
-
-    @Override
-    public void onSurfaceTextureSizeChanged(final SurfaceTexture surface, final int width, final int height) {
-
-    }
-
-    @Override
-    public boolean onSurfaceTextureDestroyed(final SurfaceTexture surface) {
-        return false;
-    }
-
-    @Override
-    public void onSurfaceTextureUpdated(final SurfaceTexture surface) {
-
     }
 
     public interface OnItemClickedListener {

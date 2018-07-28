@@ -48,7 +48,7 @@ public class MainActivityPresenterTest {
 
     @Test
     public void testItemUpdateWithEmptyMeasure() {
-        presenter.itemChanged(emptyItem);
+        presenter.itemZoomIn(emptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_DAY));
@@ -56,7 +56,7 @@ public class MainActivityPresenterTest {
 
     @Test
     public void testItemUpdate() {
-        presenter.itemChanged(notEmptyItem);
+        presenter.itemZoomIn(notEmptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_WITH_TIME));

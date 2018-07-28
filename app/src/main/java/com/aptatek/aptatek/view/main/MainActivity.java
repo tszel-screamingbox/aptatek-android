@@ -14,7 +14,7 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapter;
-import com.aptatek.aptatek.view.main.adapter.ChartAdapterViewHolder;
+import com.aptatek.aptatek.view.main.adapter.ChartVM;
 import com.aptatek.aptatek.view.main.adapter.DailyResultAdapterItem;
 import com.aptatek.aptatek.view.main.adapter.DailyResultsAdapter;
 import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
@@ -94,13 +94,12 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @Override
     public void onScrollStart(@NonNull final RecyclerView.ViewHolder currentItemHolder, final int adapterPosition) {
-        final ChartAdapterViewHolder viewHolder = (ChartAdapterViewHolder) currentItemHolder;
-        viewHolder.hideDetails();
+        presenter.itemZoomOut(chartAdapter.getItem(adapterPosition));
     }
 
     @Override
     public void onScrollEnd(@NonNull final RecyclerView.ViewHolder currentItemHolder, final int adapterPosition) {
-
+        presenter.itemZoomIn(chartAdapter.getItem(adapterPosition));
     }
 
     @Override
@@ -147,11 +146,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         bubbleScrollView.setItemTransitionTimeMillis(TRANSITION_TIME);
         bubbleScrollView.addScrollStateChangeListener(this);
         bubbleScrollView.addOnItemChangedListener((viewHolder, adapterPosition) -> {
-            final ChartAdapterViewHolder holder = (ChartAdapterViewHolder) viewHolder;
-            if (holder != null) {
-                holder.showDetails();
-            }
-            presenter.itemChanged(chartAdapter.getItem(adapterPosition));
+//            presenter.itemZoomIn(chartAdapter.getItem(adapterPosition));
         });
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
@@ -161,6 +156,11 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
                 presenter.measureListToAdapterList(chartVM.getMeasures());
             }
         });
+    }
+
+    @Override
+    public void changeItemZoomState(final ChartVM oldItem, final ChartVM newItem) {
+        chartAdapter.updateItem(oldItem, newItem);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.text.format.DateUtils;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.respository.chart.Measure;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
@@ -42,9 +43,9 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         return chartUtils.asChartVMList(fakeCubeDataManager.listAll());
     }
 
-    void itemChanged(final ChartVM chartVM) {
+    void itemZoomIn(final ChartVM chartVM) {
         final Date date = chartVM.getDate();
-        final String subTitle = CalendarUtils.formatDate(date, chartVM.isEmpty() ? PATTERN_DAY : PATTERN_WITH_TIME);
+        final String subTitle = CalendarUtils.formatDate(date, chartVM.getNumberOfMeasures() == 0 ? PATTERN_DAY : PATTERN_WITH_TIME);
         final String title;
 
         if (DateUtils.isToday(date.getTime())) {
@@ -57,17 +58,29 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
             title = CalendarUtils.dayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
         }
 
-        ifViewAttached(view -> view.updateTitles(title, subTitle));
+        ifViewAttached(view -> {
+            view.updateTitles(title, subTitle);
+            view.changeItemZoomState(chartVM, chartVM.toBuilder().setZoomed(true).build());
+        });
+    }
+
+    void itemZoomOut(final ChartVM chartVM) {
+        ifViewAttached(view -> view.changeItemZoomState(chartVM, chartVM.toBuilder().setZoomed(false).build()));
     }
 
     void measureListToAdapterList(final List<Measure> measures) {
         final List<DailyResultAdapterItem> dailyResultAdapterItems = new ArrayList<>();
 
         for (Measure measure : measures) {
+            final String unit = String.valueOf(measure.getUnit().getValue())
+                    + (measure.getUnit().getUnit() == PkuLevelUnits.MICRO_MOL
+                    ? resourceInteractor.getStringResource(R.string.rangeinfo_pkulevel_mmol)
+                    : resourceInteractor.getStringResource(R.string.rangeinfo_pkulevel_mg));
+
             dailyResultAdapterItems.add(DailyResultAdapterItem.create(
                     StringUtils.highlightWord(
                             String.valueOf(measure.getPhenylalanineLevel()),
-                            String.valueOf(measure.getUnit() + " mg/dl")),
+                            String.valueOf(unit)),
                     System.currentTimeMillis(),
                     ChartUtils.getState(measure.getPhenylalanineLevel())));
         }

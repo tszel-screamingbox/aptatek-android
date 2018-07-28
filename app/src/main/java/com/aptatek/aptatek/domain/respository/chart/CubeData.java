@@ -1,5 +1,6 @@
 package com.aptatek.aptatek.domain.respository.chart;
 
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.google.auto.value.AutoValue;
 
 import java.util.Date;
@@ -13,9 +14,9 @@ public abstract class CubeData {
 
     public abstract int getMeasuredLevel();
 
-    public abstract double getUnit();
+    public abstract PkuLevel getUnit();
 
-    public static CubeData create(final long id, final Date date, final int level, final double unit) {
+    public static CubeData create(final long id, final Date date, final int level, final PkuLevel unit) {
         return new AutoValue_CubeData(id, date, level, unit);
     }
 }
