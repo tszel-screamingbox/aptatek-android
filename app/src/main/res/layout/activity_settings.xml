@@ -115,7 +115,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/general.distance.small"
-        android:drawableEnd="@drawable/ic_left_arrow"
+        android:drawableEnd="@drawable/ic_right_arrow"
         android:text="@string/settings.units"
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toStartOf="@+id/guideStart"

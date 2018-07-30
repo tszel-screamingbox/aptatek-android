@@ -17,7 +17,6 @@ import com.aptatek.aptatek.view.main.adapter.ChartAdapterViewHolder;
 import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
 import com.aptatek.aptatek.view.weekly.WeeklyResultActivity;
-import com.aptatek.aptatek.view.toggle.ToggleActivity;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import javax.inject.Inject;
@@ -91,8 +90,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @OnClick(R.id.resultButton)
     public void onToggleButtonClicked() {
         final Intent intent = new Intent(this, WeeklyResultActivity.class);
-        launchActivity(intent, false, Animation.FADE);
-        //launchActivity(RangeInfoActivity.starter(this), false, Animation.FADE);
+        launchActivity(intent, false, Animation.RIGHT_TO_LEFT);
     }
 
     @OnClick(R.id.newTestButton)
