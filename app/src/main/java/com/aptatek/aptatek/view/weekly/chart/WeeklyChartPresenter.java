@@ -2,9 +2,10 @@ package com.aptatek.aptatek.view.weekly.chart;
 
 import android.graphics.Color;
 
+import com.aptatek.aptatek.device.formatter.WeeklyChartValueFormatter;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
-import com.aptatek.aptatek.view.weekly.format.ValueFormatter;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -21,10 +22,13 @@ import javax.inject.Inject;
 class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
 
     private final FakeCubeDataManager fakeCubeDataManager;
+    private final PkuRangeInteractor pkuRangeInteractor;
 
     @Inject
-    WeeklyChartPresenter(final FakeCubeDataManager fakeCubeDataManager) {
+    WeeklyChartPresenter(final FakeCubeDataManager fakeCubeDataManager,
+                         final PkuRangeInteractor pkuRangeInteractor) {
         this.fakeCubeDataManager = fakeCubeDataManager;
+        this.pkuRangeInteractor = pkuRangeInteractor;
     }
 
     void fillDataSet(final int weekBefore) {
@@ -56,7 +60,8 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
         for (final BubbleEntry bubbleEntry : entries) {
             labels.put(bubbleEntry, "123");
         }
-        dataSet.setValueFormatter(new ValueFormatter(labels));
+
+        dataSet.setValueFormatter(new WeeklyChartValueFormatter(labels));
         return dataSet;
     }
 }
