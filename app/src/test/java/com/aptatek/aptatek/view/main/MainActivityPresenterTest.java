@@ -1,8 +1,8 @@
 package com.aptatek.aptatek.view.main;
 
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
-import com.aptatek.aptatek.domain.respository.chart.ChartDTO;
-import com.aptatek.aptatek.domain.respository.chart.Measure;
+import com.aptatek.aptatek.domain.model.PkuLevel;
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.ChartUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
@@ -42,13 +42,31 @@ public class MainActivityPresenterTest {
         MockitoAnnotations.initMocks(this);
         presenter = new MainActivityPresenter(fakeCubeDataManager, chartUtils, resourceInteractor);
         presenter.attachView(view);
-        emptyItem = new ChartVM(ChartDTO.create(0, date, new ArrayList<>(), 0, 0, 0));
-        notEmptyItem = new ChartVM(ChartDTO.create(1, date, Collections.singletonList(Measure.create(20, 20)), 0, 0, 0));
+        emptyItem = ChartVM.builder()
+                .setId(0)
+                .setDate(date)
+                .setMeasures(new ArrayList<>())
+                .setBubbleYAxis(0)
+                .setStartLineYAxis(0)
+                .setEndLineYAxis(0)
+                .setNumberOfMeasures(0)
+                .setZoomed(false)
+                .build();
+
+        notEmptyItem = ChartVM.builder()
+                .setId(1)
+                .setDate(date)
+                .setMeasures(Collections.singletonList(PkuLevel.create(20.0f, PkuLevelUnits.MILLI_GRAM)))
+                .setBubbleYAxis(0)
+                .setZoomed(true)
+                .setNumberOfMeasures(1)
+                .setStartLineYAxis(0)
+                .setEndLineYAxis(0).build();
     }
 
     @Test
     public void testItemUpdateWithEmptyMeasure() {
-        presenter.itemChanged(emptyItem);
+        presenter.itemZoomIn(emptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_DAY));
@@ -56,7 +74,7 @@ public class MainActivityPresenterTest {
 
     @Test
     public void testItemUpdate() {
-        presenter.itemChanged(notEmptyItem);
+        presenter.itemZoomIn(notEmptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_WITH_TIME));

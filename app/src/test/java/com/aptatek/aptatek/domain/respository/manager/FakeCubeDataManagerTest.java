@@ -1,5 +1,7 @@
 package com.aptatek.aptatek.domain.respository.manager;
 
+import com.aptatek.aptatek.domain.model.PkuLevel;
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.respository.chart.CubeData;
 
 import org.junit.Before;
@@ -24,7 +26,7 @@ public class FakeCubeDataManagerTest {
     @Before
     public void setUp() {
         cubeDataList = Ix.range(0, SIZE)
-                .map(x -> CubeData.create(x, date(x), x * 10, x * 20))
+                .map(x -> CubeData.create(x, date(x), PkuLevel.create(1.27f, PkuLevelUnits.MICRO_MOL)))
                 .toList();
         fakeCubeDataManager = new FakeCubeDataManager(cubeDataList);
     }

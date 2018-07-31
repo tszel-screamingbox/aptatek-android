@@ -1,95 +1,65 @@
 package com.aptatek.aptatek.view.main.adapter;
 
-import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.respository.chart.ChartDTO;
-import com.aptatek.aptatek.domain.respository.chart.Measure;
-import com.aptatek.aptatek.util.CalendarUtils;
-import com.aptatek.aptatek.util.StringUtils;
-import com.aptatek.aptatek.view.base.list.IListTypeProvider;
+import android.support.annotation.Nullable;
 
-import java.util.Comparator;
+import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.domain.model.PkuLevel;
+import com.aptatek.aptatek.view.base.list.IListTypeProvider;
+import com.google.auto.value.AutoValue;
+
 import java.util.Date;
 import java.util.List;
 
-import ix.Ix;
+@AutoValue
+public abstract class ChartVM implements IListTypeProvider {
 
-public class ChartVM implements IListTypeProvider {
+    public abstract long getId();
 
-    private static final String PATTERN = "dd\nMMM";
+    public abstract Date getDate();
 
-    private long id;
-    private Date date;
-    private CharSequence details;
-    private int numberOfMeasures;
-    private int maxPhenylalanineLevel;
-    private float bubbleYAxis;
-    private float startLineYAxis;
-    private float endLineYAxis;
+    @Nullable
+    public abstract PkuLevel getHighestMeasure();
 
-    public ChartVM(final ChartDTO chartDTO) {
-        this.id = chartDTO.getId();
-        this.date = chartDTO.getDate();
-        this.numberOfMeasures = chartDTO.getMeasureList().size();
-        this.details = bubbleDetails(chartDTO.getMeasureList());
-        this.bubbleYAxis = chartDTO.getBubbleYAxis();
-        this.startLineYAxis = chartDTO.getStartLineYAxis();
-        this.endLineYAxis = chartDTO.getEndLineYAxis();
+    public abstract float getBubbleYAxis();
+
+    public abstract float getStartLineYAxis();
+
+    public abstract float getEndLineYAxis();
+
+    public abstract boolean isZoomed();
+
+    public abstract int getNumberOfMeasures();
+
+    @Nullable
+    public abstract List<PkuLevel> getMeasures();
+
+    public abstract Builder toBuilder();
+
+    public static Builder builder() {
+        return new AutoValue_ChartVM.Builder();
     }
 
-    private CharSequence bubbleDetails(final List<Measure> measureList) {
-        if (numberOfMeasures == 0) {
-            return null;
-        }
-        final Comparator<Measure> comp = (p1, p2) -> Integer.compare(p1.getPhenylalanineLevel(), p2.getPhenylalanineLevel());
-        final Measure highest = Ix.from(measureList)
-                .max(comp)
-                .first();
-        maxPhenylalanineLevel = highest.getPhenylalanineLevel();
+    @AutoValue.Builder
+    public abstract static class Builder {
+        public abstract Builder setId(long id);
 
-        final String unit = highest.getUnit() + " mg/dl";
-        return StringUtils.highlightWord(
-                String.valueOf(highest.getPhenylalanineLevel()),
-                String.valueOf(unit));
-    }
+        public abstract Builder setDate(Date date);
 
-    public int getMaxPhenylalanineLevel() {
-        return maxPhenylalanineLevel;
-    }
+        public abstract Builder setHighestMeasure(@Nullable PkuLevel highestMeasure);
 
-    public long getId() {
-        return id;
-    }
+        public abstract Builder setBubbleYAxis(float bubbleYAxis);
 
-    public String getFormattedDate() {
-        return CalendarUtils.formatDate(date, PATTERN);
-    }
+        public abstract Builder setStartLineYAxis(float startLineYAxis);
 
-    public Date getDate() {
-        return date;
-    }
+        public abstract Builder setEndLineYAxis(float endLineYAxis);
 
-    public CharSequence getDetails() {
-        return details;
-    }
+        public abstract Builder setZoomed(boolean zoomed);
 
-    public int getNumberOfMeasures() {
-        return numberOfMeasures;
-    }
+        public abstract Builder setMeasures(@Nullable List<PkuLevel> measures);
 
-    public float getBubbleYAxis() {
-        return bubbleYAxis;
-    }
+        public abstract Builder setNumberOfMeasures(int numberOfMeasures);
 
-    public float getStartLineYAxis() {
-        return startLineYAxis;
-    }
-
-    public float getEndLineYAxis() {
-        return endLineYAxis;
-    }
-
-    public boolean isEmpty() {
-        return numberOfMeasures == 0;
+        public abstract ChartVM build();
     }
 
     @Override

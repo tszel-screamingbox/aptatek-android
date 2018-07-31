@@ -4,12 +4,18 @@ import android.text.format.DateUtils;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
+import com.aptatek.aptatek.domain.model.PkuLevel;
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
+import com.aptatek.aptatek.util.StringUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
+import com.aptatek.aptatek.view.main.adapter.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,12 +41,14 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     }
 
     List<ChartVM> fakeData() {
-        return chartUtils.asChartVMList(fakeCubeDataManager.listAll());
+        final List<ChartVM> chartVMS = chartUtils.asChartVMList(fakeCubeDataManager.listAll());
+        chartVMS.set(chartVMS.size() - 1, chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build());
+        return chartVMS;
     }
 
-    void itemChanged(final ChartVM chartVM) {
+    void itemZoomIn(final ChartVM chartVM) {
         final Date date = chartVM.getDate();
-        final String subTitle = CalendarUtils.formatDate(date, chartVM.isEmpty() ? PATTERN_DAY : PATTERN_WITH_TIME);
+        final String subTitle = CalendarUtils.formatDate(date, chartVM.getNumberOfMeasures() == 0 ? PATTERN_DAY : PATTERN_WITH_TIME);
         final String title;
 
         if (DateUtils.isToday(date.getTime())) {
@@ -53,6 +61,34 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
             title = CalendarUtils.dayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
         }
 
-        ifViewAttached(view -> view.updateTitles(title, subTitle));
+        ifViewAttached(view -> {
+            view.updateTitles(title, subTitle);
+            view.changeItemZoomState(chartVM, chartVM.toBuilder().setZoomed(true).build());
+        });
+    }
+
+    void itemZoomOut(final ChartVM chartVM) {
+        ifViewAttached(view -> view.changeItemZoomState(chartVM, chartVM.toBuilder().setZoomed(false).build()));
+    }
+
+    void measureListToAdapterList(final List<PkuLevel> measures) {
+        final List<DailyResultAdapterItem> dailyResultAdapterItems = new ArrayList<>();
+
+        for (PkuLevel measure : measures) {
+            final PkuLevel unit = PkuLevelConverter.convertTo(measure, measure.getUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL);
+            final String unitString = (unit.getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) unit.getValue()) : String.valueOf(unit.getValue()))
+                    + (measure.getUnit() == PkuLevelUnits.MICRO_MOL
+                    ? resourceInteractor.getStringResource(R.string.rangeinfo_pkulevel_mg)
+                    : resourceInteractor.getStringResource(R.string.rangeinfo_pkulevel_mmol));
+
+            dailyResultAdapterItems.add(DailyResultAdapterItem.create(
+                    StringUtils.highlightWord(
+                            measure.getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) measure.getValue()) : String.valueOf(measure.getValue()),
+                            String.valueOf(unitString)),
+                    System.currentTimeMillis(),
+                    ChartUtils.getState((int) PkuLevelConverter.convertTo(measure, PkuLevelUnits.MICRO_MOL).getValue())));
+        }
+
+        ifViewAttached(view -> view.setMeasureList(dailyResultAdapterItems));
     }
 }
