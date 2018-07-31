@@ -58,7 +58,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         } else {
             final Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            title = CalendarUtils.dayOfWeek(cal.get(Calendar.DAY_OF_WEEK));
+            title = CalendarUtils.nameOfDay(cal.get(Calendar.DAY_OF_WEEK));
         }
 
         ifViewAttached(view -> {
@@ -74,7 +74,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     void measureListToAdapterList(final List<PkuLevel> measures) {
         final List<DailyResultAdapterItem> dailyResultAdapterItems = new ArrayList<>();
 
-        for (PkuLevel measure : measures) {
+        for (final PkuLevel measure : measures) {
             final PkuLevel unit = PkuLevelConverter.convertTo(measure, measure.getUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL);
             final String unitString = (unit.getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) unit.getValue()) : String.valueOf(unit.getValue()))
                     + (measure.getUnit() == PkuLevelUnits.MICRO_MOL

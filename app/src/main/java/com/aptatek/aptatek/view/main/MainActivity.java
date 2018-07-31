@@ -1,5 +1,6 @@
 package com.aptatek.aptatek.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,7 +18,6 @@ import com.aptatek.aptatek.view.main.adapter.ChartAdapter;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
 import com.aptatek.aptatek.view.main.adapter.DailyResultAdapterItem;
 import com.aptatek.aptatek.view.main.adapter.DailyResultsAdapter;
-import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.aptatek.view.settings.basic.SettingsActivity;
 import com.aptatek.aptatek.view.test.TestActivity;
 import com.aptatek.aptatek.view.weekly.WeeklyResultActivity;

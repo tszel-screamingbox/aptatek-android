@@ -54,8 +54,10 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     @Override
     protected void initObjects(final View view) {
         initChart();
-        weeklyBubbleChart.getData().addDataSet(presenter.getChartData(weekBefore));
-        weeklyBubbleChart.invalidate();
+        if (weekBefore >= 0) {
+            weeklyBubbleChart.getData().addDataSet(presenter.getChartData(weekBefore));
+            weeklyBubbleChart.invalidate();
+        }
     }
 
     @Override
@@ -94,6 +96,7 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
         weeklyBubbleChart.getAxisRight().setDrawGridLines(false);
         weeklyBubbleChart.setDrawBorders(false);
         weeklyBubbleChart.setScaleEnabled(false);
+        weeklyBubbleChart.getLegend().setEnabled(false);
         weeklyBubbleChart.getDescription().setEnabled(false);
     }
 }

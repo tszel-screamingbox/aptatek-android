@@ -13,6 +13,7 @@ import static android.support.v4.util.Preconditions.checkArgument;
 
 public class CalendarUtils {
     private static final int WEEK_IN_DAYS = 7;
+    private static final long WEEK_IN_MILLISEC = 1000 * 60 * 60 * 24 * 7;
 
     private static final int FIRST = 1;
     private static final int SECOND = 2;
@@ -50,12 +51,36 @@ public class CalendarUtils {
         return sdf.format(date);
     }
 
+    // TODO: unit testing
     public static int dayOfWeek(final Date date) {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return calendar.get(Calendar.DAY_OF_WEEK);
+        switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+            case Calendar.MONDAY:
+                return FIRST;
+            case Calendar.TUESDAY:
+                return SECOND;
+            case Calendar.WEDNESDAY:
+                return THIRD;
+            case Calendar.THURSDAY:
+                return FOURTH;
+            case Calendar.FRIDAY:
+                return FIFTH;
+            case Calendar.SATURDAY:
+                return SIXTH;
+            case Calendar.SUNDAY:
+                return SEVENTH;
+            default:
+                return FIRST;
+        }
     }
 
+    // TODO: unit testing
+    public static int differenceInWeeks(final Date start, final Date end) {
+        return (int) ((end.getTime() - start.getTime()) / WEEK_IN_MILLISEC);
+    }
+
+    // TODO: unit testing
     public static int hourOfDay(final Date date) {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -63,7 +88,7 @@ public class CalendarUtils {
     }
 
     // TODO: unit testing
-    public static Date dateBefore(final int numberOfWeek) {
+    public static Date weekAgo(final int numberOfWeek) {
         final Date date = new Date();
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -71,12 +96,6 @@ public class CalendarUtils {
         return calendar.getTime();
     }
 
-    /**
-     * Returns with the last monday.
-     *
-     * @param date
-     * @return Last monday.
-     */
     // TODO: unit testing
     public static Date lastMonday(final Date date) {
         final Calendar calendar = Calendar.getInstance();
@@ -89,12 +108,6 @@ public class CalendarUtils {
         return calendar.getTime();
     }
 
-    /**
-     * Returns with the following monday.
-     *
-     * @param date
-     * @return Next monday.
-     */
     // TODO: unit testing
     public static Date nextMonday(final Date date) {
         final Calendar calendar = Calendar.getInstance();
@@ -108,7 +121,7 @@ public class CalendarUtils {
         return calendar.getTime();
     }
 
-    public static String dayOfWeek(final int dayOfWeek) {
+    public static String nameOfDay(final int dayOfWeek) {
         switch (dayOfWeek) {
             case FIRST:
                 return SUN;

@@ -14,12 +14,15 @@ import java.util.List;
 import java.util.Random;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import ix.Ix;
 
+@Singleton
 public class FakeCubeDataManager implements ICubeDataRepository {
 
-    private static final int SIZE = 60;
+    private static final int SIZE = 30;
+    private static final int HOURS_IN_A_DAY = 24;
     private static final int RANGE = 650;
     private static final int OFFSET = 100;
     private List<CubeData> cubeDataList = new ArrayList<>();
@@ -87,9 +90,11 @@ public class FakeCubeDataManager implements ICubeDataRepository {
 
     private Date date(final int index) {
         final Date dt = new Date();
+        final Random random = new Random();
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(dt);
         calendar.add(Calendar.DATE, -index);
+        calendar.add(Calendar.HOUR, random.nextInt(HOURS_IN_A_DAY));
         return calendar.getTime();
     }
 }

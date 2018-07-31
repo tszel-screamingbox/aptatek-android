@@ -17,11 +17,13 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import ix.Ix;
+import timber.log.Timber;
 
 
 class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
 
     private static final float SIZE = 0.1f;
+    private static final int DAY_OFFSET = 1;
 
     private final FakeCubeDataManager fakeCubeDataManager;
 
@@ -32,41 +34,28 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
     }
 
     BubbleDataSet getChartData(final int weekBefore) {
-        final Date currentWeekDay = CalendarUtils.dateBefore(weekBefore);
+        Timber.d("Loading data from %s week(s) ago", weekBefore);
+        final Date currentWeekDay = CalendarUtils.weekAgo(weekBefore);
         final Date lastMonday = CalendarUtils.lastMonday(currentWeekDay);
         final Date nextMonday = CalendarUtils.nextMonday(currentWeekDay);
 
-        final List<BubbleEntry> entries =
-                Ix.from(fakeCubeDataManager.loadByDate(lastMonday, nextMonday))
-                        .filter(cubeData -> cubeData.getMeasuredLevel() >= 0)
-                        .map(value -> new BubbleEntry(CalendarUtils.dayOfWeek(value.getDate()) - 1, CalendarUtils.hourOfDay(value.getDate()), SIZE))
-                        .toList();
-
-        return new BubbleDataSet(entries, null);
-    }
-
-    BubbleDataSet generateDataset() {
-        final ArrayList<BubbleEntry> entries = new ArrayList<>();
-        entries.add(new BubbleEntry(0, 0, SIZE));
-        entries.add(new BubbleEntry(0, 13, 0.1f));
-        entries.add(new BubbleEntry(1, 7, 0.1f));
-        entries.add(new BubbleEntry(1, 10, 0.1f));
-        entries.add(new BubbleEntry(2, 8, 0.1f));
-        entries.add(new BubbleEntry(2, 12, 0.1f));
-        entries.add(new BubbleEntry(3, 20, 0.1f));
-        entries.add(new BubbleEntry(4, 23, 0.1f));
-        entries.add(new BubbleEntry(6, 23, 0.1f));
-        entries.add(new BubbleEntry(6, 11, 0.1f));
-
-
-        final BubbleDataSet dataSet = new BubbleDataSet(entries, null);
-//        dataSet.setColors(Color.RED, Color.GRAY, Color.GREEN);
-
         final Map<Entry, String> labels = new HashMap<>();
-        for (final BubbleEntry bubbleEntry : entries) {
-            labels.put(bubbleEntry, "123");
-        }
+        final List<Integer> dataColorList = new ArrayList<>();
+        final List<Integer> valueColorList = new ArrayList<>();
+        final List<BubbleEntry> entries = Ix.from(fakeCubeDataManager.loadByDate(lastMonday, nextMonday))
+                .filter(cubeData -> cubeData.getMeasure().getValue() >= 0)
+                .map(value -> {
+                    final BubbleEntry bubbleEntry = new BubbleEntry(CalendarUtils.dayOfWeek(value.getDate()) - DAY_OFFSET, CalendarUtils.hourOfDay(value.getDate()), SIZE);
+                    labels.put(bubbleEntry, String.valueOf(value.getMeasure().getValue()));
+                    //TODO add color to valueColorList and dataColorList
+                    return bubbleEntry;
+                })
+                .toList();
 
+        Timber.d("Number of entries: %s", entries.size());
+        final BubbleDataSet dataSet = new BubbleDataSet(entries, null);
+//        dataSet.setColors(dataColorList);
+//        dataSet.setValueTextColors(valueColorList);
         dataSet.setValueFormatter(new WeeklyChartValueFormatter(labels));
         return dataSet;
     }

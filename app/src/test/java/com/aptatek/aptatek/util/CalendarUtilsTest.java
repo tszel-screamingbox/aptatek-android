@@ -40,14 +40,14 @@ public class CalendarUtilsTest {
 
     @Test
     public void testDaysOfWeek() {
-        assertEquals(CalendarUtils.dayOfWeek(1), "Sunday");
-        assertEquals(CalendarUtils.dayOfWeek(2), "Monday");
-        assertEquals(CalendarUtils.dayOfWeek(3), "Tuesday");
-        assertEquals(CalendarUtils.dayOfWeek(4), "Wednesday");
-        assertEquals(CalendarUtils.dayOfWeek(5), "Thursday");
-        assertEquals(CalendarUtils.dayOfWeek(6), "Friday");
-        assertEquals(CalendarUtils.dayOfWeek(7), "Saturday");
-        assertEquals(CalendarUtils.dayOfWeek(0), null);
+        assertEquals(CalendarUtils.nameOfDay(1), "Sunday");
+        assertEquals(CalendarUtils.nameOfDay(2), "Monday");
+        assertEquals(CalendarUtils.nameOfDay(3), "Tuesday");
+        assertEquals(CalendarUtils.nameOfDay(4), "Wednesday");
+        assertEquals(CalendarUtils.nameOfDay(5), "Thursday");
+        assertEquals(CalendarUtils.nameOfDay(6), "Friday");
+        assertEquals(CalendarUtils.nameOfDay(7), "Saturday");
+        assertEquals(CalendarUtils.nameOfDay(0), null);
     }
 
     @Test
@@ -81,17 +81,17 @@ public class CalendarUtilsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testIllegalDayNumberSuffix() throws Exception {
+    public void testIllegalDayNumberSuffix() {
         CalendarUtils.dayNumberSuffix(32);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDayNumberSuffixWithZero() throws Exception {
+    public void testDayNumberSuffixWithZero() {
         CalendarUtils.dayNumberSuffix(0);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testDayNumberSuffixWithNegative() throws Exception {
+    public void testDayNumberSuffixWithNegative() {
         CalendarUtils.dayNumberSuffix(-1);
     }
 }
