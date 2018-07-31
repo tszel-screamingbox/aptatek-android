@@ -2,12 +2,13 @@ package com.aptatek.aptatek.view.main.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
+import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.view.base.list.adapter.BaseAdapter;
 import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
 
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 
 public class ChartAdapter extends BaseAdapter<ChartVM> {
 
+    @Nullable
     private ChartAdapterViewHolder.OnItemClickedListener onItemClickedListener;
 
     @Inject
@@ -39,10 +41,19 @@ public class ChartAdapter extends BaseAdapter<ChartVM> {
     @Override
     public void onBindViewHolder(@NonNull final BaseViewHolder<ChartVM> holder, final int position) {
         super.onBindViewHolder(holder, position);
-        ((ChartAdapterViewHolder) holder).setOnItemClickedListener(onItemClickedListener);
+        if (onItemClickedListener != null) {
+            ((ChartAdapterViewHolder) holder).setOnItemClickedListener(onItemClickedListener);
+        }
     }
 
-    public void setOnItemClickListener(final ChartAdapterViewHolder.OnItemClickedListener onItemClickedListener) {
+    public void setOnItemClickListener(@NonNull final ChartAdapterViewHolder.OnItemClickedListener onItemClickedListener) {
         this.onItemClickedListener = onItemClickedListener;
+    }
+
+    public void updateWithoutNotify(final ChartVM oldItem, final ChartVM newItem) {
+        if (items.contains(oldItem)) {
+            final int position = items.indexOf(oldItem);
+            items.set(position, newItem);
+        }
     }
 }
