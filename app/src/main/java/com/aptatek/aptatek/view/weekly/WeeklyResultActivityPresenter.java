@@ -34,9 +34,12 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
         weekList.add(14);
     }
 
-    //TODO: filter for valid weeks
+
 
     List<Integer> validWeekList() {
+        //TODO: filter for valid weeks
+//        fakeCubeDataManager.listAll()
+
         return weekList;
     }
 

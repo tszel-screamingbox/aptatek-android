@@ -54,7 +54,8 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     @Override
     protected void initObjects(final View view) {
         initChart();
-        presenter.fillDataSet(weekBefore);
+        weeklyBubbleChart.getData().addDataSet(presenter.getChartData(weekBefore));
+        weeklyBubbleChart.invalidate();
     }
 
     @Override

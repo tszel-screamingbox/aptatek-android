@@ -50,6 +50,18 @@ public class CalendarUtils {
         return sdf.format(date);
     }
 
+    public static int dayOfWeek(final Date date) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public static int hourOfDay(final Date date) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
     // TODO: unit testing
     public static Date dateBefore(final int numberOfWeek) {
         final Date date = new Date();
@@ -61,11 +73,12 @@ public class CalendarUtils {
 
     /**
      * Returns with the last monday.
+     *
      * @param date
      * @return Last monday.
      */
     // TODO: unit testing
-    public static Date thisMonday(final Date date) {
+    public static Date lastMonday(final Date date) {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -78,6 +91,7 @@ public class CalendarUtils {
 
     /**
      * Returns with the following monday.
+     *
      * @param date
      * @return Next monday.
      */

@@ -1,9 +1,6 @@
 package com.aptatek.aptatek.view.weekly.chart;
 
-import android.graphics.Color;
-
 import com.aptatek.aptatek.device.formatter.WeeklyChartValueFormatter;
-import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
 import com.github.mikephil.charting.data.BubbleDataSet;
@@ -14,34 +11,43 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import ix.Ix;
+
 
 class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
 
+    private static final float SIZE = 0.1f;
+
     private final FakeCubeDataManager fakeCubeDataManager;
-    private final PkuRangeInteractor pkuRangeInteractor;
 
     @Inject
-    WeeklyChartPresenter(final FakeCubeDataManager fakeCubeDataManager,
-                         final PkuRangeInteractor pkuRangeInteractor) {
+    WeeklyChartPresenter(final FakeCubeDataManager fakeCubeDataManager) {
         this.fakeCubeDataManager = fakeCubeDataManager;
-        this.pkuRangeInteractor = pkuRangeInteractor;
+
     }
 
-    void fillDataSet(final int weekBefore) {
-        final Date firstDayOfWeek;
-        final Date lastDayOfWeek;
-        final Date date = CalendarUtils.dateBefore(weekBefore);
+    BubbleDataSet getChartData(final int weekBefore) {
+        final Date currentWeekDay = CalendarUtils.dateBefore(weekBefore);
+        final Date lastMonday = CalendarUtils.lastMonday(currentWeekDay);
+        final Date nextMonday = CalendarUtils.nextMonday(currentWeekDay);
 
-        //fakeCubeDataManager.loadByDate(firstDayOfWeek, nextMonday);
+        final List<BubbleEntry> entries =
+                Ix.from(fakeCubeDataManager.loadByDate(lastMonday, nextMonday))
+                        .filter(cubeData -> cubeData.getMeasuredLevel() >= 0)
+                        .map(value -> new BubbleEntry(CalendarUtils.dayOfWeek(value.getDate()) - 1, CalendarUtils.hourOfDay(value.getDate()), SIZE))
+                        .toList();
+
+        return new BubbleDataSet(entries, null);
     }
 
     BubbleDataSet generateDataset() {
         final ArrayList<BubbleEntry> entries = new ArrayList<>();
-        entries.add(new BubbleEntry(0, 0, 0.1f));
+        entries.add(new BubbleEntry(0, 0, SIZE));
         entries.add(new BubbleEntry(0, 13, 0.1f));
         entries.add(new BubbleEntry(1, 7, 0.1f));
         entries.add(new BubbleEntry(1, 10, 0.1f));
@@ -54,7 +60,7 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
 
 
         final BubbleDataSet dataSet = new BubbleDataSet(entries, null);
-        dataSet.setColors(Color.RED, Color.GRAY, Color.GREEN);
+//        dataSet.setColors(Color.RED, Color.GRAY, Color.GREEN);
 
         final Map<Entry, String> labels = new HashMap<>();
         for (final BubbleEntry bubbleEntry : entries) {
