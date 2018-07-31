@@ -1,15 +1,9 @@
 package com.aptatek.aptatek.util;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.respository.chart.CubeData;
-import com.aptatek.aptatek.view.main.adapter.ChartVM;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import static com.aptatek.aptatek.util.ChartUtils.State;
 import static com.aptatek.aptatek.util.ChartUtils.bigBubbleBackground;
@@ -64,27 +58,6 @@ public class ChartUtilsTest {
 
     @Test
     public void testChartCoordinates() {
-        final List<CubeData> cubeDataList = new ArrayList<>();
-        cubeDataList.add(CubeData.create(0, new Date(), 0, 0));
-        cubeDataList.add(CubeData.create(0, new Date(), 100, 0));
-        cubeDataList.add(CubeData.create(0, new Date(), 100, 0));
-        cubeDataList.add(CubeData.create(0, new Date(), 50, 0));
-        cubeDataList.add(CubeData.create(0, new Date(), -1, 0));
-
-        final List<ChartVM> chartVMList = chartUtils.asChartVMList(cubeDataList);
-        assertEquals(-1, chartVMList.get(0).getStartLineYAxis(),0);
-        assertEquals(0.5, chartVMList.get(0).getEndLineYAxis(),0);
-
-        assertEquals(0.5, chartVMList.get(1).getStartLineYAxis(),0);
-        assertEquals(0, chartVMList.get(1).getEndLineYAxis(),0);
-
-        assertEquals(0, chartVMList.get(2).getStartLineYAxis(),0);
-        assertEquals(0.25, chartVMList.get(2).getEndLineYAxis(),0);
-
-        assertEquals(0.25, chartVMList.get(3).getStartLineYAxis(),0);
-        assertEquals(0.5, chartVMList.get(3).getEndLineYAxis(),0);
-
-        assertEquals(0.5, chartVMList.get(4).getStartLineYAxis(),0);
-        assertEquals(-1, chartVMList.get(4).getEndLineYAxis(),0);
+        //TODO
     }
 }

@@ -12,11 +12,9 @@ public abstract class CubeData {
 
     public abstract Date getDate();
 
-    public abstract int getMeasuredLevel();
+    public abstract PkuLevel getMeasure();
 
-    public abstract PkuLevel getUnit();
-
-    public static CubeData create(final long id, final Date date, final int level, final PkuLevel unit) {
-        return new AutoValue_CubeData(id, date, level, unit);
+    public static CubeData create(final long id, final Date date, final PkuLevel measure) {
+        return new AutoValue_CubeData(id, date, measure);
     }
 }

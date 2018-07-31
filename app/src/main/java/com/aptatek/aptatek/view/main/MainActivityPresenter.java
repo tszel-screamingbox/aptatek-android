@@ -4,8 +4,9 @@ import android.text.format.DateUtils;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
-import com.aptatek.aptatek.domain.respository.chart.Measure;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
@@ -40,7 +41,9 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     }
 
     List<ChartVM> fakeData() {
-        return chartUtils.asChartVMList(fakeCubeDataManager.listAll());
+        final List<ChartVM> chartVMS = chartUtils.asChartVMList(fakeCubeDataManager.listAll());
+        chartVMS.set(chartVMS.size() - 1, chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build());
+        return chartVMS;
     }
 
     void itemZoomIn(final ChartVM chartVM) {
@@ -68,21 +71,22 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         ifViewAttached(view -> view.changeItemZoomState(chartVM, chartVM.toBuilder().setZoomed(false).build()));
     }
 
-    void measureListToAdapterList(final List<Measure> measures) {
+    void measureListToAdapterList(final List<PkuLevel> measures) {
         final List<DailyResultAdapterItem> dailyResultAdapterItems = new ArrayList<>();
 
-        for (Measure measure : measures) {
-            final String unit = String.valueOf(measure.getUnit().getValue())
-                    + (measure.getUnit().getUnit() == PkuLevelUnits.MICRO_MOL
-                    ? resourceInteractor.getStringResource(R.string.rangeinfo_pkulevel_mmol)
-                    : resourceInteractor.getStringResource(R.string.rangeinfo_pkulevel_mg));
+        for (PkuLevel measure : measures) {
+            final PkuLevel unit = PkuLevelConverter.convertTo(measure, measure.getUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL);
+            final String unitString = (unit.getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) unit.getValue()) : String.valueOf(unit.getValue()))
+                    + (measure.getUnit() == PkuLevelUnits.MICRO_MOL
+                    ? resourceInteractor.getStringResource(R.string.rangeinfo_pkulevel_mg)
+                    : resourceInteractor.getStringResource(R.string.rangeinfo_pkulevel_mmol));
 
             dailyResultAdapterItems.add(DailyResultAdapterItem.create(
                     StringUtils.highlightWord(
-                            String.valueOf(measure.getPhenylalanineLevel()),
-                            String.valueOf(unit)),
+                            measure.getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) measure.getValue()) : String.valueOf(measure.getValue()),
+                            String.valueOf(unitString)),
                     System.currentTimeMillis(),
-                    ChartUtils.getState(measure.getPhenylalanineLevel())));
+                    ChartUtils.getState((int) PkuLevelConverter.convertTo(measure, PkuLevelUnits.MICRO_MOL).getValue())));
         }
 
         ifViewAttached(view -> view.setMeasureList(dailyResultAdapterItems));

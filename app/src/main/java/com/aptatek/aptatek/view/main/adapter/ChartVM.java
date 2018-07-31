@@ -3,7 +3,7 @@ package com.aptatek.aptatek.view.main.adapter;
 import android.support.annotation.Nullable;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.respository.chart.Measure;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.view.base.list.IListTypeProvider;
 import com.google.auto.value.AutoValue;
 
@@ -18,7 +18,7 @@ public abstract class ChartVM implements IListTypeProvider {
     public abstract Date getDate();
 
     @Nullable
-    public abstract Measure getHighestMeasure();
+    public abstract PkuLevel getHighestMeasure();
 
     public abstract float getBubbleYAxis();
 
@@ -31,7 +31,7 @@ public abstract class ChartVM implements IListTypeProvider {
     public abstract int getNumberOfMeasures();
 
     @Nullable
-    public abstract List<Measure> getMeasures();
+    public abstract List<PkuLevel> getMeasures();
 
     public abstract Builder toBuilder();
 
@@ -45,7 +45,7 @@ public abstract class ChartVM implements IListTypeProvider {
 
         public abstract Builder setDate(Date date);
 
-        public abstract Builder setHighestMeasure(@Nullable Measure highestMeasure);
+        public abstract Builder setHighestMeasure(@Nullable PkuLevel highestMeasure);
 
         public abstract Builder setBubbleYAxis(float bubbleYAxis);
 
@@ -55,7 +55,7 @@ public abstract class ChartVM implements IListTypeProvider {
 
         public abstract Builder setZoomed(boolean zoomed);
 
-        public abstract Builder setMeasures(@Nullable List<Measure> measures);
+        public abstract Builder setMeasures(@Nullable List<PkuLevel> measures);
 
         public abstract Builder setNumberOfMeasures(int numberOfMeasures);
 

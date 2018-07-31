@@ -4,9 +4,9 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.respository.chart.ChartDTO;
 import com.aptatek.aptatek.domain.respository.chart.CubeData;
-import com.aptatek.aptatek.domain.respository.chart.Measure;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
 
 import java.util.ArrayList;
@@ -40,22 +40,22 @@ public class ChartUtils {
     }
 
     public List<ChartVM> asChartVMList(final List<CubeData> inputList) {
-        final Comparator<CubeData> comp = (p1, p2) -> Integer.compare(p1.getMeasuredLevel(), p2.getMeasuredLevel());
+        final Comparator<CubeData> comp = (p1, p2) -> Float.compare(p1.getMeasure().getValue(), p2.getMeasure().getValue());
 
         if (inputList == null || inputList.size() == 0) {
             return null;
         }
 
         final float maxLevel = Ix.from(inputList)
-                .filter(cubeData -> cubeData.getMeasuredLevel() >= 0)
+                .filter(cubeData -> cubeData.getMeasure().getValue() >= 0)
                 .max(comp)
                 .first()
-                .getMeasuredLevel();
+                .getMeasure().getValue();
         minLevel = Ix.from(inputList)
-                .filter(cubeData -> cubeData.getMeasuredLevel() >= 0)
+                .filter(cubeData -> cubeData.getMeasure().getValue() >= 0)
                 .min(comp)
                 .first()
-                .getMeasuredLevel();
+                .getMeasure().getValue();
         delta = maxLevel - minLevel;
 
         for (int i = 0; i < inputList.size(); i++) {
@@ -71,7 +71,7 @@ public class ChartUtils {
 
             if (inputList.size() - 1 != i) { // if it's not the last item in the list
                 final float nextBubbleY;
-                if (inputList.get(i + 1).getMeasuredLevel() >= 0) {
+                if (inputList.get(i + 1).getMeasure().getValue() >= 0) {
                     //calculate the next bubble Y-height
                     nextBubbleY = getY(inputList.get(i + 1));
                 } else {
@@ -82,8 +82,8 @@ public class ChartUtils {
                 endY = (bubbleY + nextBubbleY) / 2;
             }
 
-            final List<Measure> measureList = new ArrayList<>();
-            if (cubeData.getMeasuredLevel() >= 0) {
+            final List<PkuLevel> measureList = new ArrayList<>();
+            if (cubeData.getMeasure().getValue() >= 0) {
                 // if the item has one measure at least, generate a random sized list
                 measureList.addAll(randomMeasureList(cubeData));
             }
@@ -93,9 +93,9 @@ public class ChartUtils {
 
         return Ix.from(chartDTOList)
                 .map(chartDTO -> {
-                    Measure highest = null;
+                    PkuLevel highest = null;
                     if (chartDTO.getMeasureList() != null && !chartDTO.getMeasureList().isEmpty()) {
-                        final Comparator<Measure> comp1 = (p1, p2) -> Integer.compare(p1.getPhenylalanineLevel(), p2.getPhenylalanineLevel());
+                        final Comparator<PkuLevel> comp1 = (p1, p2) -> Float.compare(p1.getValue(), p2.getValue());
                         highest = Ix.from(chartDTO.getMeasureList())
                                 .max(comp1)
                                 .first();
@@ -177,26 +177,26 @@ public class ChartUtils {
         }
     }
 
-    private List<Measure> randomMeasureList(final CubeData cubeData) {
+    private List<PkuLevel> randomMeasureList(final CubeData cubeData) {
         //Generates random measue data for a given day
         final Random random = new Random();
         if (random.nextBoolean()) {
             // 2 or more measure on the same day
-            final List<Measure> measureList = new ArrayList<>();
+            final List<PkuLevel> measureList = new ArrayList<>();
             for (int i = 0; i < random.nextInt(RANGE); i++) {
-                measureList.add(Measure.create(cubeData.getMeasuredLevel() - i, cubeData.getUnit()));
+                measureList.add(cubeData.getMeasure());
             }
             return measureList;
         } else {
-            return Collections.singletonList(Measure.create(cubeData.getMeasuredLevel(), cubeData.getUnit()));
+            return Collections.singletonList(cubeData.getMeasure());
         }
     }
 
 
     private float getY(final CubeData cubeData) {
-        if (cubeData.getMeasuredLevel() >= 0 && delta > 0) {
+        if (cubeData.getMeasure().getValue() >= 0 && delta > 0) {
             // calculate the Y percentage of the bubble
-            return (1 - (cubeData.getMeasuredLevel() - minLevel) / delta);
+            return (1 - (cubeData.getMeasure().getValue() - minLevel) / delta);
         } else {
             // if there is no measure on the givan day, set Y to half of the Y-axis
             return 0.5f;

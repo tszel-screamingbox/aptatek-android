@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
@@ -159,18 +161,19 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
             if (currentData.getHighestMeasure() == null) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
             } else {
-                final ChartUtils.State state = ChartUtils.getState(currentData.getHighestMeasure().getPhenylalanineLevel());
+                final ChartUtils.State state = ChartUtils.getState((int) PkuLevelConverter.convertTo(currentData.getHighestMeasure(), PkuLevelUnits.MICRO_MOL).getValue());
                 infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.bigBubbleBackground(state)));
                 infoTextView.setTextColor(context.getResources().getColor(ChartUtils.stateColor(state)));
 
-                final String unit = String.valueOf(currentData.getHighestMeasure().getUnit().getValue())
-                        + (currentData.getHighestMeasure().getUnit().getUnit() == PkuLevelUnits.MICRO_MOL
-                        ? context.getString(R.string.rangeinfo_pkulevel_mmol)
-                        : context.getString(R.string.rangeinfo_pkulevel_mg));
+                final PkuLevel unit = PkuLevelConverter.convertTo(currentData.getHighestMeasure(), currentData.getHighestMeasure().getUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL);
+                final String unitString = (unit.getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) unit.getValue()) : String.valueOf(unit.getValue()))
+                        + (currentData.getHighestMeasure().getUnit() == PkuLevelUnits.MICRO_MOL
+                        ? context.getString(R.string.rangeinfo_pkulevel_mg)
+                        : context.getString(R.string.rangeinfo_pkulevel_mmol));
 
                 final CharSequence details = StringUtils.highlightWord(
-                        String.valueOf(currentData.getHighestMeasure().getPhenylalanineLevel()),
-                        String.valueOf(unit));
+                        currentData.getHighestMeasure().getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) currentData.getHighestMeasure().getValue()) : String.valueOf(currentData.getHighestMeasure().getValue()),
+                        String.valueOf(unitString));
 
                 infoTextView.setText(details);
                 if (currentData.getNumberOfMeasures() > 1) {
@@ -189,7 +192,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
         if (currentData.getHighestMeasure() == null) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         } else {
-            final ChartUtils.State state = ChartUtils.getState(currentData.getHighestMeasure().getPhenylalanineLevel());
+            final ChartUtils.State state = ChartUtils.getState((int) PkuLevelConverter.convertTo(currentData.getHighestMeasure(), PkuLevelUnits.MICRO_MOL).getValue());
             infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.smallBubbleBackground(state)));
         }
     }
