@@ -25,7 +25,6 @@ public class PkuValueFormatterImpl implements PkuValueFormatter {
         return info.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? 1f : 0.1f;
     }
 
-
     @Override
     public String formatVeryHigh(final PkuRangeInfo info) {
         return String.format(Locale.getDefault(), getProperFormat(info), info.getHighCeilValue() + getProperOffset(info));

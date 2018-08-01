@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
+import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapter;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
@@ -77,8 +78,15 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        chartAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+        activityComponent.plus(new RangeInfoModule())
+        .inject(this);
     }
 
     @NonNull

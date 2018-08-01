@@ -10,7 +10,6 @@ import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.injection.qualifier.ActivityContext;
 import com.aptatek.aptatek.injection.scope.ActivityScope;
 import com.aptatek.aptatek.view.fingerprint.FingerprintActivity;
-import com.aptatek.aptatek.view.main.MainActivity;
 import com.aptatek.aptatek.view.parentalgate.ParentalGateActivity;
 import com.aptatek.aptatek.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.aptatek.view.pin.set.SetPinHostActivity;
@@ -29,8 +28,6 @@ public interface ActivityComponent {
     void inject(AuthPinHostActivity activity);
 
     void inject(FingerprintActivity activity);
-
-    void inject(MainActivity activity);
 
     void inject(SetPinHostActivity activity);
 
