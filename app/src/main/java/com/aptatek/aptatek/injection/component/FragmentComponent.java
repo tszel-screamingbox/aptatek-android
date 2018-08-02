@@ -1,16 +1,17 @@
 package com.aptatek.aptatek.injection.component;
 
+import com.aptatek.aptatek.injection.component.rangeinfo.RangeInfoFragmentComponent;
 import com.aptatek.aptatek.injection.component.parentalgate.ParentalGateFragmentComponent;
 import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
 import com.aptatek.aptatek.injection.module.FragmentModule;
 import com.aptatek.aptatek.injection.module.parentalgate.ParentalGateModule;
+import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.injection.scope.FragmentScope;
 import com.aptatek.aptatek.view.parentalgate.verification.ParentalGateVerificationFragment;
 import com.aptatek.aptatek.view.pin.auth.add.AuthPinFragment;
 import com.aptatek.aptatek.view.pin.set.add.AddPinFragment;
 import com.aptatek.aptatek.view.pin.set.confirm.ConfirmPinFragment;
-import com.aptatek.aptatek.view.weekly.chart.WeeklyChartFragment;
 
 import dagger.Component;
 
@@ -26,12 +27,12 @@ public interface FragmentComponent {
 
     void inject(AuthPinFragment authPinFragment);
 
-    void inject(WeeklyChartFragment weeklyChartFragment);
-
     void inject(ParentalGateVerificationFragment parentalGateVerificationFragment);
 
     TestFragmentComponent plus(TestModule module);
 
     ParentalGateFragmentComponent plus(ParentalGateModule module);
+
+    RangeInfoFragmentComponent plus(RangeInfoModule module);
 
 }

@@ -95,7 +95,7 @@
         style="@style/General.Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/weekly.chart.label"
+        tools:text="Results are in mg/dl"
         android:textSize="@dimen/font.size.normal"
         app:layout_constraintBottom_toBottomOf="parent" />
 </android.support.constraint.ConstraintLayout>

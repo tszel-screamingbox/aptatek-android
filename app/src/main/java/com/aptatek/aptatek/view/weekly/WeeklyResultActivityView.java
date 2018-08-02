@@ -11,4 +11,6 @@ interface WeeklyResultActivityView extends MvpView {
     void onUpdateLeftArrow(final boolean isVisible);
 
     void onLoadNextPage(final int page);
+
+    void displayUnitLabel(String unitLabel);
 }

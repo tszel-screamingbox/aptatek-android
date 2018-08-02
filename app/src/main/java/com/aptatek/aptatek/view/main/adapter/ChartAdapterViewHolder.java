@@ -170,9 +170,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
                 infoTextView.setTextColor(context.getResources().getColor(ChartUtils.stateColor(state)));
 
                 final PkuRangeInfo userSettings = chartUtils.getUserSettings();
-                final PkuLevel pkuLevelInSelectedUnit = userSettings.getPkuLevelUnit() == highestMeasure.getUnit()
-                        ? highestMeasure
-                        : PkuLevelConverter.convertTo(highestMeasure, userSettings.getPkuLevelUnit());
+                final PkuLevel pkuLevelInSelectedUnit = chartUtils.convertToDisplayUnit(highestMeasure);
                 final PkuLevel pkuLevelInAlternativeUnit = userSettings.getPkuLevelUnit() == highestMeasure.getUnit()
                         ? PkuLevelConverter.convertTo(highestMeasure, userSettings.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL)
                         : highestMeasure;

@@ -47,6 +47,7 @@
     <dimen name="font.size.mini">10sp</dimen>
     <dimen name="font.size.small">11sp</dimen>
     <dimen name="font.size.regular">12sp</dimen>
+    <dimen name="font.size.xregular">13sp</dimen>
     <dimen name="font.size.normal">15sp</dimen>
     <dimen name="font.size.medium">16sp</dimen>
     <dimen name="font.size.big">18sp</dimen>
