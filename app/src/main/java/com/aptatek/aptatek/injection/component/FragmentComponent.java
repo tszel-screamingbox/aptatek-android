@@ -10,6 +10,7 @@ import com.aptatek.aptatek.view.parentalgate.verification.ParentalGateVerificati
 import com.aptatek.aptatek.view.pin.auth.add.AuthPinFragment;
 import com.aptatek.aptatek.view.pin.set.add.AddPinFragment;
 import com.aptatek.aptatek.view.pin.set.confirm.ConfirmPinFragment;
+import com.aptatek.aptatek.view.weekly.chart.WeeklyChartFragment;
 
 import dagger.Component;
 
@@ -24,6 +25,8 @@ public interface FragmentComponent {
     void inject(ConfirmPinFragment confirmPinFragment);
 
     void inject(AuthPinFragment authPinFragment);
+
+    void inject(WeeklyChartFragment weeklyChartFragment);
 
     void inject(ParentalGateVerificationFragment parentalGateVerificationFragment);
 

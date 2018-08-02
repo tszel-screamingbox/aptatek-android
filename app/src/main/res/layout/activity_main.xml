@@ -48,11 +48,14 @@
 
     <ImageView
         android:id="@+id/playIcon"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/graph.height"
         android:background="@color/chartBackrgroundBlue"
         android:src="@drawable/ic_measure"
-        app:layout_constraintBottom_toTopOf="@id/chartGuide" />
+        app:layout_constraintBottom_toTopOf="@id/chartGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
     <com.yarolegovich.discretescrollview.DiscreteScrollView
         android:id="@+id/scrollView"

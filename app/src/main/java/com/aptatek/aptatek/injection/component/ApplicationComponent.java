@@ -8,11 +8,12 @@ import com.aptatek.aptatek.AptatekApplication;
 import com.aptatek.aptatek.data.AptatekDatabase;
 import com.aptatek.aptatek.device.DeviceHelper;
 import com.aptatek.aptatek.device.PreferenceManager;
-import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.injection.module.DatabaseModule;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
+import com.aptatek.aptatek.util.animation.AnimationHelper;
 
 import javax.inject.Singleton;
 
@@ -38,6 +39,8 @@ public interface ApplicationComponent {
     NotificationManagerCompat notificationManagerCompat();
 
     AptatekDatabase aptatekDatabase();
+
+    FakeCubeDataManager fakeCubeDataManager();
 
     @ApplicationContext
     Context context();

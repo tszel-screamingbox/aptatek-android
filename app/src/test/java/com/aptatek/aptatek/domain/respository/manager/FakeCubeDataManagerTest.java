@@ -68,6 +68,27 @@ public class FakeCubeDataManagerTest {
     }
 
     @Test
+    public void testFilterForToday() {
+        final Date date = cubeDataList.get(0).getDate();
+        final List<CubeData> cubeDataList = fakeCubeDataManager.loadByDate(date(1), date(-1));
+        assertEquals(cubeDataList.size(), 1);
+        assertEquals(cubeDataList.get(0).getDate(), date);
+    }
+
+    @Test
+    public void testFilterWithDates() {
+        final List<CubeData> subList = cubeDataList.subList(0, 4);
+        final List<CubeData> cubeDataList = fakeCubeDataManager.loadByDate(date(4), date(-1));
+        assertEquals(cubeDataList.size(), subList.size());
+        assertEquals(subList, cubeDataList);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testInvalidParameters() {
+        fakeCubeDataManager.loadByDate(date(-1), date(1));
+    }
+
+    @Test
     public void removeById() {
         fakeCubeDataManager.removeById(0);
         assertEquals(fakeCubeDataManager.listAll().size(), SIZE - 1);
