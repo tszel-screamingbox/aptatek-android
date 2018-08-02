@@ -120,7 +120,7 @@ public class ChartUtils {
                 .toList();
     }
 
-    public State getState(final PkuLevel pkuLevel) {
+    public PkuLevel convertToDisplayUnit(final PkuLevel pkuLevel) {
         final PkuRangeInfo userRange = pkuRangeInteractor.getInfo().blockingGet();
         final PkuLevel levelInProperUnit;
         if (userRange.getPkuLevelUnit() != pkuLevel.getUnit()) {
@@ -128,6 +128,13 @@ public class ChartUtils {
         } else {
             levelInProperUnit = pkuLevel;
         }
+
+        return levelInProperUnit;
+    }
+
+    public State getState(final PkuLevel pkuLevel) {
+        final PkuLevel levelInProperUnit = convertToDisplayUnit(pkuLevel);
+        final PkuRangeInfo userRange = pkuRangeInteractor.getInfo().blockingGet();
 
         final State chartState;
 

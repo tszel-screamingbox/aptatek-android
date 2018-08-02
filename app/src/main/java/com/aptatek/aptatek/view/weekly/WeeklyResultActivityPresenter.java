@@ -2,6 +2,8 @@ package com.aptatek.aptatek.view.weekly;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
@@ -14,6 +16,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 
 import static com.aptatek.aptatek.util.CalendarUtils.dayNumberSuffix;
@@ -25,12 +30,47 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
     private final FakeCubeDataManager fakeCubeDataManager;
     private final ResourceInteractor resourceInteractor;
     private final List<Integer> weekList = new ArrayList<>();
+    private final PkuRangeInteractor rangeInteractor;
+
+    private Disposable disposable;
 
     @Inject
     public WeeklyResultActivityPresenter(final FakeCubeDataManager fakeCubeDataManager,
-                                         final ResourceInteractor resourceInteractor) {
+                                         final ResourceInteractor resourceInteractor,
+                                         final PkuRangeInteractor rangeInteractor) {
         this.fakeCubeDataManager = fakeCubeDataManager;
         this.resourceInteractor = resourceInteractor;
+        this.rangeInteractor = rangeInteractor;
+    }
+
+    @Override
+    public void attachView(final WeeklyResultActivityView view) {
+        super.attachView(view);
+
+        disposable = rangeInteractor.getInfo()
+                .map(rangeInfo ->
+                        resourceInteractor.getStringResource(R.string.weekly_chart_label,
+                                resourceInteractor.getStringResource(rangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                                    ? R.string.rangeinfo_pkulevel_mmol
+                                     : R.string.rangeinfo_pkulevel_mg)
+                        )
+                )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(label ->
+                    ifViewAttached(attachedView ->
+                        attachedView.displayUnitLabel(label)
+                    )
+                );
+    }
+
+    @Override
+    public void detachView() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+
+        super.detachView();
     }
 
     List<Integer> validWeekList() {

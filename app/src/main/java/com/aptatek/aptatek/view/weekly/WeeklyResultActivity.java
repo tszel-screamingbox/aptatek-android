@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
+import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.weekly.swipe.CustomViewPager;
 import com.aptatek.aptatek.view.weekly.swipe.SwipeAdapter;
@@ -40,6 +41,9 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     @BindView(R.id.rightArrow)
     ImageView rightArrowImageView;
 
+    @BindView(R.id.label)
+    TextView tvUnit;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +58,8 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+        activityComponent.plus(new RangeInfoModule())
+                .inject(this);
     }
 
     @NonNull
@@ -117,5 +122,10 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     @Override
     public void onLoadNextPage(final int page) {
         chartViewPager.setCurrentItem(page, true);
+    }
+
+    @Override
+    public void displayUnitLabel(String unitLabel) {
+        tvUnit.setText(unitLabel);
     }
 }

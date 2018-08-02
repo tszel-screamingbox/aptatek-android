@@ -5,6 +5,7 @@ import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.main.MainActivity;
 import com.aptatek.aptatek.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.aptatek.view.settings.pkulevel.RangeSettingsActivity;
+import com.aptatek.aptatek.view.weekly.WeeklyResultActivity;
 
 import dagger.Subcomponent;
 
@@ -16,5 +17,7 @@ public interface RangeInfoActivityComponent {
     void inject(RangeSettingsActivity activity);
 
     void inject(MainActivity mainActivity);
+
+    void inject(WeeklyResultActivity activity);
 
 }

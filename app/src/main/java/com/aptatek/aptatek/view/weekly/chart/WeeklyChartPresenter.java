@@ -1,8 +1,16 @@
 package com.aptatek.aptatek.view.weekly.chart;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
+
+import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.device.formatter.WeeklyChartValueFormatter;
+import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
 import com.aptatek.aptatek.util.CalendarUtils;
+import com.aptatek.aptatek.util.ChartUtils;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.Entry;
@@ -24,13 +32,19 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
 
     private static final float SIZE = 0.1f;
     private static final int DAY_OFFSET = 1;
+    private static final float BUBBLE_ALPHA = 0.2f;
 
     private final FakeCubeDataManager fakeCubeDataManager;
+    private final ChartUtils chartUtils;
+    private final ResourceInteractor resourceInteractor;
 
     @Inject
-    WeeklyChartPresenter(final FakeCubeDataManager fakeCubeDataManager) {
+    WeeklyChartPresenter(final FakeCubeDataManager fakeCubeDataManager,
+                         final ChartUtils chartUtils,
+                         final ResourceInteractor resourceInteractor) {
         this.fakeCubeDataManager = fakeCubeDataManager;
-
+        this.chartUtils = chartUtils;
+        this.resourceInteractor = resourceInteractor;
     }
 
     BubbleDataSet getChartData(final int weekBefore) {
@@ -46,17 +60,35 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
                 .filter(cubeData -> cubeData.getMeasure().getValue() >= 0)
                 .map(value -> {
                     final BubbleEntry bubbleEntry = new BubbleEntry(CalendarUtils.dayOfWeek(value.getDate()) - DAY_OFFSET, CalendarUtils.hourOfDay(value.getDate()), SIZE);
-                    labels.put(bubbleEntry, String.valueOf(value.getMeasure().getValue()));
-                    //TODO add color to valueColorList and dataColorList
+
+                    final PkuLevel pkuLevelInDisplayUnit = chartUtils.convertToDisplayUnit(value.getMeasure());
+
+                    labels.put(bubbleEntry, chartUtils.format(pkuLevelInDisplayUnit));
+                    final ChartUtils.State state = chartUtils.getState(pkuLevelInDisplayUnit);
+                    final int color = resourceInteractor.getColorResource(ChartUtils.stateColor(state));
+
+                    dataColorList.add(adjustAlpha(color));
+                    valueColorList.add(color);
+
                     return bubbleEntry;
                 })
                 .toList();
 
         Timber.d("Number of entries: %s", entries.size());
         final BubbleDataSet dataSet = new BubbleDataSet(entries, null);
-//        dataSet.setColors(dataColorList);
-//        dataSet.setValueTextColors(valueColorList);
+        dataSet.setColors(dataColorList);
+        dataSet.setValueTextColors(valueColorList);
+        dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_xregular));
+        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
         dataSet.setValueFormatter(new WeeklyChartValueFormatter(labels));
         return dataSet;
+    }
+
+    private int adjustAlpha(@ColorInt final int color) {
+        final int alpha = Math.round(Color.alpha(color) * BUBBLE_ALPHA);
+        final int red = Color.red(color);
+        final int green = Color.green(color);
+        final int blue = Color.blue(color);
+        return Color.argb(alpha, red, green, blue);
     }
 }

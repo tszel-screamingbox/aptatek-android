@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.FragmentComponent;
+import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -62,7 +63,8 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
 
     @Override
     protected void injectFragment(final FragmentComponent fragmentComponent) {
-        fragmentComponent.inject(this);
+        fragmentComponent.plus(new RangeInfoModule())
+                .inject(this);
     }
 
     @NonNull
