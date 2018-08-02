@@ -4,6 +4,7 @@ import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
+import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
 
@@ -17,7 +18,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.aptatek.aptatek.util.CalendarUtils.dayOfWeek;
 import static com.aptatek.aptatek.util.CalendarUtils.formatDate;
 import static org.mockito.Mockito.verify;
 
@@ -69,7 +69,7 @@ public class MainActivityPresenterTest {
         presenter.itemZoomIn(emptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_DAY));
+        verify(view).updateTitles(CalendarUtils.nameOfDay(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_DAY));
     }
 
     @Test
@@ -77,6 +77,6 @@ public class MainActivityPresenterTest {
         presenter.itemZoomIn(notEmptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        verify(view).updateTitles(dayOfWeek(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_WITH_TIME));
+        verify(view).updateTitles(CalendarUtils.nameOfDay(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_WITH_TIME));
     }
 }

@@ -40,14 +40,14 @@ public class CalendarUtilsTest {
 
     @Test
     public void testDaysOfWeek() {
-        assertEquals(CalendarUtils.dayOfWeek(1), "Sunday");
-        assertEquals(CalendarUtils.dayOfWeek(2), "Monday");
-        assertEquals(CalendarUtils.dayOfWeek(3), "Tuesday");
-        assertEquals(CalendarUtils.dayOfWeek(4), "Wednesday");
-        assertEquals(CalendarUtils.dayOfWeek(5), "Thursday");
-        assertEquals(CalendarUtils.dayOfWeek(6), "Friday");
-        assertEquals(CalendarUtils.dayOfWeek(7), "Saturday");
-        assertEquals(CalendarUtils.dayOfWeek(0), null);
+        assertEquals(CalendarUtils.nameOfDay(1), "Sunday");
+        assertEquals(CalendarUtils.nameOfDay(2), "Monday");
+        assertEquals(CalendarUtils.nameOfDay(3), "Tuesday");
+        assertEquals(CalendarUtils.nameOfDay(4), "Wednesday");
+        assertEquals(CalendarUtils.nameOfDay(5), "Thursday");
+        assertEquals(CalendarUtils.nameOfDay(6), "Friday");
+        assertEquals(CalendarUtils.nameOfDay(7), "Saturday");
+        assertEquals(CalendarUtils.nameOfDay(0), null);
     }
 
     @Test
@@ -62,5 +62,36 @@ public class CalendarUtilsTest {
         final Calendar cal = Calendar.getInstance();
         cal.setTime(now);
         assertEquals(year, String.valueOf(cal.get(Calendar.YEAR)));
+    }
+
+    @Test
+    public void testDayNumberSuffix() {
+        assertEquals(CalendarUtils.dayNumberSuffix(1), "st");
+        assertEquals(CalendarUtils.dayNumberSuffix(2), "nd");
+        assertEquals(CalendarUtils.dayNumberSuffix(3), "rd");
+        assertEquals(CalendarUtils.dayNumberSuffix(4), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(10), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(11), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(12), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(13), "th");
+        assertEquals(CalendarUtils.dayNumberSuffix(21), "st");
+        assertEquals(CalendarUtils.dayNumberSuffix(22), "nd");
+        assertEquals(CalendarUtils.dayNumberSuffix(23), "rd");
+        assertEquals(CalendarUtils.dayNumberSuffix(31), "st");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalDayNumberSuffix() {
+        CalendarUtils.dayNumberSuffix(32);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDayNumberSuffixWithZero() {
+        CalendarUtils.dayNumberSuffix(0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDayNumberSuffixWithNegative() {
+        CalendarUtils.dayNumberSuffix(-1);
     }
 }

@@ -65,6 +65,9 @@ ext {
             // DiscreteScrollView
             discreteScrollView          : '1.4.7',
 
+            // MpAndroidChart
+            chart             : 'v3.0.3',
+
             // Testing
             junit                       : '4.12',
             mockito                     : '2.8.9',
@@ -164,6 +167,10 @@ ext {
 
     scrollView = [
             discreteScrollView : "com.yarolegovich:discrete-scrollview:${versions.discreteScrollView}",
+    ]
+
+    mpAndroidChartDependencies = [
+            androidChart : "com.github.PhilJay:MPAndroidChart:${versions.chart}"
     ]
 
     testDependencies = [
