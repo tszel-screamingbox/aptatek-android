@@ -4,10 +4,14 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.aptatek.domain.model.PkuLevel;
+import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 import com.aptatek.aptatek.domain.respository.chart.ChartDTO;
 import com.aptatek.aptatek.domain.respository.chart.CubeData;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
+import com.aptatek.aptatek.view.settings.pkulevel.RangeSettingsValueFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,20 +26,20 @@ import ix.Ix;
 public class ChartUtils {
 
     private static final int RANGE = 5;
-    // Default measure levels
-    private static final int NORMAL = 100;
-    private static final int HIGH = 350;
-    private static final int VERY_HIGH = 500;
 
     private final List<ChartDTO> chartDTOList;
     private float minLevel;
     private float delta;
 
+    private final PkuRangeInteractor pkuRangeInteractor;
+    private final RangeSettingsValueFormatter formatter;
 
     public enum State {LOW, NORMAL, HIGH, VERY_HIGH}
 
     @Inject
-    public ChartUtils() {
+    public ChartUtils(final PkuRangeInteractor pkuRangeInteractor, final RangeSettingsValueFormatter formatter) {
+        this.pkuRangeInteractor = pkuRangeInteractor;
+        this.formatter = formatter;
         chartDTOList = new ArrayList<>();
     }
 
@@ -116,17 +120,30 @@ public class ChartUtils {
                 .toList();
     }
 
-    public static State getState(final int phenylalanineLevel) {
-        if (0 <= phenylalanineLevel && phenylalanineLevel < NORMAL) {
-            return State.LOW;
-        } else if (NORMAL <= phenylalanineLevel && phenylalanineLevel < HIGH) {
-            return State.NORMAL;
-        } else if (HIGH <= phenylalanineLevel && phenylalanineLevel < VERY_HIGH) {
-            return State.HIGH;
-        } else if (VERY_HIGH <= phenylalanineLevel) {
-            return State.VERY_HIGH;
+    public State getState(final PkuLevel pkuLevel) {
+        final PkuRangeInfo userRange = pkuRangeInteractor.getInfo().blockingGet();
+        final PkuLevel levelInProperUnit;
+        if (userRange.getPkuLevelUnit() != pkuLevel.getUnit()) {
+            levelInProperUnit = PkuLevelConverter.convertTo(pkuLevel, userRange.getPkuLevelUnit());
+        } else {
+            levelInProperUnit = pkuLevel;
         }
-        return State.NORMAL;
+
+        final State chartState;
+
+        if (0f > levelInProperUnit.getValue()) {
+            throw new IllegalArgumentException("Invalid pku value: " + pkuLevel);
+        } else if (userRange.getNormalFloorValue() > levelInProperUnit.getValue()) {
+            chartState = State.LOW;
+        } else if (userRange.getNormalFloorValue() <= levelInProperUnit.getValue() && levelInProperUnit.getValue() <= userRange.getNormalCeilValue()) {
+            chartState = State.NORMAL;
+        } else if (userRange.getNormalCeilValue() < levelInProperUnit.getValue() && levelInProperUnit.getValue() <= userRange.getHighCeilValue()) {
+            chartState = State.HIGH;
+        } else {
+            chartState = State.VERY_HIGH;
+        }
+
+        return chartState;
     }
 
     @DrawableRes
@@ -192,7 +209,6 @@ public class ChartUtils {
         }
     }
 
-
     private float getY(final CubeData cubeData) {
         if (cubeData.getMeasure().getValue() >= 0 && delta > 0) {
             // calculate the Y percentage of the bubble
@@ -201,5 +217,13 @@ public class ChartUtils {
             // if there is no measure on the givan day, set Y to half of the Y-axis
             return 0.5f;
         }
+    }
+
+    public PkuRangeInfo getUserSettings() {
+        return pkuRangeInteractor.getInfo().blockingGet();
+    }
+
+    public String format(final PkuLevel pkuLevel) {
+        return formatter.formatRegularValue(pkuLevel);
     }
 }

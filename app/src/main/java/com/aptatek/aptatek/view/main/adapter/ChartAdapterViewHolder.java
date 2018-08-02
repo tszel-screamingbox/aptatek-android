@@ -17,6 +17,7 @@ import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
+import com.aptatek.aptatek.domain.model.PkuRangeInfo;
 import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
 import com.aptatek.aptatek.util.StringUtils;
@@ -50,6 +51,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
     private OnItemClickedListener onItemClickedListener;
     private final Context context;
     private final AnimationHelper animationHelper;
+    private final ChartUtils chartUtils;
 
     private final float viewWidth;
     private final float viewHeight;
@@ -60,10 +62,11 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private float bubbleY;
 
-    ChartAdapterViewHolder(final View view, final Context context, final AnimationHelper animationHelper) {
+    ChartAdapterViewHolder(final View view, final Context context, final AnimationHelper animationHelper, final ChartUtils chartUtils) {
         super(view, context);
         this.context = context;
         this.animationHelper = animationHelper;
+        this.chartUtils = chartUtils;
         ButterKnife.bind(this, view);
 
         bubbleHeight = infoTextView.getLayoutParams().height;
@@ -158,22 +161,29 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private void showDetails(final ChartVM currentData) {
         animationHelper.zoomIn(bubbleContainerLayout, () -> {
-            if (currentData.getHighestMeasure() == null) {
+            final PkuLevel highestMeasure = currentData.getHighestMeasure();
+            if (highestMeasure == null) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
             } else {
-                final ChartUtils.State state = ChartUtils.getState((int) PkuLevelConverter.convertTo(currentData.getHighestMeasure(), PkuLevelUnits.MICRO_MOL).getValue());
+                final ChartUtils.State state = chartUtils.getState(highestMeasure);
                 infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.bigBubbleBackground(state)));
                 infoTextView.setTextColor(context.getResources().getColor(ChartUtils.stateColor(state)));
 
-                final PkuLevel unit = PkuLevelConverter.convertTo(currentData.getHighestMeasure(), currentData.getHighestMeasure().getUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL);
-                final String unitString = (unit.getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) unit.getValue()) : String.valueOf(unit.getValue()))
-                        + (currentData.getHighestMeasure().getUnit() == PkuLevelUnits.MICRO_MOL
-                        ? context.getString(R.string.rangeinfo_pkulevel_mg)
-                        : context.getString(R.string.rangeinfo_pkulevel_mmol));
+                final PkuRangeInfo userSettings = chartUtils.getUserSettings();
+                final PkuLevel pkuLevelInSelectedUnit = userSettings.getPkuLevelUnit() == highestMeasure.getUnit()
+                        ? highestMeasure
+                        : PkuLevelConverter.convertTo(highestMeasure, userSettings.getPkuLevelUnit());
+                final PkuLevel pkuLevelInAlternativeUnit = userSettings.getPkuLevelUnit() == highestMeasure.getUnit()
+                        ? PkuLevelConverter.convertTo(highestMeasure, userSettings.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL)
+                        : highestMeasure;
+
+                final String alternativeText = chartUtils.format(pkuLevelInAlternativeUnit) + context.getString(pkuLevelInAlternativeUnit.getUnit() == PkuLevelUnits.MICRO_MOL
+                        ? R.string.rangeinfo_pkulevel_mmol
+                        : R.string.rangeinfo_pkulevel_mg);
 
                 final CharSequence details = StringUtils.highlightWord(
-                        currentData.getHighestMeasure().getUnit() == PkuLevelUnits.MICRO_MOL ? String.valueOf((int) currentData.getHighestMeasure().getValue()) : String.valueOf(currentData.getHighestMeasure().getValue()),
-                        String.valueOf(unitString));
+                        chartUtils.format(pkuLevelInSelectedUnit),
+                        alternativeText);
 
                 infoTextView.setText(details);
                 if (currentData.getNumberOfMeasures() > 1) {
@@ -192,7 +202,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
         if (currentData.getHighestMeasure() == null) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         } else {
-            final ChartUtils.State state = ChartUtils.getState((int) PkuLevelConverter.convertTo(currentData.getHighestMeasure(), PkuLevelUnits.MICRO_MOL).getValue());
+            final ChartUtils.State state = chartUtils.getState(currentData.getHighestMeasure());
             infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.smallBubbleBackground(state)));
         }
     }
