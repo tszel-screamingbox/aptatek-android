@@ -8,6 +8,8 @@ import java.util.List;
 
 interface MainActivityView extends MvpView {
 
+    void displayData(List<ChartVM> data);
+
     void changeItemZoomState(ChartVM oldItem, ChartVM newItem);
 
     void updateTitles(String title, String subTitle);

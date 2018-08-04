@@ -14,13 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
-import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.aptatek.domain.model.PkuLevel;
-import com.aptatek.aptatek.domain.model.PkuLevelUnits;
-import com.aptatek.aptatek.domain.model.PkuRangeInfo;
-import com.aptatek.aptatek.util.CalendarUtils;
-import com.aptatek.aptatek.util.ChartUtils;
-import com.aptatek.aptatek.util.StringUtils;
 import com.aptatek.aptatek.util.animation.AnimationHelper;
 import com.aptatek.aptatek.view.base.list.viewholder.BaseViewHolder;
 
@@ -31,7 +25,6 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private static final float STROKE_WIDTH = 10f;
     private static final float INTERVAL = 5;
-    private static final String PATTERN = "dd\nMMM";
 
     @BindView(R.id.bubbleLayout)
     ConstraintLayout itemLayout;
@@ -49,9 +42,8 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
     RelativeLayout bubbleContainerLayout;
 
     private OnItemClickedListener onItemClickedListener;
-    private final Context context;
     private final AnimationHelper animationHelper;
-    private final ChartUtils chartUtils;
+    private final DailyChartFormatter dailyChartFormatter;
 
     private final float viewWidth;
     private final float viewHeight;
@@ -62,11 +54,13 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private float bubbleY;
 
-    ChartAdapterViewHolder(final View view, final Context context, final AnimationHelper animationHelper, final ChartUtils chartUtils) {
+    ChartAdapterViewHolder(final View view,
+                           final Context context,
+                           final AnimationHelper animationHelper,
+                           final DailyChartFormatter dailyChartFormatter) {
         super(view, context);
-        this.context = context;
         this.animationHelper = animationHelper;
-        this.chartUtils = chartUtils;
+        this.dailyChartFormatter = dailyChartFormatter;
         ButterKnife.bind(this, view);
 
         bubbleHeight = infoTextView.getLayoutParams().height;
@@ -161,31 +155,18 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private void showDetails(final ChartVM currentData) {
         animationHelper.zoomIn(bubbleContainerLayout, () -> {
-            final PkuLevel highestMeasure = currentData.getHighestMeasure();
+            final PkuLevel highestMeasure = currentData.getHighestPkuLevel();
             if (highestMeasure == null) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
             } else {
-                final ChartUtils.State state = chartUtils.getState(highestMeasure);
-                infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.bigBubbleBackground(state)));
-                infoTextView.setTextColor(context.getResources().getColor(ChartUtils.stateColor(state)));
+                infoTextView.setBackground(context.getResources().getDrawable(currentData.getExpandedBackgroundRes()));
+                infoTextView.setTextColor(context.getResources().getColor(currentData.getColorRes()));
 
-                final PkuRangeInfo userSettings = chartUtils.getUserSettings();
-                final PkuLevel pkuLevelInSelectedUnit = chartUtils.convertToDisplayUnit(highestMeasure);
-                final PkuLevel pkuLevelInAlternativeUnit = userSettings.getPkuLevelUnit() == highestMeasure.getUnit()
-                        ? PkuLevelConverter.convertTo(highestMeasure, userSettings.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL)
-                        : highestMeasure;
+               final CharSequence infoText = dailyChartFormatter.getBubbleText(highestMeasure);
 
-                final String alternativeText = chartUtils.format(pkuLevelInAlternativeUnit) + context.getString(pkuLevelInAlternativeUnit.getUnit() == PkuLevelUnits.MICRO_MOL
-                        ? R.string.rangeinfo_pkulevel_mmol
-                        : R.string.rangeinfo_pkulevel_mg);
-
-                final CharSequence details = StringUtils.highlightWord(
-                        chartUtils.format(pkuLevelInSelectedUnit),
-                        alternativeText);
-
-                infoTextView.setText(details);
+                infoTextView.setText(infoText);
                 if (currentData.getNumberOfMeasures() > 1) {
-                    badgeTextView.setBackground(context.getResources().getDrawable(ChartUtils.smallBubbleBackground(state)));
+                    badgeTextView.setBackground(context.getResources().getDrawable(currentData.getCollapsedBackgroundRes()));
                     badgeTextView.setText(String.valueOf(currentData.getNumberOfMeasures()));
                     badgeTextView.setVisibility(View.VISIBLE);
                 }
@@ -195,13 +176,12 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private void resetBubble(final ChartVM currentData) {
         badgeTextView.setVisibility(View.GONE);
-        infoTextView.setText(CalendarUtils.formatDate(currentData.getDate(), PATTERN));
+        infoTextView.setText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()));
         infoTextView.setTextColor(context.getResources().getColor(R.color.applicationWhite));
-        if (currentData.getHighestMeasure() == null) {
+        if (currentData.getHighestPkuLevel() == null) {
             infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         } else {
-            final ChartUtils.State state = chartUtils.getState(currentData.getHighestMeasure());
-            infoTextView.setBackground(context.getResources().getDrawable(ChartUtils.smallBubbleBackground(state)));
+            infoTextView.setBackground(context.getResources().getDrawable(currentData.getCollapsedBackgroundRes()));
         }
     }
 

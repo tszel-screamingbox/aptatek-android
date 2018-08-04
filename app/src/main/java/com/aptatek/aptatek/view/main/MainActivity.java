@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
+import com.aptatek.aptatek.injection.module.chart.ChartModule;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.main.adapter.ChartAdapter;
@@ -34,7 +35,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity<MainActivityView, MainActivityPresenter> implements MainActivityView, DiscreteScrollView.ScrollStateChangeListener {
 
-    private static final int TRESHOLD = 500;
+    private static final int THRESHOLD = 500;
     private static final int TRANSITION_TIME = 200;
 
     @Inject
@@ -64,6 +65,9 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @BindView(R.id.recyclerViewDailyResults)
     RecyclerView recyclerViewDailyResults;
 
+    @BindView(R.id.playIcon)
+    ImageView playIcon;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +90,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new RangeInfoModule())
-        .inject(this);
+        activityComponent.plus(new RangeInfoModule(), new ChartModule()).inject(this);
     }
 
     @NonNull
@@ -116,6 +119,14 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     }
 
+    @Override
+    public void displayData(final List<ChartVM> data) {
+        bubbleScrollView.setVisibility(View.VISIBLE);
+        playIcon.setVisibility(View.GONE);
+        chartAdapter.setItems(data);
+        bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
+    }
+
     @OnClick(R.id.resultButton)
     public void onToggleButtonClicked() {
         final Intent intent = new Intent(this, WeeklyResultActivity.class);
@@ -133,11 +144,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     }
 
     @OnClick(R.id.playIcon)
-    public void onPlayIconClicked(final ImageView icon) {
-        bubbleScrollView.setVisibility(View.VISIBLE);
-        icon.setVisibility(View.GONE);
-        chartAdapter.setItems(presenter.fakeData());
-        bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
+    public void onPlayIconClicked() {
+        presenter.loadData();
     }
 
     @OnClick(R.id.imgCloseResults)
@@ -149,7 +157,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         bubbleScrollView.setAdapter(chartAdapter);
         bubbleScrollView.setSlideOnFling(true);
         bubbleScrollView.setOverScrollEnabled(true);
-        bubbleScrollView.setSlideOnFlingThreshold(TRESHOLD);
+        bubbleScrollView.setSlideOnFlingThreshold(THRESHOLD);
         bubbleScrollView.setItemTransitionTimeMillis(TRANSITION_TIME);
         bubbleScrollView.addScrollStateChangeListener(this);
         bubbleScrollView.addOnItemChangedListener((viewHolder, adapterPosition) -> {

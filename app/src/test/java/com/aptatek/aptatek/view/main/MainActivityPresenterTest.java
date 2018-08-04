@@ -4,7 +4,6 @@ import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
 import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
-import com.aptatek.aptatek.util.CalendarUtils;
 import com.aptatek.aptatek.util.ChartUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
 
@@ -40,7 +39,7 @@ public class MainActivityPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = new MainActivityPresenter(fakeCubeDataManager, chartUtils, resourceInteractor);
+        presenter = new MainActivityPresenter(fakeCubeDataManager, cubeInteractor, chartUtils, resourceInteractor, dailyChartFormatter);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setId(0)

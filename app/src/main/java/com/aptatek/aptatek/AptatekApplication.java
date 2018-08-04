@@ -16,6 +16,8 @@ import com.aptatek.aptatek.injection.module.ApplicationModule;
 import com.aptatek.aptatek.view.test.incubation.IncubationReminderService;
 import com.aptatek.aptatek.view.test.samplewetting.SampleWettingReminderService;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import javax.inject.Inject;
 
 import timber.log.Timber;
@@ -47,6 +49,8 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         }
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+
+        JodaTimeAndroid.init(this);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)

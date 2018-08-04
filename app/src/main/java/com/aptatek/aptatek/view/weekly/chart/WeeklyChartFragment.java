@@ -6,12 +6,14 @@ import android.view.View;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.FragmentComponent;
+import com.aptatek.aptatek.injection.module.chart.ChartModule;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.base.BaseFragment;
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import javax.inject.Inject;
@@ -56,14 +58,13 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     protected void initObjects(final View view) {
         initChart();
         if (weekBefore >= 0) {
-            weeklyBubbleChart.getData().addDataSet(presenter.getChartData(weekBefore));
-            weeklyBubbleChart.invalidate();
+            presenter.getChartData(weekBefore);
         }
     }
 
     @Override
     protected void injectFragment(final FragmentComponent fragmentComponent) {
-        fragmentComponent.plus(new RangeInfoModule())
+        fragmentComponent.plus(new RangeInfoModule(), new ChartModule())
                 .inject(this);
     }
 
@@ -71,6 +72,12 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     @Override
     public WeeklyChartPresenter createPresenter() {
         return presenter;
+    }
+
+    @Override
+    public void displayChartData(BubbleDataSet bubbleDataSet) {
+        weeklyBubbleChart.getData().addDataSet(bubbleDataSet);
+        weeklyBubbleChart.invalidate();
     }
 
     private void initChart() {
@@ -100,5 +107,6 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
         weeklyBubbleChart.setScaleEnabled(false);
         weeklyBubbleChart.getLegend().setEnabled(false);
         weeklyBubbleChart.getDescription().setEnabled(false);
+        weeklyBubbleChart.setHighlightPerTapEnabled(false);
     }
 }

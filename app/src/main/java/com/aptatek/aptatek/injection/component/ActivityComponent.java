@@ -2,9 +2,11 @@ package com.aptatek.aptatek.injection.component;
 
 import android.content.Context;
 
+import com.aptatek.aptatek.injection.component.chart.ChartActivityComponent;
 import com.aptatek.aptatek.injection.component.rangeinfo.RangeInfoActivityComponent;
 import com.aptatek.aptatek.injection.component.test.TestActivityComponent;
 import com.aptatek.aptatek.injection.module.ActivityModule;
+import com.aptatek.aptatek.injection.module.chart.ChartModule;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
 import com.aptatek.aptatek.injection.qualifier.ActivityContext;
@@ -48,5 +50,7 @@ public interface ActivityComponent {
     TestActivityComponent plus(TestModule module);
 
     RangeInfoActivityComponent plus(RangeInfoModule module);
+
+    ChartActivityComponent plus(RangeInfoModule rangeInfoModule, ChartModule chartModule);
 
 }

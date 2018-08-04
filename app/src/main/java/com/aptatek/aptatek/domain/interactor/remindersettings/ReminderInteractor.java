@@ -96,7 +96,7 @@ public class ReminderInteractor {
         );
     }
 
-    public Observable<Collection<Reminder>> listReminders(final int weekDay) {
+    public Observable<List<Reminder>> listReminders(final int weekDay) {
         return reminderDao.getReminders(weekDay)
                 .map(reminderMapper::mapListToDomain)
                 .toObservable();

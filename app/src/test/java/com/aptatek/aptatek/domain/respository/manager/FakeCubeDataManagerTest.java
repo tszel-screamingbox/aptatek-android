@@ -2,7 +2,7 @@ package com.aptatek.aptatek.domain.respository.manager;
 
 import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
-import com.aptatek.aptatek.domain.respository.chart.CubeData;
+import com.aptatek.aptatek.domain.model.CubeData;
 
 import org.junit.Before;
 import org.junit.Test;

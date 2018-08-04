@@ -4,7 +4,7 @@ import com.aptatek.aptatek.data.model.ReminderDataModel;
 import com.aptatek.aptatek.domain.base.Mapper;
 import com.aptatek.aptatek.domain.model.Reminder;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -17,7 +17,7 @@ public class ReminderMapper implements Mapper<Reminder, ReminderDataModel> {
     }
 
     @Override
-    public Collection<Reminder> mapListToDomain(final Collection<ReminderDataModel> dataModels) {
+    public List<Reminder> mapListToDomain(final List<ReminderDataModel> dataModels) {
         return Ix.from(dataModels).map(this::mapToDomain).toList();
     }
 
@@ -32,7 +32,7 @@ public class ReminderMapper implements Mapper<Reminder, ReminderDataModel> {
     }
 
     @Override
-    public Collection<ReminderDataModel> mapListToData(final Collection<Reminder> domainModels) {
+    public List<ReminderDataModel> mapListToData(final List<Reminder> domainModels) {
         return Ix.from(domainModels).map(this::mapToData).toList();
     }
 

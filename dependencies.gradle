@@ -84,6 +84,9 @@ ext {
             // UI
             rangebar                    : '1.4.3',
 
+            // Time
+            yodatime                    : '2.9.9.4'
+
     ]
 
     androidSupportDependencies = [
@@ -186,5 +189,9 @@ ext {
 
     uiDependencies = [
             rangebar            : "com.appyvet:materialrangebar:$versions.rangebar"
+    ]
+
+    timeDependencies = [
+            yodatime            : "net.danlew:android.joda:$versions.yodatime"
     ]
 }

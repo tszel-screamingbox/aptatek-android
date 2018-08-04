@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
+import com.aptatek.aptatek.injection.module.chart.ChartModule;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.weekly.swipe.CustomViewPager;
@@ -58,7 +59,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new RangeInfoModule())
+        activityComponent.plus(new RangeInfoModule(), new ChartModule())
                 .inject(this);
     }
 

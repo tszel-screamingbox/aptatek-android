@@ -16,8 +16,4 @@ public interface RangeInfoActivityComponent {
 
     void inject(RangeSettingsActivity activity);
 
-    void inject(MainActivity mainActivity);
-
-    void inject(WeeklyResultActivity activity);
-
 }
