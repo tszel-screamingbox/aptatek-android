@@ -71,6 +71,11 @@ public final class TimeHelper {
         return localDate.getDayOfWeek();
     }
 
+    public static int getDayOfMonth(final long timestamp) {
+        final LocalDate localDate = dateFromTimestamp(timestamp);
+        return localDate.getDayOfMonth();
+    }
+
     public static int getHourOfDay(final long timestamp) {
         final LocalDateTime localDate = timeFromTimestamp(timestamp);
         return localDate.getHourOfDay();

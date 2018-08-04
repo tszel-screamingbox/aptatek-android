@@ -88,32 +88,9 @@ public final class ChartUtils {
                     .max(cubeDataComparator)
                     .first(null);
 
-            float startY = -1; // start Y-axis of dashed-line on chart,  if less than 0, won't be drawn
-            float endY = -1; // end Y-axis of dashed-line on chart,  if less than 0, won't be drawn
+            float startY = -1f; // start Y-axis of dashed-line on chart,  if less than 0, won't be drawn
+            float endY = -1f; // end Y-axis of dashed-line on chart,  if less than 0, won't be drawn
             final float bubbleY = getY(dailyHighest, delta, minLevel); // Y-axis of bubble
-
-            final long prevDay = TimeHelper.getEarliestTimeAtGivenDay(TimeHelper.addDays(-1, entry.getKey()));
-            if (dayToMeasurementsMap.containsKey(prevDay)) {
-                final List<CubeData> prevDayMeasures = dayToMeasurementsMap.get(prevDay);
-                final CubeData nextDayHighest = Ix.from(prevDayMeasures)
-                        .max(cubeDataComparator)
-                        .first(null);
-                final float prevBubbleY = getY(nextDayHighest, delta, minLevel);
-                // calculate the current item end-line Y-height with the current and next item Y-height
-                endY = (bubbleY + prevBubbleY) / 2;
-            }
-
-            final long nextDay = TimeHelper.getEarliestTimeAtGivenDay(TimeHelper.addDays(1, entry.getKey()));
-            if (dayToMeasurementsMap.containsKey(nextDay)) { // if it's not the last day
-                // get the the measurements for the next day
-                final List<CubeData> nextDayMeasures = dayToMeasurementsMap.get(nextDay);
-                final CubeData nextDayHighest = Ix.from(nextDayMeasures)
-                        .max(cubeDataComparator)
-                        .first(null);
-                final float nextBubbleY = getY(nextDayHighest, delta, minLevel);
-                // calculate the current item end-line Y-height with the current and next item Y-height
-                endY = (bubbleY + nextBubbleY) / 2;
-            }
 
             final State state;
             if (dailyHighest != null) {
@@ -123,7 +100,7 @@ public final class ChartUtils {
             }
 
             final ChartVM chartVm = ChartVM.builder()
-                    .setDate(new Date(entry.getKey()))
+                    .setDate(new Date(dailyHighest == null ? entry.getKey() : dailyHighest.getTimestamp()))
                     .setMeasures(entry.getValue())
                     .setNumberOfMeasures(entry.getValue().size())
                     .setZoomed(false)
@@ -139,15 +116,55 @@ public final class ChartUtils {
             chartVms.add(chartVm);
         }
 
-        return Ix.from(chartVms)
+        final List<ChartVM> orderedChartVms = Ix.from(chartVms)
+                .orderBy(chartVMComparator)
+                .toList();
+
+        final List<ChartVM> connectedChartVms = new ArrayList<>();
+        for (int i = 0; i < orderedChartVms.size(); i++) {
+            float endY = -1f;
+            float startY = -1f;
+            final ChartVM chartVM = orderedChartVms.get(i);
+
+            if (i > 0) { // if it's not the first day
+                final ChartVM prevChartVm = orderedChartVms.get(i - 1);
+                final float prevBubbleY = getY(prevChartVm.getHighestPkuLevel(), delta, minLevel);
+                // calculate the current item end-line Y-height with the current and next item Y-height
+                startY = (chartVM.getBubbleYAxis() + prevBubbleY) / 2;
+            }
+
+            if (i < orderedChartVms.size() - 1) { // if it's not the last day
+                // get the the measurements for the next day
+                final ChartVM nextChartVm = orderedChartVms.get(i + 1);
+                final float nextBubbleY = getY(nextChartVm.getHighestPkuLevel(), delta, minLevel);
+                // calculate the current item end-line Y-height with the current and next item Y-height
+                endY = (chartVM.getBubbleYAxis() + nextBubbleY) / 2;
+            }
+
+            connectedChartVms.add(chartVM.toBuilder()
+                .setEndLineYAxis(endY)
+                .setStartLineYAxis(startY)
+                .build()
+            );
+        }
+
+        return Ix.from(connectedChartVms)
                 .orderBy(chartVMComparator)
                 .toList();
     }
 
     private static float getY(final CubeData cubeData, float delta, float minLevel) {
-        if (cubeData != null && cubeData.getPkuLevel().getValue() >= 0 && delta > 0) {
+        if (cubeData == null) {
+            return 0.5f;
+        }
+
+        return getY(cubeData.getPkuLevel(), delta, minLevel);
+    }
+
+    private static float getY(final PkuLevel pkuLevel, float delta, float minLevel) {
+        if (pkuLevel != null && pkuLevel.getValue() >= 0 && delta > 0) {
             // calculate the Y percentage of the bubble
-            return (1 - (cubeData.getPkuLevel().getValue() - minLevel) / delta);
+            return (1 - (pkuLevel.getValue() - minLevel) / delta);
         } else {
             // if there is no measure on the given day, set Y to half of the Y-axis
             return 0.5f;

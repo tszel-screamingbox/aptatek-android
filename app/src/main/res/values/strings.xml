@@ -207,9 +207,9 @@
     </string-array>
     <string name="weekly.subtitle">Week of %s</string>
     <string name="weekly.subtitle.dateformat">MMMM dd\'%s\' yyyy</string>
-    <string name="weekly.suffix.dayofmonth.first">%dst</string>
-    <string name="weekly.suffix.dayofmonth.second">%dnd</string>
-    <string name="weekly.suffix.dayofmonth.third">%drd</string>
-    <string name="weekly.suffix.dayofmonth.nth">%dth</string>
+    <string name="weekly.suffix.dayofmonth.first">st</string>
+    <string name="weekly.suffix.dayofmonth.second">nd</string>
+    <string name="weekly.suffix.dayofmonth.third">rd</string>
+    <string name="weekly.suffix.dayofmonth.nth">th</string>
     <string name="weekly.title">Weekly Results</string>
 </resources>

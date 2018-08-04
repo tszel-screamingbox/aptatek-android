@@ -103,6 +103,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
                                     ChartUtils.smallBubbleBackground(state),
                                     ChartUtils.stateColor(state));
                         })
+                        .orderBy((o1, o2) -> Long.compare(o1.getTimestamp(), o2.getTimestamp()))
                         .toList()
                 )
                 .subscribeOn(Schedulers.io())

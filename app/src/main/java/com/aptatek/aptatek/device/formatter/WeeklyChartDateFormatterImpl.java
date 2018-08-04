@@ -25,15 +25,12 @@ public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
     public String getWeeklyChartTitle(final int weeksBeforeNow) {
         final long actualWeekTimestamp = TimeHelper.addWeeks(-1 * weeksBeforeNow, System.currentTimeMillis());
         final Date actualDate = new Date(actualWeekTimestamp);
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(actualDate);
         final String pattern = resourceInteractor.getStringResource(R.string.weekly_subtitle_dateformat,
-                resourceInteractor.getStringResource(getDayOfMothSuffix(calendar.get(Calendar.DAY_OF_MONTH))));
+                resourceInteractor.getStringResource(getDayOfMothSuffix(TimeHelper.getDayOfMonth(actualWeekTimestamp))));
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
         final String formattedDate = simpleDateFormat.format(actualDate);
-        final String chartTitle = resourceInteractor.getStringResource(R.string.weekly_subtitle, formattedDate);
 
-        return chartTitle;
+        return resourceInteractor.getStringResource(R.string.weekly_subtitle, formattedDate);
     }
 
     @StringRes
