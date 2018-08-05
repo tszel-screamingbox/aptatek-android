@@ -85,7 +85,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.loadData();
+
+        if (chartAdapter.getItemCount() > 0) {
+            presenter.loadData();
+        }
     }
 
     @Override

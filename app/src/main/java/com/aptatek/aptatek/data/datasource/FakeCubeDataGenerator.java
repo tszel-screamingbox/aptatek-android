@@ -35,7 +35,7 @@ public class FakeCubeDataGenerator {
         for (int day = 0; day <= daysBetween; day++) {
             final int numOfMeasurementsThatDay = dataFactory.getNumberUpTo(MAX_MEASUREMENTS_PER_DAY);
             for (int measurement = 0; measurement < numOfMeasurementsThatDay; measurement++) {
-                final CubeDataModel cubeDataModel = generateDataForGivenDay(TimeHelper.addDays(day, begin));
+                final CubeDataModel cubeDataModel = generateDataForGivenDay(TimeHelper.addDays(day, begin), false);
                 cubeDataModels.add(cubeDataModel);
             }
         }
@@ -44,21 +44,22 @@ public class FakeCubeDataGenerator {
     }
 
     @NonNull
-    public CubeDataModel generateDataForGivenDay(final long timestamp) {
+    public CubeDataModel generateDataForGivenDay(final long timestamp, boolean useExactTime) {
         final CubeDataModel cubeDataModel = new CubeDataModel();
         cubeDataModel.setCubeId(dataFactory.getRandomChars(10));
         cubeDataModel.setId(dataFactory.getNumberUpTo(Integer.MAX_VALUE));
         cubeDataModel.setValueInMMol(dataFactory.getNumberUpTo((int) Constants.DEFAULT_PKU_HIGHEST_VALUE));
         final long earliestTimeAtGivenDay = TimeHelper.getEarliestTimeAtGivenDay(timestamp);
         final long randomOffset = dataFactory.getNumberUpTo((int) DAY_IN_MILLIS);
-        cubeDataModel.setTimestamp(earliestTimeAtGivenDay + randomOffset);
+        cubeDataModel.setTimestamp(earliestTimeAtGivenDay + (useExactTime ? 0 : randomOffset));
 
         return cubeDataModel;
     }
 
     @NonNull
     public CubeDataModel generateOldestData() {
-        return generateDataForGivenDay(TimeHelper.addDays(FIRST_DATA_BEFORE_TODAY_IN_DAYS * -1, System.currentTimeMillis()));
+        return generateDataForGivenDay(TimeHelper.addDays(FIRST_DATA_BEFORE_TODAY_IN_DAYS * -1,
+                TimeHelper.getEarliestTimeAtGivenDay(System.currentTimeMillis())), true);
     }
 
 }

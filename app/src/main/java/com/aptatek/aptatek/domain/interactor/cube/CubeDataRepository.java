@@ -3,6 +3,7 @@ package com.aptatek.aptatek.domain.interactor.cube;
 import android.support.annotation.NonNull;
 
 import com.aptatek.aptatek.data.model.CubeDataModel;
+import com.aptatek.aptatek.device.time.TimeHelper;
 import com.aptatek.aptatek.domain.base.Mapper;
 import com.aptatek.aptatek.domain.base.Repository;
 import com.aptatek.aptatek.domain.model.CubeData;
@@ -36,7 +37,7 @@ public class CubeDataRepository extends Repository<CubeData, CubeDataModel> {
     // TODO remove as soon as pagination is implemented
      @NonNull
     public Single<List<CubeData>> listAll() {
-        return Single.fromCallable(() -> cubeDataSource.getDataBetween(cubeDataSource.getOldestData().getTimestamp(), System.currentTimeMillis()))
+        return Single.fromCallable(() -> cubeDataSource.getDataBetween(cubeDataSource.getOldestData().getTimestamp(), TimeHelper.getLatestTimeAtGivenDay(System.currentTimeMillis())))
                 .map(mapper::mapListToDomain)
                 .subscribeOn(Schedulers.io());
     }
