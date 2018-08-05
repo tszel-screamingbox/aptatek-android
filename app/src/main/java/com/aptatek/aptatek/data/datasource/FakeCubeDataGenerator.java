@@ -33,7 +33,7 @@ public class FakeCubeDataGenerator {
         final List<CubeDataModel> cubeDataModels = new ArrayList<>();
         final int daysBetween = TimeHelper.getDaysBetween(begin, end);
 
-        for (int day = 0; day < daysBetween; day++) {
+        for (int day = 0; day <= daysBetween; day++) {
             final int numOfMeasurementsThatDay = dataFactory.getNumberUpTo(MAX_MEASUREMENTS_PER_DAY);
             for (int measurement = 0; measurement < numOfMeasurementsThatDay; measurement++) {
                 final CubeDataModel cubeDataModel = generateDataForGivenDay(TimeHelper.addDays(day, begin));

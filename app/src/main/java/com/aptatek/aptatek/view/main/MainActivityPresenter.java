@@ -1,5 +1,6 @@
 package com.aptatek.aptatek.view.main;
 
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
 import android.util.Pair;
 
@@ -115,7 +116,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     }
 
     @Override
-    public void attachView(MainActivityView view) {
+    public void attachView(final @NonNull MainActivityView view) {
         super.attachView(view);
 
         disposables = new CompositeDisposable();

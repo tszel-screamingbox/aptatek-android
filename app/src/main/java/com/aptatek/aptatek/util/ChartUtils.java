@@ -66,7 +66,7 @@ public final class ChartUtils {
         final int daysBetween = TimeHelper.getDaysBetween(timestampOldestDay, nowInDay);
         // create an initial map to hold the data for each days passed between today and the first measurement
         // each value is an empty list by default
-        final Map<Long, List<CubeData>> dayToMeasurementsMap = Ix.range(0, daysBetween)
+        final Map<Long, List<CubeData>> dayToMeasurementsMap = Ix.range(0, daysBetween + 1)
                 .map(day -> TimeHelper.getEarliestTimeAtGivenDay(TimeHelper.addDays(day, timestampOldestDay)))
                 .map(day -> new Pair<Long, List<CubeData>>(day, new ArrayList<>()))
                 .toMap(pair -> pair.first, pair -> pair.second);

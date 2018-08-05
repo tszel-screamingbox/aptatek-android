@@ -108,5 +108,6 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
         weeklyBubbleChart.getLegend().setEnabled(false);
         weeklyBubbleChart.getDescription().setEnabled(false);
         weeklyBubbleChart.setHighlightPerTapEnabled(false);
+        weeklyBubbleChart.setRenderer(new CustomBubbleChartRenderer(weeklyBubbleChart));
     }
 }

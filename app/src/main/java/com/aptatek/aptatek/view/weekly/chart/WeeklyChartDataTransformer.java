@@ -61,10 +61,8 @@ public class WeeklyChartDataTransformer {
                     levelInProperUnit = pkuLevel;
                 }
 
-                final BubbleEntry bubbleEntry = new BubbleEntry(
-                        TimeHelper.getDayOfWeek(cubeData.getTimestamp()) - DAY_OFFSET,
-                        TimeHelper.getHourOfDay(cubeData.getTimestamp()),
-                        SIZE);
+                final int x = TimeHelper.getDayOfWeek(cubeData.getTimestamp()) - DAY_OFFSET;
+                final int y = TimeHelper.getHourOfDay(cubeData.getTimestamp());
                 final String label = rangeSettingsValueFormatter.formatRegularValue(levelInProperUnit);
                 final ChartUtils.State state = ChartUtils.getState(pkuLevel, rangeInfo);
                 final @ColorRes int colorRes = ChartUtils.stateColor(state);
@@ -72,7 +70,9 @@ public class WeeklyChartDataTransformer {
                 final @ColorInt int bubbleColor = adjustAlpha(labelColor);
 
                 return ChartEntryData.builder()
-                        .setEntry(bubbleEntry)
+                        .setX(x)
+                        .setY(y)
+                        .setSize(SIZE)
                         .setLabel(label)
                         .setLabelColor(labelColor)
                         .setBubbleColor(bubbleColor)
@@ -89,8 +89,9 @@ public class WeeklyChartDataTransformer {
 
             Ix.from(chartEntries)
                     .foreach(entry -> {
-                        bubbleEntries.add(entry.getEntry());
-                        labels.put(entry.getEntry(), entry.getLabel());
+                        final BubbleEntry bubbleEntry = createBubbleEntryFor(entry);
+                        bubbleEntries.add(bubbleEntry);
+                        labels.put(bubbleEntry, entry.getLabel());
                         bubbleColors.add(entry.getBubbleColor());
                         labelColors.add(entry.getLabelColor());
                     });
@@ -98,12 +99,18 @@ public class WeeklyChartDataTransformer {
             final BubbleDataSet dataSet = new BubbleDataSet(bubbleEntries, null);
             dataSet.setColors(bubbleColors);
             dataSet.setValueTextColors(labelColors);
-            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_xregular));
+            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_mini));
             dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
             dataSet.setValueFormatter(new WeeklyChartValueFormatter(labels));
 
             return dataSet;
         });
+    }
+
+    private BubbleEntry createBubbleEntryFor(ChartEntryData data) {
+        final BubbleEntry bubbleEntry = new BubbleEntry(data.getX(), data.getY(), data.getSize());
+        bubbleEntry.setData(data);
+        return bubbleEntry;
     }
 
     private int adjustAlpha(@ColorInt final int color) {
