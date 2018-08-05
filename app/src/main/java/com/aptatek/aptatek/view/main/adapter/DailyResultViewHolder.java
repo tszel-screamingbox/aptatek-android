@@ -35,6 +35,11 @@ public class DailyResultViewHolder extends RecyclerView.ViewHolder {
         textViewMeasureInfo.getBackground().setAlpha(51);
         textViewMeasureInfo.setTextColor(ContextCompat.getColor(itemView.getContext(), ChartUtils.stateColor(item.getState())));
         textViewMeasureTime.setTextColor(ContextCompat.getColor(itemView.getContext(), ChartUtils.stateColor(item.getState())));
+        textViewMeasureInfo.setPadding(
+                (int) itemView.getContext().getResources().getDimension(R.dimen.general_distance_small),
+                (int) itemView.getContext().getResources().getDimension(R.dimen.general_distance_mini),
+                (int) itemView.getContext().getResources().getDimension(R.dimen.general_distance_small),
+                (int) itemView.getContext().getResources().getDimension(R.dimen.general_distance_mini));
 
         final Date dt = new Date(item.getTimestamp());
         final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
