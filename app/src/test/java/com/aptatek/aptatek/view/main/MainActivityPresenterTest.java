@@ -1,14 +1,17 @@
 package com.aptatek.aptatek.view.main;
 
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.cube.CubeInteractor;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.aptatek.domain.model.CubeData;
 import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
-import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
-import com.aptatek.aptatek.util.ChartUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
+import com.aptatek.aptatek.view.main.adapter.DailyChartFormatter;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -17,19 +20,24 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.aptatek.aptatek.util.CalendarUtils.formatDate;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
+// TODO write proper tests for this class...
 public class MainActivityPresenterTest {
+
+    private static final String TEST_STRING = "hello";
 
     @Mock
     private ResourceInteractor resourceInteractor;
     @Mock
-    private ChartUtils chartUtils;
-    @Mock
-    private FakeCubeDataManager fakeCubeDataManager;
-    @Mock
     private MainActivityView view;
+    @Mock
+    private CubeInteractor cubeInteractor;
+    @Mock
+    private PkuRangeInteractor rangeInteractor;
+    @Mock
+    private DailyChartFormatter dailyChartFormatter;
 
     private final Date date = new Date();
     private MainActivityPresenter presenter;
@@ -39,10 +47,14 @@ public class MainActivityPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        presenter = new MainActivityPresenter(fakeCubeDataManager, cubeInteractor, chartUtils, resourceInteractor, dailyChartFormatter);
+
+        doReturn(TEST_STRING).when(dailyChartFormatter).formatDate(ArgumentMatchers.anyLong(), ArgumentMatchers.anyBoolean());
+        doReturn(TEST_STRING).when(dailyChartFormatter).getNameOfDay(ArgumentMatchers.anyLong());
+        doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
+
+        presenter = new MainActivityPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
-                .setId(0)
                 .setDate(date)
                 .setMeasures(new ArrayList<>())
                 .setBubbleYAxis(0)
@@ -50,17 +62,29 @@ public class MainActivityPresenterTest {
                 .setEndLineYAxis(0)
                 .setNumberOfMeasures(0)
                 .setZoomed(false)
+                .setColorRes(0)
+                .setExpandedBackgroundRes(0)
+                .setCollapsedBackgroundRes(0)
                 .build();
 
+        final long now = System.currentTimeMillis();
         notEmptyItem = ChartVM.builder()
-                .setId(1)
                 .setDate(date)
-                .setMeasures(Collections.singletonList(PkuLevel.create(20.0f, PkuLevelUnits.MILLI_GRAM)))
+                .setMeasures(Collections.singletonList(CubeData.builder()
+                        .setPkuLevel(PkuLevel.create(20.0f, PkuLevelUnits.MILLI_GRAM))
+                        .setTimestamp(now)
+                        .setId(now)
+                        .setCubeId(String.valueOf(now))
+                        .build()))
                 .setBubbleYAxis(0)
                 .setZoomed(true)
                 .setNumberOfMeasures(1)
                 .setStartLineYAxis(0)
-                .setEndLineYAxis(0).build();
+                .setEndLineYAxis(0)
+                .setColorRes(0)
+                .setExpandedBackgroundRes(0)
+                .setCollapsedBackgroundRes(0)
+                .build();
     }
 
     @Test
@@ -68,7 +92,7 @@ public class MainActivityPresenterTest {
         presenter.itemZoomIn(emptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        verify(view).updateTitles(CalendarUtils.nameOfDay(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_DAY));
+        verify(view).updateTitles(TEST_STRING, TEST_STRING);
     }
 
     @Test
@@ -76,6 +100,6 @@ public class MainActivityPresenterTest {
         presenter.itemZoomIn(notEmptyItem);
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
-        verify(view).updateTitles(CalendarUtils.nameOfDay(cal.get(Calendar.DAY_OF_WEEK)), formatDate(date, MainActivityPresenter.PATTERN_WITH_TIME));
+        verify(view).updateTitles(TEST_STRING, TEST_STRING);
     }
 }

@@ -9,7 +9,6 @@ import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.cube.CubeInteractor;
 import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.aptatek.domain.model.CubeData;
-import com.aptatek.aptatek.domain.model.PkuLevel;
 import com.aptatek.aptatek.util.ChartUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
 import com.aptatek.aptatek.view.main.adapter.DailyChartFormatter;

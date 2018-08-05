@@ -11,7 +11,6 @@ import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.domain.model.ReminderDay;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;

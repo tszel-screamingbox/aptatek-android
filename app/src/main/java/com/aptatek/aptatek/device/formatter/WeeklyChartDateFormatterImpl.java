@@ -9,7 +9,6 @@ import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.view.weekly.WeeklyChartDateFormatter;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 

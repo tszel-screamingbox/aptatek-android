@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @Override
     protected void onResume() {
         super.onResume();
-        chartAdapter.notifyDataSetChanged();
+        presenter.loadData();
     }
 
     @Override

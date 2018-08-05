@@ -20,9 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import ix.GroupedIx;
 import ix.Ix;
-import timber.log.Timber;
 
 public final class ChartUtils {
 
