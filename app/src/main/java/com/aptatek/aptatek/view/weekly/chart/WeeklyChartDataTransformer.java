@@ -99,7 +99,8 @@ public class WeeklyChartDataTransformer {
             final BubbleDataSet dataSet = new BubbleDataSet(bubbleEntries, null);
             dataSet.setColors(bubbleColors);
             dataSet.setValueTextColors(labelColors);
-            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_mini));
+            // TODO enable again when the text alignment issue is fixed
+            // dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_mini));
             dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
             dataSet.setValueFormatter(new WeeklyChartValueFormatter(labels));
 
