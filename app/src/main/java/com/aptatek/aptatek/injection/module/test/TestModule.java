@@ -4,17 +4,12 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.aptatek.aptatek.data.datasource.IncubationDataSourceImpl;
-import com.aptatek.aptatek.data.datasource.WettingDataSourceImpl;
-import com.aptatek.aptatek.device.notifications.IncubationCountdownNotificationFactory;
-import com.aptatek.aptatek.device.PreferenceManager;
 import com.aptatek.aptatek.device.formatter.CountdownTimeFormatterImpl;
+import com.aptatek.aptatek.device.notifications.IncubationCountdownNotificationFactory;
 import com.aptatek.aptatek.device.notifications.SampleWettingCountdownNotificationFactory;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
 import com.aptatek.aptatek.domain.interactor.countdown.CountdownTimeFormatter;
-import com.aptatek.aptatek.domain.interactor.incubation.IncubationDataSource;
 import com.aptatek.aptatek.domain.notifications.CountdownNotificationFactory;
-import com.aptatek.aptatek.domain.interactor.samplewetting.WettingDataSource;
 import com.aptatek.aptatek.injection.qualifier.ApplicationContext;
 
 import javax.inject.Named;
@@ -44,16 +39,6 @@ public class TestModule {
     @Provides
     CountdownTimeFormatter provideCountdownTimeFormatter(@NonNull final ResourceInteractor resourceInteractor) {
         return new CountdownTimeFormatterImpl(resourceInteractor);
-    }
-
-    @Provides
-    IncubationDataSource provideIncubationDataSource(@NonNull final PreferenceManager preferenceManager) {
-        return new IncubationDataSourceImpl(preferenceManager);
-    }
-
-    @Provides
-    WettingDataSource provideWettingDataSource(@NonNull final PreferenceManager preferenceManager) {
-        return new WettingDataSourceImpl(preferenceManager);
     }
 
 }

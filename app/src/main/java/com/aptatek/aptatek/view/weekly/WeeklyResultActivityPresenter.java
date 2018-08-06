@@ -1,101 +1,85 @@
 package com.aptatek.aptatek.view.weekly;
 
+import android.support.annotation.NonNull;
+
 import com.aptatek.aptatek.R;
+import com.aptatek.aptatek.device.time.TimeHelper;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
+import com.aptatek.aptatek.domain.interactor.cube.CubeInteractor;
 import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.aptatek.domain.model.PkuLevelUnits;
-import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
-import com.aptatek.aptatek.util.CalendarUtils;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
-
-import static com.aptatek.aptatek.util.CalendarUtils.dayNumberSuffix;
 
 public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResultActivityView> {
 
     private static final int EMPTY_LIST = -1;
 
-    private final FakeCubeDataManager fakeCubeDataManager;
+    private final CubeInteractor cubeInteractor;
     private final ResourceInteractor resourceInteractor;
-    private final List<Integer> weekList = new ArrayList<>();
     private final PkuRangeInteractor rangeInteractor;
+    private final WeeklyChartDateFormatter weeklyChartDateFormatter;
+    private final List<Integer> weekList = new ArrayList<>();
 
-    private Disposable disposable;
+    private CompositeDisposable disposables;
 
     @Inject
-    public WeeklyResultActivityPresenter(final FakeCubeDataManager fakeCubeDataManager,
+    public WeeklyResultActivityPresenter(final CubeInteractor cubeInteractor,
                                          final ResourceInteractor resourceInteractor,
-                                         final PkuRangeInteractor rangeInteractor) {
-        this.fakeCubeDataManager = fakeCubeDataManager;
+                                         final PkuRangeInteractor rangeInteractor,
+                                         final WeeklyChartDateFormatter weeklyChartDateFormatter) {
+        this.cubeInteractor = cubeInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
+        this.weeklyChartDateFormatter = weeklyChartDateFormatter;
     }
 
     @Override
-    public void attachView(final WeeklyResultActivityView view) {
+    public void attachView(final @NonNull WeeklyResultActivityView view) {
         super.attachView(view);
 
-        disposable = rangeInteractor.getInfo()
+        disposables = new CompositeDisposable();
+
+        disposables.add(rangeInteractor.getInfo()
                 .map(rangeInfo ->
                         resourceInteractor.getStringResource(R.string.weekly_chart_label,
                                 resourceInteractor.getStringResource(rangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
-                                    ? R.string.rangeinfo_pkulevel_mmol
-                                     : R.string.rangeinfo_pkulevel_mg)
+                                        ? R.string.rangeinfo_pkulevel_mmol
+                                        : R.string.rangeinfo_pkulevel_mg)
                         )
                 )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribe(label ->
-                    ifViewAttached(attachedView ->
-                        attachedView.displayUnitLabel(label)
-                    )
-                );
+                        ifViewAttached(attachedView ->
+                                attachedView.displayUnitLabel(label)
+                        )
+                )
+        );
     }
 
     @Override
     public void detachView() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
+        if (disposables != null && !disposables.isDisposed()) {
+            disposables.dispose();
         }
 
         super.detachView();
     }
 
-    List<Integer> validWeekList() {
-        Ix.from(fakeCubeDataManager.listAll()).foreach(cubeData -> {
-            final int week = CalendarUtils.differenceInWeeks(cubeData.getDate(), new Date());
-            if (!weekList.contains(week) && cubeData.getMeasure().getValue() >= 0) {
-                weekList.add(week);
-            }
-        });
-
-        if (weekList.isEmpty()) {
-            weekList.add(EMPTY_LIST);
-        }
-        Collections.reverse(weekList);
-        return weekList;
-    }
-
     void subTitle(final int page) {
-        final Date actualDate = CalendarUtils.weekAgo(weekList.get(page));
-        final Calendar calendar = Calendar.getInstance();
-        calendar.setTime(actualDate);
-        final String pattern = resourceInteractor.getStringResource(R.string.weekly_subtitle_dateformat, dayNumberSuffix(calendar.get(Calendar.DAY_OF_MONTH)));
-        final String formatDate = CalendarUtils.formatDate(actualDate, pattern);
-        final String subtitle = resourceInteractor.getStringResource(R.string.weekly_subtitle, formatDate);
-        ifViewAttached(view -> view.onSubtitleChanged(subtitle));
+        final String weeklyChartTitle = weeklyChartDateFormatter.getWeeklyChartTitle(weekList.get(page));
+        ifViewAttached(view -> view.onSubtitleChanged(weeklyChartTitle));
     }
 
     void showPage(final int pageNum) {
@@ -105,6 +89,37 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
 
     void updateArrows(final int page) {
         ifViewAttached(view -> view.onUpdateLeftArrow(page != 0));
-        ifViewAttached(view -> view.onUpdateRightArrow(page != validWeekList().size() - 1));
+        ifViewAttached(view -> view.onUpdateRightArrow(page != weekList.size() - 1));
+    }
+
+    // TODO should not get ALL data at once...
+    public void loadValidWeeks() {
+        disposables.add(cubeInteractor.listAll()
+                .map(cubeDataList -> {
+                    Ix.from(cubeDataList).foreach(cubeData -> {
+                        final int week = TimeHelper.getWeeksBetween(cubeData.getTimestamp(), System.currentTimeMillis());
+                        if (!weekList.contains(week) && cubeData.getPkuLevel().getValue() >= 0) {
+                            weekList.add(week);
+                        }
+                    });
+
+                    if (weekList.isEmpty()) {
+                        weekList.add(EMPTY_LIST);
+                    }
+                    Collections.reverse(weekList);
+
+                    return weekList;
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(validWeeks ->
+                        ifViewAttached(attachedView ->
+                                attachedView.displayValidWeekList(validWeeks)
+                        )
+                )
+        );
+    }
+
+    public List<Integer> getValidWeeks() {
+        return weekList;
     }
 }

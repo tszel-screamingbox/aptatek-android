@@ -27,6 +27,9 @@
     <string name="main.button.result">Result Summary</string>
     <string name="main.button.settings">Settings</string>
     <string name="main.button.toggle">Toggle</string>
+    <string name="main.chart.daily.format">dd\nMMM</string>
+    <string name="main.date.format.short">MMM dd</string>
+    <string name="main.date.format.long">MMM dd - hh:mm a</string>
     <string name="main.title.noresult">No Results</string>
     <string name="main.title.noresult.hint">Take your first test</string>
     <string name="main.title.today">Last result</string>
@@ -204,5 +207,9 @@
     </string-array>
     <string name="weekly.subtitle">Week of %s</string>
     <string name="weekly.subtitle.dateformat">MMMM dd\'%s\' yyyy</string>
+    <string name="weekly.suffix.dayofmonth.first">st</string>
+    <string name="weekly.suffix.dayofmonth.second">nd</string>
+    <string name="weekly.suffix.dayofmonth.third">rd</string>
+    <string name="weekly.suffix.dayofmonth.nth">th</string>
     <string name="weekly.title">Weekly Results</string>
 </resources>

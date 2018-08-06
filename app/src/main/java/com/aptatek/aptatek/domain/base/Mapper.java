@@ -1,6 +1,6 @@
 package com.aptatek.aptatek.domain.base;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Utility to provide mapping between data and domain layer.
@@ -11,11 +11,11 @@ import java.util.Collection;
 // TODO use this maybe for data/mappers ...
 public interface Mapper<I, O> {
 
-    Collection<I> mapListToDomain(Collection<O> dataModels);
+    List<I> mapListToDomain(List<O> dataModels);
 
     I mapToDomain(O dataModel);
 
-    Collection<O> mapListToData(Collection<I> domainModels);
+    List<O> mapListToData(List<I> domainModels);
 
     O mapToData(I domainModel);
 

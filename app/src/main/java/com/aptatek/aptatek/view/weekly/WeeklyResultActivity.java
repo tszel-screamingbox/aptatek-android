@@ -9,10 +9,14 @@ import android.widget.TextView;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.injection.component.ActivityComponent;
+import com.aptatek.aptatek.injection.module.chart.ChartModule;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.view.base.BaseActivity;
 import com.aptatek.aptatek.view.weekly.swipe.CustomViewPager;
 import com.aptatek.aptatek.view.weekly.swipe.SwipeAdapter;
+
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -44,6 +48,8 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     @BindView(R.id.label)
     TextView tvUnit;
 
+    private SwipeAdapter swipeAdapter;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +59,13 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
         // starts with "empty view"
         leftArrowImageView.setVisibility(View.INVISIBLE);
         rightArrowImageView.setVisibility(View.INVISIBLE);
+
         initAdapter();
     }
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new RangeInfoModule())
+        activityComponent.plus(new RangeInfoModule(), new ChartModule())
                 .inject(this);
     }
 
@@ -75,9 +82,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
 
     @OnClick(R.id.playIcon)
     public void onPlayButtonClicked() {
-        emptyGroup.setVisibility(View.GONE);
-        chartViewPager.disableSwipe(false);
-        chartViewPager.setCurrentItem(presenter.validWeekList().size() - 1);
+        presenter.loadValidWeeks();
     }
 
     @OnClick(R.id.leftArrow)
@@ -93,14 +98,14 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     }
 
     private void initAdapter() {
-        final SwipeAdapter swipeAdapter = new SwipeAdapter(getSupportFragmentManager(), presenter.validWeekList());
+        swipeAdapter = new SwipeAdapter(getSupportFragmentManager(), Collections.emptyList());
         chartViewPager.setAdapter(swipeAdapter);
         chartViewPager.disableSwipe(true);
     }
 
     @OnPageChange(R.id.viewpager)
     public void onPageChanged(final int state) {
-        presenter.subTitle(presenter.validWeekList().size() - state - 1);
+        presenter.subTitle(presenter.getValidWeeks().size() - state - 1);
         presenter.updateArrows(state);
     }
 
@@ -125,7 +130,15 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     }
 
     @Override
-    public void displayUnitLabel(String unitLabel) {
+    public void displayUnitLabel(final String unitLabel) {
         tvUnit.setText(unitLabel);
+    }
+
+    @Override
+    public void displayValidWeekList(final List<Integer> validWeeks) {
+        emptyGroup.setVisibility(View.GONE);
+        swipeAdapter.setData(validWeeks);
+        chartViewPager.disableSwipe(false);
+        chartViewPager.setCurrentItem(validWeeks.size() - 1);
     }
 }
