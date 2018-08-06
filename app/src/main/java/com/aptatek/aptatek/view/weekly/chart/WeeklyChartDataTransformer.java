@@ -6,7 +6,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 
-import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.device.formatter.WeeklyChartValueFormatter;
 import com.aptatek.aptatek.device.time.TimeHelper;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
