@@ -47,7 +47,7 @@
         app:layout_constraintStart_toEndOf="@+id/leftArrow"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <com.aptatek.aptatek.view.weekly.swipe.CustomViewPager
+    <com.aptatek.pkuapp.view.weekly.swipe.CustomViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

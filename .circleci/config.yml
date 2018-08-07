@@ -95,7 +95,7 @@ references:
   export_gservices_key: &export_gservices_key
     run:
       name: Export Google Services key environment variable
-      command: echo 'export GOOGLE_SERVICES_KEY="$GOOGLE_SERVICES_JSON"' >> $BASH_ENV
+      command: echo 'export GOOGLE_SERVICES_KEY="$NEW_GOOGLE_SERVICES_JSON"' >> $BASH_ENV
   decode_gservices_key: &decode_gservices_key
     run:
       name: Decode Google Services key
