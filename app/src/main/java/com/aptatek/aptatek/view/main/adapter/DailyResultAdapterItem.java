@@ -1,6 +1,8 @@
 package com.aptatek.aptatek.view.main.adapter;
 
-import com.aptatek.aptatek.util.ChartUtils;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+
 import com.aptatek.aptatek.view.base.AdapterItem;
 import com.google.auto.value.AutoValue;
 
@@ -11,7 +13,9 @@ public abstract class DailyResultAdapterItem implements AdapterItem {
 
     public abstract long getTimestamp();
 
-    public abstract ChartUtils.State getState();
+    public abstract @DrawableRes int getBackgroundRes();
+
+    public abstract @ColorRes int getColorRes();
 
     @Override
     public Object uniqueIdentifier() {
@@ -20,7 +24,8 @@ public abstract class DailyResultAdapterItem implements AdapterItem {
 
     public static DailyResultAdapterItem create(final CharSequence measureInformationText,
                                                 final long timestamp,
-                                                final ChartUtils.State state) {
-        return new AutoValue_DailyResultAdapterItem(measureInformationText, timestamp, state);
+                                                final @DrawableRes int backgroundRes,
+                                                final @ColorRes int colorRes) {
+        return new AutoValue_DailyResultAdapterItem(measureInformationText, timestamp, backgroundRes, colorRes);
     }
 }

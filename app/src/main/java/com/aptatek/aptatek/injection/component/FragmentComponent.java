@@ -1,9 +1,10 @@
 package com.aptatek.aptatek.injection.component;
 
-import com.aptatek.aptatek.injection.component.rangeinfo.RangeInfoFragmentComponent;
+import com.aptatek.aptatek.injection.component.chart.ChartFragmentComponent;
 import com.aptatek.aptatek.injection.component.parentalgate.ParentalGateFragmentComponent;
 import com.aptatek.aptatek.injection.component.test.TestFragmentComponent;
 import com.aptatek.aptatek.injection.module.FragmentModule;
+import com.aptatek.aptatek.injection.module.chart.ChartModule;
 import com.aptatek.aptatek.injection.module.parentalgate.ParentalGateModule;
 import com.aptatek.aptatek.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.aptatek.injection.module.test.TestModule;
@@ -33,6 +34,6 @@ public interface FragmentComponent {
 
     ParentalGateFragmentComponent plus(ParentalGateModule module);
 
-    RangeInfoFragmentComponent plus(RangeInfoModule module);
+    ChartFragmentComponent plus(RangeInfoModule module, ChartModule chartModule);
 
 }

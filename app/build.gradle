@@ -42,8 +42,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 4
-        versionName "0.0.4"
+        versionCode 5
+        versionName "0.0.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -177,6 +177,9 @@ dependencies {
     // MpAndroidChart
     implementation mpAndroidChartDependencies.androidChart
 
+    // Time
+    implementation timeDependencies.yodatime
+
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito
@@ -198,7 +201,7 @@ dependencies {
     }
     androidTestAnnotationProcessor daggerDependencies.compiler
     androidTestCompileOnly daggerDependencies.annotations
-    androidTestImplementation appDependencies.dataFactory
+    implementation appDependencies.dataFactory // TODO temporarily added to PROD flavor, only for the fake cube data generation.
     androidTestUtil testDependencies.orchestrator
 
 }

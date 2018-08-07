@@ -1,55 +1,72 @@
 package com.aptatek.aptatek.view.main;
 
+import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
+import android.util.Pair;
 
 import com.aptatek.aptatek.R;
 import com.aptatek.aptatek.domain.interactor.ResourceInteractor;
-import com.aptatek.aptatek.domain.interactor.pkurange.PkuLevelConverter;
-import com.aptatek.aptatek.domain.model.PkuLevel;
-import com.aptatek.aptatek.domain.model.PkuLevelUnits;
-import com.aptatek.aptatek.domain.model.PkuRangeInfo;
-import com.aptatek.aptatek.domain.respository.manager.FakeCubeDataManager;
-import com.aptatek.aptatek.util.CalendarUtils;
+import com.aptatek.aptatek.domain.interactor.cube.CubeInteractor;
+import com.aptatek.aptatek.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.aptatek.domain.model.CubeData;
 import com.aptatek.aptatek.util.ChartUtils;
-import com.aptatek.aptatek.util.StringUtils;
 import com.aptatek.aptatek.view.main.adapter.ChartVM;
+import com.aptatek.aptatek.view.main.adapter.DailyChartFormatter;
 import com.aptatek.aptatek.view.main.adapter.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+import ix.Ix;
+
 class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
 
-    public static final String PATTERN_DAY = "MMM dd";
-    public static final String PATTERN_WITH_TIME = "MMM dd - hh:mm a";
-
-    private final FakeCubeDataManager fakeCubeDataManager;
-    private final ChartUtils chartUtils;
+    private final CubeInteractor cubeInteractor;
     private final ResourceInteractor resourceInteractor;
+    private final PkuRangeInteractor rangeInteractor;
+    private final DailyChartFormatter dailyChartFormatter;
+
+    private CompositeDisposable disposables;
 
     @Inject
-    MainActivityPresenter(final FakeCubeDataManager fakeCubeDataManager,
-                          final ChartUtils chartUtils,
-                          final ResourceInteractor resourceInteractor) {
-        this.fakeCubeDataManager = fakeCubeDataManager;
-        this.chartUtils = chartUtils;
+    MainActivityPresenter(final CubeInteractor cubeInteractor,
+                          final ResourceInteractor resourceInteractor,
+                          final PkuRangeInteractor rangeInteractor,
+                          final DailyChartFormatter dailyChartFormatter) {
+        this.cubeInteractor = cubeInteractor;
         this.resourceInteractor = resourceInteractor;
+        this.rangeInteractor = rangeInteractor;
+        this.dailyChartFormatter = dailyChartFormatter;
     }
 
-    List<ChartVM> fakeData() {
-        final List<ChartVM> chartVMS = chartUtils.asChartVMList(fakeCubeDataManager.listAll());
-        chartVMS.set(chartVMS.size() - 1, chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build());
-        return chartVMS;
+    // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts
+    void loadData() {
+        disposables.add(
+            rangeInteractor.getInfo()
+                .flatMap(rangeInfo ->
+                    cubeInteractor.listAll()
+                        .map(list -> new Pair<>(rangeInfo, list))
+                )
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(pair -> {
+                    final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
+                    chartVMS.set(chartVMS.size() - 1, chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build());
+
+                    ifViewAttached(attachedView -> attachedView.displayData(chartVMS));
+                })
+        );
     }
 
     void itemZoomIn(final ChartVM chartVM) {
         final Date date = chartVM.getDate();
-        final String subTitle = CalendarUtils.formatDate(date, chartVM.getNumberOfMeasures() == 0 ? PATTERN_DAY : PATTERN_WITH_TIME);
+        final String subTitle = dailyChartFormatter.formatDate(date.getTime(), chartVM.getNumberOfMeasures() > 0);
         final String title;
 
         if (DateUtils.isToday(date.getTime())) {
@@ -59,7 +76,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         } else {
             final Calendar cal = Calendar.getInstance();
             cal.setTime(date);
-            title = CalendarUtils.nameOfDay(cal.get(Calendar.DAY_OF_WEEK));
+            title = dailyChartFormatter.getNameOfDay(date.getTime());
         }
 
         ifViewAttached(view -> {
@@ -72,32 +89,44 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         ifViewAttached(view -> view.changeItemZoomState(chartVM, chartVM.toBuilder().setZoomed(false).build()));
     }
 
-    void measureListToAdapterList(final List<PkuLevel> measures) {
-        final List<DailyResultAdapterItem> dailyResultAdapterItems = new ArrayList<>();
+    void measureListToAdapterList(final List<CubeData> measures) {
+        disposables.add(
+            rangeInteractor.getInfo()
+                .map(rangeInfo ->
+                    Ix.from(measures)
+                        .map(cubeData -> {
+                            final CharSequence details = dailyChartFormatter.getBubbleText(cubeData.getPkuLevel());
+                            final ChartUtils.State state = ChartUtils.getState(cubeData.getPkuLevel(), rangeInfo);
+                            return DailyResultAdapterItem.create(
+                                    details,
+                                    cubeData.getTimestamp(),
+                                    ChartUtils.smallBubbleBackground(state),
+                                    ChartUtils.stateColor(state));
+                        })
+                        .orderBy((o1, o2) -> Long.compare(o1.getTimestamp(), o2.getTimestamp()))
+                        .toList()
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(adapterItems ->
+                    ifViewAttached(view -> view.setMeasureList(adapterItems))
+                )
+        );
+    }
 
-        for (final PkuLevel measure : measures) {
-            final PkuRangeInfo userSettings = chartUtils.getUserSettings();
-            final PkuLevel pkuLevelInSelectedUnit = userSettings.getPkuLevelUnit() == measure.getUnit()
-                    ? measure
-                    : PkuLevelConverter.convertTo(measure, userSettings.getPkuLevelUnit());
-            final PkuLevel pkuLevelInAlternativeUnit = userSettings.getPkuLevelUnit() == measure.getUnit()
-                    ? PkuLevelConverter.convertTo(measure, userSettings.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL)
-                    : measure;
+    @Override
+    public void attachView(final @NonNull MainActivityView view) {
+        super.attachView(view);
 
-            final String alternativeText = chartUtils.format(pkuLevelInAlternativeUnit) + resourceInteractor.getStringResource(pkuLevelInAlternativeUnit.getUnit() == PkuLevelUnits.MICRO_MOL
-                    ? R.string.rangeinfo_pkulevel_mmol
-                    : R.string.rangeinfo_pkulevel_mg);
+        disposables = new CompositeDisposable();
+    }
 
-            final CharSequence details = StringUtils.highlightWord(
-                    chartUtils.format(pkuLevelInSelectedUnit),
-                    alternativeText);
-
-            dailyResultAdapterItems.add(DailyResultAdapterItem.create(
-                    details,
-                    System.currentTimeMillis(),
-                    chartUtils.getState(measure)));
+    @Override
+    public void detachView() {
+        if (disposables != null && !disposables.isDisposed()) {
+            disposables.dispose();
         }
 
-        ifViewAttached(view -> view.setMeasureList(dailyResultAdapterItems));
+        super.detachView();
     }
 }

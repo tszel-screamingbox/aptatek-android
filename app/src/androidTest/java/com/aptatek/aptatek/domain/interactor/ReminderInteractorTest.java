@@ -106,7 +106,7 @@ public class ReminderInteractorTest {
         testInsert.assertNoErrors();
         testInsert.assertComplete();
 
-        final TestObserver<Collection<Reminder>> testReminders = reminderInteractor.listReminders(1).test();
+        final TestObserver<List<Reminder>> testReminders = reminderInteractor.listReminders(1).test();
         testReminders.await();
         testReminders.assertNoErrors();
         testReminders.assertComplete();
@@ -145,7 +145,7 @@ public class ReminderInteractorTest {
         testInsert.assertNoErrors();
         testInsert.assertComplete();
 
-        final TestObserver<Collection<Reminder>> testReminders = reminderInteractor.listReminders(1).test();
+        final TestObserver<List<Reminder>> testReminders = reminderInteractor.listReminders(1).test();
         testReminders.await();
         testReminders.assertNoErrors();
         testReminders.assertComplete();
@@ -156,7 +156,7 @@ public class ReminderInteractorTest {
         testDelete.assertNoErrors();
         testDelete.assertComplete();
 
-        final TestObserver<Collection<Reminder>> testRemindersAfterDelete = reminderInteractor.listReminders(1).test();
+        final TestObserver<List<Reminder>> testRemindersAfterDelete = reminderInteractor.listReminders(1).test();
         testRemindersAfterDelete.await();
         testRemindersAfterDelete.assertNoErrors();
         testRemindersAfterDelete.assertComplete();
@@ -195,28 +195,28 @@ public class ReminderInteractorTest {
         testInsert.assertNoErrors();
         testInsert.assertComplete();
 
-        final TestObserver<Collection<Reminder>> testReminders = reminderInteractor.listReminders(1).test();
+        final TestObserver<List<Reminder>> testReminders = reminderInteractor.listReminders(1).test();
         testReminders.await();
         testReminders.assertNoErrors();
         testReminders.assertComplete();
         testReminders.assertValueAt(0, reminders
                 -> !reminders.isEmpty()
-                && ((List<Reminder>) reminders).get(0).getHour() == 10
-                && ((List<Reminder>) reminders).get(0).getMinute() == 10);
+                && reminders.get(0).getHour() == 10
+                && reminders.get(0).getMinute() == 10);
 
         final TestObserver testUpdate = reminderInteractor.updateReminder(reminder.getId(), 11, 11).test();
         testUpdate.await();
         testUpdate.assertNoErrors();
         testUpdate.assertComplete();
 
-        final TestObserver<Collection<Reminder>> testRemindersAfterUpdate = reminderInteractor.listReminders(1).test();
+        final TestObserver<List<Reminder>> testRemindersAfterUpdate = reminderInteractor.listReminders(1).test();
         testRemindersAfterUpdate.await();
         testRemindersAfterUpdate.assertNoErrors();
         testRemindersAfterUpdate.assertComplete();
         testRemindersAfterUpdate.assertValueAt(0, reminders
                 -> !reminders.isEmpty()
-                && ((List<Reminder>) reminders).get(0).getHour() == 11
-                && ((List<Reminder>) reminders).get(0).getMinute() == 11);
+                && reminders.get(0).getHour() == 11
+                && reminders.get(0).getMinute() == 11);
     }
 
     /**

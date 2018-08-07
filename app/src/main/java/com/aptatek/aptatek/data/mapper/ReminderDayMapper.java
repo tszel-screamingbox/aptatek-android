@@ -5,7 +5,7 @@ import com.aptatek.aptatek.domain.base.Mapper;
 import com.aptatek.aptatek.domain.model.ReminderDay;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -18,7 +18,7 @@ public class ReminderDayMapper implements Mapper<ReminderDay, ReminderDayDataMod
     }
 
     @Override
-    public Collection<ReminderDay> mapListToDomain(final Collection<ReminderDayDataModel> dataModels) {
+    public List<ReminderDay> mapListToDomain(final List<ReminderDayDataModel> dataModels) {
         return Ix.from(dataModels).map(this::mapToDomain).toList();
     }
 
@@ -32,7 +32,7 @@ public class ReminderDayMapper implements Mapper<ReminderDay, ReminderDayDataMod
     }
 
     @Override
-    public Collection<ReminderDayDataModel> mapListToData(final Collection<ReminderDay> domainModels) {
+    public List<ReminderDayDataModel> mapListToData(final List<ReminderDay> domainModels) {
         return Ix.from(domainModels).map(this::mapToData).toList();
     }
 

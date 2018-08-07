@@ -11,7 +11,6 @@ import com.aptatek.aptatek.domain.model.Reminder;
 import com.aptatek.aptatek.domain.model.ReminderDay;
 
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -96,7 +95,7 @@ public class ReminderInteractor {
         );
     }
 
-    public Observable<Collection<Reminder>> listReminders(final int weekDay) {
+    public Observable<List<Reminder>> listReminders(final int weekDay) {
         return reminderDao.getReminders(weekDay)
                 .map(reminderMapper::mapListToDomain)
                 .toObservable();
