@@ -40,6 +40,13 @@ public class DailyResultViewHolder extends RecyclerView.ViewHolder {
         textViewMeasureInfo.setTextColor(color);
         textViewMeasureTime.setTextColor(color);
 
+        textViewMeasureInfo.setPadding(
+                (int) resourceInteractor.getDimension(R.dimen.general_distance_small),
+                (int) resourceInteractor.getDimension(R.dimen.general_distance_mini),
+                (int) resourceInteractor.getDimension(R.dimen.general_distance_small),
+                (int) resourceInteractor.getDimension(R.dimen.general_distance_mini));
+
+
         // TODO extract to a formatter and use string resource for the format pattern
         final Date dt = new Date(item.getTimestamp());
         final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
