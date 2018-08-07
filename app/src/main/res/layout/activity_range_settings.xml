@@ -59,7 +59,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsLowLabel"
                 tools:text="From 0 to 119 mmol/L" />
 
-            <com.aptatek.aptatek.widget.LevelIndicatorView
+            <com.aptatek.pkuapp.widget.LevelIndicatorView
                 android:id="@+id/rangeSettingsLowIndicator"
                 android:layout_width="@dimen/general.distance"
                 android:layout_height="@dimen/general.distance"
@@ -190,7 +190,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsHighLabel"
                 tools:text="From 361 to 510 mmol/L" />
 
-            <com.aptatek.aptatek.widget.LevelIndicatorView
+            <com.aptatek.pkuapp.widget.LevelIndicatorView
                 android:id="@+id/rangeSettingsHighIndicator"
                 android:layout_width="@dimen/general.distance"
                 android:layout_height="@dimen/general.distance"
@@ -231,7 +231,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsVeryHighLabel"
                 tools:text="Over 511 mmol/L" />
 
-            <com.aptatek.aptatek.widget.LevelIndicatorView
+            <com.aptatek.pkuapp.widget.LevelIndicatorView
                 android:id="@+id/rangeSettingsVeryHighIndicator"
                 android:layout_width="@dimen/general.distance"
                 android:layout_height="@dimen/general.distance"
