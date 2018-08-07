@@ -80,9 +80,7 @@ public class FakeCubeDataGenerator {
     public CubeDataModel generateOldestData() {
         final long earliestTimeAtGivenDay = TimeHelper.getEarliestTimeAtGivenDay(System.currentTimeMillis());
         final long oldestTimestamp = TimeHelper.addDays(FIRST_DATA_BEFORE_TODAY_IN_DAYS * -1, earliestTimeAtGivenDay);
-        final CubeDataModel cubeDataModel = generateDataForGivenDay(
-                oldestTimestamp
-        );
+        final CubeDataModel cubeDataModel = generateDataForGivenDay(oldestTimestamp);
         cubeDataModel.setTimestamp(oldestTimestamp);
 
         return cubeDataModel;
