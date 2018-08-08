@@ -6,6 +6,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.device.formatter.WeeklyChartValueFormatter;
 import com.aptatek.pkuapp.device.time.TimeHelper;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
@@ -49,7 +50,7 @@ public class WeeklyChartDataTransformer {
     }
 
     @NonNull
-    Single<ChartEntryData> transform(CubeData cubeData) {
+    Single<ChartEntryData> transform(final CubeData cubeData) {
         return pkuRangeInteractor.getInfo()
             .map(rangeInfo -> {
                 final PkuLevel pkuLevel = cubeData.getPkuLevel();
@@ -61,7 +62,7 @@ public class WeeklyChartDataTransformer {
                 }
 
                 final int x = TimeHelper.getDayOfWeek(cubeData.getTimestamp()) - DAY_OFFSET;
-                final int y = TimeHelper.getHourOfDay(cubeData.getTimestamp());
+                final int y = TimeHelper.getMinuteOfDay(cubeData.getTimestamp());
                 final String label = rangeSettingsValueFormatter.formatRegularValue(levelInProperUnit);
                 final ChartUtils.State state = ChartUtils.getState(pkuLevel, rangeInfo);
                 final @ColorRes int colorRes = ChartUtils.stateColor(state);
@@ -99,7 +100,7 @@ public class WeeklyChartDataTransformer {
             dataSet.setColors(bubbleColors);
             dataSet.setValueTextColors(labelColors);
             // TODO enable again when the text alignment issue is fixed
-            // dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_mini));
+            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_mini));
             dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
             dataSet.setValueFormatter(new WeeklyChartValueFormatter(labels));
 

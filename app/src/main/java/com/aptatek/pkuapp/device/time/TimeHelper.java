@@ -81,6 +81,13 @@ public final class TimeHelper {
         return localDate.getHourOfDay();
     }
 
+    public static int getMinuteOfDay(final long timestamp) {
+        final LocalDateTime localDateTime = timeFromTimestamp(timestamp);
+        final int minuteOfHour = localDateTime.getMinuteOfHour();
+        final int hourOfDay = getHourOfDay(timestamp);
+        return hourOfDay * 60 + minuteOfHour;
+    }
+
     private static LocalDate dateFromTimestamp(final long timestamp) {
         return LocalDate.fromDateFields(new Date(timestamp));
     }

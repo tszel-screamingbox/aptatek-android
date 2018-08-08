@@ -78,7 +78,7 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
 
         boolean normalizeSize = dataSet.isNormalizeSizeEnabled();
 
-        // calcualte the full width of 1 step on the x-axis
+        // calculate the full width of 1 step on the x-axis
         final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
         final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
         final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);

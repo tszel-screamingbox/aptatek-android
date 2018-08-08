@@ -180,6 +180,7 @@
     <string name="weekly.empty.subtitle">Take your first test</string>
     <string name="weekly.empty.title">No results</string>
     <string-array name="weekly.hours">
+        <item> </item>
         <item>1am</item>
         <item>2</item>
         <item>3</item>
@@ -191,7 +192,7 @@
         <item>9</item>
         <item>10</item>
         <item>11</item>
-        <item>12am</item>
+        <item>12pm</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -202,8 +203,8 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
-        <item>11</item>
-        <item>12pm</item>
+        <item>11pm</item>
+        <item> </item>
     </string-array>
     <string name="weekly.subtitle">Week of %s</string>
     <string name="weekly.subtitle.dateformat">MMMM dd\'%s\' yyyy</string>
