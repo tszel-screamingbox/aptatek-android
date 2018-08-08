@@ -18,18 +18,13 @@
 
     <color name="chartBackrgroundBlue">#DBF9FE</color>
 
-    <color name="chartBubbleLow">#4AE1F8</color>
-    <color name="chartBubbleNormal">#4CD864</color>
-    <color name="chartBubbleHigh">#F65196</color>
-    <color name="chartBubbleVeryHigh">#F25555</color>
-
     <color name="dialButtonGrey">#8034414A</color>
     <color name="applicationGainsBoroGray">#F2F2F2</color>
     <color name="applicationTimePickerSelector">#33b5e5</color>
 
-    <color name="pkuLevelVeryHigh">#B2004B</color>
-    <color name="pkuLevelHigh">#F65196</color>
-    <color name="pkuLevelNormal">@color/applicationGreen</color>
-    <color name="pkuLevelLow">#4AE1F8</color>
+    <color name="pkuLevelVeryHigh">#FA4E7C</color>
+    <color name="pkuLevelHigh">#FFD34F</color>
+    <color name="pkuLevelNormal">#20E8CD</color>
+    <color name="pkuLevelLow">#31CACF</color>
 
 </resources>

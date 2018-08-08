@@ -3,7 +3,7 @@
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/graph.bubble.radius.small" />
 
-            <solid android:color="@color/chartBubbleHigh" />
+            <solid android:color="@color/pkuLevelHigh" />
             <size
                 android:width="@dimen/graph.bubble.size"
                 android:height="@dimen/graph.bubble.size" />
