@@ -21,10 +21,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance"
+        android:paddingTop="@dimen/general.distance.xxmini"
+        android:paddingBottom="@dimen/general.distance.xxmini"
+        android:paddingStart="@dimen/general.distance.xxsmall"
+        android:paddingEnd="@dimen/general.distance.xxsmall"
         android:src="@drawable/ic_left_arrow"
         android:tint="@color/applicationLightGray"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toTopOf="@+id/dateText"
+        app:layout_constraintBottom_toBottomOf="@+id/dateText"
+        app:layout_constraintVertical_bias="0.5"
         tools:ignore="ContentDescription" />
 
     <ImageView
@@ -32,10 +38,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/general.distance"
+        android:paddingTop="@dimen/general.distance.xxmini"
+        android:paddingBottom="@dimen/general.distance.xxmini"
+        android:paddingStart="@dimen/general.distance.xxsmall"
+        android:paddingEnd="@dimen/general.distance.xxsmall"
         android:src="@drawable/ic_right_arrow"
         android:tint="@color/applicationLightGray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toTopOf="@+id/dateText"
+        app:layout_constraintBottom_toBottomOf="@+id/dateText"
+        app:layout_constraintVertical_bias="0.5"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -95,7 +107,7 @@
         style="@style/General.Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Results are in mg/dl"
         android:textSize="@dimen/font.size.normal"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Results are in mg/dl" />
 </android.support.constraint.ConstraintLayout>
