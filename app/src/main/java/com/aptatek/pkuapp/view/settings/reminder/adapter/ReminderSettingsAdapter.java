@@ -73,7 +73,7 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
 
             textViewDayName.setText(item.getNameOfDay());
             switchActivate.setChecked(item.isActive());
-            textViewDayName.setEnabled(item.isActive());
+            textViewDayName.setSelected(item.isActive());
 
             if (item.isActive()) {
                 imageAddNewReminder.setVisibility(View.VISIBLE);
@@ -92,6 +92,8 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
                     callback.changeActiveState(data.getCurrentList().get(getAdapterPosition()), isChecked);
                 }
             });
+
+            textViewDayName.setOnClickListener(v -> switchActivate.setChecked(!switchActivate.isChecked()));
         }
 
         @Override
