@@ -31,11 +31,10 @@ class RemindersViewHolder extends RecyclerView.ViewHolder {
     void bind(final RemindersAdapterItem item) {
         textViewTime.setText(item.getTime());
 
-        itemView.setOnLongClickListener(v -> {
+        itemView.setOnClickListener(v -> {
             if (callback != null && item.isActive()) {
                 callback.modifyReminderTime(item);
             }
-            return true;
         });
 
         if (item.isActive()) {
