@@ -105,7 +105,7 @@
     <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
     <string name="set.pin.title">Set PIN</string>
     <!-- Reminder Time Picker Dialog -->
-    <string name="settings.daily.reminder.description">You can set up multiple reminders for every day in the week</string>
+    <string name="settings.daily.reminder.description">You can set up multiple reminder times per day, on as many days per week that you want to check Phe levels.</string>
     <string name="settings.daily.reminders">Daily reminders</string>
     <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
     <string name="settings.fingerprint.description">Turn the switch off for PIN only. Turns on your passcode you use for your device.</string>
