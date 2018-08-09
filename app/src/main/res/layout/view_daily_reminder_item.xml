@@ -16,7 +16,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xxxsmall"
-        android:enabled="false"
         android:textColor="@color/reminder_settings_day_color_selector"
         android:textSize="@dimen/font.size.xbig"
         app:layout_constraintBottom_toBottomOf="@+id/switchActivate"
