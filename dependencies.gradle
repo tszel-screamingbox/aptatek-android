@@ -83,6 +83,7 @@ ext {
 
             // UI
             rangebar                    : '1.4.3',
+            autoFitTextView             : '0.2.1',
 
             // Time
             yodatime                    : '2.9.9.4'
@@ -188,7 +189,8 @@ ext {
     ]
 
     uiDependencies = [
-            rangebar            : "com.appyvet:materialrangebar:$versions.rangebar"
+            rangebar            : "com.appyvet:materialrangebar:$versions.rangebar",
+            autoFitTextView     : "me.grantland:autofittextview:$versions.autoFitTextView"
     ]
 
     timeDependencies = [

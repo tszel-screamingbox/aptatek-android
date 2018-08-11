@@ -63,7 +63,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
         this.dailyChartFormatter = dailyChartFormatter;
         ButterKnife.bind(this, view);
 
-        bubbleHeight = infoTextView.getLayoutParams().height;
+        bubbleHeight = bubbleContainerLayout.getLayoutParams().height;
         viewWidth = itemLayout.getLayoutParams().width;
         // need a margin, because of the zooming animation
         marginY = bubbleHeight * 0.5f;
@@ -71,7 +71,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
         // get the middle of the cell
         middleX = viewWidth / 2;
         // calculate the X-coordinate of the bubble, taking care of the bubble width
-        bubbleX = middleX - infoTextView.getLayoutParams().width / 2;
+        bubbleX = middleX - bubbleContainerLayout.getLayoutParams().width / 2;
     }
 
     @Override
@@ -144,7 +144,6 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
         };
     }
 
-
     void setOnItemClickedListener(final OnItemClickedListener onItemClickedListener) {
         this.onItemClickedListener = onItemClickedListener;
     }
@@ -159,10 +158,10 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
             if (highestMeasure == null) {
                 infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
             } else {
-                infoTextView.setBackground(context.getResources().getDrawable(currentData.getExpandedBackgroundRes()));
+                bubbleContainerLayout.setBackground(context.getResources().getDrawable(currentData.getExpandedBackgroundRes()));
                 infoTextView.setTextColor(context.getResources().getColor(currentData.getColorRes()));
 
-               final CharSequence infoText = dailyChartFormatter.getBubbleText(highestMeasure);
+                final CharSequence infoText = dailyChartFormatter.getBubbleText(highestMeasure);
 
                 infoTextView.setText(infoText);
                 if (currentData.getNumberOfMeasures() > 1) {
@@ -179,9 +178,9 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
         infoTextView.setText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()));
         infoTextView.setTextColor(context.getResources().getColor(R.color.applicationWhite));
         if (currentData.getHighestPkuLevel() == null) {
-            infoTextView.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
+            bubbleContainerLayout.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
         } else {
-            infoTextView.setBackground(context.getResources().getDrawable(currentData.getCollapsedBackgroundRes()));
+            bubbleContainerLayout.setBackground(context.getResources().getDrawable(currentData.getCollapsedBackgroundRes()));
         }
     }
 

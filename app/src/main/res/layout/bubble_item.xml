@@ -12,17 +12,19 @@
 
     <RelativeLayout
         android:id="@+id/bubbleContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="@dimen/graph.bubble.size"
+        android:layout_height="@dimen/graph.bubble.size"
+        android:background="@drawable/bubble_full_normal">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/infoText"
-            android:layout_width="@dimen/graph.bubble.size"
-            android:layout_height="@dimen/graph.bubble.size"
-            android:background="@drawable/bubble_full_normal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:lines="2"
             android:minLines="2"
+            android:paddingLeft="@dimen/general.distance.xmini"
+            android:paddingRight="@dimen/general.distance.xmini"
             android:textColor="@color/applicationWhite"
             android:textSize="@dimen/font.size.regular"
             android:textStyle="bold" />
