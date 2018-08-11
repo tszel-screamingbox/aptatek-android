@@ -65,10 +65,10 @@ public class ChartUtilsTest {
 
     @Test
     public void testStateColor() {
-        assertEquals(R.color.chartBubbleLow, stateColor(State.LOW));
-        assertEquals(R.color.chartBubbleNormal, stateColor(State.NORMAL));
-        assertEquals(R.color.chartBubbleHigh, stateColor(State.HIGH));
-        assertEquals(R.color.chartBubbleVeryHigh, stateColor(State.VERY_HIGH));
+        assertEquals(R.color.pkuLevelLow, stateColor(State.LOW));
+        assertEquals(R.color.pkuLevelNormal, stateColor(State.NORMAL));
+        assertEquals(R.color.pkuLevelHigh, stateColor(State.HIGH));
+        assertEquals(R.color.pkuLevelVeryHigh, stateColor(State.VERY_HIGH));
     }
 
 

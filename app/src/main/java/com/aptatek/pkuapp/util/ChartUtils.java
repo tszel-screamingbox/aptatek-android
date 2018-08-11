@@ -219,15 +219,15 @@ public final class ChartUtils {
     public static int stateColor(final State state) {
         switch (state) {
             case LOW:
-                return R.color.chartBubbleLow;
+                return R.color.pkuLevelLow;
             case NORMAL:
-                return R.color.chartBubbleNormal;
+                return R.color.pkuLevelNormal;
             case HIGH:
-                return R.color.chartBubbleHigh;
+                return R.color.pkuLevelHigh;
             case VERY_HIGH:
-                return R.color.chartBubbleVeryHigh;
+                return R.color.pkuLevelVeryHigh;
             default:
-                return R.color.chartBubbleNormal;
+                return R.color.pkuLevelNormal;
         }
     }
 

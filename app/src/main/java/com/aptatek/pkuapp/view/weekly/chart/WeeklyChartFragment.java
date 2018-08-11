@@ -8,6 +8,7 @@ import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
 import com.aptatek.pkuapp.injection.module.chart.ChartModule;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
+import com.aptatek.pkuapp.util.Constants;
 import com.aptatek.pkuapp.view.base.BaseFragment;
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,7 +28,6 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
 
     private static final float MIN_X = -0.5f;
     private static final float MAX_X = 6.5f;
-    private static final float OFFSET = 2f;
 
     @Arg
     int weekBefore;
@@ -75,7 +75,7 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     }
 
     @Override
-    public void displayChartData(BubbleDataSet bubbleDataSet) {
+    public void displayChartData(final BubbleDataSet bubbleDataSet) {
         weeklyBubbleChart.getData().addDataSet(bubbleDataSet);
         weeklyBubbleChart.invalidate();
     }
@@ -91,13 +91,18 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
 
         final YAxis yAxis = weeklyBubbleChart.getAxisLeft();
         final String[] hours = getResources().getStringArray(R.array.weekly_hours);
-        yAxis.setValueFormatter(new IndexAxisValueFormatter(hours));
-        yAxis.setLabelCount(hours.length);
+        yAxis.setValueFormatter((value, axis) -> {
+            final int round = Math.round(value);
+            final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
+
+            return hours[index];
+        });
         yAxis.setDrawAxisLine(false);
         yAxis.setDrawGridLines(false);
         yAxis.setInverted(true);
-        yAxis.setAxisMinimum(-OFFSET);
-        yAxis.setAxisMaximum(hours.length + OFFSET);
+        yAxis.setAxisMinimum(0f);
+        yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setLabelCount(hours.length, true);
 
         final BubbleData data = new BubbleData();
         weeklyBubbleChart.setData(data);
@@ -107,7 +112,6 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
         weeklyBubbleChart.setScaleEnabled(false);
         weeklyBubbleChart.getLegend().setEnabled(false);
         weeklyBubbleChart.getDescription().setEnabled(false);
-        weeklyBubbleChart.setHighlightPerTapEnabled(false);
         weeklyBubbleChart.setRenderer(new CustomBubbleChartRenderer(weeklyBubbleChart));
     }
 }

@@ -116,7 +116,7 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                         savedCeilMMol = info.getNormalCeilValue();
                     }
 
-                    if (Math.abs(floorMMol - savedFloorMMol) > Constants.FLOAT_COMPARSION_ERROR_MARGIN || Math.abs(ceilMMol - savedCeilMMol) > Constants.FLOAT_COMPARSION_ERROR_MARGIN) {
+                    if (Math.abs(floorMMol - savedFloorMMol) > Constants.FLOAT_COMPARISION_ERROR_MARGIN || Math.abs(ceilMMol - savedCeilMMol) > Constants.FLOAT_COMPARISION_ERROR_MARGIN) {
                         return Completable.fromAction(() -> ifViewAttached(RangeSettingsView::showSaveChangesDialog));
                     } else {
                         return Completable.fromAction(() -> ifViewAttached(RangeSettingsView::finish));

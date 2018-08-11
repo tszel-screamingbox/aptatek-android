@@ -115,7 +115,7 @@
     <string name="settings.units.confirmation.button.save">Save</string>
     <string name="settings.units.confirmation.message">Do you want to save these changes?</string>
     <string name="settings.units.confirmation.title">Ranges Changed</string>
-    <string name="settings.units.description">You can set your Phe levels and the units</string>
+    <string name="settings.units.description">You can edit your Phe level target ranges and select Phe units</string>
     <string name="settings.units.label">Units</string>
     <string name="settings.units.normal.ceil.hint">Ceil</string>
     <string name="settings.units.normal.description">Talk with your medical team about how you can customize your \"Target Phe level range\" so that the app can give you customized feedback about how closely you\'re meeting those goals</string>
@@ -152,9 +152,9 @@
     <string name="test.samplewetting.notification.inprogress.textformat">Remaining time is %s</string>
     <string name="test.samplewetting.notification.inprogress.title">Sample wetting in progress</string>
     <string name="test.samplewetting.title">Sample wetting</string>
-    <string name="test.takesample.age.adult">an adult</string>
-    <string name="test.takesample.age.child">a child</string>
-    <string name="test.takesample.age.switch">I\'m taking a sample for %1$s</string>
+    <string name="test.takesample.age.adult">adult</string>
+    <string name="test.takesample.age.child">infant</string>
+    <string name="test.takesample.age.switch">I\'m taking a sample for an %1$s</string>
     <string name="test.takesample.button.start">Start timer (30min)</string>
     <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
     <string name="test.takesample.title">Take sample</string>
@@ -180,6 +180,7 @@
     <string name="weekly.empty.subtitle">Take your first test</string>
     <string name="weekly.empty.title">No results</string>
     <string-array name="weekly.hours">
+        <item> </item>
         <item>1am</item>
         <item>2</item>
         <item>3</item>
@@ -191,7 +192,7 @@
         <item>9</item>
         <item>10</item>
         <item>11</item>
-        <item>12am</item>
+        <item>12pm</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -202,8 +203,8 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
-        <item>11</item>
-        <item>12pm</item>
+        <item>11pm</item>
+        <item> </item>
     </string-array>
     <string name="weekly.subtitle">Week of %s</string>
     <string name="weekly.subtitle.dateformat">MMMM dd\'%s\' yyyy</string>

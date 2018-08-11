@@ -114,8 +114,8 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
             etNormalCeil.setText(rightPinValue);
 
             if (rangeSet && lastModel != null
-                    && (Math.abs(lastModel.getNormalFloorMMolValue() - mmolFloor) > Constants.FLOAT_COMPARSION_ERROR_MARGIN
-                    || Math.abs(lastModel.getNormalCeilMMolValue() - mmolCeil) > Constants.FLOAT_COMPARSION_ERROR_MARGIN)) {
+                    && (Math.abs(lastModel.getNormalFloorMMolValue() - mmolFloor) > Constants.FLOAT_COMPARISION_ERROR_MARGIN
+                    || Math.abs(lastModel.getNormalCeilMMolValue() - mmolCeil) > Constants.FLOAT_COMPARISION_ERROR_MARGIN)) {
 
                 changeProcessor.onNext(new Object());
             }
@@ -139,7 +139,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
 
                 rbRange.setRangePinsByValue(validValue, topLimit);
 
-                if (Math.abs(validValue - mmolValue) > Constants.FLOAT_COMPARSION_ERROR_MARGIN) {
+                if (Math.abs(validValue - mmolValue) > Constants.FLOAT_COMPARISION_ERROR_MARGIN) {
                     etNormalFloor.setText(presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(validValue, PkuLevelUnits.MICRO_MOL), getSelectedUnit())));
                 }
 
@@ -171,7 +171,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
 
                 rbRange.setRangePinsByValue(bottomLimit, validValue);
 
-                if (Math.abs(validValue - mmolValue) > Constants.FLOAT_COMPARSION_ERROR_MARGIN) {
+                if (Math.abs(validValue - mmolValue) > Constants.FLOAT_COMPARISION_ERROR_MARGIN) {
                     etNormalCeil.setText(presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(validValue, PkuLevelUnits.MICRO_MOL), getSelectedUnit())));
                 }
 

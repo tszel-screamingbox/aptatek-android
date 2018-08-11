@@ -58,7 +58,7 @@ public class TakeSampleFragment extends TestBaseFragment<TakeSampleView, TakeSam
     @Override
     public void showAgeSwitcherText(@NonNull final String text) {
         final SpannableString spannableString = new SpannableString(text);
-        spannableString.setSpan(new UnderlineSpan(), 0, text.length() - 1, 0);
+        spannableString.setSpan(new UnderlineSpan(), 0, text.length(), 0);
         ageToggle.setText(spannableString);
     }
 

@@ -10,7 +10,7 @@
 
             <stroke
                 android:width="@dimen/graph.bubble.stroke.small"
-                android:color="@color/chartBubbleHigh" />
+                android:color="@color/pkuLevelHigh" />
 
         </shape>
     </item>
