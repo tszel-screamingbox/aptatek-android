@@ -47,7 +47,7 @@ public class TakeSampleScreenTest {
         onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_takesample_title)));
         onView(withId(R.id.testBaseMessage)).check(matches(withText(R.string.test_takesample_description)));
         onView(withId(R.id.testNavigationButton)).check(matches(withText(R.string.test_takesample_button_start)));
-        onView(withId(R.id.takeSampleAgeToggle)).check(matches(withText(StringContains.containsString("child"))));
+        onView(withId(R.id.takeSampleAgeToggle)).check(matches(withText(StringContains.containsString(activityRule.getActivity().getString(R.string.test_takesample_age_child)))));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class TakeSampleScreenTest {
     @Test
     public void testAgeSwitch() throws Exception {
         onView(withId(R.id.takeSampleAgeToggle)).perform(ViewActions.click());
-        onView(withId(R.id.takeSampleAgeToggle)).check(matches(withText(StringContains.containsString("adult"))));
+        onView(withId(R.id.takeSampleAgeToggle)).check(matches(withText(StringContains.containsString(activityRule.getActivity().getString(R.string.test_takesample_age_adult)))));
     }
 
     @Test
