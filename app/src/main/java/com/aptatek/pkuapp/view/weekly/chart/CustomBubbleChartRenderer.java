@@ -56,11 +56,8 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
     private float[] sizeBuffer = new float[4];
     private float[] pointBuffer = new float[2];
 
-    protected float getShapeSize(float entrySize, float maxSize, float reference, boolean normalizeSize) {
-        final float factor = normalizeSize ? ((maxSize == 0f) ? 1f : (float) Math.sqrt(entrySize / maxSize)) :
-                entrySize;
-        final float shapeSize = reference * factor;
-        return shapeSize;
+    protected float getShapeSize(float entrySize, float reference) {
+        return entrySize * reference;
     }
 
     protected void drawDataSet(Canvas c, IBubbleDataSet dataSet) {
@@ -91,7 +88,7 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
             pointBuffer[1] = (entry.getY()) * phaseY;
             trans.pointValuesToPixel(pointBuffer);
 
-            float shapeHalf = getShapeSize(entry.getSize(), dataSet.getMaxSize(), referenceSize, normalizeSize) / 2f;
+            float shapeHalf = getShapeSize(entry.getSize(), referenceSize) / 2f;
 
             if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
                     || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
@@ -129,8 +126,6 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
 
             final List<IBubbleDataSet> dataSets = bubbleData.getDataSets();
 
-            float lineHeight = Utils.calcTextHeight(mValuePaint, "1");
-
             for (int i = 0; i < dataSets.size(); i++) {
 
                 IBubbleDataSet dataSet = dataSets.get(i);
@@ -140,6 +135,7 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
+                float lineHeight = Utils.calcTextHeight(mValuePaint, "1");
 
                 final float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
                 final float phaseY = mAnimator.getPhaseY();

@@ -18,12 +18,9 @@ import com.aptatek.pkuapp.util.ChartUtils;
 import com.aptatek.pkuapp.view.settings.pkulevel.RangeSettingsValueFormatter;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -32,7 +29,7 @@ import ix.Ix;
 
 public class WeeklyChartDataTransformer {
 
-    private static final float SIZE = 0.1f;
+    private static final float SIZE = 0.8f;
     private static final int DAY_OFFSET = 1;
     private static final float BUBBLE_ALPHA = 0.2f;
 
@@ -83,7 +80,6 @@ public class WeeklyChartDataTransformer {
     public Single<BubbleDataSet> transformEntries(@NonNull List<ChartEntryData> chartEntries) {
         return Single.fromCallable(() -> {
             final List<BubbleEntry> bubbleEntries = new ArrayList<>();
-            final Map<Entry, String> labels = new HashMap<>();
             final List<Integer> bubbleColors = new ArrayList<>();
             final List<Integer> labelColors = new ArrayList<>();
 
@@ -91,7 +87,6 @@ public class WeeklyChartDataTransformer {
                     .foreach(entry -> {
                         final BubbleEntry bubbleEntry = createBubbleEntryFor(entry);
                         bubbleEntries.add(bubbleEntry);
-                        labels.put(bubbleEntry, entry.getLabel());
                         bubbleColors.add(entry.getBubbleColor());
                         labelColors.add(entry.getLabelColor());
                     });
@@ -102,13 +97,13 @@ public class WeeklyChartDataTransformer {
             // TODO enable again when the text alignment issue is fixed
             dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_mini));
             dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
-            dataSet.setValueFormatter(new WeeklyChartValueFormatter(labels));
+            dataSet.setValueFormatter(new WeeklyChartValueFormatter());
 
             return dataSet;
         });
     }
 
-    private BubbleEntry createBubbleEntryFor(ChartEntryData data) {
+    private BubbleEntry createBubbleEntryFor(final ChartEntryData data) {
         final BubbleEntry bubbleEntry = new BubbleEntry(data.getX(), data.getY(), data.getSize());
         bubbleEntry.setData(data);
         return bubbleEntry;
