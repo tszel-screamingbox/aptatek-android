@@ -162,7 +162,8 @@ dependencies {
     annotationProcessor activityStarterDependencies.apt
 
     // UI
-    implementation (uiDependencies.rangebar) {
+    implementation uiDependencies.autoFitTextView
+    implementation(uiDependencies.rangebar) {
         exclude module: 'support-compat'
     }
 
@@ -201,7 +202,8 @@ dependencies {
     }
     androidTestAnnotationProcessor daggerDependencies.compiler
     androidTestCompileOnly daggerDependencies.annotations
-    implementation appDependencies.dataFactory // TODO temporarily added to PROD flavor, only for the fake cube data generation.
+    implementation appDependencies.dataFactory
+    // TODO temporarily added to PROD flavor, only for the fake cube data generation.
     androidTestUtil testDependencies.orchestrator
 
 }
@@ -213,8 +215,8 @@ configurations.all {
 }
 
 task customCheckstyle(type: Checkstyle, dependsOn: 'assembleProdDebug') {
-    description    = 'Running Checkstyle'
-    group          = 'verification'
+    description = 'Running Checkstyle'
+    group = 'verification'
     ignoreFailures = true
     showViolations = true
 
@@ -228,7 +230,7 @@ task customCheckstyle(type: Checkstyle, dependsOn: 'assembleProdDebug') {
     exclude '**/BuildConfig.java'
 
     reports {
-        xml.enabled  = false
+        xml.enabled = false
         html.enabled = true
         xml.destination file("$project.buildDir/reports/checkstyle/checkstyle-output.xml")
         html.destination file("$project.buildDir/reports/checkstyle/checkstyle-output.html")
@@ -238,31 +240,31 @@ task customCheckstyle(type: Checkstyle, dependsOn: 'assembleProdDebug') {
 }
 
 task customFindBugs(type: FindBugs, dependsOn: 'assembleProdDebug') {
-    description     = 'Runing FindBugs'
-    group           = 'verification'
-    effort          = 'max'
-    reportLevel     = 'medium'
+    description = 'Runing FindBugs'
+    group = 'verification'
+    effort = 'max'
+    reportLevel = 'medium'
     source 'src/main/java', 'src/prod/java'
-    classes        = fileTree('build/intermediates/classes/prod/debug')
-    classpath      = files()
+    classes = fileTree('build/intermediates/classes/prod/debug')
+    classpath = files()
     ignoreFailures = true
 
     // Use this only if you want exclude some errors
     excludeFilter = file("$rootProject.rootDir/quality/findbugs-exclude.xml")
 
     reports {
-        xml.enabled      = false
+        xml.enabled = false
         xml.withMessages = true
-        html.enabled     = true
+        html.enabled = true
         xml.destination file("$project.buildDir/reports/findbugs/findbugs-output.xml")
         html.destination file("$project.buildDir/reports/findbugs/findbugs-output.html")
     }
 }
 
 task customPmd(type: Pmd, dependsOn: 'assembleProdDebug') {
-    ruleSetFiles   = files("$rootProject.rootDir/quality/pmd.xml")
+    ruleSetFiles = files("$rootProject.rootDir/quality/pmd.xml")
     ignoreFailures = false
-    ruleSets       = []
+    ruleSets = []
 
     source 'src/main/java', 'src/prod/java'
     include '**/*.java'
@@ -272,7 +274,7 @@ task customPmd(type: Pmd, dependsOn: 'assembleProdDebug') {
     exclude '**/BuildConfig.java'
 
     reports {
-        xml.enabled  = false
+        xml.enabled = false
         html.enabled = true
         html {
             destination file("$project.buildDir/reports/pmd/pmd.html")
@@ -294,7 +296,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testProdDebugUnitTest') {
     group = 'Reporting'
 
     reports {
-        xml.enabled  = true
+        xml.enabled = true
         html.enabled = true
     }
 
