@@ -44,6 +44,7 @@
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.header.margin.minimum">68dp</dimen>
 
+    <dimen name="font.size.xmini">9sp</dimen>
     <dimen name="font.size.mini">10sp</dimen>
     <dimen name="font.size.small">11sp</dimen>
     <dimen name="font.size.regular">12sp</dimen>
