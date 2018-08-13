@@ -1,16 +1,29 @@
 package com.aptatek.pkuapp.view.pin.auth.add;
 
+import android.support.annotation.NonNull;
+
 import com.aptatek.pkuapp.data.PinCode;
 import com.aptatek.pkuapp.device.DeviceHelper;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.auth.AuthInteractor;
 import com.aptatek.pkuapp.domain.interactor.auth.Callback;
+import com.aptatek.pkuapp.domain.manager.keystore.KeyStoreError;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Completable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.schedulers.ExecutorScheduler;
+import io.reactivex.plugins.RxJavaPlugins;
 
 import static org.mockito.AdditionalAnswers.answerVoid;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,11 +52,31 @@ public class AuthPinPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        when(authInteractor.isValidPinCode(validPin)).thenReturn(true);
-        when(authInteractor.isValidPinCode(invalidPin)).thenReturn(false);
+        when(authInteractor.checkPinCode(validPin)).thenReturn(Completable.complete());
+        when(authInteractor.checkPinCode(invalidPin)).thenReturn(Completable.error(new KeyStoreError(new Throwable())));
 
         presenter = new AuthPinPresenter(authInteractor, deviceHelper, resourceInteractor);
         presenter.attachView(view);
+    }
+
+    @BeforeClass
+    public static void beforeClass() {
+        final Scheduler immediate = new Scheduler() {
+
+            @Override
+            public Disposable scheduleDirect(@NonNull final Runnable run, final long delay, @NonNull final TimeUnit unit) {
+                // this prevents StackOverflowErrors when scheduling with a delay
+                return super.scheduleDirect(run, 0, unit);
+            }
+
+            @Override
+            public Worker createWorker() {
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+            }
+        };
+
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> immediate);
+        RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
     }
 
     @Test

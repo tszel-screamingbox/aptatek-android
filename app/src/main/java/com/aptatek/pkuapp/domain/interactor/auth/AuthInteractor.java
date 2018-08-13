@@ -11,6 +11,7 @@ import com.aptatek.pkuapp.domain.manager.keystore.KeyStoreManager;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import timber.log.Timber;
 
 public class AuthInteractor {
@@ -31,24 +32,30 @@ public class AuthInteractor {
         this.keyStoreManager = keyStoreManager;
     }
 
-
-    public void setPinCode(final PinCode pinCode) {
-        try {
-            final String encryptedPin = keyStoreManager.encrypt(pinCode);
-            preferencesManager.setEncryptedPin(encryptedPin);
-        } catch (final KeyStoreError e) {
-            Timber.e(e, "Failed to set pincode");
-        }
+    public Completable setPinCode(final PinCode pinCode) {
+        return Completable.create(emitter -> {
+            try {
+                final String encryptedPin = keyStoreManager.encrypt(pinCode);
+                preferencesManager.setEncryptedPin(encryptedPin);
+                emitter.onComplete();
+            } catch (final KeyStoreError error) {
+                Timber.e(error, "Failed to set pincode");
+                emitter.onError(error);
+            }
+        });
     }
 
-    public boolean isValidPinCode(final PinCode pinCode) {
-        try {
-            final PinCode storedPin = keyStoreManager.decrypt(preferencesManager.getEncryptedPin());
-            return storedPin != null && storedPin.equals(pinCode);
-        } catch (final KeyStoreError keyStoreError) {
-            Timber.e(keyStoreError.getCause());
-            return false;
-        }
+    public Completable checkPinCode(final PinCode pinCode) {
+        return Completable.create(emitter -> {
+            try {
+                final PinCode storedPin = keyStoreManager.decrypt(preferencesManager.getEncryptedPin());
+                if (storedPin != null && storedPin.equals(pinCode)) {
+                    emitter.onComplete();
+                }
+            } catch (final KeyStoreError keyStoreError) {
+                emitter.onError(keyStoreError);
+            }
+        });
     }
 
     public void changePinCode() {
