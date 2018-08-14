@@ -18,12 +18,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertTrue;
 
 public class SetPinScreenTest {
 
     @Rule
     public ActivityTestRule<SetPinHostActivity> activityRule = new ActivityTestRule<>(SetPinHostActivity.class);
-
 
     @Test
     public void testInitialView() {
@@ -49,10 +49,11 @@ public class SetPinScreenTest {
         onView(withId(R.id.messageTextView)).check(matches(not(isDisplayed())));
         // Enter the same pin
         enterPin();
+        sleep(3000);
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationGreen)));
 
-        //TODO check MainActivity
+        assertTrue(activityRule.getActivity().isFinishing());
     }
 
     @Test
@@ -83,11 +84,12 @@ public class SetPinScreenTest {
         sleep(1000);
         // Confirm
         enterPin();
+        sleep(3000);
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(withText(R.string.confirm_pin_successful)));
         onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationGreen)));
 
-        //TODO check MainActivity
+        assertTrue(activityRule.getActivity().isFinishing());
     }
 
 

@@ -30,7 +30,6 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
 
     void verifyPin(final PinCode addedPin, final PinCode confirmationPin) {
         if (addedPin.equals(confirmationPin)) {
-            authInteractor.setPinCode(confirmationPin);
             disposable = authInteractor.setPinCode(confirmationPin)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
