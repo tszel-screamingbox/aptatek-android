@@ -83,6 +83,7 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     private void initChart() {
         final XAxis xAxis = weeklyBubbleChart.getXAxis();
         final String[] days = getResources().getStringArray(R.array.weekly_days);
+        xAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
         xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
@@ -103,6 +104,7 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES);
         yAxis.setLabelCount(hours.length, true);
+        yAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
 
         final BubbleData data = new BubbleData();
         weeklyBubbleChart.setData(data);

@@ -17,6 +17,7 @@
     <color name="transparent">#00FFFFFF</color>
 
     <color name="chartBackrgroundBlue">#DBF9FE</color>
+    <color name="chartWeeklyBlue">#20E8CD</color>
 
     <color name="dialButtonGrey">#8034414A</color>
     <color name="applicationGainsBoroGray">#F2F2F2</color>
