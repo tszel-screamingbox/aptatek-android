@@ -125,9 +125,16 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         settingsAdapterItemBuilder.setReminders(remindersAdapterItems);
 
-        reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(item), settingsAdapterItemBuilder.build());
+        final ReminderSettingsAdapterItem reminderSettingsAdapterItem = settingsAdapterItemBuilder.build();
+        reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(item), reminderSettingsAdapterItem);
 
-        ifViewAttached(view -> view.changeActiveState(reminderSettingsAdapterItems));
+        ifViewAttached(view -> {
+            view.changeActiveState(reminderSettingsAdapterItems);
+
+            if (isActive) {
+                view.showTimePickerDialog(reminderSettingsAdapterItem);
+            }
+        });
 
         updateReminderDayActiveState(settingsAdapterItemBuilder.build(), isActive);
     }
@@ -141,14 +148,20 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         remindersAdapterItems.remove(reminderItem);
 
+        final ReminderSettingsAdapterItem.Builder builder = reminderSettingsItem.toBuilder()
+                .setReminders(remindersAdapterItems)
+                .setActive(!remindersAdapterItems.isEmpty());
+
         reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(reminderSettingsItem),
-                reminderSettingsItem.toBuilder()
-                        .setReminders(remindersAdapterItems)
-                        .build());
+                builder.build());
 
         ifViewAttached(view -> view.deleteReminder(reminderSettingsAdapterItems));
 
         deleteReminder(reminderItem);
+
+        if (remindersAdapterItems.isEmpty()) {
+            updateReminderDayActiveState(reminderSettingsItem, false);
+        }
 
         compositeDisposable.add(reminderInteractor
                 .deleteReminder(reminderSettingsItem.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute())

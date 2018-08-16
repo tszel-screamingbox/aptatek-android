@@ -90,8 +90,7 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
         adapter.setCallback(new ReminderSettingsAdapterCallback() {
             @Override
             public void onAddReminderClicked(@NonNull final ReminderSettingsAdapterItem item) {
-                TimePickerDialog.create(getTimePickerDialogCallback(item, null))
-                        .show(getSupportFragmentManager(), "");
+                showTimePickerDialog(item);
             }
 
             @Override
@@ -132,6 +131,12 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
     @Override
     public void modifyReminder(@NonNull final List<ReminderSettingsAdapterItem> data) {
         adapter.setData(data);
+    }
+
+    @Override
+    public void showTimePickerDialog(@NonNull final ReminderSettingsAdapterItem item) {
+        TimePickerDialog.create(getTimePickerDialogCallback(item, null))
+                .show(getSupportFragmentManager(), "");
     }
 
 
