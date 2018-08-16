@@ -22,6 +22,8 @@ import activitystarter.Arg;
 
 public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinView {
 
+    private static final int DELAY = 250;
+
     @Arg
     byte[] pinBytes;
 
@@ -73,7 +75,7 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setText(R.string.confirm_pin_successful);
         messageTextView.setTextColor(getResources().getColor(R.color.applicationGreen));
-        fillCircle(R.drawable.pin_circle_filled_green,  presenter::navigateForward, 0);
+        fillCircle(R.drawable.pin_circle_filled_green,  presenter::navigateForward, DELAY);
     }
 
     @Override
