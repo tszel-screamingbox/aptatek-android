@@ -60,8 +60,12 @@ public abstract class BasePinFragment extends BaseFragment {
     }
 
     protected void fillCircle(final int resId, final AnimationCallback callback) {
+        fillCircle(resId, callback, DELAY_IN_MILLISEC);
+    }
+
+    protected void fillCircle(final int resId, final AnimationCallback callback, final int delay) {
         innerFillCircle(PIN_LENGTH, resId);
-        Observable.empty().delay(DELAY_IN_MILLISEC, TimeUnit.MILLISECONDS)
+        Observable.empty().delay(delay, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
                     clearCircles();
