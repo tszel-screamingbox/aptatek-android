@@ -182,6 +182,7 @@ dependencies {
     implementation timeDependencies.yodatime
 
     // Tests
+    implementation testDependencies.idling
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito
     androidTestImplementation androidSupportDependencies.multidex

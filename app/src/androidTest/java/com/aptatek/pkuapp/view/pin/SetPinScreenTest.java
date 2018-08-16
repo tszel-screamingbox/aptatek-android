@@ -1,11 +1,15 @@
 package com.aptatek.pkuapp.view.pin;
 
+import android.support.test.espresso.IdlingRegistry;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.view.pin.set.SetPinHostActivity;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -24,6 +28,21 @@ public class SetPinScreenTest {
 
     @Rule
     public ActivityTestRule<SetPinHostActivity> activityRule = new ActivityTestRule<>(SetPinHostActivity.class);
+
+    private IdlingResource idlingResource;
+
+    @After
+    public void unregisterIdlingResource() {
+        if (idlingResource != null) {
+            IdlingRegistry.getInstance().unregister(idlingResource);
+        }
+    }
+
+    @Before
+    public void registerIdlingResource() {
+        idlingResource = activityRule.getActivity().getIdlingResource();
+        IdlingRegistry.getInstance().register(idlingResource);
+    }
 
     @Test
     public void testInitialView() {
@@ -49,10 +68,10 @@ public class SetPinScreenTest {
         onView(withId(R.id.messageTextView)).check(matches(not(isDisplayed())));
         // Enter the same pin
         enterPin();
-        sleep(3000);
+
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationGreen)));
-
+        sleep(2000);
         assertTrue(activityRule.getActivity().isFinishing());
     }
 
@@ -84,11 +103,11 @@ public class SetPinScreenTest {
         sleep(1000);
         // Confirm
         enterPin();
-        sleep(3000);
+
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(withText(R.string.confirm_pin_successful)));
         onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationGreen)));
-
+        sleep(2000);
         assertTrue(activityRule.getActivity().isFinishing());
     }
 
