@@ -71,13 +71,13 @@ public class ConfirmPinPresenterTest {
     @Test
     public void testValidPin() {
         when(authInteractor.setPinCode(validPin)).thenReturn(Completable.complete());
-        presenter.verifyPin(validPin, validPin);
+        presenter.verifyPin(validPin, validPin, null);
         verify(view).onValidPinTyped();
     }
 
     @Test
     public void testInvalidPin() {
-        presenter.verifyPin(validPin, invalidPin);
+        presenter.verifyPin(validPin, invalidPin, null);
         verify(view).onInvalidPinTyped();
     }
 
