@@ -52,6 +52,8 @@ public class ReminderNotificationFactoryImpl implements ReminderNotificationFact
                 .setContentText(resourceInteractor.getStringResource(R.string.reminder_notification_message))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setColor(resourceInteractor.getColorResource(R.color.applicationPink))
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setWhen(0)
                 .setAutoCancel(true)
                 .addAction(0,
                         resourceInteractor.getStringResource(R.string.reminder_notification_now),
