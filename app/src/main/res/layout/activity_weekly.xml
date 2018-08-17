@@ -108,6 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/font.size.normal"
+        android:textColor="@color/chartWeeklyBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Results are in mg/dl" />
 </android.support.constraint.ConstraintLayout>

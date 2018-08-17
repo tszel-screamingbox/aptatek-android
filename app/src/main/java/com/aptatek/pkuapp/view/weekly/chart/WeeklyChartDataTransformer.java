@@ -29,10 +29,9 @@ import ix.Ix;
 
 public class WeeklyChartDataTransformer {
 
-    private static final float SIZE_3_DIGITS = 0.75f;
-    private static final float SIZE_4_DIGITS = 0.9f;
+    private static final float SIZE = 1f;
     private static final int DAY_OFFSET = 1;
-    private static final float BUBBLE_ALPHA = 0.2f;
+    private static final float BUBBLE_ALPHA = 0.8f;
 
     private final ResourceInteractor resourceInteractor;
     private final PkuRangeInteractor pkuRangeInteractor;
@@ -66,20 +65,19 @@ public class WeeklyChartDataTransformer {
                 final @ColorRes int colorRes = ChartUtils.stateColor(state);
                 final @ColorInt int labelColor = resourceInteractor.getColorResource(colorRes);
                 final @ColorInt int bubbleColor = adjustAlpha(labelColor);
-                final float size = label.length() > 3 ? SIZE_4_DIGITS : SIZE_3_DIGITS;
 
                 return ChartEntryData.builder()
                         .setX(x)
                         .setY(y)
-                        .setSize(size)
+                        .setSize(SIZE)
                         .setLabel(label)
-                        .setLabelColor(labelColor)
+                        .setLabelColor(resourceInteractor.getColorResource(R.color.applicationWhite))
                         .setBubbleColor(bubbleColor)
                         .build();
             });
     }
 
-    public Single<BubbleDataSet> transformEntries(@NonNull List<ChartEntryData> chartEntries) {
+    public Single<BubbleDataSet> transformEntries(@NonNull final List<ChartEntryData> chartEntries) {
         return Single.fromCallable(() -> {
             final List<BubbleEntry> bubbleEntries = new ArrayList<>();
             final List<Integer> bubbleColors = new ArrayList<>();
@@ -96,7 +94,7 @@ public class WeeklyChartDataTransformer {
             final BubbleDataSet dataSet = new BubbleDataSet(bubbleEntries, null);
             dataSet.setColors(bubbleColors);
             dataSet.setValueTextColors(labelColors);
-            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_xmini));
+            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_xxmini));
             dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
             dataSet.setValueFormatter(new WeeklyChartValueFormatter());
 
