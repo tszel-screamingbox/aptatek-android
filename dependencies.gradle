@@ -184,7 +184,6 @@ ext {
             testrules      : "com.android.support.test:rules:${versions.runner}",
             espresso       : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
             espressocontrib: "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
-            idling         : "com.android.support.test.espresso:espresso-idling-resource:${versions.espresso}",
             hamcrest       : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
             orchestrator   : "com.android.support.test:orchestrator:${versions.orchestrator}"
     ]

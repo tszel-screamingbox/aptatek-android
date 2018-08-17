@@ -2,18 +2,15 @@ package com.aptatek.pkuapp.view.pin.set.confirm;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.test.espresso.IdlingResource;
 import android.view.View;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.data.PinCode;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
 import com.aptatek.pkuapp.view.base.BaseActivity;
-import com.aptatek.pkuapp.view.base.idle.SimpleIdlingResource;
 import com.aptatek.pkuapp.view.fingerprint.FingerprintActivity;
 import com.aptatek.pkuapp.view.main.MainActivity;
 import com.aptatek.pkuapp.view.pin.base.BasePinFragment;
-import com.aptatek.pkuapp.view.pin.set.SetPinHostActivity;
 
 import javax.inject.Inject;
 
@@ -60,8 +57,7 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
 
     @Override
     protected void finishedTyping(final PinCode pinCode) {
-        final IdlingResource idlingResource = ((SetPinHostActivity) getBaseActivity()).idlingResource;
-        presenter.verifyPin(new PinCode(pinBytes), pinCode, (SimpleIdlingResource) idlingResource);
+        presenter.verifyPin(new PinCode(pinBytes), pinCode);
     }
 
     @Override
@@ -75,7 +71,7 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setText(R.string.confirm_pin_successful);
         messageTextView.setTextColor(getResources().getColor(R.color.applicationGreen));
-        fillCircle(R.drawable.pin_circle_filled_green,  presenter::navigateForward, DELAY);
+        innerFillCircle(PIN_LENGTH, R.drawable.pin_circle_filled_green);
     }
 
     @Override
