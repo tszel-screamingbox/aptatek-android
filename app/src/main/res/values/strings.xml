@@ -207,7 +207,7 @@
         <item> </item>
     </string-array>
     <string name="weekly.subtitle">Week of %s</string>
-    <string name="weekly.subtitle.dateformat">MMMM dd\'%s\' yyyy</string>
+    <string name="weekly.subtitle.dateformat">MMMM d\'%s\' yyyy</string>
     <string name="weekly.suffix.dayofmonth.first">st</string>
     <string name="weekly.suffix.dayofmonth.second">nd</string>
     <string name="weekly.suffix.dayofmonth.third">rd</string>
