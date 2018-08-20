@@ -19,5 +19,7 @@ public interface ReminderSettingsView extends MvpView {
 
     void modifyReminder(@NonNull List<ReminderSettingsAdapterItem> data);
 
+    void showTimePickerDialog(@NonNull ReminderSettingsAdapterItem item);
+
     void showAlreadyHasReminderError();
 }
