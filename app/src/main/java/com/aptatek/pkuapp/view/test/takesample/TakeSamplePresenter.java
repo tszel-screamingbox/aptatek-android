@@ -54,8 +54,8 @@ public class TakeSamplePresenter extends TestBasePresenter<TakeSampleView> {
             final Uri uriForRawFile = resourceInteractor.getUriForRawFile(showAdult ? R.raw.big_buck_bunny : R.raw.big_buck_bunny);
             view.showVideoThumbnail(videoThumbnailInteractor.createThumbnailForRawVideo(uriForRawFile));
             view.loadVideo(uriForRawFile);
-            view.showAgeSwitcherText(resourceInteractor.getStringResource(R.string.test_takesample_age_switch,
-                    resourceInteractor.getStringResource(showAdult ? R.string.test_takesample_age_child : R.string.test_takesample_age_adult)));
+            view.showAgeSwitcherText(
+                resourceInteractor.getStringResource(showAdult ? R.string.test_takesmaple_ageswitch_adult : R.string.test_takesmaple_ageswitch_infant));
         });
     }
 
