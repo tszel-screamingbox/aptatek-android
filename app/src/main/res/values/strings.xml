@@ -67,7 +67,7 @@
     <string name="rangeinfo.hight">High</string>
     <string name="rangeinfo.low">Low</string>
     <string name="rangeinfo.low.value.prefix">under</string>
-    <string name="rangeinfo.message">To stay healthy your blood levels of phenylalanine should remain within these ranges</string>
+    <string name="rangeinfo.message">For better health, blood levels of phenylalanine should stay within the lower ranges</string>
     <string name="rangeinfo.normal">Normal</string>
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
     <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
