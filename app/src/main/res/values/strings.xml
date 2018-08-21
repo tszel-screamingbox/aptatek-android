@@ -43,7 +43,7 @@
     <string name="parental.verification.success.title">Thank you!</string>
     <string name="parental.verification.tryagain">Try Again</string>
     <string name="parental.welcome.age.disclaimer">Regulations in the U.S. and other territories require us to verify that users are at least 13 years old before using this application; we respect your privacy and this information is not stored.</string>
-    <string name="parental.welcome.birthday.format">dd/MM/yyyy</string>
+    <string name="parental.welcome.birthday.format">MM/dd/yyyy</string>
     <string name="parental.welcome.description">We need to verify your age before you would start</string>
     <string name="parental.welcome.enter.birthday">Enter your birthdate</string>
     <string name="parental.welcome.how.old.are.you">How old are you?</string>
