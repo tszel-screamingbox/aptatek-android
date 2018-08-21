@@ -15,6 +15,7 @@ import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.ActivityComponent;
 import com.aptatek.pkuapp.injection.module.chart.ChartModule;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
+import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.view.base.BaseActivity;
 import com.aptatek.pkuapp.view.main.adapter.ChartAdapter;
 import com.aptatek.pkuapp.view.main.adapter.ChartVM;
@@ -32,6 +33,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity<MainActivityView, MainActivityPresenter> implements MainActivityView, DiscreteScrollView.ScrollStateChangeListener {
 
@@ -83,6 +85,13 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.checkRunningTest();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -93,7 +102,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new RangeInfoModule(), new ChartModule()).inject(this);
+        activityComponent.plus(new TestModule(), new RangeInfoModule(), new ChartModule())
+                .inject(this);
     }
 
     @NonNull
@@ -138,7 +148,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.newTestButton)
     public void onNewTestButtonClicked() {
-        launchActivity(TestActivity.createStarter(this), false, Animation.FADE);
+        presenter.startNewTest();
     }
 
     @OnClick(R.id.settingsButton)
@@ -190,5 +200,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @Override
     public void setMeasureList(final List<DailyResultAdapterItem> data) {
         dailyResultsAdapter.setData(data);
+    }
+
+    @Override
+    public void navigateToTestScreen() {
+        launchActivity(TestActivity.createStarter(this), false, Animation.FADE);
     }
 }

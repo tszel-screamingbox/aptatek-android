@@ -55,7 +55,7 @@ public class TakeSamplePresenter extends TestBasePresenter<TakeSampleView> {
             view.showVideoThumbnail(videoThumbnailInteractor.createThumbnailForRawVideo(uriForRawFile));
             view.loadVideo(uriForRawFile);
             view.showAgeSwitcherText(
-                resourceInteractor.getStringResource(showAdult ? R.string.test_takesmaple_ageswitch_adult : R.string.test_takesmaple_ageswitch_infant));
+                resourceInteractor.getStringResource(showAdult ? R.string.test_takesample_ageswitch_adult : R.string.test_takesample_ageswitch_infant));
         });
     }
 

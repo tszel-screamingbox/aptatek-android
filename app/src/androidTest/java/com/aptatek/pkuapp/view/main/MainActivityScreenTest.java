@@ -57,8 +57,9 @@ public class MainActivityScreenTest {
     }
 
     @Test
-    public void testShowChart() {
+    public void testShowChart() throws Exception {
         onView(withId(R.id.playIcon)).perform(ViewActions.click());
+        Thread.sleep(1000L);
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
         onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
     }

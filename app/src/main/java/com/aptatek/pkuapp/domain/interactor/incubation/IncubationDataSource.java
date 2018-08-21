@@ -2,12 +2,14 @@ package com.aptatek.pkuapp.domain.interactor.incubation;
 
 public interface IncubationDataSource {
 
-    boolean hasRunningIncubation();
+    IncubationStatus getIncubationStatus();
 
     long getIncubationStart();
 
     void startIncubation();
 
-    void stopIncubation();
+    void resetIncubation();
+
+    void skipIncubation();
 
 }

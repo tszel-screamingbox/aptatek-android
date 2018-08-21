@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.device.PreferenceManager;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingDataSource;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
 import com.aptatek.pkuapp.util.Constants;
 
 public class WettingDataSourceImpl implements WettingDataSource {
@@ -15,10 +16,16 @@ public class WettingDataSourceImpl implements WettingDataSource {
     }
 
     @Override
-    public boolean hasRunningWetting() {
+    public WettingStatus getWettingStatus() {
         final long start = preferenceManager.getWettingStart();
-        return start > 0L
-                && System.currentTimeMillis() - start <= Constants.DEFAULT_WETTING_PERIOD;
+
+        if (start <= 0L) {
+            return WettingStatus.NOT_STARTED;
+        } else if (System.currentTimeMillis() - start <= Constants.DEFAULT_WETTING_PERIOD) {
+            return WettingStatus.RUNNING;
+        } else {
+            return WettingStatus.FINISHED;
+        }
     }
 
     @Override
@@ -32,7 +39,7 @@ public class WettingDataSourceImpl implements WettingDataSource {
     }
 
     @Override
-    public void stopWetting() {
+    public void resetWetting() {
         preferenceManager.setWettingStart(0L);
     }
 }

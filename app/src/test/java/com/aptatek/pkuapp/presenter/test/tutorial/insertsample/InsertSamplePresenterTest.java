@@ -1,6 +1,8 @@
 package com.aptatek.pkuapp.presenter.test.tutorial.insertsample;
 
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.pkuapp.view.test.base.TestFragmentBaseView;
 import com.aptatek.pkuapp.view.test.tutorial.insertsample.InsertSamplePresenter;
@@ -10,6 +12,8 @@ import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import io.reactivex.Single;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -25,6 +29,9 @@ public class InsertSamplePresenterTest {
     SampleWettingInteractor sampleWettingInteractor;
 
     @Mock
+    IncubationInteractor incubationInteractor;
+
+    @Mock
     TestFragmentBaseView view;
 
     private InsertSamplePresenter presenter;
@@ -34,8 +41,9 @@ public class InsertSamplePresenterTest {
         MockitoAnnotations.initMocks(this);
 
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt())).thenReturn(TEST_TEXT);
+        when(incubationInteractor.getIncubationStatus()).thenReturn(Single.just(IncubationStatus.NOT_STARTED));
 
-        presenter = new InsertSamplePresenter(resourceInteractor, sampleWettingInteractor);
+        presenter = new InsertSamplePresenter(resourceInteractor, sampleWettingInteractor, incubationInteractor);
         presenter.attachView(view);
     }
 

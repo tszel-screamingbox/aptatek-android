@@ -3,6 +3,7 @@ package com.aptatek.pkuapp.view.test.samplewetting;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationNotRunningError;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
 import com.aptatek.pkuapp.domain.notifications.CountdownNotificationFactory;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.pkuapp.domain.model.Countdown;
@@ -41,7 +42,8 @@ public class SampleWettingReminderService extends BaseReminderService {
 
     @Override
     protected Single<Boolean> shouldStart() {
-        return sampleWettingInteractor.hasRunningWetting();
+        return sampleWettingInteractor.getWettingStatus()
+                .map(wettingStatus -> WettingStatus.RUNNING == wettingStatus);
     }
 
     @Override

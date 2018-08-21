@@ -4,6 +4,7 @@ import android.support.v4.app.NotificationManagerCompat;
 
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationNotRunningError;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.notifications.CountdownNotificationFactory;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.injection.component.test.TestServiceComponent;
@@ -41,7 +42,8 @@ public class IncubationReminderService extends BaseReminderService {
 
     @Override
     protected Single<Boolean> shouldStart() {
-        return incubationInteractor.hasRunningIncubation();
+        return incubationInteractor.getIncubationStatus()
+                .map(incubationStatus -> IncubationStatus.RUNNING == incubationStatus);
     }
 
     @Override

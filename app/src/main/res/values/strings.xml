@@ -152,8 +152,8 @@
     <string name="test.samplewetting.notification.inprogress.textformat">Remaining time is %s</string>
     <string name="test.samplewetting.notification.inprogress.title">Sample wetting in progress</string>
     <string name="test.samplewetting.title">Sample wetting</string>
-    <string name="test.takesmaple.ageswitch.adult">I\'m taking a fingerstick blood sample</string>
-    <string name="test.takesmaple.ageswitch.infant">I\'m taking a sample for an infant</string>
+    <string name="test.takesample.ageswitch.adult">I\'m taking a fingerstick blood sample</string>
+    <string name="test.takesample.ageswitch.infant">I\'m taking a sample for an infant</string>
     <string name="test.takesample.button.start">Start timer (30min)</string>
     <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
     <string name="test.takesample.title">Take sample</string>

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.device.PreferenceManager;
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationDataSource;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.util.Constants;
 
 public class IncubationDataSourceImpl implements IncubationDataSource {
@@ -15,10 +16,16 @@ public class IncubationDataSourceImpl implements IncubationDataSource {
     }
 
     @Override
-    public boolean hasRunningIncubation() {
+    public IncubationStatus getIncubationStatus() {
         final long incubationStart = preferenceManager.getIncubationStart();
-        return incubationStart > 0L
-                && System.currentTimeMillis() - incubationStart <= Constants.DEFAULT_INCUBATION_PERIOD;
+
+        if (incubationStart <= 0L) {
+            return IncubationStatus.NOT_STARTED;
+        } else if(System.currentTimeMillis() - incubationStart <= Constants.DEFAULT_INCUBATION_PERIOD) {
+            return IncubationStatus.RUNNING;
+        } else {
+            return IncubationStatus.FINISHED;
+        }
     }
 
     @Override
@@ -32,7 +39,12 @@ public class IncubationDataSourceImpl implements IncubationDataSource {
     }
 
     @Override
-    public void stopIncubation() {
+    public void resetIncubation() {
         preferenceManager.setIncubationStart(0L);
+    }
+
+    @Override
+    public void skipIncubation() {
+        preferenceManager.setIncubationStart(System.currentTimeMillis() - Constants.DEFAULT_INCUBATION_PERIOD);
     }
 }

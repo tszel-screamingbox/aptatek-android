@@ -2,7 +2,9 @@ package com.aptatek.pkuapp.presenter.rangeinfo;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
 import com.aptatek.pkuapp.util.Constants;
 import com.aptatek.pkuapp.view.rangeinfo.PkuValueFormatter;
@@ -35,10 +37,13 @@ public class RangeInfoPresenterTest {
     private RangeInfoPresenter presenter;
 
     @Mock
-    PkuRangeInteractor rangeInteractor;
-
+    private PkuRangeInteractor rangeInteractor;
     @Mock
-    PkuValueFormatter valueFormatter;
+    private PkuValueFormatter valueFormatter;
+    @Mock
+    private IncubationInteractor incubationInteractor;
+    @Mock
+    private SampleWettingInteractor sampleWettingInteractor;
 
     @Mock
     RangeInfoView view;
@@ -70,7 +75,7 @@ public class RangeInfoPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        presenter = new RangeInfoPresenter(rangeInteractor, valueFormatter);
+        presenter = new RangeInfoPresenter(rangeInteractor, incubationInteractor, sampleWettingInteractor, valueFormatter);
         presenter.attachView(view);
     }
 

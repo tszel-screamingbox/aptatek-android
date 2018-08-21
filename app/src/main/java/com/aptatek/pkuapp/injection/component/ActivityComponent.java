@@ -3,6 +3,7 @@ package com.aptatek.pkuapp.injection.component;
 import android.content.Context;
 
 import com.aptatek.pkuapp.injection.component.chart.ChartActivityComponent;
+import com.aptatek.pkuapp.injection.component.main.MainActivityComponent;
 import com.aptatek.pkuapp.injection.component.rangeinfo.RangeInfoActivityComponent;
 import com.aptatek.pkuapp.injection.component.test.TestActivityComponent;
 import com.aptatek.pkuapp.injection.module.ActivityModule;
@@ -49,8 +50,10 @@ public interface ActivityComponent {
 
     TestActivityComponent plus(TestModule module);
 
-    RangeInfoActivityComponent plus(RangeInfoModule module);
+    RangeInfoActivityComponent plus(RangeInfoModule module, TestModule testModule);
 
     ChartActivityComponent plus(RangeInfoModule rangeInfoModule, ChartModule chartModule);
+
+    MainActivityComponent plus(TestModule testModule, RangeInfoModule rangeInfoModule, ChartModule chartModule);
 
 }

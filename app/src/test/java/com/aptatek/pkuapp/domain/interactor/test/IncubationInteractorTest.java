@@ -5,6 +5,7 @@ import com.aptatek.pkuapp.domain.interactor.incubation.IncubationDataSource;
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationError;
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationNotRunningError;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.util.Constants;
 
@@ -40,25 +41,25 @@ public class IncubationInteractorTest {
 
     @Test
     public void testHasRunningIncubationCallsDataSource() throws Exception {
-        incubationInteractor.hasRunningIncubation().test();
-        verify(incubationDataSource).hasRunningIncubation();
+        incubationInteractor.getIncubationStatus().test();
+        verify(incubationDataSource).getIncubationStatus();
     }
 
     @Test
-    public void testHasRunningIncubationReturnsProperValue() throws Exception {
-        final boolean testValue = true;
+    public void testGetIncubationStatusReturnsProperValue() throws Exception {
+        final IncubationStatus testValue = IncubationStatus.RUNNING;
 
-        when(incubationDataSource.hasRunningIncubation()).thenReturn(testValue);
-        final TestObserver<Boolean> test = incubationInteractor.hasRunningIncubation().test();
+        when(incubationDataSource.getIncubationStatus()).thenReturn(testValue);
+        final TestObserver<IncubationStatus> test = incubationInteractor.getIncubationStatus().test();
         test.assertNoErrors();
         test.assertValue(testValue);
     }
 
     @Test
-    public void testRunningIncubationEmitsErrorOnException() throws Exception {
+    public void testGetIncubationStatusEmitsErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
-        when(incubationDataSource.hasRunningIncubation()).thenThrow(testError);
-        final TestObserver<Boolean> test = incubationInteractor.hasRunningIncubation().test();
+        when(incubationDataSource.getIncubationStatus()).thenThrow(testError);
+        final TestObserver<IncubationStatus> test = incubationInteractor.getIncubationStatus().test();
         test.assertError(testError);
     }
 
@@ -86,13 +87,13 @@ public class IncubationInteractorTest {
 
     @Test
     public void testStopIncubationCallsDataSource() throws Exception {
-        incubationInteractor.stopIncubation().test();
-        verify(incubationDataSource).stopIncubation();
+        incubationInteractor.resetIncubation().test();
+        verify(incubationDataSource).resetIncubation();
     }
 
     @Test
     public void testStopIncubationTerminatesOnSuccess() throws Exception {
-        final TestObserver<Void> test = incubationInteractor.stopIncubation().test();
+        final TestObserver<Void> test = incubationInteractor.resetIncubation().test();
         test.assertNoErrors();
         test.assertComplete();
     }
@@ -100,14 +101,14 @@ public class IncubationInteractorTest {
     @Test
     public void testStopIncubationTerminatesWithErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
-        doThrow(testError).when(incubationDataSource).stopIncubation();
-        final TestObserver<Void> test = incubationInteractor.stopIncubation().test();
+        doThrow(testError).when(incubationDataSource).resetIncubation();
+        final TestObserver<Void> test = incubationInteractor.resetIncubation().test();
         test.assertError(testError);
     }
 
     @Test
     public void testCountdownCallsDataSourceMethods() throws Exception {
-        when(incubationDataSource.hasRunningIncubation()).thenReturn(true);
+        when(incubationDataSource.getIncubationStatus()).thenReturn(IncubationStatus.RUNNING);
         doReturn(System.currentTimeMillis() - 1000L).when(incubationDataSource).getIncubationStart();
 
         final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
@@ -116,13 +117,13 @@ public class IncubationInteractorTest {
 
         Thread.sleep(1000L);
 
-        verify(incubationDataSource).hasRunningIncubation();
+        verify(incubationDataSource).getIncubationStatus();
         verify(incubationDataSource).getIncubationStart();
     }
 
     @Test
     public void testCountdownTerminatesWhenNoIncubationIsRunning() throws Exception {
-        when(incubationDataSource.hasRunningIncubation()).thenReturn(false);
+        when(incubationDataSource.getIncubationStatus()).thenReturn(IncubationStatus.NOT_STARTED);
 
         final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
         test.assertError(IncubationNotRunningError.class);
@@ -131,7 +132,7 @@ public class IncubationInteractorTest {
     @Test
     public void testCountdownTerminatesOnIncubationFinish() throws Exception {
         final String testValue = "test";
-        when(incubationDataSource.hasRunningIncubation()).thenReturn(true);
+        when(incubationDataSource.getIncubationStatus()).thenReturn(IncubationStatus.RUNNING);
         doReturn(System.currentTimeMillis() - Constants.DEFAULT_INCUBATION_PERIOD + 200L).when(incubationDataSource).getIncubationStart();
         doReturn(testValue).when(countdownTimeFormatter).getFormattedRemaining(ArgumentMatchers.anyLong());
 
@@ -145,7 +146,7 @@ public class IncubationInteractorTest {
     @Test
     public void testCountdownTerminatesOnHasRunningIncubationException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
-        when(incubationDataSource.hasRunningIncubation()).thenThrow(testError);
+        when(incubationDataSource.getIncubationStatus()).thenThrow(testError);
 
         final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();
         test.assertError(IncubationError.class);
@@ -154,7 +155,7 @@ public class IncubationInteractorTest {
     @Test
     public void testCountdownTerminatesOnGetStartException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
-        when(incubationDataSource.hasRunningIncubation()).thenReturn(true);
+        when(incubationDataSource.getIncubationStatus()).thenReturn(IncubationStatus.RUNNING);
         when(incubationDataSource.getIncubationStart()).thenThrow(testError);
 
         final TestSubscriber<Countdown> test = incubationInteractor.getIncubationCountdown().test();

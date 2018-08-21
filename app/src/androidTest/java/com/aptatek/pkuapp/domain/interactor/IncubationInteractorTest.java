@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.injection.component.DaggerAndroidTestComponent;
 import com.aptatek.pkuapp.injection.module.ApplicationModule;
@@ -39,22 +40,22 @@ public class IncubationInteractorTest {
 
     @After
     public void cleanUp() throws Exception {
-        interactor.stopIncubation().test();
+        interactor.resetIncubation().test();
     }
 
     @Test
     public void testHasRunning() throws Exception {
         interactor.startIncubation().test();
-        final TestObserver<Boolean> test = interactor.hasRunningIncubation().test();
-        test.assertValue(true);
+        final TestObserver<IncubationStatus> test = interactor.getIncubationStatus().test();
+        test.assertValue(IncubationStatus.RUNNING);
         test.assertComplete();
     }
 
     @Test
     public void testHasRunningExpired() throws Exception {
-        interactor.stopIncubation().test();
-        final TestObserver<Boolean> test = interactor.hasRunningIncubation().test();
-        test.assertValue(false);
+        interactor.resetIncubation().test();
+        final TestObserver<IncubationStatus> test = interactor.getIncubationStatus().test();
+        test.assertValue(IncubationStatus.NOT_STARTED);
         test.assertComplete();
     }
 

@@ -7,7 +7,11 @@ import android.util.Pair;
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.cube.CubeInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.util.ChartUtils;
 import com.aptatek.pkuapp.view.main.adapter.ChartVM;
@@ -20,6 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -31,6 +36,8 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     private final ResourceInteractor resourceInteractor;
     private final PkuRangeInteractor rangeInteractor;
     private final DailyChartFormatter dailyChartFormatter;
+    private final IncubationInteractor incubationInteractor;
+    private final SampleWettingInteractor sampleWettingInteractor;
 
     private CompositeDisposable disposables;
 
@@ -38,11 +45,15 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     MainActivityPresenter(final CubeInteractor cubeInteractor,
                           final ResourceInteractor resourceInteractor,
                           final PkuRangeInteractor rangeInteractor,
-                          final DailyChartFormatter dailyChartFormatter) {
+                          final DailyChartFormatter dailyChartFormatter,
+                          final IncubationInteractor incubationInteractor,
+                          final SampleWettingInteractor sampleWettingInteractor) {
         this.cubeInteractor = cubeInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
         this.dailyChartFormatter = dailyChartFormatter;
+        this.incubationInteractor = incubationInteractor;
+        this.sampleWettingInteractor = sampleWettingInteractor;
     }
 
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts
@@ -121,6 +132,27 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         }
 
         super.detachView();
+    }
+
+    public void checkRunningTest() {
+        disposables.add(
+                Single.zip(
+                    incubationInteractor.getIncubationStatus(),
+                    sampleWettingInteractor.getWettingStatus(),
+                    (incubationStatus, sampleWettingStatus) -> incubationStatus != IncubationStatus.NOT_STARTED || sampleWettingStatus != WettingStatus.NOT_STARTED
+                )
+                .filter(shouldNavigate -> shouldNavigate)
+                .subscribe(ignored ->
+                    ifViewAttached(MainActivityView::navigateToTestScreen)
+                )
+        );
+    }
+
+    public void startNewTest() {
+        disposables.add(sampleWettingInteractor.resetWetting()
+            .andThen(incubationInteractor.resetIncubation())
+            .subscribe(() -> ifViewAttached(MainActivityView::navigateToTestScreen))
+        );
     }
 
     private String formatTitle(final ChartVM chartVM) {

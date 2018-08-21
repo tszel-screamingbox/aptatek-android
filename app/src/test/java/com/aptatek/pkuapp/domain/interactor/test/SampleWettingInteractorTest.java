@@ -5,6 +5,7 @@ import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteracto
 import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingDataSource;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingError;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingNotRunningError;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.util.Constants;
 
@@ -40,17 +41,17 @@ public class SampleWettingInteractorTest {
     }
 
     @Test
-    public void testHasRunningWettingCallsDataSource() throws Exception {
-        interactor.hasRunningWetting().test();
-        verify(wettingDataSource).hasRunningWetting();
+    public void testGetWettingStatusCallsDataSource() throws Exception {
+        interactor.getWettingStatus().test();
+        verify(wettingDataSource).getWettingStatus();
     }
 
     @Test
-    public void testHasRunningWettingReturnsProperValue() throws Exception {
-        final boolean testValue = true;
+    public void testGetWettingStatusReturnsProperValue() throws Exception {
+        final WettingStatus testValue = WettingStatus.RUNNING;
 
-        when(wettingDataSource.hasRunningWetting()).thenReturn(testValue);
-        final TestObserver<Boolean> test = interactor.hasRunningWetting().test();
+        when(wettingDataSource.getWettingStatus()).thenReturn(testValue);
+        final TestObserver<WettingStatus> test = interactor.getWettingStatus().test();
         test.assertNoErrors();
         test.assertValue(testValue);
     }
@@ -58,8 +59,8 @@ public class SampleWettingInteractorTest {
     @Test
     public void testRunningWettingEmitsErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
-        when(wettingDataSource.hasRunningWetting()).thenThrow(testError);
-        final TestObserver<Boolean> test = interactor.hasRunningWetting().test();
+        when(wettingDataSource.getWettingStatus()).thenThrow(testError);
+        final TestObserver<WettingStatus> test = interactor.getWettingStatus().test();
         test.assertError(testError);
     }
 
@@ -87,13 +88,13 @@ public class SampleWettingInteractorTest {
 
     @Test
     public void testStopWettingCallsDataSource() throws Exception {
-        interactor.stopWetting().test();
-        verify(wettingDataSource).stopWetting();
+        interactor.resetWetting().test();
+        verify(wettingDataSource).resetWetting();
     }
 
     @Test
     public void testStopWettingTerminatesOnSuccess() throws Exception {
-        final TestObserver<Void> test = interactor.stopWetting().test();
+        final TestObserver<Void> test = interactor.resetWetting().test();
         test.assertNoErrors();
         test.assertComplete();
     }
@@ -101,14 +102,14 @@ public class SampleWettingInteractorTest {
     @Test
     public void testStopWettingTerminatesWithErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
-        doThrow(testError).when(wettingDataSource).stopWetting();
-        final TestObserver<Void> test = interactor.stopWetting().test();
+        doThrow(testError).when(wettingDataSource).resetWetting();
+        final TestObserver<Void> test = interactor.resetWetting().test();
         test.assertError(testError);
     }
 
     @Test
     public void testCountdownCallsDataSourceMethods() throws Exception {
-        when(wettingDataSource.hasRunningWetting()).thenReturn(true);
+        when(wettingDataSource.getWettingStatus()).thenReturn(WettingStatus.RUNNING);
         when(wettingDataSource.getWettingStart()).thenReturn(System.currentTimeMillis() - 1000L);
 
         final TestSubscriber<Countdown> test = interactor.getWettingCountdown().test();
@@ -117,13 +118,13 @@ public class SampleWettingInteractorTest {
 
         Thread.sleep(1000L);
 
-        verify(wettingDataSource).hasRunningWetting();
+        verify(wettingDataSource).getWettingStatus();
         verify(wettingDataSource).getWettingStart();
     }
 
     @Test
     public void testCountdownTerminatesWhenNoWettingIsRunning() throws Exception {
-        when(wettingDataSource.hasRunningWetting()).thenReturn(false);
+        when(wettingDataSource.getWettingStatus()).thenReturn(WettingStatus.NOT_STARTED);
 
         final TestSubscriber<Countdown> test = interactor.getWettingCountdown().test();
         test.assertError(WettingNotRunningError.class);
@@ -132,7 +133,7 @@ public class SampleWettingInteractorTest {
     @Test
     public void testCountdownTerminatesOnWettingFinish() throws Exception {
         final String testValue = "test";
-        when(wettingDataSource.hasRunningWetting()).thenReturn(true);
+        when(wettingDataSource.getWettingStatus()).thenReturn(WettingStatus.RUNNING);
         when(wettingDataSource.getWettingStart()).thenReturn(System.currentTimeMillis() - Constants.DEFAULT_WETTING_PERIOD + 200L);
         doReturn(testValue).when(timeFormatter).getFormattedRemaining(ArgumentMatchers.anyLong());
 
@@ -144,9 +145,9 @@ public class SampleWettingInteractorTest {
     }
 
     @Test
-    public void testCountdownTerminatesOnHasRunningWettingException() throws Exception {
+    public void testCountdownTerminatesOnGetWettingStatusException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
-        when(wettingDataSource.hasRunningWetting()).thenThrow(testError);
+        when(wettingDataSource.getWettingStatus()).thenThrow(testError);
 
         final TestSubscriber<Countdown> test = interactor.getWettingCountdown().test();
         test.assertError(WettingError.class);
@@ -155,7 +156,7 @@ public class SampleWettingInteractorTest {
     @Test
     public void testCountdownTerminatesOnGetStartException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
-        when(wettingDataSource.hasRunningWetting()).thenReturn(true);
+        when(wettingDataSource.getWettingStatus()).thenReturn(WettingStatus.RUNNING);
         when(wettingDataSource.getWettingStart()).thenThrow(testError);
 
         final TestSubscriber<Countdown> test = interactor.getWettingCountdown().test();
@@ -172,7 +173,7 @@ public class SampleWettingInteractorTest {
     @Test
     public void testProgressUpdatesOnWettingTick() throws Exception {
         final String testValue = "test";
-        when(wettingDataSource.hasRunningWetting()).thenReturn(true);
+        when(wettingDataSource.getWettingStatus()).thenReturn(WettingStatus.RUNNING);
         when(wettingDataSource.getWettingStart()).thenReturn(System.currentTimeMillis() - (Constants.DEFAULT_WETTING_PERIOD + 200L));
         when(timeFormatter.getFormattedRemaining(ArgumentMatchers.anyLong())).thenReturn(testValue);
 

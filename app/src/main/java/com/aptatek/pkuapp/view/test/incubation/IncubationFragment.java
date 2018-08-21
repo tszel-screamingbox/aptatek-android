@@ -77,8 +77,7 @@ public class IncubationFragment extends TestBaseFragment<IncubationView, Incubat
     @Override
     public void onDecision(@NonNull final AlertDialogDecisions decision) {
         if (decision == AlertDialogDecisions.POSITIVE) {
-            presenter.stopIncubation();
-            showScreen(TestScreens.INSERT_CASSETTE);
+            presenter.skipIncubation();
         }
     }
 }

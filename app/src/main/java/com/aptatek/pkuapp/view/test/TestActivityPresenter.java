@@ -3,7 +3,10 @@ package com.aptatek.pkuapp.view.test;
 import android.util.Pair;
 
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
+import com.github.mikephil.charting.interfaces.datasets.IScatterDataSet;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
@@ -30,17 +33,22 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
     public void showProperScreen(final boolean otherScreenDisplayed) {
         disposable =
                 Single.zip(
-                    incubationInteractor.hasRunningIncubation(),
-                    sampleWettingInteractor.hasRunningWetting(),
+                    incubationInteractor.getIncubationStatus(),
+                    sampleWettingInteractor.getWettingStatus(),
                     Pair::new)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     value ->
                         ifViewAttached(attachedView -> {
-                            if (value.second) {
+                            if (value.second == WettingStatus.FINISHED) {
                                 attachedView.showScreen(TestScreens.SAMPLE_WETTING);
-                            } else if (value.first) {
+                                attachedView.navigateForward();
+                            } else if (value.second == WettingStatus.RUNNING) {
+                                attachedView.showScreen(TestScreens.SAMPLE_WETTING);
+                            } else if (value.first == IncubationStatus.RUNNING) {
                                 attachedView.showScreen(TestScreens.INCUBATION);
+                            } else if (value.first == IncubationStatus.FINISHED) {
+                                attachedView.showScreen(TestScreens.INSERT_CASSETTE);
                             } else if (!otherScreenDisplayed) {
                                 attachedView.showScreen(TestScreens.TAKE_SAMPLE);
                             }

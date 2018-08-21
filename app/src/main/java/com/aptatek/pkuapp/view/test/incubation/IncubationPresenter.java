@@ -7,10 +7,12 @@ import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.domain.model.AlertDialogModel;
 import com.aptatek.pkuapp.view.test.TestActivityView;
+import com.aptatek.pkuapp.view.test.TestScreens;
 import com.aptatek.pkuapp.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -56,7 +58,7 @@ public class IncubationPresenter extends TestBasePresenter<IncubationView> {
     }
 
     public void stopIncubation() {
-        disposables.add(incubationInteractor.stopIncubation()
+        disposables.add(incubationInteractor.resetIncubation()
                 .subscribe());
     }
 
@@ -91,5 +93,12 @@ public class IncubationPresenter extends TestBasePresenter<IncubationView> {
         }
 
         super.detachView();
+    }
+
+    public void skipIncubation() {
+        disposables.add(incubationInteractor.skipIncubation()
+                .andThen(Completable.fromAction(() ->
+                    ifViewAttached(attachedView -> attachedView.showScreen(TestScreens.INSERT_CASSETTE))))
+                .subscribe());
     }
 }
