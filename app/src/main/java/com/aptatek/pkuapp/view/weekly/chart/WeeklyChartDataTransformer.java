@@ -94,7 +94,7 @@ public class WeeklyChartDataTransformer {
             final BubbleDataSet dataSet = new BubbleDataSet(bubbleEntries, null);
             dataSet.setColors(bubbleColors);
             dataSet.setValueTextColors(labelColors);
-            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_xxmini));
+            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_xmini));
             dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
             dataSet.setValueFormatter(new WeeklyChartValueFormatter());
 
