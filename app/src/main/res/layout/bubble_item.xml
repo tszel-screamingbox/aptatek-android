@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bubbleLayout"
-    android:layout_width="@dimen/general.distance.xlarge"
+    android:layout_width="@dimen/general.distance.xxlarge"
     android:layout_height="@dimen/graph.height"
     android:gravity="center_horizontal">
 
@@ -23,6 +23,7 @@
             android:gravity="center"
             android:lines="2"
             android:minLines="2"
+
             android:padding="@dimen/general.distance.xxxsmall"
             android:textColor="@color/applicationWhite"
             android:textSize="@dimen/font.size.regular"

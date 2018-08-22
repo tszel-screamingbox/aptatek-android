@@ -66,8 +66,8 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
         bubbleHeight = bubbleContainerLayout.getLayoutParams().height;
         viewWidth = itemLayout.getLayoutParams().width;
         // need a margin, because of the zooming animation
-        marginY = bubbleHeight * 0.5f;
-        viewHeight = itemLayout.getLayoutParams().height - bubbleHeight * 2f;
+        marginY = bubbleHeight * (AnimationHelper.SCALE_MAX - AnimationHelper.SCALE_MIN) / 2;
+        viewHeight = itemLayout.getLayoutParams().height - bubbleHeight * AnimationHelper.SCALE_MAX;
         // get the middle of the cell
         middleX = viewWidth / 2;
         // calculate the X-coordinate of the bubble, taking care of the bubble width

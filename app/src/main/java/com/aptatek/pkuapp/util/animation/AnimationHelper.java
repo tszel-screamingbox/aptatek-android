@@ -7,8 +7,9 @@ import javax.inject.Inject;
 
 public final class AnimationHelper {
 
+    public static final float SCALE_MAX = 2.3f;
+    public static final float SCALE_MIN = 1f;
     private static final int DURATION_MILLISEC = 200;
-    private static final float SCALE_MIN = 1f;
 
 
     @Inject
@@ -16,7 +17,7 @@ public final class AnimationHelper {
     }
 
     public void zoomIn(final View view, final AnimationCallback callback) {
-        zoom(view, callback, SCALE_MIN * 2f);
+        zoom(view, callback, SCALE_MIN * SCALE_MAX);
     }
 
     public void zoomOut(final View view, final AnimationCallback callback) {
