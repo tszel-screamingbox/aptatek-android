@@ -40,6 +40,6 @@
             android:textColor="@color/applicationWhite"
             android:textSize="@dimen/font.size.mini"
             android:textStyle="bold"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

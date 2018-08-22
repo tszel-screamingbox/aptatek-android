@@ -17,7 +17,7 @@ public final class AnimationHelper {
     }
 
     public void zoomIn(final View view, final AnimationCallback callback) {
-        zoom(view, callback, SCALE_MIN * SCALE_MAX);
+        zoom(view, callback,  SCALE_MAX);
     }
 
     public void zoomOut(final View view, final AnimationCallback callback) {
