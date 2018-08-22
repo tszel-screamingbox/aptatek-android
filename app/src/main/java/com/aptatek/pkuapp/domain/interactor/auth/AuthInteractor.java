@@ -33,27 +33,26 @@ public class AuthInteractor {
     }
 
     public Completable setPinCode(final PinCode pinCode) {
-        return Completable.create(emitter -> {
+        return Completable.fromAction(() -> {
             try {
                 final String encryptedPin = keyStoreManager.encrypt(pinCode);
                 preferencesManager.setEncryptedPin(encryptedPin);
-                emitter.onComplete();
             } catch (final KeyStoreError error) {
                 Timber.e(error, "Failed to set pincode");
-                emitter.onError(error);
+                throw new AuthException("Error during decrytpion", error);
             }
         });
     }
 
     public Completable checkPinCode(final PinCode pinCode) {
-        return Completable.create(emitter -> {
+        return Completable.fromAction(() -> {
             try {
                 final PinCode storedPin = keyStoreManager.decrypt(preferencesManager.getEncryptedPin());
-                if (storedPin != null && storedPin.equals(pinCode)) {
-                    emitter.onComplete();
+                if (storedPin == null || !storedPin.equals(pinCode)) {
+                    throw new AuthException("Invalid pincode");
                 }
             } catch (final KeyStoreError keyStoreError) {
-                emitter.onError(keyStoreError);
+                throw new AuthException("Error during decrytpion", keyStoreError);
             }
         });
     }
