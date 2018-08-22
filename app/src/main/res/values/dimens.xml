@@ -37,7 +37,6 @@
     <dimen name="graph.bubble.size.small">15dp</dimen>
     <dimen name="graph.bubble.radius.small">40dp</dimen>
     <dimen name="graph.bubble.stroke.big">8dp</dimen>
-    <dimen name="graph.bubble.stroke">6dp</dimen>
     <dimen name="graph.bubble.stroke.small">4dp</dimen>
     <dimen name="graph.height">200dp</dimen>
 
