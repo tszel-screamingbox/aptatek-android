@@ -31,13 +31,14 @@ public class SampleWettingInteractor {
         wettingStatus.onNext(0);
     }
 
-    public Single<Boolean> hasRunningWetting() {
-        return Single.fromCallable(wettingDataSource::hasRunningWetting);
+    public Single<WettingStatus> getWettingStatus() {
+        return Single.fromCallable(wettingDataSource::getWettingStatus);
     }
 
     public Flowable<Countdown> getWettingCountdown() {
-        return hasRunningWetting()
+        return getWettingStatus()
                 .toFlowable()
+                .map(status -> status == WettingStatus.RUNNING)
                 .take(1)
                 .flatMap(value -> {
                     if (value) {
@@ -75,7 +76,7 @@ public class SampleWettingInteractor {
         return Completable.fromAction(wettingDataSource::startWetting);
     }
 
-    public Completable stopWetting() {
-        return Completable.fromAction(wettingDataSource::stopWetting);
+    public Completable resetWetting() {
+        return Completable.fromAction(wettingDataSource::resetWetting);
     }
 }

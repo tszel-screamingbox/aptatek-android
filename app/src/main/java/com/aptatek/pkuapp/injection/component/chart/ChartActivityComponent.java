@@ -11,8 +11,6 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {ActivityModule.class, RangeInfoModule.class, ChartModule.class})
 public interface ChartActivityComponent {
 
-    void inject(MainActivity mainActivity);
-
     void inject(WeeklyResultActivity activity);
 
 }

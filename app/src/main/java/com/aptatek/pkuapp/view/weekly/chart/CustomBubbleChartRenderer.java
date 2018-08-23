@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.text.TextPaint;
 
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.data.BubbleData;
@@ -22,7 +23,12 @@ import java.util.List;
 // The difference are in this implementation:
 // - in the drawDataSet method since we need custom bubble colors for each entry.
 // - drawHighlighted is empty since we don't need highlighting
+// - drawValues modified to render text properly positioned
 public class CustomBubbleChartRenderer extends BubbleChartRenderer {
+
+    private static final float BUBBLE_TEXT_PADDING_RATIO = 0.30f;
+    private static final float BUBBLE_TEXT_SIZE_STEP = 5f;
+    private static final String DEMO_TEXT_4_DIGITS = "9999";
 
     protected BubbleDataProvider mChart;
 
@@ -60,6 +66,13 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
         return entrySize * reference;
     }
 
+    private float getReferenceSize() {
+        // calculate the full width of 1 step on the x-axis
+        final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
+        final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
+        return Math.min(maxBubbleHeight, maxBubbleWidth);
+    }
+
     protected void drawDataSet(Canvas c, IBubbleDataSet dataSet) {
 
         Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
@@ -73,12 +86,7 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
 
         trans.pointValuesToPixel(sizeBuffer);
 
-        boolean normalizeSize = dataSet.isNormalizeSizeEnabled();
-
-        // calculate the full width of 1 step on the x-axis
-        final float maxBubbleWidth = Math.abs(sizeBuffer[2] - sizeBuffer[0]);
-        final float maxBubbleHeight = Math.abs(mViewPortHandler.contentBottom() - mViewPortHandler.contentTop());
-        final float referenceSize = Math.min(maxBubbleHeight, maxBubbleWidth);
+        final float referenceSize = getReferenceSize();
 
         for (int j = mXBounds.min; j <= mXBounds.range + mXBounds.min; j++) {
 
@@ -125,6 +133,7 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
         if (isDrawingValuesAllowed(mChart)) {
 
             final List<IBubbleDataSet> dataSets = bubbleData.getDataSets();
+            final float referenceSize = getReferenceSize();
 
             for (int i = 0; i < dataSets.size(); i++) {
 
@@ -135,7 +144,6 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
 
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
-                float lineHeight = Utils.calcTextHeight(mValuePaint, "1");
 
                 final float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
                 final float phaseY = mAnimator.getPhaseY();
@@ -167,8 +175,11 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                         continue;
 
                     BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
+                    final float shapeSize = getShapeSize(entry.getSize(), referenceSize);
+                    mValuePaint.setTextSize(findOptimalTextSize(shapeSize, DEMO_TEXT_4_DIGITS, mValuePaint.getTextSize()));
 
                     if (dataSet.isDrawValuesEnabled()) {
+                        final float lineHeight = Utils.calcTextHeight(mValuePaint, "9999");
                         drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
                                 y + (0.5f * lineHeight), valueTextColor);
                     }
@@ -190,6 +201,20 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                 MPPointF.recycleInstance(iconsOffset);
             }
         }
+    }
+
+    private float findOptimalTextSize(final float maxSize, final String text, final float currentTextSize) {
+        final TextPaint textPaint = new TextPaint(mValuePaint);
+        textPaint.setTextSize(currentTextSize);
+        final float measuredWidth = textPaint.measureText(text);
+
+        final float padding = maxSize * BUBBLE_TEXT_PADDING_RATIO;
+        if (measuredWidth > maxSize - padding) {
+            final float reducedTextSize = currentTextSize - BUBBLE_TEXT_SIZE_STEP;
+            return findOptimalTextSize(maxSize, text, reducedTextSize);
+        }
+
+        return currentTextSize;
     }
 
     @Override

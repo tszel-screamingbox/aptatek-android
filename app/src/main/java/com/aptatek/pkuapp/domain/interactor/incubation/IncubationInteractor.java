@@ -27,13 +27,14 @@ public class IncubationInteractor {
         this.timeFormatter = timeFormatter;
     }
 
-    public Single<Boolean> hasRunningIncubation() {
-        return Single.fromCallable(dataSource::hasRunningIncubation);
+    public Single<IncubationStatus> getIncubationStatus() {
+        return Single.fromCallable(dataSource::getIncubationStatus);
     }
 
     public Flowable<Countdown> getIncubationCountdown() {
-        return hasRunningIncubation()
+        return getIncubationStatus()
                 .toFlowable()
+                .map(incubationStatus -> incubationStatus == IncubationStatus.RUNNING)
                 .take(1)
                 .flatMap(value -> {
                     if (value) {
@@ -61,7 +62,11 @@ public class IncubationInteractor {
         return Completable.fromAction(dataSource::startIncubation);
     }
 
-    public Completable stopIncubation() {
-        return Completable.fromAction(dataSource::stopIncubation);
+    public Completable resetIncubation() {
+        return Completable.fromAction(dataSource::resetIncubation);
+    }
+
+    public Completable skipIncubation() {
+        return Completable.fromAction(dataSource::skipIncubation);
     }
 }

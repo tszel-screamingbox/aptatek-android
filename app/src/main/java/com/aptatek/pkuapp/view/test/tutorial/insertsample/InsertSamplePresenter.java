@@ -2,6 +2,7 @@ package com.aptatek.pkuapp.view.test.tutorial.insertsample;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.pkuapp.view.test.tutorial.BaseTutorialPresenter;
 
@@ -10,12 +11,15 @@ import javax.inject.Inject;
 public class InsertSamplePresenter extends BaseTutorialPresenter {
 
     private final SampleWettingInteractor sampleWettingInteractor;
+    private final IncubationInteractor incubationInteractor;
 
     @Inject
     public InsertSamplePresenter(final ResourceInteractor resourceInteractor,
-                                 final SampleWettingInteractor sampleWettingInteractor) {
+                                 final SampleWettingInteractor sampleWettingInteractor,
+                                 final IncubationInteractor incubationInteractor) {
         super(resourceInteractor);
         this.sampleWettingInteractor = sampleWettingInteractor;
+        this.incubationInteractor = incubationInteractor;
     }
 
     @Override
@@ -29,6 +33,8 @@ public class InsertSamplePresenter extends BaseTutorialPresenter {
     }
 
     public void startSampleWetting() {
-        sampleWettingInteractor.startWetting().subscribe();
+        sampleWettingInteractor.startWetting()
+                .andThen(incubationInteractor.resetIncubation())
+                .subscribe();
     }
 }

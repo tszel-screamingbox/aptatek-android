@@ -2,12 +2,12 @@ package com.aptatek.pkuapp.domain.interactor.samplewetting;
 
 public interface WettingDataSource {
 
-    boolean hasRunningWetting();
+    WettingStatus getWettingStatus();
 
     long getWettingStart();
 
     void startWetting();
 
-    void stopWetting();
+    void resetWetting();
 
 }

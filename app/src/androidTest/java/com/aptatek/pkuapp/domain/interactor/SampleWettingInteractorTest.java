@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.injection.component.DaggerAndroidTestComponent;
 import com.aptatek.pkuapp.injection.module.ApplicationModule;
@@ -39,22 +40,22 @@ public class SampleWettingInteractorTest {
 
     @After
     public void cleanUp() throws Exception {
-        interactor.stopWetting().test();
+        interactor.resetWetting().test();
     }
 
     @Test
     public void testHasRunning() throws Exception {
         interactor.startWetting().test();
-        final TestObserver<Boolean> test = interactor.hasRunningWetting().test();
-        test.assertValue(true);
+        final TestObserver<WettingStatus> test = interactor.getWettingStatus().test();
+        test.assertValue(WettingStatus.RUNNING);
         test.assertComplete();
     }
 
     @Test
-    public void testHasRunningExpired() throws Exception {
-        interactor.stopWetting().test();
-        final TestObserver<Boolean> test = interactor.hasRunningWetting().test();
-        test.assertValue(false);
+    public void testNotStarted() throws Exception {
+        interactor.resetWetting().test();
+        final TestObserver<WettingStatus> test = interactor.getWettingStatus().test();
+        test.assertValue(WettingStatus.NOT_STARTED);
         test.assertComplete();
     }
 

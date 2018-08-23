@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.ActivityComponent;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
+import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.view.base.BaseActivity;
+import com.aptatek.pkuapp.view.main.MainActivity;
 import com.aptatek.pkuapp.view.settings.pkulevel.RangeSettingsActivity;
 
 import javax.inject.Inject;
@@ -62,7 +64,7 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new RangeInfoModule())
+        activityComponent.plus(new RangeInfoModule(), new TestModule())
                 .inject(this);
     }
 
@@ -86,6 +88,11 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
         return presenter;
     }
 
+    @Override
+    public void navigateToHome() {
+        launchActivity(new Intent(this, MainActivity.class), true, Animation.FADE);
+    }
+
     @OnClick(R.id.rangeinfo_back)
     public void onClickBack() {
         onBackPressed();
@@ -94,5 +101,11 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
     @OnClick(R.id.rangeinfo_edit)
     public void onClickEdit() {
         launchActivity(RangeSettingsActivity.starter(this), false, Animation.FADE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // TODO remove this when the test flow is complete.
+        presenter.clearTestState();
     }
 }

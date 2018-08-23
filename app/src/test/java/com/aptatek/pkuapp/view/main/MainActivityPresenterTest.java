@@ -2,7 +2,11 @@ package com.aptatek.pkuapp.view.main;
 
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.cube.CubeInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
+import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
@@ -19,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+
+import io.reactivex.Single;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -38,6 +44,10 @@ public class MainActivityPresenterTest {
     private PkuRangeInteractor rangeInteractor;
     @Mock
     private DailyChartFormatter dailyChartFormatter;
+    @Mock
+    private IncubationInteractor incubationInteractor;
+    @Mock
+    private SampleWettingInteractor sampleWettingInteractor;
 
     private final Date date = new Date();
     private MainActivityPresenter presenter;
@@ -51,8 +61,10 @@ public class MainActivityPresenterTest {
         doReturn(TEST_STRING).when(dailyChartFormatter).formatDate(ArgumentMatchers.anyLong(), ArgumentMatchers.anyBoolean());
         doReturn(TEST_STRING).when(dailyChartFormatter).getNameOfDay(ArgumentMatchers.anyLong());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
+        doReturn(Single.just(IncubationStatus.NOT_STARTED)).when(incubationInteractor).getIncubationStatus();
+        doReturn(Single.just(WettingStatus.NOT_STARTED)).when(sampleWettingInteractor).getWettingStatus();
 
-        presenter = new MainActivityPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter);
+        presenter = new MainActivityPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, incubationInteractor, sampleWettingInteractor);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)

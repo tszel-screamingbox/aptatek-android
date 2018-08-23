@@ -43,7 +43,7 @@
     <string name="parental.verification.success.title">Thank you!</string>
     <string name="parental.verification.tryagain">Try Again</string>
     <string name="parental.welcome.age.disclaimer">Regulations in the U.S. and other territories require us to verify that users are at least 13 years old before using this application; we respect your privacy and this information is not stored.</string>
-    <string name="parental.welcome.birthday.format">dd/MM/yyyy</string>
+    <string name="parental.welcome.birthday.format">MM/dd/yyyy</string>
     <string name="parental.welcome.description">We need to verify your age before you would start</string>
     <string name="parental.welcome.enter.birthday">Enter your birthdate</string>
     <string name="parental.welcome.how.old.are.you">How old are you?</string>
@@ -67,7 +67,7 @@
     <string name="rangeinfo.hight">High</string>
     <string name="rangeinfo.low">Low</string>
     <string name="rangeinfo.low.value.prefix">under</string>
-    <string name="rangeinfo.message">To stay healthy your blood levels of phenylalanine should remain within these ranges</string>
+    <string name="rangeinfo.message">For better health, blood levels of phenylalanine should stay within the lower ranges</string>
     <string name="rangeinfo.normal">Normal</string>
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
     <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
@@ -152,9 +152,8 @@
     <string name="test.samplewetting.notification.inprogress.textformat">Remaining time is %s</string>
     <string name="test.samplewetting.notification.inprogress.title">Sample wetting in progress</string>
     <string name="test.samplewetting.title">Sample wetting</string>
-    <string name="test.takesample.age.adult">adult</string>
-    <string name="test.takesample.age.child">infant</string>
-    <string name="test.takesample.age.switch">I\'m taking a sample for an %1$s</string>
+    <string name="test.takesample.ageswitch.adult">I\'m taking a fingerstick blood sample</string>
+    <string name="test.takesample.ageswitch.infant">I\'m taking a sample for an infant</string>
     <string name="test.takesample.button.start">Start timer (30min)</string>
     <string name="test.takesample.description">This video will guide you through taking blood and preparing it for use</string>
     <string name="test.takesample.title">Take sample</string>
