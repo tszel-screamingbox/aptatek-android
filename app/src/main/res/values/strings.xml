@@ -108,7 +108,7 @@
     <string name="settings.daily.reminder.description">You can set up multiple reminder times per day, on as many days per week that you want to check Phe levels.</string>
     <string name="settings.daily.reminders">Daily reminders</string>
     <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
-    <string name="settings.fingerprint.description">Turn the switch off for PIN only. Turns on your passcode you use for your device.</string>
+    <string name="settings.fingerprint.description">Turning it ON will enable the fingerprint scanner to start the application instead of requesting your PIN code on every application start.</string>
     <string name="settings.title">Settings</string>
     <string name="settings.units">Phe Preferences &amp; Units</string>
     <string name="settings.units.confirmation.button.cancel">Cancel</string>

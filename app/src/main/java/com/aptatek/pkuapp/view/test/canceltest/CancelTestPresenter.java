@@ -1,20 +1,15 @@
 package com.aptatek.pkuapp.view.test.canceltest;
 
-import android.util.Pair;
-
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
 import com.aptatek.pkuapp.view.test.TestScreens;
 import com.aptatek.pkuapp.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 
 public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
