@@ -7,11 +7,17 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
+
 
 class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
 
     private final AuthInteractor authInteractor;
     private final DeviceHelper deviceHelper;
+
+    private Disposable disposable;
 
     @Inject
     ConfirmPinPresenter(final AuthInteractor authInteractor,
@@ -23,8 +29,10 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
 
     void verifyPin(final PinCode addedPin, final PinCode confirmationPin) {
         if (addedPin.equals(confirmationPin)) {
-            authInteractor.setPinCode(confirmationPin);
             ifViewAttached(ConfirmPinView::onValidPinTyped);
+            disposable = authInteractor.setPinCode(confirmationPin)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(this::navigateForward, Timber::e);
         } else {
             ifViewAttached(ConfirmPinView::onInvalidPinTyped);
         }
@@ -36,5 +44,14 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
         } else {
             ifViewAttached(ConfirmPinView::onMainActivityShouldLoad);
         }
+    }
+
+    @Override
+    public void detachView() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+
+        super.detachView();
     }
 }

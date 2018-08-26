@@ -1,92 +1,92 @@
 ext {
     versions = [
-            minsdk                      : 19,
-            targetsdk                   : 27,
-            buildToolsVersion           : '27.0.3',
-            gradle                      : '3.1.2',
+            minsdk            : 19,
+            targetsdk         : 27,
+            buildToolsVersion : '27.0.3',
+            gradle            : '3.1.2',
 
             // Support
-            androidSupport              : '27.1.1',
-            constraintLayout            : '1.1.0',
-            multidex                    : '1.0.3',
+            androidSupport    : '27.1.1',
+            constraintLayout  : '1.1.0',
+            multidex          : '1.0.3',
 
             // ArchitectureComponents
-            lifecycle                   : '1.1.1',
-            work                        : '1.0.0-alpha01',
+            lifecycle         : '1.1.1',
+            work              : '1.0.0-alpha01',
 
             // Mosby
-            mosby                       : '3.1.0',
+            mosby             : '3.1.0',
 
             // Butterknife
-            butterknife                 : '8.8.1',
+            butterknife       : '8.8.1',
 
             // Dagger
-            dagger                      : '2.15',
+            dagger            : '2.15',
 
             // RX
-            rxjava                      : '2.1.13',
-            rxandroid                   : '2.0.2',
+            rxjava            : '2.1.13',
+            rxandroid         : '2.0.2',
 
             // Database
-            room                        : '1.1.0',
-            sqlcipher                   : '0.4.1',
+            room              : '1.1.0',
+            sqlcipher         : '0.4.1',
 
             // IX
-            ixjava                      : '1.0.0',
+            ixjava            : '1.0.0',
 
             // Log
-            timber                      : '4.7.0',
+            timber            : '4.7.0',
 
             // Leak
-            leakcanary                  : '1.5.4',
+            leakcanary        : '1.5.4',
 
             // Firebase
-            firebase                    : '12.0.1',
+            firebase          : '12.0.1',
 
             // Crashlytics
-            crashlytics                 : '2.9.3',
+            crashlytics       : '2.9.3',
 
             // AutoValue
-            autoValue                   : '1.6',
+            autoValue         : '1.6',
 
             // Parceler
-            parceler                    : '0.2.6',
+            parceler          : '0.2.6',
 
             // Glide
-            glide                       : '4.7.1',
-            glideOkhttp                 : '4.7.1',
+            glide             : '4.7.1',
+            glideOkhttp       : '4.7.1',
 
             // Other
-            dataFactory                 : '0.8',
+            dataFactory       : '0.8',
 
             // ActivityStarter
-            activityStarter             : '1.11-beta',
+            activityStarter   : '1.11-beta',
 
             // DiscreteScrollView
-            discreteScrollView          : '1.4.7',
+            discreteScrollView: '1.4.7',
 
             // MpAndroidChart
             chart             : 'v3.0.3',
 
             // Testing
-            junit                       : '4.12',
-            mockito                     : '2.8.9',
-            runner                      : '1.0.2',
-            espresso                    : '3.0.2',
-            hamcrest                    : '1.3',
-            orchestrator                : '1.0.2',
+            junit             : '4.12',
+            mockito           : '2.8.9',
+            runner            : '1.0.2',
+            espresso          : '3.0.2',
+            hamcrest          : '1.3',
+            orchestrator      : '1.0.2',
 
             // CodeQuality
-            jacoco                      : '0.8.1',
-            findbugs                    : '3.0.1',
-            checkstyle                  : '8.10',
+            jacoco            : '0.8.1',
+            findbugs          : '3.0.1',
+            checkstyle        : '8.10',
 
             // UI
-            rangebar                    : '1.4.3',
-            autoFitTextView             : '0.2.1',
+            rangebar          : '1.4.3',
+            autoFitTextView   : '0.2.1',
 
             // Time
-            yodatime                    : '2.9.9.4'
+            yodatime          : '2.9.9.4'
 
     ]
 
@@ -100,24 +100,24 @@ ext {
     ]
 
     architectureComponentsDependencies = [
-            extensions      : "android.arch.lifecycle:extensions:${versions.lifecycle}",
-            compiler        : "android.arch.lifecycle:compiler:${versions.lifecycle}",
+            extensions: "android.arch.lifecycle:extensions:${versions.lifecycle}",
+            compiler  : "android.arch.lifecycle:compiler:${versions.lifecycle}",
     ]
 
     mvpDependencies = [
-            mosby      : "com.hannesdorfmann.mosby3:mvi:${versions.mosby}",
-            viewstate  : "com.hannesdorfmann.mosby3:viewstate:${versions.mosby}"
+            mosby    : "com.hannesdorfmann.mosby3:mvi:${versions.mosby}",
+            viewstate: "com.hannesdorfmann.mosby3:viewstate:${versions.mosby}"
     ]
 
     butterknifeDependencies = [
-            butterknife : "com.jakewharton:butterknife:${versions.butterknife}",
-            compiler    : "com.jakewharton:butterknife-compiler:${versions.butterknife}"
+            butterknife: "com.jakewharton:butterknife:${versions.butterknife}",
+            compiler   : "com.jakewharton:butterknife-compiler:${versions.butterknife}"
     ]
 
     daggerDependencies = [
-            dagger         : "com.google.dagger:dagger:${versions.dagger}",
-            compiler       : "com.google.dagger:dagger-compiler:${versions.dagger}",
-            annotations    : "javax.inject:javax.inject:1"
+            dagger     : "com.google.dagger:dagger:${versions.dagger}",
+            compiler   : "com.google.dagger:dagger-compiler:${versions.dagger}",
+            annotations: "javax.inject:javax.inject:1"
     ]
 
     rxDependencies = [
@@ -127,15 +127,15 @@ ext {
     ]
 
     databaseDependencies = [
-            room        : "android.arch.persistence.room:runtime:${versions.room}",
-            compiler    : "android.arch.persistence.room:compiler:${versions.room}",
-            testhelper  : "android.arch.persistence.room:testing:${versions.room}",
+            room      : "android.arch.persistence.room:runtime:${versions.room}",
+            compiler  : "android.arch.persistence.room:compiler:${versions.room}",
+            testhelper: "android.arch.persistence.room:testing:${versions.room}",
 
             // https://github.com/commonsguy/cwac-saferoom
-            sqlcipher   : "com.commonsware.cwac:saferoom:${versions.sqlcipher}",
+            sqlcipher : "com.commonsware.cwac:saferoom:${versions.sqlcipher}",
 
             // optional - RxJava support for Room
-            rxjava      : "android.arch.persistence.room:rxjava2:${versions.room}"
+            rxjava    : "android.arch.persistence.room:rxjava2:${versions.room}"
     ]
 
     glideDependencies = [
@@ -156,7 +156,7 @@ ext {
     ]
 
     crashlyticsDependencies = [
-            crashlytics : "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
+            crashlytics: "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
     ]
 
     appDependencies = [
@@ -165,35 +165,35 @@ ext {
     ]
 
     activityStarterDependencies = [
-            activityStarter : "com.marcinmoskala.activitystarter:activitystarter:${versions.activityStarter}",
-            apt : "com.marcinmoskala.activitystarter:activitystarter-compiler:${versions.activityStarter}",
+            activityStarter: "com.marcinmoskala.activitystarter:activitystarter:${versions.activityStarter}",
+            apt            : "com.marcinmoskala.activitystarter:activitystarter-compiler:${versions.activityStarter}",
     ]
 
     scrollView = [
-            discreteScrollView : "com.yarolegovich:discrete-scrollview:${versions.discreteScrollView}",
+            discreteScrollView: "com.yarolegovich:discrete-scrollview:${versions.discreteScrollView}",
     ]
 
     mpAndroidChartDependencies = [
-            androidChart : "com.github.PhilJay:MPAndroidChart:${versions.chart}"
+            androidChart: "com.github.PhilJay:MPAndroidChart:${versions.chart}"
     ]
 
     testDependencies = [
-            junit               : "junit:junit:${versions.junit}",
-            mockito             : "org.mockito:mockito-core:${versions.mockito}",
-            testrunner          : "com.android.support.test:runner:${versions.runner}",
-            testrules           : "com.android.support.test:rules:${versions.runner}",
-            espresso            : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
-            espressocontrib     : "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
-            hamcrest            : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
-            orchestrator        : "com.android.support.test:orchestrator:${versions.orchestrator}"
+            junit          : "junit:junit:${versions.junit}",
+            mockito        : "org.mockito:mockito-core:${versions.mockito}",
+            testrunner     : "com.android.support.test:runner:${versions.runner}",
+            testrules      : "com.android.support.test:rules:${versions.runner}",
+            espresso       : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
+            espressocontrib: "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
+            hamcrest       : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
+            orchestrator   : "com.android.support.test:orchestrator:${versions.orchestrator}"
     ]
 
     uiDependencies = [
-            rangebar            : "com.appyvet:materialrangebar:$versions.rangebar",
-            autoFitTextView     : "me.grantland:autofittextview:$versions.autoFitTextView"
+            rangebar       : "com.appyvet:materialrangebar:$versions.rangebar",
+            autoFitTextView: "me.grantland:autofittextview:$versions.autoFitTextView"
     ]
 
     timeDependencies = [
-            yodatime            : "net.danlew:android.joda:$versions.yodatime"
+            yodatime: "net.danlew:android.joda:$versions.yodatime"
     ]
 }

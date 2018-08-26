@@ -10,6 +10,9 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 
@@ -18,6 +21,8 @@ class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
     private final AuthInteractor authInteractor;
     private final DeviceHelper deviceHelper;
     private final ResourceInteractor resourceInteractor;
+
+    private Disposable disposable;
 
     @Inject
     AuthPinPresenter(final AuthInteractor authInteractor,
@@ -65,10 +70,19 @@ class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
     }
 
     void verifyPinCode(final PinCode pinCode) {
-        if (authInteractor.isValidPinCode(pinCode)) {
-            ifViewAttached(AuthPinView::onValidPinTyped);
-        } else {
-            ifViewAttached(AuthPinView::onInvalidPinTyped);
+        disposable = authInteractor.checkPinCode(pinCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> ifViewAttached(AuthPinView::onValidPinTyped),
+                        throwable -> ifViewAttached(AuthPinView::onInvalidPinTyped));
+    }
+
+    @Override
+    public void detachView() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
+
+        super.detachView();
     }
 }

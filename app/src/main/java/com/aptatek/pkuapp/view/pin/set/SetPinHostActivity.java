@@ -17,7 +17,6 @@ public class SetPinHostActivity extends BaseRootFrameActivity<SetPinHostActivity
     @Inject
     SetPinHostActivityPresenter presenter;
 
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

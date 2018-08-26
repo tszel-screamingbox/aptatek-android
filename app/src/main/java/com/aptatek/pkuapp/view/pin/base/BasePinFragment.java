@@ -111,7 +111,7 @@ public abstract class BasePinFragment extends BaseFragment {
         }
     }
 
-    private void innerFillCircle(final int untilAt, final int resId) {
+    protected void innerFillCircle(final int untilAt, final int resId) {
         clearCircles();
         for (int i = 0; i < untilAt; i++) {
             final ImageView imageView = (ImageView) pinCircleConstrainLayout.getChildAt(i);
