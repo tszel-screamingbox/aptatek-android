@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -70,6 +72,26 @@ public class WeeklyResultActivityTest {
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
 
         onView(withId(R.id.rightArrow)).perform(click());
+        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void testSwipe() {
+        onView(withId(R.id.playIcon)).perform(click());
+        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
+        onView(withId(R.id.viewpager)).perform(swipeRight());
+
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
+        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
+        onView(withId(R.id.label)).check(matches(isDisplayed()));
+        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.emptyTitle)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.emptySubtitle)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
+
+        onView(withId(R.id.viewpager)).perform(swipeLeft());
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
     }
 }
