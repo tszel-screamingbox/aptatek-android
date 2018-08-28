@@ -18,6 +18,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import io.reactivex.Single;
 
@@ -55,8 +57,8 @@ public class WeeklyResultActivityPresenterTest {
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .build();
         final CubeData cubeData = CubeData.builder()
-                .setCubeId("0")
-                .setId(0)
+                .setId(new Random().nextLong())
+                .setCubeId(UUID.randomUUID().toString())
                 .setPkuLevel(PkuLevel.create(10, PkuLevelUnits.MICRO_MOL))
                 .setTimestamp(new Date().getTime())
                 .build();
