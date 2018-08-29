@@ -57,8 +57,8 @@ public class TimeHelperTest {
 
     @Test
     public void testDayOfWeek() {
-        final int day = calendar.get(Calendar.DAY_OF_WEEK);
-        assertEquals(day - 1, getDayOfWeek(now.getTime()));
+        final int day = org.joda.time.LocalDate.fromCalendarFields(calendar).getDayOfWeek();
+        assertEquals(day, getDayOfWeek(now.getTime()));
     }
 
     @Test
