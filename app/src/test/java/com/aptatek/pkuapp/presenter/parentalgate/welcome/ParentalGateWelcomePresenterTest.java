@@ -19,6 +19,13 @@ import io.reactivex.Single;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for the ParentalGateWelcomePresenter class
+ *
+ * @test.layer presentation
+ * @test.feature ParentalGate
+ * @test.type unit
+ */
 public class ParentalGateWelcomePresenterTest {
 
     private static final String TEST_STRING = "hello";
@@ -44,6 +51,12 @@ public class ParentalGateWelcomePresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Tests the proper behavior: the initUi() method should invoke the ParentalGateWelcomeView's proper methods with the default values to render the inital UI state.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitUi() throws Exception {
         presenter.initUi();
@@ -58,6 +71,12 @@ public class ParentalGateWelcomePresenterTest {
         verify(view).setBirthDateText("");
     }
 
+    /**
+     * Tests the proper behavior: the onButtonPress() method should invoke the ParentalGateVerificationView.showDatePicker() to display the date picker.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testOnButtonPress() throws Exception {
         presenter.initUi();
@@ -66,6 +85,12 @@ public class ParentalGateWelcomePresenterTest {
         verify(view).showDatePicker();
     }
 
+    /**
+     * Tests the proper behavior: the presenter.onButtonPress() should trigger UI changes when the birthDate is already set: Age field and keyboard should become visible.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testOnButtonPressAfterBirthDate() throws Exception {
         presenter.initUi();
@@ -79,6 +104,12 @@ public class ParentalGateWelcomePresenterTest {
         verify(view).setShowAgeField(true);
     }
 
+    /**
+     * Tests the proper behavior: the verifyAge(String) should trigger the ParentalGateWelcomeView.showResult(AgeVerificationResult) to proceed to the verification result screen.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testOnAgeEntered() throws Exception {
         presenter.initUi();

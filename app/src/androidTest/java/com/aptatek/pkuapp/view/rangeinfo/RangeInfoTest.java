@@ -27,6 +27,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+/**
+ * Tests for the RangeInfo screen.
+ *
+ * @test.layer presentation
+ * @test.feature RangeInfo
+ * @test.type integration
+ */
 @RunWith(AndroidJUnit4.class)
 public class RangeInfoTest {
 
@@ -45,6 +52,12 @@ public class RangeInfoTest {
                 .inject(this);
     }
 
+    /**
+     * Tests the initial visibility of every view on this screen
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialViewsVisible() {
         onView(withId(R.id.rangeinfo_title)).check(matches(isDisplayed()));
@@ -62,6 +75,12 @@ public class RangeInfoTest {
         onView(withId(R.id.rangeinfo_low)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Tests the initial values of every view
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialUiValues() {
         final PkuRangeInfo pkuInfo = PkuRangeInfo.builder()
@@ -88,6 +107,12 @@ public class RangeInfoTest {
         onView(withId(R.id.rangeinfo_low)).check(matches(withText(formatter.formatLow(pkuInfo))));
     }
 
+    /**
+     * Tests whether the screen is dismissed when the user presses the back button
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testBackFinishesActivity() throws Exception {
         onView(withId(R.id.rangeinfo_back)).perform(click());
@@ -95,6 +120,12 @@ public class RangeInfoTest {
         Assert.assertTrue(activityRule.getActivity().isFinishing());
     }
 
+    /**
+     * Tests whether the app navigates to the RangeSettings screen when the user taps on the "Edit ranges" view.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testUnitClickTakesToSettings() throws Exception {
         onView(withId(R.id.rangeinfo_edit)).perform(click());
