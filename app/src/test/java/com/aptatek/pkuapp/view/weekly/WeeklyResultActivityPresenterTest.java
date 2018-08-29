@@ -27,6 +27,11 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * @test.layer View / Weekly
+ * @test.feature Weekly Chart
+ * @test.type Unit tests
+ */
 public class WeeklyResultActivityPresenterTest {
 
     private static final String TEST_STRING = "test";
@@ -45,6 +50,9 @@ public class WeeklyResultActivityPresenterTest {
     private WeeklyResultActivityPresenter presenter;
     private List<CubeData> cubeDataList = new ArrayList<>();
 
+    /**
+     * Setting up the required presenter and defining mocked component's behaviour
+     */
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -79,6 +87,12 @@ public class WeeklyResultActivityPresenterTest {
     }
 
 
+    /**
+     * Setting subtitle for the screen
+     *
+     * @test.input Page number for the subtitle
+     * @test.expected {@link  com.aptatek.pkuapp.view.weekly.WeeklyResultActivityView#onSubtitleChanged(String)}  onSubtitleChanged} method is called, without any error.
+     */
     @Test
     public void testSubtitle() {
         presenter.loadValidWeeks();
@@ -86,6 +100,14 @@ public class WeeklyResultActivityPresenterTest {
         verify(view).onSubtitleChanged(TEST_STRING);
     }
 
+    /**
+     * Testing page changing
+     *
+     * @test.input Page number for the screen
+     * @test.expected {@link  com.aptatek.pkuapp.view.weekly.WeeklyResultActivityView#onLoadNextPage(int)}  onLoadNextPage},
+     * {@link  com.aptatek.pkuapp.view.weekly.WeeklyResultActivityView#onUpdateLeftArrow(boolean)}  onUpdateLeftArrow}
+     * and {@link  com.aptatek.pkuapp.view.weekly.WeeklyResultActivityView#onUpdateRightArrow(boolean) onUpdateRightArrow} method are called, without any error.
+     */
     @Test
     public void testShowPage() {
         presenter.loadValidWeeks();
@@ -96,6 +118,14 @@ public class WeeklyResultActivityPresenterTest {
         verify(view).onUpdateRightArrow(true);
     }
 
+
+    /**
+     * Testing chart's arrows update
+     *
+     * @test.input Page number for updating arrows visibility
+     * @test.expected {@link  com.aptatek.pkuapp.view.weekly.WeeklyResultActivityView#onUpdateLeftArrow(boolean)}  onUpdateLeftArrow}
+     * and {@link  com.aptatek.pkuapp.view.weekly.WeeklyResultActivityView#onUpdateRightArrow(boolean) onUpdateRightArrow} method are called, without any error.
+     */
     @Test
     public void testUpdateArrow() {
         presenter.loadValidWeeks();

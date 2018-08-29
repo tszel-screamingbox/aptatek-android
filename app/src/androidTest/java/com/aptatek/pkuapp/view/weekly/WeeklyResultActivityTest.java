@@ -17,12 +17,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
+/**
+ * @test.layer View / Weekly
+ * @test.feature Weekly Chart
+ * @test.type Instrumented unit tests
+ */
 public class WeeklyResultActivityTest {
 
     @Rule
     public ActivityTestRule<WeeklyResultActivity> activityRule = new ActivityTestRule<>(WeeklyResultActivity.class);
 
 
+    /**
+     * Testing the initial view.
+     *
+     * @test.expected View appears, without any error.
+     */
     @Test
     public void testInitialView() {
         onView(withId(R.id.title)).check(matches(isDisplayed()));
@@ -39,6 +49,11 @@ public class WeeklyResultActivityTest {
         onView(withId(R.id.emptySubtitle)).check(matches(withText(R.string.weekly_empty_subtitle)));
     }
 
+    /**
+     * Testing play icon clicking.
+     *
+     * @test.expected After clicking on play icon, it disappears.
+     */
     @Test
     public void testPlayIconClicked() {
         onView(withId(R.id.playIcon)).perform(click());
@@ -55,6 +70,12 @@ public class WeeklyResultActivityTest {
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
     }
 
+    /**
+     * Testing pagination by clicking on the arrows icons.
+     *
+     * @test.expected Click on the left arrow icon, the right arrow is shown
+     * and then click on the left arrow icon and the right arrow icon disappears.
+     */
     @Test
     public void testPagination() {
         onView(withId(R.id.playIcon)).perform(click());
@@ -75,6 +96,11 @@ public class WeeklyResultActivityTest {
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
     }
 
+    /**
+     * Testing pagination by swiping.
+     *
+     * @test.expected Swiping right, the right arrow is shown, then swipe left and it disappears.
+     */
     @Test
     public void testSwipe() {
         onView(withId(R.id.playIcon)).perform(click());

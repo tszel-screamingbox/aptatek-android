@@ -35,6 +35,12 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
+/**
+ * @test.layer View / Weekly
+ * @test.feature Weekly chart
+ * @test.type Unit tests
+ */
 public class WeeklyChartPresenterTest {
 
     @Mock
@@ -49,6 +55,9 @@ public class WeeklyChartPresenterTest {
     private List<CubeData> cubeDataList;
     private List<BubbleEntry> bubbleEntries;
 
+    /**
+     * Initialize RxJava components before testing.
+     */
     @BeforeClass
     public static void beforeClass() {
         final Scheduler immediate = new Scheduler() {
@@ -72,12 +81,18 @@ public class WeeklyChartPresenterTest {
         RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
     }
 
+    /**
+     * Reset RxJava components after testing.
+     */
     @AfterClass
     public static void afterClass() {
         RxJavaPlugins.reset();
         RxAndroidPlugins.reset();
     }
 
+    /**
+     * Setting up the required presenter and defining mocked component's behaviour
+     */
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -113,6 +128,12 @@ public class WeeklyChartPresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Getting BubbleDataSet for BubbleChart
+     *
+     * @test.input Numbers of week before (0)
+     * @test.expected {@link com.aptatek.pkuapp.view.weekly.chart.WeeklyChartView#displayChartData(BubbleDataSet bubbleDataSet) displayChartData} method is called, without any error.
+     */
     @Test
     public void testGetChartData() {
         presenter.getChartData(0);
