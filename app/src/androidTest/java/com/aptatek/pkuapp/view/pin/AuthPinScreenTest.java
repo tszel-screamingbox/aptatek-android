@@ -20,6 +20,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
+/**
+ * @test.layer View / Pin
+ * @test.feature User authentication by requesting PIN code
+ * @test.type Instrumented unit tests
+ */
 @RunWith(AndroidJUnit4.class)
 public class AuthPinScreenTest {
 
@@ -27,6 +32,11 @@ public class AuthPinScreenTest {
     public ActivityTestRule<AuthPinHostActivity> activityRule = new ActivityTestRule<>(AuthPinHostActivity.class);
 
 
+    /**
+     * Testing the initial view.
+     *
+     * @test.expected View appears, without any error.
+     */
     @Test
     public void testInitialView() {
         onView(withId(R.id.hintTextView)).check(matches(isDisplayed()));
@@ -37,6 +47,11 @@ public class AuthPinScreenTest {
         onView(withId(R.id.pinLayout)).check(matches(hasChildCount(6)));
     }
 
+    /**
+     * Entering a 6-digit PIN code.
+     *
+     * @test.expected After typing 6-digit PIN code, the authentication is denied.
+     */
     @Test
     public void testEnterPin() {
         onView(withId(R.id.fingerpintImage)).check(matches(not(isDisplayed())));

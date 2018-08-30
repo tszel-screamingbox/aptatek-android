@@ -14,12 +14,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
+/**
+ * @test.layer View / Fingerprint
+ * @test.feature FingerprintScreen
+ * @test.type Instrumented unit tests
+ */
 public class FingerprintScreenTest {
 
     @Rule
     public ActivityTestRule<FingerprintActivity> activityRule = new ActivityTestRule<>(FingerprintActivity.class);
 
 
+    /**
+     * Testing the initial view.
+     *
+     * @test.expected View appears, without any error.
+     */
     @Test
     public void testInitialView() {
         onView(withId(R.id.fingerpintImage)).check(matches(isDisplayed()));
@@ -32,12 +42,22 @@ public class FingerprintScreenTest {
         onView(withId(R.id.fingerprintMessage)).check(matches(withText(R.string.fingerprint_message)));
     }
 
+    /**
+     * Enable fingerprint authentication.
+     *
+     * @test.expected Finishing current activity.
+     */
     @Test
     public void testEnableFingerprint() {
         onView(withId(R.id.enableButton)).perform(ViewActions.click());
         assert (activityRule.getActivity().isFinishing());
     }
 
+    /**
+     * Disable fingerprint authentication.
+     *
+     * @test.expected Finishing current activity.
+     */
     @Test
     public void testDisableFingerprint() {
         onView(withId(R.id.enableButton)).perform(ViewActions.click());

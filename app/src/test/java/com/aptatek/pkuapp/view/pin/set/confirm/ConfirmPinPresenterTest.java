@@ -6,6 +6,7 @@ import com.aptatek.pkuapp.data.PinCode;
 import com.aptatek.pkuapp.device.DeviceHelper;
 import com.aptatek.pkuapp.domain.interactor.auth.AuthInteractor;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,6 +26,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
+/**
+ * @test.layer View / Pin
+ * @test.feature PIN validation
+ * @test.type Unit tests
+ */
 public class ConfirmPinPresenterTest {
 
     @Mock
@@ -40,6 +46,9 @@ public class ConfirmPinPresenterTest {
     private PinCode validPin = new PinCode("valid".getBytes());
     private PinCode invalidPin = new PinCode("invalid".getBytes());
 
+    /**
+     * Setting up the required presenter
+     */
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -48,6 +57,9 @@ public class ConfirmPinPresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Initialize RxJava components before testing.
+     */
     @BeforeClass
     public static void beforeClass() {
         final Scheduler immediate = new Scheduler() {
@@ -68,6 +80,21 @@ public class ConfirmPinPresenterTest {
         RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
     }
 
+    /**
+     * Reset RxJava components after testing.
+     */
+    @AfterClass
+    public static void afterClass() {
+        RxJavaPlugins.reset();
+        RxAndroidPlugins.reset();
+    }
+
+    /**
+     * Comparing two, equal PIN codes.
+     *
+     * @test.expected The given PINs are the same, {@link  ConfirmPinView#onValidPinTyped()  onValidPinTyped}
+     * method is called, without any error.
+     */
     @Test
     public void testValidPin() {
         when(authInteractor.setPinCode(validPin)).thenReturn(Completable.complete());
@@ -75,12 +102,24 @@ public class ConfirmPinPresenterTest {
         verify(view).onValidPinTyped();
     }
 
+    /**
+     * Comparing two, different PIN codes.
+     *
+     * @test.expected The given PIN codes are different, {@link  ConfirmPinView#onInvalidPinTyped()  onInvalidPinTyped}
+     * method is called, without any error.
+     */
     @Test
     public void testInvalidPin() {
         presenter.verifyPin(validPin, invalidPin);
         verify(view).onInvalidPinTyped();
     }
 
+    /**
+     * Enable finterpint authentication.
+     *
+     * @test.expected {@link  ConfirmPinView#onFingerprintActivityShouldLoad()  onFingerprintActivityShouldLoad}
+     * method is called, without any error.
+     */
     @Test
     public void testEnableFingerprint() {
         when(deviceHelper.hasEnrolledFingerprints()).thenReturn(true);
@@ -89,6 +128,12 @@ public class ConfirmPinPresenterTest {
         verify(view).onFingerprintActivityShouldLoad();
     }
 
+    /**
+     * Disable finterpint authentication.
+     *
+     * @test.expected {@link  ConfirmPinView#onMainActivityShouldLoad()  onMainActivityShouldLoad}
+     * method is called, without any error.
+     */
     @Test
     public void testDisableFingerprint() {
         when(deviceHelper.hasEnrolledFingerprints()).thenReturn(false);
@@ -97,6 +142,12 @@ public class ConfirmPinPresenterTest {
         verify(view).onMainActivityShouldLoad();
     }
 
+    /**
+     * Fingerprint scanner detected, but the device hasn't got enrolled fingerprints.
+     *
+     * @test.expected {@link  ConfirmPinView#onMainActivityShouldLoad()  onMainActivityShouldLoad}
+     * method is called, without any error.
+     */
     @Test
     public void testHasScannerButNoFingerprint() {
         when(deviceHelper.hasEnrolledFingerprints()).thenReturn(false);
