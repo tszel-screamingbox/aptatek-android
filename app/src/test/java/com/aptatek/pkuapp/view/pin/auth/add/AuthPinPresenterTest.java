@@ -103,7 +103,7 @@ public class AuthPinPresenterTest {
     /**
      * Fingerprint authentication is enabled, shows it on the screen.
      *
-     * @test.expected {@link  AuthPinView#onFingerprintAvailable()  onFingerprintAvailable}
+     * @test.expected {@link  AuthPinView#onFingerprintAvailable()  onFingerprintAvailable()}
      * method is called, without any error.
      */
     @Test
@@ -116,7 +116,7 @@ public class AuthPinPresenterTest {
     /**
      * Fingerprint authentication is disable, shows it on the screen.
      *
-     * @test.expected {@link  AuthPinView#onFingerprintDisabled()  onFingerprintDisabled}
+     * @test.expected {@link  AuthPinView#onFingerprintDisabled()  onFingerprintDisabled()}
      * method is called, without any error.
      */
     @Test
@@ -129,7 +129,7 @@ public class AuthPinPresenterTest {
     /**
      * Enter a valid PIN code.
      *
-     * @test.expected The PIN is valid,{@link  AuthPinView#onValidPinTyped()  onValidPinTyped}
+     * @test.expected The PIN is valid,{@link  AuthPinView#onValidPinTyped()  onValidPinTyped()}
      * method is called, without any error.
      */
     @Test
@@ -141,7 +141,7 @@ public class AuthPinPresenterTest {
     /**
      * Enter an invalid PIN code.
      *
-     * @test.expected The PIN is invalid,{@link  AuthPinView#onInvalidPinTyped()  onInvalidPinTyped}
+     * @test.expected The PIN is invalid,{@link  AuthPinView#onInvalidPinTyped()  onInvalidPinTyped()}
      * method is called, without any error.
      */
     @Test
@@ -153,7 +153,7 @@ public class AuthPinPresenterTest {
     /**
      * Valid fingerprint detection.
      *
-     * @test.expected The detected fingerprint is valid,{@link  AuthPinView#onValidFingerprintDetected()  onValidFingerprintDetected}
+     * @test.expected The detected fingerprint is valid,{@link  AuthPinView#onValidFingerprintDetected()  onValidFingerprintDetected()}
      * method is called, without any error.
      */
     @Test
@@ -169,7 +169,7 @@ public class AuthPinPresenterTest {
     /**
      * Invalid fingerprint detection.
      *
-     * @test.expected The detected fingerprint is invalid,{@link  AuthPinView#onInvalidFingerprintDetected(String)  onInvalidFingerprintDetected}
+     * @test.expected The detected fingerprint is invalid,{@link  AuthPinView#onInvalidFingerprintDetected(String)  onInvalidFingerprintDetected(String)}
      * method is called, without any error.
      */
     @Test
@@ -185,7 +185,7 @@ public class AuthPinPresenterTest {
     /**
      * Can not read the fingerprint.
      *
-     * @test.expected The detected fingerprint is not valid,{@link  AuthPinView#onInvalidFingerprintDetected(String)  onInvalidFingerprintDetected}
+     * @test.expected The detected fingerprint is not valid,{@link  AuthPinView#onInvalidFingerprintDetected(String)  onInvalidFingerprintDetected(String)}
      * method is called, without any error.
      */
     @Test

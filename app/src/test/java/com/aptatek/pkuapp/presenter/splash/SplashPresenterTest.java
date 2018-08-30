@@ -52,7 +52,7 @@ public class SplashPresenterTest {
     /**
      * Testing navigation to parental gate screen, when the user hasn't passed any phase of registration
      *
-     * @test.expected {@link  SplashActivityView#onParentalGateShouldLoad() onParentalGateShouldLoad}
+     * @test.expected {@link  SplashActivityView#onParentalGateShouldLoad()  onParentalGateShouldLoad()}
      * method is called and ParentalGateActivity is loaded, without any error.
      */
     @Test
@@ -65,7 +65,7 @@ public class SplashPresenterTest {
     /**
      * Testing navigation to set PIN screen, when the user passed ParentalGate, but hasn't set PIN code yet
      *
-     * @test.expected {@link  SplashActivityView#onSetPinActivityShouldLoad()  onSetPinActivityShouldLoad}
+     * @test.expected {@link  SplashActivityView#onSetPinActivityShouldLoad()  onSetPinActivityShouldLoad()}
      * method is called and SetPinHostActivity is loaded, without any error.
      */
     @Test
@@ -80,7 +80,7 @@ public class SplashPresenterTest {
     /**
      * Testing navigation to request PIN screen, when the user has a valid registration
      *
-     * @test.expected {@link  SplashActivityView#onRequestPinActivityShouldLoad()  onRequestPinActivityShouldLoad}
+     * @test.expected {@link  SplashActivityView#onRequestPinActivityShouldLoad()  onRequestPinActivityShouldLoad()}
      * method is called and AuthPinHostActivity is loaded, without any error.
      */
     @Test

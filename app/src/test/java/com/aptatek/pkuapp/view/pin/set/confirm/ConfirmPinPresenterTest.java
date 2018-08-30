@@ -92,7 +92,7 @@ public class ConfirmPinPresenterTest {
     /**
      * Comparing two, equal PIN codes.
      *
-     * @test.expected The given PINs are the same, {@link  ConfirmPinView#onValidPinTyped()  onValidPinTyped}
+     * @test.expected The given PINs are the same, {@link  ConfirmPinView#onValidPinTyped()  onValidPinTyped()}
      * method is called, without any error.
      */
     @Test
@@ -105,7 +105,7 @@ public class ConfirmPinPresenterTest {
     /**
      * Comparing two, different PIN codes.
      *
-     * @test.expected The given PIN codes are different, {@link  ConfirmPinView#onInvalidPinTyped()  onInvalidPinTyped}
+     * @test.expected The given PIN codes are different, {@link  ConfirmPinView#onInvalidPinTyped()  onInvalidPinTyped()}
      * method is called, without any error.
      */
     @Test
@@ -117,7 +117,7 @@ public class ConfirmPinPresenterTest {
     /**
      * Enable finterpint authentication.
      *
-     * @test.expected {@link  ConfirmPinView#onFingerprintActivityShouldLoad()  onFingerprintActivityShouldLoad}
+     * @test.expected {@link  ConfirmPinView#onFingerprintActivityShouldLoad()  onFingerprintActivityShouldLoad()}
      * method is called, without any error.
      */
     @Test
@@ -131,7 +131,7 @@ public class ConfirmPinPresenterTest {
     /**
      * Disable finterpint authentication.
      *
-     * @test.expected {@link  ConfirmPinView#onMainActivityShouldLoad()  onMainActivityShouldLoad}
+     * @test.expected {@link  ConfirmPinView#onMainActivityShouldLoad()  onMainActivityShouldLoad()}
      * method is called, without any error.
      */
     @Test
@@ -145,7 +145,7 @@ public class ConfirmPinPresenterTest {
     /**
      * Fingerprint scanner detected, but the device hasn't got enrolled fingerprints.
      *
-     * @test.expected {@link  ConfirmPinView#onMainActivityShouldLoad()  onMainActivityShouldLoad}
+     * @test.expected {@link  ConfirmPinView#onMainActivityShouldLoad()  onMainActivityShouldLoad()}
      * method is called, without any error.
      */
     @Test
