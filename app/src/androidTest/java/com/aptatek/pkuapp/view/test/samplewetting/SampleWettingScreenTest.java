@@ -20,6 +20,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
+/**
+ * Tests for the SampleWetting screen.
+ *
+ * @test.layer presentation
+ * @test.feature SampleWetting
+ * @test.type integration
+ */
 @RunWith(AndroidJUnit4.class)
 public class SampleWettingScreenTest {
 
@@ -34,6 +41,12 @@ public class SampleWettingScreenTest {
         onView(withId(R.id.testNavigationButton)).perform(click());
     }
 
+    /**
+     * Tests the initial visibility of the ui elements.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialViewsVisible() throws Exception {
         Thread.sleep(2000L);
@@ -47,12 +60,24 @@ public class SampleWettingScreenTest {
         onView(withId(R.id.wettingImage)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Tests the initial values of the ui elements.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialUiValues() throws Exception {
         onView(withId(R.id.testBaseTitle)).check(matches(withText(R.string.test_samplewetting_title)));
         onView(withId(R.id.testBaseMessage)).check(matches(withText(R.string.test_samplewetting_description)));
     }
 
+    /**
+     * Tests whether pressing the back button displays the Cancel Test screen.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCancelNavigatesToCancel() throws Exception {
         onView(withId(R.id.testCancelButton)).perform(click());

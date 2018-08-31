@@ -23,6 +23,13 @@ import javax.inject.Inject;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
+/**
+ * Tests for the SampleWettingInteractor class.
+ *
+ * @test.layer domain
+ * @test.feature BloodIsProcessin
+ * @test.type integration
+ */
 @RunWith(AndroidJUnit4.class)
 public class SampleWettingInteractorTest {
 
@@ -43,6 +50,12 @@ public class SampleWettingInteractorTest {
         interactor.resetWetting().test();
     }
 
+    /**
+     * Tests whether the first wetting status is RUNNING right after a successful startWetting() call.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testHasRunning() throws Exception {
         interactor.startWetting().test();
@@ -51,6 +64,12 @@ public class SampleWettingInteractorTest {
         test.assertComplete();
     }
 
+    /**
+     * Tests whether the first wetting status is NOT_STARTED when there is no wetting running.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testNotStarted() throws Exception {
         interactor.resetWetting().test();
@@ -59,6 +78,12 @@ public class SampleWettingInteractorTest {
         test.assertComplete();
     }
 
+    /**
+     * Tests whether the wetting countdown starts to count down after a successful wetting start.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdown() throws Exception {
         interactor.startWetting().test();
@@ -71,6 +96,12 @@ public class SampleWettingInteractorTest {
         test.assertValueAt(0, value -> value.getRemainingFormattedText().startsWith("09:"));
     }
 
+    /**
+     * Tests whether the wetting progress starts to emit a non-zero percent after a successful wetting start.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testProgress() throws Exception {
         interactor.startWetting().test();
