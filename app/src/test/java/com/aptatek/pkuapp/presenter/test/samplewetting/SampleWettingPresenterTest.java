@@ -29,6 +29,13 @@ import io.reactivex.processors.FlowableProcessor;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for the SampleWettingPresenter class.
+ *
+ * @test.layer presentation
+ * @test.feature SampleWetting
+ * @test.type unit
+ */
 public class SampleWettingPresenterTest {
 
     private final String TEST_STRING = "hello";
@@ -88,6 +95,12 @@ public class SampleWettingPresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Tests the proper behavior: the initUi() method should trigger changes on UI: the initial state should be rendered
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitUi() throws Exception {
         presenter.initUi();
@@ -99,12 +112,24 @@ public class SampleWettingPresenterTest {
         verify(view).setMessage(TEST_STRING);
     }
 
+    /**
+     * Tests the proper behavior: when the screen is displayed, the presenter should check the current state of sample wetting via the interactor.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testAttachViewCallsInteractor() throws Exception {
         verify(sampleWettingInteractor).getWettingCountdown();
         verify(sampleWettingInteractor).getWettingProgress();
     }
 
+    /**
+     * Tests the proper behavior: when the interactor's countdown stream emits a new item, the UI should be updated: the countdown text should display the new value.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownUpdateCallsView() throws Exception {
         countdownProcessor.onNext(Countdown.builder().setRemainingFormattedText(TEST_STRING).setRemainingMillis(1000L).build());
@@ -114,6 +139,12 @@ public class SampleWettingPresenterTest {
         verify(view).showCountdown(TEST_STRING);
     }
 
+    /**
+     * Tests the proper behavior: when the interactor's progress stream emits a new item, the UI should be updated: the proper image should be displayed for the current progress.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testProgressUpdateCallsView() throws Exception {
         progressProcessor.onNext(30);

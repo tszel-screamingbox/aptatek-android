@@ -13,6 +13,13 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for the InsertCasettePresenter class.
+ *
+ * @test.layer presentation
+ * @test.feature InsertCasette
+ * @test.type unit
+ */
 public class InsertCasettePresenterTest {
 
     private  static final String TEST_TEXT = "Hello";
@@ -35,6 +42,12 @@ public class InsertCasettePresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Tests the proper behavior: the initUi() method should trigger changes on UI: the initial state should be rendered
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialUi() throws Exception {
         presenter.initUi();
