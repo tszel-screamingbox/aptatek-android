@@ -50,6 +50,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.withParentIndex
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.StringContains.containsString;
 
+/**
+ * Tests for the RangeSettings screen.
+ *
+ * @test.layer presentation
+ * @test.feature RangeSettings
+ * @test.type integration
+ */
 @RunWith(AndroidJUnit4.class)
 public class RangeSettingsTest {
 
@@ -68,6 +75,12 @@ public class RangeSettingsTest {
                 .inject(this);
     }
 
+    /**
+     * Tests the initial visibility of every view on this screen
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialViewsVisible() {
         onView(withId(R.id.rangeSettingsLowLabel)).check(matches(isDisplayed()));
@@ -89,6 +102,12 @@ public class RangeSettingsTest {
         onView(withId(R.id.rangeSettingsUnitMilliGram)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Tests the initial values of every view on this screen
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialUiValues() {
         final PkuRangeInfo pkuInfo = PkuRangeInfo.builder()
@@ -113,6 +132,12 @@ public class RangeSettingsTest {
         onView(withId(R.id.rangeSettingsUnitMilliGram)).check(matches(withText(R.string.rangeinfo_pkulevel_mg)));
     }
 
+    /**
+     * Tests whether back press doesn't trigger showing confirmation dialog to save data when there was no change at all on UI.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testBackDoesntPopDialogFinishesActivity() throws Exception {
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
@@ -120,6 +145,12 @@ public class RangeSettingsTest {
         Assert.assertTrue(activityRule.getActivity().isFinishing());
     }
 
+    /**
+     * Tests whether the save values dialog is displayed when there was range changes on the UI.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testBackPopsDialogAndFinishesActivity() throws Exception {
         onView(withId(R.id.rangeSettingsNormalCeil)).perform(click());
@@ -139,6 +170,12 @@ public class RangeSettingsTest {
         Assert.assertTrue(activityRule.getActivity().isFinishing());
     }
 
+    /**
+     * Tests whether changing the display unit triggers changes on UI: range data should be recalculated and displayed according to the proper settings.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testUnitChangeRefreshesUi() throws Exception {
         onView(withId(R.id.rangeSettingsUnitMilliGram)).perform(new ViewAction() {
