@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aptatek.pkuapp.widget.PdfExportView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Monthly Results"
+        android:textColor="@color/pdfTitle"
+        android:textSize="@dimen/font.size.xlarge"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="March 2018"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+    <ImageView
+        android:id="@+id/imageViewPkuLabIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_pku_lab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewUnitDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp"
+        android:text="All units are in mmol/L"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPkuLabIcon" />
+
+    <TextView
+        android:id="@+id/textViewLowNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/bubble_pdf_low"
+        android:gravity="center"
+        android:text="2x"
+        android:textColor="@color/pkuLevelLow"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewLowText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Low"
+        android:textColor="@color/pkuLevelLow"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewLowNumber"
+        app:layout_constraintStart_toEndOf="@id/textViewLowNumber"
+        app:layout_constraintTop_toTopOf="@+id/textViewLowNumber" />
+
+    <TextView
+        android:id="@+id/textViewNormalNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/bubble_pdf_normal"
+        android:gravity="center"
+        android:text="8x"
+        android:textColor="@color/pkuLevelNormal"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textViewLowText" />
+
+    <TextView
+        android:id="@+id/textViewNormalText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Normal"
+        android:textColor="@color/pkuLevelNormal"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewNormalNumber"
+        app:layout_constraintStart_toEndOf="@id/textViewNormalNumber"
+        app:layout_constraintTop_toTopOf="@+id/textViewNormalNumber" />
+
+    <TextView
+        android:id="@+id/textViewHighNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/bubble_pdf_high"
+        android:gravity="center"
+        android:text="8x"
+        android:textColor="@color/pkuLevelHigh"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textViewNormalText" />
+
+    <TextView
+        android:id="@+id/textViewHighText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="High"
+        android:textColor="@color/pkuLevelHigh"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewHighNumber"
+        app:layout_constraintStart_toEndOf="@id/textViewHighNumber"
+        app:layout_constraintTop_toTopOf="@+id/textViewHighNumber" />
+
+    <TextView
+        android:id="@+id/textViewVeryHighNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/bubble_pdf_very_high"
+        android:gravity="center"
+        android:text="8x"
+        android:textColor="@color/pkuLevelVeryHigh"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textViewHighText" />
+
+    <TextView
+        android:id="@+id/textViewVeryHighText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="Very High"
+        android:textColor="@color/pkuLevelVeryHigh"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewVeryHighNumber"
+        app:layout_constraintStart_toEndOf="@id/textViewVeryHighNumber"
+        app:layout_constraintTop_toTopOf="@+id/textViewVeryHighNumber" />
+
+    <TextView
+        android:id="@+id/textViewSickNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/bubble_sick"
+        android:gravity="center"
+        android:text="8x"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/textViewSickText" />
+
+    <TextView
+        android:id="@+id/textViewSickText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="5dp"
+        android:text="Sick"
+        android:textColor="@color/pkuPdfSick"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber" />
+
+    <TextView
+        android:id="@+id/textViewFastingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="5dp"
+        android:text="Fasting"
+        android:textColor="@color/pkuPdfSick"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
+        app:layout_constraintEnd_toStartOf="@+id/textViewSickNumber"
+        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber" />
+
+    <TextView
+        android:id="@+id/textViewFastingNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/bubble_fasting"
+        android:gravity="center"
+        android:text="8x"
+        android:textColor="@color/applicationBlack"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/textViewFastingText" />
+
+    <TextView
+        android:id="@+id/textViewAverageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="5dp"
+        android:text="Fasting"
+        android:textColor="@color/pkuLevelNormal"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
+        app:layout_constraintEnd_toStartOf="@+id/textViewFastingNumber"
+        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber" />
+
+    <TextView
+        android:id="@+id/textViewAverageNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/bubble_pdf_normal"
+        android:gravity="center"
+        android:text="275"
+        android:textColor="@color/pkuLevelNormal"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/textViewAverageText" />
+
+    <com.github.mikephil.charting.charts.BubbleChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintBottom_toTopOf="@id/textViewAverageNumber"
+        app:layout_constraintTop_toBottomOf="@id/textViewUnitDescription" />
+
+</com.aptatek.pkuapp.widget.PdfExportView>

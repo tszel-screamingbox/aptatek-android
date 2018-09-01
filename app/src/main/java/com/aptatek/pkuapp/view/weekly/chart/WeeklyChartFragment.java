@@ -2,6 +2,7 @@ package com.aptatek.pkuapp.view.weekly.chart;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.aptatek.pkuapp.R;
@@ -10,6 +11,7 @@ import com.aptatek.pkuapp.injection.module.chart.ChartModule;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkuapp.util.Constants;
 import com.aptatek.pkuapp.view.base.BaseFragment;
+import com.aptatek.pkuapp.widget.PdfExportView;
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -115,5 +117,40 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
         weeklyBubbleChart.getLegend().setEnabled(false);
         weeklyBubbleChart.getDescription().setEnabled(false);
         weeklyBubbleChart.setRenderer(new CustomBubbleChartRenderer(weeklyBubbleChart));
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        PdfExportView content = (PdfExportView) View.inflate(requireContext(), R.layout.view_pdf_export, null);
+        content.setData();
+
+//        PdfDocument document = new PdfDocument();
+//
+//        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
+//                getResources().getDimensionPixelSize(R.dimen.pdf_width),
+//                getResources().getDimensionPixelSize(R.dimen.pdf_height),
+//                1).create();
+//
+//        PdfDocument.Page page = document.startPage(pageInfo);
+//
+//        Canvas canvas = page.getCanvas();
+//        canvas.save();
+//        content.draw(canvas);
+//        canvas.restore();
+//
+//        document.finishPage(page);
+//
+//        String filepath = Environment.getExternalStorageDirectory().getPath();
+//        File file = new File(filepath, "aptatek");
+//
+//        try {
+//            document.writeTo(new FileOutputStream(file));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        document.close();
     }
 }
