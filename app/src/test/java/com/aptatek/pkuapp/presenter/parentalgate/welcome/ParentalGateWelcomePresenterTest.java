@@ -101,7 +101,7 @@ public class ParentalGateWelcomePresenterTest {
      * {@link  ParentalGateWelcomeView#setShowButton(boolean)  setShowButton(boolean)},
      * {@link  ParentalGateWelcomeView#setShowKeypad(boolean)  setShowKeypad(boolean)},
      * {@link  ParentalGateWelcomeView#setShowAgeField(boolean) setShowAgeField(boolean)}
-     * method are called, without any error.
+     * methods are called, without any error.
      */
     @Test
     public void testOnButtonPressAfterBirthDate() {
