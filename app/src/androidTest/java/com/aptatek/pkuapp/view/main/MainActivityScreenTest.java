@@ -51,7 +51,7 @@ public class MainActivityScreenTest {
     /**
      * Clicking on Settings button.
      *
-     * @test.expected After clicking on the button, the activity is changed.
+     * @test.expected After clicking on the button, the activity is changed to the new.
      */
     @Test
     public void testGoToSettings() {
@@ -62,7 +62,7 @@ public class MainActivityScreenTest {
     /**
      * Clicking on New Test button.
      *
-     * @test.expected After clicking on the button, the activity is changed.
+     * @test.expected After clicking on the button, the activity is changed to the new.
      */
     @Test
     public void testGoToNewTest() {
@@ -73,7 +73,7 @@ public class MainActivityScreenTest {
     /**
      * Clicking on Result summary button.
      *
-     * @test.expected After clicking on the button, the activity is changed.
+     * @test.expected After clicking on the button, the activity is changed to the new.
      */
     @Test
     public void testGoToResult() {
