@@ -23,6 +23,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for the IncubationInteractor class.
+ *
+ * @test.layer domain
+ * @test.feature BloodIsProcessing
+ * @test.type unit
+ */
 public class IncubationInteractorTest {
 
     private IncubationInteractor incubationInteractor;
@@ -39,12 +46,24 @@ public class IncubationInteractorTest {
         incubationInteractor = new IncubationInteractor(incubationDataSource, countdownTimeFormatter);
     }
 
+    /**
+     * Tests the proper behavior: the getIncubationStatus() should get its data from the DataSource.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testHasRunningIncubationCallsDataSource() throws Exception {
         incubationInteractor.getIncubationStatus().test();
         verify(incubationDataSource).getIncubationStatus();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource returns valid data, the getIncubationStatus() should emit the data without error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testGetIncubationStatusReturnsProperValue() throws Exception {
         final IncubationStatus testValue = IncubationStatus.RUNNING;
@@ -55,6 +74,12 @@ public class IncubationInteractorTest {
         test.assertValue(testValue);
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource throws exception, the getIncubationStatus() should signal an error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testGetIncubationStatusEmitsErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -63,12 +88,24 @@ public class IncubationInteractorTest {
         test.assertError(testError);
     }
 
+    /**
+     * Tests the proper behavior: the startIncubation() should be relayed to DataSource.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStartIncubationCallsDataSource() throws Exception {
         incubationInteractor.startIncubation().test();
         verify(incubationDataSource).startIncubation();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource successfully starts incubation, the startIncubation() stream should terminate without error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStartIncubationTerminatesOnSuccess() throws Exception {
         final TestObserver<Void> test = incubationInteractor.startIncubation().test();
@@ -76,6 +113,12 @@ public class IncubationInteractorTest {
         test.assertComplete();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource throws exception on incubation start, the startIncubation() should signal an error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStartIncubationTerminatesWithErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -85,12 +128,24 @@ public class IncubationInteractorTest {
         test.assertError(testError);
     }
 
+    /**
+     * Tests the proper behavior: the resetIncubation() should be relayed to DataSource.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStopIncubationCallsDataSource() throws Exception {
         incubationInteractor.resetIncubation().test();
         verify(incubationDataSource).resetIncubation();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource successfully resets incubation, the resetIncubation() should terminate without error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStopIncubationTerminatesOnSuccess() throws Exception {
         final TestObserver<Void> test = incubationInteractor.resetIncubation().test();
@@ -98,6 +153,12 @@ public class IncubationInteractorTest {
         test.assertComplete();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource throws exception on reset incubation, the resetIncubation() should signal an error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStopIncubationTerminatesWithErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -106,6 +167,12 @@ public class IncubationInteractorTest {
         test.assertError(testError);
     }
 
+    /**
+     * Tests the proper behavior: getIncubationCountdown() should get its data from DataSource.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownCallsDataSourceMethods() throws Exception {
         when(incubationDataSource.getIncubationStatus()).thenReturn(IncubationStatus.RUNNING);
@@ -121,6 +188,12 @@ public class IncubationInteractorTest {
         verify(incubationDataSource).getIncubationStart();
     }
 
+    /**
+     * Tests the proper behavior: when the incubation is not yet started, the getIncubationStatus() should signal error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownTerminatesWhenNoIncubationIsRunning() throws Exception {
         when(incubationDataSource.getIncubationStatus()).thenReturn(IncubationStatus.NOT_STARTED);
@@ -129,6 +202,12 @@ public class IncubationInteractorTest {
         test.assertError(IncubationNotRunningError.class);
     }
 
+    /**
+     * Tests the proper behavior: the incubation finally finishes, the getIncubationCountdown() should also finish without error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownTerminatesOnIncubationFinish() throws Exception {
         final String testValue = "test";
@@ -143,6 +222,12 @@ public class IncubationInteractorTest {
         test.assertValueAt(0, value -> value.getRemainingFormattedText().equals(testValue));
     }
 
+    /**
+     * Tests the proper behavior: when an exception occurrs during incubation, the getIncubationCountdown() should signal an error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownTerminatesOnHasRunningIncubationException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -152,6 +237,12 @@ public class IncubationInteractorTest {
         test.assertError(IncubationError.class);
     }
 
+    /**
+     * Tests the proper behavior: when an exception occurrs during incubation, the getIncubationCountdown() should signal an error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownTerminatesOnGetStartException() throws Exception {
         final Throwable testError = new RuntimeException("hello");

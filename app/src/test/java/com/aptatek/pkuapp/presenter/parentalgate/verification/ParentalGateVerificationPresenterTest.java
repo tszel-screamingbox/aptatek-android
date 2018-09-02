@@ -13,6 +13,13 @@ import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.verify;
 
+/**
+ * Tests for the ParentalGateVerificationPresenter class
+ *
+ * @test.layer presentation
+ * @test.feature ParentalGate
+ * @test.type unit
+ */
 public class ParentalGateVerificationPresenterTest {
 
     private static final String TEST_STRING = "hello";
@@ -33,6 +40,12 @@ public class ParentalGateVerificationPresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Tests the proper behavior: the initUi(AgeVerificationResult) should invoke the ParentalGateVerificationView's proper methods to render the verification result when the verification is successful.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitUiWithSuccess() throws Exception {
         presenter.initUi(AgeVerificationResult.builder()
@@ -49,6 +62,12 @@ public class ParentalGateVerificationPresenterTest {
         verify(preferenceManager).setParentalPassed(true);
     }
 
+    /**
+     * Tests the proper behavior: the initUi(AgeVerificationResult) should invoke the ParentalGateVerificationView's proper methods to render the verification result when the verification was not successful.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitUiWithError() throws Exception {
         presenter.initUi(AgeVerificationResult.builder()

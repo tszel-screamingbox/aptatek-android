@@ -23,6 +23,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for the SampleWettingInteractor class
+ *
+ * @test.layer domain
+ * @test.feature SampleWetting
+ * @test.type unit
+ */
 public class SampleWettingInteractorTest {
     
     @Mock
@@ -40,12 +47,24 @@ public class SampleWettingInteractorTest {
         interactor = new SampleWettingInteractor(wettingDataSource, timeFormatter);
     }
 
+    /**
+     * Tests the proper behavior: the getWettingStatus() method should rely on the DataSource to get the wetting status.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testGetWettingStatusCallsDataSource() throws Exception {
         interactor.getWettingStatus().test();
         verify(wettingDataSource).getWettingStatus();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource returns valid status, the interactor's getWettingStatus() should emit the same value without error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testGetWettingStatusReturnsProperValue() throws Exception {
         final WettingStatus testValue = WettingStatus.RUNNING;
@@ -56,6 +75,12 @@ public class SampleWettingInteractorTest {
         test.assertValue(testValue);
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource throws exception, the interactor's getWettingStatus() should signal an exception.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testRunningWettingEmitsErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -64,12 +89,24 @@ public class SampleWettingInteractorTest {
         test.assertError(testError);
     }
 
+    /**
+     * Tests the proper behavior: the startWetting() method should be relayed to the DataSource.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStartWettingCallsDataSource() throws Exception {
         interactor.startWetting().test();
         verify(wettingDataSource).startWetting();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource's startWetting() method runs without error, the interactor's stream should terminate without error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStartWettingTerminatesOnSuccess() throws Exception {
         final TestObserver<Void> test = interactor.startWetting().test();
@@ -77,6 +114,12 @@ public class SampleWettingInteractorTest {
         test.assertComplete();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource's startWetting() method throws exception, the interactor's stream should signal an error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStartWettingTerminatesWithErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -86,12 +129,24 @@ public class SampleWettingInteractorTest {
         test.assertError(testError);
     }
 
+    /**
+     * Tests the proper behavior: the resetWetting() method should be relayed to the DataSource.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStopWettingCallsDataSource() throws Exception {
         interactor.resetWetting().test();
         verify(wettingDataSource).resetWetting();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource's resetWetting() method runs without error, the interactor's stream should terminate without error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStopWettingTerminatesOnSuccess() throws Exception {
         final TestObserver<Void> test = interactor.resetWetting().test();
@@ -99,6 +154,12 @@ public class SampleWettingInteractorTest {
         test.assertComplete();
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource's resetWetting() method throws exception, the interactor's stream should signal error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testStopWettingTerminatesWithErrorOnException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -107,6 +168,12 @@ public class SampleWettingInteractorTest {
         test.assertError(testError);
     }
 
+    /**
+     * Tests the proper behavior: the getWettingCountdown() method should rely on the DataSource.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownCallsDataSourceMethods() throws Exception {
         when(wettingDataSource.getWettingStatus()).thenReturn(WettingStatus.RUNNING);
@@ -122,6 +189,12 @@ public class SampleWettingInteractorTest {
         verify(wettingDataSource).getWettingStart();
     }
 
+    /**
+     * Tests the proper behavior: when there is no wetting in progress, the getWettingCountdown() should signal error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownTerminatesWhenNoWettingIsRunning() throws Exception {
         when(wettingDataSource.getWettingStatus()).thenReturn(WettingStatus.NOT_STARTED);
@@ -130,6 +203,12 @@ public class SampleWettingInteractorTest {
         test.assertError(WettingNotRunningError.class);
     }
 
+    /**
+     * Tests the proper behavior: when the wetting is finally ready, the getWettingCountdown() should terminate without error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownTerminatesOnWettingFinish() throws Exception {
         final String testValue = "test";
@@ -144,6 +223,12 @@ public class SampleWettingInteractorTest {
         test.assertValueAt(0, value -> value.getRemainingFormattedText().equals(testValue));
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource throws exception during wetting, the getWettingCountdown() should signal an error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownTerminatesOnGetWettingStatusException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -153,6 +238,12 @@ public class SampleWettingInteractorTest {
         test.assertError(WettingError.class);
     }
 
+    /**
+     * Tests the proper behavior: when the DataSource throws exception during wetting, the getWettingCountdown() should signal an error.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdownTerminatesOnGetStartException() throws Exception {
         final Throwable testError = new RuntimeException("hello");
@@ -163,6 +254,12 @@ public class SampleWettingInteractorTest {
         test.assertError(WettingError.class);
     }
 
+    /**
+     * Tests the proper behavior: the getWettingProgress() should start with 0 percent.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testProgressDefault() throws Exception {
         final TestSubscriber<Integer> test = interactor.getWettingProgress().test();
@@ -170,6 +267,12 @@ public class SampleWettingInteractorTest {
         test.assertValueAt(0, 0);
     }
 
+    /**
+     * Tests the proper behavior: when some time elapses after the start of the wetting, the progress should be greater than 0.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testProgressUpdatesOnWettingTick() throws Exception {
         final String testValue = "test";

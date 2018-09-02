@@ -23,12 +23,25 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
+/**
+ * Tests for the ParentalGate screens
+ *
+ * @test.layer presentation
+ * @test.feature ParentalGate
+ * @test.type integration
+ */
 @RunWith(AndroidJUnit4.class)
 public class ParentalGateTest {
 
     @Rule
     public ActivityTestRule<ParentalGateActivity> activityRule = new ActivityTestRule<>(ParentalGateActivity.class);
 
+    /**
+     * Tests the proper visibility of the initial UI elements.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialViewsVisible() {
         onView(withId(R.id.parentalWelcomeTitle)).check(matches(isDisplayed()));
@@ -40,6 +53,12 @@ public class ParentalGateTest {
         onView(withId(R.id.keypad)).check(matches(not(isDisplayed())));
     }
 
+    /**
+     * Tests the values of the initial UI elements.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitialUiValues() {
         onView(withId(R.id.parentalWelcomeTitle)).check(matches(withText(R.string.parental_welcome_title)));
@@ -48,6 +67,12 @@ public class ParentalGateTest {
         onView(withId(R.id.parentalDisclaimer)).check(matches(withText(R.string.parental_welcome_age_disclaimer)));
     }
 
+    /**
+     * Tests whether the parental gate feature works properly when entering valid data.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testHappyCase() throws Exception {
         onView(withId(R.id.parentalButton)).perform(click());
@@ -80,6 +105,12 @@ public class ParentalGateTest {
         onView(withId(R.id.parentalVerificationTitle)).check(doesNotExist());
     }
 
+    /**
+     * Tests whether the parental gate feature works when the first we enter invalid data then valid one.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testHappyFailureWithRetry() throws Exception {
         onView(withId(R.id.parentalButton)).perform(click());
