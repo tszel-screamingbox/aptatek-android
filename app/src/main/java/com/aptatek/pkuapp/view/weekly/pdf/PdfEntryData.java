@@ -6,7 +6,9 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class PdfEntryData {
 
-    public abstract String getDate();
+    public abstract String getFormattedDate();
+
+    public abstract int getDaysOfMonth();
 
     public abstract BubbleDataSet getBubbleDataSet();
 
@@ -33,25 +35,27 @@ public abstract class PdfEntryData {
     @AutoValue.Builder
     public static abstract class Builder {
 
-        public abstract Builder setDate(String date);
+        public abstract Builder setFormattedDate(final String date);
 
-        public abstract Builder setBubbleDataSet(BubbleDataSet bubbleDataSet);
+        public abstract Builder setDaysOfMonth(final int days);
 
-        public abstract Builder setUnit(String unit);
+        public abstract Builder setBubbleDataSet(final BubbleDataSet bubbleDataSet);
 
-        public abstract Builder setLowCount(int lowCount);
+        public abstract Builder setUnit(final String unit);
 
-        public abstract Builder setNormalCount(int normalCount);
+        public abstract Builder setLowCount(final int lowCount);
 
-        public abstract Builder setHighCount(int highCount);
+        public abstract Builder setNormalCount(final int normalCount);
 
-        public abstract Builder setVeryHighCount(int veryHighCount);
+        public abstract Builder setHighCount(final int highCount);
 
-        public abstract Builder setAverageCount(int averageCount);
+        public abstract Builder setVeryHighCount(final int veryHighCount);
 
-        public abstract Builder setFastingCount(int fastingCount);
+        public abstract Builder setAverageCount(final int averageCount);
 
-        public abstract Builder setSickCount(int sickCount);
+        public abstract Builder setFastingCount(final int fastingCount);
+
+        public abstract Builder setSickCount(final int sickCount);
 
         public abstract PdfEntryData build();
     }

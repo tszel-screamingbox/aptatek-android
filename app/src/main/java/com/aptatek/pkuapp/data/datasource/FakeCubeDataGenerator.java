@@ -22,6 +22,8 @@ public class FakeCubeDataGenerator {
     private static final long MIN_TIME_BETWEEN_MEASURES = 1000L * 60 * 40;
     private static final int MAX_MEASUREMENTS_PER_DAY = 5;
     private static final int FIRST_DATA_BEFORE_TODAY_IN_DAYS = 7 * 3 - 2;
+    private static final int SICK_CHANCE = 5;
+    private static final int FASTING_CHANCE = 10;
 
     private final DataFactory dataFactory;
 
@@ -66,6 +68,8 @@ public class FakeCubeDataGenerator {
         cubeDataModel.setId(dataFactory.getNumberUpTo(Integer.MAX_VALUE));
         cubeDataModel.setValueInMMol(dataFactory.getNumberUpTo((int) Constants.DEFAULT_PKU_HIGHEST_VALUE));
         cubeDataModel.setTimestamp(generateRandomTimeAtGivenDay(timestamp));
+        cubeDataModel.setSick(dataFactory.chance(SICK_CHANCE));
+        cubeDataModel.setFasting(dataFactory.chance(FASTING_CHANCE));
 
         return cubeDataModel;
     }

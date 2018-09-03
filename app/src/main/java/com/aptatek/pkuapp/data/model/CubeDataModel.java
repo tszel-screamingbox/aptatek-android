@@ -10,6 +10,10 @@ public class CubeDataModel {
 
     private double valueInMMol;
 
+    private boolean sick;
+
+    private boolean fasting;
+
     public long getId() {
         return id;
     }
@@ -40,5 +44,21 @@ public class CubeDataModel {
 
     public void setValueInMMol(final double valueInMMol) {
         this.valueInMMol = valueInMMol;
+    }
+
+    public boolean isSick() {
+        return sick;
+    }
+
+    public void setSick(boolean sick) {
+        this.sick = sick;
+    }
+
+    public boolean isFasting() {
+        return fasting;
+    }
+
+    public void setFasting(boolean fasting) {
+        this.fasting = fasting;
     }
 }
