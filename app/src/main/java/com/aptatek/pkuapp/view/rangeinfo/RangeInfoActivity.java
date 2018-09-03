@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.widget.TextView;
 
 import com.aptatek.pkuapp.R;
@@ -15,6 +13,7 @@ import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.view.base.BaseActivity;
 import com.aptatek.pkuapp.view.main.MainActivity;
 import com.aptatek.pkuapp.view.settings.pkulevel.RangeSettingsActivity;
+import com.aptatek.pkuapp.widget.RangeInfoRowView;
 
 import javax.inject.Inject;
 
@@ -28,18 +27,16 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
         return new Intent(context, RangeInfoActivity.class);
     }
 
-    @BindView(R.id.rangeinfo_veryhigh)
-    TextView tvVeryHigh;
+    @BindView(R.id.rangeinfo_very_high)
+    RangeInfoRowView tvVeryHigh;
     @BindView(R.id.rangeinfo_high)
-    TextView tvHigh;
+    RangeInfoRowView tvHigh;
     @BindView(R.id.rangeinfo_normal)
-    TextView tvNormal;
+    RangeInfoRowView tvNormal;
     @BindView(R.id.rangeinfo_low)
-    TextView tvLow;
+    RangeInfoRowView tvLow;
     @BindView(R.id.rangeinfo_units)
     TextView tvUnits;
-    @BindView(R.id.rangeinfo_edit)
-    TextView tvEdit;
 
     @Inject
     RangeInfoPresenter presenter;
@@ -48,11 +45,6 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_range_info);
         ButterKnife.bind(this);
-
-        final String text = getString(R.string.rangeinfo_edit_level_preferences);
-        final SpannableString editRangesText = new SpannableString(text);
-        editRangesText.setSpan(new UnderlineSpan(), 0, text.length(), 0);
-        tvEdit.setText(editRangesText);
     }
 
     @Override
@@ -75,10 +67,10 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
 
     @Override
     public void displayRangeInfo(@NonNull final RangeInfoUiModel uiModel) {
-        tvVeryHigh.setText(uiModel.getVeryHighValue());
-        tvHigh.setText(uiModel.getHighValue());
-        tvNormal.setText(uiModel.getNormalValue());
-        tvLow.setText(uiModel.getLowValue());
+        tvVeryHigh.setRange(uiModel.getVeryHighValue(), getString(R.string.rangeinfo_very_high));
+        tvHigh.setRange(uiModel.getHighValue(), getString(R.string.rangeinfo_high));
+        tvNormal.setRange(uiModel.getNormalValue(), getString(R.string.rangeinfo_normal));
+        tvLow.setRange(uiModel.getLowValue(), getString(R.string.rangeinfo_low));
         tvUnits.setText(uiModel.getUnitValue());
     }
 
@@ -93,7 +85,7 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
         launchActivity(new Intent(this, MainActivity.class), true, Animation.FADE);
     }
 
-    @OnClick(R.id.rangeinfo_back)
+    @OnClick(R.id.rangeinfo_edit)
     public void onClickBack() {
         onBackPressed();
     }

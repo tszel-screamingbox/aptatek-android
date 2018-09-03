@@ -31,7 +31,6 @@
     <dimen name="general.distance.xxxlarge">180dp</dimen>
     <dimen name="general.distance.enorme">250dp</dimen>
 
-
     <!-- Chart-->
     <dimen name="graph.bubble.size">50dp</dimen>
     <dimen name="graph.bubble.size.small">15dp</dimen>
@@ -64,6 +63,7 @@
     <dimen name="font.size.weekly.subtitle">21sp</dimen>
     <dimen name="font.size.weekly.title">25sp</dimen>
 
+    <dimen name="rangeinfo.range.row.offset">8dp</dimen>
 
     <item name="alpha.general.text" format="float" type="dimen">0.5</item>
     <item name="alpha.general.full" format="float" type="dimen">1.0</item>
