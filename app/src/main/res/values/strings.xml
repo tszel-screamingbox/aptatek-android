@@ -3,7 +3,7 @@
     <string name="alertdialog.button.no">No</string>
     <string name="alertdialog.button.yes">Yes</string>
     <!-- App Constants-->
-    <string name="application.name">Aptatek</string>
+    <string name="application.name">PKU LAB</string>
     <!-- AuthPin Activity -->
     <string name="auth.pin.hint">Enter your PIN code</string>
     <string name="auth.pin.hint.fingerprint">Enter your PIN code or use your fingerprint</string>
