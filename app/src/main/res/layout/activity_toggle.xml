@@ -26,7 +26,7 @@
 
     <Button
         android:id="@+id/newTestButton"
-        style="@style/General.Blue.Button"
+        style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
         android:text="@string/toggle.button.new.test"
@@ -37,7 +37,7 @@
 
     <Button
         android:id="@+id/connectCubeButton"
-        style="@style/General.Grey.Button"
+        style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
         android:text="@string/toggle.button.connect"
@@ -48,7 +48,7 @@
 
     <Button
         android:id="@+id/resultsButton"
-        style="@style/General.Grey.Button"
+        style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
         android:layout_marginTop="@dimen/general.distance.large"

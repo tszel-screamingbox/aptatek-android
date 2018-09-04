@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/cancel_button_background_selector"/>
+    <item android:drawable="@drawable/cancel_button_background_selector" />
     <item>
-        <bitmap android:src="@drawable/ic_settings" android:gravity="center" />
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/ic_settings"
+            android:tint="@color/applicationSolidGray" />
     </item>
 
 </layer-list>
