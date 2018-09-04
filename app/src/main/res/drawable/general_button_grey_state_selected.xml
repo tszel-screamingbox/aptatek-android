@@ -2,5 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <solid android:color="@color/applicationSmoke" />
+    <stroke
+        android:width="@dimen/general.distance.xxxxmini"
+        android:color="@color/applicationSilver" />
     <corners android:radius="@dimen/general.button.corner" />
 </shape>
