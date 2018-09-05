@@ -21,15 +21,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance"
-        android:paddingTop="@dimen/general.distance.xxmini"
         android:paddingBottom="@dimen/general.distance.xxmini"
-        android:paddingStart="@dimen/general.distance.xxsmall"
         android:paddingEnd="@dimen/general.distance.xxsmall"
+        android:paddingStart="@dimen/general.distance.xxsmall"
+        android:paddingTop="@dimen/general.distance.xxmini"
         android:src="@drawable/ic_left_arrow"
         android:tint="@color/applicationLightGray"
+        app:layout_constraintBottom_toBottomOf="@+id/dateText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dateText"
-        app:layout_constraintBottom_toBottomOf="@+id/dateText"
         app:layout_constraintVertical_bias="0.5"
         tools:ignore="ContentDescription" />
 
@@ -38,15 +38,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/general.distance"
-        android:paddingTop="@dimen/general.distance.xxmini"
         android:paddingBottom="@dimen/general.distance.xxmini"
-        android:paddingStart="@dimen/general.distance.xxsmall"
         android:paddingEnd="@dimen/general.distance.xxsmall"
+        android:paddingStart="@dimen/general.distance.xxsmall"
+        android:paddingTop="@dimen/general.distance.xxmini"
         android:src="@drawable/ic_right_arrow"
         android:tint="@color/applicationLightGray"
+        app:layout_constraintBottom_toBottomOf="@+id/dateText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dateText"
-        app:layout_constraintBottom_toBottomOf="@+id/dateText"
         app:layout_constraintVertical_bias="0.5"
         tools:ignore="ContentDescription" />
 
@@ -107,8 +107,21 @@
         style="@style/General.Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/applicationBlack"
         android:textSize="@dimen/font.size.normal"
-        android:textColor="@color/chartWeeklyBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Results are in mg/dl" />
+
+    <ImageView
+        android:id="@+id/pdfExport"
+        style="@style/General.Rounded.Button"
+        android:layout_width="@dimen/general.button.height.big"
+        android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginBottom="@dimen/general.distance.xmini"
+        android:layout_marginEnd="@dimen/general.distance.xsmall"
+        android:src="@drawable/ic_pdf"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
 </android.support.constraint.ConstraintLayout>

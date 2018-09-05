@@ -6,6 +6,7 @@ import android.support.constraint.Group;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.ActivityComponent;
@@ -48,6 +49,9 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     @BindView(R.id.label)
     TextView tvUnit;
 
+    @BindView(R.id.pdfExport)
+    ImageView pdfExportButton;
+
     private SwipeAdapter swipeAdapter;
 
     @Override
@@ -82,6 +86,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
 
     @OnClick(R.id.playIcon)
     public void onPlayButtonClicked() {
+        pdfExportButton.setVisibility(View.VISIBLE);
         presenter.loadValidWeeks();
     }
 
@@ -95,6 +100,12 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     public void onRightArrowClicked() {
         final int currentPage = chartViewPager.getCurrentItem();
         presenter.showPage(currentPage + 1);
+    }
+
+    @OnClick(R.id.pdfExport)
+    public void onPdfExportClicked() {
+        // TODO: pdf export
+        Toast.makeText(this, "Pdf export", Toast.LENGTH_SHORT).show();
     }
 
     private void initAdapter() {
