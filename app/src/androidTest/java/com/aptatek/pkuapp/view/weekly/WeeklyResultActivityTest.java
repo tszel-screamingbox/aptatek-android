@@ -44,6 +44,7 @@ public class WeeklyResultActivityTest {
         onView(withId(R.id.label)).check(matches(isDisplayed()));
         onView(withId(R.id.playIcon)).check(matches(isDisplayed()));
         onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
+        onView(withId(R.id.pdfExport)).check(matches(not(isDisplayed())));
 
         onView(withId(R.id.emptyTitle)).check(matches(withText(R.string.weekly_empty_title)));
         onView(withId(R.id.emptySubtitle)).check(matches(withText(R.string.weekly_empty_subtitle)));
@@ -63,6 +64,7 @@ public class WeeklyResultActivityTest {
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));
         onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
+        onView(withId(R.id.pdfExport)).check(matches(isDisplayed()));
 
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
         onView(withId(R.id.emptyTitle)).check(matches(not(isDisplayed())));
@@ -82,6 +84,7 @@ public class WeeklyResultActivityTest {
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.leftArrow)).perform(click());
 
+        onView(withId(R.id.pdfExport)).check(matches(isDisplayed()));
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
@@ -107,6 +110,7 @@ public class WeeklyResultActivityTest {
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.viewpager)).perform(swipeRight());
 
+        onView(withId(R.id.pdfExport)).check(matches(isDisplayed()));
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
