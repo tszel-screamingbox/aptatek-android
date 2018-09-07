@@ -14,11 +14,9 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.verify;
 
 /**
- * Tests for the ParentalGateVerificationPresenter class
- *
- * @test.layer presentation
+ * @test.layer View / ParentalGate
  * @test.feature ParentalGate
- * @test.type unit
+ * @test.type Unit tests
  */
 public class ParentalGateVerificationPresenterTest {
 
@@ -32,6 +30,9 @@ public class ParentalGateVerificationPresenterTest {
 
     private ParentalGateVerificationPresenter presenter;
 
+    /**
+     * Setting up the required presenter
+     */
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -41,13 +42,16 @@ public class ParentalGateVerificationPresenterTest {
     }
 
     /**
-     * Tests the proper behavior: the initUi(AgeVerificationResult) should invoke the ParentalGateVerificationView's proper methods to render the verification result when the verification is successful.
+     * Successfully passed age verification.
      *
-     * @test.input
-     * @test.expected
+     * @test.expected {@link  ParentalGateVerificationView#showImage(int)  showImage()},
+     * {@link  ParentalGateVerificationView#showTitle(String)  showTitle(String)},
+     * {@link  ParentalGateVerificationView#showMessage(String)  showMessage(String)},
+     * {@link  ParentalGateVerificationView#showButton(boolean)  showButton(boolean)}
+     * methods are called, without any error.
      */
     @Test
-    public void testInitUiWithSuccess() throws Exception {
+    public void testInitUiWithSuccess() {
         presenter.initUi(AgeVerificationResult.builder()
                 .setShowButton(false)
                 .setMessage(TEST_STRING)
@@ -63,13 +67,16 @@ public class ParentalGateVerificationPresenterTest {
     }
 
     /**
-     * Tests the proper behavior: the initUi(AgeVerificationResult) should invoke the ParentalGateVerificationView's proper methods to render the verification result when the verification was not successful.
+     * Failed to pass on age verification.
      *
-     * @test.input
-     * @test.expected
+     * @test.expected {@link  ParentalGateVerificationView#showImage(int)  showImage()},
+     * {@link  ParentalGateVerificationView#showTitle(String)  showTitle(String)},
+     * {@link  ParentalGateVerificationView#showMessage(String)  showMessage(String)},
+     * {@link  ParentalGateVerificationView#showButton(boolean)  showButton(boolean)}
+     * methods are called, without any error.
      */
     @Test
-    public void testInitUiWithError() throws Exception {
+    public void testInitUiWithError() {
         presenter.initUi(AgeVerificationResult.builder()
                 .setShowButton(true)
                 .setMessage(TEST_STRING)
