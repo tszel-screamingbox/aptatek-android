@@ -162,24 +162,15 @@
         <item name="android:datePickerMode">spinner</item>
     </style>
 
-    <style name="RangeInfo.VeryHigh" parent="General.Title">
+    <style name="RangeInfo.Row.Value" parent="General.Title">
         <item name="android:textSize">@dimen/font.size.xlarge</item>
-        <item name="android:textColor">@color/pkuLevelVeryHigh</item>
+        <item name="android:textColor">@color/applicationWhite</item>
     </style>
 
-    <style name="RangeInfo.High" parent="General.Title">
-        <item name="android:textSize">@dimen/font.size.xlarge</item>
-        <item name="android:textColor">@color/pkuLevelHigh</item>
-    </style>
-
-    <style name="RangeInfo.Normal" parent="General.Title">
-        <item name="android:textSize">@dimen/font.size.xxlarge</item>
-        <item name="android:textColor">@color/pkuLevelNormal</item>
-    </style>
-
-    <style name="RangeInfo.Low" parent="General.Title">
-        <item name="android:textSize">@dimen/font.size.xlarge</item>
-        <item name="android:textColor">@color/pkuLevelLow</item>
+    <style name="RangeInfo.Row.Name" parent="General.Text">
+        <item name="android:textSize">@dimen/font.size.big</item>
+        <item name="android:textColor">@color/applicationWhite</item>
+        <item name="android:alpha">@dimen/alpha.general.full</item>
     </style>
 
     <style name="Settings.Row.Title" parent="TextAppearance.AppCompat">

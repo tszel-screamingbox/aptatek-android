@@ -23,6 +23,13 @@ import javax.inject.Inject;
 import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
+/**
+ * Tests for the IncubationInteractor class.
+ *
+ * @test.layer domain
+ * @test.feature BloodIsProcessin
+ * @test.type integration
+ */
 @RunWith(AndroidJUnit4.class)
 public class IncubationInteractorTest {
 
@@ -43,6 +50,12 @@ public class IncubationInteractorTest {
         interactor.resetIncubation().test();
     }
 
+    /**
+     * Tests whether the first incubation status is RUNNING right after a successful startIncubation() call.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testHasRunning() throws Exception {
         interactor.startIncubation().test();
@@ -51,6 +64,12 @@ public class IncubationInteractorTest {
         test.assertComplete();
     }
 
+    /**
+     * Tests whether the first incubation status is NOT_STARTED when there is no running incubation.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testHasRunningExpired() throws Exception {
         interactor.resetIncubation().test();
@@ -59,6 +78,12 @@ public class IncubationInteractorTest {
         test.assertComplete();
     }
 
+    /**
+     * Tests whether the incubation countdown starts to count down right after startIncubation call.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testCountdown() throws Exception {
         interactor.startIncubation().test();

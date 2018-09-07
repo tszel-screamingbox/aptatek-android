@@ -24,6 +24,13 @@ import io.reactivex.observers.TestObserver;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Tests for the PkuRangeInteractor class
+ *
+ * @test.layer domain
+ * @test.feature RangeInfo, RangeSettings, Charts
+ * @test.type integration
+ */
 @RunWith(AndroidJUnit4.class)
 public class PkuRangeInteractorTest {
 
@@ -42,6 +49,12 @@ public class PkuRangeInteractorTest {
                 .inject(this);
     }
 
+    /**
+     * Tests whether the getInfo() method returns default values when the user has not set any custom range settings yet.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testGetInfoReturnsDefaults() throws Exception {
         final TestObserver<PkuRangeInfo> test = interactor.getInfo().test();
@@ -57,8 +70,14 @@ public class PkuRangeInteractorTest {
         });
     }
 
+    /**
+     * Tests whether the getInfo() method returns proper values when the user has changed default values.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
-    public void testGetInfoReturnProper() throws Exception {
+    public void testGetInfoReturnsProperCustomRange() throws Exception {
         final PkuLevelUnits unit = PkuLevelUnits.MICRO_MOL;
         final float ceil = 400f;
         final float floor = 50f;
@@ -78,8 +97,14 @@ public class PkuRangeInteractorTest {
         });
     }
 
+    /**
+     * Tests whether the getInfo() method returns updated values after changing the previously selected display unit.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
-    public void testSaveDisplayUnit() throws Exception {
+    public void testSaveDisplayUnitWorksProperly() throws Exception {
         final TestObserver<PkuRangeInfo> test = interactor.saveDisplayUnit(PkuLevelUnits.MILLI_GRAM)
                 .andThen(interactor.getInfo()).test();
         test.assertComplete();
@@ -87,8 +112,14 @@ public class PkuRangeInteractorTest {
         test.assertValueAt(0, value -> value.getPkuLevelUnit() == PkuLevelUnits.MILLI_GRAM);
     }
 
+    /**
+     * Tests whether the getInfo() method returns updated values after a saveNormalRange(PkuLevel, PkuLevel) call.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
-    public void testSaveValues() throws Exception {
+    public void testSaveNormalRangeWorksProperly() throws Exception {
         final float ceil = 500f;
         final float floor = 50f;
         final TestObserver<PkuRangeInfo> test = interactor.saveNormalRange(PkuLevel.create(floor, PkuLevelUnits.MICRO_MOL), PkuLevel.create(ceil, PkuLevelUnits.MICRO_MOL))
@@ -99,8 +130,14 @@ public class PkuRangeInteractorTest {
         test.assertValueAt(0, value -> value.getNormalFloorValue() == floor && value.getNormalCeilValue() == ceil);
     }
 
+    /**
+     * Tests whether the saveNormalRange(PkuLevel, PkuLevel) signals an exception when the range values don't meet the requirements
+     *
+     * @test.input normalFloor = -1 mMol, normalCeil = 400000 mMol
+     * @test.expected exception because the normalFloor is invalid
+     */
     @Test
-    public void testSaveValuesInRange() throws Exception {
+    public void testSaveNormalRangeSignalsExceptionOnInvalidRange() throws Exception {
         final float invalidFloor = -1f;
         final float invalidCeil = 40000f;
 
@@ -110,6 +147,12 @@ public class PkuRangeInteractorTest {
         test.assertError(error -> error instanceof IllegalArgumentException);
     }
 
+    /**
+     * Tests whether the saveNormalRange(PkuLevel, PkuLevel) signals an exception when the floor value is higher than the ceil value
+     *
+     * @test.input normalFloor = 200 mMol, normalCeil = 5 mMol
+     * @test.expected exception because the normalFloor is higher than the normalCeil
+     */
     @Test
     public void testSaveValuesRange() throws Exception {
         final float floor = 200f;

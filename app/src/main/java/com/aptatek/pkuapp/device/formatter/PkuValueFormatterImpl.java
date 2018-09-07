@@ -27,7 +27,7 @@ public class PkuValueFormatterImpl implements PkuValueFormatter {
 
     @Override
     public String formatVeryHigh(final PkuRangeInfo info) {
-        return String.format(Locale.getDefault(), getProperFormat(info), info.getHighCeilValue() + getProperOffset(info));
+        return String.format(Locale.getDefault(), getProperFormat(info), info.getHighCeilValue() + getProperOffset(info)) + "+";
     }
 
     @NonNull
@@ -51,7 +51,7 @@ public class PkuValueFormatterImpl implements PkuValueFormatter {
 
     @Override
     public String formatLow(final PkuRangeInfo info) {
-        return String.format(Locale.getDefault(), getProperFormat(info), info.getNormalFloorValue() - getProperOffset(info));
+        return "0-" + String.format(Locale.getDefault(), getProperFormat(info), info.getNormalFloorValue() - getProperOffset(info));
     }
 
     @Override

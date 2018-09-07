@@ -36,6 +36,13 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
+/**
+ * Tests for the RangeSettingsPresenter class
+ *
+ * @test.layer presentation
+ * @test.feature RangeSettings
+ * @test.type unit
+ */
 public class RangeSettingsPresenterTest {
 
     private RangeSettingsPresenter presenter;
@@ -86,6 +93,11 @@ public class RangeSettingsPresenterTest {
         RxAndroidPlugins.reset();
     }
 
+    /**
+     * Tests the proper behavior: the refresh() methods should get the data from the PkuRangeInteractor then format it via the RangeSettingsValueFormatter to be rendered on UI.
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testRefresh() throws Exception {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
@@ -121,6 +133,12 @@ public class RangeSettingsPresenterTest {
                 .build());
     }
 
+    /**
+     * Tests the proper behavior: the formatValue(PkuLevel) methods should rely on the RangeSettingsValueFormatter to get the data in the proper format to be rendered on UI.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testFormatTest() throws Exception {
         final String hello = "hello";
@@ -130,6 +148,12 @@ public class RangeSettingsPresenterTest {
         assertEquals(s, hello);
     }
 
+    /**
+     * Tests the proper behavior: the saveDisplayUnit(PkuLevelUnits) methods should save the selected unit as the displayUnit via the interactor then should trigger changes on the UI to re-render data according to the new displayUnit.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testChangeValues() throws Exception {
         doReturn(Completable.complete()).when(rangeInteractor).saveDisplayUnit(ArgumentMatchers.any(PkuLevelUnits.class));
@@ -168,6 +192,12 @@ public class RangeSettingsPresenterTest {
         verify(view).displayRangeSettings(model);
     }
 
+    /**
+     * Tests the proper behavior: the saveNormalRange(float, float) method should save normal ranges via the interactor.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testSaveValues() throws Exception {
         doReturn(Completable.complete()).when(rangeInteractor).saveNormalRange(ArgumentMatchers.any(PkuLevel.class), ArgumentMatchers.any(PkuLevel.class));
@@ -180,6 +210,12 @@ public class RangeSettingsPresenterTest {
         verify(view).finish();
     }
 
+    /**
+     * Tests the proper behavior: when the user didn't change the range values then auto save feature should be triggered: UI should not show save changes dialog.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testOnBackDoesntPopDialog() throws Exception {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
@@ -197,6 +233,12 @@ public class RangeSettingsPresenterTest {
         verify(view).finish();
     }
 
+    /**
+     * Tests the proper behavior: when the user has changed the normal range values, auto save feature should be triggered on back press: UI should show a confirmation dialog to save new values.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testOnBackPopsDialog() throws Exception {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()

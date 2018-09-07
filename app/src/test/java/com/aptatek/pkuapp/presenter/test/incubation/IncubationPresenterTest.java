@@ -29,6 +29,13 @@ import io.reactivex.processors.FlowableProcessor;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for the IncubationPresenter class.
+ *
+ * @test.layer presentation
+ * @test.feature BloodIsProcessing
+ * @test.type unit
+ */
 public class IncubationPresenterTest {
 
     private static final String TEST_STRING = "test";
@@ -86,6 +93,12 @@ public class IncubationPresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Tests the proper behavior: initUi() should trigger changes on UI: the initial state should be rendered.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitUi() throws Exception {
         presenter.initUi();
@@ -98,11 +111,23 @@ public class IncubationPresenterTest {
         verify(view).setCancelBigVisible(false);
     }
 
+    /**
+     * Tests the proper behavior: when the screen is displayed, the presenter should interact with the interactor to get the current countdown state.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testAttachViewCallsInteractor() throws Exception {
         verify(incubationInteractor).getIncubationCountdown();
     }
 
+    /**
+     * Tests the proper behavior: when the interactor's countdown stream emits a new item, the UI should be updated: the countdown text should render the new value.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testUpdateCountdown() throws Exception {
         countdownProcessor.onNext(Countdown.builder().setRemainingFormattedText(TEST_STRING).setRemainingMillis(0L).build());

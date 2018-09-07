@@ -14,6 +14,13 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
+/**
+ * Tests for the PkuRangeDataSourceImpl class
+ *
+ * @test.layer data
+ * @test.feature RangeInfo, RangeSettings, Charts
+ * @test.type unit
+ */
 public class PkuRangeDataSourceTest {
 
     private PkuRangeDataSource dataSource;
@@ -28,6 +35,11 @@ public class PkuRangeDataSourceTest {
         dataSource = new PkuRangeDataSourceImpl(preferenceManager);
     }
 
+    /**
+     * Tests the proper behavior: the data source should rely on the shared preferences so it needs to call the corresponding methods of our PreferenceManager.
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testDataSourceCallsPrefManager() throws Exception {
         doReturn(1f).when(preferenceManager).getPkuRangeNormalCeil();
@@ -53,6 +65,11 @@ public class PkuRangeDataSourceTest {
         verify(preferenceManager).setPkuRangeNormalFloor(300f);
     }
 
+    /**
+     * Test if the user has not set any custom range settings the dataSource should return default values
+     * @test.input unit, normalFloor, normalCeil
+     * @test.expected unit = uMol, normalFloor = 100, normalCeil = 350
+     */
     @Test
     public void testDataSourceReturnsDefaultsWhenPrefNotSet() throws Exception {
         doReturn(-1f).when(preferenceManager).getPkuRangeNormalFloor();
