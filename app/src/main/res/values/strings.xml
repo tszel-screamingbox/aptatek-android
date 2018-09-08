@@ -62,7 +62,7 @@
     <string name="pin.button.9">9</string>
     <!-- RangeInfo -->
     <string name="rangeinfo.back">Back</string>
-    <string name="rangeinfo.edit.level.preferences">Edit Level Preferences</string>
+    <string name="rangeinfo.edit.level.preferences">Level Preferences</string>
     <string name="rangeinfo.high">High</string>
     <string name="rangeinfo.hight">High</string>
     <string name="rangeinfo.low">Low</string>

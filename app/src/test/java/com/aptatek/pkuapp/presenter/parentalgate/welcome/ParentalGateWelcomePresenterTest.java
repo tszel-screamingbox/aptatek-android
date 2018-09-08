@@ -19,6 +19,11 @@ import io.reactivex.Single;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * @test.layer View / ParentalGate / Welcome
+ * @test.feature ParentalGate
+ * @test.type Unit tests
+ */
 public class ParentalGateWelcomePresenterTest {
 
     private static final String TEST_STRING = "hello";
@@ -34,6 +39,9 @@ public class ParentalGateWelcomePresenterTest {
 
     private ParentalGateWelcomePresenter presenter;
 
+    /**
+     * Setting up the required presenter and defining mocked component's behaviour
+     */
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -44,8 +52,21 @@ public class ParentalGateWelcomePresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Initializing the view.
+     *
+     * @test.expected {@link  ParentalGateWelcomeView#setShowKeypad(boolean)  setShowKeypad(boolean)},
+     * {@link  ParentalGateWelcomeView#setShowBirthDateField(boolean)  setShowBirthDateField(boolean)},
+     * {@link  ParentalGateWelcomeView#setShowAgeField(boolean)  setShowAgeField(boolean)},
+     * {@link  ParentalGateWelcomeView#setShowButton(boolean)  setShowButton(boolean)},
+     * {@link  ParentalGateWelcomeView#setKeypadActionText(String)  setKeypadActionText(String)},
+     * {@link  ParentalGateWelcomeView#setButtonText(String)  setButtonText(String)},
+     * {@link  ParentalGateWelcomeView#setAgeText(String)  setAgeText(String)},
+     * {@link  ParentalGateWelcomeView#setBirthDateText(String)  setBirthDateText(String)}
+     * methods are called, without any error.
+     */
     @Test
-    public void testInitUi() throws Exception {
+    public void testInitUi() {
         presenter.initUi();
 
         verify(view).setShowKeypad(false);
@@ -58,16 +79,32 @@ public class ParentalGateWelcomePresenterTest {
         verify(view).setBirthDateText("");
     }
 
+    /**
+     * Showing DatePicker flow.
+     *
+     * @test.expected {@link  ParentalGateWelcomeView#showDatePicker()  showDatePicker()}
+     * method is called, without any error.
+     */
     @Test
-    public void testOnButtonPress() throws Exception {
+    public void testOnButtonPress() {
         presenter.initUi();
 
         presenter.onButtonPress();
         verify(view).showDatePicker();
     }
 
+    /**
+     * Selecting birthdate and typing age number.
+     *
+     * @test.expected {@link  ParentalGateWelcomeView#setShowBirthDateField(boolean)  setShowBirthDateField(boolean)},
+     * {@link  ParentalGateWelcomeView#setBirthDateText(String)  setBirthDateText(String)},
+     * {@link  ParentalGateWelcomeView#setShowButton(boolean)  setShowButton(boolean)},
+     * {@link  ParentalGateWelcomeView#setShowKeypad(boolean)  setShowKeypad(boolean)},
+     * {@link  ParentalGateWelcomeView#setShowAgeField(boolean) setShowAgeField(boolean)}
+     * methods are called, without any error.
+     */
     @Test
-    public void testOnButtonPressAfterBirthDate() throws Exception {
+    public void testOnButtonPressAfterBirthDate() {
         presenter.initUi();
 
         presenter.onBirthDateSet(System.currentTimeMillis());
@@ -79,8 +116,14 @@ public class ParentalGateWelcomePresenterTest {
         verify(view).setShowAgeField(true);
     }
 
+    /**
+     * Testing age verification flow.
+     *
+     * @test.expected {@link  ParentalGateWelcomeView#showResult(AgeVerificationResult)  showResult(AgeVerificationResult)}
+     * method is called, without any error.
+     */
     @Test
-    public void testOnAgeEntered() throws Exception {
+    public void testOnAgeEntered() {
         presenter.initUi();
 
         when(parentalGateInteractor.verify(ArgumentMatchers.any(AgeCheckModel.class))).thenReturn(Single.just(AgeCheckResult.NOT_OLD_ENOUGH));

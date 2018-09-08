@@ -13,6 +13,11 @@ import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.verify;
 
+/**
+ * @test.layer View / ParentalGate
+ * @test.feature ParentalGate
+ * @test.type Unit tests
+ */
 public class ParentalGateVerificationPresenterTest {
 
     private static final String TEST_STRING = "hello";
@@ -25,6 +30,9 @@ public class ParentalGateVerificationPresenterTest {
 
     private ParentalGateVerificationPresenter presenter;
 
+    /**
+     * Setting up the required presenter
+     */
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -33,8 +41,17 @@ public class ParentalGateVerificationPresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Successfully passed age verification.
+     *
+     * @test.expected {@link  ParentalGateVerificationView#showImage(int)  showImage()},
+     * {@link  ParentalGateVerificationView#showTitle(String)  showTitle(String)},
+     * {@link  ParentalGateVerificationView#showMessage(String)  showMessage(String)},
+     * {@link  ParentalGateVerificationView#showButton(boolean)  showButton(boolean)}
+     * methods are called, without any error.
+     */
     @Test
-    public void testInitUiWithSuccess() throws Exception {
+    public void testInitUiWithSuccess() {
         presenter.initUi(AgeVerificationResult.builder()
                 .setShowButton(false)
                 .setMessage(TEST_STRING)
@@ -49,8 +66,17 @@ public class ParentalGateVerificationPresenterTest {
         verify(preferenceManager).setParentalPassed(true);
     }
 
+    /**
+     * Failed to pass on age verification.
+     *
+     * @test.expected {@link  ParentalGateVerificationView#showImage(int)  showImage()},
+     * {@link  ParentalGateVerificationView#showTitle(String)  showTitle(String)},
+     * {@link  ParentalGateVerificationView#showMessage(String)  showMessage(String)},
+     * {@link  ParentalGateVerificationView#showButton(boolean)  showButton(boolean)}
+     * methods are called, without any error.
+     */
     @Test
-    public void testInitUiWithError() throws Exception {
+    public void testInitUiWithError() {
         presenter.initUi(AgeVerificationResult.builder()
                 .setShowButton(true)
                 .setMessage(TEST_STRING)

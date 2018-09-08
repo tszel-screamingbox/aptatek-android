@@ -22,6 +22,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -32,6 +33,13 @@ import io.reactivex.plugins.RxJavaPlugins;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
+/**
+ * Tests for the RangeInfoPresenter class
+ *
+ * @test.layer presentation
+ * @test.feature RangeInfo
+ * @test.type unit
+ */
 public class RangeInfoPresenterTest {
 
     private RangeInfoPresenter presenter;
@@ -85,8 +93,14 @@ public class RangeInfoPresenterTest {
         RxAndroidPlugins.reset();
     }
 
+    /**
+     * Tests the proper behavior: the refresh() method should call the the PkuRangeInteractor to get the current PkuRangeInfo object then use the PkuValueFormatter to format the data to be displayed on UI.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
-    public void testRefreshCallsInteractorAndFormatter() {
+    public void testRefreshCallsInteractorAndFormatter() throws Exception {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
                 .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
@@ -119,6 +133,23 @@ public class RangeInfoPresenterTest {
                 .setVeryHighValue(testValue)
                 .setUnitValue(testValue)
                 .build());
+    }
+
+    /**
+     * Tests the proper behavior: the clearTestState() method should call the the interactors to reset any running tests.
+     *
+     * @test.input
+     * @test.expected
+     */
+    @Test
+    public void testClearTestStateCallsInteractors() throws Exception {
+        doReturn(Completable.complete()).when(sampleWettingInteractor).resetWetting();
+        doReturn(Completable.complete()).when(incubationInteractor).resetIncubation();
+
+        presenter.clearTestState();
+
+        verify(sampleWettingInteractor).resetWetting();
+        verify(incubationInteractor).resetIncubation();
     }
 
 }

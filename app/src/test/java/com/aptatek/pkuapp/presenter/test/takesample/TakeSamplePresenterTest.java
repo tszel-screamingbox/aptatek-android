@@ -19,6 +19,13 @@ import io.reactivex.Completable;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for the TakeSamplePresenter class.
+ *
+ * @test.layer presentation
+ * @test.feature Test flow - Take Sample
+ * @test.type unit
+ */
 public class TakeSamplePresenterTest {
 
     private static final String TEST_STRING = "TEST";
@@ -50,6 +57,12 @@ public class TakeSamplePresenterTest {
         presenter.attachView(view);
     }
 
+    /**
+     * Tests the proper behavior: the initUi() method should trigger changes on the UI to display initial state.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testInitUi() throws Exception {
         presenter.initUi();
@@ -65,6 +78,12 @@ public class TakeSamplePresenterTest {
         verify(view).loadVideo(ArgumentMatchers.any());
     }
 
+    /**
+     * Tests the proper behavior: onChangeAge() method should trigger changes on the UI: age switcher text, video thumbnail and video should be changed.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testOnChangeAge() throws Exception {
         presenter.onChangeAge();

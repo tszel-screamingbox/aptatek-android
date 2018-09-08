@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.presenter.test.remindersettings;
+package com.aptatek.pkuapp.presenter.remindersettings;
 
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.remindersettings.ReminderInteractor;

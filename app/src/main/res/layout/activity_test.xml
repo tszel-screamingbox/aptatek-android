@@ -27,7 +27,7 @@
 
     <Button
         android:id="@+id/testNavigationButton"
-        style="@style/General.Blue.Button"
+        style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
         app:layout_constraintBottom_toTopOf="@+id/bottomGuide"
@@ -36,7 +36,7 @@
 
     <Button
         android:id="@+id/testCancelButton"
-        style="@style/General.Grey.Button"
+        style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
         android:text="@string/test.button.cancel"

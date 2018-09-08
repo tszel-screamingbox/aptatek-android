@@ -21,6 +21,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Tests for the PkuRangeInteractor class
+ *
+ * @test.layer domain
+ * @test.feature RangeInfo, RangeSettings, Charts
+ * @test.type unit
+ */
 public class PkuRangeInteractorTest {
 
     private PkuRangeInteractor interactor;
@@ -34,6 +41,12 @@ public class PkuRangeInteractorTest {
         interactor = new PkuRangeInteractor(dataSource);
     }
 
+    /**
+     * Tests the proper behavior: this class should rely on the PkuRangeDataSource so we expect to call its methods to get the desired values.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testGetInfoCallsDataSource() throws Exception {
         when(dataSource.getHighCeilValueMMol()).thenReturn(1f);
@@ -53,6 +66,12 @@ public class PkuRangeInteractorTest {
         test.assertValueCount(1);
     }
 
+    /**
+     * Tests the proper behavior: the returned stream of getInfo() method should signal error when the DataSource throws exception.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testGetInfoSignalsErrorOnDataSourceException() throws Exception {
         doThrow(new RuntimeException()).when(dataSource).getDisplayUnit();
@@ -61,6 +80,12 @@ public class PkuRangeInteractorTest {
         test.assertError(error -> error instanceof RuntimeException);
     }
 
+    /**
+     * Tests the proper behavior: the getInfo() method should complete without error and emit a PkuRangeInfo object with the proper values.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testGetInfoConvertsUnit() throws Exception {
         final float highCeilValue = 510f;
@@ -79,6 +104,12 @@ public class PkuRangeInteractorTest {
         test.assertValueAt(0, value -> value.getNormalCeilValue() == PkuLevelConverter.convertTo(PkuLevel.create(normalCeilValue, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
     }
 
+    /**
+     * Tests the proper behavior: the saveDisplayUnit(PkuLevelUnits) method should call the the DataSource to store the selected display unit.
+     *
+     * @test.input
+     * @test.expected
+     */
     @Test
     public void testSaveDisplayUnitCallsDataSource() throws Exception {
         final PkuLevelUnits unit = PkuLevelUnits.MICRO_MOL;
@@ -89,6 +120,12 @@ public class PkuRangeInteractorTest {
         verify(dataSource).setDisplayUnit(unit);
     }
 
+     /**
+     * Tests the proper behavior: the saveNormalRange(float, float) method should call the the DataSource to store the range settings then complete without error.
+     *
+     * @test.input normalFloor = 3.0 mg, normalCeil = 17.2 mg
+     * @test.expected The dataSource.setNormalFloorValueMMol and dataSource.setNormalCeilValueMMol are called with proper values
+     */
     @Test
     public void testSaveNormalRangeCallsDataSource() throws Exception {
         final PkuLevel floor = PkuLevel.create(3f, PkuLevelUnits.MILLI_GRAM);
@@ -101,6 +138,12 @@ public class PkuRangeInteractorTest {
         verify(dataSource).setNormalCeilValueMMol(PkuLevelConverter.convertTo(ceil, PkuLevelUnits.MICRO_MOL).getValue());
     }
 
+    /**
+     * Tests the proper behavior: the saveNormalRange(float, float) method should signal an error when invalid values are about to be saved.
+     *
+     * @test.input normalFloor = -1 mg, normalCeil = 200 mg
+     * @test.expected exception is signaled on the stream
+     */
     @Test
     public void testSaveNormalRangeError() throws Exception {
         final PkuLevel floor = PkuLevel.create(-1f, PkuLevelUnits.MILLI_GRAM);

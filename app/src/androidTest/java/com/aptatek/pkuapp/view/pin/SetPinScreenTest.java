@@ -20,12 +20,22 @@ import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * @test.layer View / Pin
+ * @test.feature Setting user's PIN code
+ * @test.type Instrumented unit tests
+ */
 public class SetPinScreenTest {
 
     @Rule
     public ActivityTestRule<SetPinHostActivity> activityRule = new ActivityTestRule<>(SetPinHostActivity.class);
 
 
+    /**
+     * Testing the initial view.
+     *
+     * @test.expected View appears, without any error.
+     */
     @Test
     public void testInitialView() {
         onView(withId(R.id.title)).check(matches(isDisplayed()));
@@ -37,6 +47,11 @@ public class SetPinScreenTest {
         onView(withId(R.id.pinLayout)).check(matches(hasChildCount(6)));
     }
 
+    /**
+     * Valid PIN code validation.
+     *
+     * @test.expected The typed PIN code is valid, finishing current activity.
+     */
     @Test
     public void testEnterValidPin() throws Exception {
         // SetPin
@@ -56,6 +71,11 @@ public class SetPinScreenTest {
         assertTrue(activityRule.getActivity().isFinishing());
     }
 
+    /**
+     * Invalid PIN code validation.
+     *
+     * @test.expected The first PIN is invalid, but second is valid. Then finishing current activity.
+     */
     @Test
     public void testEnterInvalidPinAndCorrectIt() throws Exception {
         // SetPin

@@ -23,12 +23,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
+/**
+ * @test.layer View / ParentalGate
+ * @test.feature ParentalGate, age verification
+ * @test.type Instrumented unit tests
+ */
 @RunWith(AndroidJUnit4.class)
 public class ParentalGateTest {
 
     @Rule
     public ActivityTestRule<ParentalGateActivity> activityRule = new ActivityTestRule<>(ParentalGateActivity.class);
 
+    /**
+     * Testing the initial view elements.
+     *
+     * @test.expected View appears, without any error.
+     */
     @Test
     public void testInitialViewsVisible() {
         onView(withId(R.id.parentalWelcomeTitle)).check(matches(isDisplayed()));
@@ -40,6 +50,11 @@ public class ParentalGateTest {
         onView(withId(R.id.keypad)).check(matches(not(isDisplayed())));
     }
 
+    /**
+     * Testing the initial view values.
+     *
+     * @test.expected View appears with the correct values.
+     */
     @Test
     public void testInitialUiValues() {
         onView(withId(R.id.parentalWelcomeTitle)).check(matches(withText(R.string.parental_welcome_title)));
@@ -48,6 +63,11 @@ public class ParentalGateTest {
         onView(withId(R.id.parentalDisclaimer)).check(matches(withText(R.string.parental_welcome_age_disclaimer)));
     }
 
+    /**
+     * Passing age verification successfully.
+     *
+     * @test.expected The applications accepts the typed age number.
+     */
     @Test
     public void testHappyCase() throws Exception {
         onView(withId(R.id.parentalButton)).perform(click());
@@ -80,6 +100,11 @@ public class ParentalGateTest {
         onView(withId(R.id.parentalVerificationTitle)).check(doesNotExist());
     }
 
+    /**
+     * Failing on age verification.
+     *
+     * @test.expected The applications doesn't accepts the typed age number: the first is not old enough, the second doesn't match with selected one.
+     */
     @Test
     public void testHappyFailureWithRetry() throws Exception {
         onView(withId(R.id.parentalButton)).perform(click());
