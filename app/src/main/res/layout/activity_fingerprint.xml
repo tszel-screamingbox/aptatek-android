@@ -55,7 +55,7 @@
 
     <Button
         android:id="@+id/enableButton"
-        style="@style/General.Blue.Button"
+        style="@style/General.Rounded.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/general.button.height.big"
         android:text="@string/fingerprint.option.enable"
@@ -63,7 +63,7 @@
 
     <Button
         android:id="@+id/disableButton"
-        style="@style/General.Grey.Button"
+        style="@style/General.Rounded.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/general.button.height.big"
         android:layout_marginTop="@dimen/general.distance.small"

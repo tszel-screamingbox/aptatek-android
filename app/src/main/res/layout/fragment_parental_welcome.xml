@@ -69,7 +69,7 @@
 
     <Button
         android:id="@+id/parentalButton"
-        style="@style/General.Blue.Button"
+        style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/general.distance.xxsmall"
