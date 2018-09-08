@@ -35,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnPageChange;
+import timber.log.Timber;
 
 public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView, WeeklyResultActivityPresenter> implements WeeklyResultActivityView {
 
@@ -191,7 +192,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
             document.close();
             out.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.d(e);
         }
 
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);

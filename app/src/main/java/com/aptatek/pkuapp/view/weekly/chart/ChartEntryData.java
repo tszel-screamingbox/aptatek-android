@@ -1,7 +1,6 @@
 package com.aptatek.pkuapp.view.weekly.chart;
 
 import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 

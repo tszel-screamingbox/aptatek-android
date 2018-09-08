@@ -1,7 +1,6 @@
 package com.aptatek.pkuapp.view.weekly.chart;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
