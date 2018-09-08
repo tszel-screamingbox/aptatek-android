@@ -1,5 +1,6 @@
 package com.aptatek.pkuapp.view.weekly;
 
+import com.aptatek.pkuapp.view.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 import java.util.List;
@@ -17,4 +18,7 @@ interface WeeklyResultActivityView extends MvpView {
     void displayUnitLabel(String unitLabel);
 
     void displayValidWeekList(List<Integer> validWeeks);
+
+    void onPdfDataReady(PdfEntryData pdfData);
+
 }

@@ -2,8 +2,8 @@
 <com.aptatek.pkuapp.widget.PdfExportView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="@dimen/pdf.width"
+    android:layout_height="@dimen/pdf.height">
 
     <TextView
         android:id="@+id/textViewTitle"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        tools:text="Monthly Results"
+        android:text="@string/pdf.export.title"
         android:textColor="@color/pdfTitle"
         android:textSize="@dimen/font.size.xlarge"
         android:textStyle="bold"
@@ -19,12 +19,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/textViewSubTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        tools:text="March 2018"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+        tools:text="March 2018" />
 
     <ImageView
         android:id="@+id/imageViewPkuLabIcon"
@@ -38,13 +39,14 @@
 
     <TextView
         android:id="@+id/textViewUnitDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="40dp"
-        tools:text="All units are in mmol/L"
+        android:gravity="end"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPkuLabIcon" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPkuLabIcon"
+        tools:text="All units are in mmol/L" />
 
     <TextView
         android:id="@+id/textViewLowNumber"
@@ -54,25 +56,26 @@
         android:layout_marginStart="20dp"
         android:background="@drawable/bubble_pdf_low"
         android:gravity="center"
-        tools:text="2x"
         android:textColor="@color/pkuLevelLow"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="2x" />
 
     <TextView
         android:id="@+id/textViewLowText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        tools:text="Low"
+        android:text="@string/pdf.legend.low"
         android:textColor="@color/pkuLevelLow"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewLowNumber"
         app:layout_constraintStart_toEndOf="@id/textViewLowNumber"
-        app:layout_constraintTop_toTopOf="@+id/textViewLowNumber" />
+        app:layout_constraintTop_toTopOf="@+id/textViewLowNumber"
+        tools:text="Low" />
 
     <TextView
         android:id="@+id/textViewNormalNumber"
@@ -82,25 +85,26 @@
         android:layout_marginStart="20dp"
         android:background="@drawable/bubble_pdf_normal"
         android:gravity="center"
-        tools:text="8x"
         android:textColor="@color/pkuLevelNormal"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textViewLowText" />
+        app:layout_constraintStart_toEndOf="@id/textViewLowText"
+        tools:text="8x" />
 
     <TextView
         android:id="@+id/textViewNormalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        tools:text="Normal"
+        android:text="@string/pdf.legend.normal"
         android:textColor="@color/pkuLevelNormal"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewNormalNumber"
         app:layout_constraintStart_toEndOf="@id/textViewNormalNumber"
-        app:layout_constraintTop_toTopOf="@+id/textViewNormalNumber" />
+        app:layout_constraintTop_toTopOf="@+id/textViewNormalNumber"
+        tools:text="Normal" />
 
     <TextView
         android:id="@+id/textViewHighNumber"
@@ -110,25 +114,26 @@
         android:layout_marginStart="20dp"
         android:background="@drawable/bubble_pdf_high"
         android:gravity="center"
-        tools:text="8x"
         android:textColor="@color/pkuLevelHigh"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textViewNormalText" />
+        app:layout_constraintStart_toEndOf="@id/textViewNormalText"
+        tools:text="8x" />
 
     <TextView
         android:id="@+id/textViewHighText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        tools:text="High"
+        android:text="@string/pdf.legend.high"
         android:textColor="@color/pkuLevelHigh"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewHighNumber"
         app:layout_constraintStart_toEndOf="@id/textViewHighNumber"
-        app:layout_constraintTop_toTopOf="@+id/textViewHighNumber" />
+        app:layout_constraintTop_toTopOf="@+id/textViewHighNumber"
+        tools:text="High" />
 
     <TextView
         android:id="@+id/textViewVeryHighNumber"
@@ -138,25 +143,26 @@
         android:layout_marginStart="20dp"
         android:background="@drawable/bubble_pdf_very_high"
         android:gravity="center"
-        tools:text="8x"
         android:textColor="@color/pkuLevelVeryHigh"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textViewHighText" />
+        app:layout_constraintStart_toEndOf="@id/textViewHighText"
+        tools:text="8x" />
 
     <TextView
         android:id="@+id/textViewVeryHighText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        tools:text="Very High"
+        android:text="@string/pdf.legend.very.high"
         android:textColor="@color/pkuLevelVeryHigh"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewVeryHighNumber"
         app:layout_constraintStart_toEndOf="@id/textViewVeryHighNumber"
-        app:layout_constraintTop_toTopOf="@+id/textViewVeryHighNumber" />
+        app:layout_constraintTop_toTopOf="@+id/textViewVeryHighNumber"
+        tools:text="Very High" />
 
     <TextView
         android:id="@+id/textViewSickNumber"
@@ -166,12 +172,12 @@
         android:layout_marginEnd="5dp"
         android:background="@drawable/bubble_sick"
         android:gravity="center"
-        tools:text="8x"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/textViewSickText" />
+        app:layout_constraintEnd_toStartOf="@id/textViewSickText"
+        tools:text="8x" />
 
     <TextView
         android:id="@+id/textViewSickText"
@@ -179,13 +185,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="5dp"
-        tools:text="Sick"
+        android:text="@string/pdf.legend.sick"
         android:textColor="@color/pkuPdfSick"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber" />
+        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber"
+        tools:text="Sick" />
 
     <TextView
         android:id="@+id/textViewFastingText"
@@ -193,13 +200,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="5dp"
-        tools:text="Fasting"
+        android:text="@string/pdf.legend.fasting"
         android:textColor="@color/pkuPdfSick"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
         app:layout_constraintEnd_toStartOf="@+id/textViewSickNumber"
-        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber" />
+        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber"
+        tools:text="Fasting" />
 
     <TextView
         android:id="@+id/textViewFastingNumber"
@@ -209,12 +217,12 @@
         android:layout_marginEnd="5dp"
         android:background="@drawable/bubble_fasting"
         android:gravity="center"
-        tools:text="8x"
         android:textColor="@color/applicationBlack"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/textViewFastingText" />
+        app:layout_constraintEnd_toStartOf="@id/textViewFastingText"
+        tools:text="8x" />
 
     <TextView
         android:id="@+id/textViewAverageText"
@@ -222,13 +230,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="5dp"
-        tools:text="Fasting"
+        android:text="Average (+/- 333.10)"
         android:textColor="@color/pkuLevelNormal"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
         app:layout_constraintEnd_toStartOf="@+id/textViewFastingNumber"
-        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber" />
+        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber"
+        tools:text="Fasting" />
 
     <TextView
         android:id="@+id/textViewAverageNumber"
@@ -238,12 +247,12 @@
         android:layout_marginEnd="5dp"
         android:background="@drawable/bubble_pdf_normal"
         android:gravity="center"
-        tools:text="275"
         android:textColor="@color/pkuLevelNormal"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/textViewAverageText" />
+        app:layout_constraintEnd_toStartOf="@id/textViewAverageText"
+        tools:text="275" />
 
     <com.github.mikephil.charting.charts.BubbleChart
         android:id="@+id/chart"

@@ -212,4 +212,20 @@
     <string name="weekly.suffix.dayofmonth.third">rd</string>
     <string name="weekly.suffix.dayofmonth.nth">th</string>
     <string name="weekly.title">Weekly Results</string>
+
+    <string name="pdf.export.title">Monthly Results</string>
+    <string name="pdf.export.unit.description">All units are in %1$s</string>
+    <string name="pdf.export.legend.x">%1$sx</string>
+    <string name="pdf.export.average">Average (+/- %1$s)</string>
+    <string name="pdf.export.email.subject">Exported results from PKU LAB</string>
+    <string name="pdf.export.file.name">PKU history %1$s.pdf</string>
+    <string name="pdf.export.subtitle.dateformat">MMMM yyyy</string>
+    <string name="pdf.export.file.name.dateformat">MM.dd.yyyy</string>
+
+    <string name="pdf.legend.fasting">Fasting</string>
+    <string name="pdf.legend.sick">Sick</string>
+    <string name="pdf.legend.very.high">Very High</string>
+    <string name="pdf.legend.high">High</string>
+    <string name="pdf.legend.normal">Normal</string>
+    <string name="pdf.legend.low">Low</string>
 </resources>

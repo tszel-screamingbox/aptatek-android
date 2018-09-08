@@ -27,11 +27,28 @@ public class PdfExportView extends ConstraintLayout {
 
     @BindView(R.id.textViewTitle)
     TextView tvTitle;
-    @BindView(R.id.textViewFastingNumber)
-    TextView tvFastingNumber;
-
+    @BindView(R.id.textViewSubTitle)
+    TextView subTitle;
     @BindView(R.id.chart)
     BubbleChart bubbleChart;
+    @BindView(R.id.textViewUnitDescription)
+    TextView unitDescription;
+    @BindView(R.id.textViewFastingNumber)
+    TextView fastingNumber;
+    @BindView(R.id.textViewSickNumber)
+    TextView sickNumber;
+    @BindView(R.id.textViewAverageNumber)
+    TextView averageNumber;
+    @BindView(R.id.textViewLowNumber)
+    TextView lowNumber;
+    @BindView(R.id.textViewNormalNumber)
+    TextView normalNumber;
+    @BindView(R.id.textViewHighNumber)
+    TextView highNumber;
+    @BindView(R.id.textViewVeryHighNumber)
+    TextView veryHighNumber;
+    @BindView(R.id.textViewAverageText)
+    TextView averageText;
 
     private PdfEntryData pdfEntryData;
 
@@ -50,10 +67,17 @@ public class PdfExportView extends ConstraintLayout {
     public void setData(final @NonNull PdfEntryData pdfEntryData) {
         this.pdfEntryData = pdfEntryData;
 
-        tvTitle.setText(pdfEntryData.getFormattedDate());
-        tvFastingNumber.setText(String.valueOf(pdfEntryData.getFastingCount()));
-        // TODO bind data to every other views
-        
+        subTitle.setText(pdfEntryData.getFormattedDate());
+        lowNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getLowCount()));
+        normalNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getNormalCount()));
+        highNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getHighCount()));
+        veryHighNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getVeryHighCount()));
+        sickNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getSickCount()));
+        averageNumber.setText(String.valueOf(pdfEntryData.getAverageCount()));
+        fastingNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getFastingCount()));
+        averageText.setText(getResources().getString(R.string.pdf_export_average, String.format("%.2f", pdfEntryData.getDeviation())));
+        unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
+
         initChart();
 
         invalidate();

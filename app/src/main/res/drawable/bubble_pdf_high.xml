@@ -5,8 +5,8 @@
 
             <solid android:color="@color/pkuPdfLevelHigh" />
             <size
-                android:width="@dimen/graph.bubble.size"
-                android:height="@dimen/graph.bubble.size" />
+                android:width="@dimen/pdf.legend.bubble.size"
+                android:height="@dimen/pdf.legend.bubble.size" />
         </shape>
     </item>
 </layer-list>

@@ -48,7 +48,7 @@ public class WeeklyChartDataTransformer {
     }
 
     @NonNull
-    Single<ChartEntryData> transform(final CubeData cubeData) {
+    public Single<ChartEntryData> transform(final CubeData cubeData) {
         return pkuRangeInteractor.getInfo()
             .map(rangeInfo -> buildChartEntryData(rangeInfo, cubeData));
     }

@@ -18,8 +18,8 @@ public class PdfChartDataTransformer extends WeeklyChartDataTransformer {
 
     @Inject
     PdfChartDataTransformer(final ResourceInteractor resourceInteractor,
-                               final PkuRangeInteractor pkuRangeInteractor,
-                               final RangeSettingsValueFormatter rangeSettingsValueFormatter) {
+                            final PkuRangeInteractor pkuRangeInteractor,
+                            final RangeSettingsValueFormatter rangeSettingsValueFormatter) {
         super(resourceInteractor, pkuRangeInteractor, rangeSettingsValueFormatter);
     }
 

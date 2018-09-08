@@ -5,8 +5,8 @@
 
             <solid android:color="@color/pkuPdfFasting" />
             <size
-                android:width="@dimen/graph.bubble.size"
-                android:height="@dimen/graph.bubble.size" />
+                android:width="@dimen/pdf.legend.bubble.size"
+                android:height="@dimen/pdf.legend.bubble.size" />
 
             <stroke
                 android:width="@dimen/graph.bubble.stroke.small"
@@ -19,10 +19,10 @@
             <corners android:radius="@dimen/graph.bubble.radius.small" />
             <solid android:color="@color/pkuPdfFasting" />
             <size
-                android:width="@dimen/graph.bubble.size"
-                android:height="@dimen/graph.bubble.size" />
+                android:width="@dimen/pdf.legend.bubble.size"
+                android:height="@dimen/pdf.legend.bubble.size" />
             <stroke
-                android:width="@dimen/graph.bubble.stroke.big"
+                android:width="4dp"
                 android:color="@color/transparent" />
         </shape>
     </item>

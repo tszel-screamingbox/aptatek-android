@@ -28,12 +28,20 @@ public abstract class PdfEntryData {
 
     public abstract int getSickCount();
 
+    public abstract double getDeviation();
+
+    public abstract String getFileName();
+
+    public abstract Builder toBuilder();
+
     public static Builder builder() {
         return new AutoValue_PdfEntryData.Builder();
     }
 
     @AutoValue.Builder
     public static abstract class Builder {
+
+        public abstract Builder setFileName(final String fileName);
 
         public abstract Builder setFormattedDate(final String date);
 
@@ -56,6 +64,8 @@ public abstract class PdfEntryData {
         public abstract Builder setFastingCount(final int fastingCount);
 
         public abstract Builder setSickCount(final int sickCount);
+
+        public abstract Builder setDeviation(final double deviation);
 
         public abstract PdfEntryData build();
     }

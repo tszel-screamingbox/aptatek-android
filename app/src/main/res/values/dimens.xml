@@ -70,4 +70,6 @@
 
     <dimen name="pdf.width">1000dp</dimen>
     <dimen name="pdf.height">800dp</dimen>
+
+    <dimen name="pdf.legend.bubble.size">40dp</dimen>
 </resources>
