@@ -8,6 +8,4 @@ public interface RangeInfoView extends MvpView {
 
     void displayRangeInfo(@NonNull RangeInfoUiModel uiModel);
 
-    void navigateToHome();
-
 }

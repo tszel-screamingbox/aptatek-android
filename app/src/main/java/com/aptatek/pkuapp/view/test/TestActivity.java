@@ -15,11 +15,11 @@ import com.aptatek.pkuapp.view.base.BaseFragment;
 import com.aptatek.pkuapp.view.test.base.TestFragmentBaseView;
 import com.aptatek.pkuapp.view.test.canceltest.CancelTestFragment;
 import com.aptatek.pkuapp.view.test.incubation.IncubationFragment;
+import com.aptatek.pkuapp.view.test.samplewetting.SampleWettingFragment;
+import com.aptatek.pkuapp.view.test.takesample.TakeSampleFragment;
 import com.aptatek.pkuapp.view.test.tutorial.attachcube.AttachCubeFragment;
 import com.aptatek.pkuapp.view.test.tutorial.insertcasette.InsertCasetteFragment;
-import com.aptatek.pkuapp.view.test.takesample.TakeSampleFragment;
 import com.aptatek.pkuapp.view.test.tutorial.insertsample.InsertSampleFragment;
-import com.aptatek.pkuapp.view.test.samplewetting.SampleWettingFragment;
 
 import javax.inject.Inject;
 

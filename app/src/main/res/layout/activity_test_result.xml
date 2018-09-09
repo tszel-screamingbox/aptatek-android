@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.96" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideBubbleStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.24" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideBubbleEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.76" />
+
+    <TextView
+        android:id="@+id/test_result_title"
+        style="@style/General.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/general.distance.small"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintTop_toTopOf="@id/guideTop"
+        tools:text="Too high!" />
+
+    <TextView
+        android:id="@+id/test_result_message"
+        style="@style/General.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/test_result_title"
+        tools:text="Contact your medician" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/test_result_bubble"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/general.distance"
+        android:layout_marginTop="@dimen/general.distance"
+        android:background="@drawable/bubble_background"
+        app:layout_constraintBottom_toTopOf="@+id/test_result_done"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="@id/guideBubbleEnd"
+        app:layout_constraintStart_toStartOf="@id/guideBubbleStart"
+        app:layout_constraintTop_toBottomOf="@+id/test_result_message"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/test_result_bubble_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/general.distance"
+            android:layout_marginStart="@dimen/general.distance"
+            android:gravity="center"
+            android:lines="1"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            tools:text="420" />
+
+        <!--<TextView-->
+        <!--android:id="@+id/test_result_bubble_message"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="@dimen/general.distance"-->
+        <!--android:layout_marginEnd="@dimen/general.distance"-->
+        <!--android:layout_marginStart="@dimen/general.distance"-->
+        <!--android:layout_marginTop="@dimen/general.distance.xmini"-->
+        <!--android:gravity="center"-->
+        <!--android:lines="1"-->
+        <!--android:textStyle="bold"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/test_result_bubble_value"-->
+        <!--tools:text="High"-->
+        <!--android:visibility="gone"/>-->
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/test_result_done"
+        style="@style/General.Rounded.Button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginBottom="@dimen/activity.margin.vertical"
+        android:text="@string/test.result.done"
+        app:layout_constraintBottom_toTopOf="@+id/test_result_range_info"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart" />
+
+    <TextView
+        android:id="@+id/test_result_range_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/general.distance.small"
+        android:layout_marginTop="@dimen/general.distance.small"
+        android:text="@string/test.result.range.info"
+        android:textColor="@color/applicationSolidGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideStart" />
+
+</android.support.constraint.ConstraintLayout>

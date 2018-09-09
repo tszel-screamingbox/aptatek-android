@@ -48,4 +48,11 @@ public class CubeDataRepository extends Repository<CubeData, CubeDataModel> {
                 .map(mapper::mapListToDomain)
                 .subscribeOn(Schedulers.io());
     }
+
+    @NonNull
+    public Single<CubeData> getLatest() {
+        return Single.fromCallable(() -> cubeDataSource.getLatestData())
+                .map(mapper::mapToDomain)
+                .subscribeOn(Schedulers.io());
+    }
 }

@@ -67,9 +67,6 @@
 
     <dimen name="rangeinfo.range.row.offset">8dp</dimen>
 
-    <item name="alpha.general.text" format="float" type="dimen">0.5</item>
-    <item name="alpha.general.full" format="float" type="dimen">1.0</item>
-
     <dimen name="pdf.width">1000dp</dimen>
     <dimen name="pdf.height">800dp</dimen>
 

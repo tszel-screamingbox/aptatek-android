@@ -21,7 +21,7 @@ public class IncubationDataSourceImpl implements IncubationDataSource {
 
         if (incubationStart <= 0L) {
             return IncubationStatus.NOT_STARTED;
-        } else if(System.currentTimeMillis() - incubationStart <= Constants.DEFAULT_INCUBATION_PERIOD) {
+        } else if (System.currentTimeMillis() - incubationStart <= Constants.DEFAULT_INCUBATION_PERIOD) {
             return IncubationStatus.RUNNING;
         } else {
             return IncubationStatus.FINISHED;
