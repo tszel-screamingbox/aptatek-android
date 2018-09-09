@@ -199,7 +199,9 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="DefaultDialogTheme" parent="ThemeOverlay.AppCompat.Dialog" />
+    <style name="DefaultDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:fontFamily">@font/nunito_black</item>
+    </style>
 
     <style name="ReminderSnoozeDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="android:textColor">@android:color/black</item>

@@ -2,13 +2,17 @@ package com.aptatek.pkuapp.view.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
+import android.widget.TextView;
 
+import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.AlertDialogModel;
 
 public class AlertDialogFragment extends DialogFragment {
@@ -80,7 +84,14 @@ public class AlertDialogFragment extends DialogFragment {
                     .setTextColor(ContextCompat.getColor(requireContext(), alertDialogModel.getPositiveButtonTextColor()));
             alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL)
                     .setTextColor(ContextCompat.getColor(requireContext(), alertDialogModel.getNeutralButtonTextColor()));
+
+            final TextView dialogTitle = alertDialog.findViewById(R.id.alertTitle);
+            if (dialogTitle != null) {
+                final Typeface typeface = ResourcesCompat.getFont(requireActivity(), R.font.nunito_black);
+                dialogTitle.setTypeface(typeface);
+            }
         });
+
         return alertDialog;
     }
 
