@@ -1,7 +1,9 @@
 package com.aptatek.pkuapp.view.weekly.chart;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 
 import com.aptatek.pkuapp.R;
@@ -81,14 +83,16 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     }
 
     private void initChart() {
+        final Typeface typeface = ResourcesCompat.getFont(getBaseActivity().getApplicationContext(), R.font.nunito_black);
         final XAxis xAxis = weeklyBubbleChart.getXAxis();
         final String[] days = getResources().getStringArray(R.array.weekly_days);
-        xAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
+        xAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
         xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
         xAxis.setAxisMinimum(MIN_X);
         xAxis.setAxisMaximum(MAX_X);
+        xAxis.setTypeface(typeface);
 
         final YAxis yAxis = weeklyBubbleChart.getAxisLeft();
         final String[] hours = getResources().getStringArray(R.array.weekly_hours);
@@ -104,7 +108,8 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES);
         yAxis.setLabelCount(hours.length, true);
-        yAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
+        yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
+        yAxis.setTypeface(typeface);
 
         final BubbleData data = new BubbleData();
         weeklyBubbleChart.setData(data);
