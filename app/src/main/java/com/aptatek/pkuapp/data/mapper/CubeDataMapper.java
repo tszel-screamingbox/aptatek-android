@@ -32,6 +32,8 @@ public class CubeDataMapper implements Mapper<CubeData,CubeDataModel> {
                 .setId(dataModel.getId())
                 .setTimestamp(dataModel.getTimestamp())
                 .setPkuLevel(PkuLevel.create((float) dataModel.getValueInMMol(), PkuLevelUnits.MICRO_MOL))
+                .setSick(dataModel.isSick())
+                .setFasting(dataModel.isFasting())
                 .build();
     }
 
@@ -49,6 +51,8 @@ public class CubeDataMapper implements Mapper<CubeData,CubeDataModel> {
         cubeDataModel.setId(domainModel.getId());
         cubeDataModel.setTimestamp(domainModel.getTimestamp());
         cubeDataModel.setValueInMMol(domainModel.getPkuLevel().getValue());
+        cubeDataModel.setFasting(domainModel.isFasting());
+        cubeDataModel.setSick(domainModel.isSick());
         return cubeDataModel;
     }
 

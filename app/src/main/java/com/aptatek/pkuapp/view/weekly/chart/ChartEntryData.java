@@ -19,8 +19,13 @@ public abstract class ChartEntryData {
 
     public abstract @ColorInt int getBubbleColor();
 
+    public abstract @ColorInt int getStrokeColor();
+
+    public abstract ChartEntryData.Builder toBuilder();
+
     public static ChartEntryData.Builder builder() {
-        return new AutoValue_ChartEntryData.Builder();
+        return new AutoValue_ChartEntryData.Builder()
+                .setStrokeColor(0);
     }
 
     @AutoValue.Builder
@@ -37,6 +42,8 @@ public abstract class ChartEntryData {
         public abstract Builder setLabelColor(@ColorInt int labelColor);
 
         public abstract Builder setBubbleColor(@ColorInt int bubbleColor);
+
+        public abstract Builder setStrokeColor(@ColorInt int strokeColor);
 
         public abstract ChartEntryData build();
 

@@ -29,4 +29,13 @@
     <color name="pkuLevelNormal">#20E8CD</color>
     <color name="pkuLevelLow">#31CACF</color>
 
+    <color name="pkuPdfLevelLow">#3331CACF</color>
+    <color name="pkuPdfLevelNormal">#3320E8CD</color>
+    <color name="pkuPdfLevelHigh">#33FFD34F</color>
+    <color name="pkuPdfLevelVeryHigh">#33FA4E7C</color>
+
+    <color name="pkuPdfSick">#4F4F4F</color>
+    <color name="pkuPdfFasting">#D3DAE3</color>
+
+    <color name="pdfTitle">#0A263C</color>
 </resources>

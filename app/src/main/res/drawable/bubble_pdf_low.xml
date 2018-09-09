@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/fullBubble">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/graph.bubble.radius.small" />
+
+            <solid android:color="@color/pkuPdfLevelLow" />
+            <size
+                android:width="@dimen/pdf.legend.bubble.size"
+                android:height="@dimen/pdf.legend.bubble.size" />
+        </shape>
+    </item>
+</layer-list>

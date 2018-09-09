@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
@@ -15,7 +15,7 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
     private final CubeInteractor cubeInteractor;
     private final WeeklyChartDataTransformer weeklyChartDataTransformer;
 
-    private Disposable disposable;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject
     WeeklyChartPresenter(final CubeInteractor cubeInteractor,
@@ -30,7 +30,7 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
         final long start = TimeHelper.getEarliestTimeAtGivenWeek(weekBeforeTimestamp);
         final long end = TimeHelper.getLatestTimeAtGivenWeek(weekBeforeTimestamp);
 
-        disposable = cubeInteractor.listBetween(start, end)
+        disposables.add(cubeInteractor.listBetween(start, end)
                 .toFlowable()
                 .flatMapIterable(it -> it)
                 .flatMapSingle(weeklyChartDataTransformer::transform)
@@ -39,14 +39,14 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(dataSet ->
                         ifViewAttached(attachedView -> attachedView.displayChartData(dataSet))
-                );
+                ));
 
     }
 
     @Override
     public void detachView() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
+        if (!disposables.isDisposed()) {
+            disposables.clear();
         }
 
         super.detachView();

@@ -116,4 +116,5 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
         weeklyBubbleChart.getDescription().setEnabled(false);
         weeklyBubbleChart.setRenderer(new CustomBubbleChartRenderer(weeklyBubbleChart));
     }
+
 }
