@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="@dimen/general.distance.xxxsmall"
-    android:layout_marginTop="@dimen/general.distance.xxxsmall">
+    android:paddingTop="@dimen/general.distance.xxxsmall">
 
     <TextView
         android:id="@+id/title"
@@ -107,21 +106,23 @@
         style="@style/General.Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/applicationBlack"
+        android:textColor="@color/chartWeeklyBlue"
         android:textSize="@dimen/font.size.normal"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/buttonPdfExport"
         tools:text="Results are in mg/dl" />
 
-    <ImageView
-        android:id="@+id/pdfExport"
-        style="@style/General.Rounded.Button"
-        android:layout_width="@dimen/general.button.height.big"
-        android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginBottom="@dimen/general.distance.xmini"
-        android:layout_marginEnd="@dimen/general.distance.xsmall"
-        android:src="@drawable/ic_pdf"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonPdfExport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general.distance.mini"
+        android:background="@color/pkuPdfFasting"
+        android:src="@drawable/pdf_ic"
         android:visibility="invisible"
+        app:backgroundTint="@color/pkuPdfFasting"
+        app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:rippleColor="@color/pkuPdfFasting" />
 </android.support.constraint.ConstraintLayout>

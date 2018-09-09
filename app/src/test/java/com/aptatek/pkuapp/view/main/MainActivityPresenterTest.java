@@ -12,6 +12,7 @@ import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
 import com.aptatek.pkuapp.view.main.adapter.ChartVM;
 import com.aptatek.pkuapp.view.main.adapter.DailyChartFormatter;
+import com.aptatek.pkuapp.view.parentalgate.welcome.ParentalGateWelcomeView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +31,11 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 // TODO write proper tests for this class...
+/**
+ * @test.layer View / Main
+ * @test.feature MainActivity, BubbleChart
+ * @test.type Unit tests
+ */
 public class MainActivityPresenterTest {
 
     private static final String TEST_STRING = "hello";
@@ -54,6 +60,9 @@ public class MainActivityPresenterTest {
     private ChartVM emptyItem;
     private ChartVM notEmptyItem;
 
+    /**
+     * Setting up the required presenter and defining mocked component's behaviour
+     */
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
@@ -99,6 +108,12 @@ public class MainActivityPresenterTest {
                 .build();
     }
 
+    /**
+     * Bubble chart zooming animation with empty measure.
+     *
+     * @test.expected {@link  MainActivityView#updateTitles(String, String)   updateTitles(String, String)  }
+     * method is called, without any error.
+     */
     @Test
     public void testItemUpdateWithEmptyMeasure() {
         presenter.itemZoomIn(emptyItem);
@@ -107,6 +122,12 @@ public class MainActivityPresenterTest {
         verify(view).updateTitles(TEST_STRING, TEST_STRING);
     }
 
+    /**
+     * Bubble chart zooming animation.
+     *
+     * @test.expected {@link  MainActivityView#updateTitles(String, String)   updateTitles(String, String)  }
+     * method is called, without any error.
+     */
     @Test
     public void testItemUpdate() {
         presenter.itemZoomIn(notEmptyItem);

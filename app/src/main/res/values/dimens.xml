@@ -70,4 +70,8 @@
     <item name="alpha.general.text" format="float" type="dimen">0.5</item>
     <item name="alpha.general.full" format="float" type="dimen">1.0</item>
 
+    <dimen name="pdf.width">1000dp</dimen>
+    <dimen name="pdf.height">800dp</dimen>
+
+    <dimen name="pdf.legend.bubble.size">40dp</dimen>
 </resources>

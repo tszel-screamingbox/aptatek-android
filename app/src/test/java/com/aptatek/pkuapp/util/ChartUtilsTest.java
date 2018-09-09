@@ -16,12 +16,20 @@ import static com.aptatek.pkuapp.util.ChartUtils.smallBubbleBackground;
 import static com.aptatek.pkuapp.util.ChartUtils.stateColor;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @test.layer Util
+ * @test.feature ChartUtils operations
+ * @test.type Unit tests
+ */
 public class ChartUtilsTest {
 
     private PkuRangeInfo rangeInfo;
 
+    /**
+     * Setting up the required variable
+     */
     @Before
-    public void before() throws Exception {
+    public void before() {
         rangeInfo = PkuRangeInfo.builder()
                 .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
@@ -32,6 +40,11 @@ public class ChartUtilsTest {
                 .build();
     }
 
+    /**
+     * Testing bubble's states.
+     *
+     * @test.expected The values are equals, no errors.
+     */
     @Test
     public void testChartState() {
         try {
@@ -47,6 +60,11 @@ public class ChartUtilsTest {
         assertEquals(State.VERY_HIGH, ChartUtils.getState(PkuLevel.create(Constants.DEFAULT_PKU_HIGH_RANGE + 50f + Constants.DEFAULT_PKU_NORMAL_CEIL, PkuLevelUnits.MICRO_MOL), rangeInfo));
     }
 
+    /**
+     * Testing small bubble's background colors.
+     *
+     * @test.expected The values are equals, no errors.
+     */
     @Test
     public void testSmallBubbleBackground() {
         assertEquals(R.drawable.bubble_full_low, smallBubbleBackground(State.LOW));
@@ -55,6 +73,11 @@ public class ChartUtilsTest {
         assertEquals(R.drawable.bubble_full_very_high, smallBubbleBackground(State.VERY_HIGH));
     }
 
+    /**
+     * Testing big bubble's background colors.
+     *
+     * @test.expected The values are equals, no errors.
+     */
     @Test
     public void testBigBubbleBackground() {
         assertEquals(R.drawable.bubble_big_low, bigBubbleBackground(State.LOW));
@@ -63,6 +86,11 @@ public class ChartUtilsTest {
         assertEquals(R.drawable.bubble_big_very_high, bigBubbleBackground(State.VERY_HIGH));
     }
 
+    /**
+     * Testing state's colors.
+     *
+     * @test.expected The values are equals, no errors.
+     */
     @Test
     public void testStateColor() {
         assertEquals(R.color.pkuLevelLow, stateColor(State.LOW));

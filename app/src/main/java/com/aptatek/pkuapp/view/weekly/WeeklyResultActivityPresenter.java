@@ -6,8 +6,14 @@ import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.device.time.TimeHelper;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.cube.CubeInteractor;
+import com.aptatek.pkuapp.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
+import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
+import com.aptatek.pkuapp.util.ChartUtils;
+import com.aptatek.pkuapp.view.weekly.chart.PdfChartDataTransformer;
+import com.aptatek.pkuapp.view.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
@@ -30,6 +36,7 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
     private final PkuRangeInteractor rangeInteractor;
     private final WeeklyChartDateFormatter weeklyChartDateFormatter;
     private final List<Integer> weekList = new ArrayList<>();
+    private final PdfChartDataTransformer pdfChartDataTransformer;
 
     private CompositeDisposable disposables;
 
@@ -37,11 +44,13 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
     public WeeklyResultActivityPresenter(final CubeInteractor cubeInteractor,
                                          final ResourceInteractor resourceInteractor,
                                          final PkuRangeInteractor rangeInteractor,
-                                         final WeeklyChartDateFormatter weeklyChartDateFormatter) {
+                                         final WeeklyChartDateFormatter weeklyChartDateFormatter,
+                                         final PdfChartDataTransformer pdfChartDataTransformer) {
         this.cubeInteractor = cubeInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
         this.weeklyChartDateFormatter = weeklyChartDateFormatter;
+        this.pdfChartDataTransformer = pdfChartDataTransformer;
     }
 
     @Override
@@ -119,7 +128,121 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
         );
     }
 
+    void getPdfChartData(final int monthsBefore) {
+        final long monthsBeforeTimeStamp = TimeHelper.addMonths(-1 * monthsBefore, System.currentTimeMillis());
+        final long start = TimeHelper.getEarliestTimeAtGivenMonth(monthsBeforeTimeStamp);
+        final long end = TimeHelper.getLatestTimeAtGivenMonth(monthsBeforeTimeStamp);
+
+        final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
+
+        final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
+                .setFormattedDate(weeklyChartDateFormatter.getPdfMonthFormat(weekList.size() - monthsBefore - 1))
+                .setFileName(resourceInteractor.getStringResource(R.string.pdf_export_file_name, weeklyChartDateFormatter.getPdfFileNameDateFormat()))
+                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                        ? R.string.rangeinfo_pkulevel_mmol
+                        : R.string.rangeinfo_pkulevel_mg));
+
+        disposables.add(cubeInteractor.listBetween(start, end)
+                .toFlowable()
+                .map(list -> {
+                    int fastingCount = 0;
+                    int sickCount = 0;
+                    int low = 0;
+                    int normal = 0;
+                    int high = 0;
+                    int veryHigh = 0;
+                    float fullCount = 0;
+
+                    for (CubeData cubeData : list) {
+                        if (cubeData.isFasting()) {
+                            fastingCount++;
+                        }
+
+                        if (pkuRangeInfo.getPkuLevelUnit() != cubeData.getPkuLevel().getUnit()) {
+                            fullCount += PkuLevelConverter.convertTo(cubeData.getPkuLevel(), pkuRangeInfo.getPkuLevelUnit()).getValue();
+                        } else {
+                            fullCount += cubeData.getPkuLevel().getValue();
+                        }
+
+                        final ChartUtils.State state = ChartUtils.getState(cubeData.getPkuLevel(), pkuRangeInfo);
+
+                        if (state == ChartUtils.State.LOW) {
+                            low++;
+                        } else if (state == ChartUtils.State.NORMAL) {
+                            normal++;
+                        } else if (state == ChartUtils.State.HIGH) {
+                            high++;
+                        } else if (state == ChartUtils.State.VERY_HIGH) {
+                            veryHigh++;
+                        }
+
+                        if (cubeData.isSick()) {
+                            sickCount++;
+                        }
+
+                        pdfEntryDataBuilder
+                                .setFastingCount(fastingCount)
+                                .setLowCount(low)
+                                .setNormalCount(normal)
+                                .setHighCount(high)
+                                .setVeryHighCount(veryHigh)
+                                .setSickCount(sickCount);
+                    }
+
+                    pdfEntryDataBuilder
+                            .setAverageCount((int) (fullCount / list.size()))
+                            .setDeviation(getDeviation(list));
+
+                    return list;
+                })
+                .flatMapIterable(it -> it)
+                .flatMapSingle(pdfChartDataTransformer::transform)
+                .toList()
+                .flatMap(pdfChartDataTransformer::transformEntries)
+                .map(bubbleDataSet -> {
+
+                    pdfEntryDataBuilder
+                            .setBubbleDataSet(bubbleDataSet)
+                            .setDaysOfMonth(TimeHelper.getDaysBetween(start, end));
+
+                    return pdfEntryDataBuilder;
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(dataSet ->
+                        ifViewAttached(attachedView -> attachedView.onPdfDataReady(dataSet.build()))
+                ));
+    }
+
     public List<Integer> getValidWeeks() {
         return weekList;
+    }
+
+    private double getDeviation(final List<CubeData> table) {
+
+        final double mean = mean(table);
+        double temp = 0;
+
+        for (int i = 0; i < table.size(); i++) {
+            final float val = table.get(i).getPkuLevel().getValue();
+
+            final double squrDiffToMean = Math.pow(val - mean, 2);
+
+
+            temp += squrDiffToMean;
+        }
+
+        final double meanOfDiffs = temp / (double) (table.size());
+
+        return Math.sqrt(meanOfDiffs);
+    }
+
+    private double mean(final List<CubeData> table) {
+        int total = 0;
+
+        for (int i = 0; i < table.size(); i++) {
+            final float currentNum = table.get(i).getPkuLevel().getValue();
+            total += currentNum;
+        }
+        return total / table.size();
     }
 }

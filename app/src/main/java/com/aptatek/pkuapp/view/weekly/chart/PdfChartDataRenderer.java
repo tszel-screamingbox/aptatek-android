@@ -1,7 +1,6 @@
 package com.aptatek.pkuapp.view.weekly.chart;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
@@ -24,7 +23,7 @@ import java.util.List;
 // - in the drawDataSet method since we need custom bubble colors for each entry.
 // - drawHighlighted is empty since we don't need highlighting
 // - drawValues modified to render text properly positioned
-public class CustomBubbleChartRenderer extends BubbleChartRenderer {
+public class PdfChartDataRenderer extends BubbleChartRenderer {
 
     private static final float BUBBLE_TEXT_PADDING_RATIO = 0.30f;
     private static final float BUBBLE_TEXT_SIZE_STEP = 5f;
@@ -32,7 +31,7 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
 
     protected BubbleDataProvider mChart;
 
-    public CustomBubbleChartRenderer(final BubbleChart chart) {
+    public PdfChartDataRenderer(final BubbleChart chart) {
         super(chart, chart.getAnimator(), chart.getViewPortHandler());
         mChart = chart;
 
@@ -109,15 +108,24 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                 break;
 
             final int color;
+            final int strokeColor;
             final Object data = entry.getData();
             if (data instanceof ChartEntryData) {
-                color = ((ChartEntryData) data).getBubbleColor();
+                final ChartEntryData chartEntryData = (ChartEntryData) data;
+                color = chartEntryData.getBubbleColor();
+                strokeColor = chartEntryData.getStrokeColor();
             } else {
                 color = dataSet.getColor((int) entry.getX());
+                strokeColor = color;
             }
 
             mRenderPaint.setColor(color);
             c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mRenderPaint);
+
+            if (strokeColor != 0) {
+                mHighlightPaint.setColor(strokeColor);
+                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mHighlightPaint);
+            }
         }
     }
 
@@ -145,7 +153,6 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                 // apply the text-styling defined by the DataSet
                 applyValueTextStyle(dataSet);
 
-                final float phaseX = Math.max(0.f, Math.min(1.f, mAnimator.getPhaseX()));
                 final float phaseY = mAnimator.getPhaseY();
 
                 mXBounds.set(mChart, dataSet);
@@ -153,17 +160,12 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesBubble(dataSet, phaseY, mXBounds.min, mXBounds.max);
 
-                final float alpha = phaseX == 1 ? phaseY : phaseX;
 
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
                 iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
                 iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
 
                 for (int j = 0; j < positions.length; j += 2) {
-
-                    int valueTextColor = dataSet.getValueTextColor(j / 2 + mXBounds.min);
-                    valueTextColor = Color.argb(Math.round(255.f * alpha), Color.red(valueTextColor),
-                            Color.green(valueTextColor), Color.blue(valueTextColor));
 
                     float x = positions[j];
                     float y = positions[j + 1];
@@ -175,11 +177,14 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                         continue;
 
                     BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
+                    final ChartEntryData data = (ChartEntryData) entry.getData();
+
+                    final int valueTextColor = data.getLabelColor();
                     final float shapeSize = getShapeSize(entry.getSize(), referenceSize);
                     mValuePaint.setTextSize(findOptimalTextSize(shapeSize, DEMO_TEXT_4_DIGITS, mValuePaint.getTextSize()));
 
                     if (dataSet.isDrawValuesEnabled()) {
-                        final float lineHeight = Utils.calcTextHeight(mValuePaint, "9999");
+                        final float lineHeight = Utils.calcTextHeight(mValuePaint, DEMO_TEXT_4_DIGITS);
                         drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
                                 y + (0.5f * lineHeight), valueTextColor);
                     }

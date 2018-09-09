@@ -26,6 +26,12 @@ public final class TimeHelper {
         return weeksAdded.toDate().getTime();
     }
 
+    public static long addMonths(final int numOfMonths, final long targetTimestamp) {
+        final LocalDate localDate = dateFromTimestamp(targetTimestamp);
+        final LocalDate weeksAdded = localDate.plusWeeks(numOfMonths);
+        return weeksAdded.toDate().getTime();
+    }
+
     public static long getEarliestTimeAtGivenDay(final long timestamp) {
         final LocalDateTime localTime = timeFromTimestamp(timestamp);
         final LocalDateTime earliest = localTime.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
@@ -48,6 +54,18 @@ public final class TimeHelper {
         final LocalDate localDate = dateFromTimestamp(timestamp);
         final LocalDate sundayThatWeek = localDate.withDayOfWeek(DateTimeConstants.SUNDAY);
         return getLatestTimeAtGivenDay(sundayThatWeek.toDate().getTime());
+    }
+
+    public static long getEarliestTimeAtGivenMonth(final long timestamp) {
+        final LocalDate localDate = dateFromTimestamp(timestamp);
+        final LocalDate mondayThatMonth = localDate.dayOfMonth().withMinimumValue();
+        return getEarliestTimeAtGivenDay(mondayThatMonth.toDate().getTime());
+    }
+
+    public static long getLatestTimeAtGivenMonth(final long timestamp) {
+        final LocalDate localDate = dateFromTimestamp(timestamp);
+        final LocalDate sundayThatMonth = localDate.dayOfMonth().withMaximumValue();
+        return getLatestTimeAtGivenDay(sundayThatMonth.toDate().getTime());
     }
 
     public static int getDaysBetween(final long start, final long end) {

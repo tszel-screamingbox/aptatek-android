@@ -13,11 +13,9 @@ import java.util.Calendar;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for the ParentalGateInteractor class
- *
- * @test.layer domain
+ * @test.layer Domain / Interactor
  * @test.feature ParentalGate
- * @test.type unit
+ * @test.type Unit tests
  */
 public class ParentalGateInteractorTest {
 
@@ -27,6 +25,9 @@ public class ParentalGateInteractorTest {
     @Mock
     BirthDateFormatter birthDateFormatter;
 
+    /**
+     * Setting up the required presenter
+     */
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -35,13 +36,12 @@ public class ParentalGateInteractorTest {
     }
 
     /**
-     * Tests the proper behavior: the formatBirthDate(long) method should call the the BirthDateFormatter class to return a properly formatted String representation of the birthday and completes without error.
+     * Testing birthday format.
      *
-     * @test.input birthday as long
-     * @test.expected formatted String
+     * @test.expected The stream completely emit without any error.
      */
     @Test
-    public void testFormatBirthday() throws Exception {
+    public void testFormatBirthday() {
         final long birthDate = System.currentTimeMillis();
         when(birthDateFormatter.formatBirthDate(birthDate)).thenReturn(TEST_STRING);
 
@@ -60,77 +60,73 @@ public class ParentalGateInteractorTest {
     }
 
     /**
-     * Tests whether the verify(AgeCheckModel) method completes and emits an AgeCheckResult.VALID_AGE object when the time elapsed between today and the provided birthdate equals the provided age.
+     * Testing age verification.
      *
-     * @test.input birthday = today minus 21 years and 3 months, age = 21
-     * @test.expected VALID_AGE
+     * @test.expected The stream returns with "VALID_AGE" result, without any error.
      */
     @Test
-    public void testVerify() throws Exception {
+    public void testVerify() {
         parentalGateInteractor.verify(AgeCheckModel.builder()
                 .setAge(21)
                 .setBirthDate(getTimestampForAge(21))
                 .setBirthDateFormatted("")
                 .build()
         ).test()
-        .assertNoErrors()
-        .assertValue(AgeCheckResult.VALID_AGE)
-        .assertComplete();
+                .assertNoErrors()
+                .assertValue(AgeCheckResult.VALID_AGE)
+                .assertComplete();
     }
 
     /**
-     * Tests whether the verify(AgeCheckModel) method completes and emits a AgeCheckResult.NOT_OLD_ENOUGH object when the provided age is under 13
+     * Testing underage verification.
      *
-     * @test.input age = 12
-     * @test.expected NOT_OLD_ENOUGH
+     * @test.expected The stream returns with "NOT_OLD_ENOUGH" result, without any error.
      */
     @Test
-    public void testVerifyUnderAge() throws Exception {
+    public void testVerifyUnderAge() {
         parentalGateInteractor.verify(AgeCheckModel.builder()
                 .setAge(12)
                 .setBirthDate(System.currentTimeMillis())
                 .setBirthDateFormatted("")
                 .build()
         ).test()
-        .assertNoErrors()
-        .assertValue(AgeCheckResult.NOT_OLD_ENOUGH)
-        .assertComplete();
+                .assertNoErrors()
+                .assertValue(AgeCheckResult.NOT_OLD_ENOUGH)
+                .assertComplete();
     }
 
     /**
-     * Tests whether the verify(AgeCheckModel) method completes and emits a AgeCheckResult.NOT_NOT_MATCH object when the provided age doesn't match the elapsed years since the given birthdate
+     * Testing age verification.
      *
-     * @test.input age = 20, birthDate = today minus 23 years and 3 months
-     * @test.expected NOT_OLD_ENOUGH
+     * @test.expected The stream returns with "AGE_NOT_MATCH" result, without any error.
      */
     @Test
-    public void testVerifyAgeMismatch() throws Exception {
+    public void testVerifyAgeMismatch() {
         parentalGateInteractor.verify(AgeCheckModel.builder()
                 .setAge(20)
                 .setBirthDate(getTimestampForAge(23))
                 .setBirthDateFormatted("")
                 .build()
         ).test()
-        .assertNoErrors()
-        .assertValue(AgeCheckResult.AGE_NOT_MATCH)
-        .assertComplete();
+                .assertNoErrors()
+                .assertValue(AgeCheckResult.AGE_NOT_MATCH)
+                .assertComplete();
     }
 
     /**
-     * Tests whether the verify(AgeCheckModel) method signals error when the provided birthDate is in the future.
+     * Testing age verification with invalid, future date.
      *
-     * @test.input birthDate = now + 1 hour
-     * @test.expected exception
+     * @test.expected The stream returns with IllegalArgumentException.
      */
     @Test
-    public void testVerifyAgeFutureBornThrowsException() throws Exception {
+    public void testVerifyAgeFutureBornThrowsException() {
         parentalGateInteractor.verify(AgeCheckModel.builder()
                 .setAge(21)
                 .setBirthDate(System.currentTimeMillis() + 1000 * 60 * 60)
                 .setBirthDateFormatted("")
                 .build()
         ).test()
-        .assertError(throwable -> throwable instanceof IllegalArgumentException);
+                .assertError(throwable -> throwable instanceof IllegalArgumentException);
     }
 
 }

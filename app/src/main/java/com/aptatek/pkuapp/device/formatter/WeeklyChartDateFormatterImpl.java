@@ -9,6 +9,7 @@ import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.view.weekly.WeeklyChartDateFormatter;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -30,6 +31,25 @@ public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
         final String formattedDate = simpleDateFormat.format(actualDate);
 
         return resourceInteractor.getStringResource(R.string.weekly_subtitle, formattedDate);
+    }
+
+    @Override
+    public String getPdfFileNameDateFormat() {
+        final Date date = Calendar.getInstance().getTime();
+
+        final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.pdf_export_file_name_dateformat), Locale.getDefault());
+        return df.format(date);
+    }
+
+    @Override
+    public String getPdfMonthFormat(final int weeksBeforeNow) {
+        final long actualWeekTimestamp = TimeHelper.addWeeks(-1 * weeksBeforeNow, System.currentTimeMillis());
+        final Date actualDate = new Date(actualWeekTimestamp);
+        final SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat(resourceInteractor.getStringResource(R.string.pdf_export_subtitle_dateformat), Locale.getDefault());
+
+        final String format = simpleDateFormat.format(actualDate);
+        return format.substring(0, 1).toUpperCase() + format.substring(1);
     }
 
     @StringRes

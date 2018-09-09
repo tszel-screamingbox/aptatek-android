@@ -7,5 +7,4 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 interface WeeklyChartView extends MvpView {
 
     void displayChartData(BubbleDataSet bubbleDataSet);
-
 }

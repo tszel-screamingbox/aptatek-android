@@ -24,11 +24,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
 /**
- * Tests for the ParentalGate screens
- *
- * @test.layer presentation
- * @test.feature ParentalGate
- * @test.type integration
+ * @test.layer View / ParentalGate
+ * @test.feature ParentalGate, age verification
+ * @test.type Instrumented unit tests
  */
 @RunWith(AndroidJUnit4.class)
 public class ParentalGateTest {
@@ -37,10 +35,9 @@ public class ParentalGateTest {
     public ActivityTestRule<ParentalGateActivity> activityRule = new ActivityTestRule<>(ParentalGateActivity.class);
 
     /**
-     * Tests the proper visibility of the initial UI elements.
+     * Testing the initial view elements.
      *
-     * @test.input
-     * @test.expected
+     * @test.expected View appears, without any error.
      */
     @Test
     public void testInitialViewsVisible() {
@@ -54,10 +51,9 @@ public class ParentalGateTest {
     }
 
     /**
-     * Tests the values of the initial UI elements.
+     * Testing the initial view values.
      *
-     * @test.input
-     * @test.expected
+     * @test.expected View appears with the correct values.
      */
     @Test
     public void testInitialUiValues() {
@@ -68,10 +64,9 @@ public class ParentalGateTest {
     }
 
     /**
-     * Tests whether the parental gate feature works properly when entering valid data.
+     * Passing age verification successfully.
      *
-     * @test.input
-     * @test.expected
+     * @test.expected The applications accepts the typed age number.
      */
     @Test
     public void testHappyCase() throws Exception {
@@ -106,10 +101,9 @@ public class ParentalGateTest {
     }
 
     /**
-     * Tests whether the parental gate feature works when the first we enter invalid data then valid one.
+     * Failing on age verification.
      *
-     * @test.input
-     * @test.expected
+     * @test.expected The applications doesn't accepts the typed age number: the first is not old enough, the second doesn't match with selected one.
      */
     @Test
     public void testHappyFailureWithRetry() throws Exception {

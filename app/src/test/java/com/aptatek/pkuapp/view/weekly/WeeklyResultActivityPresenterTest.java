@@ -8,6 +8,7 @@ import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
 import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
 import com.aptatek.pkuapp.util.Constants;
+import com.aptatek.pkuapp.view.weekly.chart.PdfChartDataTransformer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +47,8 @@ public class WeeklyResultActivityPresenterTest {
     private PkuRangeInteractor pkuRangeInteractor;
     @Mock
     private WeeklyChartDateFormatter weeklyChartDateFormatter;
+    @Mock
+    private PdfChartDataTransformer pdfChartDataTransformer;
 
     private WeeklyResultActivityPresenter presenter;
     private List<CubeData> cubeDataList = new ArrayList<>();
@@ -82,7 +85,8 @@ public class WeeklyResultActivityPresenterTest {
                 cubeInteractor,
                 resourceInteractor,
                 pkuRangeInteractor,
-                weeklyChartDateFormatter);
+                weeklyChartDateFormatter,
+                pdfChartDataTransformer);
         presenter.attachView(view);
     }
 
