@@ -18,6 +18,11 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <style name="ToolBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="fontFamily">@font/nunito_black</item>
+    </style>
+
     <style name="General.Rounded.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height</item>
         <item name="android:background">@drawable/general_button_grey_background</item>
