@@ -5,9 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +34,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 public class MainActivity extends BaseActivity<MainActivityView, MainActivityPresenter> implements MainActivityView, DiscreteScrollView.ScrollStateChangeListener {
 
@@ -69,6 +73,12 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @BindView(R.id.playIcon)
     ImageView playIcon;
 
+    @BindView(R.id.buttonGroup)
+    Group buttonsGroup;
+
+    @BindView(R.id.bigSettingsButton)
+    Button bigSettingsButton;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +86,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         ButterKnife.bind(this);
 
         initAdapter();
-        bubbleScrollView.setVisibility(View.GONE); //TODO: later, check if DB is empty or not
+        bubbleScrollView.setVisibility(GONE); //TODO: later, check if DB is empty or not
 
         recyclerViewDailyResults.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewDailyResults.setAdapter(dailyResultsAdapter);
@@ -133,38 +143,38 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @Override
     public void displayData(final List<ChartVM> data) {
-        bubbleScrollView.setVisibility(View.VISIBLE);
-        playIcon.setVisibility(View.GONE);
+        bubbleScrollView.setVisibility(VISIBLE);
+        playIcon.setVisibility(GONE);
         chartAdapter.setItems(data);
         bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
     }
 
-    @OnClick(R.id.resultButton)
+    @OnClick(R.id.weeklyButton)
     public void onToggleButtonClicked() {
         final Intent intent = new Intent(this, WeeklyResultActivity.class);
-        launchActivity(intent, false, Animation.RIGHT_TO_LEFT);
+        launchActivity(intent, false, Animation.BOTTOM_TO_TOP);
     }
 
     @OnClick(R.id.newTestButton)
     public void onNewTestButtonClicked() {
         presenter.startNewTest();
-
-        // launchActivity(TestResultActivity.starter(this), false, Animation.FADE);
     }
 
-    @OnClick(R.id.settingsButton)
+    @OnClick({R.id.settingsButton, R.id.bigSettingsButton})
     public void onSettingsButtonClicked() {
         launchActivity(SettingsActivity.starter(this), false, Animation.FADE);
     }
 
     @OnClick(R.id.playIcon)
     public void onPlayIconClicked() {
+        bigSettingsButton.setVisibility(GONE);
+        buttonsGroup.setVisibility(VISIBLE);
         presenter.loadData();
     }
 
     @OnClick(R.id.imgCloseResults)
     public void onCloseResultsClicked() {
-        resultListContainer.setVisibility(View.GONE);
+        resultListContainer.setVisibility(GONE);
     }
 
     private void initAdapter() {
@@ -180,8 +190,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);
-            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && resultListContainer.getVisibility() == View.GONE) {
-                resultListContainer.setVisibility(View.VISIBLE);
+            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && resultListContainer.getVisibility() == GONE) {
+                resultListContainer.setVisibility(VISIBLE);
                 presenter.measureListToAdapterList(chartVM.getMeasures());
             }
         });

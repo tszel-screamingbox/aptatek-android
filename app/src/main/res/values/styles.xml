@@ -18,6 +18,19 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+
+    <style name="General.Transparent.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_height">@dimen/general.button.height</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/nunito_regular</item>
+        <item name="android:textColor">@color/applicationSolidGray</item>
+        <item name="android:textSize">@dimen/font.size.large</item>
+    </style>
+
     <style name="General.Rounded.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height</item>
         <item name="android:background">@drawable/general_button_grey_background</item>
