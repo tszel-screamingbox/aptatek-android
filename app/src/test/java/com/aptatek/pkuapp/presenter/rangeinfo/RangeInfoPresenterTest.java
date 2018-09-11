@@ -48,10 +48,6 @@ public class RangeInfoPresenterTest {
     private PkuRangeInteractor rangeInteractor;
     @Mock
     private PkuValueFormatter valueFormatter;
-    @Mock
-    private IncubationInteractor incubationInteractor;
-    @Mock
-    private SampleWettingInteractor sampleWettingInteractor;
 
     @Mock
     RangeInfoView view;
@@ -83,7 +79,7 @@ public class RangeInfoPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        presenter = new RangeInfoPresenter(rangeInteractor, incubationInteractor, sampleWettingInteractor, valueFormatter);
+        presenter = new RangeInfoPresenter(rangeInteractor, valueFormatter);
         presenter.attachView(view);
     }
 
@@ -133,23 +129,6 @@ public class RangeInfoPresenterTest {
                 .setVeryHighValue(testValue)
                 .setUnitValue(testValue)
                 .build());
-    }
-
-    /**
-     * Tests the proper behavior: the clearTestState() method should call the the interactors to reset any running tests.
-     *
-     * @test.input
-     * @test.expected
-     */
-    @Test
-    public void testClearTestStateCallsInteractors() throws Exception {
-        doReturn(Completable.complete()).when(sampleWettingInteractor).resetWetting();
-        doReturn(Completable.complete()).when(incubationInteractor).resetIncubation();
-
-        presenter.clearTestState();
-
-        verify(sampleWettingInteractor).resetWetting();
-        verify(incubationInteractor).resetIncubation();
     }
 
 }
