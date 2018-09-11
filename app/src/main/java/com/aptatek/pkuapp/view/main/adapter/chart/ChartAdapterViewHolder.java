@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.view.main.adapter;
+package com.aptatek.pkuapp.view.main.adapter.chart;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -17,6 +17,7 @@ import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.util.animation.AnimationHelper;
 import com.aptatek.pkuapp.view.base.list.viewholder.BaseViewHolder;
+import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

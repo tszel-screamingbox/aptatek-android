@@ -11,7 +11,7 @@ import com.aptatek.pkuapp.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
-import com.aptatek.pkuapp.view.main.adapter.ChartVM;
+import com.aptatek.pkuapp.view.main.adapter.chart.ChartVM;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,13 +86,13 @@ public final class ChartUtils {
                     .max(cubeDataComparator)
                     .first(null);
 
-            float startY = -1f; // start Y-axis of dashed-line on chart,  if less than 0, won't be drawn
-            float endY = -1f; // end Y-axis of dashed-line on chart,  if less than 0, won't be drawn
+            final float startY = -1f; // start Y-axis of dashed-line on chart,  if less than 0, won't be drawn
+            final float endY = -1f; // end Y-axis of dashed-line on chart,  if less than 0, won't be drawn
             final float bubbleY = getY(dailyHighest, delta, minLevel); // Y-axis of bubble
 
             final State state;
             if (dailyHighest != null) {
-                 state = ChartUtils.getState(dailyHighest.getPkuLevel(), rangeInfo);
+                state = ChartUtils.getState(dailyHighest.getPkuLevel(), rangeInfo);
             } else {
                 state = State.LOW;
             }
@@ -140,9 +140,9 @@ public final class ChartUtils {
             }
 
             connectedChartVms.add(chartVM.toBuilder()
-                .setEndLineYAxis(endY)
-                .setStartLineYAxis(startY)
-                .build()
+                    .setEndLineYAxis(endY)
+                    .setStartLineYAxis(startY)
+                    .build()
             );
         }
 

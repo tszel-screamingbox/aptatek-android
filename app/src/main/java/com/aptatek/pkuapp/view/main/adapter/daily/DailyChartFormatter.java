@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.view.main.adapter;
+package com.aptatek.pkuapp.view.main.adapter.daily;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.device.time.TimeHelper;
@@ -38,11 +38,11 @@ public class DailyChartFormatter {
         dailyFormat = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.main_chart_daily_format), Locale.getDefault());
     }
 
-    public String formatDailyDate(long timestamp) {
+    public String formatDailyDate(final long timestamp) {
         return dailyFormat.format(new Date(timestamp));
     }
 
-    public CharSequence getBubbleText(PkuLevel highestMeasure) {
+    public CharSequence getBubbleText(final PkuLevel highestMeasure) {
         final PkuRangeInfo userSettings = pkuRangeInteractor.getInfo().blockingGet();
         final PkuLevel pkuLevelInSelectedUnit = convertToDisplayUnit(highestMeasure, userSettings);
         final PkuLevel pkuLevelInAlternativeUnit = userSettings.getPkuLevelUnit() == highestMeasure.getUnit()

@@ -10,9 +10,8 @@ import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
-import com.aptatek.pkuapp.view.main.adapter.ChartVM;
-import com.aptatek.pkuapp.view.main.adapter.DailyChartFormatter;
-import com.aptatek.pkuapp.view.parentalgate.welcome.ParentalGateWelcomeView;
+import com.aptatek.pkuapp.view.main.adapter.chart.ChartVM;
+import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
 
 import org.junit.Before;
 import org.junit.Test;

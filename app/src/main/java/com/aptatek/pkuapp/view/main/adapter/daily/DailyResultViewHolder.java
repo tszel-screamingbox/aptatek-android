@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.view.main.adapter;
+package com.aptatek.pkuapp.view.main.adapter.daily;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

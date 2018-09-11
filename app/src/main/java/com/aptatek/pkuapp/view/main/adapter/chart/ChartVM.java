@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.view.main.adapter;
+package com.aptatek.pkuapp.view.main.adapter.chart;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -23,11 +23,14 @@ public abstract class ChartVM implements IListTypeProvider {
     @Nullable
     public abstract PkuLevel getHighestPkuLevel();
 
-    public abstract @ColorRes int getColorRes();
+    public abstract @ColorRes
+    int getColorRes();
 
-    public abstract @DrawableRes int getCollapsedBackgroundRes();
+    public abstract @DrawableRes
+    int getCollapsedBackgroundRes();
 
-    public abstract @DrawableRes int getExpandedBackgroundRes();
+    public abstract @DrawableRes
+    int getExpandedBackgroundRes();
 
     public abstract float getBubbleYAxis();
 
