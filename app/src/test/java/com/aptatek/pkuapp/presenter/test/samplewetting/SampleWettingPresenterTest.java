@@ -30,7 +30,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for the SampleWettingPresenter class.
+ * Tests for the WettingPresenter class.
  *
  * @test.layer presentation
  * @test.feature SampleWetting

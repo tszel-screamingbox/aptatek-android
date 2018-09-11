@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.Group;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,14 +13,8 @@ import com.aptatek.pkuapp.injection.component.ActivityComponent;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.view.base.BaseActivity;
 import com.aptatek.pkuapp.view.base.BaseFragment;
-import com.aptatek.pkuapp.view.test.base.TestFragmentBaseView;
+import com.aptatek.pkuapp.view.test.breakfoil.BreakFoilFragment;
 import com.aptatek.pkuapp.view.test.canceltest.CancelTestFragment;
-import com.aptatek.pkuapp.view.test.incubation.IncubationFragment;
-import com.aptatek.pkuapp.view.test.samplewetting.SampleWettingFragment;
-import com.aptatek.pkuapp.view.test.takesample.TakeSampleFragment;
-import com.aptatek.pkuapp.view.test.tutorial.attachcube.AttachCubeFragment;
-import com.aptatek.pkuapp.view.test.tutorial.insertcasette.InsertCasetteFragment;
-import com.aptatek.pkuapp.view.test.tutorial.insertsample.InsertSampleFragment;
 
 import javax.inject.Inject;
 
@@ -52,12 +47,12 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Inject
     TestActivityPresenter testActivityPresenter;
 
-    @BindView(R.id.testCancelCircleButton)
-    View cancelCircle;
     @BindView(R.id.testCancelButton)
     View cancelButton;
-    @BindView(R.id.testNavigationButton)
-    Button navigationButton;
+    @BindView(R.id.testNextButton)
+    Button nextButton;
+    @BindView(R.id.testBottomBar)
+    Group bottomBar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -66,9 +61,9 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         ButterKnife.bind(this);
 
         if (getIntent().getBooleanExtra(KEY_INCUBATION_FINISHED, false)) {
-            showScreen(TestScreens.INSERT_CASSETTE);
+//            showScreen(TestScreens.INSERT_CASSETTE);
         } else if (getIntent().getBooleanExtra(KEY_SAMPLE_WETTING_FINISHED, false)) {
-            showScreen(TestScreens.CANCEL); // TODO implement start test screen
+//            showScreen(TestScreens.CANCEL); // TODO implement start test screen
         }
     }
 
@@ -96,34 +91,29 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         return testActivityPresenter;
     }
 
-    @OnClick({R.id.testCancelCircleButton, R.id.testCancelButton})
+    @OnClick(R.id.testCancelButton)
     void onCancelClicked() {
-        navigateBack();
+        showScreen(TestScreens.CANCEL);
     }
 
-    @OnClick(R.id.testNavigationButton)
+    @OnClick(R.id.testNextButton)
     void onNavigationClicked() {
-        navigateForward();
+        showNextScreen();
     }
 
     @Override
-    public void setCircleCancelVisible(final boolean visible) {
-        cancelCircle.setVisibility(visible ? View.VISIBLE : View.GONE);
+    public void setNextButtonEnabled(final boolean enabled) {
+        nextButton.setEnabled(enabled);
     }
 
     @Override
-    public void setCancelBigVisible(final boolean visible) {
-        cancelButton.setVisibility(visible ? View.VISIBLE : View.GONE);
+    public void setNextButtonVisible(final boolean visible) {
+        nextButton.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     @Override
-    public void setNavigationButtonVisible(final boolean visible) {
-        navigationButton.setVisibility(visible ? View.VISIBLE : View.GONE);
-    }
-
-    @Override
-    public void setNavigationButtonText(@NonNull final String buttonText) {
-        navigationButton.setText(buttonText);
+    public void setBottomBarVisible(final boolean visible) {
+        bottomBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -137,34 +127,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
                 clearStack = false;
                 break;
             }
-            case INCUBATION: {
-                fragment = new IncubationFragment();
-                clearStack = false;
-                break;
-            }
-            case INSERT_CASSETTE: {
-                fragment = new InsertCasetteFragment();
-                clearStack = false;
-                break;
-            }
-            case ATTACH_CUBE: {
-                fragment = new AttachCubeFragment();
-                clearStack = false;
-                break;
-            }
-            case INSERT_SAMPLE: {
-                fragment = new InsertSampleFragment();
-                clearStack = false;
-                break;
-            }
-            case SAMPLE_WETTING: {
-                fragment = new SampleWettingFragment();
-                clearStack = true;
-                break;
-            }
-            case TAKE_SAMPLE:
             default: {
-                fragment = new TakeSampleFragment();
+                fragment = new BreakFoilFragment();
                 clearStack = true;
                 break;
             }
@@ -178,28 +142,12 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     }
 
     @Override
-    public void navigateBack() {
-        boolean navigationHandled = false;
-        final BaseFragment activeBaseFragment = getActiveBaseFragment();
-        if (activeBaseFragment instanceof TestFragmentBaseView) {
-            navigationHandled = ((TestFragmentBaseView) activeBaseFragment).onNavigateBackPressed();
-        }
+    public void showNextScreen() {
 
-        if (!navigationHandled) {
-            onBackPressed();
-        }
     }
 
     @Override
-    public void navigateForward() {
-        boolean navigationHandled = false;
-        final BaseFragment activeBaseFragment = getActiveBaseFragment();
-        if (activeBaseFragment instanceof TestFragmentBaseView) {
-            navigationHandled = ((TestFragmentBaseView) activeBaseFragment).onNavigateForwardPressed();
-        }
-
-        if (!navigationHandled) {
-            finish();
-        }
+    public void showPreviousScreen() {
+        onBackPressed();
     }
 }

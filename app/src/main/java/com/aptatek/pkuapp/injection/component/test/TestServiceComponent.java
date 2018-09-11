@@ -5,7 +5,7 @@ import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.injection.module.ServiceModule;
 import com.aptatek.pkuapp.injection.scope.ServiceScope;
 import com.aptatek.pkuapp.view.test.incubation.IncubationReminderService;
-import com.aptatek.pkuapp.view.test.samplewetting.SampleWettingReminderService;
+import com.aptatek.pkuapp.view.test.wetting.WettingReminderService;
 
 import dagger.Component;
 
@@ -15,6 +15,6 @@ public interface TestServiceComponent {
 
     void inject(IncubationReminderService service);
 
-    void inject(SampleWettingReminderService service);
+    void inject(WettingReminderService service);
 
 }

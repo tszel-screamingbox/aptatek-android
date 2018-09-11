@@ -2,12 +2,14 @@ package com.aptatek.pkuapp.view.test;
 
 public enum TestScreens {
 
-    TAKE_SAMPLE,
-    INCUBATION,
-    CANCEL,
-    INSERT_CASSETTE,
-    ATTACH_CUBE,
-    INSERT_SAMPLE,
-    SAMPLE_WETTING
+    BREAK_FOIL,
+    POKE_FINGERTIP,
+    COLLECT_BLOOD,
+    MIX_SAMPLE,
+    WETTING,
+    TURN_READER_ON,
+    CONNECT_IT_ALL,
+    TESTING,
+    CANCEL
 
 }

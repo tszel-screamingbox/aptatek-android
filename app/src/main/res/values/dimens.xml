@@ -60,7 +60,7 @@
     <dimen name="font.size.xlarge">31sp</dimen>
     <dimen name="font.size.xxlarge">42sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
-    <dimen name="font.size.incubation">110sp</dimen>
+    <dimen name="font.size.wetting">80sp</dimen>
 
     <dimen name="font.size.weekly.subtitle">21sp</dimen>
     <dimen name="font.size.weekly.title">25sp</dimen>
@@ -71,4 +71,6 @@
     <dimen name="pdf.height">800dp</dimen>
 
     <dimen name="pdf.legend.bubble.size">40dp</dimen>
+
+    <dimen name="test.alert.corner">90dp</dimen>
 </resources>

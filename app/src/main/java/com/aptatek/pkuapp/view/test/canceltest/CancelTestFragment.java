@@ -1,37 +1,29 @@
 package com.aptatek.pkuapp.view.test.canceltest;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.view.View;
 
+import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkuapp.view.test.TestActivityView;
 import com.aptatek.pkuapp.view.test.base.TestBaseFragment;
-import com.aptatek.pkuapp.view.test.incubation.IncubationReminderService;
 
 import javax.inject.Inject;
 
-public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelTestPresenter>
-    implements CancelTestView {
+import butterknife.OnClick;
+
+public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelTestPresenter> implements CancelTestView {
 
     @Inject
     CancelTestPresenter presenter;
 
     @Override
-    protected void initObjects(final View view) {
-        super.initObjects(view);
-
-        presenter.initUi();
+    protected int getLayoutId() {
+        return R.layout.fragment_cancel_test;
     }
 
     @Override
     protected void injectTestFragment(@NonNull final TestFragmentComponent fragmentComponent) {
         fragmentComponent.inject(this);
-    }
-
-    @Override
-    protected int getContentLayoutId() {
-        return 0;
     }
 
     @NonNull
@@ -41,19 +33,20 @@ public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelT
     }
 
     @Override
-    public boolean onNavigateBackPressed() {
-        return false; // just let the activity pop the stack
+    public void finishActivity() {
+        getActivity().finish();
     }
 
-    @Override
-    public boolean onNavigateForwardPressed() {
-        presenter.stopTest();
-        final FragmentActivity activity = getActivity();
-        if (activity != null) {
-            activity.stopService(new Intent(activity, IncubationReminderService.class));
+    @OnClick(R.id.testCancelButton)
+    void onCancelClicked() {
+        if (getActivity() instanceof TestActivityView) {
+            ((TestActivityView) getActivity()).showPreviousScreen();
         }
+    }
 
-        return true;
+    @OnClick(R.id.testOkButton)
+    void onYesClicked() {
+        presenter.stopTest();
     }
 
 }
