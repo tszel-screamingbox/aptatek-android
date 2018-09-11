@@ -22,7 +22,6 @@ import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
 import com.aptatek.pkuapp.injection.component.ActivityComponent;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
-import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.util.Constants;
 import com.aptatek.pkuapp.view.base.BaseActivity;
 import com.aptatek.pkuapp.view.dialog.AlertDialogDecisions;
@@ -253,7 +252,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new RangeInfoModule(), new TestModule())
+        activityComponent.plus(new RangeInfoModule())
                 .inject(this);
     }
 

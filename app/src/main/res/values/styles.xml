@@ -83,12 +83,11 @@
     </style>
 
     <style name="General.Text" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:textColor">@color/applicationMediumGray</item>
         <item name="android:textSize">@dimen/font.size.xxbig</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:alpha">@dimen/alpha.general.text</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
@@ -118,12 +117,11 @@
         <item name="android:textSize">@dimen/font.size.incubation</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:alpha">@dimen/alpha.general.full</item>
         <item name="android:gravity">center_horizontal</item>
     </style>
 
     <style name="General.Title" parent="General.Text">
-        <item name="android:alpha">@dimen/alpha.general.full</item>
+        <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:textSize">@dimen/font.size.xxlarge</item>
         <item name="android:fontFamily">@font/nunito_black</item>
         <item name="android:textStyle">bold</item>
@@ -160,7 +158,6 @@
     <style name="RangeInfo.Row.Name" parent="General.Text">
         <item name="android:textSize">@dimen/font.size.big</item>
         <item name="android:textColor">@color/applicationWhite</item>
-        <item name="android:alpha">@dimen/alpha.general.full</item>
     </style>
 
     <style name="Settings.Row.Title" parent="TextAppearance.AppCompat">
@@ -189,7 +186,6 @@
 
     <style name="Settings.Range.Label.Active">
         <item name="android:textColor">@color/applicationBlack</item>
-        <item name="android:alpha">@dimen/alpha.general.full</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
     </style>
 

@@ -8,9 +8,9 @@ import android.widget.TextView;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.test.TestFragmentComponent;
-import com.aptatek.pkuapp.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.pkuapp.view.test.TestScreens;
 import com.aptatek.pkuapp.view.test.base.TestBaseFragment;
+import com.aptatek.pkuapp.view.test.result.TestResultActivity;
 
 import javax.inject.Inject;
 
@@ -63,7 +63,9 @@ public class SampleWettingFragment extends TestBaseFragment<SampleWettingView, S
     public void navigateForward() {
         super.navigateForward();
 
-        getActivity().startActivity(RangeInfoActivity.starter(getActivity()));
+        // TODO add missing screens...
+        startActivity(TestResultActivity.starter(getActivity()));
+        getActivity().finish();
     }
 
     @Override

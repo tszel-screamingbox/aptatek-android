@@ -23,8 +23,6 @@ import butterknife.ButterKnife;
 
 public class PdfExportView extends ConstraintLayout {
 
-    private static final float CHART_Y_OFFSET = -0.5f;
-
     @BindView(R.id.textViewTitle)
     TextView tvTitle;
     @BindView(R.id.textViewSubTitle)
@@ -75,7 +73,7 @@ public class PdfExportView extends ConstraintLayout {
         sickNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getSickCount()));
         averageNumber.setText(String.valueOf(pdfEntryData.getAverageCount()));
         fastingNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getFastingCount()));
-        averageText.setText(getResources().getString(R.string.pdf_export_average, String.format("%.2f", pdfEntryData.getDeviation())));
+        averageText.setText(getResources().getString(R.string.pdf_export_average, String.format(Locale.getDefault(), "%.2f", pdfEntryData.getDeviation())));
         unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
 
         initChart();

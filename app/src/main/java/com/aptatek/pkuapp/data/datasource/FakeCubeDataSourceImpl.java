@@ -20,7 +20,7 @@ public class FakeCubeDataSourceImpl implements CubeDataSource {
     }
 
     @Override
-    public List<CubeDataModel> getDataBetween(long startTime, long endTime) {
+    public List<CubeDataModel> getDataBetween(final long startTime, final long endTime) {
         final Pair<Long, Long> key = new Pair<>(startTime, endTime);
         if (cachedRandomData.containsKey(key)) {
             return cachedRandomData.get(key);
@@ -34,5 +34,10 @@ public class FakeCubeDataSourceImpl implements CubeDataSource {
     @Override
     public CubeDataModel getOldestData() {
         return dataGenerator.generateOldestData();
+    }
+
+    @Override
+    public CubeDataModel getLatestData() {
+        return dataGenerator.generateDataForGivenDay(System.currentTimeMillis());
     }
 }

@@ -50,7 +50,7 @@ public interface ActivityComponent {
 
     TestActivityComponent plus(TestModule module);
 
-    RangeInfoActivityComponent plus(RangeInfoModule module, TestModule testModule);
+    RangeInfoActivityComponent plus(RangeInfoModule module);
 
     ChartActivityComponent plus(RangeInfoModule rangeInfoModule, ChartModule chartModule);
 

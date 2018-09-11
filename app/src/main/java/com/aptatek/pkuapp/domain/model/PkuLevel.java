@@ -1,9 +1,11 @@
 package com.aptatek.pkuapp.domain.model;
 
+import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 
 @AutoValue
-public abstract class PkuLevel {
+public abstract class PkuLevel implements Parcelable {
 
     public abstract float getValue();
 

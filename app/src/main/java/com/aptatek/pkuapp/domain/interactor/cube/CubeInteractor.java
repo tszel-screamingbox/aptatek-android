@@ -30,4 +30,8 @@ public class CubeInteractor {
         return dataRepository.listBetween(start, end);
     }
 
+    public Single<CubeData> getLatest() {
+        return dataRepository.getLatest();
+    }
+
 }
