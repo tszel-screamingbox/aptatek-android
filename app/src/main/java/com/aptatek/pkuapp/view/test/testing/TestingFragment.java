@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkuapp.view.test.TestScreens;
 import com.aptatek.pkuapp.view.test.base.TestBaseFragment;
 import com.aptatek.pkuapp.view.test.result.TestResultActivity;
 
@@ -34,5 +35,10 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     @Override
     public TestingPresenter createPresenter() {
         return presenter;
+    }
+
+    @Override
+    public TestScreens getScreen() {
+        return TestScreens.TESTING;
     }
 }

@@ -16,7 +16,6 @@ public class ConnectItAllPresenter extends TestBasePresenter<ConnectItAllView> {
     @Override
     public void initUi() {
         ifViewAttached(attachedView -> {
-            attachedView.setBottomBarVisible(true);
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_connectitall_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_connectitall_message));
             attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.connect_it_all), true);

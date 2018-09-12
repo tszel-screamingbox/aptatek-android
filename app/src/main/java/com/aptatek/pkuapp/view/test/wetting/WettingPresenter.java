@@ -3,6 +3,7 @@ package com.aptatek.pkuapp.view.test.wetting;
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.view.test.TestActivityCommonView;
 import com.aptatek.pkuapp.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
@@ -54,11 +55,17 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
     @Override
     public void initUi() {
         ifViewAttached(attachedView -> {
-            attachedView.setBottomBarVisible(true);
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_wetting_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_wetting_message));
-            attachedView.setAlertViewVisible(true);
-            attachedView.setAlertMessage(resourceInteractor.getStringResource(R.string.test_wetting_disclaimer));
+            attachedView.setDisclaimerViewVisible(true);
+            attachedView.setDisclaimerMessage(resourceInteractor.getStringResource(R.string.test_wetting_disclaimer));
         });
+    }
+
+    public void resetWetting() {
+        disposables.add(
+                wettingInteractor.resetWetting()
+                        .subscribe(() -> ifViewAttached(TestActivityCommonView::showNextScreen))
+        );
     }
 }

@@ -16,7 +16,6 @@ public class MixSamplePresenter extends TestBasePresenter<MixSampleView> {
     @Override
     public void initUi() {
         ifViewAttached(attachedView -> {
-            attachedView.setBottomBarVisible(true);
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_mixsample_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_mixsample_message));
             attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.mix_sample), true);

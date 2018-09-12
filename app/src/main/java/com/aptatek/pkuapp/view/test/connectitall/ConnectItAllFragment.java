@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkuapp.view.test.TestScreens;
 import com.aptatek.pkuapp.view.test.base.TestBaseFragment;
 
 import javax.inject.Inject;
@@ -27,5 +28,10 @@ public class ConnectItAllFragment extends TestBaseFragment<ConnectItAllView, Con
     @Override
     public ConnectItAllPresenter createPresenter() {
         return presenter;
+    }
+
+    @Override
+    public TestScreens getScreen() {
+        return TestScreens.CONNECT_IT_ALL;
     }
 }

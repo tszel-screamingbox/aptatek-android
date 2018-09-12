@@ -8,16 +8,22 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.aptatek.pkuapp.R;
+import com.aptatek.pkuapp.domain.model.AlertDialogModel;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
 import com.aptatek.pkuapp.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.view.base.BaseFragment;
-import com.aptatek.pkuapp.view.test.TestActivityView;
+import com.aptatek.pkuapp.view.dialog.AlertDialogDecisionListener;
+import com.aptatek.pkuapp.view.dialog.AlertDialogFragment;
+import com.aptatek.pkuapp.view.test.TestActivityCommonView;
+import com.aptatek.pkuapp.view.test.TestScreens;
 
 import butterknife.BindView;
 
 public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends TestBasePresenter<V>> extends BaseFragment<V, P>
-    implements TestFragmentBaseView {
+        implements TestFragmentBaseView {
+
+    private  static final String TAG_ALERT = "alert";
 
     private TestFragmentComponent testFragmentComponent;
 
@@ -25,8 +31,8 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     protected TextView tvTitle;
     @BindView(R.id.testMessage)
     protected TextView tvMessage;
-    @Nullable
     @BindView(R.id.testAlertText)
+    @Nullable
     protected TextView tvAlert;
     @Nullable
     @BindView(R.id.testVideo)
@@ -58,18 +64,25 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     }
 
     @Override
-    public void setAlertViewVisible(final boolean visible) {
+    public void setDisclaimerViewVisible(final boolean visible) {
         if (tvAlert != null) {
             tvAlert.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
 
     @Override
-    public void setAlertMessage(@NonNull final String message) {
+    public void setDisclaimerMessage(@NonNull final String message) {
         if (tvAlert != null) {
             tvAlert.setText(message);
         }
     }
+
+    @Override
+    public void showAlertDialog(@NonNull final AlertDialogModel alertDialogModel, @Nullable final AlertDialogDecisionListener listener) {
+        final AlertDialogFragment alertDialogFragment = AlertDialogFragment.create(alertDialogModel, listener);
+        alertDialogFragment.show(getChildFragmentManager(), TAG_ALERT);
+    }
+
 
     @Override
     public void playVideo(@NonNull final Uri uri, final boolean shouldLoop) {
@@ -88,34 +101,47 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
 
     @Override
     public void setBottomBarVisible(final boolean visible) {
-        if (getActivity() instanceof TestActivityView) {
-            ((TestActivityView) getActivity()).setBottomBarVisible(visible);
-        }
+        runOnTestTestActivityView(view -> view.setBottomBarVisible(visible));
     }
 
     @Override
     public void setBatteryIndicatorVisible(final boolean visible) {
-
+        runOnTestTestActivityView(view -> view.setBatteryIndicatorVisible(visible));
     }
 
     @Override
     public void setBatteryPercentageText(@NonNull final String percentageText) {
-
+        runOnTestTestActivityView(view -> view.setBatteryPercentageText(percentageText));
     }
 
     @Override
     public void setProgressVisible(final boolean visible) {
-
+        runOnTestTestActivityView(view -> view.setProgressVisible(visible));
     }
 
     @Override
     public void setProgressPercentage(final int percentage) {
+        runOnTestTestActivityView(view -> view.setProgressPercentage(percentage));
+    }
 
+    @Override
+    public void showNextScreen() {
+        runOnTestTestActivityView(TestActivityCommonView::showNextScreen);
+    }
+
+    @Override
+    public void showPreviousScreen() {
+        runOnTestTestActivityView(TestActivityCommonView::showPreviousScreen);
+    }
+
+    @Override
+    public boolean onNextPressed() {
+        return false;
     }
 
     @Override
     protected void initObjects(final View view) {
-        presenter.initUi();
+        presenter.initWithDefaults();
     }
 
     @Override
@@ -127,4 +153,16 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
 
         super.onStop();
     }
+
+    private void runOnTestTestActivityView(final TestActivityViewAction action) {
+        if (getActivity() instanceof TestActivityCommonView) {
+            action.run((TestActivityCommonView) getActivity());
+        }
+    }
+
+    private interface TestActivityViewAction {
+        void run(TestActivityCommonView view);
+    }
+
+    public abstract TestScreens getScreen();
 }

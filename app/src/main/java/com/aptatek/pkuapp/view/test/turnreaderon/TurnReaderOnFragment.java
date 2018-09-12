@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.test.TestFragmentComponent;
-import com.aptatek.pkuapp.view.test.TestActivityView;
+import com.aptatek.pkuapp.view.test.TestScreens;
 import com.aptatek.pkuapp.view.test.base.TestBaseFragment;
 
 import javax.inject.Inject;
@@ -26,14 +26,17 @@ public class TurnReaderOnFragment extends TestBaseFragment<TurnReaderOnView, Tur
 
     @Override
     public void onReaderConnected() {
-        if (getActivity() instanceof TestActivityView) {
-            ((TestActivityView) getActivity()).showNextScreen();
-        }
+        showNextScreen();
     }
 
     @NonNull
     @Override
     public TurnReaderOnPresenter createPresenter() {
         return presenter;
+    }
+
+    @Override
+    public TestScreens getScreen() {
+        return TestScreens.TURN_READER_ON;
     }
 }

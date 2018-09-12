@@ -47,10 +47,9 @@ public class TurnReaderOnPresenter extends TestBasePresenter<TurnReaderOnView> {
     @Override
     public void initUi() {
         ifViewAttached(attachedView -> {
-            attachedView.setBottomBarVisible(true);
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_turnreaderon_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_turnreaderon_message));
-            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.turn_reader_on), false);
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.turn_reader_on), true);
             attachedView.setBatteryIndicatorVisible(true);
             attachedView.setBatteryPercentageText("100%");
         });

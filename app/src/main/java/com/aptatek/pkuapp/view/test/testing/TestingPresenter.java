@@ -15,8 +15,8 @@ import timber.log.Timber;
 
 public class TestingPresenter extends TestBasePresenter<TestingView> {
 
-    private static final long TICK_INTERVAL = 1000L;
-    private static final long TEST_PERIOD = 15000L;
+    private static final long TICK_INTERVAL = 1L;
+    private static final long TEST_PERIOD = 15L;
 
     private CompositeDisposable disposables;
 
@@ -31,8 +31,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
         disposables = new CompositeDisposable();
 
-        disposables.add(Flowable.interval(TICK_INTERVAL, TimeUnit.MILLISECONDS)
-                .takeUntil(tick -> tick <= TEST_PERIOD)
+        disposables.add(Flowable.interval(TICK_INTERVAL, TimeUnit.SECONDS)
+                .takeUntil(tick -> tick >= TEST_PERIOD)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(tick -> {
                     final int percent = (int)((tick / (float) TEST_PERIOD) * 100f);
@@ -56,13 +56,12 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     @Override
     public void initUi() {
         ifViewAttached(attachedView -> {
-            attachedView.setBottomBarVisible(true);
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_testing_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_testing_message));
             attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.testing), true);
             attachedView.setBatteryIndicatorVisible(true);
             attachedView.setBatteryPercentageText("100%");
-            attachedView.setProgressVisible(false);
+            attachedView.setProgressVisible(true);
             attachedView.setProgressPercentage(0);
         });
     }

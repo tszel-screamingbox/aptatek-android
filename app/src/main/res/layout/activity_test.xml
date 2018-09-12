@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,43 +9,67 @@
         android:id="@+id/testContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/testButtonBarrier"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toStartOf="@+id/guideStart"
         app:layout_constraintTop_toBottomOf="@+id/topGuide">
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/testCancelButton"
-        style="@style/Test.Cancel.Button"
-        android:layout_width="wrap_content"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/test.button.cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <Button
-        android:id="@+id/testNextButton"
-        style="@style/Test.Next.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/test.button.next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <Button
+            android:id="@+id/testCancelButton"
+            style="@style/Test.Cancel.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test.button.cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.constraint.Barrier
-        android:id="@+id/testButtonBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="top"
-        app:constraint_referenced_ids="testCancelButton,testNextButton" />
+        <ProgressBar
+            android:id="@+id/testProgress"
+            style="@style/Test.Progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/testCancelButton"
+            app:layout_constraintEnd_toStartOf="@id/testNextButton"
+            app:layout_constraintStart_toEndOf="@id/testCancelButton"
+            app:layout_constraintTop_toTopOf="@+id/testCancelButton"
+            app:layout_constraintVertical_bias="0.5"
+            tools:progress="10" />
 
-    <android.support.constraint.Group
-        android:id="@+id/testBottomBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="testCancelButton,testNextButton" />
+        <Button
+            android:id="@+id/testNextButton"
+            style="@style/Test.Next.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/test.button.next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/testBattery"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:drawableStart="@drawable/ic_battery"
+            android:fontFamily="@font/nunito_black"
+            android:gravity="center_vertical"
+            android:textColor="@color/applicationBlack"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/testNextButton"
+            app:layout_constraintEnd_toEndOf="@id/testNextButton"
+            app:layout_constraintStart_toStartOf="@id/testNextButton"
+            app:layout_constraintTop_toTopOf="@+id/testNextButton"
+            tools:text="100%" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.Guideline
         android:id="@+id/topGuide"

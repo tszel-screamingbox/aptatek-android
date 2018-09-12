@@ -17,18 +17,16 @@ public class BreakFoilPresenter extends TestBasePresenter<BreakFoilView> {
     @Override
     public void initUi() {
         ifViewAttached(attachedView -> {
-            attachedView.setBottomBarVisible(true);
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_breakfoil_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_breakfoil_message));
             attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.break_foil), true);
-            attachedView.showAlert(
+            attachedView.showAlertDialog(
                     AlertDialogModel.builder()
                     .setTitle(resourceInteractor.getStringResource(R.string.test_breakfoil_alert_title))
                     .setMessage(resourceInteractor.getStringResource(R.string.test_breakfoil_alert_message))
                     .setCancelable(false)
                     .setNeutralButtonText(resourceInteractor.getStringResource(android.R.string.ok))
-                    .build());
-            attachedView.setAlertViewVisible(false);
+                    .build(), null);
         });
     }
 

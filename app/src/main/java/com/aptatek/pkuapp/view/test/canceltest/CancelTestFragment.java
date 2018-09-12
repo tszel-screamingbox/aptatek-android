@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.test.TestFragmentComponent;
-import com.aptatek.pkuapp.view.test.TestActivityView;
+import com.aptatek.pkuapp.view.test.TestScreens;
 import com.aptatek.pkuapp.view.test.base.TestBaseFragment;
 
 import javax.inject.Inject;
@@ -39,9 +39,7 @@ public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelT
 
     @OnClick(R.id.testCancelButton)
     void onCancelClicked() {
-        if (getActivity() instanceof TestActivityView) {
-            ((TestActivityView) getActivity()).showPreviousScreen();
-        }
+        showPreviousScreen();
     }
 
     @OnClick(R.id.testOkButton)
@@ -49,4 +47,8 @@ public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelT
         presenter.stopTest();
     }
 
+    @Override
+    public TestScreens getScreen() {
+        return TestScreens.CANCEL;
+    }
 }
