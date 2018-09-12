@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bubbleLayout"
-    android:layout_width="@dimen/general.distance.xxlarge"
-    android:layout_height="@dimen/graph.height"
-    android:gravity="center_horizontal">
-
-    <TextureView
-        android:id="@+id/textureView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:layout_gravity="center">
 
     <RelativeLayout
         android:id="@+id/bubbleContainer"
-        android:layout_width="@dimen/graph.bubble.size"
-        android:layout_height="@dimen/graph.bubble.size"
-        android:background="@drawable/bubble_full_normal">
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:background="@drawable/bubble_full_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <me.grantland.widget.AutofitTextView
             android:id="@+id/infoText"
@@ -35,11 +34,13 @@
             android:layout_height="@dimen/graph.bubble.size.small"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/bubble_full_normal"
+            android:layout_margin="@dimen/general.distance.xxmini"
+            android:background="@drawable/bubble_full_white"
+            android:elevation="@dimen/general.elevation"
             android:gravity="center"
             android:textColor="@color/applicationWhite"
             android:textSize="@dimen/font.size.mini"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

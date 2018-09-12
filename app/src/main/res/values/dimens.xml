@@ -35,11 +35,10 @@
 
     <!-- Chart-->
     <dimen name="graph.bubble.size">50dp</dimen>
-    <dimen name="graph.bubble.size.small">15dp</dimen>
+    <dimen name="graph.bubble.size.small">20dp</dimen>
     <dimen name="graph.bubble.radius.small">40dp</dimen>
     <dimen name="graph.bubble.stroke.big">8dp</dimen>
     <dimen name="graph.bubble.stroke.small">4dp</dimen>
-    <dimen name="graph.height">200dp</dimen>
 
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>

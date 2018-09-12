@@ -38,30 +38,27 @@
         android:text="@string/main.title.noresult.hint"
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/graph.height"
-        android:background="@color/chartBackrgroundBlue"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/chartGuide" />
-
     <ImageView
         android:id="@+id/playIcon"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/graph.height"
-        android:background="@color/chartBackrgroundBlue"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/general.distance.xsmall"
         android:src="@drawable/ic_bubble_play"
         app:layout_constraintBottom_toTopOf="@id/chartGuide"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subTitleText"
         tools:ignore="ContentDescription" />
 
     <com.yarolegovich.discretescrollview.DiscreteScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/graph.height"
-        app:layout_constraintBottom_toTopOf="@id/chartGuide" />
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/general.distance.xsmall"
+        app:layout_constraintBottom_toTopOf="@id/chartGuide"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subTitleText" />
 
     <Button
         android:id="@+id/bigSettingsButton"

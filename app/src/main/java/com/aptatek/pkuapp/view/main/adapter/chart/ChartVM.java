@@ -32,12 +32,6 @@ public abstract class ChartVM implements IListTypeProvider {
     public abstract @DrawableRes
     int getExpandedBackgroundRes();
 
-    public abstract float getBubbleYAxis();
-
-    public abstract float getStartLineYAxis();
-
-    public abstract float getEndLineYAxis();
-
     public abstract boolean isZoomed();
 
     public abstract int getNumberOfMeasures();
@@ -65,12 +59,6 @@ public abstract class ChartVM implements IListTypeProvider {
         public abstract Builder setCollapsedBackgroundRes(@DrawableRes int backgroundRes);
 
         public abstract Builder setExpandedBackgroundRes(@DrawableRes int backgroundRes);
-
-        public abstract Builder setBubbleYAxis(float bubbleYAxis);
-
-        public abstract Builder setStartLineYAxis(float startLineYAxis);
-
-        public abstract Builder setEndLineYAxis(float endLineYAxis);
 
         public abstract Builder setZoomed(boolean zoomed);
 
