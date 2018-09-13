@@ -23,7 +23,7 @@ import butterknife.BindView;
 public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends TestBasePresenter<V>> extends BaseFragment<V, P>
         implements TestFragmentBaseView {
 
-    private  static final String TAG_ALERT = "alert";
+    private static final String TAG_ALERT = "alert";
 
     private TestFragmentComponent testFragmentComponent;
 
@@ -87,6 +87,7 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     @Override
     public void playVideo(@NonNull final Uri uri, final boolean shouldLoop) {
         if (videoView != null) {
+            videoView.setZOrderOnTop(true);
             if (videoView.isPlaying()) {
                 videoView.stopPlayback();
             }
