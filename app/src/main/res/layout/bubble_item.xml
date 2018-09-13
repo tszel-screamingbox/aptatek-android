@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@color/transparent"
+            android:fontFamily="@font/nunito_black"
             android:gravity="center"
             android:lines="2"
             android:minLines="2"

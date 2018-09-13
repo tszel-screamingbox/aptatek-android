@@ -61,6 +61,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
     }
 
     private void showDetails(final ChartVM currentData) {
+        infoTextView.getLayoutParams().width = calculateWidth(infoTextView);
         animationHelper.zoomIn(bubbleContainerLayout, () -> {
             final PkuLevel highestMeasure = currentData.getHighestPkuLevel();
             if (highestMeasure == null) {
@@ -69,7 +70,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
                 infoTextView.setTextColor(ContextCompat.getColor(context, currentData.getColorRes()));
                 bubbleContainerLayout.setBackground(ContextCompat.getDrawable(context, currentData.getExpandedBackgroundRes()));
 
-                final CharSequence infoText = dailyChartFormatter.getBubbleText(highestMeasure);
+                final CharSequence infoText = dailyChartFormatter.getBubbleText(highestMeasure, currentData.getState());
                 infoTextView.setText(infoText);
                 if (currentData.getNumberOfMeasures() > 1) {
                     badgeTextView.setTextColor(ContextCompat.getColor(context, currentData.getColorRes()));
@@ -78,6 +79,13 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
                 }
             }
         });
+    }
+
+    private int calculateWidth(final TextView textView) {
+        final float margin = context.getResources().getDimension(R.dimen.graph_bubble_margin);
+        final float diameter = (bubbleContainerLayout.getLayoutParams().width - 2 * margin) * 0.5f;
+        final float distance = textView.getLayoutParams().height * 0.5f;
+        return (int) (2 * Math.sqrt(Math.pow(diameter, 2) - Math.pow(distance, 2)));
     }
 
     private void resetBubble(final ChartVM currentData) {

@@ -1,12 +1,13 @@
 package com.aptatek.pkuapp.view.main.adapter.daily;
 
+import android.support.annotation.StringRes;
+
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.device.time.TimeHelper;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
-import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
 import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
 import com.aptatek.pkuapp.util.StringUtils;
 import com.aptatek.pkuapp.view.settings.pkulevel.RangeSettingsValueFormatter;
@@ -16,6 +17,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.inject.Inject;
+
+import static com.aptatek.pkuapp.domain.model.PkuLevelUnits.MICRO_MOL;
+import static com.aptatek.pkuapp.domain.model.PkuLevelUnits.MILLI_GRAM;
 
 public class DailyChartFormatter {
 
@@ -42,17 +46,26 @@ public class DailyChartFormatter {
         return dailyFormat.format(new Date(timestamp));
     }
 
+    public CharSequence getBubbleText(final PkuLevel highestMeasure, @StringRes final int stateResId) {
+        final PkuRangeInfo userSettings = pkuRangeInteractor.getInfo().blockingGet();
+        final PkuLevel pkuLevelInSelectedUnit = convertToDisplayUnit(highestMeasure, userSettings);
+
+        return StringUtils.highlightWord(
+                valueFormatter.formatRegularValue(pkuLevelInSelectedUnit),
+                resourceInteractor.getStringResource(stateResId));
+    }
+
     public CharSequence getBubbleText(final PkuLevel highestMeasure) {
         final PkuRangeInfo userSettings = pkuRangeInteractor.getInfo().blockingGet();
         final PkuLevel pkuLevelInSelectedUnit = convertToDisplayUnit(highestMeasure, userSettings);
         final PkuLevel pkuLevelInAlternativeUnit = userSettings.getPkuLevelUnit() == highestMeasure.getUnit()
-                ? PkuLevelConverter.convertTo(highestMeasure, userSettings.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL ? PkuLevelUnits.MILLI_GRAM : PkuLevelUnits.MICRO_MOL)
+                ? PkuLevelConverter.convertTo(highestMeasure, userSettings.getPkuLevelUnit() == MICRO_MOL ? MILLI_GRAM : MICRO_MOL)
                 : highestMeasure;
 
         final String alternativeText = valueFormatter.formatRegularValue(pkuLevelInAlternativeUnit)
-                + resourceInteractor.getStringResource(pkuLevelInAlternativeUnit.getUnit() == PkuLevelUnits.MICRO_MOL
-                    ? R.string.rangeinfo_pkulevel_mmol
-                    : R.string.rangeinfo_pkulevel_mg);
+                + resourceInteractor.getStringResource(pkuLevelInAlternativeUnit.getUnit() == MICRO_MOL
+                ? R.string.rangeinfo_pkulevel_mmol
+                : R.string.rangeinfo_pkulevel_mg);
 
         return StringUtils.highlightWord(
                 valueFormatter.formatRegularValue(pkuLevelInSelectedUnit),

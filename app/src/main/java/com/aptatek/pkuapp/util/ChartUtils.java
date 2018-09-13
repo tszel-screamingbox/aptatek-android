@@ -3,6 +3,7 @@ package com.aptatek.pkuapp.util;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.Pair;
 
 import com.aptatek.pkuapp.R;
@@ -86,6 +87,7 @@ public final class ChartUtils {
                     .setMeasures(entry.getValue())
                     .setNumberOfMeasures(entry.getValue().size())
                     .setZoomed(false)
+                    .setState(stateString(state))
                     .setHighestPkuLevel(dailyHighest == null ? null : dailyHighest.getPkuLevel())
                     .setCollapsedBackgroundRes(smallBubbleBackground(state))
                     .setExpandedBackgroundRes(bigBubbleBackground(state))
@@ -94,37 +96,6 @@ public final class ChartUtils {
 
             chartVms.add(chartVm);
         }
-
-//        final List<ChartVM> orderedChartVms = Ix.from(chartVms)
-//                .orderBy(chartVMComparator)
-//                .toList();
-//
-//        final List<ChartVM> connectedChartVms = new ArrayList<>();
-//        for (int i = 0; i < orderedChartVms.size(); i++) {
-//            float endY = -1f;
-//            float startY = -1f;
-//            final ChartVM chartVM = orderedChartVms.get(i);
-//
-//            if (i > 0) { // if it's not the first day
-//                final ChartVM prevChartVm = orderedChartVms.get(i - 1);
-//                final float prevBubbleY = getY(prevChartVm.getHighestPkuLevel(), delta, minLevel);
-//                // calculate the current item end-line Y-height with the current and next item Y-height
-//                startY = (chartVM.getBubbleYAxis() + prevBubbleY) / 2;
-//            }
-//
-//            if (i < orderedChartVms.size() - 1) { // if it's not the last day
-//                // get the the measurements for the next day
-//                final ChartVM nextChartVm = orderedChartVms.get(i + 1);
-//                final float nextBubbleY = getY(nextChartVm.getHighestPkuLevel(), delta, minLevel);
-//                // calculate the current item end-line Y-height with the current and next item Y-height
-//                endY = (chartVM.getBubbleYAxis() + nextBubbleY) / 2;
-//            }
-//
-//            connectedChartVms.add(chartVM.toBuilder()
-//                    .setStartLineYAxis(startY)
-//                    .build()
-//            );
-//        }
 
         return Ix.from(chartVms)
                 .orderBy(chartVMComparator)
@@ -159,6 +130,22 @@ public final class ChartUtils {
         }
 
         return chartState;
+    }
+
+    @StringRes
+    public static int stateString(final State state) {
+        switch (state) {
+            case LOW:
+                return R.string.test_result_bubble_level_low;
+            case NORMAL:
+                return R.string.test_result_bubble_level_normal;
+            case HIGH:
+                return R.string.test_result_bubble_level_high;
+            case VERY_HIGH:
+                return R.string.test_result_bubble_level_veryhigh;
+            default:
+                return R.string.test_result_bubble_level_normal;
+        }
     }
 
     @DrawableRes
