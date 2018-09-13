@@ -2,7 +2,7 @@ package com.aptatek.pkuapp.view.test.wetting;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkuapp.view.test.TestActivityCommonView;
 import com.aptatek.pkuapp.view.test.base.TestBasePresenter;
 
@@ -15,12 +15,12 @@ import timber.log.Timber;
 
 public class WettingPresenter extends TestBasePresenter<WettingView> {
 
-    private final SampleWettingInteractor wettingInteractor;
+    private final WettingInteractor wettingInteractor;
     private CompositeDisposable disposables;
 
     @Inject
     public WettingPresenter(final ResourceInteractor resourceInteractor,
-                            final SampleWettingInteractor wettingInteractor) {
+                            final WettingInteractor wettingInteractor) {
         super(resourceInteractor);
         this.wettingInteractor = wettingInteractor;
     }

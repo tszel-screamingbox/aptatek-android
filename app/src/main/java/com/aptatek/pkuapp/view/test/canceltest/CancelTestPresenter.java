@@ -2,8 +2,7 @@ package com.aptatek.pkuapp.view.test.canceltest;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkuapp.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
@@ -13,18 +12,15 @@ import io.reactivex.disposables.Disposable;
 
 public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
 
-    private final IncubationInteractor incubationInteractor;
-    private final SampleWettingInteractor sampleWettingInteractor;
+    private final WettingInteractor wettingInteractor;
 
     private Disposable disposable;
 
     @Inject
     CancelTestPresenter(final ResourceInteractor resourceInteractor,
-                        final IncubationInteractor incubationInteractor,
-                        final SampleWettingInteractor sampleWettingInteractor) {
+                        final WettingInteractor wettingInteractor) {
         super(resourceInteractor);
-        this.incubationInteractor = incubationInteractor;
-        this.sampleWettingInteractor = sampleWettingInteractor;
+        this.wettingInteractor = wettingInteractor;
     }
 
     @Override
@@ -37,8 +33,7 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
     }
 
     public void stopTest() {
-        disposable = incubationInteractor.resetIncubation()
-            .andThen(sampleWettingInteractor.resetWetting())
+        disposable = wettingInteractor.resetWetting()
             .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
         .subscribe();
     }

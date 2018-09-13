@@ -2,11 +2,11 @@ package com.aptatek.pkuapp.view.test.wetting;
 
 import android.support.v4.app.NotificationManagerCompat;
 
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationNotRunningError;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
-import com.aptatek.pkuapp.domain.notifications.CountdownNotificationFactory;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingNotRunningError;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
+import com.aptatek.pkuapp.domain.notifications.CountdownNotificationFactory;
 import com.aptatek.pkuapp.injection.component.test.TestServiceComponent;
 import com.aptatek.pkuapp.util.Constants;
 import com.aptatek.pkuapp.view.test.service.BaseReminderService;
@@ -26,9 +26,9 @@ public class WettingReminderService extends BaseReminderService {
     private static final int FINISHED_NOTIFICATION_ID = 7264;
 
     @Inject
-    SampleWettingInteractor sampleWettingInteractor;
+    WettingInteractor wettingInteractor;
 
-    @Named("samplewetting")
+    @Named("wetting")
     @Inject
     CountdownNotificationFactory countdownNotificationFactory;
 
@@ -42,7 +42,7 @@ public class WettingReminderService extends BaseReminderService {
 
     @Override
     protected Single<Boolean> shouldStart() {
-        return sampleWettingInteractor.getWettingStatus()
+        return wettingInteractor.getWettingStatus()
                 .map(wettingStatus -> WettingStatus.RUNNING == wettingStatus);
     }
 
@@ -51,30 +51,30 @@ public class WettingReminderService extends BaseReminderService {
         startForeground(COUNTDOWN_NOTIFICATION_ID, countdownNotificationFactory.createCountdownNotification(
                 Countdown.builder()
                         .setRemainingFormattedText("30:00")
-                        .setRemainingMillis(Constants.DEFAULT_INCUBATION_PERIOD)
+                        .setRemainingMillis(Constants.DEFAULT_WETTING_PERIOD)
                         .build()));
         startCountdown();
     }
 
     private void startCountdown() {
-        disposables.add(sampleWettingInteractor.getWettingCountdown()
+        disposables.add(wettingInteractor.getWettingCountdown()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     countdown -> {
-                        Timber.d("Sample Wetting Countdown: %s", countdown);
+                        Timber.d("Wetting Countdown: %s", countdown);
                         notificationManager.notify(COUNTDOWN_NOTIFICATION_ID, countdownNotificationFactory.createCountdownNotification(countdown));
                     },
                     error -> {
-                        Timber.d("Sample Wetting Countdown error: %s", error.toString());
+                        Timber.d("Wetting Countdown error: %s", error.toString());
                         stopForeground(false);
-                        if (!(error instanceof IncubationNotRunningError)) {
+                        if (!(error instanceof WettingNotRunningError)) {
                             notificationManager.notify(ERROR_NOTIFICATION_ID, countdownNotificationFactory.createCountdownErrorNotification(error));
                         }
                         stopSelf();
                     },
                     () -> {
-                        Timber.d("Sample Wetting Countdown complete");
+                        Timber.d("Wetting Countdown complete");
                         stopForeground(false);
                         notificationManager.notify(FINISHED_NOTIFICATION_ID, countdownNotificationFactory.createCountdownFinishedNotification());
                         stopSelf();

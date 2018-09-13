@@ -10,7 +10,6 @@ public final class Constants {
 
     public static final int ONE_HOUR_IN_MINUTES = 60;
     public static final int ONE_DAY_IN_HOURS = 24;
-    public static final long DEFAULT_INCUBATION_PERIOD = 1000 * 60 * 30L;
     public static final long DEFAULT_WETTING_PERIOD = 1000 * 60 * 30L;
     public static final float DEFAULT_PKU_NORMAL_FLOOR = 100f;
     public static final float DEFAULT_PKU_NORMAL_CEIL = 350f;

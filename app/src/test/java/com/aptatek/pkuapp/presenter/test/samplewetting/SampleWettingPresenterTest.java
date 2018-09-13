@@ -3,7 +3,7 @@ package com.aptatek.pkuapp.presenter.test.samplewetting;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.view.test.samplewetting.SampleWettingPresenter;
 import com.aptatek.pkuapp.view.test.samplewetting.SampleWettingView;
@@ -44,7 +44,7 @@ public class SampleWettingPresenterTest {
     ResourceInteractor resourceInteractor;
 
     @Mock
-    SampleWettingInteractor sampleWettingInteractor;
+    WettingInteractor wettingInteractor;
 
     @Mock
     SampleWettingView view;
@@ -88,10 +88,10 @@ public class SampleWettingPresenterTest {
 
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt())).thenReturn(TEST_STRING);
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt(), ArgumentMatchers.anyVararg())).thenReturn(TEST_STRING);
-        when(sampleWettingInteractor.getWettingCountdown()).thenReturn(countdownProcessor);
-        when(sampleWettingInteractor.getWettingProgress()).thenReturn(progressProcessor);
+        when(wettingInteractor.getWettingCountdown()).thenReturn(countdownProcessor);
+        when(wettingInteractor.getWettingProgress()).thenReturn(progressProcessor);
 
-        presenter = new SampleWettingPresenter(resourceInteractor, sampleWettingInteractor);
+        presenter = new SampleWettingPresenter(resourceInteractor, wettingInteractor);
         presenter.attachView(view);
     }
 
@@ -120,8 +120,8 @@ public class SampleWettingPresenterTest {
      */
     @Test
     public void testAttachViewCallsInteractor() throws Exception {
-        verify(sampleWettingInteractor).getWettingCountdown();
-        verify(sampleWettingInteractor).getWettingProgress();
+        verify(wettingInteractor).getWettingCountdown();
+        verify(wettingInteractor).getWettingProgress();
     }
 
     /**

@@ -3,7 +3,6 @@ package com.aptatek.pkuapp.presenter.test.incubation;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.view.test.incubation.IncubationPresenter;
 import com.aptatek.pkuapp.view.test.incubation.IncubationView;

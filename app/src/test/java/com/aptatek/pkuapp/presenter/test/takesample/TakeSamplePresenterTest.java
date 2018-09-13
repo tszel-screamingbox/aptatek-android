@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.VideoThumbnailInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.view.test.takesample.TakeSamplePresenter;
 import com.aptatek.pkuapp.view.test.takesample.TakeSampleView;
 

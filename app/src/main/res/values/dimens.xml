@@ -72,5 +72,6 @@
 
     <dimen name="pdf.legend.bubble.size">40dp</dimen>
 
-    <dimen name="test.alert.corner">90dp</dimen>
+    <dimen name="test.alert.corner">50dp</dimen>
+    <dimen name="test.alert.height">100dp</dimen>
 </resources>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/test.alert.corner"
+    android:layout_height="@dimen/test.alert.height"
     android:background="@drawable/test_alert_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/testAlertText"
+        android:id="@+id/testDisclaimerText"
         style="@style/Test.Alert.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

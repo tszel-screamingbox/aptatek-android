@@ -1,11 +1,11 @@
 package com.aptatek.pkuapp.domain.interactor.test;
 
 import com.aptatek.pkuapp.domain.interactor.countdown.CountdownTimeFormatter;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingDataSource;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingError;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingNotRunningError;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingDataSource;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingError;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingNotRunningError;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.util.Constants;
 
@@ -24,13 +24,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for the SampleWettingInteractor class
+ * Tests for the WettingInteractor class
  *
  * @test.layer domain
  * @test.feature SampleWetting
  * @test.type unit
  */
-public class SampleWettingInteractorTest {
+public class WettingInteractorTest {
     
     @Mock
     WettingDataSource wettingDataSource;
@@ -38,13 +38,13 @@ public class SampleWettingInteractorTest {
     @Mock
     CountdownTimeFormatter timeFormatter;
     
-    private SampleWettingInteractor interactor;
+    private WettingInteractor interactor;
     
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         
-        interactor = new SampleWettingInteractor(wettingDataSource, timeFormatter);
+        interactor = new WettingInteractor(wettingDataSource, timeFormatter);
     }
 
     /**

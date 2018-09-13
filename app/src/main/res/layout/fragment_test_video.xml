@@ -20,16 +20,16 @@
         android:layout_marginTop="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/general.distance.small"
         app:layout_constraintDimensionRatio="W,986:1080"
-        app:layout_constraintBottom_toTopOf="@id/testAlert"
+        app:layout_constraintBottom_toTopOf="@id/testDisclaimer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/testHeader" />
 
     <include
-        android:id="@+id/testAlert"
+        android:id="@+id/testDisclaimer"
         layout="@layout/layout_test_alert"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/test.alert.height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

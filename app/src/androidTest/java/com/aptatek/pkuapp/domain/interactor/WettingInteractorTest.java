@@ -4,8 +4,8 @@ import android.app.Application;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.injection.component.DaggerAndroidTestComponent;
 import com.aptatek.pkuapp.injection.module.ApplicationModule;
@@ -24,17 +24,17 @@ import io.reactivex.observers.TestObserver;
 import io.reactivex.subscribers.TestSubscriber;
 
 /**
- * Tests for the SampleWettingInteractor class.
+ * Tests for the WettingInteractor class.
  *
  * @test.layer domain
  * @test.feature BloodIsProcessin
  * @test.type integration
  */
 @RunWith(AndroidJUnit4.class)
-public class SampleWettingInteractorTest {
+public class WettingInteractorTest {
 
     @Inject
-    SampleWettingInteractor interactor;
+    WettingInteractor interactor;
 
     @Before
     public void setUp() throws Exception {

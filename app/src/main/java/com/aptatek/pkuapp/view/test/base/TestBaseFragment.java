@@ -3,6 +3,7 @@ package com.aptatek.pkuapp.view.test.base;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -31,11 +32,14 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     protected TextView tvTitle;
     @BindView(R.id.testMessage)
     protected TextView tvMessage;
-    @BindView(R.id.testAlertText)
+    @BindView(R.id.testDisclaimerText)
     @Nullable
     protected TextView tvAlert;
+    @BindView(R.id.testDisclaimer)
     @Nullable
+    protected ConstraintLayout disclaimerContainer;
     @BindView(R.id.testVideo)
+    @Nullable
     protected VideoView videoView;
 
     @Override
@@ -65,8 +69,8 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
 
     @Override
     public void setDisclaimerViewVisible(final boolean visible) {
-        if (tvAlert != null) {
-            tvAlert.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (disclaimerContainer != null) {
+            disclaimerContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
 

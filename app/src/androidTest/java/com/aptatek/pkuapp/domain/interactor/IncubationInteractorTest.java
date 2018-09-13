@@ -4,8 +4,6 @@ import android.app.Application;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.injection.component.DaggerAndroidTestComponent;
 import com.aptatek.pkuapp.injection.module.ApplicationModule;

@@ -126,7 +126,6 @@
         <receiver android:name=".device.AlarmReceiver" />
         <receiver android:name=".device.ReminderActionReceiver"/>
 
-        <service android:name=".view.test.incubation.IncubationReminderService" />
         <service android:name=".view.test.wetting.WettingReminderService" />
     </application>
 

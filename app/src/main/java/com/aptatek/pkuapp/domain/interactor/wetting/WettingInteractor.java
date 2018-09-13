@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.domain.interactor.samplewetting;
+package com.aptatek.pkuapp.domain.interactor.wetting;
 
 import android.support.annotation.NonNull;
 
@@ -14,21 +14,17 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
-import io.reactivex.processors.BehaviorProcessor;
 
-public class SampleWettingInteractor {
+public class WettingInteractor {
 
     private final WettingDataSource wettingDataSource;
     private final CountdownTimeFormatter timeFormatter;
-    private final BehaviorProcessor<Integer> wettingStatus;
 
     @Inject
-    public SampleWettingInteractor(@NonNull final WettingDataSource wettingDataSource,
-                                   @NonNull final CountdownTimeFormatter timeFormatter) {
+    public WettingInteractor(@NonNull final WettingDataSource wettingDataSource,
+                             @NonNull final CountdownTimeFormatter timeFormatter) {
         this.wettingDataSource = wettingDataSource;
         this.timeFormatter = timeFormatter;
-        wettingStatus = BehaviorProcessor.create();
-        wettingStatus.onNext(0);
     }
 
     public Single<WettingStatus> getWettingStatus() {
@@ -49,16 +45,12 @@ public class SampleWettingInteractor {
                                             tick -> System.currentTimeMillis() - startTime > Constants.DEFAULT_WETTING_PERIOD,
                                             tick -> Math.max(0, Constants.DEFAULT_WETTING_PERIOD - (System.currentTimeMillis() - startTime))
                                         )
-                                        .map(remaining -> {
-                                            final int currentProgress = (int) (remaining / (float) Constants.DEFAULT_WETTING_PERIOD * Constants.HUNDRED_PERCENT);
-
-                                            wettingStatus.onNext(currentProgress);
-
-                                            return Countdown.builder()
+                                        .map(remaining ->
+                                            Countdown.builder()
                                                 .setRemainingFormattedText(timeFormatter.getFormattedRemaining(remaining))
                                                 .setRemainingMillis(remaining)
-                                                .build();
-                                        })
+                                                .build()
+                                        )
                                 );
                     } else {
                         return Flowable.error(new WettingNotRunningError());
@@ -66,10 +58,6 @@ public class SampleWettingInteractor {
                 })
                 .onErrorResumeNext((Function<Throwable, Publisher<? extends Countdown>>) throwable ->
                         Flowable.error(throwable instanceof WettingNotRunningError ? throwable : new WettingError(throwable.getCause())));
-    }
-
-    public Flowable<Integer> getWettingProgress() {
-        return wettingStatus;
     }
 
     public Completable startWetting() {

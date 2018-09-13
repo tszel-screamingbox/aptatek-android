@@ -1,9 +1,7 @@
 package com.aptatek.pkuapp.presenter.test.tutorial.insertsample;
 
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkuapp.view.test.base.TestFragmentBaseView;
 import com.aptatek.pkuapp.view.test.tutorial.insertsample.InsertSamplePresenter;
 
@@ -33,7 +31,7 @@ public class InsertSamplePresenterTest {
     ResourceInteractor resourceInteractor;
 
     @Mock
-    SampleWettingInteractor sampleWettingInteractor;
+    WettingInteractor wettingInteractor;
 
     @Mock
     IncubationInteractor incubationInteractor;
@@ -50,7 +48,7 @@ public class InsertSamplePresenterTest {
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt())).thenReturn(TEST_TEXT);
         when(incubationInteractor.getIncubationStatus()).thenReturn(Single.just(IncubationStatus.NOT_STARTED));
 
-        presenter = new InsertSamplePresenter(resourceInteractor, sampleWettingInteractor, incubationInteractor);
+        presenter = new InsertSamplePresenter(resourceInteractor, wettingInteractor, incubationInteractor);
         presenter.attachView(view);
     }
 

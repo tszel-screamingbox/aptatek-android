@@ -8,4 +8,6 @@ public interface TestActivityView extends MvpView, TestActivityCommonView {
 
     void showScreen(@NonNull TestScreens screen);
 
+    void onBackPressed();
+
 }

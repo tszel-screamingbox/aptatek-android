@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.domain.interactor.samplewetting;
+package com.aptatek.pkuapp.domain.interactor.wetting;
 
 public enum WettingStatus {
 

@@ -1,10 +1,8 @@
 package com.aptatek.pkuapp.data.datasource;
 
 import com.aptatek.pkuapp.device.PreferenceManager;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.util.Constants;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;

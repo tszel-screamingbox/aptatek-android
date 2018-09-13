@@ -83,12 +83,12 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
         recyclerViewDailyResults.addItemDecoration(dailyResultItemDecorator);
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        presenter.checkRunningTest();
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.checkRunningTest();
+    }
 
     @Override
     protected void onResume() {

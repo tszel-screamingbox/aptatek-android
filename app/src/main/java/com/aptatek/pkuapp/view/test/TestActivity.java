@@ -38,22 +38,15 @@ import butterknife.OnClick;
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
     implements TestActivityView {
 
-    private static final String KEY_INCUBATION_FINISHED = "com.aptatek.incubation.finished";
-    private static final String KEY_SAMPLE_WETTING_FINISHED = "com.aptatek.samplewetting.finished";
+    private static final String KEY_WETTING_FINISHED = "com.aptatek.samplewetting.finished";
 
     public static Intent createStarter(@NonNull final Context context) {
         return new Intent(context, TestActivity.class);
     }
 
-    public static Bundle createForIncubationFinishedIntent() {
-        final Bundle bundle = new Bundle();
-        bundle.putBoolean(KEY_INCUBATION_FINISHED, true);
-        return bundle;
-    }
-
     public static Bundle createForSampleWettingFinishedIntent() {
         final Bundle bundle = new Bundle();
-        bundle.putBoolean(KEY_SAMPLE_WETTING_FINISHED, true);
+        bundle.putBoolean(KEY_WETTING_FINISHED, true);
         return bundle;
     }
 
@@ -81,21 +74,17 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             testProgress.getProgressDrawable().setColorFilter(ContextCompat.getColor(this, R.color.applicationGreen), PorterDuff.Mode.SRC_IN);
         }
 
-        showScreen(TestScreens.BREAK_FOIL);
-
-//        if (getIntent().getBooleanExtra(KEY_INCUBATION_FINISHED, false)) {
-//            showScreen(TestScreens.INSERT_CASSETTE);
-//        } else if (getIntent().getBooleanExtra(KEY_SAMPLE_WETTING_FINISHED, false)) {
-//            showScreen(TestScreens.CANCEL);
-//        }
+        if (getIntent().getBooleanExtra(KEY_WETTING_FINISHED, false)) {
+            showScreen(TestScreens.TURN_READER_ON);
+        }
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        presenter.showProperScreen(getActiveBaseFragment() != null);
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        presenter.showProperScreen(getActiveBaseFragment() != null);
+    }
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -184,12 +173,21 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @Override
     public void showNextScreen() {
-        presenter.onShowNextScreen(((TestBaseFragment) getActiveBaseFragment()).getScreen());
+        presenter.onShowNextScreen(getCurrentScreen());
+    }
+
+    private TestScreens getCurrentScreen() {
+        return ((TestBaseFragment) getActiveBaseFragment()).getScreen();
     }
 
     @Override
     public void showPreviousScreen() {
-        onBackPressed();
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        presenter.onShowPreviousScreen(getCurrentScreen());
     }
 
     @Override

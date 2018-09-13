@@ -1,11 +1,6 @@
 package com.aptatek.pkuapp.domain.interactor.test;
 
 import com.aptatek.pkuapp.domain.interactor.countdown.CountdownTimeFormatter;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationDataSource;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationError;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationNotRunningError;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationStatus;
 import com.aptatek.pkuapp.domain.model.Countdown;
 import com.aptatek.pkuapp.util.Constants;
 

@@ -57,7 +57,7 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
 
         showAlertDialog(model, decision -> {
             if (decision == AlertDialogDecisions.POSITIVE) {
-                showNextScreen();
+                presenter.resetWetting();
             }
         });
 

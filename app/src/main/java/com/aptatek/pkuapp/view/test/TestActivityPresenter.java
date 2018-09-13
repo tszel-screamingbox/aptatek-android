@@ -2,8 +2,8 @@ package com.aptatek.pkuapp.view.test;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingStatus;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
@@ -15,51 +15,37 @@ import io.reactivex.schedulers.Schedulers;
 
 class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
-    private final IncubationInteractor incubationInteractor;
-
-    private final SampleWettingInteractor sampleWettingInteractor;
+    private final WettingInteractor wettingInteractor;
 
     private Disposable disposable;
 
     @Inject
-    TestActivityPresenter(final IncubationInteractor incubationInteractor,
-                          final SampleWettingInteractor sampleWettingInteractor) {
-        this.incubationInteractor = incubationInteractor;
-        this.sampleWettingInteractor = sampleWettingInteractor;
+    TestActivityPresenter(final WettingInteractor wettingInteractor) {
+        this.wettingInteractor = wettingInteractor;
     }
 
-//    public void showProperScreen(final boolean otherScreenDisplayed) {
-//        disposable =
-//                Single.zip(
-//                    incubationInteractor.getIncubationStatus(),
-//                    sampleWettingInteractor.getWettingStatus(),
-//                    Pair::new)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(
-//                    value ->
-//                        ifViewAttached(attachedView -> {
-//                            attachedView.showScreen(TestScreens.BREAK_FOIL);
-//                            if (value.second == WettingStatus.FINISHED) {
-//                                attachedView.showScreen(TestScreens.SAMPLE_WETTING);
-//                                attachedView.showNextScreen();
-//                            } else if (value.second == WettingStatus.RUNNING) {
-//                                attachedView.showScreen(TestScreens.SAMPLE_WETTING);
-//                            } else if (value.first == IncubationStatus.RUNNING) {
-//                                attachedView.showScreen(TestScreens.INCUBATION);
-//                            } else if (value.first == IncubationStatus.FINISHED) {
-//                                attachedView.showScreen(TestScreens.INSERT_CASSETTE);
-//                            } else if (!otherScreenDisplayed) {
-//                                attachedView.showScreen(TestScreens.TAKE_SAMPLE);
-//                            }
-//                        })
-//                    );
-//    }
+    public void showProperScreen(final boolean otherScreenDisplayed) {
+        disposable = wettingInteractor.getWettingStatus()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    wettingStatus ->
+                        ifViewAttached(attachedView -> {
+                            if (wettingStatus == WettingStatus.FINISHED) {
+                                attachedView.showScreen(TestScreens.TURN_READER_ON);
+                            } else if (wettingStatus == WettingStatus.RUNNING) {
+                                attachedView.showScreen(TestScreens.WETTING);
+                            } else if (!otherScreenDisplayed) {
+                                attachedView.showScreen(TestScreens.BREAK_FOIL);
+                            }
+                        })
+                    );
+    }
 
     public void onShowNextScreen(@NonNull final TestScreens current) {
         disposable = Flowable.fromCallable(() -> TestScreens.values()[current.ordinal() + 1])
                 .flatMap(nextScreen -> {
                     if (nextScreen == TestScreens.WETTING) {
-                        return sampleWettingInteractor.startWetting()
+                        return wettingInteractor.startWetting()
                                 .andThen(Flowable.just(nextScreen));
                     }
 
@@ -77,5 +63,15 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
         }
 
         super.detachView();
+    }
+
+    public void onShowPreviousScreen(@NonNull final TestScreens currentScreen) {
+        ifViewAttached(attachedView -> {
+            if (currentScreen == TestScreens.WETTING || currentScreen == TestScreens.TURN_READER_ON || currentScreen == TestScreens.TESTING) {
+                attachedView.showScreen(TestScreens.CANCEL);
+            } else {
+                attachedView.showPreviousScreen();
+            }
+        });
     }
 }
