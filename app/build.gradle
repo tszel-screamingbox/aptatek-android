@@ -166,6 +166,7 @@ dependencies {
     implementation(uiDependencies.rangebar) {
         exclude module: 'support-compat'
     }
+    implementation uiDependencies.pagerIndicator
 
     // LeakCanary
     debugImplementation leakDependencies.debug

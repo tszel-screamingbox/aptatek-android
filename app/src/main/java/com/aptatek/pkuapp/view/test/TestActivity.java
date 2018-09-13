@@ -28,6 +28,7 @@ import com.aptatek.pkuapp.view.test.pokefingertip.PokeFingertipFragment;
 import com.aptatek.pkuapp.view.test.testing.TestingFragment;
 import com.aptatek.pkuapp.view.test.turnreaderon.TurnReaderOnFragment;
 import com.aptatek.pkuapp.view.test.wetting.WettingFragment;
+import com.rd.PageIndicatorView;
 
 import javax.inject.Inject;
 
@@ -38,7 +39,7 @@ import butterknife.OnClick;
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
     implements TestActivityView {
 
-    private static final String KEY_WETTING_FINISHED = "com.aptatek.samplewetting.finished";
+    private static final String KEY_WETTING_FINISHED = "com.aptatek.wetting.finished";
 
     public static Intent createStarter(@NonNull final Context context) {
         return new Intent(context, TestActivity.class);
@@ -63,6 +64,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     TextView battery;
     @BindView(R.id.bottomBar)
     ConstraintLayout bottomBar;
+    @BindView(R.id.testPageIndicator)
+    PageIndicatorView screenPagerIndicator;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -77,6 +80,9 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         if (getIntent().getBooleanExtra(KEY_WETTING_FINISHED, false)) {
             showScreen(TestScreens.TURN_READER_ON);
         }
+
+        screenPagerIndicator.setDynamicCount(false);
+        screenPagerIndicator.setCount(TestScreens.values().length - 1); // Cancel screen is ignored
     }
 
     @Override
@@ -169,6 +175,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         }
 
         switchToFragment(fragment);
+        screenPagerIndicator.setSelection(screen.ordinal());
     }
 
     @Override
@@ -183,6 +190,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void showPreviousScreen() {
         super.onBackPressed();
+        screenPagerIndicator.setSelection(getCurrentScreen().ordinal());
     }
 
     @Override
@@ -204,6 +212,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setProgressVisible(final boolean visible) {
         testProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+        screenPagerIndicator.setVisibility(visible ? View.GONE : View.VISIBLE);
     }
 
     @Override

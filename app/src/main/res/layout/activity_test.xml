@@ -12,9 +12,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/topGuide">
-
-    </FrameLayout>
+        app:layout_constraintTop_toBottomOf="@+id/topGuide" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/bottomBar"
@@ -32,6 +30,21 @@
             android:text="@string/test.button.cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <com.rd.PageIndicatorView
+            android:id="@+id/testPageIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/testCancelButton"
+            app:layout_constraintEnd_toStartOf="@id/testNextButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/testCancelButton"
+            app:layout_constraintTop_toTopOf="@+id/testCancelButton"
+            app:layout_constraintVertical_bias="0.5"
+            app:piv_animationType="worm"
+            app:piv_interactiveAnimation="true"
+            app:piv_selectedColor="@color/applicationGreen"
+            app:piv_unselectedColor="@color/testPageIndicatorDot" />
 
         <ProgressBar
             android:id="@+id/testProgress"

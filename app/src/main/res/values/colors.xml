@@ -39,4 +39,6 @@
     <color name="pkuPdfFasting">#D3DAE3</color>
 
     <color name="pdfTitle">#0A263C</color>
+
+    <color name="testPageIndicatorDot">#D3DEE5</color>
 </resources>

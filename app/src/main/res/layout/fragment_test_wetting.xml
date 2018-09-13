@@ -43,6 +43,7 @@
         layout="@layout/layout_test_alert"
         android:layout_width="0dp"
         android:layout_height="@dimen/test.alert.height"
+        android:layout_marginBottom="@dimen/general.distance.mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

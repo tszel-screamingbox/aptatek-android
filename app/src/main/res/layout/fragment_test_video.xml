@@ -17,10 +17,10 @@
         android:id="@+id/testVideo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/general.distance.small"
-        app:layout_constraintDimensionRatio="W,986:1080"
+        android:layout_marginTop="@dimen/general.distance.small"
         app:layout_constraintBottom_toTopOf="@id/testDisclaimer"
+        app:layout_constraintDimensionRatio="W,986:1080"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/testHeader" />
@@ -30,6 +30,7 @@
         layout="@layout/layout_test_alert"
         android:layout_width="0dp"
         android:layout_height="@dimen/test.alert.height"
+        android:layout_marginBottom="@dimen/general.distance.mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
