@@ -92,6 +92,7 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     public void playVideo(@NonNull final Uri uri, final boolean shouldLoop) {
         if (videoView != null) {
             videoView.setZOrderOnTop(true);
+
             if (videoView.isPlaying()) {
                 videoView.stopPlayback();
             }
@@ -152,6 +153,7 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     @Override
     public void onStop() {
         if (videoView != null && videoView.isPlaying()) {
+            videoView.setZOrderOnTop(true);
             videoView.stopPlayback();
             videoView.setOnPreparedListener(null);
         }

@@ -19,11 +19,12 @@
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/general.distance.small"
         android:layout_marginTop="@dimen/general.distance.small"
-        app:layout_constraintBottom_toTopOf="@id/testDisclaimer"
-        app:layout_constraintDimensionRatio="W,986:1080"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="986:1080"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/testHeader" />
+        app:layout_constraintTop_toBottomOf="@id/testHeader"
+        app:layout_constraintVertical_bias="0.0" />
 
     <include
         android:id="@+id/testDisclaimer"
