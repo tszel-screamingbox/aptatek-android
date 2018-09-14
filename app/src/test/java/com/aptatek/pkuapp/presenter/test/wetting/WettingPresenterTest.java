@@ -1,11 +1,12 @@
-package com.aptatek.pkuapp.presenter.test.incubation;
+package com.aptatek.pkuapp.presenter.test.wetting;
 
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkuapp.domain.model.Countdown;
-import com.aptatek.pkuapp.view.test.incubation.IncubationPresenter;
-import com.aptatek.pkuapp.view.test.incubation.IncubationView;
+import com.aptatek.pkuapp.view.test.wetting.WettingPresenter;
+import com.aptatek.pkuapp.view.test.wetting.WettingView;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -29,26 +30,26 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for the IncubationPresenter class.
+ * Tests for the WettingPresenter class.
  *
  * @test.layer presentation
- * @test.feature BloodIsProcessing
+ * @test.feature SampleWetting
  * @test.type unit
  */
-public class IncubationPresenterTest {
+public class WettingPresenterTest {
 
-    private static final String TEST_STRING = "test";
-
-    @Mock
-    IncubationInteractor incubationInteractor;
+    private final String TEST_STRING = "hello";
 
     @Mock
     ResourceInteractor resourceInteractor;
 
     @Mock
-    IncubationView view;
+    WettingInteractor wettingInteractor;
 
-    private IncubationPresenter presenter;
+    @Mock
+    WettingView view;
+
+    private WettingPresenter presenter;
 
     private final FlowableProcessor<Countdown> countdownProcessor = BehaviorProcessor.create();
 
@@ -86,14 +87,14 @@ public class IncubationPresenterTest {
 
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt())).thenReturn(TEST_STRING);
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt(), ArgumentMatchers.anyVararg())).thenReturn(TEST_STRING);
-        when(incubationInteractor.getIncubationCountdown()).thenReturn(countdownProcessor);
+        when(wettingInteractor.getWettingCountdown()).thenReturn(countdownProcessor);
 
-        presenter = new IncubationPresenter(resourceInteractor, incubationInteractor);
+        presenter = new WettingPresenter(resourceInteractor, wettingInteractor);
         presenter.attachView(view);
     }
 
     /**
-     * Tests the proper behavior: initUi() should trigger changes on UI: the initial state should be rendered.
+     * Tests the proper behavior: the initUi() method should trigger changes on UI: the initial state should be rendered
      *
      * @test.input
      * @test.expected
@@ -104,34 +105,34 @@ public class IncubationPresenterTest {
 
         verify(view).setTitle(TEST_STRING);
         verify(view).setMessage(TEST_STRING);
-        verify(view).setNavigationButtonVisible(true);
-        verify(view).setNavigationButtonText(TEST_STRING);
-        verify(view).setCircleCancelVisible(true);
-        verify(view).setCancelBigVisible(false);
+
+        // TODO write proper tests...
     }
 
     /**
-     * Tests the proper behavior: when the screen is displayed, the presenter should interact with the interactor to get the current countdown state.
+     * Tests the proper behavior: when the screen is displayed, the presenter should check the current state of sample wetting via the interactor.
      *
      * @test.input
      * @test.expected
      */
     @Test
     public void testAttachViewCallsInteractor() throws Exception {
-        verify(incubationInteractor).getIncubationCountdown();
+        verify(wettingInteractor).getWettingCountdown();
     }
 
     /**
-     * Tests the proper behavior: when the interactor's countdown stream emits a new item, the UI should be updated: the countdown text should render the new value.
+     * Tests the proper behavior: when the interactor's countdown stream emits a new item, the UI should be updated: the countdown text should display the new value.
      *
      * @test.input
      * @test.expected
      */
     @Test
-    public void testUpdateCountdown() throws Exception {
-        countdownProcessor.onNext(Countdown.builder().setRemainingFormattedText(TEST_STRING).setRemainingMillis(0L).build());
+    public void testCountdownUpdateCallsView() throws Exception {
+        countdownProcessor.onNext(Countdown.builder().setRemainingFormattedText(TEST_STRING).setRemainingMillis(1000L).build());
 
-        verify(view).showCountdownText(TEST_STRING);
+        Thread.sleep(1000L);
+
+        verify(view).showCountdown(TEST_STRING);
     }
 
 }

@@ -48,8 +48,6 @@ public class MainActivityPresenterTest {
     @Mock
     private DailyChartFormatter dailyChartFormatter;
     @Mock
-    private IncubationInteractor incubationInteractor;
-    @Mock
     private WettingInteractor wettingInteractor;
 
     private final Date date = new Date();
@@ -67,10 +65,9 @@ public class MainActivityPresenterTest {
         doReturn(TEST_STRING).when(dailyChartFormatter).formatDate(ArgumentMatchers.anyLong(), ArgumentMatchers.anyBoolean());
         doReturn(TEST_STRING).when(dailyChartFormatter).getNameOfDay(ArgumentMatchers.anyLong());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
-        doReturn(Single.just(IncubationStatus.NOT_STARTED)).when(incubationInteractor).getIncubationStatus();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new MainActivityPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, incubationInteractor, wettingInteractor);
+        presenter = new MainActivityPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)

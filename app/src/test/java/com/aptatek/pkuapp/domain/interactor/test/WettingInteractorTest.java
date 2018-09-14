@@ -254,37 +254,4 @@ public class WettingInteractorTest {
         test.assertError(WettingError.class);
     }
 
-    /**
-     * Tests the proper behavior: the getWettingProgress() should start with 0 percent.
-     *
-     * @test.input
-     * @test.expected
-     */
-    @Test
-    public void testProgressDefault() throws Exception {
-        final TestSubscriber<Integer> test = interactor.getWettingProgress().test();
-        test.assertNoErrors();
-        test.assertValueAt(0, 0);
-    }
-
-    /**
-     * Tests the proper behavior: when some time elapses after the start of the wetting, the progress should be greater than 0.
-     *
-     * @test.input
-     * @test.expected
-     */
-    @Test
-    public void testProgressUpdatesOnWettingTick() throws Exception {
-        final String testValue = "test";
-        when(wettingDataSource.getWettingStatus()).thenReturn(WettingStatus.RUNNING);
-        when(wettingDataSource.getWettingStart()).thenReturn(System.currentTimeMillis() - (Constants.DEFAULT_WETTING_PERIOD + 200L));
-        when(timeFormatter.getFormattedRemaining(ArgumentMatchers.anyLong())).thenReturn(testValue);
-
-        interactor.getWettingCountdown().test().awaitTerminalEvent();
-
-        final TestSubscriber<Integer> test = interactor.getWettingProgress().test();
-        test.assertNoErrors();
-        test.assertValueAt(0, 0);
-    }
-
 }

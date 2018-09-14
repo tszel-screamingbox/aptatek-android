@@ -93,26 +93,7 @@ public class WettingInteractorTest {
 
         test.assertNotComplete();
         test.assertNoErrors();
-        test.assertValueAt(0, value -> value.getRemainingFormattedText().startsWith("09:"));
-    }
-
-    /**
-     * Tests whether the wetting progress starts to emit a non-zero percent after a successful wetting start.
-     *
-     * @test.input
-     * @test.expected
-     */
-    @Test
-    public void testProgress() throws Exception {
-        interactor.startWetting().test();
-        final TestSubscriber<Countdown> test = interactor.getWettingCountdown().test();
-        final TestSubscriber<Integer> testProgress = interactor.getWettingProgress().test();
-
-        Thread.sleep(4000L);
-
-        testProgress.assertNotComplete();
-        testProgress.assertNoErrors();
-        testProgress.assertValueAt(testProgress.valueCount() - 1, (value) -> value < 100 && value > 90);
+        test.assertValueAt(0, value -> value.getRemainingFormattedText().startsWith("29:"));
     }
 
 }
