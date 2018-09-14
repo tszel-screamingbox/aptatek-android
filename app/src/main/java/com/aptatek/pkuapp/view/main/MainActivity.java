@@ -148,8 +148,6 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     @OnClick(R.id.newTestButton)
     public void onNewTestButtonClicked() {
         presenter.startNewTest();
-
-        // launchActivity(TestResultActivity.starter(this), false, Animation.FADE);
     }
 
     @OnClick(R.id.settingsButton)

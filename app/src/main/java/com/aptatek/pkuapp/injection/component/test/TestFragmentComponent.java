@@ -2,31 +2,36 @@ package com.aptatek.pkuapp.injection.component.test;
 
 import com.aptatek.pkuapp.injection.module.FragmentModule;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
+import com.aptatek.pkuapp.view.test.breakfoil.BreakFoilFragment;
 import com.aptatek.pkuapp.view.test.canceltest.CancelTestFragment;
-import com.aptatek.pkuapp.view.test.incubation.IncubationFragment;
-import com.aptatek.pkuapp.view.test.samplewetting.SampleWettingFragment;
-import com.aptatek.pkuapp.view.test.takesample.TakeSampleFragment;
-import com.aptatek.pkuapp.view.test.tutorial.attachcube.AttachCubeFragment;
-import com.aptatek.pkuapp.view.test.tutorial.insertcasette.InsertCasetteFragment;
-import com.aptatek.pkuapp.view.test.tutorial.insertsample.InsertSampleFragment;
+import com.aptatek.pkuapp.view.test.collectblood.CollectBloodFragment;
+import com.aptatek.pkuapp.view.test.connectitall.ConnectItAllFragment;
+import com.aptatek.pkuapp.view.test.mixsample.MixSampleFragment;
+import com.aptatek.pkuapp.view.test.pokefingertip.PokeFingertipFragment;
+import com.aptatek.pkuapp.view.test.testing.TestingFragment;
+import com.aptatek.pkuapp.view.test.turnreaderon.TurnReaderOnFragment;
+import com.aptatek.pkuapp.view.test.wetting.WettingFragment;
 
 import dagger.Subcomponent;
 
 @Subcomponent(modules = {FragmentModule.class, TestModule.class})
 public interface TestFragmentComponent {
 
-    void inject(TakeSampleFragment fragment);
-
-    void inject(IncubationFragment fragment);
-
     void inject(CancelTestFragment fragment);
 
-    void inject(InsertCasetteFragment fragment);
+    void inject(BreakFoilFragment fragment);
 
-    void inject(AttachCubeFragment fragment);
+    void inject(PokeFingertipFragment pokeFingertipFragment);
 
-    void inject(InsertSampleFragment fragment);
+    void inject(CollectBloodFragment collectBloodFragment);
 
-    void inject(SampleWettingFragment fragment);
+    void inject(MixSampleFragment mixSampleFragment);
 
+    void inject(WettingFragment wettingFragment);
+
+    void inject(TurnReaderOnFragment turnReaderOnFragment);
+
+    void inject(ConnectItAllFragment connectItAllFragment);
+
+    void inject(TestingFragment testingFragment);
 }

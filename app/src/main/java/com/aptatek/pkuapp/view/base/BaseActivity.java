@@ -186,7 +186,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         if (currentFragment != null) {
             if (!currentFragment.onBackPressed()) {
                 if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    getSupportFragmentManager().popBackStack();
+                    getSupportFragmentManager().popBackStackImmediate();
                 } else {
                     finish();
                 }

@@ -10,9 +10,8 @@ import com.aptatek.pkuapp.device.PreferenceManager;
 import com.aptatek.pkuapp.domain.base.Mapper;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.cube.CubeDataSource;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationDataSource;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeDataSource;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingDataSource;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingDataSource;
 import com.aptatek.pkuapp.injection.qualifier.ApplicationContext;
 import com.aptatek.pkuapp.util.animation.AnimationHelper;
 
@@ -40,8 +39,6 @@ public interface ApplicationComponentExposes {
     Context context();
 
     CubeDataSource provideCubeDataSource();
-
-    IncubationDataSource provideIncubationDataSource();
 
     WettingDataSource provideWettingDataSource();
 

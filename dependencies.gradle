@@ -84,6 +84,8 @@ ext {
             // UI
             rangebar          : '1.4.3',
             autoFitTextView   : '0.2.1',
+            pagerIndicator    : '1.0.2',
+            frameVideoView    : '1.3.3',
 
             // Time
             yodatime          : '2.9.9.4'
@@ -190,7 +192,9 @@ ext {
 
     uiDependencies = [
             rangebar       : "com.appyvet:materialrangebar:$versions.rangebar",
-            autoFitTextView: "me.grantland:autofittextview:$versions.autoFitTextView"
+            autoFitTextView: "me.grantland:autofittextview:$versions.autoFitTextView",
+            pagerIndicator : "com.romandanylyk:pageindicatorview:$versions.pagerIndicator@aar",
+            frameVideoView : "com.github.mklimek:frame-video-view:$versions.frameVideoView"
     ]
 
     timeDependencies = [

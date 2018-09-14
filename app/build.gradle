@@ -42,8 +42,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 8
-        versionName "0.0.8"
+        versionCode 10
+        versionName "0.0.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -166,6 +166,8 @@ dependencies {
     implementation(uiDependencies.rangebar) {
         exclude module: 'support-compat'
     }
+    implementation uiDependencies.pagerIndicator
+    implementation uiDependencies.frameVideoView
 
     // LeakCanary
     debugImplementation leakDependencies.debug
