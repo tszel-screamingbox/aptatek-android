@@ -167,6 +167,7 @@ dependencies {
         exclude module: 'support-compat'
     }
     implementation uiDependencies.pagerIndicator
+    implementation uiDependencies.frameVideoView
 
     // LeakCanary
     debugImplementation leakDependencies.debug

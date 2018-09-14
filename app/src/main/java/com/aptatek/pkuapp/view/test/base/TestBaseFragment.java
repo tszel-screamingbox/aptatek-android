@@ -1,12 +1,13 @@
 package com.aptatek.pkuapp.view.test.base;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.AlertDialogModel;
@@ -18,6 +19,8 @@ import com.aptatek.pkuapp.view.dialog.AlertDialogDecisionListener;
 import com.aptatek.pkuapp.view.dialog.AlertDialogFragment;
 import com.aptatek.pkuapp.view.test.TestActivityCommonView;
 import com.aptatek.pkuapp.view.test.TestScreens;
+import com.mklimek.frameviedoview.FrameVideoView;
+import com.mklimek.frameviedoview.FrameVideoViewListener;
 
 import butterknife.BindView;
 
@@ -40,7 +43,7 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     protected ConstraintLayout disclaimerContainer;
     @BindView(R.id.testVideo)
     @Nullable
-    protected VideoView videoView;
+    protected FrameVideoView videoView;
 
     @Override
     protected void injectFragment(@NonNull final FragmentComponent fragmentComponent) {
@@ -91,16 +94,19 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     @Override
     public void playVideo(@NonNull final Uri uri, final boolean shouldLoop) {
         if (videoView != null) {
-            videoView.setZOrderOnTop(true);
 
-            if (videoView.isPlaying()) {
-                videoView.stopPlayback();
-            }
+            videoView.setup(uri, ContextCompat.getColor(getActivity(), R.color.applicationWhite));
+            videoView.setFrameVideoViewListener(new FrameVideoViewListener() {
+                @Override
+                public void mediaPlayerPrepared(MediaPlayer mediaPlayer) {
+                    mediaPlayer.setLooping(shouldLoop);
+                    mediaPlayer.start();
+                }
 
-            videoView.setVideoURI(uri);
-            videoView.setOnPreparedListener(mp -> {
-                mp.setLooping(shouldLoop);
-                mp.start();
+                @Override
+                public void mediaPlayerPrepareFailed(MediaPlayer mediaPlayer, String s) {
+
+                }
             });
         }
     }
@@ -152,13 +158,29 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
 
     @Override
     public void onStop() {
-        if (videoView != null && videoView.isPlaying()) {
-            videoView.setZOrderOnTop(true);
-            videoView.stopPlayback();
-            videoView.setOnPreparedListener(null);
+        if (videoView != null) {
+            videoView.setFrameVideoViewListener(null);
         }
 
         super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (videoView != null) {
+            videoView.onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (videoView != null) {
+            videoView.onPause();
+        }
+
+        super.onPause();
     }
 
     private void runOnTestTestActivityView(final TestActivityViewAction action) {
