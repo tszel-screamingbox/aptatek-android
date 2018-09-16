@@ -57,19 +57,19 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
 
     @Override
     public void onParentalGateShouldLoad() {
-        launchActivity(ParentalGateActivity.starter(this), true, Animation.RIGHT_TO_LEFT);
+        launchActivity(ParentalGateActivity.starter(this), true, null);
     }
 
     @Override
     public void onRequestPinActivityShouldLoad() {
         final Intent intent = new Intent(this, AuthPinHostActivity.class);
-        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
+        launchActivity(intent, true, null);
     }
 
     @Override
     public void onSetPinActivityShouldLoad() {
         final Intent intent = new Intent(this, SetPinHostActivity.class);
-        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
+        launchActivity(intent, true, null);
     }
 
     @Override
