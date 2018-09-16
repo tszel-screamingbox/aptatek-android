@@ -49,7 +49,7 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
         compositeDisposable.add(
                 Observable.timer(DELAY, TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(o -> ifViewAttached(SplashActivityView::onFadeOutAnimationShouldStart))
+                        .subscribe(o -> switchToNextActivity())
         );
     }
 
