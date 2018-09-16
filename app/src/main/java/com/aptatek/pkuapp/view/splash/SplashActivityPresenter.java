@@ -7,13 +7,18 @@ import com.aptatek.pkuapp.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.pkuapp.domain.manager.keystore.KeyStoreManager;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView> {
+
+    private static final int DELAY = 1000;
 
     private final KeyStoreManager keyStoreManager;
     private final PreferenceManager preferenceManager;
@@ -37,7 +42,15 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
         compositeDisposable.add(reminderInteractor.initializeDays()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::switchToNextActivity));
+                .subscribe(this::startDelay));
+    }
+
+    private void startDelay() {
+        compositeDisposable.add(
+                Observable.timer(DELAY, TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(o -> ifViewAttached(SplashActivityView::onFadeOutAnimationShouldStart))
+        );
     }
 
     public void switchToNextActivity() {

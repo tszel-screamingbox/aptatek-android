@@ -9,4 +9,6 @@ public interface SplashActivityView extends MvpView {
     void onRequestPinActivityShouldLoad();
 
     void onSetPinActivityShouldLoad();
+
+    void onFadeOutAnimationShouldStart();
 }
