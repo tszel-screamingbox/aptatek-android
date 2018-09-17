@@ -92,6 +92,8 @@ ext {
 
     androidSupportDependencies = [
             appcompat       : "com.android.support:appcompat-v7:${versions.androidSupport}",
+            annotations     : "com.android.support:support-annotations:${versions.androidSupport}",
+            recyclerview    : "com.android.support:recyclerview-v7:${versions.androidSupport}",
             design          : "com.android.support:design:${versions.androidSupport}",
             multidex        : "com.android.support:multidex:${versions.multidex}",
             constraintLayout: "com.android.support.constraint:constraint-layout:${versions.constraintLayout}"

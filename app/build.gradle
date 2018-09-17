@@ -112,6 +112,8 @@ checkstyle {
 dependencies {
     // Support
     implementation androidSupportDependencies.appcompat
+    implementation androidSupportDependencies.annotations
+    implementation androidSupportDependencies.recyclerview
     implementation androidSupportDependencies.constraintLayout
     implementation androidSupportDependencies.design
     implementation androidSupportDependencies.multidex
