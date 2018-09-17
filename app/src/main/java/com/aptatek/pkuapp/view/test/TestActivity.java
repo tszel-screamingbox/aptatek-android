@@ -73,10 +73,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            testProgress.getProgressDrawable().setColorFilter(ContextCompat.getColor(this, R.color.applicationGreen), PorterDuff.Mode.SRC_IN);
-        }
-
         if (getIntent().getBooleanExtra(KEY_WETTING_FINISHED, false)) {
             showScreen(TestScreens.TURN_READER_ON);
         }

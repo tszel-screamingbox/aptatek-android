@@ -164,11 +164,11 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
+    <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog">
         <item name="android:datePickerStyle">@style/Parental.DatePicker</item>
     </style>
 
-    <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker" tools:targetApi="lollipop">
+    <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker">
         <item name="android:datePickerMode">spinner</item>
     </style>
 
