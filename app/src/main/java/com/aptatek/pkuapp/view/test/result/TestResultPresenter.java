@@ -6,9 +6,8 @@ import android.support.annotation.StringRes;
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.cube.CubeInteractor;
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
@@ -30,8 +29,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
     private final PkuRangeInteractor rangeInteractor;
     private final CubeInteractor cubeInteractor;
     private final ResourceInteractor resourceInteractor;
-    private final SampleWettingInteractor sampleWettingInteractor;
-    private final IncubationInteractor incubationInteractor;
+    private final WettingInteractor wettingInteractor;
 
     private Disposable disposable;
 
@@ -39,13 +37,11 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
     public TestResultPresenter(final PkuRangeInteractor rangeInteractor,
                                final CubeInteractor cubeInteractor,
                                final ResourceInteractor resourceInteractor,
-                               final SampleWettingInteractor sampleWettingInteractor,
-                               final IncubationInteractor incubationInteractor) {
+                               final WettingInteractor wettingInteractor) {
         this.rangeInteractor = rangeInteractor;
         this.cubeInteractor = cubeInteractor;
         this.resourceInteractor = resourceInteractor;
-        this.sampleWettingInteractor = sampleWettingInteractor;
-        this.incubationInteractor = incubationInteractor;
+        this.wettingInteractor = wettingInteractor;
     }
 
     public void initUi() {
@@ -180,7 +176,6 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
     }
 
     private Completable clearTestState() {
-        return sampleWettingInteractor.resetWetting()
-            .andThen(incubationInteractor.resetIncubation());
+        return wettingInteractor.resetWetting();
     }
 }

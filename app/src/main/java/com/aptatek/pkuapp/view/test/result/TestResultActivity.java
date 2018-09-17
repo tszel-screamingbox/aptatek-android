@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -82,7 +81,6 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
 
         tvBubbleValue.setText(state.getFormattedPkuValue());
         tvBubbleValue.setTextColor(state.getColor());
-        tvBubbleValue.setTextSize(calculateTextSize(tvBubbleValue, state.getFormattedPkuValue()));
 
 //        tvBubbleMessage.setText(state.getPkuLevelText());
 //        tvBubbleMessage.setTextColor(state.getColor());
@@ -94,18 +92,6 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
                     getResources().getDimensionPixelSize(R.dimen.graph_bubble_stroke_big),
                     state.getColor());
         }
-    }
-
-    private float calculateTextSize(final TextView textView, final String text) {
-        final TextPaint textPaint = new TextPaint(textView.getPaint());
-        final int dimensionPixelSize = getResources().getDimensionPixelSize(R.dimen.font_size_enormous);
-        textPaint.setTextSize(dimensionPixelSize);
-
-        while (textPaint.measureText(text) > textView.getMeasuredWidth()) {
-            textPaint.setTextSize(textPaint.getTextSize() - 5);
-        }
-
-        return textPaint.getTextSize();
     }
 
     @OnClick(R.id.test_result_done)

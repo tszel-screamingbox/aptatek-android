@@ -41,7 +41,7 @@ public class SplashPresenterTest {
      * Setting up the required presenter and defining mocked component's behaviour
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         when(reminderInteractor.initializeDays()).thenReturn(Completable.complete());
 

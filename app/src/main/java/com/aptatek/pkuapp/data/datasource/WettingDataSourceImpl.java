@@ -3,8 +3,8 @@ package com.aptatek.pkuapp.data.datasource;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.device.PreferenceManager;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingDataSource;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.WettingStatus;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingDataSource;
+import com.aptatek.pkuapp.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkuapp.util.Constants;
 
 public class WettingDataSourceImpl implements WettingDataSource {
