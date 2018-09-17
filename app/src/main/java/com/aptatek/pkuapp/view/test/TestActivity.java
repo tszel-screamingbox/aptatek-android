@@ -2,12 +2,9 @@ package com.aptatek.pkuapp.view.test;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -37,7 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
-    implements TestActivityView {
+        implements TestActivityView {
 
     private static final String KEY_WETTING_FINISHED = "com.aptatek.wetting.finished";
 
