@@ -1,14 +1,12 @@
 package com.aptatek.pkuapp.view.pin.auth.add;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.data.PinCode;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
-import com.aptatek.pkuapp.view.base.BaseActivity;
-import com.aptatek.pkuapp.view.main.MainActivity;
+import com.aptatek.pkuapp.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.pkuapp.view.pin.base.BasePinFragment;
 
 import javax.inject.Inject;
@@ -57,10 +55,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setTextColor(this.getResources().getColor(R.color.applicationGreen));
         messageTextView.setText(R.string.auth_pin_successful);
-        fillCircle(R.drawable.pin_circle_filled_green, () -> {
-            final Intent intent = new Intent(getContext(), MainActivity.class);
-            getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
-        });
+        fillCircle(R.drawable.pin_circle_filled_green, ((AuthPinHostActivity) getBaseActivity())::successfullyAuthorized);
     }
 
     @Override
@@ -76,10 +71,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setTextColor(this.getResources().getColor(R.color.applicationGreen));
         messageTextView.setText(R.string.auth_pin_successful);
-        fillCircle(R.drawable.pin_circle_filled_green, () -> {
-            final Intent intent = new Intent(getContext(), MainActivity.class);
-            getBaseActivity().launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
-        });
+        fillCircle(R.drawable.pin_circle_filled_green, ((AuthPinHostActivity) getBaseActivity())::successfullyAuthorized);
     }
 
     @Override
