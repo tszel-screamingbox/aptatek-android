@@ -7,14 +7,12 @@ import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
 import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
 import com.aptatek.pkuapp.util.Constants;
-import com.aptatek.pkuapp.view.rangeinfo.RangeInfoUiModel;
 import com.aptatek.pkuapp.view.settings.pkulevel.RangeSettingsModel;
 import com.aptatek.pkuapp.view.settings.pkulevel.RangeSettingsPresenter;
 import com.aptatek.pkuapp.view.settings.pkulevel.RangeSettingsValueFormatter;
 import com.aptatek.pkuapp.view.settings.pkulevel.RangeSettingsView;
 
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,7 +55,7 @@ public class RangeSettingsPresenterTest {
     RangeSettingsView view;
 
     @BeforeClass
-    public static void beforeClass() throws Exception {
+    public static void beforeClass() {
         final Scheduler immediate = new Scheduler() {
 
             @Override
@@ -80,7 +78,7 @@ public class RangeSettingsPresenterTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         presenter = new RangeSettingsPresenter(rangeInteractor, valueFormatter);
@@ -88,18 +86,19 @@ public class RangeSettingsPresenterTest {
     }
 
     @AfterClass
-    public static void afterClass() throws Exception {
+    public static void afterClass() {
         RxJavaPlugins.reset();
         RxAndroidPlugins.reset();
     }
 
     /**
      * Tests the proper behavior: the refresh() methods should get the data from the PkuRangeInteractor then format it via the RangeSettingsValueFormatter to be rendered on UI.
+     *
      * @test.input
      * @test.expected
      */
     @Test
-    public void testRefresh() throws Exception {
+    public void testRefresh() {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
                 .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
@@ -140,7 +139,7 @@ public class RangeSettingsPresenterTest {
      * @test.expected
      */
     @Test
-    public void testFormatTest() throws Exception {
+    public void testFormatTest() {
         final String hello = "hello";
         doReturn(hello).when(valueFormatter).formatRegularValue(ArgumentMatchers.any(PkuLevel.class));
 
@@ -155,7 +154,7 @@ public class RangeSettingsPresenterTest {
      * @test.expected
      */
     @Test
-    public void testChangeValues() throws Exception {
+    public void testChangeValues() {
         doReturn(Completable.complete()).when(rangeInteractor).saveDisplayUnit(ArgumentMatchers.any(PkuLevelUnits.class));
         final String testValue = "hello";
         doReturn(testValue).when(valueFormatter).getFormattedLow(ArgumentMatchers.any(PkuRangeInfo.class));
@@ -176,8 +175,6 @@ public class RangeSettingsPresenterTest {
         final float mmolCeil = 300f;
         presenter.changeValues(mmolFloor, mmolCeil, PkuLevelUnits.MICRO_MOL);
 
-        verify(rangeInteractor).saveDisplayUnit(PkuLevelUnits.MICRO_MOL);
-
         final RangeSettingsModel model = RangeSettingsModel.builder()
                 .setLowText(valueFormatter.getFormattedLow(rangeInfo))
                 .setHighText(valueFormatter.getFormattedHigh(rangeInfo))
@@ -193,20 +190,24 @@ public class RangeSettingsPresenterTest {
     }
 
     /**
-     * Tests the proper behavior: the saveNormalRange(float, float) method should save normal ranges via the interactor.
+     * Tests the proper behavior: the saveValues(float, float, PkuLevelUnits) method should save normal ranges via the interactor.
      *
      * @test.input
      * @test.expected
      */
     @Test
-    public void testSaveValues() throws Exception {
+    public void testSaveValues() {
         doReturn(Completable.complete()).when(rangeInteractor).saveNormalRange(ArgumentMatchers.any(PkuLevel.class), ArgumentMatchers.any(PkuLevel.class));
+        doReturn(Completable.complete()).when(rangeInteractor).saveDisplayUnit(ArgumentMatchers.any(PkuLevelUnits.class));
 
         final float floor = 100f;
         final float ceil = 300f;
-        presenter.saveNormalRange(floor, ceil);
+        presenter.saveValues(floor, ceil, PkuLevelUnits.MICRO_MOL);
 
-        verify(rangeInteractor).saveNormalRange(PkuLevel.create(floor, PkuLevelUnits.MICRO_MOL), PkuLevel.create(ceil, PkuLevelUnits.MICRO_MOL));
+        verify(rangeInteractor).saveNormalRange(
+                PkuLevel.create(floor, PkuLevelUnits.MICRO_MOL),
+                PkuLevel.create(ceil, PkuLevelUnits.MICRO_MOL)
+        );
         verify(view).finish();
     }
 
@@ -217,7 +218,7 @@ public class RangeSettingsPresenterTest {
      * @test.expected
      */
     @Test
-    public void testOnBackDoesntPopDialog() throws Exception {
+    public void testOnBackDoesntPopDialog() {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
                 .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
@@ -228,7 +229,7 @@ public class RangeSettingsPresenterTest {
                 .build();
         doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
 
-        presenter.onBackPressed(Constants.DEFAULT_PKU_NORMAL_FLOOR, Constants.DEFAULT_PKU_NORMAL_CEIL);
+        presenter.onBackPressed(Constants.DEFAULT_PKU_NORMAL_FLOOR, Constants.DEFAULT_PKU_NORMAL_CEIL, Constants.DEFAULT_PKU_LEVEL_UNIT);
 
         verify(view).finish();
     }
@@ -240,7 +241,7 @@ public class RangeSettingsPresenterTest {
      * @test.expected
      */
     @Test
-    public void testOnBackPopsDialog() throws Exception {
+    public void testOnBackPopsDialog() {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
                 .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
@@ -251,7 +252,7 @@ public class RangeSettingsPresenterTest {
                 .build();
         doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
 
-        presenter.onBackPressed(234f, 555f);
+        presenter.onBackPressed(234f, 555f, PkuLevelUnits.MICRO_MOL);
 
         verify(view).showSaveChangesDialog();
     }
