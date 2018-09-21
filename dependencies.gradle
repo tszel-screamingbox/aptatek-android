@@ -88,7 +88,10 @@ ext {
             frameVideoView    : '1.3.3',
 
             // Time
-            yodatime          : '2.9.9.4'
+            yodatime          : '2.9.9.4',
+
+            // Bluetooth
+            nordicBle         : '1.2.0'
 
     ]
 
@@ -199,5 +202,9 @@ ext {
 
     timeDependencies = [
             yodatime: "net.danlew:android.joda:$versions.yodatime"
+    ]
+
+    bluetoothDependencies = [
+            nordicBle : "no.nordicsemi.android:ble:$versions.nordicBle"
     ]
 }

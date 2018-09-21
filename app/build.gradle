@@ -183,6 +183,9 @@ dependencies {
     // Time
     implementation timeDependencies.yodatime
 
+    // Bluetooth
+    implementation bluetoothDependencies.nordicBle
+
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito
