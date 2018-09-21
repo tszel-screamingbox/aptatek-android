@@ -5,8 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.device.formatter.CountdownTimeFormatterImpl;
-import com.aptatek.pkuapp.device.notifications.IncubationCountdownNotificationFactory;
-import com.aptatek.pkuapp.device.notifications.SampleWettingCountdownNotificationFactory;
+import com.aptatek.pkuapp.device.notifications.WettingCountdownNotificationFactory;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.countdown.CountdownTimeFormatter;
 import com.aptatek.pkuapp.domain.notifications.CountdownNotificationFactory;
@@ -20,20 +19,12 @@ import dagger.Provides;
 @Module
 public class TestModule {
 
-    @Named("incubation")
-    @Provides
-    CountdownNotificationFactory provideIncubationNotificationFactory(@ApplicationContext final Context context,
-                                                                      final ResourceInteractor resourceInteractor,
-                                                                      final NotificationManager notificationManager) {
-        return new IncubationCountdownNotificationFactory(context, resourceInteractor, notificationManager);
-    }
-
-    @Named("samplewetting")
+    @Named("wetting")
     @Provides
     CountdownNotificationFactory provideSampleWettingNotificationFactory(@ApplicationContext final Context context,
                                                                       final ResourceInteractor resourceInteractor,
                                                                       final NotificationManager notificationManager) {
-        return new SampleWettingCountdownNotificationFactory(context, resourceInteractor, notificationManager);
+        return new WettingCountdownNotificationFactory(context, resourceInteractor, notificationManager);
     }
 
     @Provides

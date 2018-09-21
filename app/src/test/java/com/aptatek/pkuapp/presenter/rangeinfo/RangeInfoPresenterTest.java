@@ -2,9 +2,7 @@ package com.aptatek.pkuapp.presenter.rangeinfo;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkuapp.domain.interactor.incubation.IncubationInteractor;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkuapp.domain.interactor.samplewetting.SampleWettingInteractor;
 import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
 import com.aptatek.pkuapp.util.Constants;
 import com.aptatek.pkuapp.view.rangeinfo.PkuValueFormatter;
@@ -22,7 +20,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;

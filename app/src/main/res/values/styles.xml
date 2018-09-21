@@ -12,10 +12,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
-    </style>
-
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <style name="ToolBarStyle" parent="Widget.AppCompat.ActionBar">
@@ -49,16 +46,36 @@
         <item name="android:textSize">@dimen/font.size.large</item>
     </style>
 
-    <style name="Grey.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:background">@drawable/cancel_button_background</item>
-        <item name="android:layout_width">@dimen/general.button.height</item>
-        <item name="android:layout_height">@dimen/general.button.height</item>
-        <item name="android:textAllCaps">true</item>
+    <style name="Test.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">@dimen/general.distance.xmini</item>
+        <item name="android:paddingBottom">@dimen/general.distance.xmini</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:elevation">@dimen/general.elevation</item>
         <item name="android:fontFamily">@font/nunito_black</item>
         <item name="android:textColor">@color/applicationSolidGray</item>
-        <item name="android:textSize">@dimen/font.size.normal</item>
+        <item name="android:textSize">@dimen/font.size.big</item>
+    </style>
+
+    <style name="Test.Next.Button" parent="Test.Cancel.Button">
+        <item name="android:textColor">@color/applicationGreen</item>
+    </style>
+
+    <style name="Test.Circle.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:background">@drawable/cancel_button_background</item>
+        <item name="android:width">@dimen/general.button.height</item>
+        <item name="android:height">@dimen/general.button.height</item>
+        <item name="android:elevation">@dimen/general.elevation</item>
+    </style>
+
+    <style name="Test.Alert.Text" parent="General.Text">
+        <item name="android:textColor">@color/applicationWhite</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/font.size.xbig</item>
+    </style>
+
+    <style name="Test.Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressTint">@color/applicationGreen</item>
     </style>
 
     <style name="Grey.Settings.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -130,9 +147,9 @@
         <item name="android:textColor">@color/applicationLightGray</item>
     </style>
 
-    <style name="Incubation.Green.Text" parent="General.Text">
+    <style name="Wetting.Countdown" parent="General.Text">
         <item name="android:textColor">@color/applicationGreen</item>
-        <item name="android:textSize">@dimen/font.size.incubation</item>
+        <item name="android:textSize">@dimen/font.size.wetting</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_horizontal</item>
@@ -160,11 +177,11 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
-    <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog" tools:targetApi="lollipop">
+    <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog">
         <item name="android:datePickerStyle">@style/Parental.DatePicker</item>
     </style>
 
-    <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker" tools:targetApi="lollipop">
+    <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker">
         <item name="android:datePickerMode">spinner</item>
     </style>
 

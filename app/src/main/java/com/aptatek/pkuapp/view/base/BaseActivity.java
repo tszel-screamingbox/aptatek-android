@@ -112,7 +112,9 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }
         startActivity(intent);
-        setTransitionAnimation(changeAnimation);
+        if (changeAnimation != null) {
+            setTransitionAnimation(changeAnimation);
+        }
     }
 
     public void slideToFragment(final BaseFragment fragment) {
@@ -186,7 +188,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         if (currentFragment != null) {
             if (!currentFragment.onBackPressed()) {
                 if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    getSupportFragmentManager().popBackStack();
+                    getSupportFragmentManager().popBackStackImmediate();
                 } else {
                     finish();
                 }
