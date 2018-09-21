@@ -10,8 +10,6 @@ import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
 import com.aptatek.pkuapp.view.main.adapter.chart.ChartVM;
 import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
-import com.aptatek.pkuapp.view.main.adapter.ChartVM;
-import com.aptatek.pkuapp.view.main.adapter.DailyChartFormatter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +28,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 // TODO write proper tests for this class...
+
 /**
  * @test.layer View / Main
  * @test.feature MainActivity, BubbleChart
