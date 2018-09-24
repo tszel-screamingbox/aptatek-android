@@ -8,8 +8,8 @@ import com.aptatek.pkuapp.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
-import com.aptatek.pkuapp.view.main.adapter.ChartVM;
-import com.aptatek.pkuapp.view.main.adapter.DailyChartFormatter;
+import com.aptatek.pkuapp.view.main.adapter.chart.ChartVM;
+import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +28,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
 // TODO write proper tests for this class...
+
 /**
  * @test.layer View / Main
  * @test.feature MainActivity, BubbleChart
@@ -72,12 +73,10 @@ public class MainActivityPresenterTest {
         emptyItem = ChartVM.builder()
                 .setDate(date)
                 .setMeasures(new ArrayList<>())
-                .setBubbleYAxis(0)
-                .setStartLineYAxis(0)
-                .setEndLineYAxis(0)
                 .setNumberOfMeasures(0)
                 .setZoomed(false)
                 .setColorRes(0)
+                .setState(0)
                 .setExpandedBackgroundRes(0)
                 .setCollapsedBackgroundRes(0)
                 .build();
@@ -91,12 +90,10 @@ public class MainActivityPresenterTest {
                         .setId(now)
                         .setCubeId(String.valueOf(now))
                         .build()))
-                .setBubbleYAxis(0)
                 .setZoomed(true)
                 .setNumberOfMeasures(1)
-                .setStartLineYAxis(0)
-                .setEndLineYAxis(0)
                 .setColorRes(0)
+                .setState(0)
                 .setExpandedBackgroundRes(0)
                 .setCollapsedBackgroundRes(0)
                 .build();

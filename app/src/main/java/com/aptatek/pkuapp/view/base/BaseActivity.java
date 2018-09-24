@@ -62,7 +62,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
     }
 
 
-    public enum Animation {FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT}
+    public enum Animation {FADE, SLIDE, RIGHT_TO_LEFT, LEFT_TO_RIGHT, BOTTOM_TO_TOP}
 
     /**
      * Handles the component to resolve the injection
@@ -218,6 +218,9 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
                 break;
             case LEFT_TO_RIGHT:
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                break;
+            case BOTTOM_TO_TOP:
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                 break;
             default:
                 break;

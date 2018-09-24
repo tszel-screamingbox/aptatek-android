@@ -63,7 +63,7 @@ ext {
             activityStarter   : '1.11-beta',
 
             // DiscreteScrollView
-            discreteScrollView: '1.4.7',
+            discreteScrollView: '1.4.9',
 
             // MpAndroidChart
             chart             : 'v3.0.3',

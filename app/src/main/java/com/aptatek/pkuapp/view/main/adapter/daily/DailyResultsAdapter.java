@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.view.main.adapter;
+package com.aptatek.pkuapp.view.main.adapter.daily;
 
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;

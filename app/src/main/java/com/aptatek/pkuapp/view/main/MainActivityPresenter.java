@@ -12,9 +12,9 @@ import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkuapp.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.util.ChartUtils;
-import com.aptatek.pkuapp.view.main.adapter.ChartVM;
-import com.aptatek.pkuapp.view.main.adapter.DailyChartFormatter;
-import com.aptatek.pkuapp.view.main.adapter.DailyResultAdapterItem;
+import com.aptatek.pkuapp.view.main.adapter.chart.ChartVM;
+import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
+import com.aptatek.pkuapp.view.main.adapter.daily.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;

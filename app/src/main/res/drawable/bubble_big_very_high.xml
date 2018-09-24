@@ -2,28 +2,13 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/graph.bubble.radius.small" />
-
-            <solid android:color="@color/applicationWhite" />
-            <size
-                android:width="@dimen/graph.bubble.size"
-                android:height="@dimen/graph.bubble.size" />
-
-            <stroke
-                android:width="@dimen/graph.bubble.stroke.small"
-                android:color="@color/pkuLevelVeryHigh" />
-
-        </shape>
-    </item>
-    <item>
-        <shape android:shape="rectangle">
-            <corners android:radius="@dimen/graph.bubble.radius.small" />
             <solid android:color="@color/applicationWhite" />
             <size
                 android:width="@dimen/graph.bubble.size"
                 android:height="@dimen/graph.bubble.size" />
             <stroke
                 android:width="@dimen/graph.bubble.stroke.big"
-                android:color="@color/transparent" />
+                android:color="@color/pkuLevelVeryHigh" />
         </shape>
     </item>
 </layer-list>

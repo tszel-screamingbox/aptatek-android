@@ -1,9 +1,10 @@
-package com.aptatek.pkuapp.view.main.adapter;
+package com.aptatek.pkuapp.view.main.adapter.chart;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.CubeData;
@@ -23,21 +24,21 @@ public abstract class ChartVM implements IListTypeProvider {
     @Nullable
     public abstract PkuLevel getHighestPkuLevel();
 
-    public abstract @ColorRes int getColorRes();
+    public abstract @ColorRes
+    int getColorRes();
 
-    public abstract @DrawableRes int getCollapsedBackgroundRes();
+    public abstract @DrawableRes
+    int getCollapsedBackgroundRes();
 
-    public abstract @DrawableRes int getExpandedBackgroundRes();
-
-    public abstract float getBubbleYAxis();
-
-    public abstract float getStartLineYAxis();
-
-    public abstract float getEndLineYAxis();
+    public abstract @DrawableRes
+    int getExpandedBackgroundRes();
 
     public abstract boolean isZoomed();
 
     public abstract int getNumberOfMeasures();
+
+    public abstract @StringRes
+    int getState();
 
     @NonNull
     public abstract List<CubeData> getMeasures();
@@ -59,15 +60,11 @@ public abstract class ChartVM implements IListTypeProvider {
 
         public abstract Builder setColorRes(@ColorRes int colorRes);
 
+        public abstract Builder setState(@StringRes int stringRes);
+
         public abstract Builder setCollapsedBackgroundRes(@DrawableRes int backgroundRes);
 
         public abstract Builder setExpandedBackgroundRes(@DrawableRes int backgroundRes);
-
-        public abstract Builder setBubbleYAxis(float bubbleYAxis);
-
-        public abstract Builder setStartLineYAxis(float startLineYAxis);
-
-        public abstract Builder setEndLineYAxis(float endLineYAxis);
 
         public abstract Builder setZoomed(boolean zoomed);
 

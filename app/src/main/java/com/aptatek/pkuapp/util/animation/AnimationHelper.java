@@ -13,8 +13,8 @@ import static com.aptatek.pkuapp.util.animation.AnimationHelper.Fade.OUT;
 
 public final class AnimationHelper {
 
-    public static final float SCALE_MAX = 2.3f;
-    public static final float SCALE_MIN = 1f;
+    private static final float SCALE_MAX = 2f;
+    private static final float SCALE_MIN = 0.8f;
     private static final int DURATION_MILLISEC = 200;
 
     @Inject
