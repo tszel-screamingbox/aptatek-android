@@ -117,6 +117,11 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         }
     }
 
+    public void launchActivityForResult(final Intent intent, final Animation changeAnimation, final int requestCode) {
+        startActivityForResult(intent, requestCode);
+        setTransitionAnimation(changeAnimation);
+    }
+
     public void slideToFragment(final BaseFragment fragment) {
         switchToFragmentWithTransition(fragment, false, null, true);
     }

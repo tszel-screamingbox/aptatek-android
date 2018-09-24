@@ -109,6 +109,7 @@
     <string name="settings.daily.reminders">Daily reminders</string>
     <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
     <string name="settings.fingerprint.description">Turning it ON will enable the fingerprint scanner to start the application instead of requesting your PIN code on every application start.</string>
+    <string name="settings.message.saved">Your settings are saved.</string>
     <string name="settings.title">Settings</string>
     <string name="settings.units">Phe Preferences &amp; Units</string>
     <string name="settings.units.confirmation.button.cancel">Cancel</string>

@@ -81,28 +81,25 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                         .setPkuLevelUnit(displayUnit)
                         .build()
                 )
-                .map(this::buildSettingsModel)
-                .flatMap(rangeSettingsModel ->
-                    pkuRangeInteractor.saveDisplayUnit(displayUnit)
-                        .andThen(Single.just(rangeSettingsModel))
-                )
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(model -> ifViewAttached(attachedView ->
-                        attachedView.displayRangeSettings(model)
-                )));
+                        .map(this::buildSettingsModel)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(model -> ifViewAttached(attachedView ->
+                                attachedView.displayRangeSettings(model)
+                        )));
     }
 
-    public void saveNormalRange(final float mmolFloor, final float mmolCeil) {
+    public void saveValues(final float mmolFloor, final float mmolCeil, final PkuLevelUnits pkuLevelUnits) {
         compositeDisposable.add(pkuRangeInteractor.saveNormalRange(
                 PkuLevel.create(mmolFloor, PkuLevelUnits.MICRO_MOL),
                 PkuLevel.create(mmolCeil, PkuLevelUnits.MICRO_MOL))
+                .andThen(pkuRangeInteractor.saveDisplayUnit(pkuLevelUnits))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> ifViewAttached(RangeSettingsView::finish)));
+                .subscribe(() -> ifViewAttached(RangeSettingsView::finishWithMessage)));
     }
 
-    public void onBackPressed(final float floorMMol, final float ceilMMol) {
+    public void onBackPressed(final float floorMMol, final float ceilMMol, final PkuLevelUnits pkuLevelUnits) {
         compositeDisposable.add(pkuRangeInteractor.getInfo()
                 .flatMapCompletable(info -> {
                     final float savedFloorMMol;
@@ -116,7 +113,9 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                         savedCeilMMol = info.getNormalCeilValue();
                     }
 
-                    if (Math.abs(floorMMol - savedFloorMMol) > Constants.FLOAT_COMPARISION_ERROR_MARGIN || Math.abs(ceilMMol - savedCeilMMol) > Constants.FLOAT_COMPARISION_ERROR_MARGIN) {
+                    if (Math.abs(floorMMol - savedFloorMMol) > Constants.FLOAT_COMPARISION_ERROR_MARGIN
+                            || Math.abs(ceilMMol - savedCeilMMol) > Constants.FLOAT_COMPARISION_ERROR_MARGIN
+                            || pkuLevelUnits != info.getPkuLevelUnit()) {
                         return Completable.fromAction(() -> ifViewAttached(RangeSettingsView::showSaveChangesDialog));
                     } else {
                         return Completable.fromAction(() -> ifViewAttached(RangeSettingsView::finish));
