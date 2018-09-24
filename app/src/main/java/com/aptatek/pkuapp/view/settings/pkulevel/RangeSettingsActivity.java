@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appyvet.materialrangebar.RangeBar;
 import com.aptatek.pkuapp.R;
@@ -249,6 +250,12 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
                     }
                 });
         alertDialogFragment.show(getSupportFragmentManager(), TAG_CONFIRM_DIALOG);
+    }
+
+    @Override
+    public void finishWithMessage() {
+        Toast.makeText(this, R.string.settings_message_saved, Toast.LENGTH_LONG).show();
+        finish();
     }
 
     @Override

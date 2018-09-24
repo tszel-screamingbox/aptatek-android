@@ -96,7 +96,7 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                 .andThen(pkuRangeInteractor.saveDisplayUnit(pkuLevelUnits))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> ifViewAttached(RangeSettingsView::finish)));
+                .subscribe(() -> ifViewAttached(RangeSettingsView::finishWithMessage)));
     }
 
     public void onBackPressed(final float floorMMol, final float ceilMMol, final PkuLevelUnits pkuLevelUnits) {

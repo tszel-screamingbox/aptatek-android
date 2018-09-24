@@ -208,7 +208,7 @@ public class RangeSettingsPresenterTest {
                 PkuLevel.create(floor, PkuLevelUnits.MICRO_MOL),
                 PkuLevel.create(ceil, PkuLevelUnits.MICRO_MOL)
         );
-        verify(view).finish();
+        verify(view).finishWithMessage();
     }
 
     /**
