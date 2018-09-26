@@ -9,6 +9,7 @@ import com.aptatek.pkuapp.injection.module.parentalgate.ParentalGateModule;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.injection.scope.FragmentScope;
+import com.aptatek.pkuapp.view.connect.turnon.TurnOnFragment;
 import com.aptatek.pkuapp.view.parentalgate.verification.ParentalGateVerificationFragment;
 import com.aptatek.pkuapp.view.pin.auth.add.AuthPinFragment;
 import com.aptatek.pkuapp.view.pin.set.add.AddPinFragment;
@@ -29,6 +30,8 @@ public interface FragmentComponent {
     void inject(AuthPinFragment authPinFragment);
 
     void inject(ParentalGateVerificationFragment parentalGateVerificationFragment);
+
+    void inject(TurnOnFragment turnOnFragment);
 
     TestFragmentComponent plus(TestModule module);
 

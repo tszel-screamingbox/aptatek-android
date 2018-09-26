@@ -17,6 +17,19 @@
     <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
     <string name="confirm.pin.successful">PIN successfully set</string>
     <string name="confirm.pin.title">Confirm PIN</string>
+    <!-- Connect Activity -->
+    <string name="connect.turnon.title">Turn Reader On</string>
+    <string name="connect.turnon.message">Wait until the display shows "Ready"</string>
+    <string name="connect.permission.bluetooth.title">Bluetooth Required</string>
+    <string name="connect.permission.bluetooth.message">For the functioning of this app you need to connect your bluetooth.</string>
+    <string name="connect.permission.location.title">Location Required</string>
+    <string name="connect.permission.location.message">For the functioning of this app you need to provide location permission.</string>
+    <string name="connect.scan.title">Available Readers</string>
+    <string name="connect.scan.message">Hold on while we are looking for readers around you</string>
+    <string name="connect.scan.connect">Connect</string>
+    <string name="connect.connecting.message">Establishing connection with %1$s</string>
+    <string name="connect.connected.title">Reader Connected</string>
+    <string name="connect.connected.button">Continue to Home Screen</string>
     <!-- Fingerprint Activity -->
     <string name="fingerprint.message">Set up fingerprint access if desired.</string>
     <string name="fingerprint.option.disable">Disable Fingerprint</string>

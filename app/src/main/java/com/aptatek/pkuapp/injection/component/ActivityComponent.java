@@ -12,6 +12,7 @@ import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.injection.qualifier.ActivityContext;
 import com.aptatek.pkuapp.injection.scope.ActivityScope;
+import com.aptatek.pkuapp.view.connect.ConnectReaderActivity;
 import com.aptatek.pkuapp.view.fingerprint.FingerprintActivity;
 import com.aptatek.pkuapp.view.parentalgate.ParentalGateActivity;
 import com.aptatek.pkuapp.view.pin.auth.AuthPinHostActivity;
@@ -44,6 +45,8 @@ public interface ActivityComponent {
 
     void inject(SettingsActivity activity);
 
+    void inject(ConnectReaderActivity connectReaderActivity);
+
     // Activities injections should be come here
     @ActivityContext
     Context context();
@@ -55,5 +58,4 @@ public interface ActivityComponent {
     ChartActivityComponent plus(RangeInfoModule rangeInfoModule, ChartModule chartModule);
 
     MainActivityComponent plus(TestModule testModule, RangeInfoModule rangeInfoModule, ChartModule chartModule);
-
 }
