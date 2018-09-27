@@ -4,6 +4,7 @@ public enum ConnectReaderScreen {
 
     TURN_ON,
     PERMISSION_REQUIRED,
+    ENABLE_BLUETOOTH,
     SCAN,
     CONNECTING,
     CONNECTED

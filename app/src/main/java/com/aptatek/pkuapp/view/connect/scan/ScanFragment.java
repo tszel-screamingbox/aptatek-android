@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.view.connect.turnon;
+package com.aptatek.pkuapp.view.connect.scan;
 
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -9,16 +9,14 @@ import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenFragment;
 
 import javax.inject.Inject;
 
-import butterknife.OnClick;
-
-public class TurnOnFragment extends BaseConnectScreenFragment<TurnOnView, TurnOnPresenter> implements TurnOnView {
+public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresenter> implements ScanView {
 
     @Inject
-    TurnOnPresenter presenter;
+    ScanPresenter presenter;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_connect_turn_on;
+        return R.layout.fragment_connect_scan;
     }
 
     @Override
@@ -33,13 +31,7 @@ public class TurnOnFragment extends BaseConnectScreenFragment<TurnOnView, TurnOn
 
     @NonNull
     @Override
-    public TurnOnPresenter createPresenter() {
+    public ScanPresenter createPresenter() {
         return presenter;
     }
-
-    @OnClick(R.id.turnOnNext)
-    public void onNextClick() {
-        presenter.checkMandatoryRequirements();
-    }
-
 }

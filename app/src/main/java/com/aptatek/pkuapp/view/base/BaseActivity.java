@@ -184,6 +184,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
 
     @Override
     public void onBackPressed() {
+        getSupportFragmentManager().executePendingTransactions();
         final BaseFragment currentFragment = getActiveBaseFragment();
         if (currentFragment != null) {
             if (!currentFragment.onBackPressed()) {

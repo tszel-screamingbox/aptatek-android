@@ -1,5 +1,6 @@
-package com.aptatek.pkuapp.view.connect.turnon;
+package com.aptatek.pkuapp.view.connect.enablebluetooth;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
@@ -11,14 +12,14 @@ import javax.inject.Inject;
 
 import butterknife.OnClick;
 
-public class TurnOnFragment extends BaseConnectScreenFragment<TurnOnView, TurnOnPresenter> implements TurnOnView {
+public class EnableBluetoothFragment extends BaseConnectScreenFragment<EnableBluetoothView, EnableBluetoothPresenter> implements EnableBluetoothView {
 
     @Inject
-    TurnOnPresenter presenter;
+    EnableBluetoothPresenter presenter;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_connect_turn_on;
+        return R.layout.fragment_connect_bluetooth;
     }
 
     @Override
@@ -33,13 +34,20 @@ public class TurnOnFragment extends BaseConnectScreenFragment<TurnOnView, TurnOn
 
     @NonNull
     @Override
-    public TurnOnPresenter createPresenter() {
+    public EnableBluetoothPresenter createPresenter() {
         return presenter;
     }
 
-    @OnClick(R.id.turnOnNext)
-    public void onNextClick() {
+    @Override
+    public void onStart() {
+        super.onStart();
+
         presenter.checkMandatoryRequirements();
     }
 
+    @OnClick(R.id.bluetoothButton)
+    public void onEnableBluetoothClick() {
+        final Intent intent = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+        startActivity(intent);
+    }
 }

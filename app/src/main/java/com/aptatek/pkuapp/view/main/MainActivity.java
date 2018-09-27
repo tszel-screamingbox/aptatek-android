@@ -17,6 +17,7 @@ import com.aptatek.pkuapp.injection.module.chart.ChartModule;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.view.base.BaseActivity;
+import com.aptatek.pkuapp.view.connect.ConnectReaderActivity;
 import com.aptatek.pkuapp.view.main.adapter.ChartAdapter;
 import com.aptatek.pkuapp.view.main.adapter.ChartVM;
 import com.aptatek.pkuapp.view.main.adapter.DailyResultAdapterItem;
@@ -152,7 +153,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.settingsButton)
     public void onSettingsButtonClicked() {
-        launchActivity(SettingsActivity.starter(this), false, Animation.FADE);
+//        launchActivity(SettingsActivity.starter(this), false, Animation.FADE);
+        launchActivity(ConnectReaderActivity.starter(this), false, Animation.FADE);
     }
 
     @OnClick(R.id.playIcon)

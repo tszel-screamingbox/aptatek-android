@@ -1,9 +1,7 @@
 package com.aptatek.pkuapp.view.connect.turnon;
 
-import com.hannesdorfmann.mosby3.mvp.MvpView;
+import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenView;
 
-public interface TurnOnView extends MvpView {
-
-
+public interface TurnOnView extends BaseConnectScreenView {
 
 }

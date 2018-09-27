@@ -33,39 +33,39 @@
         app:layout_constraintGuide_percent="0.92" />
 
     <TextView
-        android:id="@+id/scanTitle"
+        android:id="@+id/permissionTitle"
         style="@style/General.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/connect.scan.title"
-        app:layout_constraintBottom_toBottomOf="@id/guideBottom"
+        android:text="@string/connect.permission.title"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toTopOf="@id/guideTop"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@id/guideTop" />
 
     <TextView
-        android:id="@+id/scanMessage"
+        android:id="@+id/permissionMessage"
         style="@style/General.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/general.distance.small"
         android:gravity="center"
-        android:text="@string/connect.scan.message"
+        android:text="@string/connect.permission.message"
+        app:layout_constraintBottom_toTopOf="@id/permissionButton"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/scanTitle" />
+        app:layout_constraintTop_toBottomOf="@id/permissionTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/scanReaderList"
-        android:layout_marginTop="@dimen/general.distance.small"
+    <Button
+        android:id="@+id/permissionButton"
+        style="@style/General.Rounded.Button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/guideEnd"
+        android:layout_height="@dimen/general.button.height.big"
+        android:text="@string/connect.permission.button"
+        android:textSize="@dimen/font.size.normal"
+        app:layout_constraintBottom_toTopOf="@id/guideBottom"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/scanMessage"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintStart_toStartOf="@id/guideStart" />
 
 </android.support.constraint.ConstraintLayout>
