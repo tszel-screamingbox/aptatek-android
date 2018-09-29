@@ -47,6 +47,8 @@ public class PdfExportView extends ConstraintLayout {
     TextView veryHighNumber;
     @BindView(R.id.textViewAverageText)
     TextView averageText;
+    @BindView(R.id.textViewNormalText)
+    TextView normalText;
 
     private PdfEntryData pdfEntryData;
 
@@ -75,6 +77,7 @@ public class PdfExportView extends ConstraintLayout {
         fastingNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getFastingCount()));
         averageText.setText(getResources().getString(R.string.pdf_export_average, String.format(Locale.getDefault(), "%.2f", pdfEntryData.getDeviation())));
         unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
+        normalText.setText(getResources().getString(R.string.pdf_legend_normal, pdfEntryData.getNormalFloorValue(), pdfEntryData.getNormalCeilValue()));
 
         initChart();
 
