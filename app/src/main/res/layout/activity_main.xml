@@ -74,7 +74,7 @@
         android:textColor="@color/applicationSolidGray"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/scrollView" />
+        app:layout_constraintTop_toBottomOf="@id/chartGuide" />
 
 
     <Button
@@ -88,7 +88,7 @@
         android:layout_marginTop="@dimen/general.distance.xxsmall"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/newTestButton"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/chartGuide" />
 
     <Button
         android:id="@+id/newTestButton"
