@@ -19,6 +19,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -140,7 +141,13 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
                 .setFileName(resourceInteractor.getStringResource(R.string.pdf_export_file_name, weeklyChartDateFormatter.getPdfFileNameDateFormat()))
                 .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? R.string.rangeinfo_pkulevel_mmol
-                        : R.string.rangeinfo_pkulevel_mg));
+                        : R.string.rangeinfo_pkulevel_mg))
+                .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                        ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
+                        : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalFloorValue()))
+                .setNormalCeilValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                        ? String.valueOf((int) pkuRangeInfo.getNormalCeilValue())
+                        : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalCeilValue()));
 
         disposables.add(cubeInteractor.listBetween(start, end)
                 .toFlowable()
@@ -213,7 +220,7 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
                 ));
     }
 
-    public List<Integer> getValidWeeks() {
+    List<Integer> getValidWeeks() {
         return weekList;
     }
 
