@@ -1,6 +1,10 @@
 package com.aptatek.pkuapp.view.connect.enablebluetooth;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.view.View;
 
@@ -14,8 +18,19 @@ import butterknife.OnClick;
 
 public class EnableBluetoothFragment extends BaseConnectScreenFragment<EnableBluetoothView, EnableBluetoothPresenter> implements EnableBluetoothView {
 
+    private static final int REQ_BLUETOOTH = 258;
+
     @Inject
     EnableBluetoothPresenter presenter;
+
+    private final BroadcastReceiver btReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (presenter.isBluetoothEnabled()) {
+                navigateBack();
+            }
+        }
+    };
 
     @Override
     protected int getLayoutId() {
@@ -43,11 +58,30 @@ public class EnableBluetoothFragment extends BaseConnectScreenFragment<EnableBlu
         super.onStart();
 
         presenter.checkMandatoryRequirements();
+
+        getActivity().registerReceiver(btReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+    }
+
+    @Override
+    public void onStop() {
+        getActivity().unregisterReceiver(btReceiver);
+
+        super.onStop();
     }
 
     @OnClick(R.id.bluetoothButton)
     public void onEnableBluetoothClick() {
-        final Intent intent = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
-        startActivity(intent);
+        Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        startActivityForResult(intent, REQ_BLUETOOTH);
+    }
+
+    @Override
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        if (requestCode == REQ_BLUETOOTH && presenter.isBluetoothEnabled()) {
+            navigateBack();
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

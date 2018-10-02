@@ -20,7 +20,7 @@
     <!-- Connect Activity -->
     <string name="connect.bluetooth.title">Enable Bluetooth</string>
     <string name="connect.bluetooth.message">Please enable bluetooth on your device</string>
-    <string name="connect.bluetooth.button">Bluetooth Settings</string>
+    <string name="connect.bluetooth.button">Turn Bluetooth On</string>
     <string name="connect.turnon.title">Turn Reader On</string>
     <string name="connect.turnon.message">Wait until the display shows "Ready"</string>
     <string name="connect.permission.title">Bluetooth &amp; Location Are Required</string>
