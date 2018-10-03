@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.ActivityComponent;
+import com.aptatek.pkuapp.injection.module.connect.ConnectModule;
 import com.aptatek.pkuapp.view.base.BaseActivity;
 import com.aptatek.pkuapp.view.base.BaseFragment;
 import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenView;
@@ -41,7 +42,7 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
 
     @Override
     protected void injectActivity(ActivityComponent activityComponent) {
-        activityComponent.inject(this);
+        activityComponent.plus(new ConnectModule()).inject(this);
     }
 
     @Override

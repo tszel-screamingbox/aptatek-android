@@ -29,6 +29,8 @@
     <string name="connect.scan.title">Available Readers</string>
     <string name="connect.scan.message">Hold on while we are looking for readers around you</string>
     <string name="connect.scan.connect">Connect</string>
+    <string name="connect.scan.in.progress">Scanning…</string>
+    <string name="connect.scan.start">Start scan</string>
     <string name="connect.connecting.message">Establishing connection with %1$s</string>
     <string name="connect.connected.title">Reader Connected</string>
     <string name="connect.connected.button">Continue to Home Screen</string>

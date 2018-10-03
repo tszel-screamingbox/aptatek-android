@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -56,15 +57,35 @@
         app:layout_constraintStart_toStartOf="@id/guideStart"
         app:layout_constraintTop_toBottomOf="@+id/scanTitle" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/scanReaderList"
-        android:layout_marginTop="@dimen/general.distance.small"
+    <ProgressBar
+        android:id="@+id/scanProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/scanStartScan"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintTop_toBottomOf="@id/scanMessage" />
+
+    <Button
+        android:id="@+id/scanStartScan"
+        style="@style/General.Text.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/scanProgress"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toEndOf="@id/scanProgress"
+        app:layout_constraintTop_toTopOf="@id/scanProgress"
+        app:layout_constraintVertical_bias="0.5"
+        tools:text="@string/connect.scan.in.progress" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/scanReaderList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/general.distance.small"
         app:layout_constraintBottom_toBottomOf="@id/guideBottom"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/scanMessage"
+        app:layout_constraintTop_toBottomOf="@id/scanProgress"
         app:layout_constraintVertical_bias="0.5" />
 
 </android.support.constraint.ConstraintLayout>

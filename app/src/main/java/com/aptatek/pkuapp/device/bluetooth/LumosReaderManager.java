@@ -1,12 +1,12 @@
 package com.aptatek.pkuapp.device.bluetooth;
 
-import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkuapp.domain.manager.reader.ReaderManager;
 import com.aptatek.pkuapp.injection.qualifier.ApplicationContext;
 
 import java.util.Deque;
@@ -15,18 +15,32 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
+import io.reactivex.processors.BehaviorProcessor;
+import io.reactivex.processors.FlowableProcessor;
 import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.Request;
 import timber.log.Timber;
 
-public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
+public class LumosReaderManager extends BleManager<LumosReaderCallbacks> implements ReaderManager {
 
-    private static final UUID READER_SERVICE_UUID = UUID.fromString("84A91C5E-24C5-4726-9860-0847BB1D01E7");
-    private static final UUID READER_CHAR_WORKFLOW_STATE_UUID = UUID.fromString("84A91001-24C5-4726-9860-0847BB1D01E7");
-    private static final UUID READER_CHAR_ERROR_UUID = UUID.fromString("84A94001-24C5-4726-9860-0847BB1D01E7");
-    private static final UUID READER_CHAR_CARTRIDGE_ID_UUID = UUID.fromString("84A93001-24C5-4726-9860-0847BB1D01E7");
+    // BATTERY
+    private static final UUID BATTERY_SERVICE_UUID = UUID.fromString(LumosReaderConstants.BATTERY_SERVICE);
+    private static final UUID BATTERY_CHAR_LEVEL = UUID.fromString(LumosReaderConstants.BATTERY_CHAR_LEVEL);
+
+    // READER
+    private static final UUID READER_SERVICE_UUID = UUID.fromString(LumosReaderConstants.READER_SERVICE);
+    private static final UUID READER_CHAR_WORKFLOW_STATE_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE);
+    private static final UUID READER_CHAR_ERROR_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_ERROR);
+    private static final UUID READER_CHAR_CARTRIDGE_ID_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID);
     // TODO add more characteristics
 
+    private final FlowableProcessor<Integer> batteryProcessor = BehaviorProcessor.create();
+
+    // BATTERY SERVICE CHARS
+    private BluetoothGattCharacteristic batteryLevelChar;
+
+    // READER SERVICE CHARS
     private BluetoothGattCharacteristic workflowStateChar;
     private BluetoothGattCharacteristic errorChar;
     private BluetoothGattCharacteristic cartridgeIdChar;
@@ -36,6 +50,8 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         @Override
         protected Deque<Request> initGatt(final BluetoothGatt gatt) {
             final LinkedList<Request> requests = new LinkedList<>();
+            requests.push(Request.newReadRequest(batteryLevelChar));
+
             requests.push(Request.newReadRequest(workflowStateChar));
             requests.push(Request.newEnableNotificationsRequest(workflowStateChar));
             requests.push(Request.newReadRequest(errorChar));
@@ -46,18 +62,25 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
         @Override
         public boolean isRequiredServiceSupported(final BluetoothGatt gatt) {
-            final BluetoothGattService service = gatt.getService(READER_SERVICE_UUID);
-            if (service != null) {
-                workflowStateChar = service.getCharacteristic(READER_CHAR_WORKFLOW_STATE_UUID);
-                errorChar = service.getCharacteristic(READER_CHAR_ERROR_UUID);
-                cartridgeIdChar = service.getCharacteristic(READER_CHAR_CARTRIDGE_ID_UUID);
+            final BluetoothGattService batteryService = gatt.getService(BATTERY_SERVICE_UUID);
+            if (batteryService != null) {
+                batteryLevelChar = batteryService.getCharacteristic(BATTERY_CHAR_LEVEL);
             }
 
-            return workflowStateChar != null && errorChar != null && cartridgeIdChar != null;
+            final BluetoothGattService readerService = gatt.getService(READER_SERVICE_UUID);
+            if (readerService != null) {
+                workflowStateChar = readerService.getCharacteristic(READER_CHAR_WORKFLOW_STATE_UUID);
+                errorChar = readerService.getCharacteristic(READER_CHAR_ERROR_UUID);
+                cartridgeIdChar = readerService.getCharacteristic(READER_CHAR_CARTRIDGE_ID_UUID);
+            }
+
+            return batteryLevelChar != null && workflowStateChar != null && errorChar != null && cartridgeIdChar != null;
         }
 
         @Override
         protected void onDeviceDisconnected() {
+            batteryLevelChar = null;
+
             workflowStateChar = null;
             errorChar = null;
             cartridgeIdChar = null;
@@ -65,6 +88,13 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
         @Override
         protected void onCharacteristicRead(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
+            if (characteristic == batteryLevelChar) {
+                Timber.d("Reading battery level characteristic %s", characteristic);
+                final Integer level = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0);
+
+                batteryProcessor.onNext(level);
+            }
+
             if (characteristic == workflowStateChar) {
                 // TODO parse workflow state
                 Timber.d("Reading workflow state characteristic %s", characteristic);
@@ -120,4 +150,8 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         Timber.d(message);
     }
 
+    @Override
+    public Flowable<Integer> batteryLevel() {
+        return batteryProcessor;
+    }
 }
