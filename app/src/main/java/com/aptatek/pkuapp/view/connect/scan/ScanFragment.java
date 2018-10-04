@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.ReaderDevice;
@@ -15,13 +16,13 @@ import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenFragment;
 import com.aptatek.pkuapp.view.connect.scan.adapter.ScanDeviceAdapter;
 import com.aptatek.pkuapp.view.connect.scan.adapter.ScanDeviceAdapterItem;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import ix.Ix;
+import timber.log.Timber;
 
 public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresenter> implements ScanView {
 
@@ -45,6 +46,7 @@ public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresen
     @Override
     protected void initObjects(final View view) {
         adapter = new ScanDeviceAdapter();
+        adapter.setConnectClickListener(adapterItem -> presenter.connect(adapterItem.getReaderDevice()));
         rvReaders.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvReaders.setAdapter(adapter);
     }
@@ -75,8 +77,8 @@ public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresen
     }
 
     @Override
-    public void displayScanResults(@NonNull final Set<ReaderDevice> devices) {
-        adapter.setData(Ix.from(devices).map(ScanDeviceAdapterItem::create).toList());
+    public void displayScanResults(@NonNull final List<ScanDeviceAdapterItem> devices) {
+        adapter.setData(devices);
     }
 
     @Override
@@ -84,6 +86,16 @@ public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresen
         pbScanning.setVisibility(loading ? View.VISIBLE : View.INVISIBLE);
         btnStartScan.setEnabled(!loading);
         btnStartScan.setText(loading ? R.string.connect_scan_in_progress : R.string.connect_scan_start);
+    }
+
+    @Override
+    public void showConnected(@NonNull final ReaderDevice readerDevice) {
+
+    }
+
+    @Override
+    public void showErrorToast(@NonNull final String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.scanStartScan)

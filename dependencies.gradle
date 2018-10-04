@@ -91,7 +91,10 @@ ext {
             yodatime          : '2.9.9.4',
 
             // Bluetooth
-            nordicBle         : '1.2.0'
+            nordicBle         : '1.2.0',
+
+            // gson
+            gson              : '2.8.5'
 
     ]
 
@@ -206,5 +209,9 @@ ext {
 
     bluetoothDependencies = [
             nordicBle : "no.nordicsemi.android:ble:$versions.nordicBle"
+    ]
+
+    jsonDependencies = [
+            gson      : "com.google.code.gson:gson:$versions.gson"
     ]
 }

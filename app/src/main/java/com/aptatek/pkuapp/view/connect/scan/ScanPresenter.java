@@ -3,17 +3,13 @@ package com.aptatek.pkuapp.view.connect.scan;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkuapp.domain.error.DeviceDiscoveryError;
 import com.aptatek.pkuapp.domain.interactor.reader.BluetoothInteractor;
-import com.aptatek.pkuapp.domain.manager.reader.BluetoothScanCallbacks;
-import com.aptatek.pkuapp.domain.manager.reader.BluetoothScanner;
+import com.aptatek.pkuapp.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkuapp.domain.model.ReaderDevice;
 import com.aptatek.pkuapp.injection.qualifier.ActivityContext;
 import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenPresenter;
+import com.aptatek.pkuapp.view.connect.scan.adapter.ScanDeviceAdapterItem;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -21,19 +17,25 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import ix.Ix;
 import timber.log.Timber;
 
 public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
 
     private final BluetoothInteractor bluetoothInteractor;
+    private final ReaderInteractor readerInteractor;
+
+    private Set<ReaderDevice> readerDevices;
 
     private CompositeDisposable disposables;
 
     @Inject
     public ScanPresenter(@ActivityContext final Context context,
-                         final BluetoothInteractor bluetoothInteractor) {
+                         final BluetoothInteractor bluetoothInteractor,
+                         final ReaderInteractor readerInteractor) {
         super(context);
         this.bluetoothInteractor = bluetoothInteractor;
+        this.readerInteractor = readerInteractor;
     }
 
     @Override
@@ -50,13 +52,79 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
         disposables.add(bluetoothInteractor.getDiscoveryError()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(error -> {
-                    // TODO handle
                     Timber.e(error);
+                    ifViewAttached(attachedView -> attachedView.showErrorToast(error.getClass().getSimpleName() + ": " + error.getMessage()));
+
+                    // TODO handle
                 }));
 
         disposables.add(bluetoothInteractor.getDiscoveredDevices()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(devices -> ifViewAttached(attachedView -> attachedView.displayScanResults(devices))));
+                .subscribe(devices -> {
+                    readerDevices = devices;
+                    final List<ScanDeviceAdapterItem> adapterItems = Ix.from(devices)
+                            .map(device -> ScanDeviceAdapterItem.builder().setReaderDevice(device).build())
+                            .toList();
+                    ifViewAttached(attachedView -> attachedView.displayScanResults(adapterItems));
+                }));
+
+        disposables.add(readerInteractor.getReaderConnectionState()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    Timber.d("event [%s]", event);
+
+                    ifViewAttached(attachedView -> {
+                        switch (event.getConnectionState()) {
+                            case CONNECTING:
+                            case BOUND:
+                            case CONNECTED:
+                            case BONDING_REQUIRED:
+                            case DISCONNECTING: {
+                                final List<ScanDeviceAdapterItem> adapterItems = Ix.from(readerDevices)
+                                        .map(device -> ScanDeviceAdapterItem.builder()
+                                                .setEnabled(false)
+                                                .setConnectingToThis(device.equals(event.getDevice()))
+                                                .setReaderDevice(event.getDevice())
+                                                .build())
+                                        .toList();
+
+                                attachedView.displayScanResults(adapterItems);
+                                break;
+                            }
+
+                            case READY: {
+                                attachedView.showConnected(event.getDevice());
+                                break;
+                            }
+
+                            case DISCONNECTED: {
+                                final List<ScanDeviceAdapterItem> adapterItems = Ix.from(readerDevices)
+                                        .map(device -> ScanDeviceAdapterItem.builder()
+                                                .setReaderDevice(device)
+                                                .build())
+                                        .toList();
+
+                                attachedView.displayScanResults(adapterItems);
+                                break;
+                            }
+                            default: {
+                                Timber.d("Unhandled state [%s]", event.getConnectionState());
+
+                                break;
+                            }
+
+                        }
+                    });
+                }));
+
+        disposables.add(readerInteractor.getReaderError()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(error -> {
+                    Timber.e(error);
+                    ifViewAttached(attachedView -> attachedView.showErrorToast(error.getClass().getSimpleName() + ": " + error.getMessage()));
+
+                    // TODO handle error, reset connection state?
+                }));
     }
 
     @Override
@@ -92,6 +160,12 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
 
     public void stopScan() {
         disposables.add(bluetoothInteractor.stopScan()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe());
+    }
+
+    public void connect(final @NonNull ReaderDevice readerDevice) {
+        disposables.add(readerInteractor.connect(readerDevice)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe());
     }

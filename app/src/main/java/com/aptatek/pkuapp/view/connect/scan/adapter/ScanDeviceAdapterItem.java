@@ -10,17 +10,41 @@ import com.google.auto.value.AutoValue;
 public abstract class ScanDeviceAdapterItem implements AdapterItem {
 
     @NonNull
-    public abstract String getName();
+    public abstract ReaderDevice getReaderDevice();
 
-    @NonNull
-    public abstract String getMacAddress();
+    public abstract boolean isEnabled();
+
+    public abstract boolean isConnectingToThis();
+
+    public String getName() {
+        return getReaderDevice().getName();
+    }
+
+    public String getMacAddress() {
+        return getReaderDevice().getMac();
+    }
 
     @Override
     public Object uniqueIdentifier() {
         return getMacAddress();
     }
 
-    public static ScanDeviceAdapterItem create(@NonNull final ReaderDevice device) {
-        return new AutoValue_ScanDeviceAdapterItem(device.getName(), device.getMac());
+    public abstract Builder toBuilder();
+
+    public static ScanDeviceAdapterItem.Builder builder() {
+        return new AutoValue_ScanDeviceAdapterItem.Builder()
+                .setEnabled(true)
+                .setConnectingToThis(false);
+    }
+
+    @AutoValue.Builder
+    public static abstract class Builder {
+        public abstract Builder setReaderDevice(@NonNull final ReaderDevice readerDevice);
+
+        public abstract Builder setEnabled(final boolean enabled);
+
+        public abstract Builder setConnectingToThis(final boolean connectingToThis);
+
+        public abstract ScanDeviceAdapterItem build();
     }
 }

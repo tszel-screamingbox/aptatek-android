@@ -186,6 +186,9 @@ dependencies {
     // Bluetooth
     implementation bluetoothDependencies.nordicBle
 
+    // JSON
+    implementation jsonDependencies.gson
+
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito

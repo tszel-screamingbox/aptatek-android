@@ -2,136 +2,142 @@ package com.aptatek.pkuapp.device.bluetooth;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkuapp.domain.manager.reader.ReaderManager;
+import com.aptatek.pkuapp.device.bluetooth.model.CartridgeIdResponse;
+import com.aptatek.pkuapp.device.bluetooth.parser.CartridgeIdReader;
 import com.aptatek.pkuapp.injection.qualifier.ApplicationContext;
 
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.UUID;
+import java.util.Map;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
-import io.reactivex.processors.BehaviorProcessor;
-import io.reactivex.processors.FlowableProcessor;
 import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.Request;
 import timber.log.Timber;
 
-public class LumosReaderManager extends BleManager<LumosReaderCallbacks> implements ReaderManager {
+public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
-    // BATTERY
-    private static final UUID BATTERY_SERVICE_UUID = UUID.fromString(LumosReaderConstants.BATTERY_SERVICE);
-    private static final UUID BATTERY_CHAR_LEVEL = UUID.fromString(LumosReaderConstants.BATTERY_CHAR_LEVEL);
-
-    // READER
-    private static final UUID READER_SERVICE_UUID = UUID.fromString(LumosReaderConstants.READER_SERVICE);
-    private static final UUID READER_CHAR_WORKFLOW_STATE_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE);
-    private static final UUID READER_CHAR_ERROR_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_ERROR);
-    private static final UUID READER_CHAR_CARTRIDGE_ID_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID);
-    // TODO add more characteristics
-
-    private final FlowableProcessor<Integer> batteryProcessor = BehaviorProcessor.create();
-
-    // BATTERY SERVICE CHARS
-    private BluetoothGattCharacteristic batteryLevelChar;
-
-    // READER SERVICE CHARS
-    private BluetoothGattCharacteristic workflowStateChar;
-    private BluetoothGattCharacteristic errorChar;
-    private BluetoothGattCharacteristic cartridgeIdChar;
-
-    private final BleManagerGattCallback bleGattCallback = new BleManagerGattCallback() {
-
-        @Override
-        protected Deque<Request> initGatt(final BluetoothGatt gatt) {
-            final LinkedList<Request> requests = new LinkedList<>();
-            requests.push(Request.newReadRequest(batteryLevelChar));
-
-            requests.push(Request.newReadRequest(workflowStateChar));
-            requests.push(Request.newEnableNotificationsRequest(workflowStateChar));
-            requests.push(Request.newReadRequest(errorChar));
-            requests.push(Request.newEnableNotificationsRequest(errorChar));
-            requests.push(Request.newReadRequest(cartridgeIdChar));
-            return requests;
-        }
-
-        @Override
-        public boolean isRequiredServiceSupported(final BluetoothGatt gatt) {
-            final BluetoothGattService batteryService = gatt.getService(BATTERY_SERVICE_UUID);
-            if (batteryService != null) {
-                batteryLevelChar = batteryService.getCharacteristic(BATTERY_CHAR_LEVEL);
-            }
-
-            final BluetoothGattService readerService = gatt.getService(READER_SERVICE_UUID);
-            if (readerService != null) {
-                workflowStateChar = readerService.getCharacteristic(READER_CHAR_WORKFLOW_STATE_UUID);
-                errorChar = readerService.getCharacteristic(READER_CHAR_ERROR_UUID);
-                cartridgeIdChar = readerService.getCharacteristic(READER_CHAR_CARTRIDGE_ID_UUID);
-            }
-
-            return batteryLevelChar != null && workflowStateChar != null && errorChar != null && cartridgeIdChar != null;
-        }
-
-        @Override
-        protected void onDeviceDisconnected() {
-            batteryLevelChar = null;
-
-            workflowStateChar = null;
-            errorChar = null;
-            cartridgeIdChar = null;
-        }
-
-        @Override
-        protected void onCharacteristicRead(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-            if (characteristic == batteryLevelChar) {
-                Timber.d("Reading battery level characteristic %s", characteristic);
-                final Integer level = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 0);
-
-                batteryProcessor.onNext(level);
-            }
-
-            if (characteristic == workflowStateChar) {
-                // TODO parse workflow state
-                Timber.d("Reading workflow state characteristic %s", characteristic);
-            } else if (characteristic == errorChar) {
-                // TODO parse error
-                Timber.d("Reading error characteristic %s", characteristic);
-            } else if (characteristic == cartridgeIdChar) {
-                // TODO parse cartridge id
-                Timber.d("Reading cartridgeId characteristic %s", characteristic);
-            } else {
-                Timber.d("Unhandled characteristic: %s", characteristic);
-            }
-        }
-
-        @Override
-        public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-            // TODO implement 'Request Previous Result' characteristic and write it
-            Timber.d("onCharacteristicWrite: %s", characteristic);
-        }
-
-        @Override
-        public void onCharacteristicNotified(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-            if (characteristic == workflowStateChar) {
-                // TODO read workflow state value
-                Timber.d("Notified workflow state characteristic: %s", characteristic);
-            } else if (characteristic == errorChar) {
-                // TODO read error
-                Timber.d("Notified error characteristic: %s", characteristic);
-            } else {
-                Timber.d("Unhandled characteristic: %s", characteristic);
-            }
-        }
-    };
+    private final CharacteristicsHolder characteristicsHolder;
+    private final BleManagerGattCallback bleGattCallback;
 
     @Inject
-    public LumosReaderManager(@ApplicationContext @NonNull Context context) {
+    public LumosReaderManager(@ApplicationContext @NonNull final Context context,
+                              final CharacteristicsHolder characteristicsHolder,
+                              final Map<String, CharacteristicReader> characteristicReaderMap) {
         super(context);
+
+        this.characteristicsHolder = characteristicsHolder;
+        bleGattCallback = new BleManagerGattCallback() {
+
+            @Override
+            protected Deque<Request> initGatt(final BluetoothGatt gatt) {
+                final LinkedList<Request> requests = new LinkedList<>();
+                final BluetoothGattCharacteristic workflowChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE);
+                requests.push(Request.newReadRequest(workflowChar));
+                requests.push(Request.newEnableNotificationsRequest(workflowChar));
+
+                final BluetoothGattCharacteristic errorChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_ERROR);
+                requests.push(Request.newReadRequest(errorChar));
+                requests.push(Request.newEnableNotificationsRequest(errorChar));
+
+                return requests;
+            }
+
+            @Override
+            public boolean isRequiredServiceSupported(final BluetoothGatt gatt) {
+                characteristicsHolder.collectCharacteristics(gatt);
+
+                return characteristicsHolder.hasAllMandatoryCharacteristics();
+            }
+
+            @Override
+            protected void onDeviceDisconnected() {
+                characteristicsHolder.clear();
+            }
+
+            @Override
+            protected void onCharacteristicRead(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
+                final String charId = characteristic.getUuid().toString();
+                Timber.d("Reading characteristic [%s]", charId);
+
+                switch (charId) {
+                    case LumosReaderConstants.READER_CHAR_WORKFLOW_STATE: {
+                        // TODO parse and callback
+
+                        break;
+                    }
+                    case LumosReaderConstants.READER_CHAR_ERROR: {
+                        // TODO parse and callback
+
+                        break;
+                    }
+                    case LumosReaderConstants.READER_CHAR_RESULT: {
+                        // TODO parse and callback
+
+                        break;
+                    }
+                    case LumosReaderConstants.READER_CHAR_NUM_RESULTS: {
+                        // TODO parse and callback
+
+                        break;
+                    }
+                    case LumosReaderConstants.READER_CHAR_REQUEST_RESULT: {
+                        // TODO parse and callback
+
+                        break;
+                    }
+                    case LumosReaderConstants.READER_CHAR_CARTRIDGE_ID: {
+                        final CartridgeIdReader cartridgeIdReader = (CartridgeIdReader) characteristicReaderMap.get(charId);
+                        final CartridgeIdResponse cartridgeIdResponse = cartridgeIdReader.readValue(characteristic);
+
+                        mCallbacks.onReadCartridgeId(cartridgeIdResponse);
+
+                        break;
+                    }
+                    case LumosReaderConstants.READER_CHAR_UPDATE_ASSAY_DETAILS: {
+                        // TODO parse and callback
+
+                        break;
+                    }
+                    default: {
+                        Timber.d("Unhandled READ characteristic: [%s]", charId);
+
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
+                // TODO implement WRITE characteristics
+                Timber.d("onCharacteristicWrite: [%s]", characteristic.getUuid().toString());
+            }
+
+            @Override
+            public void onCharacteristicNotified(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
+                final String charId = characteristic.getUuid().toString();
+                Timber.d("Notified characteristic [%s]", charId);
+
+                switch (charId) {
+                    case LumosReaderConstants.READER_CHAR_WORKFLOW_STATE: {
+
+                        break;
+                    }
+                    case LumosReaderConstants.READER_CHAR_ERROR: {
+
+                        break;
+                    }
+                    default: {
+                        Timber.d("Unhandled NOTIFY characteristic: [%s]", charId);
+                        break;
+                    }
+                }
+            }
+        };
     }
 
     @NonNull
@@ -150,8 +156,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> impleme
         Timber.d(message);
     }
 
-    @Override
-    public Flowable<Integer> batteryLevel() {
-        return batteryProcessor;
+    public void getCartridgeId() {
+        readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID));
     }
 }
