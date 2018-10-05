@@ -31,8 +31,9 @@
     <string name="connect.scan.connect">Connect</string>
     <string name="connect.scan.in.progress">Scanning…</string>
     <string name="connect.scan.start">Start scan</string>
-    <string name="connect.connecting.message">Establishing connection with %1$s</string>
     <string name="connect.connected.title">Reader Connected</string>
+    <string name="connect.connected.message">Reader is connected successfully</string>
+    <string name="connect.connected.disconnect">Disconnect</string>
     <string name="connect.connected.button">Continue to Home Screen</string>
     <!-- Fingerprint Activity -->
     <string name="fingerprint.message">Set up fingerprint access if desired.</string>

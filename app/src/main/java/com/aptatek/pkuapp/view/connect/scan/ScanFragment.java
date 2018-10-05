@@ -12,6 +12,7 @@ import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.ReaderDevice;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
 import com.aptatek.pkuapp.injection.module.connect.ConnectModule;
+import com.aptatek.pkuapp.view.connect.ConnectReaderScreen;
 import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenFragment;
 import com.aptatek.pkuapp.view.connect.scan.adapter.ScanDeviceAdapter;
 import com.aptatek.pkuapp.view.connect.scan.adapter.ScanDeviceAdapterItem;
@@ -90,7 +91,7 @@ public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresen
 
     @Override
     public void showConnected(@NonNull final ReaderDevice readerDevice) {
-
+        showScreen(ConnectReaderScreen.CONNECTED);
     }
 
     @Override

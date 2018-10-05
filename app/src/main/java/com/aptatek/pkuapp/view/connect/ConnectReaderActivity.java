@@ -13,6 +13,7 @@ import com.aptatek.pkuapp.injection.module.connect.ConnectModule;
 import com.aptatek.pkuapp.view.base.BaseActivity;
 import com.aptatek.pkuapp.view.base.BaseFragment;
 import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenView;
+import com.aptatek.pkuapp.view.connect.connected.ConnectedFragment;
 import com.aptatek.pkuapp.view.connect.enablebluetooth.EnableBluetoothFragment;
 import com.aptatek.pkuapp.view.connect.permission.PermissionRequiredFragment;
 import com.aptatek.pkuapp.view.connect.scan.ScanFragment;
@@ -74,12 +75,8 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
                 fragment = new ScanFragment();
                 break;
             }
-            case CONNECTING: {
-                fragment = new EnableBluetoothFragment();
-                break;
-            }
             case CONNECTED: {
-                fragment = new EnableBluetoothFragment();
+                fragment = new ConnectedFragment();
                 break;
             }
             default: {

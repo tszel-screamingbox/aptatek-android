@@ -11,9 +11,9 @@ import com.aptatek.pkuapp.injection.module.parentalgate.ParentalGateModule;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.injection.scope.FragmentScope;
+import com.aptatek.pkuapp.view.connect.connected.ConnectedFragment;
 import com.aptatek.pkuapp.view.connect.enablebluetooth.EnableBluetoothFragment;
 import com.aptatek.pkuapp.view.connect.permission.PermissionRequiredFragment;
-import com.aptatek.pkuapp.view.connect.scan.ScanFragment;
 import com.aptatek.pkuapp.view.connect.turnon.TurnOnFragment;
 import com.aptatek.pkuapp.view.parentalgate.verification.ParentalGateVerificationFragment;
 import com.aptatek.pkuapp.view.pin.auth.add.AuthPinFragment;
@@ -41,6 +41,8 @@ public interface FragmentComponent {
     void inject(PermissionRequiredFragment permissionRequiredFragment);
 
     void inject(EnableBluetoothFragment enableBluetoothFragment);
+
+    void inject(ConnectedFragment connectedFragment);
 
     TestFragmentComponent plus(TestModule module);
 

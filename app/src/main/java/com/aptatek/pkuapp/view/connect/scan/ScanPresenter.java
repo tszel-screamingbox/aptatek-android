@@ -68,7 +68,7 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                     ifViewAttached(attachedView -> attachedView.displayScanResults(adapterItems));
                 }));
 
-        disposables.add(readerInteractor.getReaderConnectionState()
+        disposables.add(readerInteractor.getReaderConnectionEvents()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(event -> {
                     Timber.d("event [%s]", event);

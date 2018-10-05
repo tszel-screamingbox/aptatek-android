@@ -11,5 +11,4 @@ public interface ConnectFragmentComponent {
 
     void inject(ScanFragment scanFragment);
 
-
 }
