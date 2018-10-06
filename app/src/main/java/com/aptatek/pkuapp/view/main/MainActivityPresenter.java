@@ -5,6 +5,7 @@ import android.text.format.DateUtils;
 import android.util.Pair;
 
 import com.aptatek.pkuapp.R;
+import com.aptatek.pkuapp.device.time.TimeHelper;
 import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.cube.CubeInteractor;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
@@ -18,6 +19,7 @@ import com.aptatek.pkuapp.view.main.adapter.daily.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,6 +30,8 @@ import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 
 class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
+
+    private static final int NUMBERS_OF_MONTHS = 6;
 
     private final CubeInteractor cubeInteractor;
     private final ResourceInteractor resourceInteractor;
@@ -54,10 +58,12 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     void loadData() {
         disposables.add(
                 rangeInteractor.getInfo()
-                        .flatMap(rangeInfo ->
-                                cubeInteractor.listAll()
-                                        .map(list -> new Pair<>(rangeInfo, list))
-                        )
+                        .flatMap(rangeInfo -> {
+                            final long now = new Date().getTime();
+                            final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, now);
+                            return cubeInteractor.listBetween(past, now)
+                                    .map(list -> new Pair<>(rangeInfo, list));
+                        })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
                             final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
@@ -131,16 +137,16 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     public void checkRunningTest() {
         disposables.add(
                 wettingInteractor.getWettingStatus()
-                .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
-                .subscribe(ignored ->
-                    ifViewAttached(MainActivityView::navigateToTestScreen)
-                )
+                        .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
+                        .subscribe(ignored ->
+                                ifViewAttached(MainActivityView::navigateToTestScreen)
+                        )
         );
     }
 
     public void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
-            .subscribe(() -> ifViewAttached(MainActivityView::navigateToTestScreen))
+                .subscribe(() -> ifViewAttached(MainActivityView::navigateToTestScreen))
         );
     }
 
