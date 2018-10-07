@@ -1,11 +1,13 @@
 package com.aptatek.pkuapp.view.connect.turnon;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
 import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenFragment;
+import com.aptatek.pkuapp.view.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -40,6 +42,12 @@ public class TurnOnFragment extends BaseConnectScreenFragment<TurnOnView, TurnOn
     @OnClick(R.id.turnOnNext)
     public void onNextClick() {
         presenter.checkMandatoryRequirements();
+    }
+
+    @OnClick(R.id.turnOnSkip)
+    public void onSkipClick() {
+        startActivity(new Intent(getActivity(), MainActivity.class));
+        getActivity().finish();
     }
 
 }

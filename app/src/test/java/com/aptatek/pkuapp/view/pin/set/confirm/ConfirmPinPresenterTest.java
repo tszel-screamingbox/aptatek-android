@@ -131,7 +131,7 @@ public class ConfirmPinPresenterTest {
     /**
      * Disable finterpint authentication.
      *
-     * @test.expected {@link  ConfirmPinView#onMainActivityShouldLoad()  onMainActivityShouldLoad()}
+     * @test.expected {@link  ConfirmPinView#onConnectReaderShouldLoad()  onConnectReaderShouldLoad()}
      * method is called, without any error.
      */
     @Test
@@ -139,13 +139,13 @@ public class ConfirmPinPresenterTest {
         when(deviceHelper.hasEnrolledFingerprints()).thenReturn(false);
         when(deviceHelper.hasFingerprintHadrware()).thenReturn(false);
         presenter.navigateForward();
-        verify(view).onMainActivityShouldLoad();
+        verify(view).onConnectReaderShouldLoad();
     }
 
     /**
      * Fingerprint scanner detected, but the device hasn't got enrolled fingerprints.
      *
-     * @test.expected {@link  ConfirmPinView#onMainActivityShouldLoad()  onMainActivityShouldLoad()}
+     * @test.expected {@link  ConfirmPinView#onConnectReaderShouldLoad()  onConnectReaderShouldLoad()}
      * method is called, without any error.
      */
     @Test
@@ -153,6 +153,6 @@ public class ConfirmPinPresenterTest {
         when(deviceHelper.hasEnrolledFingerprints()).thenReturn(false);
         when(deviceHelper.hasFingerprintHadrware()).thenReturn(true);
         presenter.navigateForward();
-        verify(view).onMainActivityShouldLoad();
+        verify(view).onConnectReaderShouldLoad();
     }
 }

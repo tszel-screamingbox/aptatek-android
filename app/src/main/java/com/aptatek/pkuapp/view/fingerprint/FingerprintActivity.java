@@ -1,13 +1,12 @@
 package com.aptatek.pkuapp.view.fingerprint;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.injection.component.ActivityComponent;
 import com.aptatek.pkuapp.view.base.BaseActivity;
-import com.aptatek.pkuapp.view.main.MainActivity;
+import com.aptatek.pkuapp.view.connect.ConnectReaderActivity;
 
 import javax.inject.Inject;
 
@@ -46,14 +45,12 @@ public class FingerprintActivity extends BaseActivity<FingerprintActivityView, F
     @OnClick(R.id.enableButton)
     public void onEnableButtonClicked() {
         presenter.enableFingerprintScan();
-        final Intent intent = new Intent(this, MainActivity.class);
-        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
+        launchActivity(ConnectReaderActivity.starter(this), true, Animation.RIGHT_TO_LEFT);
     }
 
     @OnClick(R.id.disableButton)
     public void onDisableButtonClicked() {
         presenter.disableFingerprintScan();
-        final Intent intent = new Intent(this, MainActivity.class);
-        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
+        launchActivity(ConnectReaderActivity.starter(this), true, Animation.RIGHT_TO_LEFT);
     }
 }

@@ -57,10 +57,10 @@
         app:layout_constraintTop_toBottomOf="@+id/turnOnTitle" />
 
     <ImageView
-        android:adjustViewBounds="true"
         android:id="@+id/turnOnImage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:src="@drawable/ic_reader"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
@@ -75,6 +75,18 @@
         android:text="@string/test.button.next"
         app:layout_constraintBottom_toTopOf="@+id/guideBottom"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart" />
+        app:layout_constraintStart_toEndOf="@id/turnOnSkip" />
+
+    <Button
+        android:id="@+id/turnOnSkip"
+        style="@style/General.Text.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/test.button.skip"
+        android:textColor="@color/applicationBlack"
+        app:layout_constraintTop_toTopOf="@id/turnOnNext"
+        app:layout_constraintBottom_toBottomOf="@id/turnOnNext"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintStart_toStartOf="@id/guideStart"/>
 
 </android.support.constraint.ConstraintLayout>
