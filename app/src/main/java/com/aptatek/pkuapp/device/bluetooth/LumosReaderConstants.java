@@ -6,7 +6,7 @@ public final class LumosReaderConstants {
 
     }
 
-    public static final String DEVICE_NAME = "nRF Connect";
+    public static final String DEVICE_NAME = "Lumos Camera";
 
     public static final String READER_SERVICE = "84A91C5E-24C5-4726-9860-0847BB1D01E7";
     public static final String READER_CHAR_WORKFLOW_STATE = "00001001-0000-1000-8000-00805f9b34fb";
