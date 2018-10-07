@@ -36,20 +36,25 @@ public class ConnectedPresenter extends BaseConnectScreenPresenter<ConnectedView
         disposables = new CompositeDisposable();
 
         disposables.add(
+//                readerInteractor.getReaderConnectionEvents()
+//                        .filter(event -> event.getConnectionState() == ReaderConnectionState.READY)
+//                        .take(1)
+//                        .flatMap(event -> readerInteractor.queryBatteryLevel()
+//                                .andThen(readerInteractor.getBatteryLevel()
+//                                        .take(1)
+//                                        .map(batteryLevel -> new Pair<>(event.getDevice(), batteryLevel))
+//                                )
+//                        )
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(
+//                                pair -> ifViewAttached(attachedView -> attachedView.displayReaderDevice(pair.first, pair.second)),
+//                                Timber::e // TODO handle error
+//                        )
                 readerInteractor.getReaderConnectionEvents()
                         .filter(event -> event.getConnectionState() == ReaderConnectionState.READY)
                         .take(1)
-                        .flatMap(event -> readerInteractor.queryBatteryLevel()
-                                .andThen(readerInteractor.getBatteryLevel()
-                                        .take(1)
-                                        .map(batteryLevel -> new Pair<>(event.getDevice(), batteryLevel))
-                                )
-                        )
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                pair -> ifViewAttached(attachedView -> attachedView.displayReaderDevice(pair.first, pair.second)),
-                                Timber::e // TODO handle error
-                        )
+                        .subscribeOn(AndroidSchedulers.mainThread())
+                        .subscribe(event -> ifViewAttached(attachedView -> attachedView.displayReaderDevice(event.getDevice(), 100)))
         );
 
         // TODO also watch for errors...
