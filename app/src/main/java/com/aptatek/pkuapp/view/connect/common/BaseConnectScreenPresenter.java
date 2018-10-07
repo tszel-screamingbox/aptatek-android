@@ -76,10 +76,12 @@ public abstract class BaseConnectScreenPresenter<V extends BaseConnectScreenView
                 .scan((prev, current) -> prev && current)
                 .single(false);
 
-        if (hasAllPermissions) {
-            onRequiredConditionsMet();
-        } else {
+        if (!hasAllPermissions) {
             ifViewAttached(attachedView -> attachedView.showScreen(ConnectReaderScreen.PERMISSION_REQUIRED));
+        } else if (!isBluetoothEnabled()) {
+            ifViewAttached(attachedView -> attachedView.showScreen(ConnectReaderScreen.ENABLE_BLUETOOTH));
+        } else {
+            onRequiredConditionsMet();
         }
     }
 

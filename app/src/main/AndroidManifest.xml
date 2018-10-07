@@ -4,7 +4,7 @@
     package="com.aptatek.pkuapp">
 
     <!-- App should not be used without BT -->
-    <uses-feature android:required="true" android:name="android.hardware.bluetooth" />
+    <uses-feature android:required="true" android:name="android.hardware.bluetooth_le" />
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
