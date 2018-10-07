@@ -3,6 +3,7 @@ package com.aptatek.pkuapp.util;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.util.Pair;
 
 import com.aptatek.pkuapp.R;
@@ -11,7 +12,7 @@ import com.aptatek.pkuapp.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkuapp.domain.model.CubeData;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.domain.model.PkuRangeInfo;
-import com.aptatek.pkuapp.view.main.adapter.ChartVM;
+import com.aptatek.pkuapp.view.main.adapter.chart.ChartVM;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,18 +41,6 @@ public final class ChartUtils {
         if (inputList == null || inputList.size() == 0) {
             return chartVms;
         }
-
-        final float maxLevel = Ix.from(inputList)
-                .filter(cubeData -> cubeData.getPkuLevel().getValue() >= 0)
-                .max(cubeDataComparator)
-                .first()
-                .getPkuLevel().getValue();
-        final float minLevel = Ix.from(inputList)
-                .filter(cubeData -> cubeData.getPkuLevel().getValue() >= 0)
-                .min(cubeDataComparator)
-                .first()
-                .getPkuLevel().getValue();
-        final float delta = maxLevel - minLevel;
 
         // the oldest measurement data will be the very first bubble on the graph
         final long timestampOldestDay = Ix.from(inputList)
@@ -86,13 +75,9 @@ public final class ChartUtils {
                     .max(cubeDataComparator)
                     .first(null);
 
-            float startY = -1f; // start Y-axis of dashed-line on chart,  if less than 0, won't be drawn
-            float endY = -1f; // end Y-axis of dashed-line on chart,  if less than 0, won't be drawn
-            final float bubbleY = getY(dailyHighest, delta, minLevel); // Y-axis of bubble
-
             final State state;
             if (dailyHighest != null) {
-                 state = ChartUtils.getState(dailyHighest.getPkuLevel(), rangeInfo);
+                state = getState(dailyHighest.getPkuLevel(), rangeInfo);
             } else {
                 state = State.LOW;
             }
@@ -102,71 +87,19 @@ public final class ChartUtils {
                     .setMeasures(entry.getValue())
                     .setNumberOfMeasures(entry.getValue().size())
                     .setZoomed(false)
-                    .setBubbleYAxis(bubbleY)
-                    .setStartLineYAxis(startY)
-                    .setEndLineYAxis(endY)
+                    .setState(stateString(state))
                     .setHighestPkuLevel(dailyHighest == null ? null : dailyHighest.getPkuLevel())
-                    .setCollapsedBackgroundRes(ChartUtils.smallBubbleBackground(state))
-                    .setExpandedBackgroundRes(ChartUtils.bigBubbleBackground(state))
-                    .setColorRes(ChartUtils.stateColor(state))
+                    .setCollapsedBackgroundRes(smallBubbleBackground(state))
+                    .setExpandedBackgroundRes(bigBubbleBackground(state))
+                    .setColorRes(stateColor(state))
                     .build();
 
             chartVms.add(chartVm);
         }
 
-        final List<ChartVM> orderedChartVms = Ix.from(chartVms)
+        return Ix.from(chartVms)
                 .orderBy(chartVMComparator)
                 .toList();
-
-        final List<ChartVM> connectedChartVms = new ArrayList<>();
-        for (int i = 0; i < orderedChartVms.size(); i++) {
-            float endY = -1f;
-            float startY = -1f;
-            final ChartVM chartVM = orderedChartVms.get(i);
-
-            if (i > 0) { // if it's not the first day
-                final ChartVM prevChartVm = orderedChartVms.get(i - 1);
-                final float prevBubbleY = getY(prevChartVm.getHighestPkuLevel(), delta, minLevel);
-                // calculate the current item end-line Y-height with the current and next item Y-height
-                startY = (chartVM.getBubbleYAxis() + prevBubbleY) / 2;
-            }
-
-            if (i < orderedChartVms.size() - 1) { // if it's not the last day
-                // get the the measurements for the next day
-                final ChartVM nextChartVm = orderedChartVms.get(i + 1);
-                final float nextBubbleY = getY(nextChartVm.getHighestPkuLevel(), delta, minLevel);
-                // calculate the current item end-line Y-height with the current and next item Y-height
-                endY = (chartVM.getBubbleYAxis() + nextBubbleY) / 2;
-            }
-
-            connectedChartVms.add(chartVM.toBuilder()
-                .setEndLineYAxis(endY)
-                .setStartLineYAxis(startY)
-                .build()
-            );
-        }
-
-        return Ix.from(connectedChartVms)
-                .orderBy(chartVMComparator)
-                .toList();
-    }
-
-    private static float getY(final CubeData cubeData, float delta, float minLevel) {
-        if (cubeData == null) {
-            return 0.5f;
-        }
-
-        return getY(cubeData.getPkuLevel(), delta, minLevel);
-    }
-
-    private static float getY(final PkuLevel pkuLevel, float delta, float minLevel) {
-        if (pkuLevel != null && pkuLevel.getValue() >= 0 && delta > 0) {
-            // calculate the Y percentage of the bubble
-            return (1 - (pkuLevel.getValue() - minLevel) / delta);
-        } else {
-            // if there is no measure on the given day, set Y to half of the Y-axis
-            return 0.5f;
-        }
     }
 
     public static PkuLevel convertToDisplayUnit(final PkuLevel pkuLevel, final PkuRangeInfo userRange) {
@@ -197,6 +130,22 @@ public final class ChartUtils {
         }
 
         return chartState;
+    }
+
+    @StringRes
+    public static int stateString(final State state) {
+        switch (state) {
+            case LOW:
+                return R.string.test_result_bubble_level_low;
+            case NORMAL:
+                return R.string.test_result_bubble_level_normal;
+            case HIGH:
+                return R.string.test_result_bubble_level_high;
+            case VERY_HIGH:
+                return R.string.test_result_bubble_level_veryhigh;
+            default:
+                return R.string.test_result_bubble_level_normal;
+        }
     }
 
     @DrawableRes

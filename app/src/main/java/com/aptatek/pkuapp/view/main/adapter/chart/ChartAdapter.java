@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.view.main.adapter;
+package com.aptatek.pkuapp.view.main.adapter.chart;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,6 +11,7 @@ import com.aptatek.pkuapp.injection.qualifier.ApplicationContext;
 import com.aptatek.pkuapp.util.animation.AnimationHelper;
 import com.aptatek.pkuapp.view.base.list.adapter.BaseAdapter;
 import com.aptatek.pkuapp.view.base.list.viewholder.BaseViewHolder;
+import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
 
 import javax.inject.Inject;
 

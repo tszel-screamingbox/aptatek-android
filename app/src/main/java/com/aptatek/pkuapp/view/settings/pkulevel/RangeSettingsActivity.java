@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appyvet.materialrangebar.RangeBar;
 import com.aptatek.pkuapp.R;
@@ -26,6 +27,7 @@ import com.aptatek.pkuapp.util.Constants;
 import com.aptatek.pkuapp.view.base.BaseActivity;
 import com.aptatek.pkuapp.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkuapp.view.dialog.AlertDialogFragment;
+import com.aptatek.pkuapp.view.pin.auth.AuthPinHostActivityStarter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,9 +40,12 @@ import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
 import timber.log.Timber;
 
+import static com.aptatek.pkuapp.view.base.BaseActivity.Animation.FADE;
+
 public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, RangeSettingsPresenter> implements RangeSettingsView {
 
     private static final String TAG_CONFIRM_DIALOG = "aptatek.settings.range.confirmdialog";
+    private static final int AUTH_REQUEST = 101;
     private static final long DEBOUNCE = 500L;
 
     public static Intent starter(final Context context) {
@@ -99,7 +104,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         });
 
         rbRange.setPinTextListener((rangeBar, tickIndex) ->
-            presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(getValueFromRangeBar(tickIndex), PkuLevelUnits.MICRO_MOL), getSelectedUnit()))
+                presenter.formatValue(PkuLevelConverter.convertTo(PkuLevel.create(getValueFromRangeBar(tickIndex), PkuLevelUnits.MICRO_MOL), getSelectedUnit()))
         );
 
         rbRange.setOnRangeBarChangeListener((rangeBar, leftPinIndex, rightPinIndex, leftPinValue, rightPinValue) -> {
@@ -152,7 +157,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
 
             return false;
         });
-        etNormalFloor.setFilters(new InputFilter[] { floorFilter });
+        etNormalFloor.setFilters(new InputFilter[]{floorFilter});
 
         etNormalCeil.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -185,6 +190,9 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
             return false;
         });
         etNormalCeil.setFilters(new InputFilter[] { ceilFilter });
+
+        rangeSet = false;
+        presenter.refresh();
     }
 
     private float getValueFromRangeBar(final int tickIndex) {
@@ -194,17 +202,13 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
     @Override
     protected void onStart() {
         super.onStart();
-
-        rangeSet = false;
-        presenter.refresh();
         disposable = changeProcessor.debounce(DEBOUNCE, TimeUnit.MILLISECONDS)
-            .subscribe(tick -> {
-                final float mmolFloor = getValueFromRangeBar(rbRange.getLeftIndex());
-                final float mmolCeil = getValueFromRangeBar(rbRange.getRightIndex());
-
-                presenter.changeValues(mmolFloor, mmolCeil, getSelectedUnit());
-            }
-        );
+                .subscribe(tick -> {
+                            final float mmolFloor = getValueFromRangeBar(rbRange.getLeftIndex());
+                            final float mmolCeil = getValueFromRangeBar(rbRange.getRightIndex());
+                            presenter.changeValues(mmolFloor, mmolCeil, getSelectedUnit());
+                        }
+                );
     }
 
     @Override
@@ -223,7 +227,8 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         }
 
         presenter.onBackPressed(getValueFromRangeBar(rbRange.getLeftIndex()),
-                getValueFromRangeBar(rbRange.getRightIndex()));
+                getValueFromRangeBar(rbRange.getRightIndex()),
+                getSelectedUnit());
     }
 
     @Override
@@ -239,15 +244,18 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
                 model,
                 decision -> {
                     if (decision == AlertDialogDecisions.POSITIVE) {
-                        presenter.saveNormalRange(
-                                getValueFromRangeBar(rbRange.getLeftIndex()),
-                                getValueFromRangeBar(rbRange.getRightIndex())
-                        );
+                        requestPin();
                     } else {
                         finish();
                     }
                 });
         alertDialogFragment.show(getSupportFragmentManager(), TAG_CONFIRM_DIALOG);
+    }
+
+    @Override
+    public void finishWithMessage() {
+        Toast.makeText(this, R.string.settings_message_saved, Toast.LENGTH_LONG).show();
+        finish();
     }
 
     @Override
@@ -296,5 +304,22 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
     @NonNull
     private PkuLevelUnits getSelectedUnit() {
         return rgUnits.getCheckedRadioButtonId() == R.id.rangeSettingsUnitMicroMol ? PkuLevelUnits.MICRO_MOL : PkuLevelUnits.MILLI_GRAM;
+    }
+
+    private void requestPin() {
+        final Intent intent = AuthPinHostActivityStarter.getIntent(this, true);
+        launchActivityForResult(intent, FADE, AUTH_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == AUTH_REQUEST) {
+            presenter.saveValues(
+                    getValueFromRangeBar(rbRange.getLeftIndex()),
+                    getValueFromRangeBar(rbRange.getRightIndex()),
+                    getSelectedUnit()
+            );
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.aptatek.pkuapp.view.main.adapter;
+package com.aptatek.pkuapp.view.main.adapter.daily;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -13,9 +13,11 @@ public abstract class DailyResultAdapterItem implements AdapterItem {
 
     public abstract long getTimestamp();
 
-    public abstract @DrawableRes int getBackgroundRes();
+    public abstract @DrawableRes
+    int getBackgroundRes();
 
-    public abstract @ColorRes int getColorRes();
+    public abstract @ColorRes
+    int getColorRes();
 
     @Override
     public Object uniqueIdentifier() {

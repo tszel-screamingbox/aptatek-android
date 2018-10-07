@@ -42,13 +42,13 @@
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
-    <string name="main.button.result">Result Summary</string>
     <string name="main.button.settings">Settings</string>
     <string name="main.button.toggle">Toggle</string>
+    <string name="main.button.weekly">See Weekly Results</string>
     <string name="main.chart.daily.format">dd\nMMM</string>
     <string name="main.date.format.short">MMM dd</string>
     <string name="main.date.format.long">MMM dd - hh:mm a</string>
-    <string name="main.title.noresult">No Results</string>
+    <string name="main.title.noresult">Welcome</string>
     <string name="main.title.noresult.hint">Take your first test</string>
     <string name="main.title.today">Last result</string>
     <string name="main.title.yesterday">Yesterday</string>
@@ -127,6 +127,7 @@
     <string name="settings.daily.reminders">Daily reminders</string>
     <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
     <string name="settings.fingerprint.description">Turning it ON will enable the fingerprint scanner to start the application instead of requesting your PIN code on every application start.</string>
+    <string name="settings.message.saved">Your settings are saved.</string>
     <string name="settings.title">Settings</string>
     <string name="settings.units">Phe Preferences &amp; Units</string>
     <string name="settings.units.confirmation.button.cancel">Cancel</string>
@@ -261,6 +262,6 @@
     <string name="pdf.legend.sick">Sick</string>
     <string name="pdf.legend.very.high">Very High</string>
     <string name="pdf.legend.high">High</string>
-    <string name="pdf.legend.normal">Normal</string>
+    <string name="pdf.legend.normal">Normal(%1$s - %2$s)</string>
     <string name="pdf.legend.low">Low</string>
 </resources>

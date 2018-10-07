@@ -7,8 +7,8 @@ import android.text.style.RelativeSizeSpan;
 
 public class StringUtils {
 
-    private static final float SCALE_BIG = 1.5f;
-    private static final float SCALE_SMALL = 0.5f;
+    private static final float SCALE_BIG = 1.9f;
+    private static final float SCALE_SMALL = 0.9f;
 
     public static CharSequence highlightWord(final String highlightedText, final String text) {
         final SpannableString span1 = new SpannableString(highlightedText);

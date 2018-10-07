@@ -33,9 +33,10 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testInitialView() {
-        onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
-        onView(withId(R.id.settingsButton)).check(matches(isDisplayed()));
-        onView(withId(R.id.resultButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.bigSettingsButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.weeklyButton)).check(matches(not(isDisplayed())));
         onView(withId(R.id.titleText)).check(matches(isDisplayed()));
         onView(withId(R.id.subTitleText)).check(matches(isDisplayed()));
 
@@ -43,7 +44,7 @@ public class MainActivityScreenTest {
         onView(withId(R.id.playIcon)).check(matches(isDisplayed()));
 
         onView(withId(R.id.newTestButton)).check(matches(withText(R.string.main_button_new_test)));
-        onView(withId(R.id.resultButton)).check(matches(withText(R.string.main_button_result)));
+        onView(withId(R.id.weeklyButton)).check(matches(withText(R.string.main_button_weekly)));
         onView(withId(R.id.titleText)).check(matches(withText(R.string.main_title_noresult)));
         onView(withId(R.id.subTitleText)).check(matches(withText(R.string.main_title_noresult_hint)));
     }
@@ -55,6 +56,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testGoToSettings() {
+        onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.playIcon)).perform(ViewActions.click());
         onView(withId(R.id.settingsButton)).perform(ViewActions.click());
         assert (activityRule.getActivity().isFinishing());
     }
@@ -66,6 +69,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testGoToNewTest() {
+        onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.playIcon)).perform(ViewActions.click());
         onView(withId(R.id.newTestButton)).perform(ViewActions.click());
         assert (activityRule.getActivity().isFinishing());
     }
@@ -77,7 +82,9 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testGoToResult() {
-        onView(withId(R.id.resultButton)).perform(ViewActions.click());
+        onView(withId(R.id.weeklyButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.playIcon)).perform(ViewActions.click());
+        onView(withId(R.id.weeklyButton)).perform(ViewActions.click());
         assert (activityRule.getActivity().isFinishing());
     }
 

@@ -1,7 +1,7 @@
 package com.aptatek.pkuapp.view.main;
 
-import com.aptatek.pkuapp.view.main.adapter.ChartVM;
-import com.aptatek.pkuapp.view.main.adapter.DailyResultAdapterItem;
+import com.aptatek.pkuapp.view.main.adapter.chart.ChartVM;
+import com.aptatek.pkuapp.view.main.adapter.daily.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 import java.util.List;
