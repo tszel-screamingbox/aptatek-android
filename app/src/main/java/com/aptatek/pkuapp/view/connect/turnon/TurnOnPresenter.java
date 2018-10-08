@@ -1,6 +1,7 @@
 package com.aptatek.pkuapp.view.connect.turnon;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 
 import com.aptatek.pkuapp.injection.qualifier.ActivityContext;
 import com.aptatek.pkuapp.view.connect.ConnectReaderScreen;
@@ -23,5 +24,14 @@ public class TurnOnPresenter extends BaseConnectScreenPresenter<TurnOnView> {
     @Override
     protected void onMissingPermissionsFound() {
         requestMissingPermissions();
+    }
+
+    public void checkDeviceSupported() {
+        final boolean isBleSupported = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+        if (!isBleSupported) {
+            ifViewAttached(TurnOnView::showDeviceNotSupported);
+        } else {
+            checkMandatoryRequirements();
+        }
     }
 }

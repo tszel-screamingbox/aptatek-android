@@ -92,6 +92,7 @@ ext {
 
             // Bluetooth
             nordicBle         : '1.2.0',
+            nordicScanner     : '1.1.0',
 
             // gson
             gson              : '2.8.5'
@@ -208,7 +209,8 @@ ext {
     ]
 
     bluetoothDependencies = [
-            nordicBle : "no.nordicsemi.android:ble:$versions.nordicBle"
+            nordicBle : "no.nordicsemi.android:ble:$versions.nordicBle",
+            scanner   : "no.nordicsemi.android.support.v18:scanner:$versions.nordicScanner"
     ]
 
     jsonDependencies = [

@@ -3,13 +3,13 @@ package com.aptatek.pkuapp.injection.component;
 import android.content.Context;
 
 import com.aptatek.pkuapp.injection.component.chart.ChartActivityComponent;
-import com.aptatek.pkuapp.injection.component.connect.ConnectActivityComponent;
+import com.aptatek.pkuapp.injection.component.scan.ScanActivityComponent;
 import com.aptatek.pkuapp.injection.component.main.MainActivityComponent;
 import com.aptatek.pkuapp.injection.component.rangeinfo.RangeInfoActivityComponent;
 import com.aptatek.pkuapp.injection.component.test.TestActivityComponent;
 import com.aptatek.pkuapp.injection.module.ActivityModule;
 import com.aptatek.pkuapp.injection.module.chart.ChartModule;
-import com.aptatek.pkuapp.injection.module.connect.ConnectModule;
+import com.aptatek.pkuapp.injection.module.scan.ScanModule;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
 import com.aptatek.pkuapp.injection.qualifier.ActivityContext;
@@ -58,5 +58,5 @@ public interface ActivityComponent {
 
     MainActivityComponent plus(TestModule testModule, RangeInfoModule rangeInfoModule, ChartModule chartModule);
 
-    ConnectActivityComponent plus(ConnectModule connectModule);
+    ScanActivityComponent plus(ScanModule scanModule);
 }

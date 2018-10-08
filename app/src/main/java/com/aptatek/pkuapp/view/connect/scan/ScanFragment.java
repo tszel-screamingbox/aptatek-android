@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.ReaderDevice;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
-import com.aptatek.pkuapp.injection.module.connect.ConnectModule;
+import com.aptatek.pkuapp.injection.module.scan.ScanModule;
 import com.aptatek.pkuapp.view.connect.ConnectReaderScreen;
 import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenFragment;
 import com.aptatek.pkuapp.view.connect.scan.adapter.ScanDeviceAdapter;
@@ -23,7 +23,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresenter> implements ScanView {
 
@@ -54,7 +53,7 @@ public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresen
 
     @Override
     protected void injectFragment(final FragmentComponent fragmentComponent) {
-        fragmentComponent.plus(new ConnectModule()).inject(this);
+        fragmentComponent.plus(new ScanModule()).inject(this);
     }
 
     @NonNull

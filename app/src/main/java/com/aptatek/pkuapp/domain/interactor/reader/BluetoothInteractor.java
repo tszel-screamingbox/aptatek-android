@@ -36,14 +36,14 @@ public class BluetoothInteractor {
 
         bluetoothScanner.setCallbacks(new BluetoothScanCallbacks() {
             @Override
-            public void onDeviceDiscovered(@NonNull ReaderDevice device) {
-                if (!devices.add(device)) {
+            public void onDeviceDiscovered(@NonNull final ReaderDevice device) {
+                if (devices.add(device)) {
                     discoveredDevices.onNext(Collections.unmodifiableSet(devices));
                 }
             }
 
             @Override
-            public void onFailure(@NonNull DeviceDiscoveryError error) {
+            public void onFailure(@NonNull final DeviceDiscoveryError error) {
                 discoveryError.onNext(error);
                 devices.clear();
             }

@@ -1,9 +1,4 @@
-package com.aptatek.pkuapp.injection.module.connect;
-
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanFilter;
-import android.bluetooth.le.ScanSettings;
+package com.aptatek.pkuapp.injection.module.scan;
 
 import com.aptatek.pkuapp.device.bluetooth.BluetoothScannerImpl;
 import com.aptatek.pkuapp.device.bluetooth.LumosReaderConstants;
@@ -15,13 +10,16 @@ import java.util.List;
 
 import dagger.Module;
 import dagger.Provides;
+import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat;
+import no.nordicsemi.android.support.v18.scanner.ScanFilter;
+import no.nordicsemi.android.support.v18.scanner.ScanSettings;
 
 @Module
-public class ConnectModule {
+public class ScanModule {
 
     @Provides
-    public BluetoothLeScanner provideBluetoothLeScanner() {
-        return BluetoothAdapter.getDefaultAdapter().getBluetoothLeScanner();
+    public BluetoothLeScannerCompat provideBluetoothLeScanner() {
+        return BluetoothLeScannerCompat.getScanner();
     }
 
     @Provides
@@ -29,16 +27,17 @@ public class ConnectModule {
         return new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                 .setReportDelay(0)
+                .setUseHardwareFilteringIfSupported(true)
                 .build();
     }
 
     @Provides
     public List<ScanFilter> provideScanFilters() {
         final List<ScanFilter> scanFilters = new ArrayList<>();
-        final ScanFilter filter = new ScanFilter.Builder()
+        final ScanFilter nameFilter = new ScanFilter.Builder()
                 .setDeviceName(LumosReaderConstants.DEVICE_NAME)
                 .build();
-        scanFilters.add(filter);
+        scanFilters.add(nameFilter);
 
         // why don't you work :( ?
         // final ParcelUuid uuid = ParcelUuid.fromString(LumosReaderConstants.READER_SERVICE);
@@ -48,7 +47,7 @@ public class ConnectModule {
     }
 
     @Provides
-    public BluetoothScanner provideBluetoothScanner(final BluetoothLeScanner leScanner,
+    public BluetoothScanner provideBluetoothScanner(final BluetoothLeScannerCompat leScanner,
                                                     final ScanSettings scanSettings,
                                                     final List<ScanFilter> scanFilters) {
         return new BluetoothScannerImpl(scanSettings, scanFilters, leScanner);

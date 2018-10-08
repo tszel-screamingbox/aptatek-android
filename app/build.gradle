@@ -185,6 +185,7 @@ dependencies {
 
     // Bluetooth
     implementation bluetoothDependencies.nordicBle
+    implementation bluetoothDependencies.scanner
 
     // JSON
     implementation jsonDependencies.gson

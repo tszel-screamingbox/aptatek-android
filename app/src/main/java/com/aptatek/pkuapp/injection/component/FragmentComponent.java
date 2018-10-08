@@ -1,12 +1,12 @@
 package com.aptatek.pkuapp.injection.component;
 
 import com.aptatek.pkuapp.injection.component.chart.ChartFragmentComponent;
-import com.aptatek.pkuapp.injection.component.connect.ConnectFragmentComponent;
+import com.aptatek.pkuapp.injection.component.scan.ScanFragmentComponent;
 import com.aptatek.pkuapp.injection.component.parentalgate.ParentalGateFragmentComponent;
 import com.aptatek.pkuapp.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkuapp.injection.module.FragmentModule;
 import com.aptatek.pkuapp.injection.module.chart.ChartModule;
-import com.aptatek.pkuapp.injection.module.connect.ConnectModule;
+import com.aptatek.pkuapp.injection.module.scan.ScanModule;
 import com.aptatek.pkuapp.injection.module.parentalgate.ParentalGateModule;
 import com.aptatek.pkuapp.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkuapp.injection.module.test.TestModule;
@@ -50,6 +50,6 @@ public interface FragmentComponent {
 
     ChartFragmentComponent plus(RangeInfoModule module, ChartModule chartModule);
 
-    ConnectFragmentComponent plus(ConnectModule connectModule);
+    ScanFragmentComponent plus(ScanModule scanModule);
 
 }

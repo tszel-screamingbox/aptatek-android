@@ -1,10 +1,5 @@
 package com.aptatek.pkuapp.device.bluetooth;
 
-import android.bluetooth.le.BluetoothLeScanner;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanFilter;
-import android.bluetooth.le.ScanResult;
-import android.bluetooth.le.ScanSettings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -16,6 +11,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat;
+import no.nordicsemi.android.support.v18.scanner.ScanCallback;
+import no.nordicsemi.android.support.v18.scanner.ScanFilter;
+import no.nordicsemi.android.support.v18.scanner.ScanResult;
+import no.nordicsemi.android.support.v18.scanner.ScanSettings;
 import timber.log.Timber;
 
 public class BluetoothScannerImpl implements BluetoothScanner {
@@ -23,7 +23,7 @@ public class BluetoothScannerImpl implements BluetoothScanner {
     private final ScanCallback scanCallback;
     private final ScanSettings scanSettings;
     private final List<ScanFilter> scanFilters;
-    private final BluetoothLeScanner bluetoothLeScanner;
+    private final BluetoothLeScannerCompat bluetoothLeScanner;
 
     private volatile boolean scanning;
 
@@ -32,7 +32,7 @@ public class BluetoothScannerImpl implements BluetoothScanner {
     @Inject
     public BluetoothScannerImpl(@NonNull final ScanSettings scanSettings,
                                 @NonNull final List<ScanFilter> scanFilters,
-                                @NonNull final BluetoothLeScanner bluetoothLeScanner) {
+                                @NonNull final BluetoothLeScannerCompat bluetoothLeScanner) {
         this.scanCallback = new ScanCallback() {
             @Override
             public void onScanResult(final int callbackType, final ScanResult result) {

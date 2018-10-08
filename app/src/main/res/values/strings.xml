@@ -23,6 +23,8 @@
     <string name="connect.bluetooth.button">Turn Bluetooth On</string>
     <string name="connect.turnon.title">Turn Reader On</string>
     <string name="connect.turnon.message">Wait until the display shows "Ready"</string>
+    <string name="connect.turnon.notsupported.title">Device Not Supported</string>
+    <string name="connect.turnon.notsupported.message">Unfortunately the device you are using is not capable to connect to the reader.</string>
     <string name="connect.permission.title">Bluetooth &amp; Location Are Required</string>
     <string name="connect.permission.message">For the functioning of this app you need to connect to Bluetooth and to use your Location.</string>
     <string name="connect.permission.button">Grant Missing Permissions</string>

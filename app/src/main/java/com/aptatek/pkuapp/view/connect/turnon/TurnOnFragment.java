@@ -5,8 +5,12 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.aptatek.pkuapp.R;
+import com.aptatek.pkuapp.domain.model.AlertDialogModel;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
 import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenFragment;
+import com.aptatek.pkuapp.view.dialog.AlertDialogDecisionListener;
+import com.aptatek.pkuapp.view.dialog.AlertDialogDecisions;
+import com.aptatek.pkuapp.view.dialog.AlertDialogFragment;
 import com.aptatek.pkuapp.view.main.MainActivity;
 
 import javax.inject.Inject;
@@ -41,7 +45,7 @@ public class TurnOnFragment extends BaseConnectScreenFragment<TurnOnView, TurnOn
 
     @OnClick(R.id.turnOnNext)
     public void onNextClick() {
-        presenter.checkMandatoryRequirements();
+        presenter.checkDeviceSupported();
     }
 
     @OnClick(R.id.turnOnSkip)
@@ -50,4 +54,17 @@ public class TurnOnFragment extends BaseConnectScreenFragment<TurnOnView, TurnOn
         getActivity().finish();
     }
 
+    @Override
+    public void showDeviceNotSupported() {
+        final AlertDialogModel alertDialogModel = AlertDialogModel.builder()
+                .setTitle(getString(R.string.connect_turnon_notsupported_title))
+                .setMessage(getString(R.string.connect_turnon_notsupported_message))
+                .setCancelable(false)
+                .setNeutralButtonText(getString(android.R.string.ok))
+                .build();
+
+        AlertDialogFragment.create(alertDialogModel, decision ->
+            getActivity().finish()
+        ).show(getChildFragmentManager(), "notsupported");
+    }
 }
