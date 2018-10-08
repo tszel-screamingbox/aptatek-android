@@ -89,8 +89,6 @@ public final class ChartUtils {
                     .setZoomed(false)
                     .setState(stateString(state))
                     .setHighestPkuLevel(dailyHighest == null ? null : dailyHighest.getPkuLevel())
-                    .setCollapsedBackgroundRes(smallBubbleBackground(state))
-                    .setExpandedBackgroundRes(bigBubbleBackground(state))
                     .setColorRes(stateColor(state))
                     .build();
 
@@ -177,22 +175,6 @@ public final class ChartUtils {
                 return R.color.pkuLevelVeryHigh;
             default:
                 return R.color.pkuLevelNormal;
-        }
-    }
-
-    @DrawableRes
-    public static int bigBubbleBackground(final State state) {
-        switch (state) {
-            case LOW:
-                return R.drawable.bubble_big_low;
-            case NORMAL:
-                return R.drawable.bubble_big_normal;
-            case HIGH:
-                return R.drawable.bubble_big_high;
-            case VERY_HIGH:
-                return R.drawable.bubble_big_very_high;
-            default:
-                return R.drawable.bubble_big_normal;
         }
     }
 

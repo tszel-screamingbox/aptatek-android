@@ -27,12 +27,6 @@ public abstract class ChartVM implements IListTypeProvider {
     public abstract @ColorRes
     int getColorRes();
 
-    public abstract @DrawableRes
-    int getCollapsedBackgroundRes();
-
-    public abstract @DrawableRes
-    int getExpandedBackgroundRes();
-
     public abstract boolean isZoomed();
 
     public abstract int getNumberOfMeasures();
@@ -61,10 +55,6 @@ public abstract class ChartVM implements IListTypeProvider {
         public abstract Builder setColorRes(@ColorRes int colorRes);
 
         public abstract Builder setState(@StringRes int stringRes);
-
-        public abstract Builder setCollapsedBackgroundRes(@DrawableRes int backgroundRes);
-
-        public abstract Builder setExpandedBackgroundRes(@DrawableRes int backgroundRes);
 
         public abstract Builder setZoomed(boolean zoomed);
 
