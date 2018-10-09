@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static com.aptatek.pkuapp.util.ChartUtils.State;
-import static com.aptatek.pkuapp.util.ChartUtils.bigBubbleBackground;
 import static com.aptatek.pkuapp.util.ChartUtils.smallBubbleBackground;
 import static com.aptatek.pkuapp.util.ChartUtils.stateColor;
 import static org.junit.Assert.assertEquals;
@@ -71,19 +70,6 @@ public class ChartUtilsTest {
         assertEquals(R.drawable.bubble_full_normal, smallBubbleBackground(State.NORMAL));
         assertEquals(R.drawable.bubble_full_high, smallBubbleBackground(State.HIGH));
         assertEquals(R.drawable.bubble_full_very_high, smallBubbleBackground(State.VERY_HIGH));
-    }
-
-    /**
-     * Testing big bubble's background colors.
-     *
-     * @test.expected The values are equals, no errors.
-     */
-    @Test
-    public void testBigBubbleBackground() {
-        assertEquals(R.drawable.bubble_big_low, bigBubbleBackground(State.LOW));
-        assertEquals(R.drawable.bubble_big_normal, bigBubbleBackground(State.NORMAL));
-        assertEquals(R.drawable.bubble_big_high, bigBubbleBackground(State.HIGH));
-        assertEquals(R.drawable.bubble_big_very_high, bigBubbleBackground(State.VERY_HIGH));
     }
 
     /**

@@ -8,13 +8,10 @@ import android.widget.TextView;
 
 import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.PkuLevel;
-import com.aptatek.pkuapp.util.ChartUtils;
 import com.aptatek.pkuapp.util.animation.AnimationHelper;
 import com.aptatek.pkuapp.view.base.list.viewholder.BaseViewHolder;
 import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkuapp.widget.BubbleTextView;
-
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,8 +56,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private void hideDetails(final ChartVM currentData) {
         animationHelper.animateConstraintWidthAndHeigth(bubbleText, () ->
-            resetBubble(currentData)
-        , 0.5f);
+            resetBubble(currentData), 0.5f);
     }
 
     private void showDetails(final ChartVM currentData) {
