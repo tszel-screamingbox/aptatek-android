@@ -1,9 +1,9 @@
 package com.aptatek.pkuapp.view.main.adapter.chart;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.aptatek.pkuapp.R;
@@ -11,20 +11,18 @@ import com.aptatek.pkuapp.domain.model.PkuLevel;
 import com.aptatek.pkuapp.util.animation.AnimationHelper;
 import com.aptatek.pkuapp.view.base.list.viewholder.BaseViewHolder;
 import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
+import com.aptatek.pkuapp.widget.BubbleTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
-    @BindView(R.id.infoText)
-    TextView infoTextView;
+    @BindView(R.id.bubble)
+    BubbleTextView bubbleText;
 
     @BindView(R.id.badge)
     TextView badgeTextView;
-
-    @BindView(R.id.bubbleContainer)
-    RelativeLayout bubbleContainerLayout;
 
     private OnItemClickedListener onItemClickedListener;
     private final AnimationHelper animationHelper;
@@ -42,7 +40,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     @Override
     public void bind(final ChartVM data) {
-        infoTextView.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
+        bubbleText.setOnClickListener(v -> onItemClickedListener.onItemClicked(data));
         resetBubble(data);
 
         if (data.isZoomed()) {
@@ -57,46 +55,53 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
     }
 
     private void hideDetails(final ChartVM currentData) {
-        animationHelper.zoomOut(bubbleContainerLayout, () -> resetBubble(currentData));
+        animationHelper.animateConstraintWidthAndHeigth(bubbleText, () ->
+            resetBubble(currentData), 0.5f);
     }
 
     private void showDetails(final ChartVM currentData) {
-        infoTextView.getLayoutParams().width = calculateWidth(infoTextView);
-        animationHelper.zoomIn(bubbleContainerLayout, () -> {
-            final PkuLevel highestMeasure = currentData.getHighestPkuLevel();
-            if (highestMeasure == null) {
-                bubbleContainerLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.bubble_empty));
+        animationHelper.animateConstraintWidthAndHeigth(bubbleText, () -> {
+            final BubbleTextView.BubbleTextConfiguration.Builder configBuilder = BubbleTextView.BubbleTextConfiguration.builder();
+
+            final PkuLevel highestPkuLevel = currentData.getHighestPkuLevel();
+            if (highestPkuLevel == null) {
+                configBuilder.setPrimaryText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()))
+                        .setTextColor(ContextCompat.getColor(context, R.color.applicationWhite))
+                        .setFillColor(ContextCompat.getColor(context, R.color.applicationGray))
+                        .setCircleColor(ContextCompat.getColor(context, android.R.color.transparent))
+                        .setCircleWidth(0);
             } else {
-                infoTextView.setTextColor(ContextCompat.getColor(context, currentData.getColorRes()));
-                bubbleContainerLayout.setBackground(ContextCompat.getDrawable(context, currentData.getExpandedBackgroundRes()));
-
-                final CharSequence infoText = dailyChartFormatter.getBubbleText(highestMeasure, currentData.getState());
-                infoTextView.setText(infoText);
-                if (currentData.getNumberOfMeasures() > 1) {
-                    badgeTextView.setTextColor(ContextCompat.getColor(context, currentData.getColorRes()));
-                    badgeTextView.setText(String.valueOf(currentData.getNumberOfMeasures()));
-                    badgeTextView.setVisibility(View.VISIBLE);
-                }
+                configBuilder.setPrimaryText(dailyChartFormatter.getBubbleValue(highestPkuLevel))
+                        .setSecondaryText(context.getString(currentData.getState()))
+                        .setTextColor(ContextCompat.getColor(context, currentData.getColorRes()))
+                        .setFillColor(ContextCompat.getColor(context, R.color.applicationWhite))
+                        .setCircleColor(ContextCompat.getColor(context, currentData.getColorRes()))
+                        .setCircleWidth((int) context.getResources().getDimension(R.dimen.graph_bubble_stroke_big));
             }
-        });
-    }
 
-    private int calculateWidth(final TextView textView) {
-        final float margin = context.getResources().getDimension(R.dimen.graph_bubble_margin);
-        final float diameter = (bubbleContainerLayout.getLayoutParams().width - 2 * margin) * 0.5f;
-        final float distance = textView.getLayoutParams().height * 0.5f;
-        return (int) (2 * Math.sqrt(Math.pow(diameter, 2) - Math.pow(distance, 2)));
+            bubbleText.setConfiguration(configBuilder.build());
+
+            if (currentData.getNumberOfMeasures() > 1) {
+                badgeTextView.setTextColor(ContextCompat.getColor(context, currentData.getColorRes()));
+                badgeTextView.setText(String.valueOf(currentData.getNumberOfMeasures()));
+                badgeTextView.setVisibility(View.VISIBLE);
+            }
+
+        }, 1f);
+
     }
 
     private void resetBubble(final ChartVM currentData) {
         badgeTextView.setVisibility(View.GONE);
-        infoTextView.setText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()));
-        infoTextView.setTextColor(context.getResources().getColor(R.color.applicationWhite));
-        if (currentData.getHighestPkuLevel() == null) {
-            bubbleContainerLayout.setBackground(context.getResources().getDrawable(R.drawable.bubble_empty));
-        } else {
-            bubbleContainerLayout.setBackground(context.getResources().getDrawable(currentData.getCollapsedBackgroundRes()));
-        }
+        final @ColorInt int color = ContextCompat.getColor(context,  currentData.getHighestPkuLevel() == null ? R.color.applicationGray : currentData.getColorRes());
+        final BubbleTextView.BubbleTextConfiguration config = BubbleTextView.BubbleTextConfiguration.builder()
+                .setPrimaryText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()))
+                .setTextColor(context.getResources().getColor(R.color.applicationWhite))
+                .setFillColor(color)
+                .setCircleColor(color)
+                .setCircleWidth(0)
+                .build();
+        bubbleText.setConfiguration(config);
     }
 
     public interface OnItemClickedListener {

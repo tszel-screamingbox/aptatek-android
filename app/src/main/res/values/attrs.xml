@@ -6,7 +6,16 @@
     </declare-styleable>
 
     <declare-styleable name="RangeInfoRowView">
-        <attr name="backgroundColor" format="color"/>
+        <attr name="backgroundColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="BubbleTextView">
+        <attr name="circleColor" format="color" />
+        <attr name="fillColor" format="color" />
+        <attr name="circleWidth" format="dimension" />
+        <attr name="textPrimary" format="string" />
+        <attr name="textSecondary" format="string" />
+        <attr name="textColor" format="color" />
     </declare-styleable>
 
 </resources>
