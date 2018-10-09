@@ -38,7 +38,7 @@ ext {
             timber            : '4.7.0',
 
             // Leak
-            leakcanary        : '1.5.4',
+            leakcanary        : '1.6.1',
 
             // Firebase
             firebase          : '12.0.1',
