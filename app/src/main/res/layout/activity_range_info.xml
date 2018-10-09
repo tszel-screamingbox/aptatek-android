@@ -41,7 +41,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5">
 
-        <com.aptatek.pkuapp.widget.RangeInfoRowView
+        <com.aptatek.pkulab.widget.RangeInfoRowView
             android:id="@+id/rangeinfo_very_high"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_very_high"
             app:layout_constraintStart_toStartOf="@id/rangeinfo_very_high" />
 
-        <com.aptatek.pkuapp.widget.RangeInfoRowView
+        <com.aptatek.pkulab.widget.RangeInfoRowView
             android:id="@+id/rangeinfo_high"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_high"
             app:layout_constraintStart_toStartOf="@id/rangeinfo_high" />
 
-        <com.aptatek.pkuapp.widget.RangeInfoRowView
+        <com.aptatek.pkulab.widget.RangeInfoRowView
             android:id="@+id/rangeinfo_normal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_normal"
             app:layout_constraintStart_toStartOf="@id/rangeinfo_normal" />
 
-        <com.aptatek.pkuapp.widget.RangeInfoRowView
+        <com.aptatek.pkulab.widget.RangeInfoRowView
             android:id="@+id/rangeinfo_low"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
