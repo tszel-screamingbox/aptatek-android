@@ -10,7 +10,6 @@ import com.aptatek.pkuapp.injection.component.FragmentComponent;
 import com.aptatek.pkuapp.view.base.BaseActivity;
 import com.aptatek.pkuapp.view.connect.ConnectReaderActivity;
 import com.aptatek.pkuapp.view.fingerprint.FingerprintActivity;
-import com.aptatek.pkuapp.view.main.MainActivity;
 import com.aptatek.pkuapp.view.pin.base.BasePinFragment;
 
 import javax.inject.Inject;

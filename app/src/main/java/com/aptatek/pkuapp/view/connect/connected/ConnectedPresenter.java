@@ -1,7 +1,6 @@
 package com.aptatek.pkuapp.view.connect.connected;
 
 import android.content.Context;
-import android.util.Pair;
 
 import com.aptatek.pkuapp.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkuapp.domain.model.ReaderConnectionState;
@@ -28,7 +27,7 @@ public class ConnectedPresenter extends BaseConnectScreenPresenter<ConnectedView
     }
 
     @Override
-    public void attachView(ConnectedView view) {
+    public void attachView(final ConnectedView view) {
         super.attachView(view);
 
         disposeSubscriptions();

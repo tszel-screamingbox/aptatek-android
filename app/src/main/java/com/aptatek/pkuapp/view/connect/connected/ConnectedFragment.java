@@ -45,7 +45,7 @@ public class ConnectedFragment extends BaseConnectScreenFragment<ConnectedView, 
     @Override
     public void displayReaderDevice(@NonNull final ReaderDevice device, final int batteryLevel) {
         tvDevice.setText(device.getName());
-        tvBatteryLevel.setText(String.valueOf(batteryLevel) + "%");
+        tvBatteryLevel.setText(String.valueOf(batteryLevel).concat("%"));
     }
 
     @NonNull

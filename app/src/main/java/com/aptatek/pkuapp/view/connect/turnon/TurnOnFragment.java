@@ -8,8 +8,6 @@ import com.aptatek.pkuapp.R;
 import com.aptatek.pkuapp.domain.model.AlertDialogModel;
 import com.aptatek.pkuapp.injection.component.FragmentComponent;
 import com.aptatek.pkuapp.view.connect.common.BaseConnectScreenFragment;
-import com.aptatek.pkuapp.view.dialog.AlertDialogDecisionListener;
-import com.aptatek.pkuapp.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkuapp.view.dialog.AlertDialogFragment;
 import com.aptatek.pkuapp.view.main.MainActivity;
 

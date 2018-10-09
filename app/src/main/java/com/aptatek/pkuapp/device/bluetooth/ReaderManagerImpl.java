@@ -22,10 +22,10 @@ public class ReaderManagerImpl implements ReaderManager {
 
     private final LumosReaderManager lumosReaderManager;
 
-    private final FlowableProcessor<Integer> batteryLevel = BehaviorProcessor.create();
-    private final FlowableProcessor<String> cartridgeId = BehaviorProcessor.create();
-    private final FlowableProcessor<ReaderError> readerError = BehaviorProcessor.create();
-    private final FlowableProcessor<ReaderConnectionEvent> connectionState = BehaviorProcessor.createDefault(ReaderConnectionEvent.create(null, ReaderConnectionState.DISCONNECTED));
+    private final FlowableProcessor<Integer> batteryLevelProcessor = BehaviorProcessor.create();
+    private final FlowableProcessor<String> cartridgeIdProcessor = BehaviorProcessor.create();
+    private final FlowableProcessor<ReaderError> readerErrorProcessor = BehaviorProcessor.create();
+    private final FlowableProcessor<ReaderConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ReaderConnectionEvent.create(null, ReaderConnectionState.DISCONNECTED));
 
     @Inject
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager) {
@@ -34,27 +34,27 @@ public class ReaderManagerImpl implements ReaderManager {
         lumosReaderManager.setGattCallbacks(new LumosReaderCallbacks() {
             @Override
             public void onDeviceConnecting(final BluetoothDevice device) {
-                connectionState.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.CONNECTING));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.CONNECTING));
             }
 
             @Override
             public void onDeviceConnected(final BluetoothDevice device) {
-                connectionState.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.CONNECTED));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.CONNECTED));
             }
 
             @Override
             public void onDeviceDisconnecting(final BluetoothDevice device) {
-                connectionState.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.DISCONNECTING));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.DISCONNECTING));
             }
 
             @Override
             public void onDeviceDisconnected(final BluetoothDevice device) {
-                connectionState.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.DISCONNECTED));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.DISCONNECTED));
             }
 
             @Override
             public void onLinklossOccur(final BluetoothDevice device) {
-                connectionState.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.DISCONNECTED));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.DISCONNECTED));
             }
 
             @Override
@@ -64,7 +64,7 @@ public class ReaderManagerImpl implements ReaderManager {
 
             @Override
             public void onDeviceReady(final BluetoothDevice device) {
-                connectionState.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
             }
 
             @Override
@@ -74,32 +74,32 @@ public class ReaderManagerImpl implements ReaderManager {
 
             @Override
             public void onBatteryValueReceived(final BluetoothDevice device, final int value) {
-                batteryLevel.onNext(value);
+                batteryLevelProcessor.onNext(value);
             }
 
             @Override
             public void onBondingRequired(final BluetoothDevice device) {
-                connectionState.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.BONDING_REQUIRED));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.BONDING_REQUIRED));
             }
 
             @Override
             public void onBonded(final BluetoothDevice device) {
-                connectionState.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.CONNECTED));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.CONNECTED));
             }
 
             @Override
             public void onError(final BluetoothDevice device, final String message, final int errorCode) {
-                readerError.onNext(new ReaderError(message, errorCode));
+                readerErrorProcessor.onNext(new ReaderError(message, errorCode));
             }
 
             @Override
             public void onDeviceNotSupported(final BluetoothDevice device) {
-                readerError.onNext(new DeviceNotSupportedError());
+                readerErrorProcessor.onNext(new DeviceNotSupportedError());
             }
 
             @Override
             public void onReadCartridgeId(@NonNull final CartridgeIdResponse cartridgeIdResponse) {
-                cartridgeId.onNext(cartridgeIdResponse.getCartridgeId());
+                cartridgeIdProcessor.onNext(cartridgeIdResponse.getCartridgeId());
             }
         });
     }
@@ -130,21 +130,21 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Flowable<ReaderConnectionEvent> connectionEvents() {
-        return connectionState;
+        return connectionStateProcessor;
     }
 
     @Override
     public Flowable<ReaderError> readerErrors() {
-        return readerError;
+        return readerErrorProcessor;
     }
 
     @Override
     public Flowable<Integer> batteryLevel() {
-        return batteryLevel;
+        return batteryLevelProcessor;
     }
 
     @Override
     public Flowable<String> cartridgeId() {
-        return cartridgeId;
+        return cartridgeIdProcessor;
     }
 }

@@ -9,7 +9,6 @@ import android.support.v4.content.PermissionChecker;
 
 import com.aptatek.pkuapp.injection.qualifier.ActivityContext;
 import com.aptatek.pkuapp.view.connect.ConnectReaderScreen;
-import com.aptatek.pkuapp.view.connect.permission.PermissionRequiredFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
@@ -59,7 +58,9 @@ public abstract class BaseConnectScreenPresenter<V extends BaseConnectScreenView
         if (mBluetoothAdapter == null) {
             // This should not happen since we strictly require the device to have Bluetooth in the Manifest.
             Timber.e("No bluetooth adapter!");
-        } else return mBluetoothAdapter.isEnabled();
+        } else {
+            return mBluetoothAdapter.isEnabled();
+        }
 
         return false;
     }

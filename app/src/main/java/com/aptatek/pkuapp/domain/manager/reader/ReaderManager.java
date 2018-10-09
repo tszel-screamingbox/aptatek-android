@@ -7,7 +7,6 @@ import com.aptatek.pkuapp.domain.model.ReaderConnectionEvent;
 import com.aptatek.pkuapp.domain.model.ReaderDevice;
 
 import io.reactivex.Flowable;
-import io.reactivex.processors.FlowableProcessor;
 
 public interface ReaderManager {
 
