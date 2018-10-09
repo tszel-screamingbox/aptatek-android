@@ -4,7 +4,7 @@
     android:layout_width="@dimen/graph.item.size"
     android:layout_height="@dimen/graph.item.size">
 
-    <com.aptatek.pkuapp.widget.BubbleTextView
+    <com.aptatek.pkulab.widget.BubbleTextView
         android:id="@+id/bubble"
         android:layout_width="0dp"
         android:layout_height="0dp"

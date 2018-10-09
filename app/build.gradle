@@ -38,7 +38,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.aptatek.pkuapp"
+        applicationId "com.aptatek.pkulab"
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
