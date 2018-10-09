@@ -77,8 +77,6 @@ public class MainActivityPresenterTest {
                 .setZoomed(false)
                 .setColorRes(0)
                 .setState(0)
-                .setExpandedBackgroundRes(0)
-                .setCollapsedBackgroundRes(0)
                 .build();
 
         final long now = System.currentTimeMillis();
@@ -94,8 +92,6 @@ public class MainActivityPresenterTest {
                 .setNumberOfMeasures(1)
                 .setColorRes(0)
                 .setState(0)
-                .setExpandedBackgroundRes(0)
-                .setCollapsedBackgroundRes(0)
                 .build();
     }
 

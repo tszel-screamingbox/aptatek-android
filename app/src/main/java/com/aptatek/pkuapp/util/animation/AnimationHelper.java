@@ -1,6 +1,9 @@
 package com.aptatek.pkuapp.util.animation;
 
 import android.animation.Animator;
+import android.animation.ValueAnimator;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -15,10 +18,43 @@ public final class AnimationHelper {
 
     private static final float SCALE_MAX = 2f;
     private static final float SCALE_MIN = 0.8f;
-    private static final int DURATION_MILLISEC = 200;
+    private static final long DURATION_MILLISEC = 200L;
 
     @Inject
     public AnimationHelper() {
+    }
+
+    public void animateConstraintWidthAndHeigth(@NonNull final View view, @NonNull final AnimationCallback callback, final float toPercent) {
+        final ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) view.getLayoutParams();
+        final ValueAnimator animator = ValueAnimator.ofFloat(layoutParams.matchConstraintPercentWidth, toPercent);
+        animator.addUpdateListener(animation -> {
+            layoutParams.matchConstraintPercentWidth = (float) animation.getAnimatedValue();
+            layoutParams.matchConstraintPercentHeight = (float) animation.getAnimatedValue();
+            view.requestLayout();
+        });
+        animator.setDuration(DURATION_MILLISEC);
+        animator.start();
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                callback.animationEnd();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
     }
 
     public enum Fade {
