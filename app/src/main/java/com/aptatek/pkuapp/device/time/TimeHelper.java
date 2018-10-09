@@ -28,8 +28,8 @@ public final class TimeHelper {
 
     public static long addMonths(final int numOfMonths, final long targetTimestamp) {
         final LocalDate localDate = dateFromTimestamp(targetTimestamp);
-        final LocalDate weeksAdded = localDate.plusWeeks(numOfMonths);
-        return weeksAdded.toDate().getTime();
+        final LocalDate monthsAdded = localDate.plusMonths(numOfMonths);
+        return monthsAdded.toDate().getTime();
     }
 
     public static long getEarliestTimeAtGivenDay(final long timestamp) {
