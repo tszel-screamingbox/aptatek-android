@@ -42,7 +42,7 @@ class ConfirmPinPresenter extends MvpBasePresenter<ConfirmPinView> {
         if (deviceHelper.hasFingerprintHadrware() && deviceHelper.hasEnrolledFingerprints()) {
             ifViewAttached(ConfirmPinView::onFingerprintActivityShouldLoad);
         } else {
-            ifViewAttached(ConfirmPinView::onMainActivityShouldLoad);
+            ifViewAttached(ConfirmPinView::onConnectReaderShouldLoad);
         }
     }
 

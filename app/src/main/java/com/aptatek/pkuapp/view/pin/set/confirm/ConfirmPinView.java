@@ -5,7 +5,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 interface ConfirmPinView extends MvpView {
 
-    void onMainActivityShouldLoad();
+    void onConnectReaderShouldLoad();
 
     void onValidPinTyped();
 

@@ -12,6 +12,7 @@ import com.aptatek.pkuapp.domain.interactor.ResourceInteractor;
 import com.aptatek.pkuapp.domain.interactor.cube.CubeDataSource;
 import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeDataSource;
 import com.aptatek.pkuapp.domain.interactor.wetting.WettingDataSource;
+import com.aptatek.pkuapp.domain.manager.reader.ReaderManager;
 import com.aptatek.pkuapp.injection.qualifier.ApplicationContext;
 import com.aptatek.pkuapp.util.animation.AnimationHelper;
 
@@ -43,5 +44,7 @@ public interface ApplicationComponentExposes {
     WettingDataSource provideWettingDataSource();
 
     PkuRangeDataSource providePkuRangeDataSource();
+
+    ReaderManager provideReaderManager();
 
 }
