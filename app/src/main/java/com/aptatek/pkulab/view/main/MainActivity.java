@@ -18,11 +18,11 @@ import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
-import com.aptatek.pkulab.view.connect.ConnectReaderActivity;
 import com.aptatek.pkulab.view.main.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.adapter.daily.DailyResultsAdapter;
+import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.view.weekly.WeeklyResultActivity;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick({R.id.settingsButton, R.id.bigSettingsButton})
     public void onSettingsButtonClicked() {
-        launchActivity(ConnectReaderActivity.starter(this), false, Animation.FADE);
+        launchActivity(SettingsActivity.starter(this), false, Animation.FADE);
     }
 
     @OnClick(R.id.playIcon)
