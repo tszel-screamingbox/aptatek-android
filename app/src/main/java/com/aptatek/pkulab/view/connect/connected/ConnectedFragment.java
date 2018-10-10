@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.ReaderDevice;
@@ -56,12 +55,17 @@ public class ConnectedFragment extends BaseConnectScreenFragment<ConnectedView, 
 
     @OnClick(R.id.connectedDisconnect)
     public void onDisconnectClicked() {
-        Toast.makeText(getActivity(), "disconnect clicked", Toast.LENGTH_SHORT).show();
+        presenter.disconnect();
     }
 
     @OnClick(R.id.connectedButton)
-    public void onGoHomeCliked() {
+    public void onGoHomeClicked() {
         startActivity(new Intent(getActivity(), MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void finish() {
         getActivity().finish();
     }
 }

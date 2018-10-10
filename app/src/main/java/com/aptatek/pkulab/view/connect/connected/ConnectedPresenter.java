@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.connect.connected;
 
 import android.content.Context;
+import android.util.Pair;
 
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.ReaderConnectionState;
@@ -35,28 +36,29 @@ public class ConnectedPresenter extends BaseConnectScreenPresenter<ConnectedView
         disposables = new CompositeDisposable();
 
         disposables.add(
-//                readerInteractor.getReaderConnectionEvents()
-//                        .filter(event -> event.getConnectionState() == ReaderConnectionState.READY)
-//                        .take(1)
-//                        .flatMap(event -> readerInteractor.queryBatteryLevel()
-//                                .andThen(readerInteractor.getBatteryLevel()
-//                                        .take(1)
-//                                        .map(batteryLevel -> new Pair<>(event.getDevice(), batteryLevel))
-//                                )
-//                        )
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(
-//                                pair -> ifViewAttached(attachedView -> attachedView.displayReaderDevice(pair.first, pair.second)),
-//                                Timber::e // TODO handle error
-//                        )
                 readerInteractor.getReaderConnectionEvents()
                         .filter(event -> event.getConnectionState() == ReaderConnectionState.READY)
                         .take(1)
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe(event -> ifViewAttached(attachedView -> attachedView.displayReaderDevice(event.getDevice(), 100)))
+                        .flatMap(event -> readerInteractor.queryBatteryLevel()
+                                .andThen(readerInteractor.getBatteryLevel()
+                                        .take(1)
+                                        .map(batteryLevel -> new Pair<>(event.getDevice(), batteryLevel))
+                                )
+                        )
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                pair -> ifViewAttached(attachedView -> attachedView.displayReaderDevice(pair.first, pair.second)),
+                                Timber::e // TODO handle error
+                        )
         );
 
         // TODO also watch for errors...
+    }
+
+    public void disconnect() {
+        disposables.add(readerInteractor.disconnect()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> ifViewAttached(ConnectedView::finish)));
     }
 
     private void disposeSubscriptions() {

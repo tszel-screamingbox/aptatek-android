@@ -9,4 +9,6 @@ public interface ConnectedView extends BaseConnectScreenView {
 
     void displayReaderDevice(@NonNull ReaderDevice device, int batteryLevel);
 
+    void finish();
+
 }
