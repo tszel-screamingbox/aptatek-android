@@ -170,12 +170,7 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
 
     public void connect(final @NonNull ReaderDevice readerDevice) {
         disposables.add(readerInteractor.connect(readerDevice)
-                .doOnComplete(() -> Timber.d("Successfully connected to device"))
-                .andThen(timeServerInteractor.startTimeServer())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> Timber.d("Successfully started time server"),
-                        Timber::e // TODO handle errors
-                ));
+                .subscribe());
     }
 }
