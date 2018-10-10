@@ -49,8 +49,8 @@ public final class TimeServerHelper {
         field[7] = getDayOfWeekCode(time.get(Calendar.DAY_OF_WEEK));
         // Fractions256
         field[8] = (byte) (time.get(Calendar.MILLISECOND) / 256);
-
-        field[9] = DST_UNKNOWN;
+        // Adjust reason
+        field[9] = 0x0;
 
         return field;
     }
