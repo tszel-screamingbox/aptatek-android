@@ -1,10 +1,12 @@
-package com.aptatek.pkulab.device.bluetooth;
+package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 
 import java.util.Collections;
 import java.util.HashSet;

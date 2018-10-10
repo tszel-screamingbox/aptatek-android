@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.device.bluetooth;
+package com.aptatek.pkulab.device.bluetooth.model;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;

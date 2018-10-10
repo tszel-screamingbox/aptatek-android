@@ -1,8 +1,9 @@
-package com.aptatek.pkulab.device.bluetooth;
+package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.domain.error.DeviceNotSupportedError;
 import com.aptatek.pkulab.domain.error.ReaderError;

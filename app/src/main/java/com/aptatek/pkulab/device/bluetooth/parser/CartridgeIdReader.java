@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.device.bluetooth.parser;
 
-import com.aptatek.pkulab.device.bluetooth.CharacteristicReader;
+import com.aptatek.pkulab.device.bluetooth.reader.CharacteristicReader;
 import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.google.gson.Gson;
 
