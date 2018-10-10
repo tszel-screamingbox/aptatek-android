@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.reader.TimeServerInteractor;
 import com.aptatek.pkulab.domain.model.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ActivityContext;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenPresenter;
@@ -24,6 +25,7 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
 
     private final BluetoothInteractor bluetoothInteractor;
     private final ReaderInteractor readerInteractor;
+    private final TimeServerInteractor timeServerInteractor;
 
     private Set<ReaderDevice> readerDevices;
 
@@ -32,10 +34,12 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
     @Inject
     public ScanPresenter(@ActivityContext final Context context,
                          final BluetoothInteractor bluetoothInteractor,
-                         final ReaderInteractor readerInteractor) {
+                         final ReaderInteractor readerInteractor,
+                         final TimeServerInteractor timeServerInteractor) {
         super(context);
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
+        this.timeServerInteractor = timeServerInteractor;
     }
 
     @Override
@@ -166,7 +170,12 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
 
     public void connect(final @NonNull ReaderDevice readerDevice) {
         disposables.add(readerInteractor.connect(readerDevice)
+                .doOnComplete(() -> Timber.d("Successfully connected to device"))
+                .andThen(timeServerInteractor.startTimeServer())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe());
+                .subscribe(
+                        () -> Timber.d("Successfully started time server"),
+                        Timber::e // TODO handle errors
+                ));
     }
 }
