@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.device.bluetooth.reader;
 
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Context;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -40,15 +42,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
             @Override
             protected Deque<Request> initGatt(final BluetoothGatt gatt) {
                 final LinkedList<Request> requests = new LinkedList<>();
-                requests.push(Request.newMtuRequest(LumosReaderConstants.MTU_SIZE));
-
-                // Add NOTIFY type characteristics here here
-                final BluetoothGattCharacteristic workflowChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE);
-                enqueue(Request.newEnableNotificationsRequest(workflowChar));
-
-                final BluetoothGattCharacteristic errorChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_ERROR);
-                requests.push(Request.newEnableNotificationsRequest(errorChar));
-
+                requests.push(Request.createBond());
                 return requests;
             }
 
@@ -154,9 +148,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
                     final BluetoothGattCharacteristic workflowChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE);
                     enqueue(Request.newReadRequest(workflowChar));
+                    enqueue(Request.newEnableNotificationsRequest(workflowChar));
 
                     final BluetoothGattCharacteristic errorChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_ERROR);
                     enqueue(Request.newReadRequest(errorChar));
+                    enqueue(Request.newEnableNotificationsRequest(errorChar));
 
                 } else {
                     Timber.d("Failed to set MTU size to [%d] on device [%s], status [%d]", mtu, gatt.getDevice().getAddress(), status);
@@ -169,7 +165,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     private UpdateTimeResponse createTimeResponse() {
         final UpdateTimeResponse updateTimeResponse = new UpdateTimeResponse();
-        final Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         updateTimeResponse.setYear(calendar.get(Calendar.YEAR));
         updateTimeResponse.setMonth(calendar.get(Calendar.MONTH));
         updateTimeResponse.setDay(calendar.get(Calendar.DAY_OF_MONTH));
@@ -196,7 +192,20 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         Timber.d(message);
     }
 
+    @Override
+    protected void onPairingRequestReceived(final BluetoothDevice device, final int variant) {
+        super.onPairingRequestReceived(device, variant);
+
+        Timber.d("onPairingRequestReceived: device [%s], variant [%s]", device.getAddress(), pairingVariantToString(variant));
+    }
+
     public void getCartridgeId() {
         readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID));
+    }
+
+    public void requestMtuChange() {
+        if (getMtu() != LumosReaderConstants.MTU_SIZE) {
+            enqueue(Request.newMtuRequest(LumosReaderConstants.MTU_SIZE));
+        }
     }
 }

@@ -6,7 +6,7 @@ public enum ReaderConnectionState {
     CONNECTING,
     CONNECTED,
     BONDING_REQUIRED,
-    BOUND,
+    BOND,
     READY,
     DISCONNECTING
 

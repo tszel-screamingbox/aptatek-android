@@ -63,11 +63,12 @@ public class ReaderManagerImpl implements ReaderManager {
 
             @Override
             public void onServicesDiscovered(final BluetoothDevice device, final boolean optionalServicesFound) {
-
+                Timber.d("onServicesDiscovered");
             }
 
             @Override
             public void onDeviceReady(final BluetoothDevice device) {
+                lumosReaderManager.requestMtuChange();
                 connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
             }
 
@@ -88,7 +89,8 @@ public class ReaderManagerImpl implements ReaderManager {
 
             @Override
             public void onBonded(final BluetoothDevice device) {
-                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.CONNECTED));
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.BOND));
+                lumosReaderManager.requestMtuChange();
             }
 
             @Override

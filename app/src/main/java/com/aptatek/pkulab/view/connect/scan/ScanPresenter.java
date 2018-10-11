@@ -76,9 +76,9 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                     ifViewAttached(attachedView -> {
                         switch (event.getConnectionState()) {
                             case CONNECTING:
-                            case BOUND:
                             case CONNECTED:
                             case BONDING_REQUIRED:
+                            case BOND:
                             case DISCONNECTING: {
                                 final List<ScanDeviceAdapterItem> adapterItems = Ix.from(readerDevices)
                                         .map(device -> ScanDeviceAdapterItem.builder()
