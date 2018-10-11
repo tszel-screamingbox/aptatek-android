@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
-import com.aptatek.pkulab.domain.interactor.reader.TimeServerInteractor;
 import com.aptatek.pkulab.domain.model.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ActivityContext;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenPresenter;
@@ -25,7 +24,6 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
 
     private final BluetoothInteractor bluetoothInteractor;
     private final ReaderInteractor readerInteractor;
-    private final TimeServerInteractor timeServerInteractor;
 
     private Set<ReaderDevice> readerDevices;
 
@@ -34,12 +32,10 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
     @Inject
     public ScanPresenter(@ActivityContext final Context context,
                          final BluetoothInteractor bluetoothInteractor,
-                         final ReaderInteractor readerInteractor,
-                         final TimeServerInteractor timeServerInteractor) {
+                         final ReaderInteractor readerInteractor) {
         super(context);
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
-        this.timeServerInteractor = timeServerInteractor;
     }
 
     @Override

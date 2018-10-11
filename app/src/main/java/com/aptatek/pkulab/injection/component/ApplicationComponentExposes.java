@@ -13,7 +13,6 @@ import com.aptatek.pkulab.domain.interactor.cube.CubeDataSource;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeDataSource;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingDataSource;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
-import com.aptatek.pkulab.domain.manager.reader.TimeServer;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.animation.AnimationHelper;
 
@@ -47,7 +46,4 @@ public interface ApplicationComponentExposes {
     PkuRangeDataSource providePkuRangeDataSource();
 
     ReaderManager provideReaderManager();
-
-    TimeServer provideTimeServer();
-
 }

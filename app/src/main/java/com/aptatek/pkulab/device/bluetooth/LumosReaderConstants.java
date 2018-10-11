@@ -17,8 +17,4 @@ public final class LumosReaderConstants {
     public static final String READER_CHAR_ERROR = "00004001-0000-1000-8000-00805f9b34fb";
     public static final String READER_CHAR_UPDATE_ASSAY_DETAILS = "00005001-0000-1000-8000-00805f9b34fb";
 
-    public static final String TIME_SERVICE = "00001805-0000-1000-8000-00805f9b34fb";
-    public static final String TIME_SERVICE_CHAR_CURRENT_TIME = "00002a2b-0000-1000-8000-00805f9b34fb";
-    public static final String TIME_SERVICE_CHAR_LOCAL_TIME_INFO = "00002a0f-0000-1000-8000-00805f9b34fb";
-
 }
