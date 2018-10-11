@@ -28,6 +28,7 @@ public class CharacteristicsHolder {
     private static final UUID READER_CHAR_CARTRIDGE_ID_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID);
     private static final UUID READER_CHAR_ERROR_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_ERROR);
     private static final UUID READER_CHAR_UPDATE_ASSAY_DETAILS_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_UPDATE_ASSAY_DETAILS);
+    private static final UUID READER_CHAR_UPDATE_TIME_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
 
     private final Set<BluetoothGattCharacteristic> characteristics = Collections.synchronizedSet(new HashSet<>());
     private final Set<String> mandatoryCharacteristicIds;
@@ -42,6 +43,7 @@ public class CharacteristicsHolder {
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_ERROR);
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID);
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_UPDATE_ASSAY_DETAILS);
+        mandatoryChars.add(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
 
         mandatoryCharacteristicIds = Collections.unmodifiableSet(mandatoryChars);
     }
@@ -58,10 +60,8 @@ public class CharacteristicsHolder {
             characteristics.add(readerService.getCharacteristic(READER_CHAR_CARTRIDGE_ID_UUID));
             characteristics.add(readerService.getCharacteristic(READER_CHAR_ERROR_UUID));
             characteristics.add(readerService.getCharacteristic(READER_CHAR_UPDATE_ASSAY_DETAILS_UUID));
+            characteristics.add(readerService.getCharacteristic(READER_CHAR_UPDATE_TIME_UUID));
         }
-
-        // TODO parse other services' characteristics
-
     }
 
     public boolean hasAllMandatoryCharacteristics() {

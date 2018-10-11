@@ -7,9 +7,11 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
+import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
 import com.aptatek.pkulab.device.bluetooth.parser.CartridgeIdReader;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
+import java.util.Calendar;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Map;
@@ -28,7 +30,8 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     @Inject
     public LumosReaderManager(@ApplicationContext @NonNull final Context context,
                               final CharacteristicsHolder characteristicsHolder,
-                              final Map<String, CharacteristicReader> characteristicReaderMap) {
+                              final Map<String, CharacteristicReader> characteristicReaderMap,
+                              final CharacteristicWriter characteristicWriter) {
         super(context);
 
         this.characteristicsHolder = characteristicsHolder;
@@ -44,6 +47,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 final BluetoothGattCharacteristic errorChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_ERROR);
                 requests.push(Request.newReadRequest(errorChar));
                 requests.push(Request.newEnableNotificationsRequest(errorChar));
+
+                final BluetoothGattCharacteristic timeChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
+                requests.push(Request.newWriteRequest(timeChar, characteristicWriter.toBytes(createTimeResponse())));
 
                 return requests;
             }
@@ -139,6 +145,19 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 }
             }
         };
+    }
+
+    private UpdateTimeResponse createTimeResponse() {
+        final UpdateTimeResponse updateTimeResponse = new UpdateTimeResponse();
+        final Calendar calendar = Calendar.getInstance();
+        updateTimeResponse.setYear(calendar.get(Calendar.YEAR));
+        updateTimeResponse.setMonth(calendar.get(Calendar.MONTH));
+        updateTimeResponse.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+        updateTimeResponse.setHour(calendar.get(Calendar.HOUR_OF_DAY));
+        updateTimeResponse.setMinute(calendar.get(Calendar.MINUTE));
+        updateTimeResponse.setSecond(calendar.get(Calendar.SECOND));
+
+        return updateTimeResponse;
     }
 
     @NonNull

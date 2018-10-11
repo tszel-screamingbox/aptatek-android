@@ -16,5 +16,6 @@ public final class LumosReaderConstants {
     public static final String READER_CHAR_CARTRIDGE_ID = "00003001-0000-1000-8000-00805f9b34fb";
     public static final String READER_CHAR_ERROR = "00004001-0000-1000-8000-00805f9b34fb";
     public static final String READER_CHAR_UPDATE_ASSAY_DETAILS = "00005001-0000-1000-8000-00805f9b34fb";
+    public static final String READER_CHAR_UPDATE_TIME= "00006001-0000-1000-8000-00805f9b34fb";
 
 }
