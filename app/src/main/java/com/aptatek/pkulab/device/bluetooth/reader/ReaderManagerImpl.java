@@ -3,9 +3,12 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.domain.error.DeviceNotSupportedError;
+import com.aptatek.pkulab.domain.error.GeneralReaderError;
+import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.error.ReaderError;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.ReaderConnectionEvent;
@@ -90,7 +93,15 @@ public class ReaderManagerImpl implements ReaderManager {
 
             @Override
             public void onError(final BluetoothDevice device, final String message, final int errorCode) {
-                readerErrorProcessor.onNext(new ReaderError(message, errorCode));
+                final ReaderError parsedError;
+
+                if (errorCode == LumosReaderConstants.ERROR_MTU_CHANGE_FAILED) {
+                    parsedError = new MtuChangeFailedError();
+                } else {
+                    parsedError = new GeneralReaderError(message, errorCode);
+                }
+
+                readerErrorProcessor.onNext(parsedError);
             }
 
             @Override

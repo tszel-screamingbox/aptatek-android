@@ -40,16 +40,14 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
             @Override
             protected Deque<Request> initGatt(final BluetoothGatt gatt) {
                 final LinkedList<Request> requests = new LinkedList<>();
+                requests.push(Request.newMtuRequest(LumosReaderConstants.MTU_SIZE));
+
+                // Add NOTIFY type characteristics here here
                 final BluetoothGattCharacteristic workflowChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE);
-                requests.push(Request.newReadRequest(workflowChar));
-                requests.push(Request.newEnableNotificationsRequest(workflowChar));
+                enqueue(Request.newEnableNotificationsRequest(workflowChar));
 
                 final BluetoothGattCharacteristic errorChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_ERROR);
-                requests.push(Request.newReadRequest(errorChar));
                 requests.push(Request.newEnableNotificationsRequest(errorChar));
-
-                final BluetoothGattCharacteristic timeChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
-                requests.push(Request.newWriteRequest(timeChar, characteristicWriter.toBytes(createTimeResponse())));
 
                 return requests;
             }
@@ -120,7 +118,6 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
             @Override
             public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-                // TODO implement WRITE characteristics
                 Timber.d("onCharacteristicWrite: [%s]", characteristic.getUuid().toString());
             }
 
@@ -142,6 +139,29 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         Timber.d("Unhandled NOTIFY characteristic: [%s]", charId);
                         break;
                     }
+                }
+            }
+
+            @Override
+            public void onMtuChanged(final BluetoothGatt gatt, final int mtu, final int status) {
+                super.onMtuChanged(gatt, mtu, status);
+
+                if (status == BluetoothGatt.GATT_SUCCESS) {
+                    Timber.d("Successfully changed MTU size to [%d] on device [%s]", mtu, gatt.getDevice().getAddress());
+
+                    final BluetoothGattCharacteristic timeChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
+                    enqueue(Request.newWriteRequest(timeChar, characteristicWriter.toBytes(createTimeResponse())));
+
+                    final BluetoothGattCharacteristic workflowChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE);
+                    enqueue(Request.newReadRequest(workflowChar));
+
+                    final BluetoothGattCharacteristic errorChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_ERROR);
+                    enqueue(Request.newReadRequest(errorChar));
+
+                } else {
+                    Timber.d("Failed to set MTU size to [%d] on device [%s], status [%d]", mtu, gatt.getDevice().getAddress(), status);
+
+                    mCallbacks.onError(gatt.getDevice(), "Failed to set MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
                 }
             }
         };
@@ -172,7 +192,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     }
 
     @Override
-    public void log(int level, @NonNull String message) {
+    public void log(final int level, @NonNull final String message) {
         Timber.d(message);
     }
 
