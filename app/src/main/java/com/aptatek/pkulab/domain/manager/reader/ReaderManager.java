@@ -7,10 +7,11 @@ import com.aptatek.pkulab.domain.model.ReaderConnectionEvent;
 import com.aptatek.pkulab.domain.model.ReaderDevice;
 
 import io.reactivex.Flowable;
+import io.reactivex.processors.FlowableProcessor;
 
 public interface ReaderManager {
 
-    void connect(@NonNull ReaderDevice readerDevice);
+    void connect(@NonNull ReaderDevice readerDevice, int mtuSize);
 
     void disconnect();
 
@@ -25,6 +26,8 @@ public interface ReaderManager {
     Flowable<Integer> batteryLevel();
 
     Flowable<String> cartridgeId();
+
+    Flowable<Integer> mtuSize();
 
     // TODO gather other characteristics
 

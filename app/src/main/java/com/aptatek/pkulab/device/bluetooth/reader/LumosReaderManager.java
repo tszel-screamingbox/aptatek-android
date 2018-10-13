@@ -143,6 +143,8 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     Timber.d("Successfully changed MTU size to [%d] on device [%s]", mtu, gatt.getDevice().getAddress());
 
+                    mCallbacks.onMtuSizeChanged(gatt.getDevice(), mtu);
+
                     final BluetoothGattCharacteristic timeChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
                     enqueue(Request.newWriteRequest(timeChar, characteristicWriter.toBytes(createTimeResponse())));
 
@@ -157,6 +159,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 } else {
                     Timber.d("Failed to set MTU size to [%d] on device [%s], status [%d]", mtu, gatt.getDevice().getAddress(), status);
 
+                    disconnect();
                     mCallbacks.onError(gatt.getDevice(), "Failed to set MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
                 }
             }
@@ -203,9 +206,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID));
     }
 
-    public void requestMtuChange() {
-        if (getMtu() != LumosReaderConstants.MTU_SIZE) {
-            enqueue(Request.newMtuRequest(LumosReaderConstants.MTU_SIZE));
+    public void requestMtuChange(final int mtuSize) {
+        if (getMtu() != mtuSize) {
+            enqueue(Request.newMtuRequest(mtuSize));
         }
     }
 }

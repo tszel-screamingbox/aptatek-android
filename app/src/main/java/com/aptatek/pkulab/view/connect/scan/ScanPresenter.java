@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.connect.scan;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.ReaderDevice;
@@ -117,11 +118,21 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                     });
                 }));
 
+        disposables.add(readerInteractor.getMtuSize()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mtuSize -> ifViewAttached(attachedView -> attachedView.showMtuSizeChanged(mtuSize))));
+
+
         disposables.add(readerInteractor.getReaderError()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(error -> {
                     Timber.e(error);
-                    ifViewAttached(attachedView -> attachedView.showErrorToast(error.getClass().getSimpleName() + ": " + error.getMessage()));
+
+                    if (error instanceof MtuChangeFailedError) {
+                        ifViewAttached(ScanView::showMtuError);
+                    } else {
+                        ifViewAttached(attachedView -> attachedView.showErrorToast(error.getClass().getSimpleName() + ": " + error.getMessage()));
+                    }
 
                     // TODO handle error, reset connection state?
                 }));
@@ -164,8 +175,8 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                 .subscribe());
     }
 
-    public void connect(final @NonNull ReaderDevice readerDevice) {
-        disposables.add(readerInteractor.connect(readerDevice)
+    public void connect(final @NonNull ReaderDevice readerDevice, final int mtuSize) {
+        disposables.add(readerInteractor.connect(readerDevice, mtuSize)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe());
     }

@@ -30,6 +30,9 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<String> cartridgeIdProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<ReaderError> readerErrorProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<ReaderConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ReaderConnectionEvent.create(null, ReaderConnectionState.DISCONNECTED));
+    private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
+
+    private int requestedMtuSize;
 
     @Inject
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager) {
@@ -68,8 +71,8 @@ public class ReaderManagerImpl implements ReaderManager {
 
             @Override
             public void onDeviceReady(final BluetoothDevice device) {
-                lumosReaderManager.requestMtuChange();
-                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
+                lumosReaderManager.requestMtuChange(requestedMtuSize);
+                // connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
             }
 
             @Override
@@ -90,7 +93,7 @@ public class ReaderManagerImpl implements ReaderManager {
             @Override
             public void onBonded(final BluetoothDevice device) {
                 connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.BOND));
-                lumosReaderManager.requestMtuChange();
+                lumosReaderManager.requestMtuChange(requestedMtuSize);
             }
 
             @Override
@@ -115,12 +118,19 @@ public class ReaderManagerImpl implements ReaderManager {
             public void onReadCartridgeId(@NonNull final CartridgeIdResponse cartridgeIdResponse) {
                 cartridgeIdProcessor.onNext(cartridgeIdResponse.getCartridgeId());
             }
+
+            @Override
+            public void onMtuSizeChanged(@NonNull final BluetoothDevice device, final int mtuSize) {
+                mtuSizeProcessor.onNext(mtuSize);
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
+            }
         });
     }
 
     @Override
-    public void connect(@NonNull final ReaderDevice readerDevice) {
+    public void connect(@NonNull final ReaderDevice readerDevice, int mtuSize) {
         if (readerDevice instanceof BluetoothReaderDevice) {
+            requestedMtuSize = mtuSize;
             lumosReaderManager.connect(((BluetoothReaderDevice) readerDevice).getBluetoothDevice());
         } else {
             Timber.e("Unhandled ReaderDevice implementation received!");
@@ -160,5 +170,10 @@ public class ReaderManagerImpl implements ReaderManager {
     @Override
     public Flowable<String> cartridgeId() {
         return cartridgeIdProcessor;
+    }
+
+    @Override
+    public Flowable<Integer> mtuSize() {
+        return mtuSizeProcessor;
     }
 }
