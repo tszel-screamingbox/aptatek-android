@@ -179,14 +179,10 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     private void initAdapter() {
         bubbleScrollView.setAdapter(chartAdapter);
-        bubbleScrollView.setSlideOnFling(true);
         bubbleScrollView.setOverScrollEnabled(true);
         bubbleScrollView.setSlideOnFlingThreshold(THRESHOLD);
         bubbleScrollView.setItemTransitionTimeMillis(TRANSITION_TIME);
         bubbleScrollView.addScrollStateChangeListener(this);
-        bubbleScrollView.addOnItemChangedListener((viewHolder, adapterPosition) -> {
-//            presenter.itemZoomIn(chartAdapter.getItem(adapterPosition));
-        });
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);
