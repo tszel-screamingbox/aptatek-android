@@ -206,9 +206,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID));
     }
 
-    public void requestMtuChange(final int mtuSize) {
+    public boolean requestMtuChange(final int mtuSize) {
         if (getMtu() != mtuSize) {
-            enqueue(Request.newMtuRequest(mtuSize));
+            return enqueue(Request.newMtuRequest(mtuSize));
         }
+
+        return false;
     }
 }
