@@ -11,6 +11,7 @@ import com.aptatek.pkuapp.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkuapp.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkuapp.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkuapp.domain.model.CubeData;
+import com.aptatek.pkuapp.domain.model.PkuLevelUnits;
 import com.aptatek.pkuapp.util.ChartUtils;
 import com.aptatek.pkuapp.view.main.adapter.chart.ChartVM;
 import com.aptatek.pkuapp.view.main.adapter.daily.DailyChartFormatter;
@@ -19,6 +20,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -93,7 +95,9 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
                         .map(rangeInfo ->
                                 Ix.from(measures)
                                         .map(cubeData -> {
-                                            final CharSequence details = dailyChartFormatter.getBubbleText(cubeData.getPkuLevel());
+                                            final CharSequence details = cubeData.getPkuLevel().getUnit() == PkuLevelUnits.MICRO_MOL
+                                                    ? String.valueOf((int) cubeData.getPkuLevel().getValue())
+                                                    : String.format(Locale.getDefault(), "%.2f", cubeData.getPkuLevel().getValue());
                                             final ChartUtils.State state = ChartUtils.getState(cubeData.getPkuLevel(), rangeInfo);
                                             return DailyResultAdapterItem.create(
                                                     details,
@@ -131,16 +135,16 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     public void checkRunningTest() {
         disposables.add(
                 wettingInteractor.getWettingStatus()
-                .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
-                .subscribe(ignored ->
-                    ifViewAttached(MainActivityView::navigateToTestScreen)
-                )
+                        .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
+                        .subscribe(ignored ->
+                                ifViewAttached(MainActivityView::navigateToTestScreen)
+                        )
         );
     }
 
     public void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
-            .subscribe(() -> ifViewAttached(MainActivityView::navigateToTestScreen))
+                .subscribe(() -> ifViewAttached(MainActivityView::navigateToTestScreen))
         );
     }
 
