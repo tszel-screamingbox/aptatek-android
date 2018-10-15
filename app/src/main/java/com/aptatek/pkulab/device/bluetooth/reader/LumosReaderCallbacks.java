@@ -9,6 +9,8 @@ import no.nordicsemi.android.ble.BleManagerCallbacks;
 
 public interface LumosReaderCallbacks extends BleManagerCallbacks {
 
+    void onReadBatteryLevel(int batteryLevel);
+
     void onReadCartridgeId(@NonNull CartridgeIdResponse cartridgeIdResponse);
 
     void onMtuSizeChanged(@NonNull BluetoothDevice device, int mtuSize);

@@ -19,6 +19,11 @@ public final class LumosReaderConstants {
     public static final String READER_CHAR_UPDATE_ASSAY_DETAILS = "00005001-0000-1000-8000-00805f9b34fb";
     public static final String READER_CHAR_UPDATE_TIME= "00006001-0000-1000-8000-00805f9b34fb";
 
+    public static final String BATTERY_SERVICE = "0000180F-0000-1000-8000-00805f9b34fb";
+    public static final String BATTERY_CHAR_LEVEL = "00002A19-0000-1000-8000-00805f9b34fb";
+
     public static final int ERROR_MTU_CHANGE_FAILED = 688;
+
+    public static final long DEFAULT_TIMEOUT = 5000L;
 
 }

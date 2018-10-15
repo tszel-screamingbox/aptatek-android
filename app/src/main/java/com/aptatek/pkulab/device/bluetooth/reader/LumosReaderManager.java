@@ -2,32 +2,30 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
-import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
 import com.aptatek.pkulab.device.bluetooth.parser.CartridgeIdReader;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
 import java.util.Calendar;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
 
 import no.nordicsemi.android.ble.BleManager;
-import no.nordicsemi.android.ble.Request;
+import no.nordicsemi.android.ble.data.Data;
 import timber.log.Timber;
 
 public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     private final CharacteristicsHolder characteristicsHolder;
     private final BleManagerGattCallback bleGattCallback;
+    private final Map<String, CharacteristicReader> characteristicReaderMap;
+    private final CharacteristicWriter characteristicWriter;
 
     @Inject
     public LumosReaderManager(@ApplicationContext @NonNull final Context context,
@@ -37,17 +35,12 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         super(context);
 
         this.characteristicsHolder = characteristicsHolder;
+        this.characteristicReaderMap = characteristicReaderMap;
+        this.characteristicWriter = characteristicWriter;
         bleGattCallback = new BleManagerGattCallback() {
 
             @Override
-            protected Deque<Request> initGatt(final BluetoothGatt gatt) {
-                final LinkedList<Request> requests = new LinkedList<>();
-                requests.push(Request.createBond());
-                return requests;
-            }
-
-            @Override
-            public boolean isRequiredServiceSupported(final BluetoothGatt gatt) {
+            public boolean isRequiredServiceSupported(@NonNull final BluetoothGatt gatt) {
                 characteristicsHolder.collectCharacteristics(gatt);
 
                 return characteristicsHolder.hasAllMandatoryCharacteristics();
@@ -59,112 +52,17 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
             }
 
             @Override
-            protected void onCharacteristicRead(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-                final String charId = characteristic.getUuid().toString();
-                Timber.d("Reading characteristic [%s]", charId);
+            protected void initialize() {
+                createBond()
+                        .done(device -> Timber.d("Bonded to device: [%s]", device.getAddress()))
+                        .fail((device, status) -> Timber.d("Failed to bond: status [%d]", status))
+                        .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
 
-                switch (charId) {
-                    case LumosReaderConstants.READER_CHAR_WORKFLOW_STATE: {
-                        // TODO parse and callback
-
-                        break;
-                    }
-                    case LumosReaderConstants.READER_CHAR_ERROR: {
-                        // TODO parse and callback
-
-                        break;
-                    }
-                    case LumosReaderConstants.READER_CHAR_RESULT: {
-                        // TODO parse and callback
-
-                        break;
-                    }
-                    case LumosReaderConstants.READER_CHAR_NUM_RESULTS: {
-                        // TODO parse and callback
-
-                        break;
-                    }
-                    case LumosReaderConstants.READER_CHAR_REQUEST_RESULT: {
-                        // TODO parse and callback
-
-                        break;
-                    }
-                    case LumosReaderConstants.READER_CHAR_CARTRIDGE_ID: {
-                        final CartridgeIdReader cartridgeIdReader = (CartridgeIdReader) characteristicReaderMap.get(charId);
-                        final CartridgeIdResponse cartridgeIdResponse = cartridgeIdReader.readValue(characteristic);
-
-                        mCallbacks.onReadCartridgeId(cartridgeIdResponse);
-
-                        break;
-                    }
-                    case LumosReaderConstants.READER_CHAR_UPDATE_ASSAY_DETAILS: {
-                        // TODO parse and callback
-
-                        break;
-                    }
-                    default: {
-                        Timber.d("Unhandled READ characteristic: [%s]", charId);
-
-                        break;
-                    }
-                }
             }
 
-            @Override
-            public void onCharacteristicWrite(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-                Timber.d("onCharacteristicWrite: [%s]", characteristic.getUuid().toString());
-            }
-
-            @Override
-            public void onCharacteristicNotified(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-                final String charId = characteristic.getUuid().toString();
-                Timber.d("Notified characteristic [%s]", charId);
-
-                switch (charId) {
-                    case LumosReaderConstants.READER_CHAR_WORKFLOW_STATE: {
-
-                        break;
-                    }
-                    case LumosReaderConstants.READER_CHAR_ERROR: {
-
-                        break;
-                    }
-                    default: {
-                        Timber.d("Unhandled NOTIFY characteristic: [%s]", charId);
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onMtuChanged(final BluetoothGatt gatt, final int mtu, final int status) {
-                super.onMtuChanged(gatt, mtu, status);
-
-                if (status == BluetoothGatt.GATT_SUCCESS) {
-                    Timber.d("Successfully changed MTU size to [%d] on device [%s]", mtu, gatt.getDevice().getAddress());
-
-                    mCallbacks.onMtuSizeChanged(gatt.getDevice(), mtu);
-
-                    final BluetoothGattCharacteristic timeChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
-                    enqueue(Request.newWriteRequest(timeChar, characteristicWriter.toBytes(createTimeResponse())));
-
-                    final BluetoothGattCharacteristic workflowChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE);
-                    enqueue(Request.newReadRequest(workflowChar));
-                    enqueue(Request.newEnableNotificationsRequest(workflowChar));
-
-                    final BluetoothGattCharacteristic errorChar = characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_ERROR);
-                    enqueue(Request.newReadRequest(errorChar));
-                    enqueue(Request.newEnableNotificationsRequest(errorChar));
-
-                } else {
-                    Timber.d("Failed to set MTU size to [%d] on device [%s], status [%d]", mtu, gatt.getDevice().getAddress(), status);
-
-                    disconnect();
-                    mCallbacks.onError(gatt.getDevice(), "Failed to set MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
-                }
-            }
         };
     }
+
 
     private UpdateTimeResponse createTimeResponse() {
         final UpdateTimeResponse updateTimeResponse = new UpdateTimeResponse();
@@ -186,11 +84,6 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     }
 
     @Override
-    protected boolean shouldAutoConnect() {
-        return true;
-    }
-
-    @Override
     public void log(final int level, @NonNull final String message) {
         Timber.d(message);
     }
@@ -202,15 +95,50 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         Timber.d("onPairingRequestReceived: device [%s], variant [%s]", device.getAddress(), pairingVariantToString(variant));
     }
 
-    public void getCartridgeId() {
-        readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID));
+    public void queueCartridgeId() {
+        readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID))
+                .with((device, data) -> {
+                    final CartridgeIdReader characteristicReader = (CartridgeIdReader) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID);
+                    mCallbacks.onReadCartridgeId(characteristicReader.parseFromString(data.getStringValue(0)));
+                })
+                .done(device -> Timber.d("CartridgeId read successful"))
+                .fail((device, status) -> Timber.d("CartridgeId read failed: status [%d]", status))
+                .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
     }
 
-    public boolean requestMtuChange(final int mtuSize) {
-        if (getMtu() != mtuSize) {
-            return enqueue(Request.newMtuRequest(mtuSize));
-        }
-
-        return false;
+    public void queueBatteryRead() {
+        readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL))
+                .with((device, data) -> {
+                    Timber.d("Battery level received: [%s]", data);
+                    mCallbacks.onReadBatteryLevel(data.getIntValue(Data.FORMAT_UINT8, 0));
+                })
+                .done(device -> Timber.d("Battery level read successful"))
+                .fail((device, status) -> Timber.d("Battery level read failed: status [%d]", status))
+                .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
     }
+
+    public void queueMtuChange(final int mtu) {
+        requestMtu(mtu)
+                .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
+                .done(device -> {
+                    Timber.d("Mtu change successful");
+                    writeCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME), characteristicWriter.toBytes(createTimeResponse()))
+                            .done(aDevice -> Timber.d("Update time write successful"))
+                            .fail((aDevice, aStatus) -> Timber.d("Failed to write time: status [%d]", aStatus))
+                            .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+                })
+                .fail((device, status) -> {
+                    Timber.d("Mtu change failed: status [%d]", status);
+                    mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+                })
+                .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+    }
+
+    public void queueConnect(@NonNull final BluetoothDevice bluetoothDevice){
+        connect(bluetoothDevice)
+                .done(device -> Timber.d("Connect successful"))
+                .fail((device, status) -> Timber.d("Failed to connect: status [%d]", status))
+                .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+    }
+
 }

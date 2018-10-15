@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
+import com.aptatek.pkulab.domain.error.DeviceBondingFailedError;
 import com.aptatek.pkulab.domain.error.DeviceNotSupportedError;
 import com.aptatek.pkulab.domain.error.GeneralReaderError;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
@@ -60,30 +61,13 @@ public class ReaderManagerImpl implements ReaderManager {
             }
 
             @Override
-            public void onLinklossOccur(final BluetoothDevice device) {
-                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.DISCONNECTED));
-            }
-
-            @Override
             public void onServicesDiscovered(final BluetoothDevice device, final boolean optionalServicesFound) {
                 Timber.d("onServicesDiscovered");
             }
 
             @Override
             public void onDeviceReady(final BluetoothDevice device) {
-                if (!lumosReaderManager.requestMtuChange(requestedMtuSize)) {
-                    connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
-                }
-            }
-
-            @Override
-            public boolean shouldEnableBatteryLevelNotifications(final BluetoothDevice device) {
-                return true;
-            }
-
-            @Override
-            public void onBatteryValueReceived(final BluetoothDevice device, final int value) {
-                batteryLevelProcessor.onNext(value);
+                lumosReaderManager.queueMtuChange(requestedMtuSize);
             }
 
             @Override
@@ -94,9 +78,8 @@ public class ReaderManagerImpl implements ReaderManager {
             @Override
             public void onBonded(final BluetoothDevice device) {
                 connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.BOND));
-                if (!lumosReaderManager.requestMtuChange(requestedMtuSize)) {
-                    connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
-                }
+
+                lumosReaderManager.queueMtuChange(requestedMtuSize);
             }
 
             @Override
@@ -118,6 +101,16 @@ public class ReaderManagerImpl implements ReaderManager {
             }
 
             @Override
+            public void onLinkLossOccurred(final BluetoothDevice device) {
+                connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.DISCONNECTED));
+            }
+
+            @Override
+            public void onBondingFailed(final BluetoothDevice device) {
+                readerErrorProcessor.onNext(new DeviceBondingFailedError());
+            }
+
+            @Override
             public void onReadCartridgeId(@NonNull final CartridgeIdResponse cartridgeIdResponse) {
                 cartridgeIdProcessor.onNext(cartridgeIdResponse.getCartridgeId());
             }
@@ -127,6 +120,11 @@ public class ReaderManagerImpl implements ReaderManager {
                 mtuSizeProcessor.onNext(mtuSize);
                 connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.READY));
             }
+
+            @Override
+            public void onReadBatteryLevel(final int batteryLevel) {
+                batteryLevelProcessor.onNext(batteryLevel);
+            }
         });
     }
 
@@ -134,7 +132,7 @@ public class ReaderManagerImpl implements ReaderManager {
     public void connect(@NonNull final ReaderDevice readerDevice, int mtuSize) {
         if (readerDevice instanceof BluetoothReaderDevice) {
             requestedMtuSize = mtuSize;
-            lumosReaderManager.connect(((BluetoothReaderDevice) readerDevice).getBluetoothDevice());
+            lumosReaderManager.queueConnect(((BluetoothReaderDevice) readerDevice).getBluetoothDevice());
         } else {
             Timber.e("Unhandled ReaderDevice implementation received!");
         }
@@ -147,12 +145,12 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public void queryBatteryLevel() {
-        lumosReaderManager.readBatteryLevel();
+        lumosReaderManager.queueBatteryRead();
     }
 
     @Override
     public void queryCartridgeId() {
-        lumosReaderManager.getCartridgeId();
+        lumosReaderManager.queueCartridgeId();
     }
 
     @Override
