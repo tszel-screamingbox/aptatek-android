@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/general.distance.xmini"
+    android:paddingEnd="@dimen/general.distance.xmini">
 
     <TextView
         android:id="@+id/testTitle"
@@ -37,7 +40,6 @@
         style="@style/Test.Circle.Cancel.Button"
         android:layout_width="@dimen/general.button.height.big"
         android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginStart="@dimen/general.distance.xxmini"
         android:layout_marginEnd="@dimen/general.distance.mini"
         app:layout_constraintBottom_toBottomOf="@id/guideBottom"
         app:layout_constraintEnd_toStartOf="@id/testOkButton"
@@ -48,10 +50,8 @@
         style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginEnd="@dimen/general.distance.xxmini"
         android:text="@string/test.cancel.navigation.yes"
         app:layout_constraintBottom_toBottomOf="@id/guideBottom"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/testCancelButton" />
 

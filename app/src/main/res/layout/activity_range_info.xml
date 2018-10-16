@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginEnd="@dimen/general.distance"
-    android:layout_marginStart="@dimen/general.distance">
+    android:clipToPadding="false"
+    android:paddingStart="@dimen/general.distance"
+    android:paddingEnd="@dimen/general.distance">
 
     <TextView
         android:id="@+id/rangeinfo_title"
@@ -120,8 +121,8 @@
         style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
-        android:paddingStart="@dimen/general.button.corner.normal"
         android:drawableStart="@drawable/ic_settings_dark"
+        android:paddingStart="@dimen/general.button.corner.normal"
         android:text="@string/rangeinfo.edit.level.preferences"
         android:textColor="@color/applicationSolidGray"
         app:layout_constraintBottom_toBottomOf="@id/guideBottom"
