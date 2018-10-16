@@ -10,7 +10,7 @@
 			<Class name="~.*_ViewBinding*\.*" />
 			<Class name="~.*_MembersInjector*\.*" />
             <Package name="~android\$.*" />
-            <Package name="com.aptatek.pkuapp.injection\$.*" />
+            <Package name="com.aptatek.pkulab.injection\$.*" />
             <Bug pattern="BL_BURYING_LOGIC" />
             <Bug pattern="CLI_CONSTANT_LIST_INDEX" />
             <Bug pattern="CSI_CHAR_SET_ISSUES_USE_STANDARD_CHARSET" />

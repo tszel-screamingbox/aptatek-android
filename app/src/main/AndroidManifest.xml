@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.aptatek.pkuapp">
+    package="com.aptatek.pkulab">
+
+    <!-- App should not be used without BT -->
+    <uses-feature android:required="true" android:name="android.hardware.bluetooth_le" />
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".AptatekApplication"
@@ -11,8 +17,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/application.name"
         android:supportsRtl="true"
-        tools:replace="android:allowBackup"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup,android:label">
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -21,7 +27,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
         <meta-data
@@ -107,13 +113,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.rangeinfo.RangeInfoActivity"
+        <activity
+            android:name=".view.rangeinfo.RangeInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.settings.pkulevel.RangeSettingsActivity"
+        <activity
+            android:name=".view.settings.pkulevel.RangeSettingsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:theme="@style/AppTheme.FullScreen" />
 
 
         <activity
@@ -121,12 +129,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.result.TestResultActivity"
+        <activity
+            android:name=".view.test.result.TestResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity
+            android:name=".view.connect.ConnectReaderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
         <receiver android:name=".device.AlarmReceiver" />
-        <receiver android:name=".device.ReminderActionReceiver"/>
+        <receiver android:name=".device.ReminderActionReceiver" />
 
         <service android:name=".view.test.wetting.WettingReminderService" />
     </application>

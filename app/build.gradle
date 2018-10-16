@@ -38,12 +38,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.aptatek.pkuapp"
+        applicationId "com.aptatek.pkulab"
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 11
-        versionName "0.0.11"
+        versionCode 12
+        versionName "0.0.12"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -182,6 +182,13 @@ dependencies {
 
     // Time
     implementation timeDependencies.yodatime
+
+    // Bluetooth
+    implementation bluetoothDependencies.nordicBle
+    implementation bluetoothDependencies.scanner
+
+    // JSON
+    implementation jsonDependencies.gson
 
     // Tests
     testImplementation testDependencies.junit
