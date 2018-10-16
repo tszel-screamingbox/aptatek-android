@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.main;
+package com.aptatek.pkulab.view.main.home;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

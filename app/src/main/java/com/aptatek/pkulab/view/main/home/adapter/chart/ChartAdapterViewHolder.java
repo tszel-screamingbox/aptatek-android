@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.main.adapter.chart;
+package com.aptatek.pkulab.view.main.home.adapter.chart;
 
 import android.content.Context;
 import android.support.annotation.ColorInt;
@@ -10,7 +10,7 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.util.animation.AnimationHelper;
 import com.aptatek.pkulab.view.base.list.viewholder.BaseViewHolder;
-import com.aptatek.pkulab.view.main.adapter.daily.DailyChartFormatter;
+import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.widget.BubbleTextView;
 
 import butterknife.BindView;

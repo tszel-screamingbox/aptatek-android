@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.main;
+package com.aptatek.pkulab.view.main.home;
 
 import android.support.annotation.NonNull;
 import android.text.format.DateUtils;
@@ -13,9 +13,9 @@ import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.model.CubeData;
 import com.aptatek.pkulab.util.ChartUtils;
-import com.aptatek.pkulab.view.main.adapter.chart.ChartVM;
-import com.aptatek.pkulab.view.main.adapter.daily.DailyChartFormatter;
-import com.aptatek.pkulab.view.main.adapter.daily.DailyResultAdapterItem;
+import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
+import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
+import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;
@@ -29,7 +29,8 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 
-class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
+
+class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
 
     private static final int NUMBERS_OF_MONTHS = 6;
 
@@ -42,7 +43,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     private CompositeDisposable disposables;
 
     @Inject
-    MainActivityPresenter(final CubeInteractor cubeInteractor,
+    HomeFragmentPresenter(final CubeInteractor cubeInteractor,
                           final ResourceInteractor resourceInteractor,
                           final PkuRangeInteractor rangeInteractor,
                           final DailyChartFormatter dailyChartFormatter,
@@ -119,7 +120,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     }
 
     @Override
-    public void attachView(final @NonNull MainActivityView view) {
+    public void attachView(final @NonNull HomeFragmentView view) {
         super.attachView(view);
 
         disposables = new CompositeDisposable();
@@ -139,14 +140,14 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
                 wettingInteractor.getWettingStatus()
                         .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
                         .subscribe(ignored ->
-                                ifViewAttached(MainActivityView::navigateToTestScreen)
+                                ifViewAttached(HomeFragmentView::navigateToTestScreen)
                         )
         );
     }
 
     public void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
-                .subscribe(() -> ifViewAttached(MainActivityView::navigateToTestScreen))
+                .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
     }
 

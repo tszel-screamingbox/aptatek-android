@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.main.adapter.daily;
+package com.aptatek.pkulab.view.main.home.adapter.daily;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;

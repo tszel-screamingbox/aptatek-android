@@ -10,7 +10,7 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.ReaderDevice;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenFragment;
-import com.aptatek.pkulab.view.main.MainActivity;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 
 import javax.inject.Inject;
 
@@ -61,7 +61,7 @@ public class ConnectedFragment extends BaseConnectScreenFragment<ConnectedView, 
 
     @OnClick(R.id.connectedButton)
     public void onGoHomeCliked() {
-        startActivity(new Intent(getActivity(), MainActivity.class));
+        startActivity(new Intent(getActivity(), MainHostActivity.class));
         getActivity().finish();
     }
 }

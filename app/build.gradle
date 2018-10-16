@@ -168,6 +168,7 @@ dependencies {
     }
     implementation uiDependencies.pagerIndicator
     implementation uiDependencies.frameVideoView
+    implementation uiDependencies.slidingPanel
 
     // LeakCanary
     debugImplementation leakDependencies.debug
@@ -201,7 +202,7 @@ dependencies {
     androidTestImplementation(testDependencies.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile(testDependencies.espressocontrib) {
+    androidTestImplementation(testDependencies.espressocontrib) {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude module: 'support-annotations'
         exclude module: 'support-v4'

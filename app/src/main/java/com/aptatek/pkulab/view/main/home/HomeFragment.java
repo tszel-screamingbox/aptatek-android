@@ -1,27 +1,28 @@
-package com.aptatek.pkulab.view.main;
+package com.aptatek.pkulab.view.main.home;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
-import com.aptatek.pkulab.view.main.adapter.chart.ChartAdapter;
-import com.aptatek.pkulab.view.main.adapter.chart.ChartVM;
-import com.aptatek.pkulab.view.main.adapter.daily.DailyResultAdapterItem;
-import com.aptatek.pkulab.view.main.adapter.daily.DailyResultsAdapter;
+import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
+import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
+import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
+import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.view.weekly.WeeklyResultActivity;
@@ -32,19 +33,19 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class MainActivity extends BaseActivity<MainActivityView, MainActivityPresenter> implements MainActivityView, DiscreteScrollView.ScrollStateChangeListener {
+
+public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
 
     private static final int THRESHOLD = 500;
     private static final int TRANSITION_TIME = 200;
 
     @Inject
-    MainActivityPresenter presenter;
+    HomeFragmentPresenter presenter;
 
     @Inject
     DailyResultItemDecorator dailyResultItemDecorator;
@@ -80,50 +81,52 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
     Button bigSettingsButton;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    public String getTitle() {
+        return null;
+    }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_home;
+    }
+
+    @Override
+    protected void initObjects(final View view) {
         initAdapter();
         bubbleScrollView.setVisibility(GONE); //TODO: later, check if DB is empty or not
 
-        recyclerViewDailyResults.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewDailyResults.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewDailyResults.setAdapter(dailyResultsAdapter);
         recyclerViewDailyResults.addItemDecoration(dailyResultItemDecorator);
     }
 
     @Override
-    protected void onStart() {
+    protected void injectFragment(final FragmentComponent fragmentComponent) {
+        fragmentComponent.plus(new TestModule(), new RangeInfoModule(), new ChartModule())
+                .inject(this);
+    }
+
+    @NonNull
+    @Override
+    public HomeFragmentPresenter createPresenter() {
+        return presenter;
+    }
+
+
+    @Override
+    public void onStart() {
         super.onStart();
 
         presenter.checkRunningTest();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         if (chartAdapter.getItemCount() > 0) {
             presenter.loadData();
         }
-    }
-
-    @Override
-    protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new TestModule(), new RangeInfoModule(), new ChartModule())
-                .inject(this);
-    }
-
-    @NonNull
-    @Override
-    public MainActivityPresenter createPresenter() {
-        return presenter;
-    }
-
-    @Override
-    public int getFrameLayoutId() {
-        return R.layout.activity_main;
     }
 
     @Override
@@ -151,8 +154,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick(R.id.weeklyButton)
     public void onToggleButtonClicked() {
-        final Intent intent = new Intent(this, WeeklyResultActivity.class);
-        launchActivity(intent, false, Animation.BOTTOM_TO_TOP);
+        final Intent intent = new Intent(getContext(), WeeklyResultActivity.class);
+        getBaseActivity().launchActivity(intent, false, BaseActivity.Animation.BOTTOM_TO_TOP);
     }
 
     @OnClick(R.id.newTestButton)
@@ -162,7 +165,7 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @OnClick({R.id.settingsButton, R.id.bigSettingsButton})
     public void onSettingsButtonClicked() {
-        launchActivity(SettingsActivity.starter(this), false, Animation.FADE);
+        getBaseActivity().launchActivity(SettingsActivity.starter(getContext()), false, BaseActivity.Animation.FADE);
     }
 
     @OnClick(R.id.playIcon)
@@ -215,6 +218,6 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @Override
     public void navigateToTestScreen() {
-        launchActivity(TestActivity.createStarter(this), false, Animation.FADE);
+        getBaseActivity().launchActivity(TestActivity.createStarter(getContext()), false, BaseActivity.Animation.FADE);
     }
 }

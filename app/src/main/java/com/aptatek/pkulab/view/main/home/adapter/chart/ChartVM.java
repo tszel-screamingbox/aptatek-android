@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.main.adapter.chart;
+package com.aptatek.pkulab.view.main.home.adapter.chart;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;

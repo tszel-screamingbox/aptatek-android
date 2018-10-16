@@ -1,14 +1,15 @@
 package com.aptatek.pkulab.injection.component;
 
 import com.aptatek.pkulab.injection.component.chart.ChartFragmentComponent;
-import com.aptatek.pkulab.injection.component.scan.ScanFragmentComponent;
+import com.aptatek.pkulab.injection.component.home.HomeFragmentComponent;
 import com.aptatek.pkulab.injection.component.parentalgate.ParentalGateFragmentComponent;
+import com.aptatek.pkulab.injection.component.scan.ScanFragmentComponent;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkulab.injection.module.FragmentModule;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
-import com.aptatek.pkulab.injection.module.scan.ScanModule;
 import com.aptatek.pkulab.injection.module.parentalgate.ParentalGateModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
+import com.aptatek.pkulab.injection.module.scan.ScanModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.injection.scope.FragmentScope;
 import com.aptatek.pkulab.view.connect.connected.ConnectedFragment;
@@ -43,6 +44,8 @@ public interface FragmentComponent {
     void inject(EnableBluetoothFragment enableBluetoothFragment);
 
     void inject(ConnectedFragment connectedFragment);
+
+    HomeFragmentComponent plus(TestModule testModule, RangeInfoModule rangeInfoModule, ChartModule chartModule);
 
     TestFragmentComponent plus(TestModule module);
 
