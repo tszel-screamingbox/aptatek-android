@@ -64,60 +64,18 @@
         app:layout_constraintTop_toBottomOf="@+id/test_result_title"
         tools:text="Contact your medician" />
 
-    <android.support.constraint.ConstraintLayout
+    <com.aptatek.pkulab.widget.BubbleTextView
         android:id="@+id/test_result_bubble"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="@dimen/general.distance"
         android:layout_marginTop="@dimen/general.distance"
-        android:background="@drawable/bubble_background"
         app:layout_constraintBottom_toTopOf="@+id/test_result_done"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="@id/guideBubbleEnd"
         app:layout_constraintStart_toStartOf="@id/guideBubbleStart"
         app:layout_constraintTop_toBottomOf="@+id/test_result_message"
-        app:layout_constraintVertical_bias="0.5">
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/test_result_bubble_value"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="@dimen/general.distance"
-            android:layout_marginStart="@dimen/general.distance"
-            android:gravity="center"
-            android:lines="1"
-            android:textStyle="bold"
-            app:autoSizeMaxTextSize="@dimen/font.size.wetting"
-            app:autoSizeMinTextSize="@dimen/font.size.xbig"
-            app:autoSizeStepGranularity="2sp"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            tools:text="420" />
-
-        <!--<TextView-->
-        <!--android:id="@+id/test_result_bubble_message"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="@dimen/general.distance"-->
-        <!--android:layout_marginEnd="@dimen/general.distance"-->
-        <!--android:layout_marginStart="@dimen/general.distance"-->
-        <!--android:layout_marginTop="@dimen/general.distance.xmini"-->
-        <!--android:gravity="center"-->
-        <!--android:lines="1"-->
-        <!--android:textStyle="bold"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/test_result_bubble_value"-->
-        <!--tools:text="High"-->
-        <!--android:visibility="gone"/>-->
-
-    </android.support.constraint.ConstraintLayout>
+        app:layout_constraintVertical_bias="0.5"/>
 
     <Button
         android:id="@+id/test_result_done"
