@@ -162,20 +162,17 @@ dependencies {
     annotationProcessor activityStarterDependencies.apt
 
     // UI
-    implementation uiDependencies.autoFitTextView
     implementation(uiDependencies.rangebar) {
         exclude module: 'support-compat'
     }
     implementation uiDependencies.pagerIndicator
     implementation uiDependencies.frameVideoView
+    implementation scrollView.discreteScrollView
 
     // LeakCanary
     debugImplementation leakDependencies.debug
     releaseImplementation leakDependencies.release
     testImplementation leakDependencies.release
-
-    // DiscrateScrollView
-    implementation scrollView.discreteScrollView
 
     // MpAndroidChart
     implementation mpAndroidChartDependencies.androidChart
