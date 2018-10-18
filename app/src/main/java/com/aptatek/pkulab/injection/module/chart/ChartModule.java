@@ -2,7 +2,7 @@ package com.aptatek.pkulab.injection.module.chart;
 
 import com.aptatek.pkulab.device.formatter.WeeklyChartDateFormatterImpl;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.view.weekly.WeeklyChartDateFormatter;
+import com.aptatek.pkulab.view.main.weekly.WeeklyChartDateFormatter;
 
 import dagger.Module;
 import dagger.Provides;

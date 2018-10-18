@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.weekly.swipe;
+package com.aptatek.pkulab.view.main.weekly.swipe;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

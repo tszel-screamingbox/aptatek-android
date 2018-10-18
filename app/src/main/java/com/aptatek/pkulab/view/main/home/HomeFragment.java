@@ -19,13 +19,14 @@ import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
+import com.aptatek.pkulab.view.main.weekly.WeeklyResultFragment;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
-import com.aptatek.pkulab.view.weekly.WeeklyResultActivity;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.List;
@@ -154,7 +155,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @OnClick(R.id.weeklyButton)
     public void onToggleButtonClicked() {
-        final Intent intent = new Intent(getContext(), WeeklyResultActivity.class);
+        final Intent intent = new Intent(getContext(), WeeklyResultFragment.class);
         getBaseActivity().launchActivity(intent, false, BaseActivity.Animation.BOTTOM_TO_TOP);
     }
 
@@ -173,6 +174,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         bigSettingsButton.setVisibility(GONE);
         buttonsGroup.setVisibility(VISIBLE);
         presenter.loadData();
+        ((MainHostActivity) getBaseActivity()).enableSlidingPanel();
     }
 
     @OnClick(R.id.imgCloseResults)

@@ -1,9 +1,8 @@
-package com.aptatek.pkulab.view.weekly;
+package com.aptatek.pkulab.view.main.weekly;
 
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.pdf.PdfDocument;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
@@ -14,13 +13,13 @@ import android.widget.TextView;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
-import com.aptatek.pkulab.view.base.BaseActivity;
-import com.aptatek.pkulab.view.weekly.pdf.PdfEntryData;
-import com.aptatek.pkulab.view.weekly.swipe.CustomViewPager;
-import com.aptatek.pkulab.view.weekly.swipe.SwipeAdapter;
+import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
+import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
+import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
 import com.aptatek.pkulab.widget.PdfExportView;
 
 import java.io.File;
@@ -32,15 +31,14 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnPageChange;
 import timber.log.Timber;
 
-public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView, WeeklyResultActivityPresenter> implements WeeklyResultActivityView {
+public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView {
 
     @Inject
-    WeeklyResultActivityPresenter presenter;
+    WeeklyResultFragmentPresenter presenter;
 
     @BindView(R.id.emptyGroup)
     Group emptyGroup;
@@ -66,11 +64,17 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     private SwipeAdapter swipeAdapter;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weekly);
-        ButterKnife.bind(this);
+    public String getTitle() {
+        return null;
+    }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_weekly;
+    }
+
+    @Override
+    protected void initObjects(final View view) {
         // starts with "empty view"
         leftArrowImageView.setVisibility(View.INVISIBLE);
         rightArrowImageView.setVisibility(View.INVISIBLE);
@@ -79,20 +83,15 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     }
 
     @Override
-    protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new RangeInfoModule(), new ChartModule())
+    protected void injectFragment(final FragmentComponent fragmentComponent) {
+        fragmentComponent.add(new RangeInfoModule(), new ChartModule())
                 .inject(this);
     }
 
     @NonNull
     @Override
-    public WeeklyResultActivityPresenter createPresenter() {
+    public WeeklyResultFragmentPresenter createPresenter() {
         return presenter;
-    }
-
-    @Override
-    public int getFrameLayoutId() {
-        return 0;
     }
 
     @OnClick(R.id.playIcon)
@@ -119,7 +118,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
     }
 
     private void initAdapter() {
-        swipeAdapter = new SwipeAdapter(getSupportFragmentManager(), Collections.emptyList());
+        swipeAdapter = new SwipeAdapter(getBaseActivity().getSupportFragmentManager(), Collections.emptyList());
         chartViewPager.setAdapter(swipeAdapter);
         chartViewPager.disableSwipe(true);
     }
@@ -165,7 +164,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
 
     @Override
     public void onPdfDataReady(final PdfEntryData pdfData) {
-        final PdfExportView content = (PdfExportView) View.inflate(this, R.layout.view_pdf_export, null);
+        final PdfExportView content = (PdfExportView) View.inflate(getContext(), R.layout.view_pdf_export, null);
         content.setData(pdfData);
 
         final PdfDocument document = new PdfDocument();
@@ -184,7 +183,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
 
         document.finishPage(page);
 
-        final File file = new File(getFilesDir(), pdfData.getFileName());
+        final File file = new File(getBaseActivity().getFilesDir(), pdfData.getFileName());
 
         try {
             final FileOutputStream out = new FileOutputStream(file);
@@ -198,7 +197,7 @@ public class WeeklyResultActivity extends BaseActivity<WeeklyResultActivityView,
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("vnd.android.cursor.dir/email");
         emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                this,
+                getContext(),
                 BuildConfig.APPLICATION_ID + ".provider",
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));

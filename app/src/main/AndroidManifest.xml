@@ -123,12 +123,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-
-        <activity
-            android:name=".view.weekly.WeeklyResultActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
-
         <activity
             android:name=".view.test.result.TestResultActivity"
             android:screenOrientation="portrait"

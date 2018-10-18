@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.weekly;
+package com.aptatek.pkulab.view.main.weekly;
 
 public interface WeeklyChartDateFormatter {
 

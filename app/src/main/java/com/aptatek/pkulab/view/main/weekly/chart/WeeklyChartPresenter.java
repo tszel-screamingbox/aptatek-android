@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.weekly.chart;
+package com.aptatek.pkulab.view.main.weekly.chart;
 
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;

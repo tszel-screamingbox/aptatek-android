@@ -1,10 +1,10 @@
-package com.aptatek.pkulab.view.weekly.swipe;
+package com.aptatek.pkulab.view.main.weekly.swipe;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.aptatek.pkulab.view.weekly.chart.WeeklyChartFragmentStarter;
+import com.aptatek.pkulab.view.main.weekly.chart.WeeklyChartFragmentStarter;
 
 import java.util.ArrayList;
 import java.util.List;

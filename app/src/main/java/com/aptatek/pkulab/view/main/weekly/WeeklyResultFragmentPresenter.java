@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.weekly;
+package com.aptatek.pkulab.view.main.weekly;
 
 import android.support.annotation.NonNull;
 
@@ -12,8 +12,8 @@ import com.aptatek.pkulab.domain.model.CubeData;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.util.ChartUtils;
-import com.aptatek.pkulab.view.weekly.chart.PdfChartDataTransformer;
-import com.aptatek.pkulab.view.weekly.pdf.PdfEntryData;
+import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 
-public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResultActivityView> {
+public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResultFragmentView> {
 
     private static final int EMPTY_LIST = -1;
 
@@ -42,7 +42,7 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
     private CompositeDisposable disposables;
 
     @Inject
-    public WeeklyResultActivityPresenter(final CubeInteractor cubeInteractor,
+    public WeeklyResultFragmentPresenter(final CubeInteractor cubeInteractor,
                                          final ResourceInteractor resourceInteractor,
                                          final PkuRangeInteractor rangeInteractor,
                                          final WeeklyChartDateFormatter weeklyChartDateFormatter,
@@ -55,7 +55,7 @@ public class WeeklyResultActivityPresenter extends MvpBasePresenter<WeeklyResult
     }
 
     @Override
-    public void attachView(final @NonNull WeeklyResultActivityView view) {
+    public void attachView(final @NonNull WeeklyResultFragmentView view) {
         super.attachView(view);
 
         disposables = new CompositeDisposable();

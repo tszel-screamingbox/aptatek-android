@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.weekly.pdf;
+package com.aptatek.pkulab.view.main.weekly.pdf;
 
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.google.auto.value.AutoValue;

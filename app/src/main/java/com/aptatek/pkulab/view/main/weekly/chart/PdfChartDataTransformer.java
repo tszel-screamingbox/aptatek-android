@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.weekly.chart;
+package com.aptatek.pkulab.view.main.weekly.chart;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
