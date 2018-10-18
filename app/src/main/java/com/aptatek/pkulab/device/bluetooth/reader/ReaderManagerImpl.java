@@ -67,7 +67,9 @@ public class ReaderManagerImpl implements ReaderManager {
 
             @Override
             public void onDeviceReady(final BluetoothDevice device) {
-                lumosReaderManager.queueMtuChange(requestedMtuSize);
+                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                    lumosReaderManager.queueMtuChange(requestedMtuSize);
+                }
             }
 
             @Override
@@ -108,6 +110,7 @@ public class ReaderManagerImpl implements ReaderManager {
             @Override
             public void onBondingFailed(final BluetoothDevice device) {
                 readerErrorProcessor.onNext(new DeviceBondingFailedError());
+                disconnect();
             }
 
             @Override
@@ -129,9 +132,10 @@ public class ReaderManagerImpl implements ReaderManager {
     }
 
     @Override
-    public void connect(@NonNull final ReaderDevice readerDevice, int mtuSize) {
+    public void connect(@NonNull final ReaderDevice readerDevice, final int mtuSize) {
         if (readerDevice instanceof BluetoothReaderDevice) {
             requestedMtuSize = mtuSize;
+
             lumosReaderManager.queueConnect(((BluetoothReaderDevice) readerDevice).getBluetoothDevice());
         } else {
             Timber.e("Unhandled ReaderDevice implementation received!");
@@ -140,7 +144,7 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public void disconnect() {
-        lumosReaderManager.disconnect();
+        lumosReaderManager.queueDisconnect();
     }
 
     @Override

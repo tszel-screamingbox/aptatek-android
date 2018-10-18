@@ -55,8 +55,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
             protected void initialize() {
                 createBond()
                         .done(device -> Timber.d("Bonded to device: [%s]", device.getAddress()))
-                        .fail((device, status) -> Timber.d("Failed to bond: status [%d]", status))
-                        .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+                        .fail((device, status) -> {
+                            Timber.d("Failed to bond: status [%d]", status);
+                            queueDisconnect();
+                        })
+                        .enqueue();
 
             }
 
@@ -103,7 +106,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 })
                 .done(device -> Timber.d("CartridgeId read successful"))
                 .fail((device, status) -> Timber.d("CartridgeId read failed: status [%d]", status))
-                .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+                .enqueue();
     }
 
     public void queueBatteryRead() {
@@ -114,7 +117,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 })
                 .done(device -> Timber.d("Battery level read successful"))
                 .fail((device, status) -> Timber.d("Battery level read failed: status [%d]", status))
-                .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+                .enqueue();
     }
 
     public void queueMtuChange(final int mtu) {
@@ -125,20 +128,35 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                     writeCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME), characteristicWriter.toBytes(createTimeResponse()))
                             .done(aDevice -> Timber.d("Update time write successful"))
                             .fail((aDevice, aStatus) -> Timber.d("Failed to write time: status [%d]", aStatus))
-                            .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+                            .enqueue();
                 })
                 .fail((device, status) -> {
                     Timber.d("Mtu change failed: status [%d]", status);
                     mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
                 })
-                .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+                .enqueue();
     }
 
-    public void queueConnect(@NonNull final BluetoothDevice bluetoothDevice){
+    public void queueConnect(@NonNull final BluetoothDevice bluetoothDevice) {
         connect(bluetoothDevice)
-                .done(device -> Timber.d("Connect successful"))
+                .done(device -> {
+                    Timber.d("Connect successful");
+                    createBond()
+                            .done(aDevice -> Timber.d("Successfully bounded"))
+                            .fail((aDevice, status) -> {
+                                Timber.d("Failed to bound: status [%d]", status);
+                                disconnect().enqueue();
+                            })
+                            .enqueue();
+                })
                 .fail((device, status) -> Timber.d("Failed to connect: status [%d]", status))
-                .enqueue(LumosReaderConstants.DEFAULT_TIMEOUT);
+                .enqueue();
     }
 
+    public void queueDisconnect() {
+        disconnect()
+                .done(device -> Timber.d("Disconnect successful"))
+                .fail((device, status) -> Timber.d("Failed to disconnect: status [%d]", status))
+                .enqueue();
+    }
 }
