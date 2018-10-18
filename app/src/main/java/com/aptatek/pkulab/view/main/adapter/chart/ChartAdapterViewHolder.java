@@ -67,7 +67,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
             if (highestPkuLevel == null) {
                 configBuilder.setPrimaryText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()))
                         .setTextColor(ContextCompat.getColor(context, R.color.applicationWhite))
-                        .setFillColor(ContextCompat.getColor(context, R.color.applicationGray))
+                        .setFillColor(ContextCompat.getColor(context, R.color.chartEmpty))
                         .setCircleColor(ContextCompat.getColor(context, android.R.color.transparent))
                         .setCircleWidth(0);
             } else {
@@ -93,7 +93,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private void resetBubble(final ChartVM currentData) {
         badgeTextView.setVisibility(View.GONE);
-        final @ColorInt int color = ContextCompat.getColor(context,  currentData.getHighestPkuLevel() == null ? R.color.applicationGray : currentData.getColorRes());
+        final @ColorInt int color = ContextCompat.getColor(context,  currentData.getHighestPkuLevel() == null ? R.color.chartEmpty : currentData.getColorRes());
         final BubbleTextView.BubbleTextConfiguration config = BubbleTextView.BubbleTextConfiguration.builder()
                 .setPrimaryText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()))
                 .setTextColor(context.getResources().getColor(R.color.applicationWhite))

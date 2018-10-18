@@ -39,8 +39,8 @@
         android:layout_height="wrap_content"
         android:text="@string/connect.turnon.title"
         app:layout_constraintBottom_toBottomOf="@id/guideBottom"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideTop"
         app:layout_constraintVertical_bias="0.0" />
 
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:src="@drawable/ic_reader"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/turnOnNext"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
         app:layout_constraintTop_toBottomOf="@id/turnOnMessage" />
@@ -84,9 +84,9 @@
         android:layout_height="wrap_content"
         android:text="@string/test.button.skip"
         android:textColor="@color/applicationBlack"
-        app:layout_constraintTop_toTopOf="@id/turnOnNext"
         app:layout_constraintBottom_toBottomOf="@id/turnOnNext"
-        app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintStart_toStartOf="@id/guideStart"/>
+        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintTop_toTopOf="@id/turnOnNext"
+        app:layout_constraintVertical_bias="0.5" />
 
 </android.support.constraint.ConstraintLayout>
