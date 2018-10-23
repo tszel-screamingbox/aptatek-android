@@ -8,6 +8,7 @@ import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,6 +36,11 @@ import butterknife.OnClick;
 import butterknife.OnPageChange;
 import timber.log.Timber;
 
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+import static android.view.View.inflate;
+
 public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView {
 
     @Inject
@@ -61,6 +67,12 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @BindView(R.id.buttonPdfExport)
     FloatingActionButton pdfExport;
 
+    @BindView(R.id.weeklyNavigation)
+    Group navigationGroup;
+
+    @BindView(R.id.weeklyButton)
+    Button weeklyButton;
+
     private SwipeAdapter swipeAdapter;
 
     @Override
@@ -76,8 +88,8 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @Override
     protected void initObjects(final View view) {
         // starts with "empty view"
-        leftArrowImageView.setVisibility(View.INVISIBLE);
-        rightArrowImageView.setVisibility(View.INVISIBLE);
+        leftArrowImageView.setVisibility(INVISIBLE);
+        rightArrowImageView.setVisibility(INVISIBLE);
 
         initAdapter();
     }
@@ -97,7 +109,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @OnClick(R.id.playIcon)
     public void onPlayButtonClicked() {
         presenter.loadValidWeeks();
-        pdfExport.setVisibility(View.VISIBLE);
+        pdfExport.setVisibility(VISIBLE);
     }
 
     @OnClick(R.id.leftArrow)
@@ -136,12 +148,12 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void onUpdateRightArrow(final boolean isVisible) {
-        rightArrowImageView.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
+        rightArrowImageView.setVisibility(isVisible ? VISIBLE : INVISIBLE);
     }
 
     @Override
     public void onUpdateLeftArrow(final boolean isVisible) {
-        leftArrowImageView.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
+        leftArrowImageView.setVisibility(isVisible ? VISIBLE : INVISIBLE);
     }
 
     @Override
@@ -156,7 +168,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void displayValidWeekList(final List<Integer> validWeeks) {
-        emptyGroup.setVisibility(View.GONE);
+        emptyGroup.setVisibility(GONE);
         swipeAdapter.setData(validWeeks);
         chartViewPager.disableSwipe(false);
         chartViewPager.setCurrentItem(validWeeks.size() - 1);
@@ -164,7 +176,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void onPdfDataReady(final PdfEntryData pdfData) {
-        final PdfExportView content = (PdfExportView) View.inflate(getContext(), R.layout.view_pdf_export, null);
+        final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
         content.setData(pdfData);
 
         final PdfDocument document = new PdfDocument();
@@ -202,5 +214,20 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
         startActivity(Intent.createChooser(emailIntent, ""));
+    }
+
+    public void hideHeader() {
+        weeklyButton.setVisibility(GONE);
+        navigationGroup.setVisibility(VISIBLE);
+    }
+
+    public void showHeader() {
+        weeklyButton.setVisibility(VISIBLE);
+        navigationGroup.setVisibility(INVISIBLE);
+    }
+
+    public void hideCompleteHeader() {
+        weeklyButton.setVisibility(GONE);
+        navigationGroup.setVisibility(INVISIBLE);
     }
 }

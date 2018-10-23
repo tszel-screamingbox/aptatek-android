@@ -1,6 +1,5 @@
 package com.aptatek.pkulab.view.main.home;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -24,7 +23,6 @@ import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
-import com.aptatek.pkulab.view.main.weekly.WeeklyResultFragment;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -153,12 +151,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
     }
 
-    @OnClick(R.id.weeklyButton)
-    public void onToggleButtonClicked() {
-        final Intent intent = new Intent(getContext(), WeeklyResultFragment.class);
-        getBaseActivity().launchActivity(intent, false, BaseActivity.Animation.BOTTOM_TO_TOP);
-    }
-
     @OnClick(R.id.newTestButton)
     public void onNewTestButtonClicked() {
         presenter.startNewTest();
@@ -189,9 +181,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         bubbleScrollView.setSlideOnFlingThreshold(THRESHOLD);
         bubbleScrollView.setItemTransitionTimeMillis(TRANSITION_TIME);
         bubbleScrollView.addScrollStateChangeListener(this);
-        bubbleScrollView.addOnItemChangedListener((viewHolder, adapterPosition) -> {
-//            presenter.itemZoomIn(chartAdapter.getItem(adapterPosition));
-        });
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoShadowHeight="0dp"
+    sothree:umanoPanelHeight="@dimen/main.panel.height"
     tools:context=".view.main.MainHostActivity">
 
     <FrameLayout
@@ -15,7 +15,7 @@
         android:layout_height="match_parent" />
 
     <fragment
-        android:id="@+id/secondPanel"
+        android:id="@+id/weeklyPanel"
         android:name="com.aptatek.pkulab.view.main.weekly.WeeklyResultFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

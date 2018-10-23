@@ -6,6 +6,27 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/general.distance.xxxsmall">
 
+    <Button
+        android:id="@+id/weeklyButton"
+        style="@style/General.Transparent.Button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginStart="@dimen/general.distance.big"
+        android:layout_marginEnd="@dimen/general.distance.big"
+        android:drawableEnd="@drawable/ic_arrow_up"
+        android:gravity="center"
+        android:text="@string/main.button.weekly"
+        android:textSize="@dimen/font.size.xbig"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.constraint.Group
+        android:id="@+id/weeklyNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="title, leftArrow, rightArrow, dateText" />
+
     <TextView
         android:id="@+id/title"
         style="@style/General.Title"
@@ -14,16 +35,15 @@
         android:text="@string/weekly.title"
         android:textSize="@dimen/font.size.weekly.title" />
 
-
     <ImageView
         android:id="@+id/leftArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance"
-        android:paddingBottom="@dimen/general.distance.xxmini"
-        android:paddingEnd="@dimen/general.distance.xxsmall"
         android:paddingStart="@dimen/general.distance.xxsmall"
         android:paddingTop="@dimen/general.distance.xxmini"
+        android:paddingEnd="@dimen/general.distance.xxsmall"
+        android:paddingBottom="@dimen/general.distance.xxmini"
         android:src="@drawable/ic_left_arrow"
         android:tint="@color/applicationLightGray"
         app:layout_constraintBottom_toBottomOf="@+id/dateText"
@@ -37,10 +57,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/general.distance"
-        android:paddingBottom="@dimen/general.distance.xxmini"
-        android:paddingEnd="@dimen/general.distance.xxsmall"
         android:paddingStart="@dimen/general.distance.xxsmall"
         android:paddingTop="@dimen/general.distance.xxmini"
+        android:paddingEnd="@dimen/general.distance.xxsmall"
+        android:paddingBottom="@dimen/general.distance.xxmini"
         android:src="@drawable/ic_right_arrow"
         android:tint="@color/applicationLightGray"
         app:layout_constraintBottom_toBottomOf="@+id/dateText"

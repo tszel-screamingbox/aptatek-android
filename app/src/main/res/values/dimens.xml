@@ -43,6 +43,10 @@
     <dimen name="graph.item.size">150dp</dimen>
     <dimen name="graph.item.size.half">75dp</dimen>
 
+    <!-- Main -->
+    <dimen name="main.margin.bottom">25dp</dimen>
+    <dimen name="main.panel.height">80dp</dimen>
+
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.header.margin.minimum">68dp</dimen>
