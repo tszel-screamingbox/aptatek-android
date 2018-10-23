@@ -3,37 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/general.distance.xxxsmall">
-
-    <Button
-        android:id="@+id/weeklyButton"
-        style="@style/General.Transparent.Button"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginStart="@dimen/general.distance.big"
-        android:layout_marginEnd="@dimen/general.distance.big"
-        android:drawableEnd="@drawable/ic_arrow_up"
-        android:gravity="center"
-        android:text="@string/main.button.weekly"
-        android:textSize="@dimen/font.size.xbig"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <android.support.constraint.Group
-        android:id="@+id/weeklyNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        app:constraint_referenced_ids="title, leftArrow, rightArrow, dateText" />
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/title"
         style="@style/General.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/general.distance.xxxsmall"
         android:text="@string/weekly.title"
-        android:textSize="@dimen/font.size.weekly.title" />
+        android:textSize="@dimen/font.size.weekly.title"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/leftArrow"
@@ -77,6 +57,28 @@
         app:layout_constraintEnd_toStartOf="@+id/rightArrow"
         app:layout_constraintStart_toEndOf="@+id/leftArrow"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <View
+        android:id="@+id/cover"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main.panel.height"
+        android:background="@color/applicationWhite" />
+
+    <Button
+        android:id="@+id/weeklyButton"
+        style="@style/General.Transparent.Button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/main.panel.height"
+        android:drawableEnd="@drawable/ic_arrow_up"
+        android:gravity="center"
+        android:paddingStart="@dimen/general.distance.big"
+        android:paddingEnd="@dimen/general.distance.big"
+        android:text="@string/main.button.weekly"
+        android:textSize="@dimen/font.size.xbig"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager
         android:id="@+id/viewpager"

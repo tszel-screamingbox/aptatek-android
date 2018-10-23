@@ -40,7 +40,6 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
 
         final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.weeklyPanel);
         weeklyResultFragment = (WeeklyResultFragment) fragment;
-        weeklyResultFragment.hideCompleteHeader();
 
         mainSlidingPanelLayout.setEnabled(false);
         mainSlidingPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -90,5 +89,9 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
         }
 
         super.onBackPressed();
+    }
+
+    public void showPanel() {
+        mainSlidingPanelLayout.setPanelState(EXPANDED);
     }
 }

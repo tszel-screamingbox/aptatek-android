@@ -18,6 +18,7 @@ import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
 import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
@@ -67,11 +68,11 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @BindView(R.id.buttonPdfExport)
     FloatingActionButton pdfExport;
 
-    @BindView(R.id.weeklyNavigation)
-    Group navigationGroup;
-
     @BindView(R.id.weeklyButton)
     Button weeklyButton;
+
+    @BindView(R.id.cover)
+    View coverView;
 
     private SwipeAdapter swipeAdapter;
 
@@ -216,18 +217,18 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
         startActivity(Intent.createChooser(emailIntent, ""));
     }
 
+    @OnClick(R.id.weeklyButton)
+    public void onResultButtonClicked() {
+        ((MainHostActivity) getBaseActivity()).showPanel();
+    }
+
     public void hideHeader() {
         weeklyButton.setVisibility(GONE);
-        navigationGroup.setVisibility(VISIBLE);
+        coverView.setVisibility(GONE);
     }
 
     public void showHeader() {
         weeklyButton.setVisibility(VISIBLE);
-        navigationGroup.setVisibility(INVISIBLE);
-    }
-
-    public void hideCompleteHeader() {
-        weeklyButton.setVisibility(GONE);
-        navigationGroup.setVisibility(INVISIBLE);
+        coverView.setVisibility(VISIBLE);
     }
 }
