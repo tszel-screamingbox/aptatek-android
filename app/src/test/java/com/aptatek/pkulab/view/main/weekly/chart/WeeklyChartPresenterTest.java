@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.weekly.chart;
+package com.aptatek.pkulab.view.main.weekly.chart;
 
 import android.support.annotation.NonNull;
 
@@ -132,7 +132,7 @@ public class WeeklyChartPresenterTest {
      * Getting BubbleDataSet for BubbleChart
      *
      * @test.input Numbers of week before (0)
-     * @test.expected {@link com.aptatek.pkulab.view.weekly.chart.WeeklyChartView#displayChartData(BubbleDataSet bubbleDataSet) displayChartData} method is called, without any error.
+     * @test.expected {@link com.aptatek.pkulab.view.main.weekly.chart.WeeklyChartView#displayChartData(BubbleDataSet bubbleDataSet) displayChartData} method is called, without any error.
      */
     @Test
     public void testGetChartData() {

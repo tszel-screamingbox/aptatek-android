@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.main;
+package com.aptatek.pkulab.view.main.home;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
@@ -8,8 +8,8 @@ import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.model.CubeData;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
-import com.aptatek.pkulab.view.main.adapter.chart.ChartVM;
-import com.aptatek.pkulab.view.main.adapter.daily.DailyChartFormatter;
+import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
+import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,21 +27,19 @@ import io.reactivex.Single;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
-// TODO write proper tests for this class...
-
 /**
  * @test.layer View / Main
- * @test.feature MainActivity, BubbleChart
+ * @test.feature MainHostActivity, BubbleChart
  * @test.type Unit tests
  */
-public class MainActivityPresenterTest {
+public class HomeFragmentPresenterTest {
 
     private static final String TEST_STRING = "hello";
 
     @Mock
     private ResourceInteractor resourceInteractor;
     @Mock
-    private MainActivityView view;
+    private HomeFragmentView view;
     @Mock
     private CubeInteractor cubeInteractor;
     @Mock
@@ -52,7 +50,7 @@ public class MainActivityPresenterTest {
     private WettingInteractor wettingInteractor;
 
     private final Date date = new Date();
-    private MainActivityPresenter presenter;
+    private HomeFragmentPresenter presenter;
     private ChartVM emptyItem;
     private ChartVM notEmptyItem;
 
@@ -68,7 +66,7 @@ public class MainActivityPresenterTest {
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new MainActivityPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor);
+        presenter = new HomeFragmentPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)
@@ -98,7 +96,7 @@ public class MainActivityPresenterTest {
     /**
      * Bubble chart zooming animation with empty measure.
      *
-     * @test.expected {@link  MainActivityView#updateTitles(String, String)   updateTitles(String, String)  }
+     * @test.expected {@link  HomeFragmentView#updateTitles(String, String)   updateTitles(String, String)  }
      * method is called, without any error.
      */
     @Test
@@ -112,7 +110,7 @@ public class MainActivityPresenterTest {
     /**
      * Bubble chart zooming animation.
      *
-     * @test.expected {@link  MainActivityView#updateTitles(String, String)   updateTitles(String, String)  }
+     * @test.expected {@link  HomeFragmentView#updateTitles(String, String)   updateTitles(String, String)  }
      * method is called, without any error.
      */
     @Test

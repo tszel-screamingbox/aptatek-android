@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.weekly;
+package com.aptatek.pkulab.view.main.weekly;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
@@ -8,7 +8,7 @@ import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.util.Constants;
-import com.aptatek.pkulab.view.weekly.chart.PdfChartDataTransformer;
+import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,12 +33,12 @@ import static org.mockito.Mockito.when;
  * @test.feature Weekly Chart
  * @test.type Unit tests
  */
-public class WeeklyResultActivityPresenterTest {
+public class WeeklyResultFragmentPresenterTest {
 
     private static final String TEST_STRING = "test";
 
     @Mock
-    private WeeklyResultActivityView view;
+    private WeeklyResultFragmentView view;
     @Mock
     private CubeInteractor cubeInteractor;
     @Mock
@@ -50,7 +50,7 @@ public class WeeklyResultActivityPresenterTest {
     @Mock
     private PdfChartDataTransformer pdfChartDataTransformer;
 
-    private WeeklyResultActivityPresenter presenter;
+    private WeeklyResultFragmentPresenter presenter;
     private List<CubeData> cubeDataList = new ArrayList<>();
 
     /**
@@ -81,7 +81,7 @@ public class WeeklyResultActivityPresenterTest {
         when(pkuRangeInteractor.getInfo()).thenReturn(Single.just(rangeInfo));
         when(cubeInteractor.listAll()).thenReturn(Single.just(cubeDataList));
 
-        presenter = new WeeklyResultActivityPresenter(
+        presenter = new WeeklyResultFragmentPresenter(
                 cubeInteractor,
                 resourceInteractor,
                 pkuRangeInteractor,
@@ -95,7 +95,7 @@ public class WeeklyResultActivityPresenterTest {
      * Setting subtitle for the screen
      *
      * @test.input Page number for the subtitle
-     * @test.expected {@link  com.aptatek.pkulab.view.weekly.WeeklyResultActivityView#onSubtitleChanged(String)}  onSubtitleChanged} method is called, without any error.
+     * @test.expected {@link  WeeklyResultFragmentView#onSubtitleChanged(String)}  onSubtitleChanged} method is called, without any error.
      */
     @Test
     public void testSubtitle() {
@@ -108,9 +108,9 @@ public class WeeklyResultActivityPresenterTest {
      * Testing page changing
      *
      * @test.input Page number for the screen
-     * @test.expected {@link  com.aptatek.pkulab.view.weekly.WeeklyResultActivityView#onLoadNextPage(int)}  onLoadNextPage},
-     * {@link  com.aptatek.pkulab.view.weekly.WeeklyResultActivityView#onUpdateLeftArrow(boolean)}  onUpdateLeftArrow}
-     * and {@link  com.aptatek.pkulab.view.weekly.WeeklyResultActivityView#onUpdateRightArrow(boolean) onUpdateRightArrow} method are called, without any error.
+     * @test.expected {@link  WeeklyResultFragmentView#onLoadNextPage(int)}  onLoadNextPage},
+     * {@link  WeeklyResultFragmentView#onUpdateLeftArrow(boolean)}  onUpdateLeftArrow}
+     * and {@link  WeeklyResultFragmentView#onUpdateRightArrow(boolean) onUpdateRightArrow} method are called, without any error.
      */
     @Test
     public void testShowPage() {
@@ -127,8 +127,8 @@ public class WeeklyResultActivityPresenterTest {
      * Testing chart's arrows update
      *
      * @test.input Page number for updating arrows visibility
-     * @test.expected {@link  com.aptatek.pkulab.view.weekly.WeeklyResultActivityView#onUpdateLeftArrow(boolean)}  onUpdateLeftArrow}
-     * and {@link  com.aptatek.pkulab.view.weekly.WeeklyResultActivityView#onUpdateRightArrow(boolean) onUpdateRightArrow} method are called, without any error.
+     * @test.expected {@link  WeeklyResultFragmentView#onUpdateLeftArrow(boolean)}  onUpdateLeftArrow}
+     * and {@link  WeeklyResultFragmentView#onUpdateRightArrow(boolean) onUpdateRightArrow} method are called, without any error.
      */
     @Test
     public void testUpdateArrow() {
