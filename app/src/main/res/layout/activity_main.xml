@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
-    sothree:umanoShadowHeight="0dp"
     sothree:umanoPanelHeight="@dimen/main.panel.height"
+    sothree:umanoShadowHeight="0dp"
     tools:context=".view.main.MainHostActivity">
 
     <FrameLayout

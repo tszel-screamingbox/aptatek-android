@@ -107,7 +107,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
         return presenter;
     }
 
-    @OnClick(R.id.playIcon)
+    @OnClick(R.id.showIcon)
     public void onPlayButtonClicked() {
         presenter.loadValidWeeks();
         pdfExport.setVisibility(VISIBLE);

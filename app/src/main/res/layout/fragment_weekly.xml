@@ -58,6 +58,49 @@
         app:layout_constraintStart_toEndOf="@+id/leftArrow"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
+    <com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        app:layout_constraintBottom_toTopOf="@id/label"
+        app:layout_constraintTop_toBottomOf="@id/dateText" />
+
+    <android.support.constraint.Group
+        android:id="@+id/emptyGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="showIcon, emptyTitle, emptySubtitle" />
+
+    <ImageView
+        android:id="@+id/showIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_measure"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/emptyTitle"
+        style="@style/General.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/general.distance.xxxsmall"
+        android:text="@string/weekly.empty.title"
+        android:textSize="@dimen/font.size.weekly.title"
+        app:layout_constraintTop_toBottomOf="@+id/showIcon" />
+
+    <TextView
+        android:id="@+id/emptySubtitle"
+        style="@style/General.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/weekly.empty.subtitle"
+        app:layout_constraintTop_toBottomOf="@+id/emptyTitle" />
+
     <View
         android:id="@+id/cover"
         android:layout_width="match_parent"
@@ -79,49 +122,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/general.distance.xxsmall"
-        app:layout_constraintBottom_toTopOf="@id/label"
-        app:layout_constraintTop_toBottomOf="@id/dateText" />
-
-    <android.support.constraint.Group
-        android:id="@+id/emptyGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="playIcon, emptyTitle, emptySubtitle" />
-
-    <ImageView
-        android:id="@+id/playIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_measure"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/emptyTitle"
-        style="@style/General.Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/weekly.empty.title"
-        android:textSize="@dimen/font.size.weekly.title"
-        app:layout_constraintTop_toBottomOf="@+id/playIcon" />
-
-    <TextView
-        android:id="@+id/emptySubtitle"
-        style="@style/General.Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/weekly.empty.subtitle"
-        app:layout_constraintTop_toBottomOf="@+id/emptyTitle" />
-
 
     <TextView
         android:id="@+id/label"
