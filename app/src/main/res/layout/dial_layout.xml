@@ -4,7 +4,12 @@
     android:id="@+id/keypad"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/applicationSilver">
+    android:background="@color/applicationWhite">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/general.distance.xxsmall"
+        android:background="@drawable/gradient_shadow"/>
 
     <TableRow android:layout_weight="1">
 

@@ -10,6 +10,8 @@ public abstract class TestResultState {
 
     public abstract String getTitle();
 
+    public abstract boolean isTitleVisible();
+
     public abstract @ColorInt int getColor();
 
     @Nullable
@@ -27,6 +29,8 @@ public abstract class TestResultState {
     public abstract static class Builder {
 
         public abstract Builder setTitle(String title);
+
+        public abstract Builder setTitleVisible(boolean visible);
 
         public abstract Builder setColor(@ColorInt int color);
 

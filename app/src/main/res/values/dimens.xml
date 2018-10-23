@@ -51,6 +51,7 @@
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.header.margin.minimum">68dp</dimen>
 
+    <dimen name="font.size.steps">1sp</dimen>
     <dimen name="font.size.xxmini">5sp</dimen>
     <dimen name="font.size.xmini">9sp</dimen>
     <dimen name="font.size.mini">10sp</dimen>
@@ -80,4 +81,7 @@
 
     <dimen name="test.alert.corner">50dp</dimen>
     <dimen name="test.alert.height">100dp</dimen>
+
+    <dimen name="test.result.circle.width">20dp</dimen>
+
 </resources>

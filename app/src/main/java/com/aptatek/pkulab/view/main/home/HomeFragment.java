@@ -176,7 +176,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     private void initAdapter() {
         bubbleScrollView.setAdapter(chartAdapter);
-        bubbleScrollView.setSlideOnFling(true);
         bubbleScrollView.setOverScrollEnabled(true);
         bubbleScrollView.setSlideOnFlingThreshold(THRESHOLD);
         bubbleScrollView.setItemTransitionTimeMillis(TRANSITION_TIME);

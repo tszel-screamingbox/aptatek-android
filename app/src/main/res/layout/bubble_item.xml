@@ -17,7 +17,7 @@
         app:layout_constraintVertical_bias="0.5"
         app:layout_constraintWidth_percent="0.5" />
 
-    <me.grantland.widget.AutofitTextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/badge"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -26,8 +26,11 @@
         android:elevation="@dimen/general.elevation"
         android:gravity="center"
         android:textColor="@color/applicationWhite"
+        android:textSize="@dimen/font.size.regular"
         android:textStyle="bold"
         android:visibility="visible"
+        app:autoSizeStepGranularity="@dimen/font.size.steps"
+        app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.25"
         app:layout_constraintTop_toTopOf="parent"

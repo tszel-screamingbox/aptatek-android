@@ -52,7 +52,7 @@ public interface ActivityComponent {
     @ActivityContext
     Context context();
 
-    TestActivityComponent plus(TestModule module);
+    TestActivityComponent plus(TestModule module, RangeInfoModule rangeInfoModule);
 
     RangeInfoActivityComponent plus(RangeInfoModule module);
 

@@ -12,9 +12,8 @@ import com.aptatek.pkulab.domain.model.CubeData;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.util.ChartUtils;
+import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -30,6 +29,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
     private final CubeInteractor cubeInteractor;
     private final ResourceInteractor resourceInteractor;
     private final WettingInteractor wettingInteractor;
+    private final RangeSettingsValueFormatter rangeSettingsValueFormatter;
 
     private Disposable disposable;
 
@@ -37,39 +37,47 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
     public TestResultPresenter(final PkuRangeInteractor rangeInteractor,
                                final CubeInteractor cubeInteractor,
                                final ResourceInteractor resourceInteractor,
-                               final WettingInteractor wettingInteractor) {
+                               final WettingInteractor wettingInteractor,
+                               final RangeSettingsValueFormatter rangeSettingsValueFormatter) {
         this.rangeInteractor = rangeInteractor;
         this.cubeInteractor = cubeInteractor;
         this.resourceInteractor = resourceInteractor;
         this.wettingInteractor = wettingInteractor;
+        this.rangeSettingsValueFormatter = rangeSettingsValueFormatter;
     }
 
     public void initUi() {
+        disposeSubscriptions();
         disposable =
                 clearTestState().andThen(
-                    Single.zip(
-                        rangeInteractor.getInfo(),
-                        cubeInteractor.getLatest().map(CubeData::getPkuLevel),
-                        (rangeInfo, pkuLevel) ->
-                        TestResultState.builder()
-                            .setTitle(getTitleForLevel(pkuLevel, rangeInfo))
-                            .setMessage(getMessageForLevel(pkuLevel, rangeInfo))
-                            .setColor(getColorForLevel(pkuLevel, rangeInfo))
-                            .setFormattedPkuValue(getFormattedPkuValue(pkuLevel, rangeInfo))
-                            .setPkuLevelText(getPkuLevelText(pkuLevel, rangeInfo))
-                            .build())
+                        Single.zip(
+                                rangeInteractor.getInfo(),
+                                cubeInteractor.getLatest().map(CubeData::getPkuLevel),
+                                (rangeInfo, pkuLevel) ->
+                                        TestResultState.builder()
+                                                .setTitle(getTitleForLevel(pkuLevel, rangeInfo))
+                                                .setTitleVisible(ChartUtils.getState(pkuLevel, rangeInfo) == ChartUtils.State.VERY_HIGH)
+                                                .setMessage(getMessageForLevel(pkuLevel, rangeInfo))
+                                                .setColor(getColorForLevel(pkuLevel, rangeInfo))
+                                                .setFormattedPkuValue(getFormattedPkuValue(pkuLevel, rangeInfo))
+                                                .setPkuLevelText(getPkuLevelText(pkuLevel, rangeInfo))
+                                                .build())
                 )
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)));
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)));
     }
 
     @Override
     public void detachView() {
+        disposeSubscriptions();
+
+        super.detachView();
+    }
+
+    private void disposeSubscriptions() {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
-
-        super.detachView();
     }
 
     private String getTitleForLevel(final PkuLevel level, final PkuRangeInfo rangeInfo) {
@@ -135,13 +143,13 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
         return resource == 0 ? null : resourceInteractor.getStringResource(resource);
     }
 
-    private @ColorInt int getColorForLevel(final PkuLevel level, final PkuRangeInfo rangeInfo) {
+    private @ColorInt
+    int getColorForLevel(final PkuLevel level, final PkuRangeInfo rangeInfo) {
         return resourceInteractor.getColorResource(ChartUtils.stateColor(ChartUtils.getState(level, rangeInfo)));
     }
 
     private String getFormattedPkuValue(final PkuLevel level, final PkuRangeInfo rangeInfo) {
-        final float valueInDisplayUnit = ChartUtils.convertToDisplayUnit(level, rangeInfo).getValue();
-        return String.format(Locale.getDefault(), "%.0f", valueInDisplayUnit);
+        return rangeSettingsValueFormatter.formatRegularValue(ChartUtils.convertToDisplayUnit(level, rangeInfo));
     }
 
     private String getPkuLevelText(final PkuLevel level, final PkuRangeInfo rangeInfo) {
