@@ -5,15 +5,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/roundedBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general.distance.xxxsmall"
+        android:src="@drawable/ic_rounded_bar"
+        android:tint="@color/applicationLightGray"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/title"
         style="@style/General.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/general.distance.xxxsmall"
         android:text="@string/weekly.title"
         android:textSize="@dimen/font.size.weekly.title"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/roundedBar" />
 
     <ImageView
         android:id="@+id/leftArrow"
@@ -66,41 +76,6 @@
         app:layout_constraintBottom_toTopOf="@id/label"
         app:layout_constraintTop_toBottomOf="@id/dateText" />
 
-    <android.support.constraint.Group
-        android:id="@+id/emptyGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="showIcon, emptyTitle, emptySubtitle" />
-
-    <ImageView
-        android:id="@+id/showIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_measure"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/emptyTitle"
-        style="@style/General.Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/general.distance.xxxsmall"
-        android:text="@string/weekly.empty.title"
-        android:textSize="@dimen/font.size.weekly.title"
-        app:layout_constraintTop_toBottomOf="@+id/showIcon" />
-
-    <TextView
-        android:id="@+id/emptySubtitle"
-        style="@style/General.Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/weekly.empty.subtitle"
-        app:layout_constraintTop_toBottomOf="@+id/emptyTitle" />
-
     <View
         android:id="@+id/cover"
         android:layout_width="match_parent"
@@ -141,7 +116,6 @@
         android:layout_margin="@dimen/general.distance.mini"
         android:background="@color/pkuPdfFasting"
         android:src="@drawable/ic_pdf"
-        android:visibility="invisible"
         app:backgroundTint="@color/applicationWhite"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

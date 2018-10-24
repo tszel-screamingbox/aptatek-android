@@ -43,7 +43,6 @@ public class MainActivityScreenTest {
         onView(withId(R.id.subTitleText)).check(matches(isDisplayed()));
 
         onView(withId(R.id.scrollView)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.playIcon)).check(matches(isDisplayed()));
 
         onView(withId(R.id.newTestButton)).check(matches(withText(R.string.main_button_new_test)));
         onView(withId(R.id.titleText)).check(matches(withText(R.string.main_title_noresult)));
@@ -100,18 +99,13 @@ public class MainActivityScreenTest {
         showWeeklyFragment();
 
         onView(withId(R.id.title)).check(matches(isDisplayed()));
-        onView(withId(R.id.leftArrow)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
+        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
-        onView(withId(R.id.emptyTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.emptySubtitle)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));
-        onView(withId(R.id.showIcon)).check(matches(isDisplayed()));
         onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
-        onView(withId(R.id.buttonPdfExport)).check(matches(not(isDisplayed())));
-
-        onView(withId(R.id.emptyTitle)).check(matches(withText(R.string.weekly_empty_title)));
-        onView(withId(R.id.emptySubtitle)).check(matches(withText(R.string.weekly_empty_subtitle)));
+        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
     }
 
     /**
@@ -123,9 +117,8 @@ public class MainActivityScreenTest {
     public void testWeeklyPlayIconClicked() throws Exception {
         showWeeklyFragment();
 
-        onView(withId(R.id.showIcon)).perform(click());
-
         onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));
@@ -133,9 +126,6 @@ public class MainActivityScreenTest {
         onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
 
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.emptyTitle)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.emptySubtitle)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
     }
 
 
@@ -148,20 +138,15 @@ public class MainActivityScreenTest {
     public void testSwipe() throws Exception {
         showWeeklyFragment();
 
-        onView(withId(R.id.showIcon)).perform(click());
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.viewpager)).perform(swipeRight());
-
+        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));
         onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.emptyTitle)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.emptySubtitle)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
 
         onView(withId(R.id.viewpager)).perform(swipeLeft());
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
@@ -177,20 +162,15 @@ public class MainActivityScreenTest {
     public void testPagination() throws Exception {
         showWeeklyFragment();
 
-        onView(withId(R.id.showIcon)).perform(click());
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.leftArrow)).perform(click());
-
+        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));
         onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.emptyTitle)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.emptySubtitle)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
 
         onView(withId(R.id.rightArrow)).perform(click());
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));

@@ -47,9 +47,6 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @Inject
     WeeklyResultFragmentPresenter presenter;
 
-    @BindView(R.id.emptyGroup)
-    Group emptyGroup;
-
     @BindView(R.id.viewpager)
     CustomViewPager chartViewPager;
 
@@ -64,9 +61,6 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @BindView(R.id.label)
     TextView tvUnit;
-
-    @BindView(R.id.buttonPdfExport)
-    FloatingActionButton pdfExport;
 
     @BindView(R.id.weeklyButton)
     Button weeklyButton;
@@ -93,6 +87,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
         rightArrowImageView.setVisibility(INVISIBLE);
 
         initAdapter();
+        presenter.loadValidWeeks();
     }
 
     @Override
@@ -105,12 +100,6 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @Override
     public WeeklyResultFragmentPresenter createPresenter() {
         return presenter;
-    }
-
-    @OnClick(R.id.showIcon)
-    public void onPlayButtonClicked() {
-        presenter.loadValidWeeks();
-        pdfExport.setVisibility(VISIBLE);
     }
 
     @OnClick(R.id.leftArrow)
@@ -169,7 +158,6 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void displayValidWeekList(final List<Integer> validWeeks) {
-        emptyGroup.setVisibility(GONE);
         swipeAdapter.setData(validWeeks);
         chartViewPager.disableSwipe(false);
         chartViewPager.setCurrentItem(validWeeks.size() - 1);
