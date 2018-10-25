@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/general.distance.xxxsmall"
         android:src="@drawable/ic_rounded_bar"
-        android:tint="@color/applicationLightGray"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/title"
