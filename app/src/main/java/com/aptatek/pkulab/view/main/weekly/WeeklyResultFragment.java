@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.pdf.PdfDocument;
 import android.support.annotation.NonNull;
-import android.support.constraint.Group;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
