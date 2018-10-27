@@ -12,7 +12,6 @@ import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.model.CubeData;
-import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.adapter.daily.DailyChartFormatter;
@@ -22,7 +21,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -40,7 +38,6 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
     private final PkuRangeInteractor rangeInteractor;
     private final DailyChartFormatter dailyChartFormatter;
     private final WettingInteractor wettingInteractor;
-
     private CompositeDisposable disposables;
 
     @Inject
@@ -101,12 +98,9 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
                         .map(rangeInfo ->
                                 Ix.from(measures)
                                         .map(cubeData -> {
-                                            final CharSequence details = cubeData.getPkuLevel().getUnit() == PkuLevelUnits.MICRO_MOL
-                                                    ? String.valueOf((int) cubeData.getPkuLevel().getValue())
-                                                    : String.format(Locale.getDefault(), "%.2f", cubeData.getPkuLevel().getValue());
                                             final ChartUtils.State state = ChartUtils.getState(cubeData.getPkuLevel(), rangeInfo);
                                             return DailyResultAdapterItem.create(
-                                                    details,
+                                                    dailyChartFormatter.getBubbleValue(cubeData.getPkuLevel()),
                                                     cubeData.getTimestamp(),
                                                     ChartUtils.smallBubbleBackground(state),
                                                     ChartUtils.stateColor(state));
@@ -138,7 +132,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         super.detachView();
     }
 
-    public void checkRunningTest() {
+    void checkRunningTest() {
         disposables.add(
                 wettingInteractor.getWettingStatus()
                         .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
@@ -148,7 +142,7 @@ class MainActivityPresenter extends MvpBasePresenter<MainActivityView> {
         );
     }
 
-    public void startNewTest() {
+    void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
                 .subscribe(() -> ifViewAttached(MainActivityView::navigateToTestScreen))
         );
