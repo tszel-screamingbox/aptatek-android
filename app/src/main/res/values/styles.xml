@@ -217,6 +217,7 @@
 
     <style name="Settings.Range.Description" parent="Settings.Range.Label">
         <item name="android:textSize">@dimen/font.size.normal</item>
+        <item name="android:textColor">@color/applicationTransparentGray</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
     </style>
 
@@ -226,8 +227,8 @@
     </style>
 
     <style name="Settings.Range.Units.Radio" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:buttonTint">@color/pkuLevelVeryHigh</item>
-        <item name="android:textColor">@color/applicationLightGray</item>
+        <item name="android:buttonTint">@color/applicationBlack</item>
+        <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 
