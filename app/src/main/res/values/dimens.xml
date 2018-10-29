@@ -4,7 +4,7 @@
     <dimen name="activity.margin.vertical">20dp</dimen>
 
     <!-- General-->
-    <dimen name="general.elevation">5dp</dimen>
+    <dimen name="general.elevation">2dp</dimen>
 
     <dimen name="general.button.corner">40dp</dimen>
     <dimen name="general.button.corner.normal">16dp</dimen>
