@@ -38,10 +38,10 @@
     <dimen name="graph.bubble.size.small">20dp</dimen>
     <dimen name="graph.bubble.radius.small">40dp</dimen>
     <dimen name="graph.bubble.margin">10dp</dimen>
-    <dimen name="graph.bubble.stroke.big">8dp</dimen>
+    <dimen name="graph.bubble.stroke.big">16dp</dimen>
     <dimen name="graph.bubble.stroke.small">4dp</dimen>
-    <dimen name="graph.item.size">150dp</dimen>
-    <dimen name="graph.item.size.half">75dp</dimen>
+    <dimen name="graph.item.size">180dp</dimen>
+    <dimen name="graph.item.size.half">90dp</dimen>
 
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
