@@ -9,15 +9,15 @@ public final class LumosReaderConstants {
     public static final String DEVICE_NAME = "Lumos Camera";
     public static final int MTU_SIZE = 128;
 
-    public static final String READER_SERVICE = "84A91C5E-24C5-4726-9860-0847BB1D01E7";
-    public static final String READER_CHAR_WORKFLOW_STATE = "00001001-0000-1000-8000-00805f9b34fb";
-    public static final String READER_CHAR_RESULT = "00002001-0000-1000-8000-00805f9b34fb";
-    public static final String READER_CHAR_NUM_RESULTS = "00002002-0000-1000-8000-00805f9b34fb";
-    public static final String READER_CHAR_REQUEST_RESULT = "00002003-0000-1000-8000-00805f9b34fb";
-    public static final String READER_CHAR_CARTRIDGE_ID = "00003001-0000-1000-8000-00805f9b34fb";
-    public static final String READER_CHAR_ERROR = "00004001-0000-1000-8000-00805f9b34fb";
-    public static final String READER_CHAR_UPDATE_ASSAY_DETAILS = "00005001-0000-1000-8000-00805f9b34fb";
-    public static final String READER_CHAR_UPDATE_TIME= "00006001-0000-1000-8000-00805f9b34fb";
+    public static final String READER_SERVICE = "84a91000-24c5-4726-9860-0847bb1d01e7";
+    public static final String READER_CHAR_WORKFLOW_STATE = "84a91001-24c5-4726-9860-0847bb1d01E7";
+    public static final String READER_CHAR_RESULT = "84a92001-24c5-4726-9860-0847bb1d01E7";
+    public static final String READER_CHAR_NUM_RESULTS = "84a92002-24c5-4726-9860-0847bb1d01E7";
+    public static final String READER_CHAR_REQUEST_RESULT = "84a92003-24c5-4726-9860-0847bb1d01E7";
+    public static final String READER_CHAR_CARTRIDGE_ID = "84a93001-24c5-4726-9860-0847bb1d01E7";
+    public static final String READER_CHAR_ERROR = "84a94001-24c5-4726-9860-0847bb1d01E7";
+    public static final String READER_CHAR_UPDATE_ASSAY_DETAILS = "84A95001-24c5-4726-9860-0847bb1d01E7";
+    public static final String READER_CHAR_UPDATE_TIME= "84a96001-24c5-4726-9860-0847bb1d01E7";
 
     public static final String BATTERY_SERVICE = "0000180F-0000-1000-8000-00805f9b34fb";
     public static final String BATTERY_CHAR_LEVEL = "00002A19-0000-1000-8000-00805f9b34fb";

@@ -80,8 +80,6 @@ public class ReaderManagerImpl implements ReaderManager {
             @Override
             public void onBonded(final BluetoothDevice device) {
                 connectionStateProcessor.onNext(ReaderConnectionEvent.create(new BluetoothReaderDevice(device), ReaderConnectionState.BOND));
-
-                lumosReaderManager.queueMtuChange(requestedMtuSize);
             }
 
             @Override
