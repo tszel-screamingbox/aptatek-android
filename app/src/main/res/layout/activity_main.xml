@@ -65,9 +65,9 @@
         style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginEnd="@dimen/general.distance.small"
         android:layout_marginStart="@dimen/general.distance.small"
         android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:layout_marginEnd="@dimen/general.distance.small"
         android:drawableStart="@drawable/ic_settings_dark"
         android:paddingStart="@dimen/general.button.corner.normal"
         android:text="@string/main.button.settings"
@@ -82,10 +82,10 @@
         style="@style/Grey.Settings.Button"
         android:layout_width="@dimen/general.button.height.big"
         android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginBottom="@dimen/activity.margin.vertical"
-        android:layout_marginEnd="@dimen/general.distance.small"
         android:layout_marginStart="@dimen/general.distance.small"
         android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:layout_marginEnd="@dimen/general.distance.small"
+        android:layout_marginBottom="@dimen/activity.margin.vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/newTestButton"
         app:layout_constraintTop_toBottomOf="@+id/chartGuide" />
@@ -107,9 +107,9 @@
         style="@style/General.Transparent.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginBottom="@dimen/general.distance.small"
-        android:layout_marginEnd="@dimen/general.distance.big"
         android:layout_marginStart="@dimen/general.distance.big"
+        android:layout_marginEnd="@dimen/general.distance.big"
+        android:layout_marginBottom="@dimen/general.distance.small"
         android:drawableEnd="@drawable/ic_arrow_up"
         android:gravity="center"
         android:text="@string/main.button.weekly"
@@ -144,20 +144,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline6">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewDailyResults"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <ImageView
             android:id="@+id/imgCloseResults"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:src="@drawable/ic_close"
+            android:padding="@dimen/general.distance.xxxsmall"
+            android:src="@drawable/swipe_close_indicator"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewDailyResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/general.distance.small"
+            app:layout_constraintTop_toBottomOf="@+id/imgCloseResults" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
