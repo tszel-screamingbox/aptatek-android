@@ -253,7 +253,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
     }
 
     @Override
-    public void showToastMessage() {
+    public void showSettingsUpdateMessage() {
         Toast.makeText(this, R.string.settings_message_saved, Toast.LENGTH_LONG).show();
     }
 
