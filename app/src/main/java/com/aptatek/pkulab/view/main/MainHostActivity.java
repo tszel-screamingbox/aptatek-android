@@ -2,14 +2,11 @@ package com.aptatek.pkulab.view.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.view.View;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.main.home.HomeFragment;
-import com.aptatek.pkulab.view.main.weekly.WeeklyResultFragment;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import javax.inject.Inject;
@@ -29,40 +26,26 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
     @BindView(R.id.panelLayout)
     SlidingUpPanelLayout mainSlidingPanelLayout;
 
-    private WeeklyResultFragment weeklyResultFragment;
+    private HomeFragment homeFragment;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        switchToFragment(new HomeFragment());
+        homeFragment = new HomeFragment();
+        switchToFragment(homeFragment);
 
-        final Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.weeklyPanel);
-        weeklyResultFragment = (WeeklyResultFragment) fragment;
 
         mainSlidingPanelLayout.setEnabled(false);
-        mainSlidingPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(final View panel, final float slideOffset) {
-
-            }
-
-            @Override
-            public void onPanelStateChanged(final View panel, final SlidingUpPanelLayout.PanelState previousState, final SlidingUpPanelLayout.PanelState newState) {
-                if (newState == COLLAPSED) {
-                    weeklyResultFragment.showHeader();
-                }
-                if (newState == EXPANDED) {
-                    weeklyResultFragment.hideHeader();
-                }
-            }
-        });
     }
 
     public void enableSlidingPanel() {
         mainSlidingPanelLayout.setEnabled(true);
-        weeklyResultFragment.showHeader();
+    }
+
+    public void showWeeklyChartPanel() {
+        mainSlidingPanelLayout.setPanelState(EXPANDED);
     }
 
     @Override
@@ -88,10 +71,11 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
             return;
         }
 
-        super.onBackPressed();
-    }
+        if (homeFragment.isResultShown()) {
+            homeFragment.closeResultsPanel();
+            return;
+        }
 
-    public void showPanel() {
-        mainSlidingPanelLayout.setPanelState(EXPANDED);
+        super.onBackPressed();
     }
 }

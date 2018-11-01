@@ -128,15 +128,17 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         }
     }
 
+    public boolean isResultShown() {
+        return resultListContainer.getVisibility() == View.VISIBLE;
+    }
 
-    @Override
-    public boolean onBackPressed() {
-        if (resultListContainer.getVisibility() == View.VISIBLE) {
-            resultListContainer.setVisibility(View.GONE);
-            return false;
-        } else {
-            return super.onBackPressed();
-        }
+    public void closeResultsPanel(){
+        resultListContainer.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.weeklyButton)
+    public void onWeeklyResultsButtonClicked() {
+        ((MainHostActivity) getBaseActivity()).showWeeklyChartPanel();
     }
 
     @Override

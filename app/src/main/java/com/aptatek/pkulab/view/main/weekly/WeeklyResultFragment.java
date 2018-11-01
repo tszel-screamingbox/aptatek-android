@@ -60,12 +60,6 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @BindView(R.id.label)
     TextView tvUnit;
 
-    @BindView(R.id.weeklyButton)
-    Button weeklyButton;
-
-    @BindView(R.id.cover)
-    View coverView;
-
     private SwipeAdapter swipeAdapter;
 
     @Override
@@ -201,20 +195,5 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
         startActivity(Intent.createChooser(emailIntent, ""));
-    }
-
-    @OnClick(R.id.weeklyButton)
-    public void onResultButtonClicked() {
-        ((MainHostActivity) getBaseActivity()).showPanel();
-    }
-
-    public void hideHeader() {
-        weeklyButton.setVisibility(GONE);
-        coverView.setVisibility(GONE);
-    }
-
-    public void showHeader() {
-        weeklyButton.setVisibility(VISIBLE);
-        coverView.setVisibility(VISIBLE);
     }
 }

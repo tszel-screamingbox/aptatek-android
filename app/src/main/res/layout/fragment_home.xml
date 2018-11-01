@@ -73,7 +73,7 @@
         android:paddingStart="@dimen/general.button.corner.normal"
         android:text="@string/main.button.settings"
         android:textColor="@color/applicationSolidGray"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/weeklyButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chartGuide" />
@@ -88,7 +88,7 @@
         android:layout_marginTop="@dimen/general.distance.xxsmall"
         android:layout_marginEnd="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/main.margin.bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/weeklyButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/newTestButton"
         app:layout_constraintTop_toBottomOf="@+id/chartGuide" />
@@ -103,18 +103,32 @@
         android:layout_marginBottom="@dimen/main.margin.bottom"
         android:gravity="center"
         android:text="@string/main.button.new.test"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/weeklyButton"
         app:layout_constraintLeft_toRightOf="@id/settingsButton"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chartGuide" />
 
+    <Button
+        android:id="@+id/weeklyButton"
+        style="@style/General.Transparent.Button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/main.panel.height"
+        android:drawableEnd="@drawable/ic_arrow_up"
+        android:gravity="center"
+        android:paddingStart="@dimen/general.distance.big"
+        android:paddingEnd="@dimen/general.distance.big"
+        android:text="@string/main.button.weekly"
+        android:textSize="@dimen/font.size.xbig"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <android.support.constraint.Group
         android:id="@+id/buttonGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
-        app:constraint_referenced_ids="newTestButton, settingsButton" />
+        app:constraint_referenced_ids="newTestButton, settingsButton, weeklyButton" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline6"
@@ -135,20 +149,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline6">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewDailyResults"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
         <ImageView
             android:id="@+id/imgCloseResults"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:src="@drawable/ic_close"
+            android:padding="@dimen/general.distance.xxxsmall"
+            android:src="@drawable/swipe_close_indicator"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewDailyResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/general.distance.small"
+            app:layout_constraintTop_toBottomOf="@+id/imgCloseResults" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>
