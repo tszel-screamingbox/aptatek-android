@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

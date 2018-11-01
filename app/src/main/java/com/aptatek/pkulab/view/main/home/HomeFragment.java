@@ -129,11 +129,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     public boolean isResultShown() {
-        return resultListContainer.getVisibility() == View.VISIBLE;
+        return resultListContainer.getVisibility() == VISIBLE;
     }
 
-    public void closeResultsPanel(){
-        resultListContainer.setVisibility(View.GONE);
+    public void closeResultsPanel() {
+        resultListContainer.setVisibility(GONE);
     }
 
     @OnClick(R.id.weeklyButton)

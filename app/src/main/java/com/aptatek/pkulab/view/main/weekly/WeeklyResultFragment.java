@@ -6,7 +6,6 @@ import android.graphics.pdf.PdfDocument;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.view.base.BaseFragment;
-import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
 import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
@@ -35,7 +33,6 @@ import butterknife.OnClick;
 import butterknife.OnPageChange;
 import timber.log.Timber;
 
-import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.View.inflate;

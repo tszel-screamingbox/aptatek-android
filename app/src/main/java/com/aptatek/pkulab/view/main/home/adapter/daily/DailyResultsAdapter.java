@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.view.base.BaseAdapter;
 
 import javax.inject.Inject;
