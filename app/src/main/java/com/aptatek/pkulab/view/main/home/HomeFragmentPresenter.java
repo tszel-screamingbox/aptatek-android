@@ -39,7 +39,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private final PkuRangeInteractor rangeInteractor;
     private final DailyChartFormatter dailyChartFormatter;
     private final WettingInteractor wettingInteractor;
-
     private CompositeDisposable disposables;
 
     @Inject
@@ -100,10 +99,9 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                         .map(rangeInfo ->
                                 Ix.from(measures)
                                         .map(cubeData -> {
-                                            final CharSequence details = dailyChartFormatter.getBubbleText(cubeData.getPkuLevel());
                                             final ChartUtils.State state = ChartUtils.getState(cubeData.getPkuLevel(), rangeInfo);
                                             return DailyResultAdapterItem.create(
-                                                    details,
+                                                    dailyChartFormatter.getBubbleValue(cubeData.getPkuLevel()),
                                                     cubeData.getTimestamp(),
                                                     ChartUtils.smallBubbleBackground(state),
                                                     ChartUtils.stateColor(state));
@@ -135,7 +133,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         super.detachView();
     }
 
-    public void checkRunningTest() {
+    void checkRunningTest() {
         disposables.add(
                 wettingInteractor.getWettingStatus()
                         .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
@@ -145,7 +143,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         );
     }
 
-    public void startNewTest() {
+    void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );

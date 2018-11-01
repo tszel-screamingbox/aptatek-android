@@ -12,16 +12,13 @@ import javax.inject.Inject;
 
 public class DailyResultsAdapter extends BaseAdapter<DailyResultViewHolder, DailyResultAdapterItem> {
 
-    private final ResourceInteractor resourceInteractor;
-
     @Inject
-    public DailyResultsAdapter(final ResourceInteractor resourceInteractor) {
-        this.resourceInteractor = resourceInteractor;
+    public DailyResultsAdapter() {
     }
 
     @Override
     protected DailyResultViewHolder setViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        return new DailyResultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_daily_result_item, parent, false), resourceInteractor);
+        return new DailyResultViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_daily_result_item, parent, false));
     }
 
     @Override
