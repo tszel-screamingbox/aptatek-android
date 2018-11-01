@@ -8,7 +8,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -112,8 +111,8 @@ public class MainActivity extends BaseActivity<MainActivityView, MainActivityPre
 
     @Override
     public void onBackPressed() {
-        if (resultListContainer.getVisibility() == View.VISIBLE) {
-            resultListContainer.setVisibility(View.GONE);
+        if (resultListContainer.getVisibility() == VISIBLE) {
+            resultListContainer.setVisibility(GONE);
         } else {
             super.onBackPressed();
         }
