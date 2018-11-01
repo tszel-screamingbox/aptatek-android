@@ -128,30 +128,15 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         }
     }
 
+
     @Override
-    public void onBackPressed() {
+    public boolean onBackPressed() {
         if (resultListContainer.getVisibility() == View.VISIBLE) {
             resultListContainer.setVisibility(View.GONE);
+            return false;
         } else {
-            super.onBackPressed();
+            return super.onBackPressed();
         }
-    }
-
-    @Override
-    protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new TestModule(), new RangeInfoModule(), new ChartModule())
-                .inject(this);
-    }
-
-    @NonNull
-    @Override
-    public MainActivityPresenter createPresenter() {
-        return presenter;
-    }
-
-    @Override
-    public int getFrameLayoutId() {
-        return R.layout.activity_main;
     }
 
     @Override
