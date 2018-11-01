@@ -4,7 +4,7 @@
     <dimen name="activity.margin.vertical">20dp</dimen>
 
     <!-- General-->
-    <dimen name="general.elevation">5dp</dimen>
+    <dimen name="general.elevation">2dp</dimen>
 
     <dimen name="general.button.corner">40dp</dimen>
     <dimen name="general.button.corner.normal">16dp</dimen>
@@ -38,10 +38,9 @@
     <dimen name="graph.bubble.size.small">20dp</dimen>
     <dimen name="graph.bubble.radius.small">40dp</dimen>
     <dimen name="graph.bubble.margin">10dp</dimen>
-    <dimen name="graph.bubble.stroke.big">8dp</dimen>
+    <dimen name="graph.bubble.stroke.big">20dp</dimen>
     <dimen name="graph.bubble.stroke.small">4dp</dimen>
-    <dimen name="graph.item.size">150dp</dimen>
-    <dimen name="graph.item.size.half">75dp</dimen>
+    <dimen name="graph.item.size">208dp</dimen>
 
     <!-- Main -->
     <dimen name="main.margin.bottom">25dp</dimen>

@@ -12,6 +12,7 @@
     <color name="applicationMediumGray">#B8C3CC</color>
     <color name="applicationSolidGray">#84929D</color>
     <color name="applicationGray">#4A4A4A</color>
+    <color name="applicationTransparentGray">#774A4A4A</color>
     <color name="applicationGreen">#4CD864</color>
     <color name="applicationRed">#EB5757</color>
     <color name="applicationPink">#FA4E7C</color>
