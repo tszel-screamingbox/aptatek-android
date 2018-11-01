@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/roundedBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general.distance.xxxsmall"
+        android:src="@drawable/ic_rounded_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/General.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/weekly.title"
+        android:textSize="@dimen/font.size.weekly.title"
+        app:layout_constraintTop_toBottomOf="@id/roundedBar" />
+
+    <ImageView
+        android:id="@+id/leftArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance"
+        android:paddingStart="@dimen/general.distance.xxsmall"
+        android:paddingTop="@dimen/general.distance.xxmini"
+        android:paddingEnd="@dimen/general.distance.xxsmall"
+        android:paddingBottom="@dimen/general.distance.xxmini"
+        android:src="@drawable/ic_left_arrow"
+        android:tint="@color/applicationLightGray"
+        app:layout_constraintBottom_toBottomOf="@+id/dateText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateText"
+        app:layout_constraintVertical_bias="0.5"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/rightArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/general.distance"
+        android:paddingStart="@dimen/general.distance.xxsmall"
+        android:paddingTop="@dimen/general.distance.xxmini"
+        android:paddingEnd="@dimen/general.distance.xxsmall"
+        android:paddingBottom="@dimen/general.distance.xxmini"
+        android:src="@drawable/ic_right_arrow"
+        android:tint="@color/applicationLightGray"
+        app:layout_constraintBottom_toBottomOf="@+id/dateText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateText"
+        app:layout_constraintVertical_bias="0.5"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/dateText"
+        style="@style/General.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/rightArrow"
+        app:layout_constraintStart_toEndOf="@+id/leftArrow"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        app:layout_constraintBottom_toTopOf="@id/label"
+        app:layout_constraintTop_toBottomOf="@id/dateText" />
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/General.Text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/applicationSolidGray"
+        android:textSize="@dimen/font.size.normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/buttonPdfExport"
+        tools:text="Results are in mg/dl" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonPdfExport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general.distance.mini"
+        android:background="@color/pkuPdfFasting"
+        android:src="@drawable/ic_pdf"
+        app:backgroundTint="@color/applicationWhite"
+        app:borderWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:rippleColor="@color/pkuPdfFasting" />
+</android.support.constraint.ConstraintLayout>

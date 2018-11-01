@@ -8,7 +8,7 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseRootFrameActivity;
-import com.aptatek.pkulab.view.main.MainActivity;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.pin.auth.add.AuthPinFragment;
 
 import javax.inject.Inject;
@@ -53,7 +53,7 @@ public class AuthPinHostActivity extends BaseRootFrameActivity<AuthPinHostActivi
             setResult(RESULT_OK);
             finish();
         } else {
-            final Intent intent = new Intent(this, MainActivity.class);
+            final Intent intent = new Intent(this, MainHostActivity.class);
             launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
         }
     }

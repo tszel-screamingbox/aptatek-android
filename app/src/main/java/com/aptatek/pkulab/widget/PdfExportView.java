@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.util.Constants;
-import com.aptatek.pkulab.view.weekly.chart.PdfChartDataRenderer;
-import com.aptatek.pkulab.view.weekly.pdf.PdfEntryData;
+import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataRenderer;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;

@@ -12,7 +12,7 @@ import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.model.CubeData;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
-import com.aptatek.pkulab.view.main.adapter.chart.ChartVM;
+import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 
 import java.util.ArrayList;
 import java.util.Collections;

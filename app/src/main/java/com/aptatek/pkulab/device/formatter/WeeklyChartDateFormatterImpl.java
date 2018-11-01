@@ -6,7 +6,7 @@ import android.support.v4.util.Preconditions;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.view.weekly.WeeklyChartDateFormatter;
+import com.aptatek.pkulab.view.main.weekly.WeeklyChartDateFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

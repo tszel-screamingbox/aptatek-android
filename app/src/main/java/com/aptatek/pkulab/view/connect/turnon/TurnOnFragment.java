@@ -9,7 +9,7 @@ import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
-import com.aptatek.pkulab.view.main.MainActivity;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 
 import javax.inject.Inject;
 
@@ -48,7 +48,7 @@ public class TurnOnFragment extends BaseConnectScreenFragment<TurnOnView, TurnOn
 
     @OnClick(R.id.turnOnSkip)
     public void onSkipClick() {
-        startActivity(new Intent(getActivity(), MainActivity.class));
+        startActivity(new Intent(getActivity(), MainHostActivity.class));
         getActivity().finish();
     }
 
