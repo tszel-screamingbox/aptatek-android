@@ -52,12 +52,12 @@
         <item name="android:paddingBottom">@dimen/general.distance.xmini</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/nunito_black</item>
-        <item name="android:textColor">@color/applicationSolidGray</item>
+        <item name="android:textColor">@color/applicationMediumGray</item>
         <item name="android:textSize">@dimen/font.size.big</item>
     </style>
 
     <style name="Test.Next.Button" parent="Test.Cancel.Button">
-        <item name="android:textColor">@color/applicationGreen</item>
+        <item name="android:textColor">@color/pageIndicatorBlue</item>
     </style>
 
     <style name="Test.Circle.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -75,7 +75,7 @@
     </style>
 
     <style name="Test.Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressTint">@color/applicationGreen</item>
+        <item name="android:progressTint">@color/pageIndicatorBlue</item>
     </style>
 
     <style name="Grey.Settings.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
