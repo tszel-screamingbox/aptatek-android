@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -16,11 +17,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xxxsmall"
+        android:fontFamily="@font/nunito_semibold"
         android:textColor="@color/reminder_settings_day_color_selector"
         android:textSize="@dimen/font.size.xbig"
         app:layout_constraintBottom_toBottomOf="@+id/switchActivate"
         app:layout_constraintStart_toEndOf="@+id/switchActivate"
-        app:layout_constraintTop_toTopOf="@id/switchActivate" />
+        app:layout_constraintTop_toTopOf="@id/switchActivate"
+        tools:text="Test text" />
 
     <ImageView
         android:id="@+id/imageAddNewReminder"
