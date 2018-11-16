@@ -46,6 +46,10 @@
         <item name="android:textSize">@dimen/font.size.large</item>
     </style>
 
+    <style name="General.Rounded.Gray.Button" parent="General.Rounded.Button">
+        <item name="android:background">@drawable/gray_button_background_selector</item>
+    </style>
+
     <style name="Test.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingTop">@dimen/general.distance.xmini</item>
