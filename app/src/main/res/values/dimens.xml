@@ -43,7 +43,8 @@
     <dimen name="graph.item.size">208dp</dimen>
 
     <!-- Main -->
-    <dimen name="main.margin.bottom">25dp</dimen>
+    <dimen name="main.bottom.margin">80dp</dimen>
+    <dimen name="main.bottom.margin.empty">48dp</dimen>
     <dimen name="main.panel.height">80dp</dimen>
 
     <!-- Pin -->
