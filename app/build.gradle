@@ -184,7 +184,8 @@ dependencies {
     implementation timeDependencies.yodatime
 
     // Bluetooth
-    implementation bluetoothDependencies.nordicBle
+    //implementation bluetoothDependencies.nordicBle
+    implementation project(':ble')
     implementation bluetoothDependencies.scanner
 
     // JSON

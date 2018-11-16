@@ -139,6 +139,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     public void queueConnect(@NonNull final BluetoothDevice bluetoothDevice) {
         connect(bluetoothDevice)
+                .useAutoConnect(true)
                 .done(device -> {
                     Timber.d("Connect successful");
                     createBond()
