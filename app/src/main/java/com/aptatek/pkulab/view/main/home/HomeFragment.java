@@ -2,7 +2,6 @@ package com.aptatek.pkulab.view.main.home;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +24,7 @@ import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.List;
@@ -64,9 +64,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @BindView(R.id.subTitleText)
     TextView subTitleTextView;
 
-    @BindView(R.id.resultListContainer)
-    ConstraintLayout resultListContainer;
-
     @BindView(R.id.recyclerViewDailyResults)
     RecyclerView recyclerViewDailyResults;
 
@@ -78,6 +75,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @BindView(R.id.bigSettingsButton)
     Button bigSettingsButton;
+
+    @BindView(R.id.panelLayout)
+    SlidingUpPanelLayout panelLayout;
 
     @Override
     public String getTitle() {
@@ -97,6 +97,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         recyclerViewDailyResults.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewDailyResults.setAdapter(dailyResultsAdapter);
         recyclerViewDailyResults.addItemDecoration(dailyResultItemDecorator);
+
     }
 
     @Override
@@ -129,11 +130,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     public boolean isResultShown() {
-        return resultListContainer.getVisibility() == VISIBLE;
+        return panelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED;
     }
 
     public void closeResultsPanel() {
-        resultListContainer.setVisibility(GONE);
+        panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
     @OnClick(R.id.weeklyButton)
@@ -171,7 +172,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @OnClick({R.id.settingsButton, R.id.bigSettingsButton})
     public void onSettingsButtonClicked() {
-        getBaseActivity().launchActivity(SettingsActivity.starter(getContext()), false, BaseActivity.Animation.FADE);
+        getBaseActivity().launchActivity(SettingsActivity.starter(requireContext()), false, BaseActivity.Animation.FADE);
     }
 
     @OnClick(R.id.playIcon)
@@ -184,7 +185,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @OnClick(R.id.imgCloseResults)
     public void onCloseResultsClicked() {
-        resultListContainer.setVisibility(GONE);
+        panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
     private void initAdapter() {
@@ -196,8 +197,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);
-            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && resultListContainer.getVisibility() == GONE) {
-                resultListContainer.setVisibility(VISIBLE);
+            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1
+                    && panelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED) {
+                panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 presenter.measureListToAdapterList(chartVM.getMeasures());
             }
         });
@@ -221,6 +223,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @Override
     public void navigateToTestScreen() {
-        getBaseActivity().launchActivity(TestActivity.createStarter(getContext()), false, BaseActivity.Animation.FADE);
+        getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
     }
 }
