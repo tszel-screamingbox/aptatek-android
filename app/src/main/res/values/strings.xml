@@ -109,7 +109,7 @@
     <string name="reminder.settings.friday">Friday</string>
     <string name="reminder.settings.monday">Monday</string>
     <string name="reminder.settings.pm">pm</string>
-    <string name="reminder.settings.reminder.item.time.format">%1$s:%2$s%3$s</string>
+    <string name="reminder.settings.reminder.item.time.format">%1$s:%2$s%3$s, %4$s</string>
     <string name="reminder.settings.saturday">Saturday</string>
     <string name="reminder.settings.sunday">Sunday</string>
     <string name="reminder.settings.thursday">Thursday</string>
@@ -127,6 +127,12 @@
     <!-- Reminder Time Picker Dialog -->
     <string name="settings.daily.reminder.description">You can set up multiple reminder times per day, on as many days per week that you want to check Phe levels.</string>
     <string name="settings.daily.reminders">Daily reminders</string>
+    <string name="settings.daily.reminder.schedule.type.weekly">w</string>
+    <string name="settings.daily.reminder.schedule.type.monthly">m</string>
+    <string name="settings.daily.reminder.schedule.type.biweekly">bw</string>
+    <string name="settings.reminder.schedule.type.weekly">Weekly</string>
+    <string name="settings.reminder.schedule.type.monthly">Monthly</string>
+    <string name="settings.reminder.schedule.type.biweekly">Biweekly</string>
     <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
     <string name="settings.fingerprint.description">Turning it ON will enable the fingerprint scanner to start the application instead of requesting your PIN code on every application start.</string>
     <string name="settings.message.saved">Your settings are saved.</string>

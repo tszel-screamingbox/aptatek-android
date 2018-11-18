@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.ReminderScheduleType;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.settings.reminder.adapter.ReminderSettingsAdapter;
@@ -100,7 +101,10 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
 
             @Override
             public void modifyReminderTime(@NonNull final ReminderSettingsAdapterItem reminderSettingsItem, final @NonNull RemindersAdapterItem reminderItem) {
-                TimePickerDialog.createForEdit(reminderItem.getHour(), reminderItem.getMinute(), getTimePickerDialogCallback(reminderSettingsItem, reminderItem))
+                TimePickerDialog.createForEdit(reminderItem.getHour(),
+                        reminderItem.getMinute(),
+                        reminderItem.getReminderScheduleType(),
+                        getTimePickerDialogCallback(reminderSettingsItem, reminderItem))
                         .show(getSupportFragmentManager(), "");
             }
         });
@@ -149,11 +153,11 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
     private TimePickerDialog.TimePickerDialogCallback getTimePickerDialogCallback(@NonNull final ReminderSettingsAdapterItem reminderSettingsAdapterItem, @Nullable final RemindersAdapterItem remindersAdapterItem) {
         return new TimePickerDialog.TimePickerDialogCallback() {
             @Override
-            public void done(final int hourOfDay, final int minute) {
+            public void done(final int hourOfDay, final int minute, final ReminderScheduleType reminderScheduleType) {
                 if (remindersAdapterItem != null) {
-                    presenter.modifyReminder(adapter.getData(), reminderSettingsAdapterItem, remindersAdapterItem, hourOfDay, minute);
+                    presenter.modifyReminder(adapter.getData(), reminderSettingsAdapterItem, remindersAdapterItem, hourOfDay, minute, reminderScheduleType);
                 } else {
-                    presenter.addNewReminder(adapter.getData(), reminderSettingsAdapterItem, hourOfDay, minute);
+                    presenter.addNewReminder(adapter.getData(), reminderSettingsAdapterItem, hourOfDay, minute, reminderScheduleType);
                 }
             }
 

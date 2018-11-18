@@ -9,6 +9,7 @@ import com.aptatek.pkulab.data.model.ReminderDayDataModel;
 import com.aptatek.pkulab.device.AlarmManager;
 import com.aptatek.pkulab.domain.model.Reminder;
 import com.aptatek.pkulab.domain.model.ReminderDay;
+import com.aptatek.pkulab.domain.model.ReminderScheduleType;
 
 import java.util.Calendar;
 import java.util.List;
@@ -70,18 +71,18 @@ public class ReminderInteractor {
         return Completable.fromAction(() -> reminderDao.insert(reminderMapper.mapToData(reminder)));
     }
 
-    public Completable insertReminder(final int weekDay, final int hour, final int minute) {
+    public Completable insertReminder(final int weekDay, final int hour, final int minute, final ReminderScheduleType reminderScheduleType) {
         return Completable.fromAction(() ->
-                alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute, true));
+                alarmManager.setReminder(getReminderTimeStamp(weekDay, hour, minute, reminderScheduleType), weekDay + hour + minute, true));
     }
 
-    public Completable updateReminder(final String id, final int hour, final int minute) {
-        return Completable.fromAction(() -> reminderDao.updateReminder(id, hour, minute));
+    public Completable updateReminder(final String id, final int hour, final int minute, final ReminderScheduleType reminderScheduleType) {
+        return Completable.fromAction(() -> reminderDao.updateReminder(id, hour, minute, reminderMapper.scheduleDataTypeToDomain(reminderScheduleType).getCode()));
     }
 
-    public Completable updateReminder(final int weekDay, final int hour, final int minute) {
+    public Completable updateReminder(final int weekDay, final int hour, final int minute, final ReminderScheduleType reminderScheduleType) {
         return Completable.fromAction(() ->
-                alarmManager.updateReminder(getReminderTimeStamp(weekDay, hour, minute), weekDay + hour + minute)
+                alarmManager.updateReminder(getReminderTimeStamp(weekDay, hour, minute, reminderScheduleType), weekDay + hour + minute)
         );
     }
 
@@ -101,7 +102,7 @@ public class ReminderInteractor {
                 .toObservable();
     }
 
-    private long getReminderTimeStamp(final int weekDay, final int hour, final int minute) {
+    private long getReminderTimeStamp(final int weekDay, final int hour, final int minute, final ReminderScheduleType reminderScheduleType) {
         final Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
         calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
@@ -111,7 +112,13 @@ public class ReminderInteractor {
         calendar.set(Calendar.SECOND, 0);
 
         if (Calendar.getInstance().getTimeInMillis() > calendar.getTimeInMillis()) {
-            calendar.set(Calendar.WEEK_OF_MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 1);
+            if (reminderScheduleType == ReminderScheduleType.WEEKLY) {
+                calendar.set(Calendar.WEEK_OF_MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 1);
+            } else if (reminderScheduleType == ReminderScheduleType.BIWEEKLY) {
+                calendar.set(Calendar.WEEK_OF_MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 2);
+            } else {
+                calendar.set(Calendar.MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 1);
+            }
         }
 
         return calendar.getTimeInMillis();
