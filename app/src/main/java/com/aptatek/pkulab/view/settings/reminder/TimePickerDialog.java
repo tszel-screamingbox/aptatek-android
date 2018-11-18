@@ -25,6 +25,7 @@ import android.widget.TimePicker;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.ReminderScheduleType;
+import com.aptatek.pkulab.widget.CustomRadioGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,14 +94,8 @@ public class TimePickerDialog extends DialogFragment {
     @BindView(R.id.constraintLayout)
     ConstraintLayout constraintLayout;
 
-    @BindView(R.id.radioButtonWeekly)
-    RadioButton radioButtonWeekly;
-
-    @BindView(R.id.radioButtonMonthly)
-    RadioButton radioButtonMonthly;
-
-    @BindView(R.id.radioButtonBiWeekly)
-    RadioButton radioButtonBiWeekly;
+    @BindView(R.id.radioGroupSchedule)
+    CustomRadioGroup radioGroupSchedule;
 
     @Nullable
     private TimePickerDialogCallback callback;
@@ -121,27 +116,6 @@ public class TimePickerDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         timePicker.setIs24HourView(false);
-
-        radioButtonWeekly.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                radioButtonBiWeekly.setChecked(false);
-                radioButtonMonthly.setChecked(false);
-            }
-        });
-
-        radioButtonBiWeekly.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                radioButtonMonthly.setChecked(false);
-                radioButtonWeekly.setChecked(false);
-            }
-        });
-
-        radioButtonMonthly.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                radioButtonWeekly.setChecked(false);
-                radioButtonBiWeekly.setChecked(false);
-            }
-        });
 
         if (getArguments() != null) {
             textViewDelete.setText(R.string.reminder_time_picker_delete);

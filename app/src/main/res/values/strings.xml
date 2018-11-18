@@ -105,10 +105,10 @@
     <!-- Reminder Notification-->
     <string name="reminder.notification.title">Time for Phe Check!</string>
     <string name="reminder.settings.already.has.reminder">You already have the same reminder on the given day.</string>
-    <string name="reminder.settings.am">am</string>
+    <string name="reminder.settings.am">a</string>
     <string name="reminder.settings.friday">Friday</string>
     <string name="reminder.settings.monday">Monday</string>
-    <string name="reminder.settings.pm">pm</string>
+    <string name="reminder.settings.pm">p</string>
     <string name="reminder.settings.reminder.item.time.format">%1$s:%2$s%3$s, %4$s</string>
     <string name="reminder.settings.saturday">Saturday</string>
     <string name="reminder.settings.sunday">Sunday</string>
