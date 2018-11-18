@@ -38,6 +38,7 @@
             android:name=".view.pin.auth.AuthPinHostActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
