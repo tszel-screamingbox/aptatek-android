@@ -14,6 +14,7 @@ public class ReminderDataModel {
     private int weekDay;
     private int hour;
     private int minute;
+    @NonNull
     @TypeConverters(ReminderScheduleTypeConverter.class)
     private ReminderScheduleDataType reminderScheduleType;
 
@@ -50,11 +51,12 @@ public class ReminderDataModel {
         this.minute = minute;
     }
 
+    @NonNull
     public ReminderScheduleDataType getReminderScheduleType() {
         return reminderScheduleType;
     }
 
-    public void setReminderScheduleType(final ReminderScheduleDataType reminderScheduleType) {
+    public void setReminderScheduleType(@NonNull final ReminderScheduleDataType reminderScheduleType) {
         this.reminderScheduleType = reminderScheduleType;
     }
 }
