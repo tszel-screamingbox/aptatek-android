@@ -54,7 +54,9 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
     private final BroadcastReceiver requestPinReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
-            AuthPinHostActivityStarter.start(BaseActivity.this, true);
+            if (shouldShowPinAuthWhenInactive()) {
+                AuthPinHostActivityStarter.start(BaseActivity.this, true);
+            }
         }
     };
 
@@ -239,6 +241,10 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
             default:
                 break;
         }
+    }
+
+    protected boolean shouldShowPinAuthWhenInactive() {
+        return true;
     }
 
 }

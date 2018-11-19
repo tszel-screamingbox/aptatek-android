@@ -50,4 +50,9 @@ public class ParentalGateActivity extends BaseRootFrameActivity<ParentalGateView
     public void navigateBack() {
         onBackPressed();
     }
+
+    @Override
+    protected boolean shouldShowPinAuthWhenInactive() {
+        return false;
+    }
 }

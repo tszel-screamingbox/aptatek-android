@@ -67,4 +67,9 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
         final Intent intent = new Intent(this, SetPinHostActivity.class);
         launchActivity(intent, true, FADE);
     }
+
+    @Override
+    protected boolean shouldShowPinAuthWhenInactive() {
+        return false;
+    }
 }

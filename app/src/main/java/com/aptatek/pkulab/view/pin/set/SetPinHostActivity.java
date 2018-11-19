@@ -38,6 +38,11 @@ public class SetPinHostActivity extends BaseRootFrameActivity<SetPinHostActivity
     public int getFrameLayoutId() {
         return R.id.rootFrame;
     }
+
+    @Override
+    protected boolean shouldShowPinAuthWhenInactive() {
+        return false;
+    }
 }
 
 
