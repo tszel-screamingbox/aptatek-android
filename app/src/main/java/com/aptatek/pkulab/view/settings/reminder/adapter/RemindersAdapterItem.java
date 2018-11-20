@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.settings.reminder.adapter;
 
+import com.aptatek.pkulab.domain.model.ReminderScheduleType;
 import com.aptatek.pkulab.view.base.AdapterItem;
 import com.google.auto.value.AutoValue;
 
@@ -15,6 +16,8 @@ public abstract class RemindersAdapterItem implements AdapterItem {
 
     public abstract int getMinute();
 
+    public abstract ReminderScheduleType getReminderScheduleType();
+
     public abstract Builder toBuilder();
 
     public static Builder builder() {
@@ -28,6 +31,8 @@ public abstract class RemindersAdapterItem implements AdapterItem {
 
     @AutoValue.Builder
     public abstract static class Builder {
+        public abstract Builder setReminderScheduleType(ReminderScheduleType reminderScheduleType);
+
         public abstract Builder setId(String id);
 
         public abstract Builder setTime(String time);

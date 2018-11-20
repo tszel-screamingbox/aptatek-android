@@ -13,12 +13,16 @@ public abstract class Reminder {
 
     public abstract int getWeekDay();
 
+    public abstract ReminderScheduleType getReminderScheduleType();
+
     public static Reminder.Builder builder() {
         return new AutoValue_Reminder.Builder();
     }
 
     @AutoValue.Builder
     public abstract static class Builder {
+
+        public abstract Builder setReminderScheduleType(ReminderScheduleType reminderScheduleType);
 
         public abstract Builder setId(String id);
 

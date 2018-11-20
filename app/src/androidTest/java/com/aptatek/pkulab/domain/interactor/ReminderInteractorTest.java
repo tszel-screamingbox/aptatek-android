@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.pkulab.domain.model.Reminder;
 import com.aptatek.pkulab.domain.model.ReminderDay;
+import com.aptatek.pkulab.domain.model.ReminderScheduleType;
 import com.aptatek.pkulab.injection.component.DaggerAndroidTestComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.injection.module.ReminderModule;
@@ -99,6 +100,7 @@ public class ReminderInteractorTest {
                 .setMinute(10)
                 .setId(UUID.randomUUID().toString())
                 .setWeekDay(1)
+                .setReminderScheduleType(ReminderScheduleType.WEEKLY)
                 .build();
 
         final TestObserver testInsert = reminderInteractor.insertReminder(reminder).test();
@@ -120,7 +122,7 @@ public class ReminderInteractorTest {
      */
     @Test
     public void testInsertReminderToAlarmManager() throws Exception {
-        final TestObserver testObserver = reminderInteractor.insertReminder(1, 10, 10).test();
+        final TestObserver testObserver = reminderInteractor.insertReminder(1, 10, 10, ReminderScheduleType.WEEKLY).test();
         testObserver.await();
         testObserver.assertNoErrors();
         testObserver.assertComplete();
@@ -138,6 +140,7 @@ public class ReminderInteractorTest {
                 .setMinute(10)
                 .setId(UUID.randomUUID().toString())
                 .setWeekDay(1)
+                .setReminderScheduleType(ReminderScheduleType.WEEKLY)
                 .build();
 
         final TestObserver testInsert = reminderInteractor.insertReminder(reminder).test();
@@ -188,6 +191,7 @@ public class ReminderInteractorTest {
                 .setMinute(10)
                 .setId(UUID.randomUUID().toString())
                 .setWeekDay(1)
+                .setReminderScheduleType(ReminderScheduleType.WEEKLY)
                 .build();
 
         final TestObserver testInsert = reminderInteractor.insertReminder(reminder).test();
@@ -204,7 +208,7 @@ public class ReminderInteractorTest {
                 && reminders.get(0).getHour() == 10
                 && reminders.get(0).getMinute() == 10);
 
-        final TestObserver testUpdate = reminderInteractor.updateReminder(reminder.getId(), 11, 11).test();
+        final TestObserver testUpdate = reminderInteractor.updateReminder(reminder.getId(), 11, 11, ReminderScheduleType.WEEKLY).test();
         testUpdate.await();
         testUpdate.assertNoErrors();
         testUpdate.assertComplete();
@@ -226,7 +230,7 @@ public class ReminderInteractorTest {
      */
     @Test
     public void testUpdateReminderInAlarmManager() throws Exception {
-        final TestObserver testObserver = reminderInteractor.updateReminder(1, 10, 10).test();
+        final TestObserver testObserver = reminderInteractor.updateReminder(1, 10, 10, ReminderScheduleType.WEEKLY).test();
         testObserver.await();
         testObserver.assertNoErrors();
         testObserver.assertComplete();
