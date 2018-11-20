@@ -57,6 +57,11 @@ public class AuthPinHostActivity extends BaseRootFrameActivity<AuthPinHostActivi
             launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        // disable
+    }
 }
 
 

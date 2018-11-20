@@ -7,12 +7,14 @@ import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Context;
 import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.aptatek.pkulab.device.AlarmManager;
 import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.DaggerApplicationComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.test.wetting.WettingReminderService;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -26,6 +28,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
     private ApplicationComponent applicationComponent;
     private boolean inForeground;
+    private long lastForegroundTime;
 
     @Inject
     AlarmManager alarmManager;
@@ -57,11 +60,20 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         inForeground = true;
         Timber.d("Process.Lifecycle: foreground");
         stopService(new Intent(this, WettingReminderService.class));
+
+        if (lastForegroundTime > 0L && Math.abs(System.currentTimeMillis() - lastForegroundTime) > Constants.PIN_IDLE_PERIOD_MS) {
+            Timber.d("Requesting pin code due to exceeding max idle period");
+
+            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Constants.PIN_IDLE_ACTION));
+        }
+
+        lastForegroundTime = 0L;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     public void onMoveToBackground() {
         inForeground = false;
+        lastForegroundTime = System.currentTimeMillis();
         Timber.d("Process.Lifecycle: background");
         startService(new Intent(this, WettingReminderService.class));
     }

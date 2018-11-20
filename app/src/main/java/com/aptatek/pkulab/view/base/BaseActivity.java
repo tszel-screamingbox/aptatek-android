@@ -22,6 +22,7 @@ import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
+import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivityStarter;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
@@ -47,6 +48,15 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
                     .setNeutralButtonTextColor(R.color.applicationPink)
                     .setCancelable(true)
                     .build(), BaseActivity.this).show(getSupportFragmentManager(), ALERT_DIALOG_FRAGMENT_TAG);
+        }
+    };
+
+    private final BroadcastReceiver requestPinReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            if (shouldShowPinAuthWhenInactive()) {
+                AuthPinHostActivityStarter.start(BaseActivity.this, true);
+            }
         }
     };
 
@@ -81,14 +91,19 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
     protected void onStart() {
         super.onStart();
 
-        LocalBroadcastManager.getInstance(this)
+        final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastManager
                 .registerReceiver(reminderDialogBroadcast, new IntentFilter(Constants.REMINDER_DIALOG_BROADCAST_NAME));
+        broadcastManager.registerReceiver(requestPinReceiver, new IntentFilter(Constants.PIN_IDLE_ACTION));
     }
 
     @Override
     protected void onStop() {
-        LocalBroadcastManager.getInstance(this)
+        final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastManager
                 .unregisterReceiver(reminderDialogBroadcast);
+        broadcastManager.unregisterReceiver(requestPinReceiver);
+
         super.onStop();
     }
 
@@ -226,6 +241,10 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
             default:
                 break;
         }
+    }
+
+    protected boolean shouldShowPinAuthWhenInactive() {
+        return true;
     }
 
 }

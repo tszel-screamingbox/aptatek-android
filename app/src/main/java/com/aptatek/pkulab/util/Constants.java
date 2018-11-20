@@ -33,4 +33,7 @@ public final class Constants {
     public static final int REMINDER_NOTIFICATION_ID = 999;
     public static final String REMINDER_DIALOG_BROADCAST_NAME = "reminderDialogBroadcastName";
 
+    public static final long PIN_IDLE_PERIOD_MS = 20L * 1000L;
+    public static final String PIN_IDLE_ACTION = "requestPinDueToInactivity";
+
 }
