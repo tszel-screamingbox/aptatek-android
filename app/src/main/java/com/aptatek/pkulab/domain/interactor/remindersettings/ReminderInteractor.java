@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 public class ReminderInteractor {
 
@@ -41,18 +42,21 @@ public class ReminderInteractor {
     }
 
     public Single<List<ReminderDay>> listReminderDays() {
-        return reminderDayDao.getReminderDays()
-                .map(reminderDayMapper::mapListToDomain)
-                .toObservable()
-                .flatMapIterable(data -> data)
-                .flatMap(reminderDay -> listReminders(reminderDay.getWeekDay())
-                        .map(reminders ->
-                                ReminderDay.builder()
-                                        .setReminders(reminders)
-                                        .setActive(reminderDay.isActive())
-                                        .setWeekDay(reminderDay.getWeekDay())
-                                        .build()))
-                .toList();
+        return initializeDays().andThen(
+                reminderDayDao.getReminderDays()
+                        .subscribeOn(Schedulers.computation())
+                        .map(reminderDayMapper::mapListToDomain)
+                        .toObservable()
+                        .flatMapIterable(data -> data)
+                        .flatMap(reminderDay -> listReminders(reminderDay.getWeekDay())
+                                .map(reminders ->
+                                        ReminderDay.builder()
+                                                .setReminders(reminders)
+                                                .setActive(reminderDay.isActive())
+                                                .setWeekDay(reminderDay.getWeekDay())
+                                                .build()))
+                        .toList()
+        );
     }
 
     public Completable initializeDays() {
@@ -117,7 +121,7 @@ public class ReminderInteractor {
             } else if (reminderScheduleType == ReminderScheduleType.BIWEEKLY) {
                 calendar.set(Calendar.WEEK_OF_MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 2);
             } else {
-                calendar.set(Calendar.MONTH, calendar.get(Calendar.WEEK_OF_MONTH) + 1);
+                calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + 1);
             }
         }
 

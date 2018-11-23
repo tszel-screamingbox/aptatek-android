@@ -42,7 +42,6 @@ public abstract class AptatekDatabase extends RoomDatabase {
         return Room.databaseBuilder(context, AptatekDatabase.class, databaseName)
                 .openHelperFactory(safeHelperFactory)
                 .addMigrations(MIGRATION_1_2)
-                .setJournalMode(JournalMode.TRUNCATE)
                 .build();
     }
 
