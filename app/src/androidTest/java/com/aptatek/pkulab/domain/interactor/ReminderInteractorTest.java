@@ -63,6 +63,7 @@ public class ReminderInteractorTest {
     @Test
     public void testFetchDaysAfterInitialization() throws Exception {
         final TestObserver<List<ReminderDay>> testDays = reminderInteractor.listReminderDays().test();
+        testDays.await();
         testDays.assertNoErrors();
         testDays.assertComplete();
         testDays.assertValueAt(0, value -> !value.isEmpty());
@@ -83,6 +84,7 @@ public class ReminderInteractorTest {
         testUpdate.assertComplete();
 
         final TestObserver<List<ReminderDay>> testDays = reminderInteractor.listReminderDays().test();
+        testDays.await();
         testDays.assertNoErrors();
         testDays.assertComplete();
         testDays.assertValueAt(0, value -> value.get(0).isActive());
