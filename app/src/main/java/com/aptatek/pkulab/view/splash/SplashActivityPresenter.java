@@ -3,7 +3,6 @@ package com.aptatek.pkulab.view.splash;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.device.PreferenceManager;
-import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -22,25 +21,21 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
 
     private final KeyStoreManager keyStoreManager;
     private final PreferenceManager preferenceManager;
-    private final ReminderInteractor reminderInteractor;
 
     private CompositeDisposable compositeDisposable;
 
     @Inject
     public SplashActivityPresenter(final KeyStoreManager keyStoreManager,
-                                   final ReminderInteractor reminderInteractor,
                                    final PreferenceManager preferenceManager) {
         this.keyStoreManager = keyStoreManager;
         this.preferenceManager = preferenceManager;
-        this.reminderInteractor = reminderInteractor;
     }
 
     @Override
     public void attachView(@NonNull final SplashActivityView view) {
         super.attachView(view);
         compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(reminderInteractor.initializeDays()
-                .andThen(Flowable.timer(DELAY_IN_MILLISEC, TimeUnit.MILLISECONDS))
+        compositeDisposable.add(Flowable.timer(DELAY_IN_MILLISEC, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ignored -> switchToNextActivity()));

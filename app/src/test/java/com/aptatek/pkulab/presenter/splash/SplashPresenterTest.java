@@ -45,7 +45,7 @@ public class SplashPresenterTest {
         MockitoAnnotations.initMocks(this);
         when(reminderInteractor.initializeDays()).thenReturn(Completable.complete());
 
-        presenter = new SplashActivityPresenter(keyStoreManager, reminderInteractor, preferenceManager);
+        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager);
         presenter.attachView(view);
     }
 
