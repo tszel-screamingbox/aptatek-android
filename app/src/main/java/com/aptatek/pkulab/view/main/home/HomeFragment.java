@@ -11,12 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
@@ -40,6 +42,7 @@ import static android.view.View.VISIBLE;
 
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
 
+    private static final String TAG_BATTER_DIALOG = "aptatek.main.home.battery.dialog";
     private static final int THRESHOLD = 500;
     private static final int TRANSITION_TIME = 200;
 
@@ -219,6 +222,19 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     public void setMeasureList(final List<DailyResultAdapterItem> data) {
         dailyResultsAdapter.setData(data);
+    }
+
+    @Override
+    public void showLowBatteryDialog() {
+        final AlertDialogModel model = AlertDialogModel.builder()
+                .setTitle(getString(R.string.home_battery_alert_title))
+                .setMessage(getString(R.string.home_battery_alert_content))
+                .setPositiveButtonText(getString(R.string.alertdialog_button_ok))
+                .setCancelable(false)
+                .build();
+
+        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(model, null);
+        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_BATTER_DIALOG);
     }
 
     @Override
