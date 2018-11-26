@@ -103,8 +103,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Dial.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:background">@color/applicationWhite</item>
+    <style name="Ripple.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:background">@drawable/ripple_white_button</item>
+    </style>
+
+    <style name="Dial.Button" parent="Ripple.Button">
         <item name="android:textColor">@color/dialButtonGrey</item>
         <item name="android:textSize">@dimen/font.size.xlarge</item>
         <item name="android:gravity">center</item>

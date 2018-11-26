@@ -9,7 +9,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/general.distance.xxsmall"
-        android:background="@drawable/gradient_shadow"/>
+        android:background="@drawable/gradient_shadow" />
 
     <TableRow android:layout_weight="1">
 
@@ -47,7 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/applicationWhite"
             android:text="@string/pin.button.4" />
 
         <Button
@@ -92,7 +91,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/applicationWhite"
             android:text="@string/pin.button.9" />
 
     </TableRow>
@@ -106,7 +104,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="center"
-            android:src="@drawable/delete" />
+            android:src="@drawable/delete"
+            tools:ignore="ContentDescription" />
 
         <Button
             android:id="@+id/button0"
