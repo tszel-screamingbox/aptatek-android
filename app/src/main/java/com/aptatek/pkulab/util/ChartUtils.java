@@ -75,20 +75,18 @@ public final class ChartUtils {
                     .max(cubeDataComparator)
                     .first(null);
 
-            final State state;
-            if (dailyHighest != null) {
-                state = getState(dailyHighest.getPkuLevel(), rangeInfo);
-            } else {
-                state = State.LOW;
+            if (dailyHighest == null) {
+                continue;
             }
 
+            final State state = getState(dailyHighest.getPkuLevel(), rangeInfo);
             final ChartVM chartVm = ChartVM.builder()
-                    .setDate(new Date(dailyHighest == null ? entry.getKey() : dailyHighest.getTimestamp()))
+                    .setDate(new Date(dailyHighest.getTimestamp()))
                     .setMeasures(entry.getValue())
                     .setNumberOfMeasures(entry.getValue().size())
                     .setZoomed(false)
                     .setState(stateString(state))
-                    .setHighestPkuLevel(dailyHighest == null ? null : dailyHighest.getPkuLevel())
+                    .setHighestPkuLevel(dailyHighest.getPkuLevel())
                     .setColorRes(stateColor(state))
                     .build();
 
