@@ -57,7 +57,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/nunito_black</item>
         <item name="android:textColor">@color/applicationMediumGray</item>
-        <item name="android:textSize">@dimen/font.size.big</item>
+        <item name="android:textSize">@dimen/font.size.large</item>
     </style>
 
     <style name="Test.Next.Button" parent="Test.Cancel.Button">

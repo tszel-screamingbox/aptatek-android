@@ -63,7 +63,7 @@
     <dimen name="font.size.big">18sp</dimen>
     <dimen name="font.size.xbig">20sp</dimen>
     <dimen name="font.size.xxbig">21sp</dimen>
-    <dimen name="font.size.large">22sp</dimen>
+    <dimen name="font.size.large">24sp</dimen>
     <dimen name="font.size.xlarge">31sp</dimen>
     <dimen name="font.size.xxlarge">42sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
