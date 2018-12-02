@@ -69,6 +69,10 @@
     <dimen name="font.size.enormous">48sp</dimen>
     <dimen name="font.size.wetting">80sp</dimen>
 
+
+    <dimen name="font.size.badge">36sp</dimen>
+
+
     <dimen name="font.size.weekly.subtitle">21sp</dimen>
     <dimen name="font.size.weekly.title">25sp</dimen>
 
