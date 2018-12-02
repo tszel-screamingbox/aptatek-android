@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/graph.item.size"
-    android:layout_height="@dimen/graph.item.size">
+    android:layout_height="@dimen/graph.item.size"
+    android:clipToPadding="false"
+    android:padding="@dimen/general.distance.xxxmini">
 
     <com.aptatek.pkulab.widget.BubbleTextView
         android:id="@+id/bubble"
@@ -21,18 +24,16 @@
         android:id="@+id/badge"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="@dimen/general.distance.xmini"
         android:background="@drawable/bubble_badge"
         android:elevation="@dimen/general.elevation"
         android:gravity="center"
-        android:textColor="@color/applicationWhite"
-        android:textSize="@dimen/font.size.regular"
+        android:textColor="@color/applicationRed"
+        android:textSize="36sp"
         android:textStyle="bold"
         android:visibility="visible"
-        app:autoSizeStepGranularity="@dimen/font.size.steps"
-        app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintHeight_percent="0.269"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.25" />
+        app:layout_constraintWidth_percent="0.269"
+        tools:text="5" />
 </android.support.constraint.ConstraintLayout>
