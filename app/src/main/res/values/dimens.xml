@@ -76,13 +76,13 @@
 
     <dimen name="pdf.width">1000dp</dimen>
     <dimen name="pdf.height">800dp</dimen>
-
     <dimen name="pdf.legend.bubble.size">40dp</dimen>
 
     <dimen name="test.alert.corner">50dp</dimen>
     <dimen name="test.alert.height">100dp</dimen>
-
     <dimen name="test.result.circle.width">20dp</dimen>
+
+    <dimen name="test.progressbar.height">12dp</dimen>
 
     <dimen name="daily.result.sliding.background.corner">20dp</dimen>
 
