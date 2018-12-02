@@ -3,7 +3,7 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="@dimen/general.distance.mini" />
-            <solid android:color="@color/testPageIndicatorDot" />
+            <solid android:color="@color/testPageIndicatorGray" />
         </shape>
     </item>
 
@@ -11,7 +11,7 @@
         <scale android:scaleWidth="100%">
             <shape>
                 <corners android:radius="@dimen/general.distance.mini" />
-                <solid android:color="@color/pageIndicatorBlue" />
+                <solid android:color="@color/testPageIndicatorBlue" />
             </shape>
         </scale>
     </item>

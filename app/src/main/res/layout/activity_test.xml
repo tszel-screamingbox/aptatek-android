@@ -43,8 +43,8 @@
             app:layout_constraintVertical_bias="0.5"
             app:piv_animationType="worm"
             app:piv_interactiveAnimation="true"
-            app:piv_selectedColor="@color/pageIndicatorBlue"
-            app:piv_unselectedColor="@color/testPageIndicatorDot" />
+            app:piv_selectedColor="@color/testPageIndicatorBlue"
+            app:piv_unselectedColor="@color/testPageIndicatorGray" />
 
         <ProgressBar
             android:id="@+id/testProgress"

@@ -61,7 +61,7 @@
     </style>
 
     <style name="Test.Next.Button" parent="Test.Cancel.Button">
-        <item name="android:textColor">@color/pageIndicatorBlue</item>
+        <item name="android:textColor">@color/testPageIndicatorBlue</item>
     </style>
 
     <style name="Test.Circle.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -79,7 +79,7 @@
     </style>
 
     <style name="Test.Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressTint">@color/pageIndicatorBlue</item>
+        <item name="android:progressTint">@color/testPageIndicatorBlue</item>
     </style>
 
     <style name="Grey.Settings.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
