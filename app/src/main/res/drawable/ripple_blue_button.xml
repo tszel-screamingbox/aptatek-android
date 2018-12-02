@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/buttonBluePushed">
-    <item android:id="@android:id/mask">
-        <shape android:shape="rectangle">
-            <corners android:radius="@dimen/general.button.corner" />
-            <solid android:color="@color/buttonBluePushed" />
-        </shape>
-    </item>
+    android:color="?android:colorControlHighlight">
 
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
