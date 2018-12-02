@@ -23,11 +23,8 @@
 
 
     <color name="buttonBlue">#20E8CD</color>
-    <color name="buttonBluePushed">#77ff00ff</color>
     <color name="buttonGrey">@color/applicationSmoke</color>
-    <color name="buttonGreyPushed">#770fff0f</color>
     <color name="buttonWhite">#ffffff</color>
-    <color name="buttonWhitePushed">#D3DEE6</color>
 
     <color name="chartBackrgroundBlue">#DBF9FE</color>
     <color name="chartEmpty">#D3DEE5</color>
