@@ -49,7 +49,6 @@
 
     <color name="pdfTitle">#0A263C</color>
 
-    <color name="pageIndicatorBlue">#20E8CD</color>
-
-    <color name="testPageIndicatorDot">#D3DEE5</color>
+    <color name="testPageIndicatorBlue">#20E8CD</color>
+    <color name="testPageIndicatorGray">#D3DEE5</color>
 </resources>
