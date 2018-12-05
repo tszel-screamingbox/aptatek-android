@@ -21,6 +21,11 @@
     <color name="applicationWhite">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
 
+
+    <color name="buttonBlue">#20E8CD</color>
+    <color name="buttonGrey">@color/applicationSmoke</color>
+    <color name="buttonWhite">#ffffff</color>
+
     <color name="chartBackrgroundBlue">#DBF9FE</color>
     <color name="chartEmpty">#D3DEE5</color>
     <color name="chartWeeklyBlue">#20E8CD</color>
