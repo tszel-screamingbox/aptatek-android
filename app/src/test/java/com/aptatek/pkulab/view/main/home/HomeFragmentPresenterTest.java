@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.main.home;
 
+import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
@@ -35,6 +36,8 @@ import static org.mockito.Mockito.verify;
 public class HomeFragmentPresenterTest {
 
     private static final String TEST_STRING = "hello";
+    private static final float BATTERY_NORMAL = 0.6f;
+    private static final float BATTERY_LOW = 0.1f;
 
     @Mock
     private ResourceInteractor resourceInteractor;
@@ -48,6 +51,8 @@ public class HomeFragmentPresenterTest {
     private DailyChartFormatter dailyChartFormatter;
     @Mock
     private WettingInteractor wettingInteractor;
+    @Mock
+    private DeviceHelper deviceHelper;
 
     private final Date date = new Date();
     private HomeFragmentPresenter presenter;
@@ -64,9 +69,10 @@ public class HomeFragmentPresenterTest {
         doReturn(TEST_STRING).when(dailyChartFormatter).formatDate(ArgumentMatchers.anyLong(), ArgumentMatchers.anyBoolean());
         doReturn(TEST_STRING).when(dailyChartFormatter).getNameOfDay(ArgumentMatchers.anyLong());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
+        doReturn(BATTERY_NORMAL).when(deviceHelper).getBatteryLevel();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new HomeFragmentPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor);
+        presenter = new HomeFragmentPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)
@@ -119,5 +125,18 @@ public class HomeFragmentPresenterTest {
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         verify(view).updateTitles(TEST_STRING, TEST_STRING);
+    }
+
+    /**
+     * Showing low battery dialog.
+     *
+     * @test.expected {@link  HomeFragmentView#showLowBatteryDialog()   showLowBatteryDialog()  }
+     * method is called, without any error.
+     */
+    @Test
+    public void testLowBattery() {
+        doReturn(BATTERY_LOW).when(deviceHelper).getBatteryLevel();
+        presenter.startNewTest();
+        verify(view).showLowBatteryDialog();
     }
 }

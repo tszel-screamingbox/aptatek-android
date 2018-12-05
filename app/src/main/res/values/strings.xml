@@ -1,6 +1,7 @@
 <resources>
     <!-- AlertDialog strings -->
     <string name="alertdialog.button.no">No</string>
+    <string name="alertdialog.button.ok">OK</string>
     <string name="alertdialog.button.yes">Yes</string>
     <!-- App Constants-->
     <string name="application.name">PKU LAB</string>
@@ -42,6 +43,9 @@
     <string name="fingerprint.option.disable">Disable Fingerprint</string>
     <string name="fingerprint.option.enable">Enable Fingerprint</string>
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
+    <!-- Home Fragment -->
+    <string name="home.battery.alert.content">You need to charge phone to >20% of battery to continue.</string>
+    <string name="home.battery.alert.title">Battery Life Too Low</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>

@@ -1,9 +1,18 @@
 package com.aptatek.pkulab.device;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+
 import com.aptatek.pkulab.domain.manager.FingerprintManager;
+import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import static android.content.Intent.ACTION_BATTERY_CHANGED;
+import static android.os.BatteryManager.EXTRA_LEVEL;
+import static android.os.BatteryManager.EXTRA_SCALE;
 
 /**
  * Helper for easy access device provided data
@@ -12,12 +21,15 @@ import javax.inject.Singleton;
 @Singleton
 public class DeviceHelper {
 
+    private final Context context;
     private final FingerprintManager fingerprintManager;
     private final PreferenceManager preferenceManager;
 
     @Inject
-    public DeviceHelper(final FingerprintManager fingerprintManager,
+    public DeviceHelper(@ApplicationContext final Context context,
+                        final FingerprintManager fingerprintManager,
                         final PreferenceManager preferenceManager) {
+        this.context = context;
         this.fingerprintManager = fingerprintManager;
         this.preferenceManager = preferenceManager;
     }
@@ -34,5 +46,13 @@ public class DeviceHelper {
         return hasEnrolledFingerprints()
                 && hasEnrolledFingerprints()
                 && preferenceManager.isFingerprintScanEnabled();
+    }
+
+    public float getBatteryLevel() {
+        final IntentFilter ifilter = new IntentFilter(ACTION_BATTERY_CHANGED);
+        final Intent batteryStatus = context.registerReceiver(null, ifilter);
+        final int level = batteryStatus.getIntExtra(EXTRA_LEVEL, -1);
+        final int scale = batteryStatus.getIntExtra(EXTRA_SCALE, -1);
+        return level / (float) scale;
     }
 }
