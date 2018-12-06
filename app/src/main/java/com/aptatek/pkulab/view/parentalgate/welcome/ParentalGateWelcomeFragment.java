@@ -21,6 +21,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static android.view.View.*;
+
 public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcomeView, ParentalGateWelcomePresenter>
         implements ParentalGateWelcomeView {
 
@@ -77,7 +79,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
     @Override
     public void setShowButton(final boolean visible) {
-        btnControl.setVisibility(visible ? View.VISIBLE : View.GONE);
+        btnControl.setVisibility(visible ? VISIBLE : GONE);
     }
 
     @Override
@@ -110,7 +112,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
     @Override
     public void setShowBirthDateField(final boolean visible) {
-        etBirthDate.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        etBirthDate.setVisibility(visible ? VISIBLE : GONE);
     }
 
     @Override
@@ -120,7 +122,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
     @Override
     public void setShowAgeField(final boolean visible) {
-        etAge.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        etAge.setVisibility(visible ? VISIBLE : INVISIBLE);
     }
 
     @Override
@@ -130,7 +132,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
     @Override
     public void setShowKeypad(final boolean visible) {
-        keypad.setVisibility(visible ? View.VISIBLE : View.GONE);
+        keypad.setVisibility(visible ? VISIBLE : GONE);
     }
 
     @Override
