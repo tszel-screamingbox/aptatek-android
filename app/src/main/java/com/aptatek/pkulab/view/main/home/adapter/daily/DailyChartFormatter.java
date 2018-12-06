@@ -18,6 +18,9 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 public class DailyChartFormatter {
+
+    private static final String EMPTY = "";
+
     private final ResourceInteractor resourceInteractor;
     private final RangeSettingsValueFormatter valueFormatter;
     private final PkuRangeInteractor pkuRangeInteractor;
@@ -42,6 +45,9 @@ public class DailyChartFormatter {
     }
 
     public String getBubbleValue(final PkuLevel highestMeasure) {
+        if (highestMeasure == null) {
+            return EMPTY;
+        }
         final PkuRangeInfo userSettings = pkuRangeInteractor.getInfo().blockingGet();
         final PkuLevel pkuLevelInSelectedUnit = convertToDisplayUnit(highestMeasure, userSettings);
 

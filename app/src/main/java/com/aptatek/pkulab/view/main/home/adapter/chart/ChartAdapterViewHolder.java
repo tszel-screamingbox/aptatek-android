@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.util.animation.AnimationHelper;
 import com.aptatek.pkulab.view.base.list.viewholder.BaseViewHolder;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
@@ -56,28 +55,19 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private void hideDetails(final ChartVM currentData) {
         animationHelper.animateConstraintWidthAndHeigth(bubbleText, () ->
-            resetBubble(currentData), 0.5f);
+                resetBubble(currentData), 0.5f);
     }
 
     private void showDetails(final ChartVM currentData) {
         animationHelper.animateConstraintWidthAndHeigth(bubbleText, () -> {
             final BubbleTextView.BubbleTextConfiguration.Builder configBuilder = BubbleTextView.BubbleTextConfiguration.builder();
 
-            final PkuLevel highestPkuLevel = currentData.getHighestPkuLevel();
-            if (highestPkuLevel == null) {
-                configBuilder.setPrimaryText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()))
-                        .setTextColor(ContextCompat.getColor(context, R.color.applicationWhite))
-                        .setFillColor(ContextCompat.getColor(context, R.color.chartEmpty))
-                        .setCircleColor(ContextCompat.getColor(context, android.R.color.transparent))
-                        .setCircleWidth(0);
-            } else {
-                configBuilder.setPrimaryText(dailyChartFormatter.getBubbleValue(highestPkuLevel))
-                        .setSecondaryText(context.getString(currentData.getState()))
-                        .setTextColor(ContextCompat.getColor(context, currentData.getColorRes()))
-                        .setFillColor(ContextCompat.getColor(context, R.color.applicationWhite))
-                        .setCircleColor(ContextCompat.getColor(context, currentData.getColorRes()))
-                        .setCircleWidth((int) context.getResources().getDimension(R.dimen.graph_bubble_stroke_big));
-            }
+            configBuilder.setPrimaryText(dailyChartFormatter.getBubbleValue(currentData.getHighestPkuLevel()))
+                    .setSecondaryText(context.getString(currentData.getState()))
+                    .setTextColor(ContextCompat.getColor(context, currentData.getColorRes()))
+                    .setFillColor(ContextCompat.getColor(context, R.color.applicationWhite))
+                    .setCircleColor(ContextCompat.getColor(context, currentData.getColorRes()))
+                    .setCircleWidth((int) context.getResources().getDimension(R.dimen.graph_bubble_stroke_big));
 
             bubbleText.setConfiguration(configBuilder.build());
 
@@ -93,7 +83,7 @@ public class ChartAdapterViewHolder extends BaseViewHolder<ChartVM> {
 
     private void resetBubble(final ChartVM currentData) {
         badgeTextView.setVisibility(View.GONE);
-        final @ColorInt int color = ContextCompat.getColor(context,  currentData.getHighestPkuLevel() == null ? R.color.chartEmpty : currentData.getColorRes());
+        final @ColorInt int color = ContextCompat.getColor(context, currentData.getColorRes());
         final BubbleTextView.BubbleTextConfiguration config = BubbleTextView.BubbleTextConfiguration.builder()
                 .setPrimaryText(dailyChartFormatter.formatDailyDate(currentData.getDate().getTime()))
                 .setTextColor(context.getResources().getColor(R.color.applicationWhite))
