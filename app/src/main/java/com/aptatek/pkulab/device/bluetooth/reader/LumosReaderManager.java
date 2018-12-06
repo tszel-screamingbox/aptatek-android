@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
@@ -121,20 +122,55 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     }
 
     public void queueMtuChange(final int mtu) {
-        requestMtu(mtu)
-                .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
-                .done(device -> {
+//        requestMtu(mtu)
+//                .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
+//                .done(device -> {
                     Timber.d("Mtu change successful");
                     writeCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME), characteristicWriter.toBytes(createTimeResponse()))
                             .done(aDevice -> Timber.d("Update time write successful"))
                             .fail((aDevice, aStatus) -> Timber.d("Failed to write time: status [%d]", aStatus))
                             .enqueue();
+
+                    writeCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST),new byte[] {0x0})
+                            .done(device -> {
+                                Timber.d("Successfully written sync request on device: [%s]", device.getAddress());
+                                final StringBuilder stringBuilder = new StringBuilder();
+                                final Callback callback = response -> {
+                                    Timber.d("SYNC RESPONSE: %s", response);
+                                };
+
+                                readSyncResponse(callback, stringBuilder);
+                            })
+                            .fail(((device, status) -> Timber.d("Failed to write sync request: status [%d]", status)))
+                            .enqueue();
+//                })
+//                .fail((device, status) -> {
+//                    Timber.d("Mtu change failed: status [%d]", status);
+//                    mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+//                })
+//                .enqueue();
+    }
+
+    private void readSyncResponse(final Callback callback, final StringBuilder stringBuilder) {
+        readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE))
+                .with((device1, data) -> {
+                    final String stringValue = data.getStringValue(0);
+                    Timber.d("Successfully read sync response: [%s]", stringValue);
+                    if (TextUtils.isEmpty(stringValue.trim())) {
+                        Timber.d("STOP READING SYNC RESPONSE");
+                        callback.onSyncResponseRead(stringBuilder.toString());
+                    } else {
+                        stringBuilder.append(stringValue);
+                        readSyncResponse(callback, stringBuilder);
+
+                    }
                 })
-                .fail((device, status) -> {
-                    Timber.d("Mtu change failed: status [%d]", status);
-                    mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
-                })
+                .fail((device1, status) -> Timber.d("Failed to write sync request: status [%d]", status))
                 .enqueue();
+    }
+
+    private interface Callback {
+        void onSyncResponseRead(String response);
     }
 
     public void queueConnect(@NonNull final BluetoothDevice bluetoothDevice) {

@@ -16,6 +16,7 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import ix.Ix;
+import timber.log.Timber;
 
 public class CharacteristicsHolder {
 
@@ -27,8 +28,10 @@ public class CharacteristicsHolder {
     private static final UUID READER_CHAR_REQUEST_RESULT_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_REQUEST_RESULT);
     private static final UUID READER_CHAR_CARTRIDGE_ID_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID);
     private static final UUID READER_CHAR_ERROR_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_ERROR);
-    private static final UUID READER_CHAR_UPDATE_ASSAY_DETAILS_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_UPDATE_ASSAY_DETAILS);
+//    private static final UUID READER_CHAR_UPDATE_ASSAY_DETAILS_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_UPDATE_ASSAY_DETAILS);
     private static final UUID READER_CHAR_UPDATE_TIME_UUID = UUID.fromString(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
+    private static final UUID READER_CHAR_SYNC_REQUEST = UUID.fromString(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST);
+    private static final UUID READER_CHAR_SYNC_RESPONSE = UUID.fromString(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE);
 
     // Battery UUIDs
     private static final UUID BATTERY_SERVICE_UUID = UUID.fromString(LumosReaderConstants.BATTERY_SERVICE);
@@ -46,8 +49,10 @@ public class CharacteristicsHolder {
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_REQUEST_RESULT);
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_ERROR);
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID);
-        mandatoryChars.add(LumosReaderConstants.READER_CHAR_UPDATE_ASSAY_DETAILS);
+//        mandatoryChars.add(LumosReaderConstants.READER_CHAR_UPDATE_ASSAY_DETAILS);
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_UPDATE_TIME);
+        mandatoryChars.add(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST);
+        mandatoryChars.add(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE);
         mandatoryChars.add(LumosReaderConstants.BATTERY_CHAR_LEVEL);
 
         mandatoryCharacteristicIds = Collections.unmodifiableSet(mandatoryChars);
@@ -64,7 +69,9 @@ public class CharacteristicsHolder {
             characteristics.add(readerService.getCharacteristic(READER_CHAR_REQUEST_RESULT_UUID));
             characteristics.add(readerService.getCharacteristic(READER_CHAR_CARTRIDGE_ID_UUID));
             characteristics.add(readerService.getCharacteristic(READER_CHAR_ERROR_UUID));
-            characteristics.add(readerService.getCharacteristic(READER_CHAR_UPDATE_ASSAY_DETAILS_UUID));
+//            characteristics.add(readerService.getCharacteristic(READER_CHAR_UPDATE_ASSAY_DETAILS_UUID));
+            characteristics.add(readerService.getCharacteristic(READER_CHAR_SYNC_REQUEST));
+            characteristics.add(readerService.getCharacteristic(READER_CHAR_SYNC_RESPONSE));
             characteristics.add(readerService.getCharacteristic(READER_CHAR_UPDATE_TIME_UUID));
         }
 
