@@ -30,6 +30,7 @@
         android:textSize="@dimen/font.size.badge"
         android:textStyle="bold"
         android:visibility="visible"
+        app:fontFamily="@font/nunito_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.269"
         app:layout_constraintTop_toTopOf="parent"

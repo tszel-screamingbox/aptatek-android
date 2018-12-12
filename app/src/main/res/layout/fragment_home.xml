@@ -176,7 +176,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/general.distance.small"
-            android:layout_marginTop="@dimen/general.distance.normal"
+            android:layout_marginTop="@dimen/general.distance.big"
             android:layout_marginRight="@dimen/general.distance.small"
             android:layout_marginBottom="@dimen/general.distance.normal" />
 
