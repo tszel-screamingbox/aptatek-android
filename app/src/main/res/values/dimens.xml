@@ -4,7 +4,7 @@
     <dimen name="activity.margin.vertical">20dp</dimen>
 
     <!-- General-->
-    <dimen name="general.elevation">2dp</dimen>
+    <dimen name="general.elevation">4dp</dimen>
 
     <dimen name="general.button.corner">40dp</dimen>
     <dimen name="general.button.corner.normal">16dp</dimen>
@@ -63,7 +63,7 @@
     <dimen name="font.size.big">18sp</dimen>
     <dimen name="font.size.xbig">20sp</dimen>
     <dimen name="font.size.xxbig">21sp</dimen>
-    <dimen name="font.size.large">22sp</dimen>
+    <dimen name="font.size.large">24sp</dimen>
     <dimen name="font.size.xlarge">31sp</dimen>
     <dimen name="font.size.xxlarge">42sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
@@ -80,13 +80,13 @@
 
     <dimen name="pdf.width">1000dp</dimen>
     <dimen name="pdf.height">800dp</dimen>
-
     <dimen name="pdf.legend.bubble.size">40dp</dimen>
 
     <dimen name="test.alert.corner">50dp</dimen>
     <dimen name="test.alert.height">100dp</dimen>
-
     <dimen name="test.result.circle.width">20dp</dimen>
+
+    <dimen name="test.progressbar.height">12dp</dimen>
 
     <dimen name="daily.result.sliding.background.corner">20dp</dimen>
 

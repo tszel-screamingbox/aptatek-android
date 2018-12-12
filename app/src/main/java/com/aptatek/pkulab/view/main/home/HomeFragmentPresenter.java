@@ -5,6 +5,7 @@ import android.text.format.DateUtils;
 import android.util.Pair;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
@@ -33,12 +34,14 @@ import ix.Ix;
 class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
 
     private static final int NUMBERS_OF_MONTHS = 6;
+    private static final float BATTERY_LEVEL_LOW = 0.2f;
 
     private final CubeInteractor cubeInteractor;
     private final ResourceInteractor resourceInteractor;
     private final PkuRangeInteractor rangeInteractor;
     private final DailyChartFormatter dailyChartFormatter;
     private final WettingInteractor wettingInteractor;
+    private final DeviceHelper deviceHelper;
     private CompositeDisposable disposables;
 
     @Inject
@@ -46,12 +49,14 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                           final ResourceInteractor resourceInteractor,
                           final PkuRangeInteractor rangeInteractor,
                           final DailyChartFormatter dailyChartFormatter,
-                          final WettingInteractor wettingInteractor) {
+                          final WettingInteractor wettingInteractor,
+                          final DeviceHelper deviceHelper) {
         this.cubeInteractor = cubeInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
         this.dailyChartFormatter = dailyChartFormatter;
         this.wettingInteractor = wettingInteractor;
+        this.deviceHelper = deviceHelper;
     }
 
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts
@@ -144,6 +149,11 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void startNewTest() {
+        if (deviceHelper.getBatteryLevel() <= BATTERY_LEVEL_LOW) {
+            ifViewAttached(HomeFragmentView::showLowBatteryDialog);
+            return;
+        }
+
         disposables.add(wettingInteractor.resetWetting()
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
