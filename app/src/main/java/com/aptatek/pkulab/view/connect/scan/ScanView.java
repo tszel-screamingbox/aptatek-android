@@ -2,7 +2,7 @@ package com.aptatek.pkulab.view.connect.scan;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenView;
 import com.aptatek.pkulab.view.connect.scan.adapter.ScanDeviceAdapterItem;
 

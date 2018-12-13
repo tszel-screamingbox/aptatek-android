@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenFragment;
 import com.aptatek.pkulab.view.main.MainActivity;
@@ -45,6 +47,11 @@ public class ConnectedFragment extends BaseConnectScreenFragment<ConnectedView, 
     public void displayReaderDevice(@NonNull final ReaderDevice device, final int batteryLevel) {
         tvDevice.setText(device.getName());
         tvBatteryLevel.setText(String.valueOf(batteryLevel).concat("%"));
+    }
+
+    @Override
+    public void displayWorkflowState(@NonNull WorkflowState workflowState) {
+        Toast.makeText(getActivity(), workflowState.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @NonNull

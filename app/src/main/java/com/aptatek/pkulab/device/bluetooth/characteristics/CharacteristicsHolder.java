@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.device.bluetooth.reader;
+package com.aptatek.pkulab.device.bluetooth.characteristics;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;

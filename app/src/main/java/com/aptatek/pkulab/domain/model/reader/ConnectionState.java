@@ -1,6 +1,6 @@
-package com.aptatek.pkulab.domain.model;
+package com.aptatek.pkulab.domain.model.reader;
 
-public enum ReaderConnectionState {
+public enum ConnectionState {
 
     DISCONNECTED,
     CONNECTING,

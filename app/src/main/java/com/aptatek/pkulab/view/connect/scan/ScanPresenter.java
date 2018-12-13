@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ActivityContext;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenPresenter;
 import com.aptatek.pkulab.view.connect.scan.adapter.ScanDeviceAdapterItem;
@@ -123,19 +123,19 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                 .subscribe(mtuSize -> ifViewAttached(attachedView -> attachedView.showMtuSizeChanged(mtuSize))));
 
 
-        disposables.add(readerInteractor.getReaderError()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(error -> {
-                    Timber.e(error);
-
-                    if (error instanceof MtuChangeFailedError) {
-                        ifViewAttached(ScanView::showMtuError);
-                    } else {
-                        ifViewAttached(attachedView -> attachedView.showErrorToast(error.getClass().getSimpleName() + ": " + error.getMessage()));
-                    }
-
-                    // TODO handle error, reset connection state?
-                }));
+//        disposables.add(readerInteractor.getReaderError()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(error -> {
+//                    Timber.e(error);
+//
+//                    if (error instanceof MtuChangeFailedError) {
+//                        ifViewAttached(ScanView::showMtuError);
+//                    } else {
+//                        ifViewAttached(attachedView -> attachedView.showErrorToast(error.getClass().getSimpleName() + ": " + error.getMessage()));
+//                    }
+//
+//                    // TODO handle error, reset connection state?
+//                }));
     }
 
     @Override

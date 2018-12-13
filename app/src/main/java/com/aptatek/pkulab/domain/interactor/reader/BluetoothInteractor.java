@@ -6,7 +6,7 @@ import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanCallbacks;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 
 import java.util.Collections;
 import java.util.HashSet;

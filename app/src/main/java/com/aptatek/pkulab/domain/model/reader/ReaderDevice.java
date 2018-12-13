@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.domain.model;
+package com.aptatek.pkulab.domain.model.reader;
 
 public interface ReaderDevice {
 
