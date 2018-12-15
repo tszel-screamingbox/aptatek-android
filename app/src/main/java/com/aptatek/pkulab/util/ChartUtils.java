@@ -12,7 +12,7 @@ import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.model.CubeData;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
-import com.aptatek.pkulab.view.main.adapter.chart.ChartVM;
+import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,20 +75,18 @@ public final class ChartUtils {
                     .max(cubeDataComparator)
                     .first(null);
 
-            final State state;
-            if (dailyHighest != null) {
-                state = getState(dailyHighest.getPkuLevel(), rangeInfo);
-            } else {
-                state = State.LOW;
+            if (dailyHighest == null) {
+                continue;
             }
 
+            final State state = getState(dailyHighest.getPkuLevel(), rangeInfo);
             final ChartVM chartVm = ChartVM.builder()
-                    .setDate(new Date(dailyHighest == null ? entry.getKey() : dailyHighest.getTimestamp()))
+                    .setDate(new Date(dailyHighest.getTimestamp()))
                     .setMeasures(entry.getValue())
                     .setNumberOfMeasures(entry.getValue().size())
                     .setZoomed(false)
                     .setState(stateString(state))
-                    .setHighestPkuLevel(dailyHighest == null ? null : dailyHighest.getPkuLevel())
+                    .setHighestPkuLevel(dailyHighest.getPkuLevel())
                     .setColorRes(stateColor(state))
                     .build();
 

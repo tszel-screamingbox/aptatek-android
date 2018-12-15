@@ -38,17 +38,18 @@
             android:name=".view.pin.auth.AuthPinHostActivity"
             android:noHistory="true"
             android:screenOrientation="portrait"
+            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
             android:name=".view.settings.basic.SettingsActivity"
-            android:parentActivityName=".view.main.MainActivity"
+            android:parentActivityName=".view.main.MainHostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.main.MainActivity" />
+                android:value=".view.main.MainHostActivity" />
 
         </activity>
 
@@ -58,7 +59,7 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".view.main.MainHostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
@@ -98,13 +99,13 @@
 
         <activity
             android:name=".view.test.TestActivity"
-            android:parentActivityName=".view.main.MainActivity"
+            android:parentActivityName=".view.main.MainHostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.main.MainActivity" />
+                android:value=".view.main.MainHostActivity" />
 
         </activity>
 
@@ -120,12 +121,6 @@
 
         <activity
             android:name=".view.settings.pkulevel.RangeSettingsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
-
-
-        <activity
-            android:name=".view.weekly.WeeklyResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 

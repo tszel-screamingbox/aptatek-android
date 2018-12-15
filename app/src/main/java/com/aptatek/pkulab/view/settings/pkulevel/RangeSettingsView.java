@@ -12,6 +12,6 @@ public interface RangeSettingsView extends MvpView {
 
     void finish();
 
-    void finishWithMessage();
+    void showSettingsUpdateMessage();
 
 }

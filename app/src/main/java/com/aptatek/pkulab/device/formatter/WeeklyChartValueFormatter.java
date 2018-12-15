@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.device.formatter;
 
-import com.aptatek.pkulab.view.weekly.chart.ChartEntryData;
+import com.aptatek.pkulab.view.main.weekly.chart.ChartEntryData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.utils.ViewPortHandler;

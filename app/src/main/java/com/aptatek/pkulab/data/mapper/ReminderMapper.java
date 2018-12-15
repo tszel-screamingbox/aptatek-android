@@ -1,8 +1,10 @@
 package com.aptatek.pkulab.data.mapper;
 
 import com.aptatek.pkulab.data.model.ReminderDataModel;
+import com.aptatek.pkulab.data.model.ReminderScheduleDataType;
 import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.model.Reminder;
+import com.aptatek.pkulab.domain.model.ReminderScheduleType;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class ReminderMapper implements Mapper<Reminder, ReminderDataModel> {
                 .setHour(dataModel.getHour())
                 .setMinute(dataModel.getMinute())
                 .setWeekDay(dataModel.getWeekDay())
+                .setReminderScheduleType(scheduleTypeToData(dataModel.getReminderScheduleType()))
                 .build();
     }
 
@@ -42,6 +45,27 @@ public class ReminderMapper implements Mapper<Reminder, ReminderDataModel> {
         reminderDataModel.setWeekDay(domainModel.getWeekDay());
         reminderDataModel.setHour(domainModel.getHour());
         reminderDataModel.setMinute(domainModel.getMinute());
+        reminderDataModel.setReminderScheduleType(scheduleDataTypeToDomain(domainModel.getReminderScheduleType()));
         return reminderDataModel;
+    }
+
+    public ReminderScheduleType scheduleTypeToData(final ReminderScheduleDataType reminderScheduleDataType) {
+        if (reminderScheduleDataType.getCode() == ReminderScheduleType.WEEKLY.getCode()) {
+            return ReminderScheduleType.WEEKLY;
+        } else if (reminderScheduleDataType.getCode() == ReminderScheduleType.MONTHLY.getCode()) {
+            return ReminderScheduleType.MONTHLY;
+        } else {
+            return ReminderScheduleType.BIWEEKLY;
+        }
+    }
+
+    public ReminderScheduleDataType scheduleDataTypeToDomain(final ReminderScheduleType reminderScheduleType) {
+        if (reminderScheduleType.getCode() == ReminderScheduleDataType.WEEKLY.getCode()) {
+            return ReminderScheduleDataType.WEEKLY;
+        } else if (reminderScheduleType.getCode() == ReminderScheduleDataType.MONTHLY.getCode()) {
+            return ReminderScheduleDataType.MONTHLY;
+        } else {
+            return ReminderScheduleDataType.BIWEEKLY;
+        }
     }
 }

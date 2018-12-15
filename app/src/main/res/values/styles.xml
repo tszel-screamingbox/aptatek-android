@@ -35,7 +35,7 @@
 
     <style name="General.Rounded.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height</item>
-        <item name="android:background">@drawable/general_button_white_background</item>
+        <item name="android:background">@drawable/ripple_white_button</item>
         <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
         <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
         <item name="android:textAllCaps">false</item>
@@ -46,18 +46,27 @@
         <item name="android:textSize">@dimen/font.size.large</item>
     </style>
 
+    <style name="General.Rounded.Gray.Button" parent="General.Rounded.Button">
+        <item name="android:background">@drawable/ripple_grey_button</item>
+    </style>
+
+    <style name="General.Rounded.Blue.Button" parent="General.Rounded.Button">
+        <item name="android:background">@drawable/ripple_blue_button</item>
+        <item name="android:textColor">@color/applicationWhite</item>
+    </style>
+
     <style name="Test.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:textAllCaps">false</item>
         <item name="android:paddingTop">@dimen/general.distance.xmini</item>
         <item name="android:paddingBottom">@dimen/general.distance.xmini</item>
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/nunito_black</item>
-        <item name="android:textColor">@color/applicationSolidGray</item>
-        <item name="android:textSize">@dimen/font.size.big</item>
+        <item name="android:textColor">@color/applicationMediumGray</item>
+        <item name="android:textSize">@dimen/font.size.large</item>
     </style>
 
     <style name="Test.Next.Button" parent="Test.Cancel.Button">
-        <item name="android:textColor">@color/applicationGreen</item>
+        <item name="android:textColor">@color/testPageIndicatorBlue</item>
     </style>
 
     <style name="Test.Circle.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -75,7 +84,7 @@
     </style>
 
     <style name="Test.Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressTint">@color/applicationGreen</item>
+        <item name="android:progressTint">@color/testPageIndicatorBlue</item>
     </style>
 
     <style name="Grey.Settings.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -99,8 +108,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Dial.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:background">@color/applicationWhite</item>
+    <style name="Ripple.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:background">@drawable/ripple_white_button</item>
+    </style>
+
+    <style name="Dial.Button" parent="Ripple.Button">
         <item name="android:textColor">@color/dialButtonGrey</item>
         <item name="android:textSize">@dimen/font.size.xlarge</item>
         <item name="android:gravity">center</item>
@@ -119,7 +131,7 @@
 
     <style name="General.Text" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/applicationMediumGray</item>
-        <item name="android:textSize">@dimen/font.size.xxbig</item>
+        <item name="android:textSize">@dimen/font.size.xbig</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">normal</item>
@@ -166,15 +178,16 @@
         <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
         <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/applicationBlack</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:elevation">@dimen/general.elevation</item>
+        <item name="android:textColor">@color/applicationSolidGray</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:elevation">0dp</item>
         <item name="android:textSize">@dimen/font.size.large</item>
-        <item name="android:background">@drawable/edittext_background</item>
+        <item name="android:background">@drawable/ripple_grey_button</item>
     </style>
 
     <style name="Parental.Keypad.Next" parent="Dial.Button">
-        <item name="android:textColor">@color/applicationGreen</item>
+        <item name="android:textColor">@color/buttonBlue</item>
+        <item name="android:textSize">@dimen/font.size.xlarge</item>
         <item name="android:textAllCaps">false</item>
     </style>
 
@@ -217,6 +230,7 @@
 
     <style name="Settings.Range.Description" parent="Settings.Range.Label">
         <item name="android:textSize">@dimen/font.size.normal</item>
+        <item name="android:textColor">@color/applicationTransparentGray</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
     </style>
 
@@ -226,8 +240,8 @@
     </style>
 
     <style name="Settings.Range.Units.Radio" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:buttonTint">@color/pkuLevelVeryHigh</item>
-        <item name="android:textColor">@color/applicationLightGray</item>
+        <item name="android:buttonTint">@color/applicationBlack</item>
+        <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:gravity">center_vertical</item>
     </style>
 

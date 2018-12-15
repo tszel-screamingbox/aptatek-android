@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bubble_full_high">
 
     <TextView
         android:id="@+id/textViewMeasureInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:textSize="@dimen/font.size.large"
+        android:layout_marginStart="@dimen/general.distance"
+        android:layout_marginTop="@dimen/general.distance.xmini"
+        android:layout_marginBottom="@dimen/general.distance.xmini"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font.size.xxlarge"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewMeasureTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/general.distance"
         android:layout_marginBottom="@dimen/general.distance.mini"
-        android:layout_marginEnd="@dimen/general.distance.xxxsmall"
-        android:textSize="@dimen/font.size.regular"
-        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font.size.xbig"
         app:layout_constraintBottom_toBottomOf="@+id/textViewMeasureInfo"
-        app:layout_constraintEnd_toStartOf="@+id/textViewMeasureInfo" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="RtlHardcoded" />
 
 
 </android.support.constraint.ConstraintLayout>

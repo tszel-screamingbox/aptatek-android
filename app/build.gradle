@@ -42,8 +42,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 14
-        versionName "0.0.14"
+        versionCode 18
+        versionName "0.0.18"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -162,20 +162,18 @@ dependencies {
     annotationProcessor activityStarterDependencies.apt
 
     // UI
-    implementation uiDependencies.autoFitTextView
     implementation(uiDependencies.rangebar) {
         exclude module: 'support-compat'
     }
     implementation uiDependencies.pagerIndicator
     implementation uiDependencies.frameVideoView
+    implementation uiDependencies.slidingPanel
+    implementation scrollView.discreteScrollView
 
     // LeakCanary
     debugImplementation leakDependencies.debug
     releaseImplementation leakDependencies.release
     testImplementation leakDependencies.release
-
-    // DiscrateScrollView
-    implementation scrollView.discreteScrollView
 
     // MpAndroidChart
     implementation mpAndroidChartDependencies.androidChart
@@ -201,7 +199,7 @@ dependencies {
     androidTestImplementation(testDependencies.espresso, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile(testDependencies.espressocontrib) {
+    androidTestImplementation(testDependencies.espressocontrib) {
         exclude group: 'com.android.support', module: 'appcompat'
         exclude module: 'support-annotations'
         exclude module: 'support-v4'

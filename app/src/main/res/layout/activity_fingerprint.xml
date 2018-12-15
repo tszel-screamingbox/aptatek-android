@@ -8,7 +8,7 @@
     android:layout_marginEnd="@dimen/activity.margin.horizontal"
     android:layout_marginStart="@dimen/activity.margin.horizontal"
     android:layout_marginTop="@dimen/activity.margin.horizontal"
-    tools:context=".view.main.MainActivity">
+    tools:context=".view.main.MainHostActivity">
 
 
     <ImageView

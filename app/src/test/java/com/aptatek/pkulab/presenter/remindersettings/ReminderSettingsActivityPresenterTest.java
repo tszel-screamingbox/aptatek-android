@@ -2,6 +2,7 @@ package com.aptatek.pkulab.presenter.remindersettings;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
+import com.aptatek.pkulab.domain.model.ReminderScheduleType;
 import com.aptatek.pkulab.view.settings.reminder.adapter.ReminderSettingsAdapterItem;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsPresenter;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsView;
@@ -46,6 +47,7 @@ public class ReminderSettingsActivityPresenterTest {
                 .setActive(true)
                 .setHour(10)
                 .setMinute(30)
+                .setReminderScheduleType(ReminderScheduleType.WEEKLY)
                 .build();
 
         ReminderSettingsAdapterItem reminderSettingsAdapterItem = ReminderSettingsAdapterItem.builder()
@@ -56,7 +58,7 @@ public class ReminderSettingsActivityPresenterTest {
                 .build();
 
         reminderSettingsAdapterItem.getReminders().add(remindersAdapterItem);
-        presenter.modifyReminder(new ArrayList<>(), reminderSettingsAdapterItem, remindersAdapterItem, 10, 30);
+        presenter.modifyReminder(new ArrayList<>(), reminderSettingsAdapterItem, remindersAdapterItem, 10, 30, ReminderScheduleType.WEEKLY);
         verify(view).showAlreadyHasReminderError();
     }
 }

@@ -26,11 +26,14 @@ public final class Constants {
     public static final int REMINDER_HALF_DAY = 12;
     public static final String REMINDER_RE_SCHEDULE_INTENT_KEY = "reminderReScheduleIntentKey";
     public static final int REMINDER_AM_OR_PM = 11;
-    public static final int REMINDER_SPAN_COUNT = 3;
+    public static final int REMINDER_SPAN_COUNT = 2;
     public static final int HUNDRED_PERCENT = 100;
 
     public static final String REMINDER_NOTIFICATION_ACTION_TYPE_KEY = "reminderNotificationActionTypeKey";
     public static final int REMINDER_NOTIFICATION_ID = 999;
     public static final String REMINDER_DIALOG_BROADCAST_NAME = "reminderDialogBroadcastName";
+
+    public static final long PIN_IDLE_PERIOD_MS = 20L * 1000L;
+    public static final String PIN_IDLE_ACTION = "requestPinDueToInactivity";
 
 }

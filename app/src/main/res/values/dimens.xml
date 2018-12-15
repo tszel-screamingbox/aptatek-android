@@ -4,7 +4,7 @@
     <dimen name="activity.margin.vertical">20dp</dimen>
 
     <!-- General-->
-    <dimen name="general.elevation">5dp</dimen>
+    <dimen name="general.elevation">4dp</dimen>
 
     <dimen name="general.button.corner">40dp</dimen>
     <dimen name="general.button.corner.normal">16dp</dimen>
@@ -38,15 +38,20 @@
     <dimen name="graph.bubble.size.small">20dp</dimen>
     <dimen name="graph.bubble.radius.small">40dp</dimen>
     <dimen name="graph.bubble.margin">10dp</dimen>
-    <dimen name="graph.bubble.stroke.big">8dp</dimen>
+    <dimen name="graph.bubble.stroke.big">20dp</dimen>
     <dimen name="graph.bubble.stroke.small">4dp</dimen>
-    <dimen name="graph.item.size">150dp</dimen>
-    <dimen name="graph.item.size.half">75dp</dimen>
+    <dimen name="graph.item.size">208dp</dimen>
+
+    <!-- Main -->
+    <dimen name="main.bottom.margin">80dp</dimen>
+    <dimen name="main.bottom.margin.empty">48dp</dimen>
+    <dimen name="main.panel.height">80dp</dimen>
 
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.header.margin.minimum">68dp</dimen>
 
+    <dimen name="font.size.steps">1sp</dimen>
     <dimen name="font.size.xxmini">5sp</dimen>
     <dimen name="font.size.xmini">9sp</dimen>
     <dimen name="font.size.mini">10sp</dimen>
@@ -58,7 +63,7 @@
     <dimen name="font.size.big">18sp</dimen>
     <dimen name="font.size.xbig">20sp</dimen>
     <dimen name="font.size.xxbig">21sp</dimen>
-    <dimen name="font.size.large">22sp</dimen>
+    <dimen name="font.size.large">24sp</dimen>
     <dimen name="font.size.xlarge">31sp</dimen>
     <dimen name="font.size.xxlarge">42sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
@@ -71,9 +76,14 @@
 
     <dimen name="pdf.width">1000dp</dimen>
     <dimen name="pdf.height">800dp</dimen>
-
     <dimen name="pdf.legend.bubble.size">40dp</dimen>
 
     <dimen name="test.alert.corner">50dp</dimen>
     <dimen name="test.alert.height">100dp</dimen>
+    <dimen name="test.result.circle.width">20dp</dimen>
+
+    <dimen name="test.progressbar.height">12dp</dimen>
+
+    <dimen name="daily.result.sliding.background.corner">20dp</dimen>
+
 </resources>

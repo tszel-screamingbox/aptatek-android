@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/panelLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    app:umanoFadeColor="@android:color/transparent"
+    app:umanoOverlay="false"
+    sothree:umanoPanelHeight="0dp"
+    sothree:umanoShadowHeight="0dp"
+    tools:context=".view.main.MainHostActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity.margin.horizontal"
+        android:animateLayoutChanges="true">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/chartGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.07" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.77" />
+
+        <TextView
+            android:id="@+id/titleText"
+            style="@style/Header.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main.title.noresult"
+            app:layout_constraintTop_toBottomOf="@id/guideTop" />
+
+        <TextView
+            android:id="@+id/subTitleText"
+            style="@style/General.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main.title.noresult.hint"
+            app:layout_constraintTop_toBottomOf="@id/titleText" />
+
+        <ImageView
+            android:id="@+id/playIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/general.distance.xsmall"
+            android:src="@drawable/ic_bubble_play"
+            app:layout_constraintBottom_toTopOf="@id/chartGuide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subTitleText"
+            tools:ignore="ContentDescription" />
+
+        <com.yarolegovich.discretescrollview.DiscreteScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/general.distance.xsmall"
+            app:layout_constraintBottom_toTopOf="@id/chartGuide"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subTitleText" />
+
+        <Button
+            android:id="@+id/bigSettingsButton"
+            style="@style/General.Rounded.Gray.Button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/general.button.height.big"
+            android:layout_marginStart="@dimen/general.distance.small"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:layout_marginEnd="@dimen/general.distance.small"
+            android:layout_marginBottom="@dimen/main.bottom.margin.empty"
+            android:drawableStart="@drawable/settings_button_background"
+            android:elevation="0dp"
+            android:paddingStart="@dimen/general.button.corner.normal"
+            android:text="@string/main.button.settings"
+            android:textColor="@color/applicationSolidGray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+        <Button
+            android:id="@+id/settingsButton"
+            style="@style/Grey.Settings.Button"
+            android:layout_width="@dimen/general.button.height.big"
+            android:layout_height="@dimen/general.button.height.big"
+            android:layout_marginStart="@dimen/general.distance.small"
+            android:layout_marginEnd="@dimen/general.distance.small"
+            android:layout_marginBottom="@dimen/main.bottom.margin"
+            android:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/newTestButton" />
+
+        <Button
+            android:id="@+id/newTestButton"
+            style="@style/General.Rounded.Button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/general.button.height.big"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:layout_marginEnd="@dimen/general.distance.small"
+            android:layout_marginBottom="@dimen/main.bottom.margin"
+            android:gravity="center"
+            android:text="@string/main.button.new.test"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/settingsButton"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/weeklyButton"
+            style="@style/General.Transparent.Button"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/main.panel.height"
+            android:drawableEnd="@drawable/ic_arrow_up"
+            android:gravity="center"
+            android:paddingStart="@dimen/general.distance.xbig"
+            android:paddingEnd="@dimen/general.distance.xbig"
+            android:text="@string/main.button.weekly"
+            android:textSize="@dimen/font.size.medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <android.support.constraint.Group
+            android:id="@+id/buttonGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:constraint_referenced_ids="newTestButton, settingsButton, weeklyButton" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.30" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.7"
+        android:background="@drawable/daily_result_sliding_background"
+        android:elevation="@dimen/general.distance.small">
+
+        <ImageView
+            android:id="@+id/imgCloseResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/general.distance.small"
+            android:src="@drawable/swipe_close_indicator"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewDailyResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/general.distance.small"
+            android:layout_marginTop="@dimen/general.distance.normal"
+            android:layout_marginRight="@dimen/general.distance.small"
+            android:layout_marginBottom="@dimen/general.distance.normal" />
+
+    </android.support.constraint.ConstraintLayout>
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>

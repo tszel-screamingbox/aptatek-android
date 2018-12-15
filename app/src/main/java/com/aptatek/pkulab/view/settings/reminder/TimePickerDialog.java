@@ -21,6 +21,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.ReminderScheduleType;
+import com.aptatek.pkulab.widget.CustomRadioGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +31,7 @@ public class TimePickerDialog extends DialogFragment {
 
     private static final String TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY = "com.aptatek.remider.dialog.hour";
     private static final String TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY = "com.aptatek.remider.dialog.minute";
+    private static final String TIME_PICKER_DIALOG_REMINDER_SCHEDULE_TYPE_KEY = "com.aptatek.remider.dialog.schedule.type";
     private static final String TIME_PICKER_DIALOG_EDIT_KEY = "com.aptatek.remider.dialog.edit";
     public static final float GUIDELINE_EXPANDED_PERCENT = 0.7f;
     public static final float GUIDELINE_COLLAPSED_PERCENT = 0.5f;
@@ -37,7 +40,7 @@ public class TimePickerDialog extends DialogFragment {
     public static final float ALPHA_MAX = 1f;
 
     interface TimePickerDialogCallback {
-        void done(int hourOfDay, int minute);
+        void done(int hourOfDay, int minute, ReminderScheduleType reminderScheduleType);
 
         void delete();
     }
@@ -48,11 +51,15 @@ public class TimePickerDialog extends DialogFragment {
         return dialog;
     }
 
-    public static TimePickerDialog createForEdit(final int hour, final int minute, @NonNull final TimePickerDialogCallback callback) {
+    public static TimePickerDialog createForEdit(final int hour,
+                                                 final int minute,
+                                                 final ReminderScheduleType reminderScheduleType,
+                                                 @NonNull final TimePickerDialogCallback callback) {
         final Bundle bundle = new Bundle();
         bundle.putInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY, hour);
         bundle.putInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY, minute);
         bundle.putBoolean(TIME_PICKER_DIALOG_EDIT_KEY, true);
+        bundle.putSerializable(TIME_PICKER_DIALOG_REMINDER_SCHEDULE_TYPE_KEY, reminderScheduleType);
 
         final TimePickerDialog dialog = new TimePickerDialog();
         dialog.setArguments(bundle);
@@ -84,6 +91,9 @@ public class TimePickerDialog extends DialogFragment {
     @BindView(R.id.constraintLayout)
     ConstraintLayout constraintLayout;
 
+    @BindView(R.id.radioGroupSchedule)
+    CustomRadioGroup radioGroupSchedule;
+
     @Nullable
     private TimePickerDialogCallback callback;
 
@@ -112,6 +122,7 @@ public class TimePickerDialog extends DialogFragment {
 
             timePicker.setCurrentHour(getArguments().getInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY));
             timePicker.setCurrentMinute(getArguments().getInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY));
+            radioGroupSchedule.check(getSelectedRadioGroup());
         } else {
             textViewDelete.setText(R.string.reminder_time_picker_cancel);
         }
@@ -119,7 +130,7 @@ public class TimePickerDialog extends DialogFragment {
         layoutDone.setOnClickListener(v -> {
             if (callback != null) {
                 if (getArguments() == null) {
-                    callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                    callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute(), getSelectedReminderScheduleType());
                     dismiss();
                 } else if (getArguments() != null) {
                     if (textViewCancel.getVisibility() == View.VISIBLE && textViewConfirm.getVisibility() == View.VISIBLE) {
@@ -133,8 +144,9 @@ public class TimePickerDialog extends DialogFragment {
                         hideAnimation(textViewConfirm);
                     } else {
                         if (getArguments().getInt(TIME_PICKER_DIALOG_HOUR_ARGUMENT_KEY) != timePicker.getCurrentHour()
-                                || getArguments().getInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY) != timePicker.getCurrentMinute()) {
-                            callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+                                || getArguments().getInt(TIME_PICKER_DIALOG_MINUTE_ARGUMENT_KEY) != timePicker.getCurrentMinute()
+                                || radioGroupSchedule.getCheckedRadioButtonId() != getSelectedRadioGroup()) {
+                            callback.done(timePicker.getCurrentHour(), timePicker.getCurrentMinute(), getSelectedReminderScheduleType());
                         }
                         dismiss();
                     }
@@ -216,5 +228,26 @@ public class TimePickerDialog extends DialogFragment {
                         view.setVisibility(View.GONE);
                     }
                 });
+    }
+
+    private ReminderScheduleType getSelectedReminderScheduleType() {
+        if (radioGroupSchedule.getCheckedRadioButtonId() == R.id.radioButtonWeekly) {
+            return ReminderScheduleType.WEEKLY;
+        } else if (radioGroupSchedule.getCheckedRadioButtonId() == R.id.radioButtonMonthly) {
+            return ReminderScheduleType.MONTHLY;
+        } else {
+            return ReminderScheduleType.BIWEEKLY;
+        }
+    }
+
+    private int getSelectedRadioGroup() {
+        final ReminderScheduleType type = (ReminderScheduleType) getArguments().getSerializable(TIME_PICKER_DIALOG_REMINDER_SCHEDULE_TYPE_KEY);
+        if (type == ReminderScheduleType.WEEKLY) {
+            return R.id.radioButtonWeekly;
+        } else if (type == ReminderScheduleType.MONTHLY) {
+            return R.id.radioButtonMonthly;
+        } else {
+            return R.id.radioButtonBiWeekly;
+        }
     }
 }

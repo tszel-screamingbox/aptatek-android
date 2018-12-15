@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
@@ -87,7 +88,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
-        activityComponent.plus(new TestModule())
+        activityComponent.plus(new TestModule(), new RangeInfoModule())
                 .inject(this);
     }
 

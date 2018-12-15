@@ -42,3 +42,4 @@
   * ActivityStarter [License](https://github.com/MarcinMoskala/ActivityStarter/blob/master/LICENSE.txt)
   * DiscreteScrollView [License](https://github.com/yarolegovich/DiscreteScrollView#license)
   * MpAndroidChart [License](https://github.com/PhilJay/MPAndroidChart/blob/master/LICENSE)
+  * AndroidSlidingUpPanel [License](https://github.com/umano/AndroidSlidingUpPanel/blob/master/LICENSE.txt)
