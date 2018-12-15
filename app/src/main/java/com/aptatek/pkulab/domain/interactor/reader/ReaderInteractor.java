@@ -2,8 +2,6 @@ package com.aptatek.pkulab.domain.interactor.reader;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
-import com.aptatek.pkulab.domain.error.ReaderError;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.Error;
@@ -17,7 +15,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -32,12 +29,7 @@ public class ReaderInteractor {
 
     @NonNull
     public Completable connect(@NonNull final ReaderDevice readerDevice) {
-        return connect(readerDevice, LumosReaderConstants.MTU_SIZE);
-    }
-
-    @NonNull
-    public Completable connect(@NonNull final ReaderDevice readerDevice, final int mtuSize) {
-        return readerManager.connect(readerDevice, mtuSize)
+        return readerManager.connect(readerDevice)
                 .subscribeOn(Schedulers.io());
     }
 

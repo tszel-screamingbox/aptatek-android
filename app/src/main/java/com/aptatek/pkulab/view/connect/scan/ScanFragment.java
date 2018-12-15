@@ -1,19 +1,14 @@
 package com.aptatek.pkulab.view.connect.scan;
 
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.scan.ScanModule;
@@ -28,7 +23,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresenter> implements ScanView {
 
@@ -41,10 +35,6 @@ public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresen
     ProgressBar pbScanning;
     @BindView(R.id.scanStartScan)
     Button btnStartScan;
-    @BindView(R.id.scanMtuInput)
-    TextInputLayout tilMtu;
-    @BindView(R.id.scanMtuSize)
-    TextInputEditText etMtuSize;
 
     private ScanDeviceAdapter adapter;
 
@@ -56,45 +46,9 @@ public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresen
     @Override
     protected void initObjects(final View view) {
         adapter = new ScanDeviceAdapter();
-        adapter.setConnectClickListener(adapterItem -> presenter.connect(adapterItem.getReaderDevice(), getMtuSize()));
+        adapter.setConnectClickListener(adapterItem -> presenter.connect(adapterItem.getReaderDevice()));
         rvReaders.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvReaders.setAdapter(adapter);
-
-        etMtuSize.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
-                try {
-                    final int mtuSize = Integer.parseInt(s.toString());
-                    //  if (mtuSize < 23 || mtuSize > 247) {
-                        // etMtuSize.setError("Invalid MTU size, default will be used");
-                    //  } else {
-                        etMtuSize.setError(null);
-                    // }
-                } catch (final NumberFormatException ex) {
-                    Timber.d("Failed to convert mtu size [%s] to number", s.toString());
-                    etMtuSize.setError("Invalid MTU size, default will be used");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(final Editable s) {
-
-            }
-        });
-    }
-
-    private int getMtuSize() {
-        try {
-            final int mtuSize = Integer.parseInt(etMtuSize.getText().toString());
-            return mtuSize;
-        } catch (final NumberFormatException e) {
-            return LumosReaderConstants.MTU_SIZE;
-        }
     }
 
     @Override
@@ -142,16 +96,6 @@ public class ScanFragment extends BaseConnectScreenFragment<ScanView, ScanPresen
     @Override
     public void showErrorToast(@NonNull final String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showMtuSizeChanged(final int mtuSize) {
-        Toast.makeText(getActivity(), "MTU size changed to: " + mtuSize, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showMtuError() {
-        Toast.makeText(getActivity(), "Failed to set MTU size", Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.scanStartScan)

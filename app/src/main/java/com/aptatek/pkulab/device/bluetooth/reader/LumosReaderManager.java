@@ -193,12 +193,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     public void queueMtuChange(final int mtu) {
         requestMtu(mtu)
                 .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
-                .done(device ->
-                        Timber.d("Mtu change successful")
+                .done(device -> Timber.d("Mtu change successful")
                 ).fail((device, status) -> {
-            Timber.d("Mtu change failed: status [%d]", status);
-            mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
-        })
+                    Timber.d("Mtu change failed: status [%d]", status);
+                    mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+                })
                 .enqueue();
     }
 

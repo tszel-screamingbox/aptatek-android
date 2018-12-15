@@ -17,7 +17,9 @@ import io.reactivex.Single;
 public interface ReaderManager {
 
     // on-demand operations / read characteristics
-    Completable connect(@NonNull ReaderDevice readerDevice, int mtuSize);
+    Completable connect(@NonNull ReaderDevice readerDevice);
+
+    Completable changeMtu(int mtuSize);
 
     Completable disconnect();
 

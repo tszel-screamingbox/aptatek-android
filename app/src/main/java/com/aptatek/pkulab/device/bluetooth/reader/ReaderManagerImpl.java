@@ -1,6 +1,5 @@
 package com.aptatek.pkulab.device.bluetooth.reader;
 
-import android.app.admin.ConnectEvent;
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
 
@@ -46,8 +45,6 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<ConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ConnectionEvent.create(null, ConnectionState.DISCONNECTED));
     private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
-
-    private int requestedMtuSize;
 
     @Inject
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager) {
@@ -184,10 +181,8 @@ public class ReaderManagerImpl implements ReaderManager {
     }
 
     @Override
-    public Completable connect(@NonNull final ReaderDevice readerDevice, final int mtuSize) {
+    public Completable connect(@NonNull final ReaderDevice readerDevice) {
         if (readerDevice instanceof BluetoothReaderDevice) {
-            requestedMtuSize = mtuSize;
-
             return lumosReaderManager.connectAndBound(((BluetoothReaderDevice) readerDevice).getBluetoothDevice());
 
 //            // TODO handle errors during connect!!!
@@ -211,6 +206,11 @@ public class ReaderManagerImpl implements ReaderManager {
 //                        .filter(ConnectionState.DISCONNECTED::equals)
 //                        .take(1)
 //                        .flatMapCompletable(it -> Completable.complete()));
+    }
+
+    @Override
+    public Completable changeMtu(int mtuSize) {
+        return Completable.fromAction(() -> lumosReaderManager.queueMtuChange(mtuSize));
     }
 
     @Override

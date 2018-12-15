@@ -3,7 +3,6 @@ package com.aptatek.pkulab.view.connect.scan;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
@@ -118,11 +117,6 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                     });
                 }));
 
-        disposables.add(readerInteractor.getMtuSize()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(mtuSize -> ifViewAttached(attachedView -> attachedView.showMtuSizeChanged(mtuSize))));
-
-
 //        disposables.add(readerInteractor.getReaderError()
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(error -> {
@@ -175,8 +169,8 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                 .subscribe());
     }
 
-    public void connect(final @NonNull ReaderDevice readerDevice, final int mtuSize) {
-        disposables.add(readerInteractor.connect(readerDevice, mtuSize)
+    public void connect(final @NonNull ReaderDevice readerDevice) {
+        disposables.add(readerInteractor.connect(readerDevice)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe());
     }

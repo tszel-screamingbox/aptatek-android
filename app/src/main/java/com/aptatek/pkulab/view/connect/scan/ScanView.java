@@ -18,8 +18,4 @@ public interface ScanView extends BaseConnectScreenView {
 
     void showErrorToast(@NonNull String message);
 
-    void showMtuSizeChanged(int mtuSize);
-
-    void showMtuError();
-
 }
