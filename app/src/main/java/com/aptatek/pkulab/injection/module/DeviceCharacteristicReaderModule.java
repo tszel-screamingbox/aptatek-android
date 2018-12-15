@@ -16,7 +16,7 @@ import dagger.multibindings.IntoMap;
 import dagger.multibindings.StringKey;
 
 @Module
-public interface DeviceCommunicationModule {
+public interface DeviceCharacteristicReaderModule {
 
     @Binds
     @IntoMap

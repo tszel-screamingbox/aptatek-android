@@ -243,7 +243,7 @@ public class ReaderManagerImpl implements ReaderManager {
         return lumosReaderManager.syncResults()
                 .map(list -> Ix.from(list)
                         .map(data -> TestResult.builder()
-                            .setId(data.getId())
+                            .setId(data.getDate()) // TODO change this to idx as soon as the firmware has idx property
                             .setPkuLevel(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_FLOOR, PkuLevelUnits.MICRO_MOL))
                             .setDate(System.currentTimeMillis()) // TODO convert string to long
                             .build())

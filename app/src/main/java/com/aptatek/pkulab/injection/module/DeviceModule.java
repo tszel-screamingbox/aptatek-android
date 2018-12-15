@@ -4,6 +4,8 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.AdvertiseSettings;
 import android.content.Context;
 
+import com.aptatek.pkulab.device.bluetooth.characteristics.reader.deserializer.ResultSyncResponseDeserializer;
+import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
 import com.aptatek.pkulab.device.bluetooth.reader.LumosReaderManager;
 import com.aptatek.pkulab.device.bluetooth.reader.ReaderManagerImpl;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
@@ -16,7 +18,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = DeviceCommunicationModule.class)
+@Module(includes = DeviceCharacteristicReaderModule.class)
 public class DeviceModule {
 
     @Singleton
@@ -27,8 +29,10 @@ public class DeviceModule {
 
     @Singleton
     @Provides
-    public Gson provideGson() {
-        return new GsonBuilder().create();
+    public Gson provideGson(final ResultSyncResponseDeserializer deserializer) {
+        return new GsonBuilder()
+                .registerTypeAdapter(ResultSyncResponse.class, deserializer)
+                .create();
     }
 
     @Singleton

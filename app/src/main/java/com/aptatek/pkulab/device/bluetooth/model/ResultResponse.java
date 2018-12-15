@@ -1,9 +1,12 @@
 package com.aptatek.pkulab.device.bluetooth.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 public class ResultResponse {
 
+    @Nullable // remove it as soon as the firmware is updated and will have idx property as the IDC says...
     @SerializedName("idx")
     private String id;
     private String date;

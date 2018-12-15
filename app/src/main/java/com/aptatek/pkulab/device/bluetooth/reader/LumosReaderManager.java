@@ -35,6 +35,8 @@ import io.reactivex.Flowable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.functions.BooleanSupplier;
+import io.reactivex.functions.Predicate;
+import io.reactivex.schedulers.Schedulers;
 import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.data.Data;
 import no.nordicsemi.android.ble.exception.BluetoothDisabledException;
@@ -215,7 +217,8 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                             .await();
                     Timber.d("Successfully written Result Request: id [%s]", id);
                 }
-        ).andThen(readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT));
+        )
+                .andThen(readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT));
     }
 
     public Single<List<ResultResponse>> syncResults() {
@@ -224,13 +227,15 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                             .await();
                     Timber.d("Successfully written Sync Request");
                 }
-        ).andThen(concatSyncResponse()
-                .map(ResultSyncResponse::getIdentifiers)
-                .toFlowable()
-                .flatMapIterable(it -> it)
-                .flatMapSingle(this::getResult)
-                .toList()
-        );
+        )
+                .andThen(concatSyncResponse()
+                        .map(ResultSyncResponse::getIdentifiers)
+                        .toFlowable()
+                        .flatMapIterable(it -> it)
+                        .observeOn(Schedulers.io())
+                        .flatMapSingle(this::getResult)
+                        .toList()
+                );
     }
 
     private Single<ResultSyncResponse> concatSyncResponse() {
@@ -253,12 +258,12 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                             emitter.tryOnError(new NoValueReceivedError(device));
                         })
                         .enqueue())
-                .repeatWhen(objectFlowable -> objectFlowable
-                        .doOnNext(a -> Timber.d("repeatWhen next: [%s]", a.toString()))
-                        .flatMapSingle(it -> ((Integer) it) > 100 ? Single.just(it): Single.never())
-                )
+                .repeatWhen(objectFlowable -> objectFlowable)
+                .takeUntil(s -> {
+                    return TextUtils.isEmpty(s.trim());
+                })
                 .scan((current, next) -> current + next)
-                .singleOrError()
+                .lastOrError()
                 .map(rawString -> (ResultSyncResponse) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE).read(Data.from(rawString)));
     }
 }
