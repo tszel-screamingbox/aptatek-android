@@ -15,11 +15,13 @@ import com.aptatek.pkulab.device.bluetooth.error.FailedToBondError;
 import com.aptatek.pkulab.device.bluetooth.error.FailedToConnectError;
 import com.aptatek.pkulab.device.bluetooth.error.FailedToDisconnectError;
 import com.aptatek.pkulab.device.bluetooth.error.NoValueReceivedError;
+import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.RequestResultRequest;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
 import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
@@ -32,6 +34,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.functions.BooleanSupplier;
@@ -265,5 +268,14 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 .scan((current, next) -> current + next)
                 .lastOrError()
                 .map(rawString -> (ResultSyncResponse) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE).read(Data.from(rawString)));
+    }
+
+    public Maybe<ReaderDevice> getConnectedDevice() {
+        final BluetoothDevice bluetoothDevice = getBluetoothDevice();
+        if (bluetoothDevice == null) {
+            return Maybe.empty();
+        }
+
+        return Maybe.just(new BluetoothReaderDevice(bluetoothDevice));
     }
 }

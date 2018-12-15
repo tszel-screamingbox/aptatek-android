@@ -2,7 +2,7 @@ package com.aptatek.pkulab.domain.interactor.cube;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 
 import java.util.List;
 
@@ -10,27 +10,27 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-public class CubeInteractor {
+public class TestResultInteractor {
 
-    private final CubeDataRepository dataRepository;
+    private final TestResultRepository dataRepository;
 
     @Inject
-    CubeInteractor(CubeDataRepository dataRepository) {
+    TestResultInteractor(TestResultRepository dataRepository) {
         this.dataRepository = dataRepository;
     }
 
     // TODO remove this as soon as the chart on the Main screen uses pagination to get the data...
     @NonNull
-    public Single<List<CubeData>> listAll() {
+    public Single<List<TestResult>> listAll() {
         return dataRepository.listAll();
     }
 
     @NonNull
-    public Single<List<CubeData>> listBetween(final long start, final long end) {
+    public Single<List<TestResult>> listBetween(final long start, final long end) {
         return dataRepository.listBetween(start, end);
     }
 
-    public Single<CubeData> getLatest() {
+    public Single<TestResult> getLatest() {
         return dataRepository.getLatest();
     }
 

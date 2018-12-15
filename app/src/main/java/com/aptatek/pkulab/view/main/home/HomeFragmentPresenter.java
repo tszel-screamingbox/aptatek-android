@@ -8,17 +8,18 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
+import com.aptatek.pkulab.domain.interactor.cube.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private static final int NUMBERS_OF_MONTHS = 6;
     private static final float BATTERY_LEVEL_LOW = 0.2f;
 
-    private final CubeInteractor cubeInteractor;
+    private final TestResultInteractor testResultInteractor;
     private final ResourceInteractor resourceInteractor;
     private final PkuRangeInteractor rangeInteractor;
     private final DailyChartFormatter dailyChartFormatter;
@@ -45,13 +46,13 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private CompositeDisposable disposables;
 
     @Inject
-    HomeFragmentPresenter(final CubeInteractor cubeInteractor,
+    HomeFragmentPresenter(final TestResultInteractor testResultInteractor,
                           final ResourceInteractor resourceInteractor,
                           final PkuRangeInteractor rangeInteractor,
                           final DailyChartFormatter dailyChartFormatter,
                           final WettingInteractor wettingInteractor,
                           final DeviceHelper deviceHelper) {
-        this.cubeInteractor = cubeInteractor;
+        this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
         this.dailyChartFormatter = dailyChartFormatter;
@@ -66,21 +67,25 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                         .flatMap(rangeInfo -> {
                             final long now = new Date().getTime();
                             final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, now);
-                            return cubeInteractor.listBetween(past, now)
+                            return testResultInteractor.listBetween(past, now)
                                     .map(list -> new Pair<>(rangeInfo, list));
                         })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
-                            final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
-                            final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
-                            chartVMS.set(chartVMS.size() - 1, lastResult);
+                            if (pair.second.isEmpty()) {
+                                ifViewAttached(HomeFragmentView::showNoResultsInLast6Months);
+                            } else {
+                                final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
+                                final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
+                                chartVMS.set(chartVMS.size() - 1, lastResult);
 
-                            ifViewAttached(attachedView -> {
-                                attachedView.updateTitles(
-                                        formatTitle(lastResult),
-                                        dailyChartFormatter.formatDate(lastResult.getDate().getTime(), lastResult.getNumberOfMeasures() > 0));
-                                attachedView.displayData(chartVMS);
-                            });
+                                ifViewAttached(attachedView -> {
+                                    attachedView.updateTitles(
+                                            formatTitle(lastResult),
+                                            dailyChartFormatter.formatDate(lastResult.getDate().getTime(), lastResult.getNumberOfMeasures() > 0));
+                                    attachedView.displayData(chartVMS);
+                                });
+                            }
                         })
         );
     }
@@ -98,7 +103,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         ifViewAttached(view -> view.changeItemZoomState(chartVM, chartVM.toBuilder().setZoomed(false).build()));
     }
 
-    void measureListToAdapterList(final List<CubeData> measures) {
+    void measureListToAdapterList(final List<TestResult> measures) {
         disposables.add(
                 rangeInteractor.getInfo()
                         .map(rangeInfo ->

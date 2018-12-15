@@ -2,8 +2,10 @@ package com.aptatek.pkulab.data.datasource;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.data.model.CubeDataModel;
+import com.aptatek.pkulab.data.model.TestResultDataModel;
 import com.aptatek.pkulab.device.time.TimeHelper;
+import com.aptatek.pkulab.domain.model.PkuLevel;
+import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.util.Constants;
 
 import org.fluttercode.datafactory.impl.DataFactory;
@@ -33,45 +35,45 @@ public class FakeCubeDataGenerator {
     }
 
     @NonNull
-    public List<CubeDataModel> generateDataBetween(final long begin, final long end) {
-        final List<CubeDataModel> cubeDataModels = new ArrayList<>();
+    public List<TestResultDataModel> generateDataBetween(final long begin, final long end) {
+        final List<TestResultDataModel> testResultDataModels = new ArrayList<>();
         final int daysBetween = TimeHelper.getDaysBetween(begin, end);
 
         for (int day = 0; day <= daysBetween; day++) {
             final int numOfMeasurementsThatDay = dataFactory.getNumberUpTo(MAX_MEASUREMENTS_PER_DAY);
             for (int measurement = 0; measurement < numOfMeasurementsThatDay; measurement++) {
-                final CubeDataModel cubeDataModel = generateDataForGivenDay(TimeHelper.addDays(day, begin));
+                final TestResultDataModel testResultDataModel = generateDataForGivenDay(TimeHelper.addDays(day, begin));
 
-                ensureCubeDataTimeBetweenRandomData(cubeDataModels, cubeDataModel);
+                ensureCubeDataTimeBetweenRandomData(testResultDataModels, testResultDataModel);
 
-                cubeDataModels.add(cubeDataModel);
+                testResultDataModels.add(testResultDataModel);
             }
         }
 
-        return cubeDataModels;
+        return testResultDataModels;
     }
 
-    private void ensureCubeDataTimeBetweenRandomData(final List<CubeDataModel> randomModels, final CubeDataModel cubeDataModel) {
+    private void ensureCubeDataTimeBetweenRandomData(final List<TestResultDataModel> randomModels, final TestResultDataModel testResultDataModel) {
         final boolean hasCollision = Ix.from(randomModels)
-            .filter(model -> Math.abs(cubeDataModel.getTimestamp() - model.getTimestamp()) < MIN_TIME_BETWEEN_MEASURES)
+            .filter(model -> Math.abs(testResultDataModel.getTimestamp() - model.getTimestamp()) < MIN_TIME_BETWEEN_MEASURES)
             .count()
             .single() > 0;
         if (hasCollision) {
-            cubeDataModel.setTimestamp(generateRandomTimeAtGivenDay(cubeDataModel.getTimestamp()));
+            testResultDataModel.setTimestamp(generateRandomTimeAtGivenDay(testResultDataModel.getTimestamp()));
         }
     }
 
     @NonNull
-    public CubeDataModel generateDataForGivenDay(final long timestamp) {
-        final CubeDataModel cubeDataModel = new CubeDataModel();
-        cubeDataModel.setCubeId(dataFactory.getRandomChars(10));
-        cubeDataModel.setId(dataFactory.getNumberUpTo(Integer.MAX_VALUE));
-        cubeDataModel.setValueInMMol(dataFactory.getNumberUpTo((int) Constants.DEFAULT_PKU_HIGHEST_VALUE));
-        cubeDataModel.setTimestamp(generateRandomTimeAtGivenDay(timestamp));
-        cubeDataModel.setSick(dataFactory.chance(SICK_CHANCE));
-        cubeDataModel.setFasting(dataFactory.chance(FASTING_CHANCE));
+    public TestResultDataModel generateDataForGivenDay(final long timestamp) {
+        final TestResultDataModel testResultDataModel = new TestResultDataModel();
+        testResultDataModel.setReaderId(dataFactory.getRandomChars(10));
+        testResultDataModel.setId(dataFactory.getRandomChars(10));
+        testResultDataModel.setPkuLevel(PkuLevel.create(dataFactory.getNumberUpTo((int) Constants.DEFAULT_PKU_HIGHEST_VALUE), PkuLevelUnits.MILLI_GRAM));
+        testResultDataModel.setTimestamp(generateRandomTimeAtGivenDay(timestamp));
+        testResultDataModel.setSick(dataFactory.chance(SICK_CHANCE));
+        testResultDataModel.setFasting(dataFactory.chance(FASTING_CHANCE));
 
-        return cubeDataModel;
+        return testResultDataModel;
     }
 
     private long generateRandomTimeAtGivenDay(final long timestamp) {
@@ -81,13 +83,13 @@ public class FakeCubeDataGenerator {
     }
 
     @NonNull
-    public CubeDataModel generateOldestData() {
+    public TestResultDataModel generateOldestData() {
         final long earliestTimeAtGivenDay = TimeHelper.getEarliestTimeAtGivenDay(System.currentTimeMillis());
         final long oldestTimestamp = TimeHelper.addDays(FIRST_DATA_BEFORE_TODAY_IN_DAYS * -1, earliestTimeAtGivenDay);
-        final CubeDataModel cubeDataModel = generateDataForGivenDay(oldestTimestamp);
-        cubeDataModel.setTimestamp(oldestTimestamp);
+        final TestResultDataModel testResultDataModel = generateDataForGivenDay(oldestTimestamp);
+        testResultDataModel.setTimestamp(oldestTimestamp);
 
-        return cubeDataModel;
+        return testResultDataModel;
     }
 
 }

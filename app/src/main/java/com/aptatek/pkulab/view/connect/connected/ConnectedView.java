@@ -12,6 +12,8 @@ public interface ConnectedView extends BaseConnectScreenView {
 
     void displayWorkflowState(@NonNull WorkflowState workflowState);
 
+    void displaySyncFinished(int numResults);
+
     void finish();
 
 }

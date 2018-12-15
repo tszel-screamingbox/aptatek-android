@@ -19,6 +19,8 @@ interface HomeFragmentView extends MvpView {
 
     void setMeasureList(List<DailyResultAdapterItem> data);
 
+    void showNoResultsInLast6Months();
+
     void showLowBatteryDialog();
 
 }

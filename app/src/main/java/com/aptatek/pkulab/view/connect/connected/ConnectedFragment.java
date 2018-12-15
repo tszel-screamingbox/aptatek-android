@@ -54,6 +54,11 @@ public class ConnectedFragment extends BaseConnectScreenFragment<ConnectedView, 
         Toast.makeText(getActivity(), workflowState.toString(), Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void displaySyncFinished(final int numResults) {
+        Toast.makeText(getActivity(), "Successfully synced " + numResults + " records", Toast.LENGTH_SHORT).show();
+    }
+
     @NonNull
     @Override
     public ConnectedPresenter createPresenter() {

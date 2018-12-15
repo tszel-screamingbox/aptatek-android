@@ -1,6 +1,8 @@
-package com.aptatek.pkulab.data.model;
+package com.aptatek.pkulab.data.model.converter;
 
 import android.arch.persistence.room.TypeConverter;
+
+import com.aptatek.pkulab.data.model.ReminderScheduleDataType;
 
 import static com.aptatek.pkulab.data.model.ReminderScheduleDataType.BIWEEKLY;
 import static com.aptatek.pkulab.data.model.ReminderScheduleDataType.MONTHLY;

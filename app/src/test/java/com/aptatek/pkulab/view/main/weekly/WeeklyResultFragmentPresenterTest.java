@@ -1,9 +1,9 @@
 package com.aptatek.pkulab.view.main.weekly;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
+import com.aptatek.pkulab.domain.interactor.cube.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
@@ -40,7 +40,7 @@ public class WeeklyResultFragmentPresenterTest {
     @Mock
     private WeeklyResultFragmentView view;
     @Mock
-    private CubeInteractor cubeInteractor;
+    private TestResultInteractor testResultInteractor;
     @Mock
     private ResourceInteractor resourceInteractor;
     @Mock
@@ -51,7 +51,7 @@ public class WeeklyResultFragmentPresenterTest {
     private PdfChartDataTransformer pdfChartDataTransformer;
 
     private WeeklyResultFragmentPresenter presenter;
-    private List<CubeData> cubeDataList = new ArrayList<>();
+    private List<TestResult> testResultList = new ArrayList<>();
 
     /**
      * Setting up the required presenter and defining mocked component's behaviour
@@ -67,22 +67,22 @@ public class WeeklyResultFragmentPresenterTest {
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .build();
-        final CubeData cubeData = CubeData.builder()
+        final TestResult testResult = TestResult.builder()
                 .setId(new Random().nextLong())
-                .setCubeId(UUID.randomUUID().toString())
+                .setReaderId(UUID.randomUUID().toString())
                 .setPkuLevel(PkuLevel.create(10, PkuLevelUnits.MICRO_MOL))
                 .setTimestamp(new Date().getTime())
                 .build();
-        cubeDataList.add(cubeData);
+        testResultList.add(testResult);
 
 
         doReturn(TEST_STRING).when(weeklyChartDateFormatter).getWeeklyChartTitle(ArgumentMatchers.anyInt());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
         when(pkuRangeInteractor.getInfo()).thenReturn(Single.just(rangeInfo));
-        when(cubeInteractor.listAll()).thenReturn(Single.just(cubeDataList));
+        when(testResultInteractor.listAll()).thenReturn(Single.just(testResultList));
 
         presenter = new WeeklyResultFragmentPresenter(
-                cubeInteractor,
+                testResultInteractor,
                 resourceInteractor,
                 pkuRangeInteractor,
                 weeklyChartDateFormatter,

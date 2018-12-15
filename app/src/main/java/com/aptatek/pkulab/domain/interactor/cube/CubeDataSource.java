@@ -1,15 +1,15 @@
 package com.aptatek.pkulab.domain.interactor.cube;
 
-import com.aptatek.pkulab.data.model.CubeDataModel;
+import com.aptatek.pkulab.data.model.TestResultDataModel;
 
 import java.util.List;
 
 public interface CubeDataSource {
 
-    List<CubeDataModel> getDataBetween(long startTime, long endTime);
+    List<TestResultDataModel> getDataBetween(long startTime, long endTime);
 
-    CubeDataModel getOldestData();
+    TestResultDataModel getOldestData();
 
-    CubeDataModel getLatestData();
+    TestResultDataModel getLatestData();
 
 }

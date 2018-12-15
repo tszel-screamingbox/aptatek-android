@@ -43,8 +43,8 @@ public class ConnectedPresenter extends BaseConnectScreenPresenter<ConnectedView
                         .filter(event -> event.getConnectionState() == ConnectionState.READY)
                         .take(1)
                         .flatMapSingle(event -> readerInteractor.getBatteryLevel()
-                                        .map(batteryLevel -> new Pair<>(event.getDevice(), batteryLevel))
-                                )
+                                .map(batteryLevel -> new Pair<>(event.getDevice(), batteryLevel))
+                        )
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 pair -> ifViewAttached(attachedView -> attachedView.displayReaderDevice(pair.first, pair.second)),
@@ -59,11 +59,16 @@ public class ConnectedPresenter extends BaseConnectScreenPresenter<ConnectedView
 
         disposables.add(
                 readerInteractor.syncResults()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        testResults -> { Timber.d("testResults received: %s", Arrays.toString(testResults.toArray(new TestResult[0]))); },
-                        throwable -> { Timber.d("testResults error: %s", throwable); }
-                )
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                testResults -> {
+                                    Timber.d("testResults received: %s", Arrays.toString(testResults.toArray(new TestResult[0])));
+                                    ifViewAttached(attachedView -> attachedView.displaySyncFinished(testResults.size()));
+                                },
+                                throwable -> {
+                                    Timber.d("testResults error: %s", throwable);
+                                }
+                        )
         );
 
         // TODO also watch for errors...

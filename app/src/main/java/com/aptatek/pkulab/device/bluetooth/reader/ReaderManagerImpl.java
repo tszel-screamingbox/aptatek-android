@@ -25,6 +25,11 @@ import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.util.Constants;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -45,6 +50,8 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<ConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ConnectionEvent.create(null, ConnectionState.DISCONNECTED));
     private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
+
+    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 
     @Inject
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager) {
@@ -155,7 +162,7 @@ public class ReaderManagerImpl implements ReaderManager {
                 mtuSizeProcessor.onNext(mtuSize);
 //                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
             }
-            
+
             @Override
             public void onWorkflowStateChanged(@NonNull final WorkflowStateResponse workflowStateResponse) {
                 Timber.d("onWorkflowStateChanged: %s", workflowStateResponse);
@@ -240,15 +247,39 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Single<List<TestResult>> syncResults() {
-        return lumosReaderManager.syncResults()
-                .map(list -> Ix.from(list)
-                        .map(data -> TestResult.builder()
-                            .setId(data.getDate()) // TODO change this to idx as soon as the firmware has idx property
-                            .setPkuLevel(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_FLOOR, PkuLevelUnits.MICRO_MOL))
-                            .setDate(System.currentTimeMillis()) // TODO convert string to long
-                            .build())
-                        .toList()
+        // TODO extract mapper logic
+        return lumosReaderManager.getConnectedDevice()
+                .toSingle()
+                .map(ReaderDevice::getMac)
+                .flatMap(deviceId ->
+                        lumosReaderManager.syncResults()
+                                .map(list -> {
+                                            int counter = 0;
+                                            final List<TestResult> mapped = new ArrayList<>();
+
+                                            for (ResultResponse resultResponse : list) {
+                                                mapped.add(TestResult.builder()
+                                                        .setId(resultResponse.getDate() + ++counter) // TODO change this to idx as soon as the firmware has idx property
+                                                        .setPkuLevel(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_FLOOR, PkuLevelUnits.MICRO_MOL)) // TODO wait for firmware update......
+                                                        .setTimestamp(tryParseDate(resultResponse.getDate()))
+                                                        .setReaderId(deviceId)
+                                                        .build());
+                                            }
+
+                                            return mapped;
+                                        }
+                                )
                 );
+    }
+
+    private long tryParseDate(final String date) {
+        try {
+            final Date parse = dateFormat.parse(date);
+            return parse.getTime();
+        } catch (ParseException e) {
+            Timber.d("Failed to parse date: %s", e);
+            return System.currentTimeMillis();
+        }
     }
 
     @Override

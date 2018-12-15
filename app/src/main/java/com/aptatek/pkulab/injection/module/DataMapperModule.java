@@ -1,10 +1,10 @@
 package com.aptatek.pkulab.injection.module;
 
-import com.aptatek.pkulab.data.mapper.CubeDataMapper;
+import com.aptatek.pkulab.data.mapper.TestResultMapper;
 import com.aptatek.pkulab.data.mapper.ReminderDayMapper;
 import com.aptatek.pkulab.data.mapper.ReminderMapper;
 import com.aptatek.pkulab.domain.base.Mapper;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.Reminder;
 import com.aptatek.pkulab.domain.model.ReminderDay;
 import com.aptatek.pkulab.injection.qualifier.ClassKey;
@@ -18,8 +18,8 @@ public abstract class DataMapperModule {
 
     @Binds
     @IntoMap
-    @ClassKey(CubeData.class)
-    public abstract Mapper<?, ?> bindCubeDataMapper(CubeDataMapper mapper);
+    @ClassKey(TestResult.class)
+    public abstract Mapper<?, ?> bindCubeDataMapper(TestResultMapper mapper);
 
     @Binds
     @IntoMap

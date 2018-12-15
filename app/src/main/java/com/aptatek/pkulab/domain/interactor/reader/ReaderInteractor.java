@@ -2,6 +2,8 @@ package com.aptatek.pkulab.domain.interactor.reader;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.data.AptatekDatabase;
+import com.aptatek.pkulab.domain.interactor.cube.TestResultRepository;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.Error;
@@ -21,10 +23,13 @@ import io.reactivex.schedulers.Schedulers;
 public class ReaderInteractor {
 
     private final ReaderManager readerManager;
+    private final TestResultRepository testResultRepository;
 
     @Inject
-    public ReaderInteractor(final ReaderManager readerManager) {
+    public ReaderInteractor(final ReaderManager readerManager,
+                            final TestResultRepository testResultRepository) {
         this.readerManager = readerManager;
+        this.testResultRepository = testResultRepository;
     }
 
     @NonNull
@@ -54,6 +59,9 @@ public class ReaderInteractor {
     @NonNull
     public Single<List<TestResult>> syncResults() {
         return readerManager.syncResults()
+                .flatMap(results -> testResultRepository.insertAll(results)
+                        .andThen(Single.just(results))
+                )
                 .subscribeOn(Schedulers.io());
     }
 

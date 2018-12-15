@@ -2,8 +2,8 @@ package com.aptatek.pkulab.view.main.weekly.chart;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.interactor.cube.TestResultInteractor;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.github.mikephil.charting.data.BubbleDataSet;
@@ -46,13 +46,13 @@ public class WeeklyChartPresenterTest {
     @Mock
     private WeeklyChartView view;
     @Mock
-    private CubeInteractor cubeInteractor;
+    private TestResultInteractor testResultInteractor;
     @Mock
     private WeeklyChartDataTransformer weeklyChartDataTransformer;
 
     private WeeklyChartPresenter presenter;
     private BubbleDataSet bubbleDataSet;
-    private List<CubeData> cubeDataList;
+    private List<TestResult> testResultList;
     private List<BubbleEntry> bubbleEntries;
 
     /**
@@ -97,13 +97,13 @@ public class WeeklyChartPresenterTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        cubeDataList = new ArrayList<>();
+        testResultList = new ArrayList<>();
         bubbleEntries = new ArrayList<>();
 
-        final CubeData cubeData = CubeData.builder()
+        final TestResult testResult = TestResult.builder()
                 .setTimestamp(new Date().getTime())
                 .setId(new Random().nextLong())
-                .setCubeId(UUID.randomUUID().toString())
+                .setReaderId(UUID.randomUUID().toString())
                 .setPkuLevel(PkuLevel.create(10f, PkuLevelUnits.MICRO_MOL))
                 .build();
         final ChartEntryData chartEntryData = ChartEntryData.builder()
@@ -116,15 +116,15 @@ public class WeeklyChartPresenterTest {
                 .build();
 
 
-        cubeDataList.add(cubeData);
+        testResultList.add(testResult);
         bubbleEntries.add(createBubbleEntryFor(chartEntryData));
         bubbleDataSet = new BubbleDataSet(bubbleEntries, null);
 
-        when(cubeInteractor.listBetween(anyLong(), anyLong())).thenReturn(Single.just(cubeDataList));
-        when(weeklyChartDataTransformer.transform(ArgumentMatchers.any(CubeData.class))).thenReturn(Single.just(chartEntryData));
+        when(testResultInteractor.listBetween(anyLong(), anyLong())).thenReturn(Single.just(testResultList));
+        when(weeklyChartDataTransformer.transform(ArgumentMatchers.any(TestResult.class))).thenReturn(Single.just(chartEntryData));
         when(weeklyChartDataTransformer.transformEntries(ArgumentMatchers.anyList())).thenReturn(Single.just(bubbleDataSet));
 
-        presenter = new WeeklyChartPresenter(cubeInteractor, weeklyChartDataTransformer);
+        presenter = new WeeklyChartPresenter(testResultInteractor, weeklyChartDataTransformer);
         presenter.attachView(view);
     }
 

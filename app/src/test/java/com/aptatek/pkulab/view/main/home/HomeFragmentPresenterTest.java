@@ -2,11 +2,11 @@ package com.aptatek.pkulab.view.main.home;
 
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
+import com.aptatek.pkulab.domain.interactor.cube.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
@@ -44,7 +44,7 @@ public class HomeFragmentPresenterTest {
     @Mock
     private HomeFragmentView view;
     @Mock
-    private CubeInteractor cubeInteractor;
+    private TestResultInteractor testResultInteractor;
     @Mock
     private PkuRangeInteractor rangeInteractor;
     @Mock
@@ -72,7 +72,7 @@ public class HomeFragmentPresenterTest {
         doReturn(BATTERY_NORMAL).when(deviceHelper).getBatteryLevel();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new HomeFragmentPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper);
+        presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)
@@ -86,11 +86,11 @@ public class HomeFragmentPresenterTest {
         final long now = System.currentTimeMillis();
         notEmptyItem = ChartVM.builder()
                 .setDate(date)
-                .setMeasures(Collections.singletonList(CubeData.builder()
+                .setMeasures(Collections.singletonList(TestResult.builder()
                         .setPkuLevel(PkuLevel.create(20.0f, PkuLevelUnits.MILLI_GRAM))
                         .setTimestamp(now)
                         .setId(now)
-                        .setCubeId(String.valueOf(now))
+                        .setReaderId(String.valueOf(now))
                         .build()))
                 .setZoomed(true)
                 .setNumberOfMeasures(1)
