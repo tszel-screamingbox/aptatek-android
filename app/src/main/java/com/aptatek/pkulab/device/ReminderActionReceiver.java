@@ -31,7 +31,7 @@ public class ReminderActionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent intent) {
         DaggerBroadcastReceiverComponent.builder()
-                .applicationModule(new ApplicationModule((AptatekApplication) context.getApplicationContext()))
+                .applicationComponent(((AptatekApplication) context.getApplicationContext()).getApplicationComponent())
                 .reminderModule(new ReminderModule())
                 .build()
                 .inject(this);

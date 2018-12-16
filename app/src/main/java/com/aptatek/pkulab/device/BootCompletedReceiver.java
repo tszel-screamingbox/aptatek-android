@@ -23,9 +23,8 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         DaggerBroadcastReceiverComponent.builder()
-                .applicationModule(new ApplicationModule((AptatekApplication) context.getApplicationContext()))
+                .applicationComponent(((AptatekApplication) context.getApplicationContext()).getApplicationComponent())
                 .reminderModule(new ReminderModule())
-                .databaseModule(new DatabaseModule())
                 .build()
                 .inject(this);
 
