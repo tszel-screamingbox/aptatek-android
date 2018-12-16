@@ -9,7 +9,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificationFactory;
 import com.aptatek.pkulab.injection.component.DaggerBroadcastReceiverComponent;
-import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.injection.module.ReminderModule;
 import com.aptatek.pkulab.util.Constants;
 

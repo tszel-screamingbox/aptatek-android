@@ -3,12 +3,7 @@ package com.aptatek.pkulab.injection.component;
 import com.aptatek.pkulab.device.AlarmReceiver;
 import com.aptatek.pkulab.device.BootCompletedReceiver;
 import com.aptatek.pkulab.device.ReminderActionReceiver;
-import com.aptatek.pkulab.injection.module.ActivityModule;
-import com.aptatek.pkulab.injection.module.ApplicationModule;
-import com.aptatek.pkulab.injection.module.DatabaseModule;
 import com.aptatek.pkulab.injection.module.ReminderModule;
-import com.aptatek.pkulab.injection.module.ServiceModule;
-import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.injection.scope.BroadcastReceiverScope;
 
 import dagger.Component;

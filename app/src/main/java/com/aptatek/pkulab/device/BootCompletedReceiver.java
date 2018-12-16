@@ -6,8 +6,6 @@ import android.content.Intent;
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.pkulab.injection.component.DaggerBroadcastReceiverComponent;
-import com.aptatek.pkulab.injection.module.ApplicationModule;
-import com.aptatek.pkulab.injection.module.DatabaseModule;
 import com.aptatek.pkulab.injection.module.ReminderModule;
 
 import javax.inject.Inject;
