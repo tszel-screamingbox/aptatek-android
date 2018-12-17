@@ -49,9 +49,23 @@ public class AddPinFragment extends BasePinFragment implements AddPinView {
 
     @Override
     protected void finishedTyping(final PinCode pinCode) {
+        presenter.finishedTyping(pinCode);
+    }
+
+    @Override
+    public void forward(final byte[] pinBytes) {
         fillCircle(R.drawable.pin_circle_filled_grey, () -> {
-            final ConfirmPinFragment confirmPinFragment = ConfirmPinFragmentStarter.newInstance(pinCode.getBytes());
+            final ConfirmPinFragment confirmPinFragment = ConfirmPinFragmentStarter.newInstance(pinBytes);
             getBaseActivity().slideToFragment(confirmPinFragment);
+        });
+    }
+
+    @Override
+    public void invalidPinFormat(final String message) {
+        messageTextView.setVisibility(View.VISIBLE);
+        messageTextView.setText(R.string.confirm_pin_error);
+        messageTextView.setBackgroundResource(R.drawable.pin_invalid_message_background);
+        fillCircle(R.drawable.pin_circle_filled_red, () -> {
         });
     }
 }
