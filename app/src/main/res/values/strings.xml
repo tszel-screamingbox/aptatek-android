@@ -126,7 +126,7 @@
     <string name="reminder.time.picker.delete">Delete</string>
     <string name="reminder.time.picker.update">Update</string>
     <!-- Set PIN Activity -->
-    <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
+    <string name="set.pin.hint">Set a code that you will remember, because you will never be able to reset it again</string>
     <string name="set.pin.title">Set PIN</string>
     <!-- Reminder Time Picker Dialog -->
     <string name="settings.daily.reminder.description">You can set up multiple reminder times per day, on as many days per week that you want to check Phe levels.</string>

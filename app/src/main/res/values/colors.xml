@@ -50,4 +50,7 @@
 
     <color name="testPageIndicatorBlue">#20E8CD</color>
     <color name="testPageIndicatorGray">#D3DEE5</color>
+
+    <color name="pinIndicatorGreen">#20E8CD</color>
+    <color name="pinIndicatorRed">#FA4E7C</color>
 </resources>

@@ -50,6 +50,7 @@
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.header.margin.minimum">68dp</dimen>
+    <dimen name="pin.message.background.height">40dp</dimen>
 
     <dimen name="font.size.steps">1sp</dimen>
     <dimen name="font.size.xxmini">5sp</dimen>

@@ -69,7 +69,7 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
     public void onValidPinTyped() {
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setText(R.string.confirm_pin_successful);
-        messageTextView.setTextColor(getResources().getColor(R.color.applicationGreen));
+        messageTextView.setBackgroundResource(R.drawable.pin_message_valid_message_background);
         innerFillCircle(PIN_LENGTH, R.drawable.pin_circle_filled_green);
     }
 
@@ -77,7 +77,7 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
     public void onInvalidPinTyped() {
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setText(R.string.confirm_pin_error);
-        messageTextView.setTextColor(getResources().getColor(R.color.applicationRed));
+        messageTextView.setBackgroundResource(R.drawable.pin_invalid_message_background);
         fillCircle(R.drawable.pin_circle_filled_red, getBaseActivity()::onBackPressed);
     }
 
