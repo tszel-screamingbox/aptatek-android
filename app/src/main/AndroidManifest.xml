@@ -4,12 +4,15 @@
     package="com.aptatek.pkulab">
 
     <!-- App should not be used without BT -->
-    <uses-feature android:required="true" android:name="android.hardware.bluetooth_le" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".AptatekApplication"
@@ -36,9 +39,9 @@
 
         <activity
             android:name=".view.pin.auth.AuthPinHostActivity"
+            android:launchMode="singleInstance"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:launchMode="singleInstance"
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
@@ -138,6 +141,14 @@
         <receiver android:name=".device.ReminderActionReceiver" />
 
         <service android:name=".view.test.wetting.WettingReminderService" />
+
+        <receiver android:name=".device.BootCompletedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
