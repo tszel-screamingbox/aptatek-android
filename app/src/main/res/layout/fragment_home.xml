@@ -165,10 +165,11 @@
             android:id="@+id/imgCloseResults"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/general.distance.small"
             android:src="@drawable/swipe_close_indicator"
+            app:layout_constraintBottom_toTopOf="@+id/recyclerViewDailyResults"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
         <android.support.v7.widget.RecyclerView
