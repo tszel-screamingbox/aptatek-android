@@ -52,6 +52,8 @@
     <dimen name="pin.header.margin.minimum">68dp</dimen>
     <dimen name="pin.message.background.height">40dp</dimen>
 
+    <dimen name="fingerprint.size">224dp</dimen>
+
     <dimen name="font.size.steps">1sp</dimen>
     <dimen name="font.size.xxmini">5sp</dimen>
     <dimen name="font.size.xmini">9sp</dimen>

@@ -40,11 +40,9 @@
         android:id="@+id/hintTextView"
         style="@style/General.Text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance"
-        android:layout_marginTop="@dimen/general.distance.xxxsmall"
-        android:layout_marginEnd="@dimen/general.distance"
-        android:text="@string/set.pin.hint"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/general.distance.xxxmini"
+        app:layout_constraintBottom_toTopOf="@id/pinLayout"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <android.support.constraint.ConstraintLayout
@@ -54,7 +52,8 @@
         android:layout_marginStart="@dimen/general.distance"
         android:layout_marginTop="@dimen/general.distance.xsmall"
         android:layout_marginEnd="@dimen/general.distance"
-        app:layout_constraintTop_toBottomOf="@id/hintTextView">
+        android:layout_marginBottom="@dimen/general.distance.small"
+        app:layout_constraintBottom_toTopOf="@id/messageTextView">
 
         <ImageView
             android:id="@+id/pin0"
@@ -118,13 +117,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance"
         android:layout_marginEnd="@dimen/general.distance"
+        android:layout_marginBottom="@dimen/general.distance.xsmall"
         android:gravity="center"
         android:padding="@dimen/general.distance.xxxsmall"
         android:textColor="@android:color/white"
         android:textSize="@dimen/font.size.normal"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/buttonsGuideLine"
-        app:layout_constraintTop_toBottomOf="@+id/pinLayout" />
+        app:layout_constraintBottom_toTopOf="@id/buttonsGuideLine" />
 
     <android.support.constraint.Guideline
         android:id="@+id/buttonsGuideLine"

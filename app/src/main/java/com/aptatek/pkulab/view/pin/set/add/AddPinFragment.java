@@ -33,7 +33,7 @@ public class AddPinFragment extends BasePinFragment implements AddPinView {
     protected void initObjects(final View view) {
         titleTextView.setText(R.string.set_pin_title);
         hintTextView.setText(R.string.set_pin_hint);
-        messageTextView.setVisibility(View.GONE);
+        messageTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -49,23 +49,9 @@ public class AddPinFragment extends BasePinFragment implements AddPinView {
 
     @Override
     protected void finishedTyping(final PinCode pinCode) {
-        presenter.finishedTyping(pinCode);
-    }
-
-    @Override
-    public void forward(final byte[] pinBytes) {
         fillCircle(R.drawable.pin_circle_filled_grey, () -> {
-            final ConfirmPinFragment confirmPinFragment = ConfirmPinFragmentStarter.newInstance(pinBytes);
+            final ConfirmPinFragment confirmPinFragment = ConfirmPinFragmentStarter.newInstance(pinCode.getBytes());
             getBaseActivity().slideToFragment(confirmPinFragment);
-        });
-    }
-
-    @Override
-    public void invalidPinFormat(final String message) {
-        messageTextView.setVisibility(View.VISIBLE);
-        messageTextView.setText(R.string.confirm_pin_error);
-        messageTextView.setBackgroundResource(R.drawable.pin_invalid_message_background);
-        fillCircle(R.drawable.pin_circle_filled_red, () -> {
         });
     }
 }
