@@ -14,12 +14,13 @@
         android:layout_marginStart="@dimen/general.distance"
         android:layout_marginTop="@dimen/general.distance.xmini"
         android:layout_marginBottom="@dimen/general.distance.xmini"
+        android:fontFamily="@font/nunito_black"
         android:textColor="@android:color/white"
         android:textSize="@dimen/font.size.xxlarge"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Test" />
 
     <TextView
         android:id="@+id/textViewMeasureTime"
@@ -27,11 +28,13 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/general.distance"
         android:layout_marginBottom="@dimen/general.distance.mini"
+        android:fontFamily="@font/nunito_regular"
         android:textColor="@android:color/white"
         android:textSize="@dimen/font.size.xbig"
         app:layout_constraintBottom_toBottomOf="@+id/textViewMeasureInfo"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="RtlHardcoded" />
+        tools:ignore="RtlHardcoded"
+        tools:text="Test" />
 
 
 </android.support.constraint.ConstraintLayout>
