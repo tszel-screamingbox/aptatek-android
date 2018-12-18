@@ -67,11 +67,12 @@ public class WeeklyResultFragmentPresenterTest {
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .build();
+        final long now = System.currentTimeMillis();
         final TestResult testResult = TestResult.builder()
-                .setId(new Random().nextLong())
+                .setId(String.valueOf(now))
                 .setReaderId(UUID.randomUUID().toString())
                 .setPkuLevel(PkuLevel.create(10, PkuLevelUnits.MICRO_MOL))
-                .setTimestamp(new Date().getTime())
+                .setTimestamp(now)
                 .build();
         testResultList.add(testResult);
 

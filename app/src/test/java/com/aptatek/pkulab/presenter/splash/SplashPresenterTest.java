@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.presenter.splash;
 
+import android.support.annotation.NonNull;
+
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
@@ -7,11 +9,19 @@ import com.aptatek.pkulab.view.splash.SplashActivityPresenter;
 import com.aptatek.pkulab.view.splash.SplashActivityView;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Completable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.schedulers.ExecutorScheduler;
+import io.reactivex.plugins.RxJavaPlugins;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,6 +48,30 @@ public class SplashPresenterTest {
     private SplashActivityPresenter presenter;
 
     /**
+     * Initialize RxJava components before testing.
+     */
+    @BeforeClass
+    public static void beforeClass() {
+        final Scheduler immediate = new Scheduler() {
+
+            @Override
+            public Disposable scheduleDirect(@NonNull final Runnable run, final long delay, @NonNull final TimeUnit unit) {
+                // this prevents StackOverflowErrors when scheduling with a delay
+                return super.scheduleDirect(run, 0, unit);
+            }
+
+            @Override
+            public Worker createWorker() {
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+            }
+        };
+
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> immediate);
+        RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
+    }
+
+    /**
      * Setting up the required presenter and defining mocked component's behaviour
      */
     @Before
@@ -58,7 +92,8 @@ public class SplashPresenterTest {
     @Test
     public void testNavigationToParentalGate() {
         when(preferenceManager.isParentalPassed()).thenReturn(false);
-        presenter.switchToNextActivity();
+        // don't invoke here directly, attachView will trigger it eventually
+        //presenter.switchToNextActivity();
         verify(view).onParentalGateShouldLoad();
     }
 

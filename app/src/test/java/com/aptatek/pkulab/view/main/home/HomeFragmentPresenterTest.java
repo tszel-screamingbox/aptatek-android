@@ -89,7 +89,7 @@ public class HomeFragmentPresenterTest {
                 .setMeasures(Collections.singletonList(TestResult.builder()
                         .setPkuLevel(PkuLevel.create(20.0f, PkuLevelUnits.MILLI_GRAM))
                         .setTimestamp(now)
-                        .setId(now)
+                        .setId(String.valueOf(now))
                         .setReaderId(String.valueOf(now))
                         .build()))
                 .setZoomed(true)

@@ -100,9 +100,10 @@ public class WeeklyChartPresenterTest {
         testResultList = new ArrayList<>();
         bubbleEntries = new ArrayList<>();
 
+        final long now = System.currentTimeMillis();
         final TestResult testResult = TestResult.builder()
-                .setTimestamp(new Date().getTime())
-                .setId(new Random().nextLong())
+                .setTimestamp(now)
+                .setId(String.valueOf(now))
                 .setReaderId(UUID.randomUUID().toString())
                 .setPkuLevel(PkuLevel.create(10f, PkuLevelUnits.MICRO_MOL))
                 .build();
