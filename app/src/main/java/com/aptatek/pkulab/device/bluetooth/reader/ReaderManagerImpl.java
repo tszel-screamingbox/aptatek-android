@@ -39,7 +39,6 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
-import ix.Ix;
 import timber.log.Timber;
 
 public class ReaderManagerImpl implements ReaderManager {

@@ -26,7 +26,6 @@ import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
-import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;

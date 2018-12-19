@@ -3,7 +3,6 @@ package com.aptatek.pkulab.domain.model.reader;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.aptatek.pkulab.domain.model.reader.AutoValue_ConnectionEvent;
 import com.google.auto.value.AutoValue;
 
 @AutoValue

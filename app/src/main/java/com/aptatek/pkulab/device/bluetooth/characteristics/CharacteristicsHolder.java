@@ -16,7 +16,6 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import ix.Ix;
-import timber.log.Timber;
 
 public class CharacteristicsHolder {
 

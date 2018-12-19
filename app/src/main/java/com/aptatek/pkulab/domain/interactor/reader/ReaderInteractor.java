@@ -2,7 +2,6 @@ package com.aptatek.pkulab.domain.interactor.reader;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.data.AptatekDatabase;
 import com.aptatek.pkulab.domain.interactor.cube.TestResultRepository;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;

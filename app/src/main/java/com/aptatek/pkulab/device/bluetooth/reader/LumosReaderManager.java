@@ -12,8 +12,6 @@ import com.aptatek.pkulab.device.bluetooth.characteristics.reader.Characteristic
 import com.aptatek.pkulab.device.bluetooth.characteristics.writer.JsonCharacteristicWriter;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicReadError;
 import com.aptatek.pkulab.device.bluetooth.error.FailedToBondError;
-import com.aptatek.pkulab.device.bluetooth.error.FailedToConnectError;
-import com.aptatek.pkulab.device.bluetooth.error.FailedToDisconnectError;
 import com.aptatek.pkulab.device.bluetooth.error.NoValueReceivedError;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.RequestResultRequest;
@@ -22,7 +20,6 @@ import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
 import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
 import java.util.Calendar;
@@ -33,20 +30,11 @@ import java.util.TimeZone;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
 import io.reactivex.Maybe;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.functions.BooleanSupplier;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.data.Data;
-import no.nordicsemi.android.ble.exception.BluetoothDisabledException;
-import no.nordicsemi.android.ble.exception.DeviceDisconnectedException;
-import no.nordicsemi.android.ble.exception.InvalidRequestException;
-import no.nordicsemi.android.ble.exception.RequestFailedException;
-import no.nordicsemi.android.ble.response.ReadResponse;
 import timber.log.Timber;
 
 public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {

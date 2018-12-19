@@ -19,7 +19,6 @@ import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
