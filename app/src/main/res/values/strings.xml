@@ -46,6 +46,10 @@
     <!-- Home Fragment -->
     <string name="home.battery.alert.content">You need to charge phone to >20% of battery to continue.</string>
     <string name="home.battery.alert.title">Battery Life Too Low</string>
+    <string name="home.range.dialog.later">Do It Later</string>
+    <string name="home.range.dialog.message">Review Phe target ranges with your clinician to make sure they are right for you.\n\nIn case you just reinstalled the app, these settings reset.</string>
+    <string name="home.range.dialog.set">Set Phe Levels</string>
+    <string name="home.range.dialog.title">Review Phe Levels</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>

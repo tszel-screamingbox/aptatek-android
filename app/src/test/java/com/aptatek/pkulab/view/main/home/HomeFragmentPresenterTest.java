@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.main.home;
 
 import com.aptatek.pkulab.device.DeviceHelper;
+import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
@@ -27,6 +28,7 @@ import io.reactivex.Single;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @test.layer View / Main
@@ -53,6 +55,8 @@ public class HomeFragmentPresenterTest {
     private WettingInteractor wettingInteractor;
     @Mock
     private DeviceHelper deviceHelper;
+    @Mock
+    private PreferenceManager preferenceManager;
 
     private final Date date = new Date();
     private HomeFragmentPresenter presenter;
@@ -72,7 +76,7 @@ public class HomeFragmentPresenterTest {
         doReturn(BATTERY_NORMAL).when(deviceHelper).getBatteryLevel();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new HomeFragmentPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper);
+        presenter = new HomeFragmentPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper, preferenceManager);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)
@@ -138,5 +142,18 @@ public class HomeFragmentPresenterTest {
         doReturn(BATTERY_LOW).when(deviceHelper).getBatteryLevel();
         presenter.startNewTest();
         verify(view).showLowBatteryDialog();
+    }
+
+    /**
+     * Showing range settings dialog.
+     *
+     * @test.expected {@link  HomeFragmentView#showRangeDialog()   showRangeDialog()  }
+     * method is called, without any error.
+     */
+    @Test
+    public void testRangeDialog() {
+        when(preferenceManager.isRangeDialogShown()).thenReturn(false);
+        presenter.initRangeDialog();
+        verify(view).showRangeDialog();
     }
 }
