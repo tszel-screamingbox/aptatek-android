@@ -248,6 +248,9 @@
 
     <style name="DefaultDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textColorPrimary">@color/applicationSolidGray</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="ReminderSnoozeDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
