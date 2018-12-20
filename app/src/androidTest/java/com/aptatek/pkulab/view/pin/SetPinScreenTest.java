@@ -42,7 +42,7 @@ public class SetPinScreenTest {
         onView(withId(R.id.title)).check(matches(withText(R.string.set_pin_title)));
         onView(withId(R.id.hintTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.hintTextView)).check(matches(withText(R.string.set_pin_hint)));
-        onView(withId(R.id.messageTextView)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(hasChildCount(6)));
     }
@@ -66,7 +66,7 @@ public class SetPinScreenTest {
         // Enter the same pin
         enterPin();
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
-        onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationGreen)));
+        onView(withId(R.id.messageTextView)).check(matches(hasTextColor(android.R.color.white)));
         sleep(10000);
         assertTrue(activityRule.getActivity().isFinishing());
     }
@@ -97,7 +97,7 @@ public class SetPinScreenTest {
 
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(withText(R.string.confirm_pin_error)));
-        onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationRed)));
+        onView(withId(R.id.messageTextView)).check(matches(hasTextColor(android.R.color.white)));
         sleep(1000);
         // SetPin Again
         enterPin();
@@ -107,7 +107,7 @@ public class SetPinScreenTest {
 
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(withText(R.string.confirm_pin_successful)));
-        onView(withId(R.id.messageTextView)).check(matches(hasTextColor(R.color.applicationGreen)));
+        onView(withId(R.id.messageTextView)).check(matches(hasTextColor(android.R.color.white)));
         sleep(10000);
         assertTrue(activityRule.getActivity().isFinishing());
     }
