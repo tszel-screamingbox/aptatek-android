@@ -33,7 +33,7 @@ public class AddPinFragment extends BasePinFragment implements AddPinView {
     protected void initObjects(final View view) {
         titleTextView.setText(R.string.set_pin_title);
         hintTextView.setText(R.string.set_pin_hint);
-        messageTextView.setVisibility(View.GONE);
+        messageTextView.setVisibility(View.VISIBLE);
     }
 
     @Override

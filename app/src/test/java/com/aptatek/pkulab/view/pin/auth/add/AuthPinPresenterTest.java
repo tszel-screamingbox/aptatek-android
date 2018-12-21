@@ -141,13 +141,13 @@ public class AuthPinPresenterTest {
     /**
      * Enter an invalid PIN code.
      *
-     * @test.expected The PIN is invalid,{@link  AuthPinView#onInvalidPinTyped()  onInvalidPinTyped()}
+     * @test.expected The PIN is invalid,{@link  AuthPinView#onInvalidPinTyped(boolean hasReachedAttemptLimit)  onInvalidPinTyped()}
      * method is called, without any error.
      */
     @Test
     public void testInvalidPin() {
         presenter.verifyPinCode(invalidPin);
-        verify(view).onInvalidPinTyped();
+        verify(view).onInvalidPinTyped(false);
     }
 
     /**

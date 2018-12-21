@@ -41,18 +41,19 @@
         style="@style/General.Text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/general.distance.xxxsmall"
-        android:text="@string/set.pin.hint"
+        android:layout_marginTop="@dimen/general.distance.xxxmini"
+        app:layout_constraintBottom_toTopOf="@id/pinLayout"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/pinLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="@dimen/general.distance"
         android:layout_marginStart="@dimen/general.distance"
         android:layout_marginTop="@dimen/general.distance.xsmall"
-        app:layout_constraintTop_toBottomOf="@id/hintTextView">
+        android:layout_marginEnd="@dimen/general.distance"
+        android:layout_marginBottom="@dimen/general.distance.small"
+        app:layout_constraintBottom_toTopOf="@id/messageTextView">
 
         <ImageView
             android:id="@+id/pin0"
@@ -110,16 +111,19 @@
             app:layout_constraintRight_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-
     <TextView
         android:id="@+id/messageTextView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance"
+        android:layout_marginEnd="@dimen/general.distance"
+        android:layout_marginBottom="@dimen/general.distance.xsmall"
         android:gravity="center"
+        android:padding="@dimen/general.distance.xxxsmall"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/font.size.normal"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/buttonsGuideLine"
-        app:layout_constraintTop_toBottomOf="@+id/pinLayout" />
+        app:layout_constraintBottom_toTopOf="@id/buttonsGuideLine" />
 
     <android.support.constraint.Guideline
         android:id="@+id/buttonsGuideLine"
