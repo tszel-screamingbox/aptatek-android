@@ -118,6 +118,7 @@
         android:layout_marginStart="@dimen/general.distance"
         android:layout_marginEnd="@dimen/general.distance"
         android:layout_marginBottom="@dimen/general.distance.xsmall"
+        android:fontFamily="@font/nunito_regular"
         android:gravity="center"
         android:padding="@dimen/general.distance.xxxsmall"
         android:textColor="@android:color/white"
