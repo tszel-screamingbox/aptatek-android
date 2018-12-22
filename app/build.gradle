@@ -88,15 +88,15 @@ android {
 
     }
 
-    testOptions {
-        execution 'ANDROID_TEST_ORCHESTRATOR'
-        animationsDisabled true
-
-        unitTests {
-            includeAndroidResources = true
-            returnDefaultValues = true
-        }
-    }
+//    testOptions {
+//        execution 'ANDROID_TEST_ORCHESTRATOR'
+//        animationsDisabled true
+//
+//        unitTests {
+//            includeAndroidResources = true
+//            returnDefaultValues = true
+//        }
+//    }
 
     lintOptions {
         abortOnError false

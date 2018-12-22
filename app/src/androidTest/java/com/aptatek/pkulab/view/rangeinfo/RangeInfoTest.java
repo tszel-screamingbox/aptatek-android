@@ -2,12 +2,13 @@ package com.aptatek.pkulab.view.rangeinfo;
 
 import android.app.Application;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.matcher.RootMatchers;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
+import com.aptatek.pkulab.domain.model.PkuLevel;
+import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.injection.component.DaggerAndroidTestComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
@@ -26,7 +27,6 @@ import javax.inject.Inject;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -84,12 +84,12 @@ public class RangeInfoTest {
     @Test
     public void testInitialUiValues() {
         final PkuRangeInfo pkuInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
-                .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
-                .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
+                .setHighCeilValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
+                .setNormalCeilValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_CEIL, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
+                .setNormalFloorValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_FLOOR, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
                 .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
-                .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
-                .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
+                .setNormalAbsoluteMinValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_LOWEST_VALUE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
+                .setNormalAbsoluteMaxValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_HIGHEST_VALUE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
                 .build();
 
         onView(withId(R.id.rangeinfo_title)).check(matches(withText(R.string.rangeinfo_title)));
