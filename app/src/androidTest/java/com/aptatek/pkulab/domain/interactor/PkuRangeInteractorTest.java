@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.aptatek.pkulab.device.PreferenceManager;
+import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
@@ -127,7 +128,9 @@ public class PkuRangeInteractorTest {
                 .test();
         test.assertNoErrors();
         test.assertComplete();
-        test.assertValueAt(0, value -> value.getNormalFloorValue() == floor && value.getNormalCeilValue() == ceil);
+        test.assertValueAt(0, value ->
+                value.getNormalFloorValue() == PkuLevelConverter.convertTo(PkuLevel.create(floor, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue()
+                        && value.getNormalCeilValue() == PkuLevelConverter.convertTo(PkuLevel.create(ceil, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
     }
 
     /**
