@@ -34,7 +34,7 @@
     <dimen name="general.distance.enorme">250dp</dimen>
 
     <!-- Chart-->
-    <dimen name="graph.bubble.size">50dp</dimen>
+    <dimen name="graph.bubble.size">56dp</dimen>
     <dimen name="graph.bubble.size.small">20dp</dimen>
     <dimen name="graph.bubble.radius.small">40dp</dimen>
     <dimen name="graph.bubble.margin">10dp</dimen>

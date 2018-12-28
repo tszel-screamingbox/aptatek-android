@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/graph.item.size"
     android:layout_height="@dimen/graph.item.size"
     android:clipToPadding="false"
@@ -21,8 +22,8 @@
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/badge"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/graph.bubble.size"
+        android:layout_height="@dimen/graph.bubble.size"
         android:background="@drawable/bubble_badge"
         android:elevation="@dimen/general.elevation"
         android:gravity="center"
@@ -32,7 +33,6 @@
         android:visibility="visible"
         app:fontFamily="@font/nunito_black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.269"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.269" />
+        tools:text="5" />
 </android.support.constraint.ConstraintLayout>
