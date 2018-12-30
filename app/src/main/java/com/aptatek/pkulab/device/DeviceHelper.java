@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 
 import com.aptatek.pkulab.domain.manager.FingerprintManager;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
+import com.scottyab.rootbeer.RootBeer;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -46,6 +47,11 @@ public class DeviceHelper {
         return hasEnrolledFingerprints()
                 && hasEnrolledFingerprints()
                 && preferenceManager.isFingerprintScanEnabled();
+    }
+
+    public boolean isRooted() {
+        final RootBeer rootBeer = new RootBeer(context);
+        return rootBeer.isRootedWithoutBusyBoxCheck();
     }
 
     public float getBatteryLevel() {

@@ -7,8 +7,11 @@ import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
+import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
+import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.parentalgate.ParentalGateActivity;
 import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.pkulab.view.pin.set.SetPinHostActivity;
@@ -21,6 +24,8 @@ import butterknife.ButterKnife;
 import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
 
 public class SplashActivity extends BaseActivity<SplashActivityView, SplashActivityPresenter> implements SplashActivityView {
+
+    private static final String TAG_ROOT_DIALOG = "aptatek.splash.root.dialog";
 
     @Inject
     SplashActivityPresenter presenter;
@@ -66,6 +71,28 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
     public void onSetPinActivityShouldLoad() {
         final Intent intent = new Intent(this, SetPinHostActivity.class);
         launchActivity(intent, true, FADE);
+    }
+
+    @Override
+    public void onRootedDeviceDetected() {
+        final AlertDialogModel model = AlertDialogModel.builder()
+                .setTitle(getString(R.string.splash_root_alert_title))
+                .setMessage(getString(R.string.splash_root_alert))
+                .setNegativeButtonText(getString(R.string.alertdialog_button_no))
+                .setPositiveButtonText(getString(R.string.alertdialog_button_yes))
+                .setCancelable(false)
+                .build();
+
+        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
+                model,
+                decision -> {
+                    if (decision == AlertDialogDecisions.POSITIVE) {
+                        presenter.switchToNextActivity();
+                    } else {
+                        finish();
+                    }
+                });
+        dialogFragment.show(getSupportFragmentManager(), TAG_ROOT_DIALOG);
     }
 
     @Override

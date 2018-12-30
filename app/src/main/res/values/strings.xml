@@ -159,6 +159,9 @@
     <string name="settings.units.range.format">From %s to %s %s</string>
     <string name="settings.units.range.over.format">Over %s %s</string>
     <string name="settings.units.title">Your Phe Target Range</string>
+    <!-- Splash Activity -->
+    <string name="splash.root.alert">We have detected that this is an unsecure device, are you sure that you would like to continue?</string>
+    <string name="splash.root.alert.title">Warning</string>
     <!-- Test Activity -->
     <string name="test.button.cancel">Cancel</string>
     <string name="test.button.next">Next</string>
