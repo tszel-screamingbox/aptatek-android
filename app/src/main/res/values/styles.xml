@@ -71,9 +71,13 @@
 
     <style name="Test.Circle.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:background">@drawable/cancel_button_background</item>
-        <item name="android:width">@dimen/general.button.height</item>
-        <item name="android:height">@dimen/general.button.height</item>
+        <item name="android:layout_width">@dimen/general.button.height</item>
+        <item name="android:layout_height">@dimen/general.button.height</item>
         <item name="android:elevation">@dimen/general.elevation</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/applicationSolidGray</item>
+        <item name="android:textSize">@dimen/font.size.normal</item>
     </style>
 
     <style name="Test.Alert.Text" parent="General.Text">
