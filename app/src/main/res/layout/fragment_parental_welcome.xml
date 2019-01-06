@@ -35,11 +35,9 @@
         android:id="@+id/parentalBirthDate"
         style="@style/Parental.Input"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xxsmall"
         android:layout_marginTop="@dimen/general.distance.xxsmall"
         android:layout_marginEnd="@dimen/general.distance.xxsmall"
-        android:layout_marginBottom="@dimen/general.distance.mini"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:visibility="gone"
@@ -47,15 +45,15 @@
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toStartOf="@+id/guideStart"
         app:layout_constraintTop_toBottomOf="@+id/parentalWelcomeDescription"
-        tools:text="11/11/1984" />
+        tools:text="11/11/1984"
+        tools:ignore="Autofill,LabelFor,TextFields" />
 
     <EditText
         android:id="@+id/parentalAge"
         style="@style/Parental.Input"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xxsmall"
-        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:layout_marginTop="@dimen/general.distance.xsmall"
         android:layout_marginEnd="@dimen/general.distance.xxsmall"
         android:layout_marginBottom="@dimen/general.distance.mini"
         android:focusable="false"
@@ -64,13 +62,13 @@
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toStartOf="@+id/guideStart"
         app:layout_constraintTop_toBottomOf="@+id/parentalBirthDate"
-        tools:text="11" />
+        tools:text="11"
+        tools:ignore="Autofill,LabelFor,TextFields" />
 
     <Button
         android:id="@+id/parentalButton"
         style="@style/General.Rounded.Blue.Button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xxsmall"
         android:layout_marginTop="@dimen/general.distance.xxsmall"
         android:layout_marginEnd="@dimen/general.distance.xxsmall"
