@@ -22,7 +22,7 @@
 
 
     <style name="General.Transparent.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:layout_height">@dimen/general.button.height</item>
+        <item name="android:layout_height">@dimen/general.button.height.big</item>
         <item name="android:background">@color/transparent</item>
         <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
         <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
@@ -34,7 +34,7 @@
     </style>
 
     <style name="General.Rounded.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:layout_height">@dimen/general.button.height</item>
+        <item name="android:layout_height">@dimen/general.button.height.big</item>
         <item name="android:background">@drawable/ripple_white_button</item>
         <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
         <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
@@ -53,6 +53,7 @@
     <style name="General.Rounded.Blue.Button" parent="General.Rounded.Button">
         <item name="android:background">@drawable/ripple_blue_button</item>
         <item name="android:textColor">@color/applicationWhite</item>
+        <item name="android:layout_height">@dimen/general.button.height.big</item>
     </style>
 
     <style name="Test.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -71,9 +72,13 @@
 
     <style name="Test.Circle.Cancel.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:background">@drawable/cancel_button_background</item>
-        <item name="android:width">@dimen/general.button.height</item>
-        <item name="android:height">@dimen/general.button.height</item>
+        <item name="android:layout_width">@dimen/general.button.height.big</item>
+        <item name="android:layout_height">@dimen/general.button.height.big</item>
         <item name="android:elevation">@dimen/general.elevation</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/applicationSolidGray</item>
+        <item name="android:textSize">@dimen/font.size.normal</item>
     </style>
 
     <style name="Test.Alert.Text" parent="General.Text">
@@ -89,8 +94,8 @@
 
     <style name="Grey.Settings.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:background">@drawable/settings_button_background</item>
-        <item name="android:layout_width">@dimen/general.button.height</item>
-        <item name="android:layout_height">@dimen/general.button.height</item>
+        <item name="android:layout_width">@dimen/general.button.height.big</item>
+        <item name="android:layout_height">@dimen/general.button.height.big</item>
         <item name="android:elevation">@dimen/general.elevation</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
@@ -99,7 +104,7 @@
     </style>
 
     <style name="General.Text.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:layout_height">@dimen/general.button.height</item>
+        <item name="android:layout_height">@dimen/general.button.height.big</item>
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@color/applicationSolidGray</item>
         <item name="android:textSize">@dimen/font.size.normal</item>
@@ -176,6 +181,7 @@
     </style>
 
     <style name="Parental.Input" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_height">@dimen/general.button.height.big</item>
         <item name="android:paddingTop">@dimen/general.distance.xxsmall</item>
         <item name="android:paddingBottom">@dimen/general.distance.xxsmall</item>
         <item name="android:gravity">center</item>

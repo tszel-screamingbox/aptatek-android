@@ -12,6 +12,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -21,6 +24,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.JANUARY;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
+import static java.util.Calendar.getInstance;
 import static org.hamcrest.Matchers.not;
 
 /**
@@ -70,13 +78,16 @@ public class ParentalGateTest {
      */
     @Test
     public void testHappyCase() throws Exception {
+        final Calendar past = eighteenYearsAgo();
+
         onView(withId(R.id.parentalButton)).perform(click());
-        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(2000, 1, 1));
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(past.get(YEAR), 1, 1));
         onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click());
 
         onView(withId(R.id.parentalButton)).check(matches(withText(R.string.parental_welcome_how_old_are_you)));
         onView(withId(R.id.parentalBirthDate)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo("01/01/2000"))));
+        final String date = new SimpleDateFormat("MM/dd/yyyy").format(past.getTime());
+        onView(withId(R.id.parentalBirthDate)).check(matches(withText(Matchers.equalTo(date))));
 
         onView(withId(R.id.parentalButton)).perform(click());
         onView(withId(R.id.parentalButton)).check(matches(not(isDisplayed())));
@@ -162,4 +173,11 @@ public class ParentalGateTest {
         onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_failure_age_not_match_message)));
     }
 
+    private Calendar eighteenYearsAgo() {
+        final Calendar calendar = getInstance();
+        calendar.add(YEAR, -18);
+        calendar.set(MONTH, JANUARY);
+        calendar.set(DAY_OF_MONTH, 1);
+        return calendar;
+    }
 }

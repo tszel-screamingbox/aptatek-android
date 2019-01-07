@@ -40,20 +40,23 @@
         style="@style/Test.Circle.Cancel.Button"
         android:layout_width="@dimen/general.button.height.big"
         android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginEnd="@dimen/general.distance.mini"
+        android:layout_marginEnd="@dimen/general.distance.xsmall"
+        android:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="@id/guideBottom"
-        app:layout_constraintEnd_toStartOf="@id/testOkButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/testOkButton" />
 
     <Button
         android:id="@+id/testOkButton"
         style="@style/General.Rounded.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:gravity="center"
         android:text="@string/test.cancel.navigation.yes"
         app:layout_constraintBottom_toBottomOf="@id/guideBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/testCancelButton" />
+        app:layout_constraintLeft_toRightOf="@id/testCancelButton"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideBottom"
