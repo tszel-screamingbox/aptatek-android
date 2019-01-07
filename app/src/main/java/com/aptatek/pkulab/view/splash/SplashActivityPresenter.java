@@ -46,7 +46,7 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
     }
 
     private void checkRoot() {
-        if (!deviceHelper.isRooted()) {
+        if (deviceHelper.isRooted()) {
             ifViewAttached(SplashActivityView::onRootedDeviceDetected);
         } else {
             switchToNextActivity();
