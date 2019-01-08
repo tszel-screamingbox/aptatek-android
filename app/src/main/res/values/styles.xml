@@ -119,7 +119,7 @@
     </style>
 
     <style name="Dial.Button" parent="Ripple.Button">
-        <item name="android:textColor">@color/dialButtonGrey</item>
+        <item name="android:textColor">@color/dialButton</item>
         <item name="android:textSize">@dimen/font.size.xlarge</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">@font/nunito_black</item>

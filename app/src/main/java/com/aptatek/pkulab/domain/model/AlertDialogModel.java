@@ -44,9 +44,9 @@ public abstract class AlertDialogModel implements Parcelable {
     public static Builder builder() {
         return new AutoValue_AlertDialogModel.Builder()
                 .setTheme(R.style.DefaultDialogTheme)
-                .setNegativeButtonTextColor(R.color.dialButtonGrey)
-                .setPositiveButtonTextColor(R.color.dialButtonGrey)
-                .setNeutralButtonTextColor(R.color.dialButtonGrey);
+                .setNegativeButtonTextColor(R.color.dialogButtonGrey)
+                .setPositiveButtonTextColor(R.color.dialogButtonGrey)
+                .setNeutralButtonTextColor(R.color.dialogButtonGrey);
     }
 
     @AutoValue.Builder
