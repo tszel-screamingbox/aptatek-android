@@ -134,11 +134,14 @@
     <string name="set.pin.hint">Set a code that you will\nremember, because you will\nnever be able to reset it again</string>
     <string name="set.pin.title">Set PIN</string>
     <!-- Reminder Time Picker Dialog -->
+    <string name="settings.app.version">App version %s</string>
     <string name="settings.daily.reminder.description">You can set up multiple reminder times per day, on as many days per week that you want to check Phe levels.</string>
     <string name="settings.daily.reminders">Daily reminders</string>
     <string name="settings.daily.reminder.schedule.type.weekly">w</string>
     <string name="settings.daily.reminder.schedule.type.monthly">m</string>
     <string name="settings.daily.reminder.schedule.type.biweekly">bw</string>
+    <string name="settings.faq">FAQ</string>
+    <string name="settings.privacy">Privacy Policy</string>
     <string name="settings.reminder.schedule.type.weekly">Weekly</string>
     <string name="settings.reminder.schedule.type.monthly">Monthly</string>
     <string name="settings.reminder.schedule.type.biweekly">Biweekly</string>
