@@ -1,99 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
-
-    <TextView
-        android:id="@+id/textViewTitle"
-        style="@style/General.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.normal"
-        android:gravity="center"
-        android:text="@string/settings.title"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
-    <TextView
-        android:id="@+id/textViewFingerprint"
-        style="@style/Settings.Row.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.xbig"
-        android:text="@string/settings.fingerprint.authentication"
-        app:layout_constraintEnd_toStartOf="@+id/switchFingerprint"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
-
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switchFingerprint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:thumb="@drawable/switch_selector"
-        android:track="@drawable/switch_track"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintTop_toTopOf="@+id/textViewFingerprint" />
-
-    <View
-        android:id="@+id/separatorFingerprint"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/general.distance.xxxxmini"
-        android:layout_marginTop="@dimen/general.distance.mini"
-        android:background="@color/applicationLightGray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/switchFingerprint" />
-
-    <TextView
-        android:id="@+id/textViewFingerprintDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.xxmini"
-        android:text="@string/settings.fingerprint.description"
-        style="@style/Settings.Row.Description"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/separatorFingerprint" />
-
-    <TextView
-        android:layout_marginTop="@dimen/general.distance.small"
-        android:id="@+id/textViewDailyReminders"
-        style="@style/Settings.Row.Title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/ic_right_arrow"
-        android:text="@string/settings.daily.reminders"
-        app:layout_constraintEnd_toStartOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/textViewFingerprintDescription" />
-
-    <View
-        android:id="@+id/separatorDailyReminder"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/general.distance.xxxxmini"
-        android:layout_marginTop="@dimen/general.distance.mini"
-        android:background="@color/applicationLightGray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDailyReminders" />
-
-    <TextView
-        android:id="@+id/settingsRemindersDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.xxmini"
-        android:text="@string/settings.daily.reminder.description"
-        style="@style/Settings.Row.Description"
-        app:layout_constraintEnd_toStartOf="@+id/guideEnd"
-        app:layout_constraintStart_toEndOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/separatorDailyReminder" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideStart"
@@ -109,37 +23,150 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96" />
 
-    <TextView
-        android:id="@+id/settingsUnitsLabel"
-        style="@style/Settings.Row.Title"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.small"
-        android:drawableEnd="@drawable/ic_right_arrow"
-        android:text="@string/settings.units"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/settingsRemindersDescription" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-    <View
-        android:id="@+id/settingsSeparatorUnits"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/general.distance.xxxxmini"
-        android:layout_marginTop="@dimen/general.distance.mini"
-        android:background="@color/applicationLightGray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/settingsUnitsLabel" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/settingsUnitsDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.xxmini"
-        android:text="@string/settings.units.description"
-        style="@style/Settings.Row.Description"
-        app:layout_constraintEnd_toStartOf="@+id/guideEnd"
-        app:layout_constraintStart_toEndOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/settingsSeparatorUnits" />
+            <TextView
+                android:id="@+id/textViewTitle"
+                style="@style/General.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general.distance.normal"
+                android:gravity="center"
+                android:text="@string/settings.title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/textViewAppVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/font.size.xxmini"
+                android:fontFamily="@font/nunito_regular"
+                android:textColor="@color/applicationSolidGray"
+                android:textSize="@dimen/font.size.xbig"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+                tools:text="App version X.X.X" />
+
+            <TextView
+                android:id="@+id/textViewFingerprint"
+                style="@style/Settings.Row.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general.distance.xbig"
+                android:text="@string/settings.fingerprint.authentication"
+                app:layout_constraintEnd_toStartOf="@+id/switchFingerprint"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewAppVersion" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchFingerprint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/switch_selector"
+                android:track="@drawable/switch_track"
+                app:layout_constraintBottom_toBottomOf="@id/textViewFingerprint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textViewFingerprint" />
+
+            <TextView
+                android:id="@+id/textViewFingerprintDescription"
+                style="@style/Settings.Row.Description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general.distance.xxmini"
+                android:text="@string/settings.fingerprint.description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewFingerprint" />
+
+            <TextView
+                android:id="@+id/textViewDailyReminders"
+                style="@style/Settings.Row.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/settings.daily.reminders"
+                android:layout_marginTop="@dimen/general.distance.small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewFingerprintDescription" />
+
+            <TextView
+                android:id="@+id/settingsRemindersDescription"
+                style="@style/Settings.Row.Description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/settings.daily.reminder.description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewDailyReminders" />
+
+            <TextView
+                android:id="@+id/settingsUnitsLabel"
+                style="@style/Settings.Row.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general.distance.small"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/settings.units"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsRemindersDescription" />
+
+            <TextView
+                android:id="@+id/settingsUnitsDescription"
+                style="@style/Settings.Row.Description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general.distance.xxmini"
+                android:text="@string/settings.units.description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/settingsUnitsLabel" />
+
+            <TextView
+                android:id="@+id/textViewPrivacyPolicy"
+                style="@style/Settings.Row.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general.distance.small"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/settings.privacy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/settingsUnitsDescription" />
+
+            <TextView
+                android:id="@+id/textViewFaq"
+                style="@style/Settings.Row.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general.distance.small"
+                android:layout_marginBottom="@dimen/general.distance.small"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:text="@string/settings.faq"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPrivacyPolicy" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
