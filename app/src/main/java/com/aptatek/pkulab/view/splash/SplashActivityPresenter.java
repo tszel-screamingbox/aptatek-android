@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.splash;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
@@ -21,14 +22,17 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
 
     private final KeyStoreManager keyStoreManager;
     private final PreferenceManager preferenceManager;
+    private final DeviceHelper deviceHelper;
 
     private CompositeDisposable compositeDisposable;
 
     @Inject
     public SplashActivityPresenter(final KeyStoreManager keyStoreManager,
-                                   final PreferenceManager preferenceManager) {
+                                   final PreferenceManager preferenceManager,
+                                   final DeviceHelper deviceHelper) {
         this.keyStoreManager = keyStoreManager;
         this.preferenceManager = preferenceManager;
+        this.deviceHelper = deviceHelper;
     }
 
     @Override
@@ -38,7 +42,15 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
         compositeDisposable.add(Flowable.timer(DELAY_IN_MILLISEC, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ignored -> switchToNextActivity()));
+                .subscribe(ignored -> checkRoot()));
+    }
+
+    private void checkRoot() {
+        if (deviceHelper.isRooted()) {
+            ifViewAttached(SplashActivityView::onRootedDeviceDetected);
+        } else {
+            switchToNextActivity();
+        }
     }
 
     public void switchToNextActivity() {

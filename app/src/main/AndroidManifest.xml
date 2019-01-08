@@ -137,6 +137,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
+        <activity android:name=".view.settings.web.WebPageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
+
         <receiver android:name=".device.AlarmReceiver" />
         <receiver android:name=".device.ReminderActionReceiver" />
 
