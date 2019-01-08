@@ -2,6 +2,7 @@ package com.aptatek.pkulab.domain.manager.reader;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
@@ -25,7 +26,7 @@ public interface ReaderManager {
 
     Single<Integer> getBatteryLevel();
 
-    Single<String> getCartridgeId();
+    Single<CartridgeInfo> getCartridgeInfo();
 
     Single<Integer> getNumberOfResults();
 

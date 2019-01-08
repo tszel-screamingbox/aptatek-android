@@ -10,7 +10,8 @@ public class ResultResponse {
     @SerializedName("idx")
     private String id;
     private String date;
-    private String results;
+    private String result;
+    private String units;
     private String assay;
 
     public String getId() {
@@ -29,12 +30,20 @@ public class ResultResponse {
         this.date = date;
     }
 
-    public String getResults() {
-        return results;
+    public String getResult() {
+        return result;
     }
 
-    public void setResults(String results) {
-        this.results = results;
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public String getUnits() {
+        return units;
+    }
+
+    public void setUnits(String units) {
+        this.units = units;
     }
 
     public String getAssay() {
@@ -43,5 +52,16 @@ public class ResultResponse {
 
     public void setAssay(String assay) {
         this.assay = assay;
+    }
+
+    @Override
+    public String toString() {
+        return "ResultResponse{" +
+                "id='" + id + '\'' +
+                ", date='" + date + '\'' +
+                ", result='" + result + '\'' +
+                ", units='" + units + '\'' +
+                ", assay='" + assay + '\'' +
+                '}';
     }
 }

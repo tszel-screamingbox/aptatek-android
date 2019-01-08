@@ -51,7 +51,7 @@ public class ReaderInteractor {
 
     @NonNull
     public Single<String> queryCartridgeId() {
-        return readerManager.getCartridgeId()
+        return readerManager.getCartridgeInfo()
                 .subscribeOn(Schedulers.io());
     }
 

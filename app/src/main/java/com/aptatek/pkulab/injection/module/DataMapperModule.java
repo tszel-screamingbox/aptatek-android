@@ -19,7 +19,7 @@ public abstract class DataMapperModule {
     @Binds
     @IntoMap
     @ClassKey(TestResult.class)
-    public abstract Mapper<?, ?> bindCubeDataMapper(TestResultMapper mapper);
+    public abstract Mapper<?, ?> bindTestResultMapper(TestResultMapper mapper);
 
     @Binds
     @IntoMap

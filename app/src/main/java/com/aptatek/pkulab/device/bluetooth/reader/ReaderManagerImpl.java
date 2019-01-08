@@ -2,10 +2,13 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
+import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ErrorResponse;
+import com.aptatek.pkulab.device.bluetooth.model.NumPreviousResultsResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
@@ -17,6 +20,7 @@ import com.aptatek.pkulab.domain.error.ReaderError;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
+import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.Error;
@@ -50,7 +54,7 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
 
-    private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+    private DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'kkmmss");
 
     @Inject
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager) {
@@ -179,6 +183,9 @@ public class ReaderManagerImpl implements ReaderManager {
             case "TEST COMPLETE": {
                 return WorkflowState.TEST_COMPLETE;
             }
+            case "READY": {
+                return WorkflowState.READY;
+            }
             case "default":
             default: {
                 return WorkflowState.DEFAULT;
@@ -225,23 +232,43 @@ public class ReaderManagerImpl implements ReaderManager {
     }
 
     @Override
-    public Single<String> getCartridgeId() {
-        return lumosReaderManager.readCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID);
+    public Single<CartridgeInfo> getCartridgeInfo() {
+        return lumosReaderManager.<CartridgeIdResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID)
+                .map(cartridgeIdResponse -> CartridgeInfo.builder()
+                        .setExpiry(tryParseDate(cartridgeIdResponse.getExpiry()))
+                        .setCalibration(cartridgeIdResponse.getCalibration())
+                        .setDate(tryParseDate(cartridgeIdResponse.getDate()))
+                        .setLot(cartridgeIdResponse.getLot())
+                        .setType(cartridgeIdResponse.getType())
+                        .build());
     }
 
     @Override
     public Single<Integer> getNumberOfResults() {
-        return lumosReaderManager.readCharacteristic(LumosReaderConstants.READER_CHAR_NUM_RESULTS);
+        return lumosReaderManager.<NumPreviousResultsResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_NUM_RESULTS)
+                .map(NumPreviousResultsResponse::getNumberOfResults);
     }
 
     @Override
-    public Single<TestResult> getResult(@NonNull String id) {
-        return lumosReaderManager.readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT);
+    public Single<TestResult> getResult(@NonNull final String id) {
+        return lumosReaderManager.getConnectedDevice()
+                .toSingle()
+                .map(ReaderDevice::getMac)
+                .flatMap(deviceId -> lumosReaderManager.<ResultResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT)
+                        .map(resultResponse -> TestResult.builder()
+                                .setId(id)
+                                .setPkuLevel(parsePkuLevel(resultResponse))
+                                .setTimestamp(tryParseDate(resultResponse.getDate()))
+                                .setReaderId(deviceId)
+                                .build()
+                        )
+                );
     }
 
     @Override
     public Single<Error> getError() {
-        return lumosReaderManager.readCharacteristic(LumosReaderConstants.READER_CHAR_ERROR);
+        return lumosReaderManager.<ErrorResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_ERROR)
+                .map(errorResponse -> Error.create(errorResponse.getError()));
     }
 
     @Override
@@ -259,7 +286,7 @@ public class ReaderManagerImpl implements ReaderManager {
                                             for (ResultResponse resultResponse : list) {
                                                 mapped.add(TestResult.builder()
                                                         .setId(resultResponse.getDate() + ++counter) // TODO change this to idx as soon as the firmware has idx property
-                                                        .setPkuLevel(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_FLOOR, PkuLevelUnits.MICRO_MOL)) // TODO wait for firmware update......
+                                                        .setPkuLevel(parsePkuLevel(resultResponse))
                                                         .setTimestamp(tryParseDate(resultResponse.getDate()))
                                                         .setReaderId(deviceId)
                                                         .build());
@@ -269,6 +296,27 @@ public class ReaderManagerImpl implements ReaderManager {
                                         }
                                 )
                 );
+    }
+
+    @Nullable
+    private PkuLevel parsePkuLevel(final ResultResponse resultResponse) {
+        try {
+            final float value = Float.parseFloat(resultResponse.getResult());
+            final PkuLevelUnits unit = parseUnit(resultResponse.getUnits());
+            return PkuLevel.create(value, unit);
+        } catch (Exception ex) {
+            Timber.d("Failed to parse pkuLevel from result response: %s", resultResponse);
+        }
+
+        return null;
+    }
+
+    private PkuLevelUnits parseUnit(final String units) {
+        if ("umol/L".equals(units)) {
+            return PkuLevelUnits.MICRO_MOL;
+        }
+
+        throw new IllegalArgumentException("Unhandled unit received: " + units);
     }
 
     private long tryParseDate(final String date) {

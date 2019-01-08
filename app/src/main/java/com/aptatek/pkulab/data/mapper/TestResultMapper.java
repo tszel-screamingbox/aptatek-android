@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 import ix.Ix;
 
-public class TestResultMapper implements Mapper<TestResult,TestResultDataModel> {
+public class TestResultMapper implements Mapper<TestResult, TestResultDataModel> {
 
     @Inject
     TestResultMapper() {
