@@ -25,6 +25,7 @@
     <color name="buttonBlue">#20E8CD</color>
     <color name="buttonGrey">@color/applicationSmoke</color>
     <color name="buttonWhite">#ffffff</color>
+    <color name="buttonPressed">#d3dee5</color>
 
     <color name="chartBackrgroundBlue">#DBF9FE</color>
     <color name="chartWeeklyBlue">#20E8CD</color>
