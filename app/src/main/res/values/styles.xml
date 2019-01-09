@@ -201,6 +201,8 @@
 
     <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog">
         <item name="android:datePickerStyle">@style/Parental.DatePicker</item>
+        <item name="android:colorAccent">@color/buttonBlue</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
     </style>
 
     <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker">
