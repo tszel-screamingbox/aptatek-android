@@ -7,7 +7,7 @@ public final class LumosReaderConstants {
     }
 
     public static final String DEVICE_NAME = "Lumos Camera";
-    public static final int MTU_SIZE = 128;
+    public static final int MTU_SIZE = 240;
 
     public static final String READER_SERVICE = "84a91000-24c5-4726-9860-0847bb1d01e7";
     public static final String READER_CHAR_WORKFLOW_STATE = "84a91001-24c5-4726-9860-0847bb1d01E7";

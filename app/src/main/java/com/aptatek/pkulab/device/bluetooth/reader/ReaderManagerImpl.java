@@ -175,7 +175,8 @@ public class ReaderManagerImpl implements ReaderManager {
     @Override
     public Completable connect(@NonNull final ReaderDevice readerDevice) {
         if (readerDevice instanceof BluetoothReaderDevice) {
-            return lumosReaderManager.connectAndBound(((BluetoothReaderDevice) readerDevice).getBluetoothDevice());
+            return lumosReaderManager.connectAndBound(((BluetoothReaderDevice) readerDevice).getBluetoothDevice())
+                    .andThen(changeMtu(LumosReaderConstants.MTU_SIZE));
         } else {
             Timber.e("Unhandled ReaderDevice implementation received!");
             return Completable.complete();
@@ -189,7 +190,7 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Completable changeMtu(int mtuSize) {
-        return Completable.fromAction(() -> lumosReaderManager.changeMtu(mtuSize));
+        return lumosReaderManager.changeMtu(mtuSize);
     }
 
     @Override

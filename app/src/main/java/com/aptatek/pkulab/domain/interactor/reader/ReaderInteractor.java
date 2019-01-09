@@ -51,7 +51,7 @@ public class ReaderInteractor {
     }
 
     @NonNull
-    public Single<CartridgeInfo> queryCartridgeInfo() {
+    public Single<CartridgeInfo> getCartridgeInfo() {
         return readerManager.getCartridgeInfo()
                 .subscribeOn(Schedulers.io());
     }
