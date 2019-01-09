@@ -4,28 +4,28 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.characteristics.CharacteristicsHolder;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.CharacteristicReader;
-import com.aptatek.pkulab.device.bluetooth.characteristics.writer.JsonCharacteristicWriter;
+import com.aptatek.pkulab.device.bluetooth.characteristics.writer.CharacteristicDataProvider;
+import com.aptatek.pkulab.device.bluetooth.characteristics.writer.RequestResultCharacteristicDataProvider;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicReadError;
+import com.aptatek.pkulab.device.bluetooth.error.CharacteristicWriteError;
 import com.aptatek.pkulab.device.bluetooth.error.FailedToBondError;
 import com.aptatek.pkulab.device.bluetooth.error.NoValueReceivedError;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
-import com.aptatek.pkulab.device.bluetooth.model.RequestResultRequest;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
-import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
+import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -42,18 +42,18 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     private final CharacteristicsHolder characteristicsHolder;
     private final BleManagerGattCallback bleGattCallback;
     private final Map<String, CharacteristicReader> characteristicReaderMap;
-    private final JsonCharacteristicWriter jsonCharacteristicWriter;
+    private final Map<String, CharacteristicDataProvider> characteristicDataProviderMap;
 
     @Inject
     LumosReaderManager(@ApplicationContext @NonNull final Context context,
                        final CharacteristicsHolder characteristicsHolder,
                        final Map<String, CharacteristicReader> characteristicReaderMap,
-                       final JsonCharacteristicWriter jsonCharacteristicWriter) {
+                       final Map<String, CharacteristicDataProvider> characteristicDataProviderMap) {
         super(context);
 
         this.characteristicsHolder = characteristicsHolder;
         this.characteristicReaderMap = characteristicReaderMap;
-        this.jsonCharacteristicWriter = jsonCharacteristicWriter;
+        this.characteristicDataProviderMap = characteristicDataProviderMap;
         bleGattCallback = new BleManagerGattCallback() {
 
             @Override
@@ -70,7 +70,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
             @Override
             protected void initialize() {
-                updateTime();
+                updateTime().subscribe();
 
                 // WORKFLOW STATE
                 setNotificationCallback(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE))
@@ -129,24 +129,19 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         );
     }
 
-    private UpdateTimeResponse createTimeResponse() {
-        final UpdateTimeResponse updateTimeResponse = new UpdateTimeResponse();
-        final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        updateTimeResponse.setYear(calendar.get(Calendar.YEAR));
-        updateTimeResponse.setMonth(calendar.get(Calendar.MONTH));
-        updateTimeResponse.setDay(calendar.get(Calendar.DAY_OF_MONTH));
-        updateTimeResponse.setHour(calendar.get(Calendar.HOUR_OF_DAY));
-        updateTimeResponse.setMinute(calendar.get(Calendar.MINUTE));
-        updateTimeResponse.setSecond(calendar.get(Calendar.SECOND));
-
-        return updateTimeResponse;
-    }
-
-    private RequestResultRequest createRequestResultRequest(@NonNull final String id) {
-        final RequestResultRequest requestResultRequest = new RequestResultRequest();
-        requestResultRequest.setResultId(id);
-
-        return requestResultRequest;
+    Completable writeCharacteristic(@NonNull final String characteristicId, @Nullable CharacteristicDataProvider.CharacteristicsData data) {
+        return Completable.create(emitter ->
+                writeCharacteristic(characteristicsHolder.getCharacteristic(characteristicId), characteristicDataProviderMap.get(characteristicId).provideData(data))
+                        .fail(((device, status) -> {
+                            Timber.d("writeCharacteristic error: device [%s], status [%d]", device.getAddress(), status);
+                            emitter.onError(new CharacteristicWriteError(device, status));
+                        }))
+                        .done(device -> {
+                            Timber.d("writeCharacteristic completed successfully");
+                            emitter.onComplete();
+                        })
+                .enqueue()
+        );
     }
 
     public Completable connectAndBound(@NonNull final BluetoothDevice bluetoothDevice) {
@@ -183,42 +178,34 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         );
     }
 
-    public void queueMtuChange(final int mtu) {
-        requestMtu(mtu)
-                .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
-                .done(device -> Timber.d("Mtu change successful")
-                ).fail((device, status) -> {
+    public Completable changeMtu(final int mtu) {
+        return Completable.create(emitter ->
+                requestMtu(mtu)
+                        .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
+                        .done(device -> {
+                                    Timber.d("Mtu change successful");
+                                    emitter.onComplete();
+                                }
+                        ).fail((device, status) -> {
                     Timber.d("Mtu change failed: status [%d]", status);
                     mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+                    emitter.onError(new MtuChangeFailedError());
                 })
-                .enqueue();
+                .enqueue()
+        );
     }
 
-    private void updateTime() {
-        writeCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME), jsonCharacteristicWriter.convertData(createTimeResponse()))
-                .done(device -> Timber.d("Update time write successful"))
-                .fail((device, aStatus) -> Timber.d("Failed to write time: status [%d]", aStatus))
-                .enqueue();
-
+    private Completable updateTime() {
+        return writeCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME, null);
     }
 
-    public Single<ResultResponse> getResult(@NonNull String id) {
-        return Completable.fromAction(() -> {
-                    writeCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT), jsonCharacteristicWriter.convertData(createRequestResultRequest(id)))
-                            .await();
-                    Timber.d("Successfully written Result Request: id [%s]", id);
-                }
-        )
+    public Single<ResultResponse> getResult(@NonNull final String id) {
+        return writeCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT, new RequestResultCharacteristicDataProvider.RequestResultData(id))
                 .andThen(readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT));
     }
 
     public Single<List<ResultResponse>> syncResults() {
-        return Completable.fromAction(() -> {
-                    writeCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST), new byte[]{0x0})
-                            .await();
-                    Timber.d("Successfully written Sync Request");
-                }
-        )
+        return writeCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST, null)
                 .andThen(concatSyncResponse()
                         .map(ResultSyncResponse::getIdentifiers)
                         .toFlowable()

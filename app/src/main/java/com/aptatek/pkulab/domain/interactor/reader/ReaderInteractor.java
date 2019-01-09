@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.cube.TestResultRepository;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
+import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
@@ -50,7 +51,7 @@ public class ReaderInteractor {
     }
 
     @NonNull
-    public Single<String> queryCartridgeId() {
+    public Single<CartridgeInfo> queryCartridgeInfo() {
         return readerManager.getCartridgeInfo()
                 .subscribeOn(Schedulers.io());
     }

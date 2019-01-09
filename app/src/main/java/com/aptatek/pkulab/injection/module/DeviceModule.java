@@ -8,23 +8,27 @@ import com.aptatek.pkulab.device.bluetooth.characteristics.reader.deserializer.R
 import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
 import com.aptatek.pkulab.device.bluetooth.reader.LumosReaderManager;
 import com.aptatek.pkulab.device.bluetooth.reader.ReaderManagerImpl;
+import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.Map;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 
-@Module(includes = DeviceCharacteristicReaderModule.class)
+@Module(includes = {DeviceCharacteristicReaderModule.class, DeviceCharacteristicWriterModule.class})
 public class DeviceModule {
 
     @Singleton
     @Provides
-    public ReaderManager provideReaderManager(final LumosReaderManager lumosReaderManager) {
-        return new ReaderManagerImpl(lumosReaderManager);
+    public ReaderManager provideReaderManager(final LumosReaderManager lumosReaderManager,
+                                              final Map<Class<?>, Mapper<?, ?>> mappers) {
+        return new ReaderManagerImpl(lumosReaderManager, mappers);
     }
 
     @Singleton

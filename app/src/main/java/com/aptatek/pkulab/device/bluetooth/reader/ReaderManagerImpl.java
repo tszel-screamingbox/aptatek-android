@@ -2,9 +2,12 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
+import com.aptatek.pkulab.device.bluetooth.mapper.CartridgeInfoMapper;
+import com.aptatek.pkulab.device.bluetooth.mapper.ErrorMapper;
+import com.aptatek.pkulab.device.bluetooth.mapper.TestResultMapper;
+import com.aptatek.pkulab.device.bluetooth.mapper.WorkflowStateMapper;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ErrorResponse;
@@ -12,14 +15,13 @@ import com.aptatek.pkulab.device.bluetooth.model.NumPreviousResultsResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
+import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.error.DeviceBondingFailedError;
 import com.aptatek.pkulab.domain.error.DeviceNotSupportedError;
 import com.aptatek.pkulab.domain.error.GeneralReaderError;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.error.ReaderError;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
-import com.aptatek.pkulab.domain.model.PkuLevel;
-import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
@@ -27,16 +29,13 @@ import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
-import com.aptatek.pkulab.util.Constants;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -53,12 +52,12 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<ConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ConnectionEvent.create(null, ConnectionState.DISCONNECTED));
     private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
-
-    private DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'kkmmss");
+    private final Map<Class<?>, Mapper<?, ?>> mappers;
 
     @Inject
-    public ReaderManagerImpl(final LumosReaderManager lumosReaderManager) {
+    public ReaderManagerImpl(final LumosReaderManager lumosReaderManager, Map<Class<?>, Mapper<?, ?>> mappers) {
         this.lumosReaderManager = lumosReaderManager;
+        this.mappers = mappers;
 
         lumosReaderManager.setGattCallbacks(new LumosReaderCallbacks() {
             @Override
@@ -94,7 +93,7 @@ public class ReaderManagerImpl implements ReaderManager {
             public void onDeviceReady(final @NonNull BluetoothDevice device) {
                 Timber.d("onDeviceReady device [%s]", device.getAddress());
 //                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-//                    lumosReaderManager.queueMtuChange(requestedMtuSize);
+//                    lumosReaderManager.changeMtu(requestedMtuSize);
 //                }
                 connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
             }
@@ -163,47 +162,20 @@ public class ReaderManagerImpl implements ReaderManager {
             public void onMtuSizeChanged(@NonNull final BluetoothDevice device, final int mtuSize) {
                 Timber.d("onMtuSizeChanged: device [%s], mtu: [%d]", device.getAddress(), mtuSize);
                 mtuSizeProcessor.onNext(mtuSize);
-//                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
             }
 
             @Override
             public void onWorkflowStateChanged(@NonNull final WorkflowStateResponse workflowStateResponse) {
                 Timber.d("onWorkflowStateChanged: %s", workflowStateResponse);
-                workflowStateProcessor.onNext(mapToDomain(workflowStateResponse));
+                workflowStateProcessor.onNext(((WorkflowStateMapper) mappers.get(WorkflowStateResponse.class)).mapToDomain(workflowStateResponse));
             }
         });
-    }
-
-    // TODO refactor this to mapper
-    private WorkflowState mapToDomain(final WorkflowStateResponse response) {
-        switch (response.getState()) {
-            case "TEST RUNNING": {
-                return WorkflowState.TEST_RUNNING;
-            }
-            case "TEST COMPLETE": {
-                return WorkflowState.TEST_COMPLETE;
-            }
-            case "READY": {
-                return WorkflowState.READY;
-            }
-            case "default":
-            default: {
-                return WorkflowState.DEFAULT;
-            }
-        }
     }
 
     @Override
     public Completable connect(@NonNull final ReaderDevice readerDevice) {
         if (readerDevice instanceof BluetoothReaderDevice) {
             return lumosReaderManager.connectAndBound(((BluetoothReaderDevice) readerDevice).getBluetoothDevice());
-
-//            // TODO handle errors during connect!!!
-//            return Completable.fromAction(() -> lumosReaderManager.queueConnect(((BluetoothReaderDevice) readerDevice).getBluetoothDevice()))
-//                    .andThen(connectionStateProcessor.map(ConnectionEvent::getConnectionState)
-//                    .filter(ConnectionState.READY::equals)
-//                    .take(1)
-//                    .flatMapCompletable(it -> Completable.complete()));
         } else {
             Timber.e("Unhandled ReaderDevice implementation received!");
             return Completable.complete();
@@ -213,17 +185,11 @@ public class ReaderManagerImpl implements ReaderManager {
     @Override
     public Completable disconnect() {
         return lumosReaderManager.disconnectCompletable();
-
-//        return Completable.fromAction(lumosReaderManager::queueDisconnect)
-//                .andThen(connectionStateProcessor.map(ConnectionEvent::getConnectionState)
-//                        .filter(ConnectionState.DISCONNECTED::equals)
-//                        .take(1)
-//                        .flatMapCompletable(it -> Completable.complete()));
     }
 
     @Override
     public Completable changeMtu(int mtuSize) {
-        return Completable.fromAction(() -> lumosReaderManager.queueMtuChange(mtuSize));
+        return Completable.fromAction(() -> lumosReaderManager.changeMtu(mtuSize));
     }
 
     @Override
@@ -234,13 +200,7 @@ public class ReaderManagerImpl implements ReaderManager {
     @Override
     public Single<CartridgeInfo> getCartridgeInfo() {
         return lumosReaderManager.<CartridgeIdResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID)
-                .map(cartridgeIdResponse -> CartridgeInfo.builder()
-                        .setExpiry(tryParseDate(cartridgeIdResponse.getExpiry()))
-                        .setCalibration(cartridgeIdResponse.getCalibration())
-                        .setDate(tryParseDate(cartridgeIdResponse.getDate()))
-                        .setLot(cartridgeIdResponse.getLot())
-                        .setType(cartridgeIdResponse.getType())
-                        .build());
+                .map(cartridgeIdResponse -> ((CartridgeInfoMapper) mappers.get(CartridgeIdResponse.class)).mapToDomain(cartridgeIdResponse));
     }
 
     @Override
@@ -251,29 +211,18 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Single<TestResult> getResult(@NonNull final String id) {
-        return lumosReaderManager.getConnectedDevice()
-                .toSingle()
-                .map(ReaderDevice::getMac)
-                .flatMap(deviceId -> lumosReaderManager.<ResultResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT)
-                        .map(resultResponse -> TestResult.builder()
-                                .setId(id)
-                                .setPkuLevel(parsePkuLevel(resultResponse))
-                                .setTimestamp(tryParseDate(resultResponse.getDate()))
-                                .setReaderId(deviceId)
-                                .build()
-                        )
-                );
+        return lumosReaderManager.getResult(id)
+                .map(resultResponse -> ((TestResultMapper) mappers.get(ResultResponse.class)).mapToDomain(resultResponse));
     }
 
     @Override
     public Single<Error> getError() {
         return lumosReaderManager.<ErrorResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_ERROR)
-                .map(errorResponse -> Error.create(errorResponse.getError()));
+                .map(errorResponse -> ((ErrorMapper) mappers.get(ErrorResponse.class)).mapToDomain(errorResponse));
     }
 
     @Override
     public Single<List<TestResult>> syncResults() {
-        // TODO extract mapper logic
         return lumosReaderManager.getConnectedDevice()
                 .toSingle()
                 .map(ReaderDevice::getMac)
@@ -282,12 +231,12 @@ public class ReaderManagerImpl implements ReaderManager {
                                 .map(list -> {
                                             int counter = 0;
                                             final List<TestResult> mapped = new ArrayList<>();
+                                            final Mapper<TestResult, ResultResponse> mapper = (TestResultMapper) mappers.get(ResultResponse.class);
 
                                             for (ResultResponse resultResponse : list) {
-                                                mapped.add(TestResult.builder()
-                                                        .setId(resultResponse.getDate() + ++counter) // TODO change this to idx as soon as the firmware has idx property
-                                                        .setPkuLevel(parsePkuLevel(resultResponse))
-                                                        .setTimestamp(tryParseDate(resultResponse.getDate()))
+                                                resultResponse.setId(resultResponse.getDate() + ++counter); // TODO wait for fw update
+                                                mapped.add(mapper.mapToDomain(resultResponse)
+                                                        .toBuilder()
                                                         .setReaderId(deviceId)
                                                         .build());
                                             }
@@ -296,37 +245,6 @@ public class ReaderManagerImpl implements ReaderManager {
                                         }
                                 )
                 );
-    }
-
-    @Nullable
-    private PkuLevel parsePkuLevel(final ResultResponse resultResponse) {
-        try {
-            final float value = Float.parseFloat(resultResponse.getResult());
-            final PkuLevelUnits unit = parseUnit(resultResponse.getUnits());
-            return PkuLevel.create(value, unit);
-        } catch (Exception ex) {
-            Timber.d("Failed to parse pkuLevel from result response: %s", resultResponse);
-        }
-
-        return null;
-    }
-
-    private PkuLevelUnits parseUnit(final String units) {
-        if ("umol/L".equals(units)) {
-            return PkuLevelUnits.MICRO_MOL;
-        }
-
-        throw new IllegalArgumentException("Unhandled unit received: " + units);
-    }
-
-    private long tryParseDate(final String date) {
-        try {
-            final Date parse = dateFormat.parse(date);
-            return parse.getTime();
-        } catch (ParseException e) {
-            Timber.d("Failed to parse date: %s", e);
-            return System.currentTimeMillis();
-        }
     }
 
     @Override

@@ -6,12 +6,12 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
-public class JsonCharacteristicWriter extends CharacteristicWriter {
+public class JsonCharacteristicDataConverter extends CharacteristicDataConverter {
 
     private final Gson gson;
 
     @Inject
-    public JsonCharacteristicWriter(final Gson gson) {
+    public JsonCharacteristicDataConverter(final Gson gson) {
         this.gson = gson;
     }
 

@@ -24,6 +24,8 @@ public abstract class TestResult {
                 .setFasting(false);
     }
 
+    public abstract Builder toBuilder();
+
     @AutoValue.Builder
     public abstract static class Builder {
 
