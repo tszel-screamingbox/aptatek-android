@@ -5,7 +5,7 @@
     <item>
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/pin.message.background.height" />
-            <solid android:color="@color/pinIndicatorGreen" />
+            <solid android:color="@color/applicationGreen" />
         </shape>
     </item>
 </ripple>

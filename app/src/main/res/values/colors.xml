@@ -4,9 +4,7 @@
     <color name="colorPrimaryDark">@color/applicationGreen</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="applicationBlue">#4AE1F8</color>
     <color name="applicationPale">#e9edf1</color>
-    <color name="applicationSilver">#D3DAE3</color>
     <color name="applicationBlack">#36424D</color>
     <color name="applicationDarkBlack">#34414A</color>
     <color name="applicationLightGray">#A6ABB0</color>
@@ -14,20 +12,18 @@
     <color name="applicationSolidGray">#84929D</color>
     <color name="applicationGray">#4A4A4A</color>
     <color name="applicationTransparentGray">#774A4A4A</color>
-    <color name="applicationGreen">#4CD864</color>
+    <color name="applicationGreen">#20E8CD</color>
     <color name="applicationRed">#EB5757</color>
     <color name="applicationPink">#FA4E7C</color>
     <color name="applicationSmoke">#F5F8FA</color>
     <color name="applicationWhite">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
 
-
     <color name="buttonBlue">#20E8CD</color>
     <color name="buttonGrey">@color/applicationSmoke</color>
     <color name="buttonWhite">#ffffff</color>
     <color name="buttonPressed">#d3dee5</color>
 
-    <color name="chartBackrgroundBlue">#DBF9FE</color>
     <color name="chartWeeklyBlue">#20E8CD</color>
 
     <color name="dialButtonGrey">#8034414A</color>
@@ -51,7 +47,4 @@
 
     <color name="testPageIndicatorBlue">#20E8CD</color>
     <color name="testPageIndicatorGray">#D3DEE5</color>
-
-    <color name="pinIndicatorGreen">#20E8CD</color>
-    <color name="pinIndicatorRed">#FA4E7C</color>
 </resources>
