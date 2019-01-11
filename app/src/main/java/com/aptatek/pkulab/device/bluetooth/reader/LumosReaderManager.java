@@ -24,6 +24,7 @@ import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,9 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.data.Data;
@@ -129,7 +132,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         );
     }
 
-    Completable writeCharacteristic(@NonNull final String characteristicId, @Nullable CharacteristicDataProvider.CharacteristicsData data) {
+    Completable writeCharacteristic(@NonNull final String characteristicId, @Nullable final CharacteristicDataProvider.CharacteristicsData data) {
         return Completable.create(emitter ->
                 writeCharacteristic(characteristicsHolder.getCharacteristic(characteristicId), characteristicDataProviderMap.get(characteristicId).provideData(data))
                         .fail(((device, status) -> {
@@ -210,10 +213,13 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .map(ResultSyncResponse::getIdentifiers)
                         .toFlowable()
                         .flatMapIterable(it -> it)
-                        .observeOn(Schedulers.io())
-                        .flatMapSingle(this::getResult)
-                        .toList()
-                );
+                )
+                .observeOn(Schedulers.io())
+                .scan(new ArrayList<>(), (BiFunction<List<ResultResponse>, String, List<ResultResponse>>) (prevResults, identifier) -> {
+                    prevResults.add(getResult(identifier).blockingGet());
+                    return prevResults;
+                })
+                .lastOrError();
     }
 
     private Single<ResultSyncResponse> concatSyncResponse() {

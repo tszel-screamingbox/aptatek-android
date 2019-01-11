@@ -34,9 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -54,7 +51,6 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
     private final Map<Class<?>, Mapper<?, ?>> mappers;
 
-    @Inject
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager, Map<Class<?>, Mapper<?, ?>> mappers) {
         this.lumosReaderManager = lumosReaderManager;
         this.mappers = mappers;
