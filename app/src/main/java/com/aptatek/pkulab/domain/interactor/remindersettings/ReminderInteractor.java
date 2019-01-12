@@ -59,6 +59,16 @@ public class ReminderInteractor {
         );
     }
 
+    public Completable rescheduleReminderAfterReboot() {
+        return listReminderDays()
+                .toObservable()
+                .flatMapIterable(data -> data)
+                .flatMap(reminderDay -> listReminders(reminderDay.getWeekDay()))
+                .flatMapIterable(data -> data)
+                .flatMapCompletable(reminder ->
+                        insertReminder(reminder.getWeekDay(), reminder.getHour(), reminder.getMinute(), reminder.getReminderScheduleType()));
+    }
+
     public Completable initializeDays() {
         return Completable.fromAction(() -> {
             if (reminderDayDao.getReminderDaysCount() == 0) {

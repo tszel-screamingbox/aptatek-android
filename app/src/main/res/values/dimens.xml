@@ -9,8 +9,7 @@
     <dimen name="general.button.corner">40dp</dimen>
     <dimen name="general.button.corner.normal">16dp</dimen>
     <dimen name="general.button.corner.round">60dp</dimen>
-    <dimen name="general.button.height">50dp</dimen>
-    <dimen name="general.button.height.big">60dp</dimen>
+    <dimen name="general.button.height.big">64dp</dimen>
     <dimen name="general.button.height.medium">45dp</dimen>
     <dimen name="general.button.side.margin">50dp</dimen>
 
@@ -21,11 +20,11 @@
     <dimen name="general.distance.mini">8dp</dimen>
     <dimen name="general.distance.xxxsmall">10dp</dimen>
     <dimen name="general.distance.xxsmall">13dp</dimen>
-    <dimen name="general.distance.xsmall">18dp</dimen>
-    <dimen name="general.distance.small">20dp</dimen>
+    <dimen name="general.distance.xsmall">16dp</dimen>
+    <dimen name="general.distance.small">24dp</dimen>
     <dimen name="general.distance">30dp</dimen>
     <dimen name="general.distance.normal">40dp</dimen>
-    <dimen name="general.distance.big">58dp</dimen>
+    <dimen name="general.distance.big">56dp</dimen>
     <dimen name="general.distance.xbig">70dp</dimen>
     <dimen name="general.distance.large">80dp</dimen>
     <dimen name="general.distance.xlarge">110dp</dimen>
@@ -34,7 +33,7 @@
     <dimen name="general.distance.enorme">250dp</dimen>
 
     <!-- Chart-->
-    <dimen name="graph.bubble.size">50dp</dimen>
+    <dimen name="graph.bubble.size">56dp</dimen>
     <dimen name="graph.bubble.size.small">20dp</dimen>
     <dimen name="graph.bubble.radius.small">40dp</dimen>
     <dimen name="graph.bubble.margin">10dp</dimen>
@@ -50,6 +49,9 @@
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.header.margin.minimum">68dp</dimen>
+    <dimen name="pin.message.background.height">40dp</dimen>
+
+    <dimen name="fingerprint.size">224dp</dimen>
 
     <dimen name="font.size.steps">1sp</dimen>
     <dimen name="font.size.xxmini">5sp</dimen>
@@ -68,6 +70,10 @@
     <dimen name="font.size.xxlarge">42sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
     <dimen name="font.size.wetting">80sp</dimen>
+
+
+    <dimen name="font.size.badge">36sp</dimen>
+
 
     <dimen name="font.size.weekly.subtitle">21sp</dimen>
     <dimen name="font.size.weekly.title">25sp</dimen>

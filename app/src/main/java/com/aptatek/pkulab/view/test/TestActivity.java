@@ -34,6 +34,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.view.View.*;
+
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
         implements TestActivityView {
 
@@ -121,7 +123,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @Override
     public void setBottomBarVisible(final boolean visible) {
-        bottomBar.setVisibility(visible ? View.VISIBLE : View.GONE);
+        bottomBar.setVisibility(visible ? VISIBLE : GONE);
     }
 
     @Override
@@ -194,8 +196,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @Override
     public void setBatteryIndicatorVisible(final boolean visible) {
-        battery.setVisibility(visible ? View.VISIBLE : View.GONE);
-        nextButton.setVisibility(visible ? View.INVISIBLE : View.VISIBLE);
+        battery.setVisibility(visible ? VISIBLE : GONE);
+        nextButton.setVisibility(visible ? INVISIBLE : VISIBLE);
     }
 
     @Override
@@ -205,8 +207,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @Override
     public void setProgressVisible(final boolean visible) {
-        testProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
-        screenPagerIndicator.setVisibility(visible ? View.GONE : View.VISIBLE);
+        testProgress.setVisibility(visible ? VISIBLE : GONE);
+        screenPagerIndicator.setVisibility(visible ? INVISIBLE : VISIBLE);
     }
 
     @Override

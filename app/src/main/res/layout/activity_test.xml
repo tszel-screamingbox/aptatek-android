@@ -53,10 +53,9 @@
             android:layout_height="@dimen/test.progressbar.height"
             android:progressDrawable="@drawable/custom_progressbar"
             app:layout_constraintBottom_toBottomOf="@id/testCancelButton"
-            app:layout_constraintEnd_toStartOf="@id/testNextButton"
-            app:layout_constraintStart_toEndOf="@id/testCancelButton"
+            app:layout_constraintEnd_toEndOf="@id/testPageIndicator"
+            app:layout_constraintStart_toStartOf="@id/testPageIndicator"
             app:layout_constraintTop_toTopOf="@+id/testCancelButton"
-            app:layout_constraintVertical_bias="0.5"
             tools:progress="10" />
 
         <Button

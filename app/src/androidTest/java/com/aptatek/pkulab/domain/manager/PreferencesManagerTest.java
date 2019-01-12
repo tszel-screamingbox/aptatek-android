@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.InstrumentationRegistry.getContext;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
@@ -36,7 +37,7 @@ public class PreferencesManagerTest {
 
     @Test
     public void testGetDefaultValue() {
-        assertEquals(preferenceManager.getEncryptedPin(), null);
+        assertNull(preferenceManager.getEncryptedPin());
     }
 
     @Test
@@ -67,6 +68,7 @@ public class PreferencesManagerTest {
         preferenceManager.setPkuRangeNormalFloor(Constants.DEFAULT_PKU_NORMAL_FLOOR);
         preferenceManager.setPkuRangeNormalCeil(Constants.DEFAULT_PKU_NORMAL_CEIL);
         preferenceManager.setPkuRangeUnit(Constants.DEFAULT_PKU_LEVEL_UNIT);
+        preferenceManager.setRangeDialogShown(true);
 
         preferenceManager.clearPreference(PreferenceManager.PREF_ENCRYPTED_PIN);
         preferenceManager.clearPreference(PreferenceManager.PREF_INCUBATION_START);
@@ -76,15 +78,17 @@ public class PreferencesManagerTest {
         preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_NORMAL_CEIL);
         preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_NORMAL_FLOOR);
         preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_UNIT);
+        preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_DIALOG);
 
-        assertEquals(preferenceManager.getEncryptedPin(), null);
+        assertNull(preferenceManager.getEncryptedPin());
         assertEquals(preferenceManager.getIncubationStart(), 0L);
         assertFalse(preferenceManager.isFingerprintScanEnabled());
         assertEquals(preferenceManager.getWettingStart(), 0L);
         assertFalse(preferenceManager.isParentalPassed());
         assertEquals(preferenceManager.getPkuRangeNormalCeil(), -1f, 0.1f);
         assertEquals(preferenceManager.getPkuRangeNormalFloor(), -1f, 0.1f);
-        assertEquals(preferenceManager.getPkuRangeUnit(), null);
+        assertNull(preferenceManager.getPkuRangeUnit());
+        assertFalse(preferenceManager.isRangeDialogShown());
     }
 
     @Test
@@ -92,18 +96,26 @@ public class PreferencesManagerTest {
         preferenceManager.setIncubationStart(INCUBATION_START);
         preferenceManager.setEncryptedPin(TEST);
         preferenceManager.enableFingerprintScan(true);
+        preferenceManager.setRangeDialogShown(true);
 
         preferenceManager.clearAllPreference();
 
-        assertEquals(preferenceManager.getEncryptedPin(), null);
+        assertNull(preferenceManager.getEncryptedPin());
         assertEquals(preferenceManager.getIncubationStart(), 0L);
         assertTrue(!preferenceManager.isFingerprintScanEnabled());
+        assertTrue(!preferenceManager.isRangeDialogShown());
+    }
+
+    @Test
+    public void testSetRangeDialogShown() {
+        preferenceManager.setRangeDialogShown(true);
+        assertTrue(preferenceManager.isRangeDialogShown());
     }
 
     @Test
     public void testSetParentalPassed() {
         preferenceManager.setParentalPassed(true);
-        assertEquals(preferenceManager.isParentalPassed(), true);
+        assertTrue(preferenceManager.isParentalPassed());
     }
 
     @Test
@@ -151,7 +163,7 @@ public class PreferencesManagerTest {
 
     @Test
     public void testPkuUnitDefault() {
-        assertEquals(preferenceManager.getPkuRangeUnit(), null);
+        assertNull(preferenceManager.getPkuRangeUnit());
     }
 
 }

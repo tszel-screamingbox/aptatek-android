@@ -18,9 +18,13 @@ import timber.log.Timber;
 
 class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
 
+    private static final int PIN_CODE_ATTEMPT_ERROR_LIMIT = 5;
+
     private final AuthInteractor authInteractor;
     private final DeviceHelper deviceHelper;
     private final ResourceInteractor resourceInteractor;
+
+    private int attemptCount = 0;
 
     private Disposable disposable;
 
@@ -70,11 +74,12 @@ class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
     }
 
     void verifyPinCode(final PinCode pinCode) {
+        attemptCount++;
         disposable = authInteractor.checkPinCode(pinCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> ifViewAttached(AuthPinView::onValidPinTyped),
-                        throwable -> ifViewAttached(AuthPinView::onInvalidPinTyped));
+                        throwable -> ifViewAttached(view -> view.onInvalidPinTyped(attemptCount == PIN_CODE_ATTEMPT_ERROR_LIMIT)));
     }
 
     @Override

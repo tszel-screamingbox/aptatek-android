@@ -1,17 +1,29 @@
 package com.aptatek.pkulab.presenter.splash;
 
+import android.support.annotation.NonNull;
+
+import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
 import com.aptatek.pkulab.view.splash.SplashActivityPresenter;
 import com.aptatek.pkulab.view.splash.SplashActivityView;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.Completable;
+import io.reactivex.Scheduler;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.schedulers.ExecutorScheduler;
+import io.reactivex.plugins.RxJavaPlugins;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,6 +45,9 @@ public class SplashPresenterTest {
     ReminderInteractor reminderInteractor;
 
     @Mock
+    DeviceHelper deviceHelper;
+
+    @Mock
     SplashActivityView view;
 
     private SplashActivityPresenter presenter;
@@ -44,8 +59,9 @@ public class SplashPresenterTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         when(reminderInteractor.initializeDays()).thenReturn(Completable.complete());
+        when(deviceHelper.isRooted()).thenReturn(false);
 
-        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager);
+        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper);
         presenter.attachView(view);
     }
 
@@ -58,8 +74,20 @@ public class SplashPresenterTest {
     @Test
     public void testNavigationToParentalGate() {
         when(preferenceManager.isParentalPassed()).thenReturn(false);
-        presenter.switchToNextActivity();
         verify(view).onParentalGateShouldLoad();
+    }
+
+    /**
+     * Testing detect rooted device
+     *
+     * @test.expected {@link  SplashActivityView#onRootedDeviceDetected()  onRootedDeviceDetected()}
+     * method is called, without any error.
+     */
+    @Test
+    public void testRootedDevice() {
+        when(deviceHelper.isRooted()).thenReturn(true);
+        presenter.attachView(view);
+        verify(view).onRootedDeviceDetected();
     }
 
     /**
@@ -90,5 +118,33 @@ public class SplashPresenterTest {
 
         presenter.switchToNextActivity();
         verify(view).onRequestPinActivityShouldLoad();
+    }
+
+    @BeforeClass
+    public static void beforeClass() {
+        final Scheduler immediate = new Scheduler() {
+
+            @Override
+            public Disposable scheduleDirect(@NonNull final Runnable run, final long delay, @NonNull final TimeUnit unit) {
+                // this prevents StackOverflowErrors when scheduling with a delay
+                return super.scheduleDirect(run, 0, unit);
+            }
+
+            @Override
+            public Worker createWorker() {
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+            }
+        };
+
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setNewThreadSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setSingleSchedulerHandler(scheduler -> immediate);
+        RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        RxJavaPlugins.reset();
     }
 }

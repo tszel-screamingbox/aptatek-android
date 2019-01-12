@@ -175,6 +175,9 @@ dependencies {
     releaseImplementation leakDependencies.release
     testImplementation leakDependencies.release
 
+    // RootBeer
+    implementation rootDetectionDependencies.rootBeer
+
     // MpAndroidChart
     implementation mpAndroidChartDependencies.androidChart
 

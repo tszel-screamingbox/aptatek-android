@@ -6,15 +6,16 @@
     <!-- App Constants-->
     <string name="application.name">PKU LAB</string>
     <!-- AuthPin Activity -->
-    <string name="auth.pin.hint">Enter your PIN code</string>
+    <string name="auth.pin.hint">Enter your PIN code to access\nthe app</string>
     <string name="auth.pin.hint.fingerprint">Enter your PIN code or use your fingerprint</string>
     <string name="auth.pin.message.fingerprint.invalid">Invalid fingerprint</string>
     <string name="auth.pin.message.fingerprint.longer">Keep your finger on the reader for a bit longer</string>
-    <string name="auth.pin.message.invalid">Invalid PIN</string>
+    <string name="auth.pin.message.invalid">Incorrect PIN</string>
     <string name="auth.pin.successful">Authentication successful</string>
     <string name="auth.pin.title">Authenticate</string>
+    <string name="auth.pin.attempt.limit.reached.hint">If you forgot your PIN please delete &amp;\nreinstall this application and set a\nnew code. Some data may also be lost</string>
     <!-- ConfirmPin Fragment -->
-    <string name="confirm.pin.error">Incorrect PIN</string>
+    <string name="confirm.pin.error">PIN mismatch</string>
     <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
     <string name="confirm.pin.successful">PIN successfully set</string>
     <string name="confirm.pin.title">Confirm PIN</string>
@@ -46,6 +47,10 @@
     <!-- Home Fragment -->
     <string name="home.battery.alert.content">You need to charge phone to >20% of battery to continue.</string>
     <string name="home.battery.alert.title">Battery Life Too Low</string>
+    <string name="home.range.dialog.later">Do It Later</string>
+    <string name="home.range.dialog.message">Review Phe target ranges with your clinician to make sure they are right for you.\n\nIn case you just reinstalled the app, these settings reset.</string>
+    <string name="home.range.dialog.set">Set Phe Levels</string>
+    <string name="home.range.dialog.title">Review Phe Levels</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>
@@ -126,14 +131,17 @@
     <string name="reminder.time.picker.delete">Delete</string>
     <string name="reminder.time.picker.update">Update</string>
     <!-- Set PIN Activity -->
-    <string name="set.pin.hint">Set a code that you will use to\naccess the app</string>
+    <string name="set.pin.hint">Set a code that you will\nremember, because you will\nnever be able to reset it again</string>
     <string name="set.pin.title">Set PIN</string>
     <!-- Reminder Time Picker Dialog -->
+    <string name="settings.app.version">App version %s</string>
     <string name="settings.daily.reminder.description">You can set up multiple reminder times per day, on as many days per week that you want to check Phe levels.</string>
     <string name="settings.daily.reminders">Daily reminders</string>
     <string name="settings.daily.reminder.schedule.type.weekly">w</string>
     <string name="settings.daily.reminder.schedule.type.monthly">m</string>
     <string name="settings.daily.reminder.schedule.type.biweekly">bw</string>
+    <string name="settings.faq">FAQ</string>
+    <string name="settings.privacy">Privacy Policy</string>
     <string name="settings.reminder.schedule.type.weekly">Weekly</string>
     <string name="settings.reminder.schedule.type.monthly">Monthly</string>
     <string name="settings.reminder.schedule.type.biweekly">Biweekly</string>
@@ -154,6 +162,9 @@
     <string name="settings.units.range.format">From %s to %s %s</string>
     <string name="settings.units.range.over.format">Over %s %s</string>
     <string name="settings.units.title">Your Phe Target Range</string>
+    <!-- Splash Activity -->
+    <string name="splash.root.alert">We have detected that this is an unsecure phone, are you sure that you would like to continue?</string>
+    <string name="splash.root.alert.title">Unsecure Phone</string>
     <!-- Test Activity -->
     <string name="test.button.cancel">Cancel</string>
     <string name="test.button.next">Next</string>

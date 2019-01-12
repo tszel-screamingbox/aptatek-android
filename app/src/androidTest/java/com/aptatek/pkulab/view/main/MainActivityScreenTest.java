@@ -36,6 +36,9 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testInitialView() {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
         onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
         onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
         onView(withId(R.id.bigSettingsButton)).check(matches(isDisplayed()));
@@ -50,12 +53,27 @@ public class MainActivityScreenTest {
     }
 
     /**
+     * Clicking on Set Phe Levels button in the shown dialog.
+     *
+     * @test.expected After clicking on the button, the activity is changed to the new.
+     */
+    @Test
+    public void testGoToRangeSettings() {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform(click());
+        assert (activityRule.getActivity().isFinishing());
+    }
+
+    /**
      * Clicking on Settings button.
      *
      * @test.expected After clicking on the button, the activity is changed to the new.
      */
     @Test
     public void testGoToSettings() {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
         onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
         onView(withId(R.id.playIcon)).perform(ViewActions.click());
         onView(withId(R.id.settingsButton)).perform(ViewActions.click());
@@ -69,6 +87,9 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testGoToNewTest() {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
         onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
         onView(withId(R.id.playIcon)).perform(ViewActions.click());
         onView(withId(R.id.newTestButton)).perform(ViewActions.click());
@@ -82,6 +103,9 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testShowChart() throws Exception {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
         onView(withId(R.id.playIcon)).perform(ViewActions.click());
         Thread.sleep(1000L);
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
@@ -96,6 +120,9 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testInitialWeeklyResult() throws Exception {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
         showWeeklyFragment();
 
         onView(withId(R.id.title)).check(matches(isDisplayed()));
@@ -115,6 +142,9 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testWeeklyPlayIconClicked() throws Exception {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
         showWeeklyFragment();
 
         onView(withId(R.id.title)).check(matches(isDisplayed()));
@@ -136,6 +166,9 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testSwipe() throws Exception {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
         showWeeklyFragment();
 
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
@@ -160,6 +193,9 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testPagination() throws Exception {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
         showWeeklyFragment();
 
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
