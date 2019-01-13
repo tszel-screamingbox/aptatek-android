@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -92,6 +93,11 @@ public class ReaderInteractor {
     @NonNull
     public Flowable<WorkflowState> getWorkflowState() {
         return readerManager.workflowState()
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Maybe<ReaderDevice> getConnectedReader() {
+        return readerManager.getConnectedDevice()
                 .subscribeOn(Schedulers.io());
     }
 }

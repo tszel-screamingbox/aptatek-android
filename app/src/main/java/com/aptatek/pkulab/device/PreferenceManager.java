@@ -2,6 +2,7 @@ package com.aptatek.pkulab.device;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
@@ -24,6 +25,7 @@ public class PreferenceManager {
     public static final String PREF_PKU_RANGE_NORMAL_CEIL = "aptatek.range.normal.ceil";
     public static final String PREF_PKU_RANGE_NORMAL_FLOOR = "aptatek.range.normal.floor";
     public static final String PREF_PKU_RANGE_UNIT = "aptatek.range.unit";
+    public static final String PREF_PAIRED = "aptatek.device.paired";
 
     private final SharedPreferences sharedPreferences;
 
@@ -95,6 +97,15 @@ public class PreferenceManager {
     public PkuLevelUnits getPkuRangeUnit() {
         final int ordinal = sharedPreferences.getInt(PREF_PKU_RANGE_UNIT, -1);
         return ordinal != -1 ? PkuLevelUnits.values()[ordinal] : null;
+    }
+
+    @Nullable
+    public String getPairedDevice() {
+        return sharedPreferences.getString(PREF_PAIRED, null);
+    }
+
+    public void setPairedDevice(@Nullable final String device) {
+        sharedPreferences.edit().putString(PREF_PAIRED, device).apply();
     }
 
     public void clearPreference(final String key) {

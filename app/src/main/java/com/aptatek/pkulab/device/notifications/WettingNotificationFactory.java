@@ -1,11 +1,11 @@
-package com.aptatek.pkulab.domain.notifications;
+package com.aptatek.pkulab.device.notifications;
 
 import android.app.Notification;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.model.Countdown;
 
-public interface CountdownNotificationFactory {
+public interface WettingNotificationFactory {
 
     @NonNull
     Notification createCountdownNotification(@NonNull Countdown countdown);

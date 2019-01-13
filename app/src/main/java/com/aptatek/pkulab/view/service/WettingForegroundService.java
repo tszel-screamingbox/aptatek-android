@@ -1,25 +1,27 @@
-package com.aptatek.pkulab.view.test.wetting;
+package com.aptatek.pkulab.view.service;
 
 import android.support.v4.app.NotificationManagerCompat;
 
+import com.aptatek.pkulab.device.notifications.WettingNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingNotRunningError;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.model.Countdown;
-import com.aptatek.pkulab.domain.notifications.CountdownNotificationFactory;
+import com.aptatek.pkulab.injection.component.ApplicationComponent;
+import com.aptatek.pkulab.injection.component.test.DaggerTestServiceComponent;
 import com.aptatek.pkulab.injection.component.test.TestServiceComponent;
+import com.aptatek.pkulab.injection.module.ServiceModule;
+import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.util.Constants;
-import com.aptatek.pkulab.view.test.service.BaseReminderService;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class WettingReminderService extends BaseReminderService {
+public class WettingForegroundService extends BaseForegroundService {
 
     private static final int COUNTDOWN_NOTIFICATION_ID = 726;
     private static final int ERROR_NOTIFICATION_ID = 7263;
@@ -28,16 +30,20 @@ public class WettingReminderService extends BaseReminderService {
     @Inject
     WettingInteractor wettingInteractor;
 
-    @Named("wetting")
     @Inject
-    CountdownNotificationFactory countdownNotificationFactory;
+    WettingNotificationFactory countdownNotificationFactory;
 
     @Inject
     NotificationManagerCompat notificationManager;
 
     @Override
-    protected void injectService(final TestServiceComponent component) {
-        component.inject(this);
+    protected void injectService(final ApplicationComponent component) {
+        final TestServiceComponent serviceComponent = DaggerTestServiceComponent.builder()
+                .applicationComponent(component)
+                        .testModule(new TestModule())
+                        .serviceModule(new ServiceModule(this))
+                        .build();
+        serviceComponent.inject(this);
     }
 
     @Override

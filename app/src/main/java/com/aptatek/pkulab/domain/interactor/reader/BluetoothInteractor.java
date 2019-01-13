@@ -62,9 +62,10 @@ public class BluetoothInteractor {
                     discoveredDevices.onNext(Collections.unmodifiableSet(devices));
                     scanning.onNext(bluetoothScanner.isScanning());
                 })
-                .andThen(Countdown.countdown(period, ignore -> true, ignore -> ignore)
+                .doOnComplete(() -> Countdown.countdown(period, ignore -> true, ignore -> ignore)
                         .take(1)
                         .flatMapCompletable(ignore -> stopScan())
+                        .subscribe()
                 ).subscribeOn(Schedulers.computation());
     }
 

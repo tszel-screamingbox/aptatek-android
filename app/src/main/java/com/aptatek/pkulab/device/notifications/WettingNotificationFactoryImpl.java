@@ -2,10 +2,12 @@ package com.aptatek.pkulab.device.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.aptatek.pkulab.R;
@@ -15,20 +17,34 @@ import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.test.TestActivity;
 
-public class WettingCountdownNotificationFactory extends BaseCountdownNotificationFactory {
+public class WettingNotificationFactoryImpl extends BaseNotificationFactory implements WettingNotificationFactory {
 
     private Bundle extrasBundle;
 
-    public WettingCountdownNotificationFactory(@ApplicationContext final Context context,
-                                               final ResourceInteractor resourceInteractor,
-                                               final NotificationManager notificationManager) {
+    public WettingNotificationFactoryImpl(@ApplicationContext final Context context,
+                                          final ResourceInteractor resourceInteractor,
+                                          final NotificationManager notificationManager) {
         super(context, resourceInteractor, notificationManager);
+    }
+
+    private PendingIntent createContentIntent() {
+        final Intent starter = TestActivity.createStarter(context);
+        final Bundle intentExtras = extrasBundle;
+
+        if (intentExtras != null) {
+            starter.putExtras(intentExtras);
+        }
+
+        final TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(starter);
+
+        return stackBuilder.getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
     @NonNull
     @Override
     public Notification createCountdownNotification(@NonNull final Countdown countdown) {
-        return new NotificationCompat.Builder(context, createChannelId())
+        return new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_inprogress_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_inprogress_textformat, countdown.getRemainingFormattedText()))
                 .setSmallIcon(R.drawable.ic_play)
@@ -44,16 +60,10 @@ public class WettingCountdownNotificationFactory extends BaseCountdownNotificati
         return Constants.HUNDRED_PERCENT - (int) ((remainingMillis / (float) Constants.DEFAULT_WETTING_PERIOD) * Constants.HUNDRED_PERCENT);
     }
 
-    @Nullable
-    @Override
-    protected Bundle getIntentExtras() {
-        return extrasBundle;
-    }
-
     @NonNull
     @Override
     public Notification createCountdownErrorNotification(@NonNull final Throwable throwable) {
-        return new NotificationCompat.Builder(context, createChannelId())
+        return new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
                 .setSmallIcon(R.drawable.ic_play)
@@ -67,7 +77,7 @@ public class WettingCountdownNotificationFactory extends BaseCountdownNotificati
     public Notification createCountdownFinishedNotification() {
         extrasBundle = TestActivity.createForSampleWettingFinishedIntent();
 
-        return new NotificationCompat.Builder(context, createChannelId())
+        return new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
                 .setSmallIcon(R.drawable.ic_play)

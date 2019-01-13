@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.test.service;
+package com.aptatek.pkulab.view.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -6,17 +6,14 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.aptatek.pkulab.AptatekApplication;
-import com.aptatek.pkulab.injection.component.test.DaggerTestServiceComponent;
-import com.aptatek.pkulab.injection.component.test.TestServiceComponent;
-import com.aptatek.pkulab.injection.module.ServiceModule;
-import com.aptatek.pkulab.injection.module.test.TestModule;
+import com.aptatek.pkulab.injection.component.ApplicationComponent;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class BaseReminderService extends Service {
+public abstract class BaseForegroundService extends Service {
 
     protected CompositeDisposable disposables;
 
@@ -32,12 +29,7 @@ public abstract class BaseReminderService extends Service {
 
         disposables = new CompositeDisposable();
 
-        final TestServiceComponent serviceComponent = DaggerTestServiceComponent.builder()
-                .applicationComponent(((AptatekApplication) getApplication()).getApplicationComponent())
-                .testModule(new TestModule())
-                .serviceModule(new ServiceModule(this))
-                .build();
-        injectService(serviceComponent);
+        injectService(((AptatekApplication) getApplication()).getApplicationComponent());
 
         disposables.add(
             shouldStart()
@@ -64,7 +56,7 @@ public abstract class BaseReminderService extends Service {
         super.onDestroy();
     }
 
-    protected abstract void injectService(TestServiceComponent component);
+    protected abstract void injectService(final ApplicationComponent component);
 
     protected abstract Single<Boolean> shouldStart();
 

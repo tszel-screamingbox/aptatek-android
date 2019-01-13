@@ -190,9 +190,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                                     emitter.onComplete();
                                 }
                         ).fail((device, status) -> {
-                    Timber.d("Mtu change failed: status [%d]", status);
-                    mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
-                    emitter.onError(new MtuChangeFailedError());
+                            Timber.d("Mtu change failed: status [%d]", status);
+                            mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+                            emitter.onError(new MtuChangeFailedError());
                 })
                 .enqueue()
         );
@@ -254,7 +254,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     public Maybe<ReaderDevice> getConnectedDevice() {
         final BluetoothDevice bluetoothDevice = getBluetoothDevice();
         if (bluetoothDevice == null) {
-            return Maybe.empty();
+            return Maybe.never();
         }
 
         return Maybe.just(new BluetoothReaderDevice(bluetoothDevice));

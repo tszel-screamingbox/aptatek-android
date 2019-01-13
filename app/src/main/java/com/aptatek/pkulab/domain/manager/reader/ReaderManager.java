@@ -13,6 +13,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 public interface ReaderManager {
@@ -35,6 +36,8 @@ public interface ReaderManager {
     Single<List<TestResult>> syncResults();
 
     Single<Error> getError();
+
+    Maybe<ReaderDevice> getConnectedDevice();
 
     // hot observables / notify characteristics
     Flowable<ConnectionEvent> connectionEvents();

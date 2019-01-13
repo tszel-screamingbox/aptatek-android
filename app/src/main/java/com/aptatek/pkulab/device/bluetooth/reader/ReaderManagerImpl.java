@@ -36,6 +36,7 @@ import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
@@ -88,9 +89,6 @@ public class ReaderManagerImpl implements ReaderManager {
             @Override
             public void onDeviceReady(final @NonNull BluetoothDevice device) {
                 Timber.d("onDeviceReady device [%s]", device.getAddress());
-//                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-//                    lumosReaderManager.changeMtu(requestedMtuSize);
-//                }
                 connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
             }
 
@@ -216,6 +214,11 @@ public class ReaderManagerImpl implements ReaderManager {
     public Single<Error> getError() {
         return lumosReaderManager.<ErrorResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_ERROR)
                 .map(errorResponse -> ((ErrorMapper) mappers.get(ErrorResponse.class)).mapToDomain(errorResponse));
+    }
+
+    @Override
+    public Maybe<ReaderDevice> getConnectedDevice() {
+        return lumosReaderManager.getConnectedDevice();
     }
 
     @Override

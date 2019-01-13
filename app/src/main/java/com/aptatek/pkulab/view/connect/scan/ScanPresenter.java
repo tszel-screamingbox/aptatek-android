@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.connect.scan;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
@@ -24,6 +25,7 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
 
     private final BluetoothInteractor bluetoothInteractor;
     private final ReaderInteractor readerInteractor;
+    private final PreferenceManager preferenceManager;
 
     private Set<ReaderDevice> readerDevices;
 
@@ -32,10 +34,12 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
     @Inject
     public ScanPresenter(@ActivityContext final Context context,
                          final BluetoothInteractor bluetoothInteractor,
-                         final ReaderInteractor readerInteractor) {
+                         final ReaderInteractor readerInteractor,
+                         final PreferenceManager preferenceManager) {
         super(context);
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
+        this.preferenceManager = preferenceManager;
     }
 
     @Override
@@ -93,6 +97,8 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                             }
 
                             case READY: {
+                                final ReaderDevice device = event.getDevice();
+                                preferenceManager.setPairedDevice(device.getMac());
                                 attachedView.showConnected(event.getDevice());
                                 break;
                             }
