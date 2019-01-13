@@ -106,6 +106,14 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         recyclerViewDailyResults.setAdapter(dailyResultsAdapter);
         recyclerViewDailyResults.addItemDecoration(dailyResultItemDecorator);
 
+        bubbleScrollView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
         presenter.initRangeDialog();
     }
 
