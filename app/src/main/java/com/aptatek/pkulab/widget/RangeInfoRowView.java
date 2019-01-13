@@ -2,7 +2,6 @@ package com.aptatek.pkulab.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
@@ -41,8 +40,10 @@ public class RangeInfoRowView extends ConstraintLayout {
             final int color = array.getColor(R.styleable.RangeInfoRowView_backgroundColor, -1);
             if (color != -1) {
                 final Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.rangeinfo_row_background);
-                drawable.setColorFilter(color, PorterDuff.Mode.OVERLAY);
-                setBackground(drawable);
+                if (drawable != null) {
+                    drawable.setTint(color);
+                    setBackground(drawable);
+                }
             }
         } finally {
             array.recycle();
