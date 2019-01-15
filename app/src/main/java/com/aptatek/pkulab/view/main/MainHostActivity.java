@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
@@ -77,5 +78,15 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
         }
 
         super.onBackPressed();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (homeFragment.handleDispatchTouchEvent(ev) || mainSlidingPanelLayout.getPanelState()
+                == SlidingUpPanelLayout.PanelState.DRAGGING && ev.getAction() == MotionEvent.ACTION_DOWN) {
+            return true;
+        } else {
+            return super.dispatchTouchEvent(ev);
+        }
     }
 }
