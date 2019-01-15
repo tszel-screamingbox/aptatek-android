@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import ix.Ix;
@@ -72,24 +73,30 @@ public class BluetoothService extends BaseForegroundService {
 
     private void startScanAndAutoConnect() {
         disposables.add(
-                bluetoothInteractor.startScan()
-                        .andThen(bluetoothInteractor.getDiscoveredDevices()
-                                .filter(readerDevices -> !readerDevices.isEmpty())
-                                .map(readerDevices -> Ix.from(readerDevices).first())
-                                .flatMapCompletable(device -> readerInteractor.connect(device))
-                        ).subscribe(
-                        () -> Timber.d("Connected to device"),
-                        throwable -> {
-                            Timber.d("Something went wrong during service connection: %s", throwable);
-                            notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.CommunicationError(throwable.getMessage())));
-                            stopForeground(false);
-                        }
-                )
+                readerInteractor.getReaderConnectionEvents()
+                        .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.DISCONNECTED)
+                        .take(1)
+                        .flatMapCompletable(ignored -> bluetoothInteractor.startScan()
+                                    .andThen(bluetoothInteractor.getDiscoveredDevices()
+                                            .filter(readerDevices -> !readerDevices.isEmpty())
+                                            .map(readerDevices -> Ix.from(readerDevices).first())
+                                            .flatMapCompletable(device -> readerInteractor.connect(device))
+                                    )
+                        )
+                        .subscribe(
+                                () -> Timber.d("Connected to device"),
+                                throwable -> {
+                                    Timber.d("Something went wrong during service connection: %s", throwable);
+                                    notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.CommunicationError(throwable.getMessage())));
+                                    stopForeground(false);
+                                }
+                        )
         );
     }
 
     private void watchReaderEvents() {
         disposables.add(readerInteractor.getReaderConnectionEvents()
+                .distinctUntilChanged()
                 .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
                 .flatMap(readyEvent -> readerInteractor.syncResults()
                         .doOnSubscribe(ignored -> notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.SyncingData(readyEvent.getDevice(), 100))))
@@ -103,13 +110,13 @@ public class BluetoothService extends BaseForegroundService {
                         )
                 )
                 .subscribe(pair -> {
-                    Timber.d("Device connected: %s, battery level: %d", pair.first.getDevice().getMac(), pair.second);
-                    notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDevice(pair.first.getDevice(), pair.second)));
-                },
-                error -> {
-                    Timber.d("Error while sync and idle: %s", error);
-                    // TODO handle error?
-                })
+                            Timber.d("Device connected: %s, battery level: %d", pair.first.getDevice().getMac(), pair.second);
+                            notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDevice(pair.first.getDevice(), pair.second)));
+                        },
+                        error -> {
+                            Timber.d("Error while sync and idle: %s", error);
+                            // TODO handle error?
+                        })
         );
 
         disposables.add(readerInteractor.getReaderConnectionEvents()

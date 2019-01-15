@@ -89,19 +89,21 @@ public class ReaderManagerImpl implements ReaderManager {
             @Override
             public void onDeviceReady(final @NonNull BluetoothDevice device) {
                 Timber.d("onDeviceReady device [%s]", device.getAddress());
-                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
+                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                    connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
+                }
             }
 
             @Override
             public void onBondingRequired(final @NonNull BluetoothDevice device) {
                 Timber.d("onBondingRequired: device [%s]", device.getAddress());
-                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.BONDING_REQUIRED));
+                //connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.BONDING_REQUIRED));
             }
 
             @Override
             public void onBonded(final @NonNull BluetoothDevice device) {
                 Timber.d("onBonded: device [%s]", device.getAddress());
-                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.BOND));
+                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
             }
 
             @Override
