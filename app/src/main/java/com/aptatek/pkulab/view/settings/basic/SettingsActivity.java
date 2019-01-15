@@ -7,12 +7,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
+import com.aptatek.pkulab.view.settings.web.WebPageActivityStarter;
 
 import javax.inject.Inject;
 
@@ -34,6 +36,9 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
 
     @BindView(R.id.switchFingerprint)
     SwitchCompat switchFingerPrint;
+
+    @BindView(R.id.textViewAppVersion)
+    TextView tvAppVersion;
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -57,7 +62,7 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
 
-        toolbar.setNavigationIcon(R.drawable.ic_close);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitle("");
 
         setSupportActionBar(toolbar);
@@ -67,6 +72,8 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         switchFingerPrint.setOnCheckedChangeListener((buttonView, isChecked) ->
             presenter.setFingerprintEnabled(isChecked)
         );
+
+        presenter.getAppVersion();
     }
 
     @Override
@@ -86,6 +93,16 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         launchActivity(RangeSettingsActivity.starter(this), false, Animation.FADE);
     }
 
+    @OnClick(R.id.textViewPrivacyPolicy)
+    public void onPrivacyClicked() {
+        WebPageActivityStarter.start(this, getString(R.string.settings_privacy), "http://www.google.com"); // TODO get proper url
+    }
+
+    @OnClick(R.id.textViewFaq)
+    public void onFaqClicked() {
+        WebPageActivityStarter.start(this, getString(R.string.settings_faq), "http://www.google.com"); // TODO get proper url
+    }
+
     @Override
     public void showFingerprintAuthChecked(final boolean isChecked) {
         switchFingerPrint.setChecked(isChecked);
@@ -94,5 +111,10 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     @Override
     public void showFingerprintAuthEnabled(final boolean isEnabled) {
         switchFingerPrint.setEnabled(isEnabled);
+    }
+
+    @Override
+    public void showAppVersion(final String version) {
+        tvAppVersion.setText(getString(R.string.settings_app_version, version));
     }
 }

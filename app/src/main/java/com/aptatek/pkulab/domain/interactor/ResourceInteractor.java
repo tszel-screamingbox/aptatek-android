@@ -3,9 +3,11 @@ package com.aptatek.pkulab.domain.interactor;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.RawRes;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.TypedValue;
 
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
@@ -183,6 +185,13 @@ public class ResourceInteractor {
      */
     public int getColorResource(final int resourceId) {
         return getResources().getColor(resourceId);
+    }
+
+    /**
+     * Return a typeface associated with the given resource id
+     */
+    public Typeface getTypeface(final int resourceId) {
+        return ResourcesCompat.getFont(context, resourceId);
     }
 
     /**

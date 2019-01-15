@@ -23,4 +23,5 @@ interface HomeFragmentView extends MvpView {
 
     void showLowBatteryDialog();
 
+    void showRangeDialog();
 }

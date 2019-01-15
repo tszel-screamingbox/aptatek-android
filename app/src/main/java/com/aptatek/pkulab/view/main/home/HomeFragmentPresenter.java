@@ -6,6 +6,7 @@ import android.util.Pair;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
+import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.cube.TestResultInteractor;
@@ -42,6 +43,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private final DailyChartFormatter dailyChartFormatter;
     private final WettingInteractor wettingInteractor;
     private final DeviceHelper deviceHelper;
+    private final PreferenceManager preferenceManager;
     private CompositeDisposable disposables;
 
     @Inject
@@ -50,13 +52,22 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                           final PkuRangeInteractor rangeInteractor,
                           final DailyChartFormatter dailyChartFormatter,
                           final WettingInteractor wettingInteractor,
-                          final DeviceHelper deviceHelper) {
-        this.testResultInteractor = testResultInteractor;
+                          final DeviceHelper deviceHelper,
+                          final PreferenceManager preferenceManager) {
+        this.cubeInteractor = cubeInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
         this.dailyChartFormatter = dailyChartFormatter;
         this.wettingInteractor = wettingInteractor;
         this.deviceHelper = deviceHelper;
+        this.preferenceManager = preferenceManager;
+    }
+
+    void initRangeDialog() {
+        if (!preferenceManager.isRangeDialogShown()) {
+            preferenceManager.setRangeDialogShown(true);
+            ifViewAttached(HomeFragmentView::showRangeDialog);
+        }
     }
 
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts

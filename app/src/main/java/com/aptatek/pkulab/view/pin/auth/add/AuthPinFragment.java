@@ -31,7 +31,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     protected void initObjects(final View view) {
         presenter.initView();
         titleTextView.setText(R.string.auth_pin_title);
-        messageTextView.setVisibility(View.GONE);
+        messageTextView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -53,16 +53,20 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     public void onValidPinTyped() {
         messageTextView.setVisibility(View.VISIBLE);
-        messageTextView.setTextColor(this.getResources().getColor(R.color.applicationGreen));
         messageTextView.setText(R.string.auth_pin_successful);
+        messageTextView.setBackgroundResource(R.drawable.pin_valid_message_background);
         fillCircle(R.drawable.pin_circle_filled_green, ((AuthPinHostActivity) getBaseActivity())::successfullyAuthorized);
     }
 
     @Override
-    public void onInvalidPinTyped() {
+    public void onInvalidPinTyped(final boolean hasReachedAttemptLimit) {
+        if (hasReachedAttemptLimit) {
+            hintTextView.setText(R.string.auth_pin_attempt_limit_reached_hint);
+        }
+
         messageTextView.setVisibility(View.VISIBLE);
-        messageTextView.setTextColor(this.getResources().getColor(R.color.applicationRed));
         messageTextView.setText(R.string.auth_pin_message_invalid);
+        messageTextView.setBackgroundResource(R.drawable.pin_invalid_message_background);
         fillCircle(R.drawable.pin_circle_filled_red, null);
     }
 
@@ -97,7 +101,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     public void onPinButtonClicked(final View v) {
         if (messageTextView.getVisibility() == View.VISIBLE) {
-            messageTextView.setVisibility(View.GONE);
+            messageTextView.setVisibility(View.INVISIBLE);
         }
         super.onPinButtonClicked(v);
     }

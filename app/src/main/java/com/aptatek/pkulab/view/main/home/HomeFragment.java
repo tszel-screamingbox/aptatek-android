@@ -1,10 +1,12 @@
 package com.aptatek.pkulab.view.main.home;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Group;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,13 +21,15 @@ import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
-import com.aptatek.pkulab.view.connect.ConnectReaderActivity;
+import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
+import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
+import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -39,11 +43,13 @@ import butterknife.OnClick;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.aptatek.pkulab.view.base.BaseActivity.Animation.RIGHT_TO_LEFT;
 
 
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
 
     private static final String TAG_BATTER_DIALOG = "aptatek.main.home.battery.dialog";
+    private static final String TAG_RANGE_DIALOG = "aptatek.main.home.range.dialog";
     private static final int THRESHOLD = 500;
     private static final int TRANSITION_TIME = 200;
 
@@ -101,6 +107,15 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         recyclerViewDailyResults.setAdapter(dailyResultsAdapter);
         recyclerViewDailyResults.addItemDecoration(dailyResultItemDecorator);
 
+        bubbleScrollView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+        presenter.initRangeDialog();
     }
 
     @Override
@@ -136,6 +151,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     public void closeResultsPanel() {
         panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+    }
+
+    public boolean handleDispatchTouchEvent(final MotionEvent ev) {
+        return panelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING
+                && ev.getAction() == MotionEvent.ACTION_DOWN;
     }
 
     @OnClick(R.id.weeklyButton)
@@ -234,6 +254,27 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
         final AlertDialogFragment dialogFragment = AlertDialogFragment.create(model, null);
         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_BATTER_DIALOG);
+    }
+
+    @Override
+    public void showRangeDialog() {
+        final AlertDialogModel model = AlertDialogModel.builder()
+                .setTitle(getString(R.string.home_range_dialog_title))
+                .setMessage(getString(R.string.home_range_dialog_message))
+                .setPositiveButtonText(getString(R.string.home_range_dialog_set))
+                .setNegativeButtonText(getString(R.string.home_range_dialog_later))
+                .setCancelable(false)
+                .build();
+
+        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
+                model,
+                decision -> {
+                    if (decision == AlertDialogDecisions.POSITIVE) {
+                        final Intent intent = RangeSettingsActivity.starter(getContext());
+                        getBaseActivity().launchActivity(intent, false, RIGHT_TO_LEFT);
+                    }
+                });
+        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_RANGE_DIALOG);
     }
 
     @Override

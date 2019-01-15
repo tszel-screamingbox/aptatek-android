@@ -37,17 +37,32 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testInitialView() {
-//        onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.bigSettingsButton)).check(matches(isDisplayed()));
-//        onView(withId(R.id.titleText)).check(matches(isDisplayed()));
-//        onView(withId(R.id.subTitleText)).check(matches(isDisplayed()));
-//
-//        onView(withId(R.id.scrollView)).check(matches(not(isDisplayed())));
-//
-//        onView(withId(R.id.newTestButton)).check(matches(withText(R.string.main_button_new_test)));
-//        onView(withId(R.id.titleText)).check(matches(withText(R.string.main_title_noresult)));
-//        onView(withId(R.id.subTitleText)).check(matches(withText(R.string.main_title_noresult_hint)));
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
+        onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.bigSettingsButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.titleText)).check(matches(isDisplayed()));
+        onView(withId(R.id.subTitleText)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.scrollView)).check(matches(not(isDisplayed())));
+
+        onView(withId(R.id.newTestButton)).check(matches(withText(R.string.main_button_new_test)));
+        onView(withId(R.id.titleText)).check(matches(withText(R.string.main_title_noresult)));
+        onView(withId(R.id.subTitleText)).check(matches(withText(R.string.main_title_noresult_hint)));
+    }
+
+    /**
+     * Clicking on Set Phe Levels button in the shown dialog.
+     *
+     * @test.expected After clicking on the button, the activity is changed to the new.
+     */
+    @Test
+    public void testGoToRangeSettings() {
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button1)).perform(click());
+        assert (activityRule.getActivity().isFinishing());
     }
 
     /**
@@ -57,10 +72,13 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testGoToSettings() {
-//        onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.playIcon)).perform(ViewActions.click());
-//        onView(withId(R.id.settingsButton)).perform(ViewActions.click());
-//        assert (activityRule.getActivity().isFinishing());
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
+        onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.playIcon)).perform(ViewActions.click());
+        onView(withId(R.id.settingsButton)).perform(ViewActions.click());
+        assert (activityRule.getActivity().isFinishing());
     }
 
     /**
@@ -70,10 +88,13 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testGoToNewTest() {
-//        onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.playIcon)).perform(ViewActions.click());
-//        onView(withId(R.id.newTestButton)).perform(ViewActions.click());
-//        assert (activityRule.getActivity().isFinishing());
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
+        onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.playIcon)).perform(ViewActions.click());
+        onView(withId(R.id.newTestButton)).perform(ViewActions.click());
+        assert (activityRule.getActivity().isFinishing());
     }
 
     /**
@@ -83,10 +104,13 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testShowChart() throws Exception {
-//        onView(withId(R.id.playIcon)).perform(ViewActions.click());
-//        Thread.sleep(1000L);
-//        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
+        onView(withId(R.id.playIcon)).perform(ViewActions.click());
+        Thread.sleep(1000L);
+        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
     }
 
 
@@ -97,16 +121,19 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testInitialWeeklyResult() throws Exception {
-//        showWeeklyFragment();
-//
-//        onView(withId(R.id.title)).check(matches(isDisplayed()));
-//        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
-//        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
-//        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
-//        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
-//        onView(withId(R.id.label)).check(matches(isDisplayed()));
-//        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
-//        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
+        showWeeklyFragment();
+
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
+        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
+        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
+        onView(withId(R.id.label)).check(matches(isDisplayed()));
+        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
     }
 
     /**
@@ -116,17 +143,20 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testWeeklyPlayIconClicked() throws Exception {
-//        showWeeklyFragment();
-//
-//        onView(withId(R.id.title)).check(matches(isDisplayed()));
-//        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
-//        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
-//        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
-//        onView(withId(R.id.label)).check(matches(isDisplayed()));
-//        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
-//        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
-//
-//        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
+        showWeeklyFragment();
+
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
+        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
+        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
+        onView(withId(R.id.label)).check(matches(isDisplayed()));
+        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
     }
 
 
@@ -137,20 +167,23 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testSwipe() throws Exception {
-//        showWeeklyFragment();
-//
-//        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
-//        onView(withId(R.id.viewpager)).perform(swipeRight());
-//        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
-//        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
-//        onView(withId(R.id.title)).check(matches(isDisplayed()));
-//        onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
-//        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
-//        onView(withId(R.id.label)).check(matches(isDisplayed()));
-//        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
-//
-//        onView(withId(R.id.viewpager)).perform(swipeLeft());
-//        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
+        showWeeklyFragment();
+
+        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
+        onView(withId(R.id.viewpager)).perform(swipeRight());
+        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
+        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
+        onView(withId(R.id.label)).check(matches(isDisplayed()));
+        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.viewpager)).perform(swipeLeft());
+        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
     }
 
     /**
@@ -161,20 +194,23 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testPagination() throws Exception {
-//        showWeeklyFragment();
-//
-//        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
-//        onView(withId(R.id.leftArrow)).perform(click());
-//        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
-//        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
-//        onView(withId(R.id.title)).check(matches(isDisplayed()));
-//        onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
-//        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
-//        onView(withId(R.id.label)).check(matches(isDisplayed()));
-//        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
-//
-//        onView(withId(R.id.rightArrow)).perform(click());
-//        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
+        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
+        onView(withId(android.R.id.button2)).perform(click());
+
+        showWeeklyFragment();
+
+        onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
+        onView(withId(R.id.leftArrow)).perform(click());
+        onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
+        onView(withId(R.id.dateText)).check(matches(isDisplayed()));
+        onView(withId(R.id.label)).check(matches(isDisplayed()));
+        onView(withId(R.id.viewpager)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.rightArrow)).perform(click());
+        onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
     }
 
     private void showWeeklyFragment() throws Exception {

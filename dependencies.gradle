@@ -68,6 +68,9 @@ ext {
             // MpAndroidChart
             chart             : 'v3.0.3',
 
+            // RootDetection
+            rootDetection    : '0.0.7',
+
             // Testing
             junit             : '4.12',
             mockito           : '2.8.9',
@@ -184,6 +187,10 @@ ext {
 
     mpAndroidChartDependencies = [
             androidChart: "com.github.PhilJay:MPAndroidChart:${versions.chart}"
+    ]
+
+    rootDetectionDependencies = [
+            rootBeer: "com.scottyab:rootbeer-lib:${versions.rootDetection}"
     ]
 
     testDependencies = [

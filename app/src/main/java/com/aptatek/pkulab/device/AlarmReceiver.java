@@ -9,7 +9,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificationFactory;
 import com.aptatek.pkulab.injection.component.DaggerBroadcastReceiverComponent;
-import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.injection.module.ReminderModule;
 import com.aptatek.pkulab.util.Constants;
 
@@ -29,7 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent intent) {
         DaggerBroadcastReceiverComponent.builder()
-                .applicationModule(new ApplicationModule((AptatekApplication) context.getApplicationContext()))
+                .applicationComponent(((AptatekApplication) context.getApplicationContext()).getApplicationComponent())
                 .reminderModule(new ReminderModule())
                 .build()
                 .inject(this);

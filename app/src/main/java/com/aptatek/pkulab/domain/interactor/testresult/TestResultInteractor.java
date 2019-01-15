@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.domain.interactor.cube;
+package com.aptatek.pkulab.domain.interactor.testresult;
 
 import android.support.annotation.NonNull;
 

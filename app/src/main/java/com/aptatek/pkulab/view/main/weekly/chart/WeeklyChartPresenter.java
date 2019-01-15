@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
 import com.aptatek.pkulab.device.time.TimeHelper;
-import com.aptatek.pkulab.domain.interactor.cube.TestResultInteractor;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;

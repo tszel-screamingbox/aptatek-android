@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.domain.interactor.cube;
+package com.aptatek.pkulab.domain.interactor.testresult;
 
 import android.support.annotation.NonNull;
 
@@ -22,16 +22,16 @@ import io.reactivex.schedulers.Schedulers;
 
 public class TestResultRepository extends Repository<TestResult, TestResultDataModel> {
 
-    private final CubeDataSource cubeDataSource;
+    private final TestResultDataSource testResultDataSource;
     private final TestResultDao testResultDao;
 
     @Inject
     TestResultRepository(final Provider<Map<Class<?>, Mapper<?, ?>>> mapperProvider,
-                         final CubeDataSource cubeDataSource,
+                         final TestResultDataSource testResultDataSource,
                          final AptatekDatabase aptatekDatabase) {
         super(mapperProvider);
 
-        this.cubeDataSource = cubeDataSource;
+        this.testResultDataSource = testResultDataSource;
         this.testResultDao = aptatekDatabase.getTestResultDao();
     }
 
@@ -51,7 +51,7 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     }
 
     private Single<List<TestResultDataModel>> mockDataList() {
-        return Single.fromCallable(() -> cubeDataSource.getDataBetween(cubeDataSource.getOldestData().getTimestamp(), TimeHelper.getLatestTimeAtGivenDay(System.currentTimeMillis())));
+        return Single.fromCallable(() -> testResultDataSource.getDataBetween(testResultDataSource.getOldestData().getTimestamp(), TimeHelper.getLatestTimeAtGivenDay(System.currentTimeMillis())));
     }
 
     @NonNull
@@ -64,7 +64,7 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     }
 
     private Single<List<TestResultDataModel>> mockDataBetween(final long start, final long end) {
-        return Single.fromCallable(() -> cubeDataSource.getDataBetween(start, end));
+        return Single.fromCallable(() -> testResultDataSource.getDataBetween(start, end));
     }
 
     @NonNull
@@ -77,7 +77,7 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     }
 
     private Single<TestResultDataModel> mockLatest() {
-        return Single.fromCallable(cubeDataSource::getLatestData);
+        return Single.fromCallable(testResultDataSource::getLatestData);
     }
 
     @NonNull

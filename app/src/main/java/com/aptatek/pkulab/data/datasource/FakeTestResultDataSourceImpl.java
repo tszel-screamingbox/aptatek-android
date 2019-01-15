@@ -3,19 +3,19 @@ package com.aptatek.pkulab.data.datasource;
 import android.util.Pair;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
-import com.aptatek.pkulab.domain.interactor.cube.CubeDataSource;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultDataSource;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 // TODO This DataSource implementation is currently used in PROD builds, but as soon as we integrate the real cube SDK, this class should be moved to MOCK flavor.
-public class FakeCubeDataSourceImpl implements CubeDataSource {
+public class FakeTestResultDataSourceImpl implements TestResultDataSource {
 
     private final Map<Pair<Long,Long>, List<TestResultDataModel>> cachedRandomData = new HashMap<>();
     private final FakeCubeDataGenerator dataGenerator;
 
-    public FakeCubeDataSourceImpl(final FakeCubeDataGenerator dataGenerator) {
+    public FakeTestResultDataSourceImpl(final FakeCubeDataGenerator dataGenerator) {
         this.dataGenerator = dataGenerator;
     }
 

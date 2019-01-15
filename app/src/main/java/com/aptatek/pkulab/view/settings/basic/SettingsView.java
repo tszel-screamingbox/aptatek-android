@@ -4,8 +4,10 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface SettingsView extends MvpView {
 
-    void showFingerprintAuthEnabled(boolean isEnabled);
+    void showFingerprintAuthEnabled(final boolean isEnabled);
 
-    void showFingerprintAuthChecked(boolean isChecked);
+    void showFingerprintAuthChecked(final boolean isChecked);
+
+    void showAppVersion(final String version);
 
 }

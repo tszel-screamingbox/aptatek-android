@@ -25,6 +25,7 @@ public class PreferenceManager {
     public static final String PREF_PKU_RANGE_NORMAL_CEIL = "aptatek.range.normal.ceil";
     public static final String PREF_PKU_RANGE_NORMAL_FLOOR = "aptatek.range.normal.floor";
     public static final String PREF_PKU_RANGE_UNIT = "aptatek.range.unit";
+    public static final String PREF_PKU_RANGE_DIALOG = "aptatek.range.dialog";
     public static final String PREF_PAIRED = "aptatek.device.paired";
 
     private final SharedPreferences sharedPreferences;
@@ -97,6 +98,14 @@ public class PreferenceManager {
     public PkuLevelUnits getPkuRangeUnit() {
         final int ordinal = sharedPreferences.getInt(PREF_PKU_RANGE_UNIT, -1);
         return ordinal != -1 ? PkuLevelUnits.values()[ordinal] : null;
+    }
+
+    public void setRangeDialogShown(final boolean dialogShown) {
+        sharedPreferences.edit().putBoolean(PREF_PKU_RANGE_DIALOG, dialogShown).apply();
+    }
+
+    public boolean isRangeDialogShown() {
+        return sharedPreferences.getBoolean(PREF_PKU_RANGE_DIALOG, false);
     }
 
     @Nullable

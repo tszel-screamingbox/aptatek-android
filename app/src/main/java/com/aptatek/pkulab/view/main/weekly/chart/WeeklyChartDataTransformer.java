@@ -1,7 +1,6 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
@@ -32,7 +31,6 @@ public class WeeklyChartDataTransformer {
 
     private static final float SIZE = 1f;
     private static final int DAY_OFFSET = 1;
-    private static final float BUBBLE_ALPHA = 0.8f;
 
     protected final ResourceInteractor resourceInteractor;
     private final PkuRangeInteractor pkuRangeInteractor;
@@ -68,7 +66,7 @@ public class WeeklyChartDataTransformer {
         final ChartUtils.State state = ChartUtils.getState(levelInProperUnit, rangeInfo);
         final @ColorRes int colorRes = ChartUtils.stateColor(state);
         final @ColorInt int labelColor = resourceInteractor.getColorResource(R.color.applicationWhite);
-        final @ColorInt int bubbleColor = adjustAlpha(resourceInteractor.getColorResource(colorRes), BUBBLE_ALPHA);
+        final @ColorInt int bubbleColor = resourceInteractor.getColorResource(colorRes);
 
         return ChartEntryData.builder()
                 .setX(x)
@@ -97,8 +95,8 @@ public class WeeklyChartDataTransformer {
             final BubbleDataSet dataSet = new BubbleDataSet(bubbleEntries, null);
             dataSet.setColors(bubbleColors);
             dataSet.setValueTextColors(labelColors);
-            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_xmini));
-            dataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
+            dataSet.setValueTextSize(resourceInteractor.getDimension(R.dimen.font_size_xbig));
+            dataSet.setValueTypeface(resourceInteractor.getTypeface(R.font.nunito_black));
             dataSet.setValueFormatter(new WeeklyChartValueFormatter());
 
             return dataSet;
