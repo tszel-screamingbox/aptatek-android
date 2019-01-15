@@ -41,7 +41,7 @@
         style="@style/General.Text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/general.distance.xxxmini"
+        android:layout_marginTop="@dimen/general.distance.small"
         app:layout_constraintBottom_toTopOf="@id/pinLayout"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 

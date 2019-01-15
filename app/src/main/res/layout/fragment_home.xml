@@ -53,6 +53,7 @@
             style="@style/General.Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.small"
             android:text="@string/main.title.noresult.hint"
             app:layout_constraintTop_toBottomOf="@id/titleText" />
 
