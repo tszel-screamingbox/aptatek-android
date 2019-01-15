@@ -3,6 +3,7 @@ package com.aptatek.pkulab.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -16,10 +17,10 @@ import butterknife.ButterKnife;
 
 public class RangeInfoRowView extends ConstraintLayout {
 
-    @BindView(R.id.rangeinfo_range_value)
-    TextView tvRangeValue;
-    @BindView(R.id.rangeinfo_range_name)
-    TextView tvRangeName;
+    @BindView(R.id.title)
+    TextView titleTextView;
+    @BindView(R.id.subtitle)
+    TextView subtitleTextView;
 
     public RangeInfoRowView(final Context context) {
         this(context, null, 0);
@@ -60,10 +61,17 @@ public class RangeInfoRowView extends ConstraintLayout {
         super.onMeasure(widthMeasureSpec, heightSpec);
     }
 
-    public void setRange(final String rangeValue, final String rangeName) {
-        tvRangeValue.setText(rangeValue);
-        tvRangeName.setText(rangeName);
+    public void setRange(final String title, final String subtitle) {
+        titleTextView.setText(title);
+        subtitleTextView.setText(subtitle);
         invalidate();
     }
 
+    public void setBackgroundTint(@ColorRes final int colorRes) {
+        final Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.rangeinfo_row_background);
+        if (drawable != null) {
+            drawable.setTint(ContextCompat.getColor(getContext(), colorRes));
+            setBackground(drawable);
+        }
+    }
 }

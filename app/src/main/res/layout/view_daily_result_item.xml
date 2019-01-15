@@ -1,40 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/containerConstraintLayout"
+<com.aptatek.pkulab.widget.RangeInfoRowView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rangeInfoLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bubble_full_high">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textViewMeasureInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.small"
-        android:layout_marginTop="@dimen/general.distance.xmini"
-        android:layout_marginBottom="@dimen/general.distance.xmini"
-        android:fontFamily="@font/nunito_black"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/font.size.xxlarge"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Test" />
-
-    <TextView
-        android:id="@+id/textViewMeasureTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/general.distance.small"
-        android:layout_marginBottom="@dimen/general.distance.mini"
-        android:fontFamily="@font/nunito_regular"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/font.size.xbig"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewMeasureInfo"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="RtlHardcoded"
-        tools:text="Test" />
-
-
-</android.support.constraint.ConstraintLayout>
+</com.aptatek.pkulab.widget.RangeInfoRowView>
