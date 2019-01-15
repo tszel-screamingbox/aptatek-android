@@ -73,7 +73,7 @@ public class HomeFragmentPresenterTest {
         doReturn(TEST_STRING).when(dailyChartFormatter).formatDate(ArgumentMatchers.anyLong(), ArgumentMatchers.anyBoolean());
         doReturn(TEST_STRING).when(dailyChartFormatter).getNameOfDay(ArgumentMatchers.anyLong());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
-        doReturn(BATTERY_NORMAL).when(deviceHelper).getBatteryLevel();
+        doReturn(false).when(deviceHelper).isBatteryLow();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
         presenter = new HomeFragmentPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper, preferenceManager);
@@ -139,7 +139,7 @@ public class HomeFragmentPresenterTest {
      */
     @Test
     public void testLowBattery() {
-        doReturn(BATTERY_LOW).when(deviceHelper).getBatteryLevel();
+        doReturn(true).when(deviceHelper).isBatteryLow();
         presenter.startNewTest();
         verify(view).showLowBatteryDialog();
     }
