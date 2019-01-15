@@ -196,8 +196,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @OnClick({R.id.settingsButton, R.id.bigSettingsButton})
     public void onSettingsButtonClicked() {
-        getBaseActivity().launchActivity(ConnectReaderActivity.starter(requireContext()), false, BaseActivity.Animation.FADE);
-//        getBaseActivity().launchActivity(SettingsActivity.starter(requireContext()), false, BaseActivity.Animation.FADE);
+        getBaseActivity().launchActivity(SettingsActivity.starter(requireContext()), false, BaseActivity.Animation.FADE);
     }
 
     @OnClick(R.id.playIcon)

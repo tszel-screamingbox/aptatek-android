@@ -4,7 +4,9 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.joda.time.Period;
 import org.joda.time.Weeks;
+import org.joda.time.Years;
 
 import java.util.Date;
 
@@ -112,5 +114,9 @@ public final class TimeHelper {
 
     private static LocalDateTime timeFromTimestamp(final long timestamp) {
         return LocalDateTime.fromDateFields(new Date(timestamp));
+    }
+
+    public static int diffInYears(final long start, final long end) {
+        return Years.yearsBetween(timeFromTimestamp(start), timeFromTimestamp(end)).getYears();
     }
 }

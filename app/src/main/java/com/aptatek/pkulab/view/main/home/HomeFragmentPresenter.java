@@ -9,7 +9,7 @@ import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.cube.TestResultInteractor;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
@@ -54,7 +54,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                           final WettingInteractor wettingInteractor,
                           final DeviceHelper deviceHelper,
                           final PreferenceManager preferenceManager) {
-        this.cubeInteractor = cubeInteractor;
+        this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
         this.dailyChartFormatter = dailyChartFormatter;
@@ -118,11 +118,11 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                 rangeInteractor.getInfo()
                         .map(rangeInfo ->
                                 Ix.from(measures)
-                                        .map(cubeData -> {
-                                            final ChartUtils.State state = ChartUtils.getState(cubeData.getPkuLevel(), rangeInfo);
+                                        .map(testResult -> {
+                                            final ChartUtils.State state = ChartUtils.getState(testResult.getPkuLevel(), rangeInfo);
                                             return DailyResultAdapterItem.create(
-                                                    dailyChartFormatter.getBubbleValue(cubeData.getPkuLevel()),
-                                                    cubeData.getTimestamp(),
+                                                    dailyChartFormatter.getBubbleValue(testResult.getPkuLevel()),
+                                                    testResult.getTimestamp(),
                                                     ChartUtils.smallBubbleBackground(state),
                                                     ChartUtils.stateColor(state));
                                         })
