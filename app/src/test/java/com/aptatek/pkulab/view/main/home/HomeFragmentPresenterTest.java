@@ -132,19 +132,6 @@ public class HomeFragmentPresenterTest {
     }
 
     /**
-     * Showing low battery dialog.
-     *
-     * @test.expected {@link  HomeFragmentView#showLowBatteryDialog()   showLowBatteryDialog()  }
-     * method is called, without any error.
-     */
-    @Test
-    public void testLowBattery() {
-        doReturn(true).when(deviceHelper).isBatteryLow();
-        presenter.startNewTest();
-        verify(view).showLowBatteryDialog();
-    }
-
-    /**
      * Showing range settings dialog.
      *
      * @test.expected {@link  HomeFragmentView#showRangeDialog()   showRangeDialog()  }

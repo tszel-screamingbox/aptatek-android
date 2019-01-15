@@ -10,4 +10,5 @@ public interface TestActivityView extends MvpView, TestActivityCommonView {
 
     void onBackPressed();
 
+    void showBatteryAlert();
 }

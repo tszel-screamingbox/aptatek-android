@@ -159,11 +159,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void startNewTest() {
-        if (deviceHelper.isBatteryLow()) {
-            ifViewAttached(HomeFragmentView::showLowBatteryDialog);
-            return;
-        }
-
         disposables.add(wettingInteractor.resetWetting()
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
