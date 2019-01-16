@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
@@ -30,6 +29,7 @@ import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
+import com.aptatek.pkulab.widget.HeaderView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
@@ -66,11 +66,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @BindView(R.id.scrollView)
     DiscreteScrollView bubbleScrollView;
 
-    @BindView(R.id.titleText)
-    TextView titleTextView;
-
-    @BindView(R.id.subTitleText)
-    TextView subTitleTextView;
+    @BindView(R.id.header)
+    HeaderView mainHeaderView;
 
     @BindView(R.id.recyclerViewDailyResults)
     RecyclerView recyclerViewDailyResults;
@@ -234,8 +231,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @Override
     public void updateTitles(final String title, final String subTitle) {
-        titleTextView.setText(title);
-        subTitleTextView.setText(subTitle);
+        mainHeaderView.setTitle(title);
+        mainHeaderView.setSubtitle(subTitle);
     }
 
     @Override
