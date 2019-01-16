@@ -11,11 +11,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
+import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import com.aptatek.pkulab.view.test.breakfoil.BreakFoilFragment;
 import com.aptatek.pkulab.view.test.canceltest.CancelTestFragment;
@@ -34,12 +37,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.view.View.*;
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
         implements TestActivityView {
 
     private static final String KEY_WETTING_FINISHED = "com.aptatek.wetting.finished";
+    private static final String TAG_BATTER_DIALOG = "aptatek.main.home.battery.dialog";
 
     public static Intent createStarter(@NonNull final Context context) {
         return new Intent(context, TestActivity.class);
@@ -79,6 +85,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
         screenPagerIndicator.setDynamicCount(false);
         screenPagerIndicator.setCount(TestScreens.values().length - 1); // Cancel screen is ignored
+
     }
 
     @Override
@@ -172,6 +179,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
         switchToFragment(fragment);
         screenPagerIndicator.setSelection(screen.ordinal());
+        presenter.checkBattery();
     }
 
     @Override
@@ -192,6 +200,24 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void onBackPressed() {
         presenter.onShowPreviousScreen(getCurrentScreen());
+    }
+
+    @Override
+    public void showBatteryAlert() {
+        final AlertDialogModel model = AlertDialogModel.builder()
+                .setTitle(getString(R.string.home_battery_alert_title))
+                .setMessage(getString(R.string.home_battery_alert_content))
+                .setPositiveButtonText(getString(R.string.alertdialog_button_ok))
+                .setCancelable(true)
+                .build();
+
+        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(model, decision -> {
+            if (decision == AlertDialogDecisions.POSITIVE) {
+                finish();
+            }
+        });
+        dialogFragment.setCancelable(false);
+        dialogFragment.show(getSupportFragmentManager(), TAG_BATTER_DIALOG);
     }
 
     @Override

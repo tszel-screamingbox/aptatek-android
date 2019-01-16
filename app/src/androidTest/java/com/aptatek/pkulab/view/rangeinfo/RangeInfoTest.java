@@ -2,8 +2,6 @@ package com.aptatek.pkulab.view.rangeinfo;
 
 import android.app.Application;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.matcher.RootMatchers;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -26,7 +24,6 @@ import javax.inject.Inject;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
@@ -96,10 +93,10 @@ public class RangeInfoTest {
         onView(withId(R.id.rangeinfo_message)).check(matches(withText(R.string.rangeinfo_message)));
         onView(withId(R.id.rangeinfo_edit)).check(matches(withText(R.string.rangeinfo_edit_level_preferences)));
         onView(withId(R.id.rangeinfo_units)).check(matches(withText(formatter.formatUnits(pkuInfo))));
-        onView(Matchers.allOf(withId(R.id.rangeinfo_range_value), withParent(withId(R.id.rangeinfo_high)))).check(matches(withText(formatter.formatHigh(pkuInfo))));
-        onView(Matchers.allOf(withId(R.id.rangeinfo_range_value), withParent(withId(R.id.rangeinfo_very_high)))).check(matches(withText(formatter.formatVeryHigh(pkuInfo))));
-        onView(Matchers.allOf(withId(R.id.rangeinfo_range_value), withParent(withId(R.id.rangeinfo_normal)))).check(matches(withText(formatter.formatNormal(pkuInfo))));
-        onView(Matchers.allOf(withId(R.id.rangeinfo_range_value), withParent(withId(R.id.rangeinfo_low)))).check(matches(withText(formatter.formatLow(pkuInfo))));
+        onView(Matchers.allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_high)))).check(matches(withText(formatter.formatHigh(pkuInfo))));
+        onView(Matchers.allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_very_high)))).check(matches(withText(formatter.formatVeryHigh(pkuInfo))));
+        onView(Matchers.allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_normal)))).check(matches(withText(formatter.formatNormal(pkuInfo))));
+        onView(Matchers.allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_low)))).check(matches(withText(formatter.formatLow(pkuInfo))));
     }
 
     /**
@@ -109,7 +106,7 @@ public class RangeInfoTest {
      * @test.expected
      */
     @Test
-    public void testBackFinishesActivity() throws Exception {
+    public void testBackFinishesActivity() {
         onView(withId(R.id.rangeinfo_edit)).perform(click());
 
         Assert.assertTrue(activityRule.getActivity().isFinishing());
@@ -122,7 +119,7 @@ public class RangeInfoTest {
      * @test.expected
      */
     @Test
-    public void testUnitClickTakesToSettings() throws Exception {
+    public void testUnitClickTakesToSettings() {
         onView(withId(R.id.rangeinfo_edit)).perform(click());
         onView(withId(R.id.rangeSettingsLowLabel)).check(matches(isDisplayed()));
     }
