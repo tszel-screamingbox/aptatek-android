@@ -46,9 +46,21 @@ public class HeaderView extends ConstraintLayout {
         }
     }
 
-    public void setTitles(final String title, final String subtitle) {
-        titleTextView.setText(title);
+    public TextView getSubtitleTextView() {
+        return subtitleTextView;
+    }
+
+    public TextView getTitleTextView() {
+        return titleTextView;
+    }
+
+    public void setSubtitle(final String subtitle) {
         subtitleTextView.setText(subtitle);
+        invalidate();
+    }
+
+    public void setTitle(final String title) {
+        titleTextView.setText(title);
         invalidate();
     }
 }

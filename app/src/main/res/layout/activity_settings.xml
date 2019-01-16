@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -35,31 +34,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textViewTitle"
-                style="@style/General.Title"
-                android:layout_width="wrap_content"
+            <com.aptatek.pkulab.widget.HeaderView
+                android:id="@+id/header"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/general.distance.normal"
-                android:gravity="center"
-                android:text="@string/settings.title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/textViewAppVersion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/font.size.xxmini"
-                android:fontFamily="@font/nunito_regular"
-                android:textColor="@color/applicationSolidGray"
-                android:textSize="@dimen/font.size.xbig"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-                tools:text="App version X.X.X" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:titleText="@string/settings.title" />
 
             <TextView
                 android:id="@+id/textViewFingerprint"
@@ -71,7 +54,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/switchFingerprint"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewAppVersion" />
+                app:layout_constraintTop_toBottomOf="@id/header" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switchFingerprint"
@@ -99,9 +82,9 @@
                 style="@style/Settings.Row.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/general.distance.small"
                 android:drawableEnd="@drawable/ic_right_arrow"
                 android:text="@string/settings.daily.reminders"
-                android:layout_marginTop="@dimen/general.distance.small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewFingerprintDescription" />
@@ -135,8 +118,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/general.distance.xxmini"
                 android:text="@string/settings.units.description"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/settingsUnitsLabel" />
 
             <TextView

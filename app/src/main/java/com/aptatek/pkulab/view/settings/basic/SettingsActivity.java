@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
@@ -15,6 +14,7 @@ import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
 import com.aptatek.pkulab.view.settings.web.WebPageActivityStarter;
+import com.aptatek.pkulab.widget.HeaderView;
 
 import javax.inject.Inject;
 
@@ -37,8 +37,8 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     @BindView(R.id.switchFingerprint)
     SwitchCompat switchFingerPrint;
 
-    @BindView(R.id.textViewAppVersion)
-    TextView tvAppVersion;
+    @BindView(R.id.header)
+    HeaderView tvAppVersion;
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -70,7 +70,7 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         switchFingerPrint.setOnCheckedChangeListener((buttonView, isChecked) ->
-            presenter.setFingerprintEnabled(isChecked)
+                presenter.setFingerprintEnabled(isChecked)
         );
 
         presenter.getAppVersion();
@@ -115,6 +115,6 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
 
     @Override
     public void showAppVersion(final String version) {
-        tvAppVersion.setText(getString(R.string.settings_app_version, version));
+        tvAppVersion.setSubtitle(getString(R.string.settings_app_version, version));
     }
 }

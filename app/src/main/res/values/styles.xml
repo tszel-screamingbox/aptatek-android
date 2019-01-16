@@ -178,7 +178,6 @@
         <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:textSize">@dimen/font.size.xxlarge</item>
         <item name="android:fontFamily">@font/nunito_black</item>
-        <item name="android:layout_marginBottom">@dimen/general.distance.small</item>
         <item name="android:textStyle">bold</item>
     </style>
 
