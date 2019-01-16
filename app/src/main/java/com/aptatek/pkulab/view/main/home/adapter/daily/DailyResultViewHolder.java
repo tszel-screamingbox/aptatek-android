@@ -1,11 +1,10 @@
 package com.aptatek.pkulab.view.main.home.adapter.daily;
 
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.widget.RangeInfoRowView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,14 +15,9 @@ import butterknife.ButterKnife;
 
 public class DailyResultViewHolder extends RecyclerView.ViewHolder {
 
-    @BindView(R.id.textViewMeasureInfo)
-    TextView textViewMeasureInfo;
 
-    @BindView(R.id.textViewMeasureTime)
-    TextView textViewMeasureTime;
-
-    @BindView(R.id.containerConstraintLayout)
-    ConstraintLayout container;
+    @BindView(R.id.rangeInfoLayout)
+    RangeInfoRowView rangeInfoRowView;
 
     DailyResultViewHolder(final View itemView) {
         super(itemView);
@@ -31,14 +25,12 @@ public class DailyResultViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(final DailyResultAdapterItem item) {
-        textViewMeasureInfo.setText(item.getMeasureInformationText());
-        container.setBackgroundResource(item.getBackgroundRes());
-
         // TODO extract to a formatter and use string resource for the format pattern
         final Date dt = new Date(item.getTimestamp());
         final SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa", Locale.getDefault());
         final String time1 = sdf.format(dt);
 
-        textViewMeasureTime.setText(time1);
+        rangeInfoRowView.setBackgroundTint(item.getColorRes());
+        rangeInfoRowView.setRange(item.getMeasureInformationText().toString(), time1);
     }
 }

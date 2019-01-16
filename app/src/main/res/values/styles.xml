@@ -208,12 +208,12 @@
     </style>
 
     <style name="RangeInfo.Row.Value" parent="General.Title">
-        <item name="android:textSize">@dimen/font.size.xlarge</item>
+        <item name="android:textSize">@dimen/font.size.xxlarge</item>
         <item name="android:textColor">@color/applicationWhite</item>
     </style>
 
     <style name="RangeInfo.Row.Name" parent="General.Text">
-        <item name="android:textSize">@dimen/font.size.big</item>
+        <item name="android:textSize">@dimen/font.size.xbig</item>
         <item name="android:textColor">@color/applicationWhite</item>
     </style>
 
