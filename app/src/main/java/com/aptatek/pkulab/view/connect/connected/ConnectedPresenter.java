@@ -39,7 +39,7 @@ public class ConnectedPresenter extends BaseConnectScreenPresenter<ConnectedView
 //                        .filter(event -> event.getConnectionState() == ReaderConnectionState.READY)
 //                        .take(1)
 //                        .flatMap(event -> readerInteractor.queryBatteryLevel()
-//                                .andThen(readerInteractor.getBatteryLevel()
+//                                .andThen(readerInteractor.isBatteryLow()
 //                                        .take(1)
 //                                        .map(batteryLevel -> new Pair<>(event.getDevice(), batteryLevel))
 //                                )
