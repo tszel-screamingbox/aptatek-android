@@ -10,6 +10,7 @@ import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseRootFrameActivity;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.pin.auth.add.AuthPinFragment;
+import com.aptatek.pkulab.view.service.BluetoothService;
 
 import javax.inject.Inject;
 
@@ -56,6 +57,8 @@ public class AuthPinHostActivity extends BaseRootFrameActivity<AuthPinHostActivi
             final Intent intent = new Intent(this, MainHostActivity.class);
             launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
         }
+
+        startService(new Intent(this, BluetoothService.class));
     }
 
     @Override

@@ -15,7 +15,6 @@ import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.DaggerApplicationComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.util.Constants;
-import com.aptatek.pkulab.view.service.BluetoothService;
 import com.aptatek.pkulab.view.service.WettingForegroundService;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -69,8 +68,6 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         }
 
         lastForegroundTime = 0L;
-
-        startService(new Intent(this, BluetoothService.class));
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
