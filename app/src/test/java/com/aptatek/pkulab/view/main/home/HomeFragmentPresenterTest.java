@@ -73,7 +73,7 @@ public class HomeFragmentPresenterTest {
         doReturn(TEST_STRING).when(dailyChartFormatter).formatDate(ArgumentMatchers.anyLong(), ArgumentMatchers.anyBoolean());
         doReturn(TEST_STRING).when(dailyChartFormatter).getNameOfDay(ArgumentMatchers.anyLong());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
-        doReturn(BATTERY_NORMAL).when(deviceHelper).getBatteryLevel();
+        doReturn(false).when(deviceHelper).isBatteryLow();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
         presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper, preferenceManager);
@@ -129,19 +129,6 @@ public class HomeFragmentPresenterTest {
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         verify(view).updateTitles(TEST_STRING, TEST_STRING);
-    }
-
-    /**
-     * Showing low battery dialog.
-     *
-     * @test.expected {@link  HomeFragmentView#showLowBatteryDialog()   showLowBatteryDialog()  }
-     * method is called, without any error.
-     */
-    @Test
-    public void testLowBattery() {
-        doReturn(BATTERY_LOW).when(deviceHelper).getBatteryLevel();
-        presenter.startNewTest();
-        verify(view).showLowBatteryDialog();
     }
 
     /**

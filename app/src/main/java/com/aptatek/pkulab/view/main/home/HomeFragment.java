@@ -48,7 +48,6 @@ import static com.aptatek.pkulab.view.base.BaseActivity.Animation.RIGHT_TO_LEFT;
 
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
 
-    private static final String TAG_BATTER_DIALOG = "aptatek.main.home.battery.dialog";
     private static final String TAG_RANGE_DIALOG = "aptatek.main.home.range.dialog";
     private static final int THRESHOLD = 500;
     private static final int TRANSITION_TIME = 200;
@@ -109,7 +108,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
         bubbleScrollView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
                 panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 super.onScrolled(recyclerView, dx, dy);
             }
@@ -240,19 +239,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     public void setMeasureList(final List<DailyResultAdapterItem> data) {
         dailyResultsAdapter.setData(data);
-    }
-
-    @Override
-    public void showLowBatteryDialog() {
-        final AlertDialogModel model = AlertDialogModel.builder()
-                .setTitle(getString(R.string.home_battery_alert_title))
-                .setMessage(getString(R.string.home_battery_alert_content))
-                .setPositiveButtonText(getString(R.string.alertdialog_button_ok))
-                .setCancelable(false)
-                .build();
-
-        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(model, null);
-        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_BATTER_DIALOG);
     }
 
     @Override

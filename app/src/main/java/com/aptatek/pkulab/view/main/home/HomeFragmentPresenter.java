@@ -35,7 +35,6 @@ import ix.Ix;
 class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
 
     private static final int NUMBERS_OF_MONTHS = 6;
-    private static final float BATTERY_LEVEL_LOW = 0.2f;
 
     private final TestResultInteractor testResultInteractor;
     private final ResourceInteractor resourceInteractor;
@@ -164,11 +163,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void startNewTest() {
-        if (deviceHelper.getBatteryLevel() <= BATTERY_LEVEL_LOW) {
-            ifViewAttached(HomeFragmentView::showLowBatteryDialog);
-            return;
-        }
-
         disposables.add(wettingInteractor.resetWetting()
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );

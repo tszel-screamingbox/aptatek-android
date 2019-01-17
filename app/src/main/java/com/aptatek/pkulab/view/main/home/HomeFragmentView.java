@@ -21,7 +21,5 @@ interface HomeFragmentView extends MvpView {
 
     void showNoResultsInLast6Months();
 
-    void showLowBatteryDialog();
-
     void showRangeDialog();
 }

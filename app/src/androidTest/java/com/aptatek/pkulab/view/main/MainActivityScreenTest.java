@@ -36,9 +36,11 @@ public class MainActivityScreenTest {
      * @test.expected View appears, without any error.
      */
     @Test
-    public void testInitialView() {
+    public void testInitialView() throws Exception {
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
+
+        Thread.sleep(2000L);
 
         onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
         onView(withId(R.id.settingsButton)).check(matches(isDisplayed()));
@@ -69,9 +71,11 @@ public class MainActivityScreenTest {
      * @test.expected After clicking on the button, the activity is changed to the new.
      */
     @Test
-    public void testGoToSettings() {
+    public void testGoToSettings() throws Exception {
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
+
+        Thread.sleep(2000L);
 
         onView(withId(R.id.bigSettingsButton)).check(matches(not(isDisplayed())));
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
@@ -85,9 +89,11 @@ public class MainActivityScreenTest {
      * @test.expected After clicking on the button, the activity is changed to the new.
      */
     @Test
-    public void testGoToNewTest() {
+    public void testGoToNewTest() throws Exception {
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
+
+        Thread.sleep(2000L);
 
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
         onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
@@ -101,9 +107,11 @@ public class MainActivityScreenTest {
      * @test.expected After clicking on Play icon, the chart is shown.
      */
     @Test
-    public void testShowChart() {
+    public void testShowChart() throws Exception {
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
+
+        Thread.sleep(2000L);
 
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
         onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
@@ -210,6 +218,7 @@ public class MainActivityScreenTest {
     }
 
     private void showWeeklyFragment() throws Exception {
+        Thread.sleep(2000L);
         onView(withId(R.id.weeklyButton)).perform(ViewActions.click());
         Thread.sleep(2000L);
     }

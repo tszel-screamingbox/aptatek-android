@@ -119,7 +119,7 @@
     </style>
 
     <style name="Dial.Button" parent="Ripple.Button">
-        <item name="android:textColor">@color/dialButtonGrey</item>
+        <item name="android:textColor">@color/dialButton</item>
         <item name="android:textSize">@dimen/font.size.xlarge</item>
         <item name="android:gravity">center</item>
         <item name="android:fontFamily">@font/nunito_black</item>
@@ -201,6 +201,8 @@
 
     <style name="Parental.Dialog.DatePicker" parent="android:Theme.Material.Light.Dialog">
         <item name="android:datePickerStyle">@style/Parental.DatePicker</item>
+        <item name="android:colorAccent">@color/buttonBlue</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
     </style>
 
     <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker">
@@ -208,12 +210,12 @@
     </style>
 
     <style name="RangeInfo.Row.Value" parent="General.Title">
-        <item name="android:textSize">@dimen/font.size.xlarge</item>
+        <item name="android:textSize">@dimen/font.size.xxlarge</item>
         <item name="android:textColor">@color/applicationWhite</item>
     </style>
 
     <style name="RangeInfo.Row.Name" parent="General.Text">
-        <item name="android:textSize">@dimen/font.size.big</item>
+        <item name="android:textSize">@dimen/font.size.xbig</item>
         <item name="android:textColor">@color/applicationWhite</item>
     </style>
 

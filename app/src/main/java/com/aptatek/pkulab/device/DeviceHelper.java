@@ -26,6 +26,8 @@ import static android.os.BatteryManager.EXTRA_SCALE;
 @Singleton
 public class DeviceHelper {
 
+    private static final float BATTERY_LEVEL_LOW = 0.2f;
+
     private final Context context;
     private final FingerprintManager fingerprintManager;
     private final PreferenceManager preferenceManager;
@@ -58,12 +60,12 @@ public class DeviceHelper {
         return rootBeer.isRootedWithoutBusyBoxCheck();
     }
 
-    public float getBatteryLevel() {
+    public boolean isBatteryLow() {
         final IntentFilter ifilter = new IntentFilter(ACTION_BATTERY_CHANGED);
         final Intent batteryStatus = context.registerReceiver(null, ifilter);
         final int level = batteryStatus.getIntExtra(EXTRA_LEVEL, -1);
         final int scale = batteryStatus.getIntExtra(EXTRA_SCALE, -1);
-        return level / (float) scale;
+        return level / (float) scale <= BATTERY_LEVEL_LOW;
     }
 
     public String getAppVersion() {
