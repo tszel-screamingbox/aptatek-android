@@ -4,7 +4,6 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.joda.time.Period;
 import org.joda.time.Weeks;
 import org.joda.time.Years;
 

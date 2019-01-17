@@ -40,17 +40,15 @@ public class MainActivityScreenTest {
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
-        onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.bigSettingsButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.settingsButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.bigSettingsButton)).check(matches(not(isDisplayed())));
         onView(withId(R.id.titleText)).check(matches(isDisplayed()));
         onView(withId(R.id.subTitleText)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.scrollView)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
 
         onView(withId(R.id.newTestButton)).check(matches(withText(R.string.main_button_new_test)));
-        onView(withId(R.id.titleText)).check(matches(withText(R.string.main_title_noresult)));
-        onView(withId(R.id.subTitleText)).check(matches(withText(R.string.main_title_noresult_hint)));
     }
 
     /**
@@ -75,8 +73,8 @@ public class MainActivityScreenTest {
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
-        onView(withId(R.id.settingsButton)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.playIcon)).perform(ViewActions.click());
+        onView(withId(R.id.bigSettingsButton)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
         onView(withId(R.id.settingsButton)).perform(ViewActions.click());
         assert (activityRule.getActivity().isFinishing());
     }
@@ -91,8 +89,8 @@ public class MainActivityScreenTest {
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
-        onView(withId(R.id.newTestButton)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.playIcon)).perform(ViewActions.click());
+        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
         onView(withId(R.id.newTestButton)).perform(ViewActions.click());
         assert (activityRule.getActivity().isFinishing());
     }
@@ -103,12 +101,10 @@ public class MainActivityScreenTest {
      * @test.expected After clicking on Play icon, the chart is shown.
      */
     @Test
-    public void testShowChart() throws Exception {
+    public void testShowChart() {
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
-        onView(withId(R.id.playIcon)).perform(ViewActions.click());
-        Thread.sleep(1000L);
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
         onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
     }
@@ -214,9 +210,7 @@ public class MainActivityScreenTest {
     }
 
     private void showWeeklyFragment() throws Exception {
-//        onView(withId(R.id.playIcon)).perform(ViewActions.click());
-//        Thread.sleep(1000L);
-//        onView(withId(R.id.weeklyButton)).perform(ViewActions.click());
-//        Thread.sleep(500L);
+        onView(withId(R.id.weeklyButton)).perform(ViewActions.click());
+        Thread.sleep(2000L);
     }
 }

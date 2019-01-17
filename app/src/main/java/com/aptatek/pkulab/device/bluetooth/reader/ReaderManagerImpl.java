@@ -13,7 +13,6 @@ import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ErrorResponse;
 import com.aptatek.pkulab.device.bluetooth.model.NumPreviousResultsResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
-import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.error.DeviceBondingFailedError;
@@ -137,21 +136,6 @@ public class ReaderManagerImpl implements ReaderManager {
                 Timber.d("onBondingFailed: device [%s]", device.getAddress());
                 readerErrorProcessor.onNext(new DeviceBondingFailedError());
                 disconnect();
-            }
-
-            @Override
-            public void onReadResultSync(@NonNull final ResultSyncResponse resultSyncResponse) {
-                Timber.d("onReadResultSync: %s", resultSyncResponse);
-            }
-
-            @Override
-            public void onReadResult(@NonNull final ResultResponse resultResponse) {
-                Timber.d("onReadResult: %s", resultResponse);
-            }
-
-            @Override
-            public void onReadError(@NonNull final ErrorResponse errorResponse) {
-                Timber.d("onReadError: %s", errorResponse);
             }
 
             @Override

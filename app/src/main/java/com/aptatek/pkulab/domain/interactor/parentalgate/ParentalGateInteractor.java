@@ -28,7 +28,12 @@ public class ParentalGateInteractor {
     @NonNull
     public Single<AgeCheckResult> verify(@NonNull final AgeCheckModel ageCheckModel) {
         return Single.fromCallable(() -> {
-            final int calculatedAge = TimeHelper.diffInYears(ageCheckModel.getBirthDate(), System.currentTimeMillis());
+            final long now = System.currentTimeMillis();
+            if (ageCheckModel.getBirthDate() > now) {
+                throw new IllegalArgumentException("Can't be born in future");
+            }
+
+            final int calculatedAge = TimeHelper.diffInYears(ageCheckModel.getBirthDate(), now);
 
             if (calculatedAge < MIN_AGE) {
                 return AgeCheckResult.NOT_OLD_ENOUGH;

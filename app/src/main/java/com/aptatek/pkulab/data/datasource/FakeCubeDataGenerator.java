@@ -68,7 +68,7 @@ public class FakeCubeDataGenerator {
         final TestResultDataModel testResultDataModel = new TestResultDataModel();
         testResultDataModel.setReaderId(dataFactory.getRandomChars(10));
         testResultDataModel.setId(dataFactory.getRandomChars(10));
-        testResultDataModel.setPkuLevel(PkuLevel.create(dataFactory.getNumberUpTo((int) Constants.DEFAULT_PKU_HIGHEST_VALUE), PkuLevelUnits.MILLI_GRAM));
+        testResultDataModel.setPkuLevel(PkuLevel.create(dataFactory.getNumberUpTo((int) Constants.DEFAULT_PKU_HIGHEST_VALUE), PkuLevelUnits.MICRO_MOL));
         testResultDataModel.setTimestamp(generateRandomTimeAtGivenDay(timestamp));
         testResultDataModel.setSick(dataFactory.chance(SICK_CHANCE));
         testResultDataModel.setFasting(dataFactory.chance(FASTING_CHANCE));

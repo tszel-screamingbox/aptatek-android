@@ -76,7 +76,7 @@ public class HomeFragmentPresenterTest {
         doReturn(BATTERY_NORMAL).when(deviceHelper).getBatteryLevel();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new HomeFragmentPresenter(cubeInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper, preferenceManager);
+        presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper, preferenceManager);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)
