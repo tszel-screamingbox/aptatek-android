@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/general.distance.32dp"
+    android:paddingTop="@dimen/general.distance.xsmall"
+    android:paddingEnd="@dimen/general.distance.xsmall"
+    android:paddingBottom="@dimen/general.distance.xsmall"
+    android:background="?selectableItemBackground">
+
+    <TextView
+        android:id="@+id/settings_item_title"
+        style="@style/Settings.Row.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings.fingerprint.authentication"
+        app:layout_constraintBottom_toBottomOf="@id/switchFingerprint"
+        app:layout_constraintEnd_toStartOf="@+id/switchFingerprint"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/switchFingerprint"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switchFingerprint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:thumb="@drawable/switch_selector"
+        android:track="@drawable/switch_track"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/settings_item_description"
+        style="@style/Settings.Row.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general.distance.xsmall"
+        android:text="@string/settings.fingerprint.description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_item_title" />
+
+</android.support.constraint.ConstraintLayout>

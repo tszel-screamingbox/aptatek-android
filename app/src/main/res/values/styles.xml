@@ -21,7 +21,6 @@
         <item name="fontFamily">@font/nunito_black</item>
     </style>
 
-
     <style name="General.Transparent.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height.big</item>
         <item name="android:background">@color/transparent</item>
@@ -220,12 +219,14 @@
     </style>
 
     <style name="Settings.Row.Title" parent="TextAppearance.AppCompat">
+        <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:textSize">@dimen/font.size.xbig</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
     </style>
 
     <style name="Settings.Row.Description" parent="TextAppearance.AppCompat">
+        <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@color/applicationLightGray</item>
         <item name="android:textSize">@dimen/font.size.normal</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
