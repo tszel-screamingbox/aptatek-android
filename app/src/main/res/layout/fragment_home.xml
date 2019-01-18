@@ -90,7 +90,7 @@
             android:layout_marginBottom="@dimen/main.bottom.margin.empty"
             android:drawableStart="@drawable/settings_button_background"
             android:elevation="0dp"
-            android:paddingStart="@dimen/general.button.corner.normal"
+            android:paddingStart="@dimen/general.button.icon.margin.start"
             android:text="@string/main.button.settings"
             android:textColor="@color/applicationSolidGray"
             app:layout_constraintBottom_toBottomOf="parent"

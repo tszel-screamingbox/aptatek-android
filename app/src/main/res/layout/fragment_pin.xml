@@ -118,12 +118,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance"
         android:layout_marginEnd="@dimen/general.distance"
-        android:layout_marginBottom="@dimen/general.distance.xsmall"
-        android:fontFamily="@font/nunito_regular"
+        android:layout_marginBottom="@dimen/general.distance.small"
+        android:fontFamily="@font/nunito_semibold"
         android:gravity="center"
         android:padding="@dimen/general.distance.xxxsmall"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/font.size.normal"
+        android:textSize="@dimen/font.size.medium"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/buttonsGuideLine" />
 
