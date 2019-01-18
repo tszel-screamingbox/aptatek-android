@@ -140,7 +140,7 @@
     <string name="settings.daily.reminder.schedule.type.weekly">w</string>
     <string name="settings.daily.reminder.schedule.type.monthly">m</string>
     <string name="settings.daily.reminder.schedule.type.biweekly">bw</string>
-    <string name="settings.faq">FAQ</string>
+    <string name="settings.help">Help</string>
     <string name="settings.privacy">Privacy Policy</string>
     <string name="settings.reminder.schedule.type.weekly">Weekly</string>
     <string name="settings.reminder.schedule.type.monthly">Monthly</string>

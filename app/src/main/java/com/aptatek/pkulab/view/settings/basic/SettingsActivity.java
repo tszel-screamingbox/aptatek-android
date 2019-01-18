@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import timber.log.Timber;
 
 public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresenter> implements SettingsView {
 
@@ -34,11 +35,14 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.switchFingerprint)
-    SwitchCompat switchFingerPrint;
-
     @BindView(R.id.textViewAppVersion)
     TextView tvAppVersion;
+
+    @BindView(R.id.settings_items)
+    RecyclerView recyclerView;
+
+    @Inject
+    SettingsItemAdapter settingsItemAdapter;
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -69,9 +73,36 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
 
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        switchFingerPrint.setOnCheckedChangeListener((buttonView, isChecked) ->
-            presenter.setFingerprintEnabled(isChecked)
-        );
+        settingsItemAdapter.setSettingsItemClickListener(new SettingsItemAdapter.SettingsItemClickListener() {
+            @Override
+            public void onFingerprintAuthToggled(final boolean isChecked) {
+                presenter.setFingerprintEnabled(isChecked);
+            }
+
+            @Override
+            public void onSettingsItemClicked(final SettingsItem item) {
+                switch (item) {
+                    case DAILY_REMINDERS:
+                        launchActivity(ReminderSettingsActivity.starter(SettingsActivity.this), false, Animation.FADE);
+                        break;
+                    case PHE_PREFERENCES:
+                        launchActivity(RangeSettingsActivity.starter(SettingsActivity.this), false, Animation.FADE);
+                        break;
+                    case HELP:
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), "http://www.google.com"), false, Animation.FADE); // TODO get proper url
+                        break;
+                    case PRIVACY_POLICY:
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), "http://www.google.com"), false, Animation.FADE); // TODO get proper url
+                        break;
+                    default:
+                        Timber.d("Unhandled settings item clicked: %s", item);
+                        break;
+                }
+            }
+        });
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(settingsItemAdapter);
 
         presenter.getAppVersion();
     }
@@ -83,34 +114,14 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         presenter.checkFingerprintSettings();
     }
 
-    @OnClick(R.id.textViewDailyReminders)
-    public void onTextViewDailyRemindersClicked() {
-        launchActivity(ReminderSettingsActivity.starter(this), false, Animation.FADE);
-    }
-
-    @OnClick(R.id.settingsUnitsLabel)
-    public void onUnitsClicked() {
-        launchActivity(RangeSettingsActivity.starter(this), false, Animation.FADE);
-    }
-
-    @OnClick(R.id.textViewPrivacyPolicy)
-    public void onPrivacyClicked() {
-        WebPageActivityStarter.start(this, getString(R.string.settings_privacy), "http://www.google.com"); // TODO get proper url
-    }
-
-    @OnClick(R.id.textViewFaq)
-    public void onFaqClicked() {
-        WebPageActivityStarter.start(this, getString(R.string.settings_faq), "http://www.google.com"); // TODO get proper url
-    }
-
     @Override
     public void showFingerprintAuthChecked(final boolean isChecked) {
-        switchFingerPrint.setChecked(isChecked);
+        settingsItemAdapter.updateFingerprintItemChecked(isChecked);
     }
 
     @Override
     public void showFingerprintAuthEnabled(final boolean isEnabled) {
-        switchFingerPrint.setEnabled(isEnabled);
+        settingsItemAdapter.updateFingerprintItemEnabled(isEnabled);
     }
 
     @Override

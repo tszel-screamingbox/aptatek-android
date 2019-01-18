@@ -36,8 +36,8 @@ public class WebPageActivity extends AppCompatActivity {
 
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitle(title);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);
