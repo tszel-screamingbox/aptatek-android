@@ -77,7 +77,7 @@
 
 
     <dimen name="font.size.weekly.subtitle">21sp</dimen>
-    <dimen name="font.size.weekly.title">25sp</dimen>
+    <dimen name="font.size.weekly.title">34sp</dimen>
 
     <dimen name="rangeinfo.range.row.offset">8dp</dimen>
 

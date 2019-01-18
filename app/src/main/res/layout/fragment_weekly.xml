@@ -19,18 +19,19 @@
     <TextView
         android:id="@+id/title"
         style="@style/General.Title"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/weekly.title"
         android:textSize="@dimen/font.size.weekly.title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/roundedBar" />
 
     <ImageView
         android:id="@+id/leftArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance"
-        android:paddingStart="@dimen/general.distance.xxsmall"
+        android:paddingStart="@dimen/general.distance.mini"
         android:paddingTop="@dimen/general.distance.xxmini"
         android:paddingEnd="@dimen/general.distance.xxsmall"
         android:paddingBottom="@dimen/general.distance.xxmini"
@@ -38,7 +39,7 @@
         android:tint="@color/applicationLightGray"
         app:layout_constraintBottom_toBottomOf="@+id/dateText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/title"
         app:layout_constraintVertical_bias="0.5"
         tools:ignore="ContentDescription" />
 
@@ -46,16 +47,15 @@
         android:id="@+id/rightArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/general.distance"
         android:paddingStart="@dimen/general.distance.xxsmall"
         android:paddingTop="@dimen/general.distance.xxmini"
-        android:paddingEnd="@dimen/general.distance.xxsmall"
+        android:paddingEnd="@dimen/general.distance.mini"
         android:paddingBottom="@dimen/general.distance.xxmini"
         android:src="@drawable/ic_right_arrow"
         android:tint="@color/applicationLightGray"
         app:layout_constraintBottom_toBottomOf="@+id/dateText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dateText"
+        app:layout_constraintTop_toTopOf="@+id/title"
         app:layout_constraintVertical_bias="0.5"
         tools:ignore="ContentDescription" />
 
@@ -64,15 +64,20 @@
         style="@style/General.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/rightArrow"
-        app:layout_constraintStart_toEndOf="@+id/leftArrow"
+        android:background="@drawable/ripple_grey_button"
+        android:paddingTop="@dimen/general.distance.mini"
+        android:paddingBottom="@dimen/general.distance.mini"
+        android:textColor="@color/applicationSolidGray"
+        android:textSize="@dimen/font.size.medium"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toStartOf="@id/title"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:layout_marginTop="@dimen/general.distance.xxxmini"
         app:layout_constraintBottom_toTopOf="@id/label"
         app:layout_constraintTop_toBottomOf="@id/dateText" />
 

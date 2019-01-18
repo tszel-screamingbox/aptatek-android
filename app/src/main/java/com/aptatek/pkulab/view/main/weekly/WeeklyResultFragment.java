@@ -18,6 +18,7 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
 import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
+import com.aptatek.pkulab.widget.MonthPickerDialog;
 import com.aptatek.pkulab.widget.PdfExportView;
 
 import java.io.File;
@@ -106,6 +107,11 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     public void onRightArrowClicked() {
         final int currentPage = chartViewPager.getCurrentItem();
         presenter.showPage(currentPage + 1);
+    }
+
+    @OnClick(R.id.dateText)
+    public void onDateTextViewClicked() {
+        MonthPickerDialog.create().show(requireFragmentManager(), "");
     }
 
     private void initAdapter() {
