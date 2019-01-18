@@ -6,7 +6,7 @@ import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanCallbacks;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -62,9 +62,10 @@ public class BluetoothInteractor {
                     discoveredDevices.onNext(Collections.unmodifiableSet(devices));
                     scanning.onNext(bluetoothScanner.isScanning());
                 })
-                .andThen(Countdown.countdown(period, ignore -> true, ignore -> ignore)
+                .doOnComplete(() -> Countdown.countdown(period, ignore -> true, ignore -> ignore)
                         .take(1)
                         .flatMapCompletable(ignore -> stopScan())
+                        .subscribe()
                 ).subscribeOn(Schedulers.computation());
     }
 

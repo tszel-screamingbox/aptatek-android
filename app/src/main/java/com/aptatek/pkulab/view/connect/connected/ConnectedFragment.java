@@ -7,7 +7,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenFragment;
 import com.aptatek.pkulab.view.main.MainHostActivity;
@@ -48,6 +49,16 @@ public class ConnectedFragment extends BaseConnectScreenFragment<ConnectedView, 
         tvBatteryLevel.setText(String.valueOf(batteryLevel).concat("%"));
     }
 
+    @Override
+    public void displayWorkflowState(@NonNull WorkflowState workflowState) {
+        Toast.makeText(getActivity(), workflowState.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void displaySyncFinished(final int numResults) {
+        Toast.makeText(getActivity(), "Successfully synced " + numResults + " records", Toast.LENGTH_SHORT).show();
+    }
+
     @NonNull
     @Override
     public ConnectedPresenter createPresenter() {
@@ -56,12 +67,17 @@ public class ConnectedFragment extends BaseConnectScreenFragment<ConnectedView, 
 
     @OnClick(R.id.connectedDisconnect)
     public void onDisconnectClicked() {
-        Toast.makeText(getActivity(), "disconnect clicked", Toast.LENGTH_SHORT).show();
+        presenter.disconnect();
     }
 
     @OnClick(R.id.connectedButton)
-    public void onGoHomeCliked() {
+    public void onGoHomeClicked() {
         startActivity(new Intent(getActivity(), MainHostActivity.class));
+        finish();
+    }
+
+    @Override
+    public void finish() {
         getActivity().finish();
     }
 }

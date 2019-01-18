@@ -11,7 +11,7 @@ import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.util.ChartUtils;
@@ -46,13 +46,13 @@ public class WeeklyChartDataTransformer {
     }
 
     @NonNull
-    public Single<ChartEntryData> transform(final CubeData cubeData) {
+    public Single<ChartEntryData> transform(final TestResult testResult) {
         return pkuRangeInteractor.getInfo()
-                .map(rangeInfo -> buildChartEntryData(rangeInfo, cubeData));
+            .map(rangeInfo -> buildChartEntryData(rangeInfo, testResult));
     }
 
-    protected ChartEntryData buildChartEntryData(final PkuRangeInfo rangeInfo, final CubeData cubeData) {
-        final PkuLevel pkuLevel = cubeData.getPkuLevel();
+    protected ChartEntryData buildChartEntryData(final PkuRangeInfo rangeInfo, final TestResult testResult) {
+        final PkuLevel pkuLevel = testResult.getPkuLevel();
         final PkuLevel levelInProperUnit;
         if (rangeInfo.getPkuLevelUnit() != pkuLevel.getUnit()) {
             levelInProperUnit = PkuLevelConverter.convertTo(pkuLevel, rangeInfo.getPkuLevelUnit());
@@ -60,8 +60,8 @@ public class WeeklyChartDataTransformer {
             levelInProperUnit = pkuLevel;
         }
 
-        final int x = TimeHelper.getDayOfWeek(cubeData.getTimestamp()) - DAY_OFFSET;
-        final int y = TimeHelper.getMinuteOfDay(cubeData.getTimestamp());
+        final int x = TimeHelper.getDayOfWeek(testResult.getTimestamp()) - DAY_OFFSET;
+        final int y = TimeHelper.getMinuteOfDay(testResult.getTimestamp());
         final String label = rangeSettingsValueFormatter.formatRegularValue(levelInProperUnit);
         final ChartUtils.State state = ChartUtils.getState(levelInProperUnit, rangeInfo);
         final @ColorRes int colorRes = ChartUtils.stateColor(state);

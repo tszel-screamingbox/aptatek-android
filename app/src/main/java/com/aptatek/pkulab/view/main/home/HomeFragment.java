@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
@@ -100,7 +101,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     protected void initObjects(final View view) {
         initAdapter();
-        bubbleScrollView.setVisibility(GONE); //TODO: later, check if DB is empty or not
 
         recyclerViewDailyResults.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewDailyResults.setAdapter(dailyResultsAdapter);
@@ -141,9 +141,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     public void onResume() {
         super.onResume();
 
-        if (chartAdapter.getItemCount() > 0) {
-            presenter.loadData();
-        }
+        presenter.loadData();
     }
 
     public boolean isResultShown() {
@@ -181,8 +179,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @Override
     public void displayData(final List<ChartVM> data) {
+        ((MainHostActivity) getBaseActivity()).enableSlidingPanel();
         bubbleScrollView.setVisibility(VISIBLE);
+        buttonsGroup.setVisibility(VISIBLE);
         playIcon.setVisibility(GONE);
+        bigSettingsButton.setVisibility(GONE);
         chartAdapter.setItems(data);
         bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
     }
@@ -199,10 +200,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @OnClick(R.id.playIcon)
     public void onPlayIconClicked() {
-        bigSettingsButton.setVisibility(GONE);
-        buttonsGroup.setVisibility(VISIBLE);
-        presenter.loadData();
-        ((MainHostActivity) getBaseActivity()).enableSlidingPanel();
+        presenter.startNewTest();
     }
 
     @OnClick(R.id.imgCloseResults)
@@ -267,5 +265,16 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     public void navigateToTestScreen() {
         getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
+    }
+
+    @Override
+    public void showNoResultsInLast6Months() {
+        // TODO temporary solution until an official decision is made
+        Toast.makeText(getActivity(), "No results in last 6 months. Take a test first ... ", Toast.LENGTH_SHORT).show();
+
+        playIcon.setVisibility(VISIBLE);
+        bigSettingsButton.setVisibility(VISIBLE);
+        buttonsGroup.setVisibility(GONE);
+        bubbleScrollView.setVisibility(GONE);
     }
 }

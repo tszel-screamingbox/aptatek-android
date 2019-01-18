@@ -5,10 +5,10 @@ import android.support.annotation.StringRes;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.util.ChartUtils;
@@ -26,7 +26,7 @@ import timber.log.Timber;
 public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
 
     private final PkuRangeInteractor rangeInteractor;
-    private final CubeInteractor cubeInteractor;
+    private final TestResultInteractor testResultInteractor;
     private final ResourceInteractor resourceInteractor;
     private final WettingInteractor wettingInteractor;
     private final RangeSettingsValueFormatter rangeSettingsValueFormatter;
@@ -35,12 +35,12 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
 
     @Inject
     public TestResultPresenter(final PkuRangeInteractor rangeInteractor,
-                               final CubeInteractor cubeInteractor,
+                               final TestResultInteractor testResultInteractor,
                                final ResourceInteractor resourceInteractor,
                                final WettingInteractor wettingInteractor,
                                final RangeSettingsValueFormatter rangeSettingsValueFormatter) {
         this.rangeInteractor = rangeInteractor;
-        this.cubeInteractor = cubeInteractor;
+        this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.wettingInteractor = wettingInteractor;
         this.rangeSettingsValueFormatter = rangeSettingsValueFormatter;
@@ -52,7 +52,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                 clearTestState().andThen(
                         Single.zip(
                                 rangeInteractor.getInfo(),
-                                cubeInteractor.getLatest().map(CubeData::getPkuLevel),
+                                testResultInteractor.getLatest().map(TestResult::getPkuLevel),
                                 (rangeInfo, pkuLevel) ->
                                         TestResultState.builder()
                                                 .setTitle(getTitleForLevel(pkuLevel, rangeInfo))

@@ -288,4 +288,18 @@
     <string name="pdf.legend.high">High</string>
     <string name="pdf.legend.normal">Normal(%1$s - %2$s)</string>
     <string name="pdf.legend.low">Low</string>
+
+    <string name="bluetooth.notification.connecting.title">Connecting</string>
+    <string name="bluetooth.notification.connecting.message">Please wait while we are trying to connect to the reader…</string>
+    <string name="bluetooth.notification.connected.title">Connected to %1$s</string>
+    <string name="bluetooth.notification.connected.message">Battery level: %1$d %%</string>
+    <string name="bluetooth.notification.sync.title">Syncing data from %1$s</string>
+    <string name="bluetooth.notification.sync.message">Please wait until the process completes</string>
+    <string name="bluetooth.notification.test.running.title">Test is running on %1$s</string>
+    <string name="bluetooth.notification.test.running.message">Please wait until the test completes</string>
+    <string name="bluetooth.notification.test.complete.title">Test ready on %1$s</string>
+    <string name="bluetooth.notification.test.complete.message">Tap to check results</string>
+    <string name="bluetooth.notification.error.title">Failed to communication with reader</string>
+    <string name="bluetooth.notification.error.disconnected.title">Device is disconnected</string>
+    <string name="bluetooth.notification.error.disconnected.message">Tap to retry connection</string>
 </resources>

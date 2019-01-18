@@ -144,7 +144,8 @@
         <receiver android:name=".device.AlarmReceiver" />
         <receiver android:name=".device.ReminderActionReceiver" />
 
-        <service android:name=".view.test.wetting.WettingReminderService" />
+        <service android:name=".view.service.BluetoothService" />
+        <service android:name=".view.service.WettingForegroundService" />
 
         <receiver android:name=".device.BootCompletedReceiver">
             <intent-filter>

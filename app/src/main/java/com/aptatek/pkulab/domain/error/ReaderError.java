@@ -1,17 +1,23 @@
 package com.aptatek.pkulab.domain.error;
 
-import android.support.annotation.NonNull;
-
 public class ReaderError extends Throwable {
 
-    private final int errorCode;
-
-    public ReaderError(@NonNull String message, final int errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+    public ReaderError() {
     }
 
-    public int getErrorCode() {
-        return errorCode;
+    public ReaderError(String message) {
+        super(message);
+    }
+
+    public ReaderError(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ReaderError(Throwable cause) {
+        super(cause);
+    }
+
+    public ReaderError(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

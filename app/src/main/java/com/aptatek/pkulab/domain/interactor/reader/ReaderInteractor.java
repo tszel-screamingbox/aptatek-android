@@ -2,62 +2,102 @@ package com.aptatek.pkulab.domain.interactor.reader;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.domain.error.ReaderError;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultRepository;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
-import com.aptatek.pkulab.domain.model.ReaderConnectionEvent;
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
+import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
+import com.aptatek.pkulab.domain.model.reader.Error;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
+import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class ReaderInteractor {
 
     private final ReaderManager readerManager;
+    private final TestResultRepository testResultRepository;
 
     @Inject
-    public ReaderInteractor(final ReaderManager readerManager) {
+    public ReaderInteractor(final ReaderManager readerManager,
+                            final TestResultRepository testResultRepository) {
         this.readerManager = readerManager;
+        this.testResultRepository = testResultRepository;
     }
 
     @NonNull
     public Completable connect(@NonNull final ReaderDevice readerDevice) {
-        return Completable.fromAction(() -> readerManager.connect(readerDevice))
+        return readerManager.connect(readerDevice)
                 .subscribeOn(Schedulers.io());
     }
 
     @NonNull
     public Completable disconnect() {
-        return Completable.fromAction(readerManager::disconnect)
+        return readerManager.disconnect()
                 .subscribeOn(Schedulers.io());
     }
 
     @NonNull
-    public Completable queryBatteryLevel() {
-        return Completable.fromAction(readerManager::queryBatteryLevel)
+    public Single<Integer> getBatteryLevel() {
+        return readerManager.getBatteryLevel()
                 .subscribeOn(Schedulers.io());
     }
 
     @NonNull
-    public Completable queryCartridgeId() {
-        return Completable.fromAction(readerManager::queryCartridgeId)
+    public Single<CartridgeInfo> getCartridgeInfo() {
+        return readerManager.getCartridgeInfo()
                 .subscribeOn(Schedulers.io());
     }
 
     @NonNull
-    public Flowable<ReaderConnectionEvent> getReaderConnectionEvents() {
-        return readerManager.connectionEvents();
+    public Single<List<TestResult>> syncResults() {
+        return readerManager.syncResults()
+                .flatMap(results -> testResultRepository.insertAll(results)
+                        .andThen(Single.just(results))
+                )
+                .subscribeOn(Schedulers.io());
     }
 
     @NonNull
-    public Flowable<ReaderError> getReaderError() {
-        return readerManager.readerErrors();
+    public Single<TestResult> getResult(@NonNull final String id) {
+        return readerManager.getResult(id)
+                .subscribeOn(Schedulers.io());
     }
 
     @NonNull
-    public Flowable<Integer> getBatteryLevel() {
-        return readerManager.batteryLevel();
+    public Single<Error> getError() {
+        return readerManager.getError()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Flowable<ConnectionEvent> getReaderConnectionEvents() {
+        return readerManager.connectionEvents()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Flowable<Integer> getMtuSize() {
+        return readerManager.mtuSize()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Flowable<WorkflowState> getWorkflowState() {
+        return readerManager.workflowState()
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Maybe<ReaderDevice> getConnectedReader() {
+        return readerManager.getConnectedDevice()
+                .subscribeOn(Schedulers.io());
     }
 }

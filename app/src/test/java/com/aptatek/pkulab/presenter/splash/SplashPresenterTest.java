@@ -53,6 +53,37 @@ public class SplashPresenterTest {
     private SplashActivityPresenter presenter;
 
     /**
+     * Initialize RxJava components before testing.
+     */
+    @BeforeClass
+    public static void beforeClass() {
+        final Scheduler immediate = new Scheduler() {
+
+            @Override
+            public Disposable scheduleDirect(@NonNull final Runnable run, final long delay, @NonNull final TimeUnit unit) {
+                // this prevents StackOverflowErrors when scheduling with a delay
+                return super.scheduleDirect(run, 0, unit);
+            }
+
+            @Override
+            public Worker createWorker() {
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+            }
+        };
+
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setNewThreadSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setSingleSchedulerHandler(scheduler -> immediate);
+        RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
+    }
+
+    @AfterClass
+    public static void afterClass() {
+        RxJavaPlugins.reset();
+    }
+
+    /**
      * Setting up the required presenter and defining mocked component's behaviour
      */
     @Before
@@ -120,31 +151,4 @@ public class SplashPresenterTest {
         verify(view).onRequestPinActivityShouldLoad();
     }
 
-    @BeforeClass
-    public static void beforeClass() {
-        final Scheduler immediate = new Scheduler() {
-
-            @Override
-            public Disposable scheduleDirect(@NonNull final Runnable run, final long delay, @NonNull final TimeUnit unit) {
-                // this prevents StackOverflowErrors when scheduling with a delay
-                return super.scheduleDirect(run, 0, unit);
-            }
-
-            @Override
-            public Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
-            }
-        };
-
-        RxJavaPlugins.setIoSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setNewThreadSchedulerHandler(scheduler -> immediate);
-        RxJavaPlugins.setSingleSchedulerHandler(scheduler -> immediate);
-        RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
-    }
-
-    @AfterClass
-    public static void afterClass() {
-        RxJavaPlugins.reset();
-    }
 }

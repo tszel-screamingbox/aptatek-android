@@ -2,10 +2,9 @@ package com.aptatek.pkulab.domain.interactor.parentalgate;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.model.AgeCheckModel;
 import com.aptatek.pkulab.domain.model.AgeCheckResult;
-
-import java.util.Calendar;
 
 import javax.inject.Inject;
 
@@ -29,7 +28,12 @@ public class ParentalGateInteractor {
     @NonNull
     public Single<AgeCheckResult> verify(@NonNull final AgeCheckModel ageCheckModel) {
         return Single.fromCallable(() -> {
-            final int calculatedAge = calculateAge(ageCheckModel.getBirthDate());
+            final long now = System.currentTimeMillis();
+            if (ageCheckModel.getBirthDate() > now) {
+                throw new IllegalArgumentException("Can't be born in future");
+            }
+
+            final int calculatedAge = TimeHelper.diffInYears(ageCheckModel.getBirthDate(), now);
 
             if (calculatedAge < MIN_AGE) {
                 return AgeCheckResult.NOT_OLD_ENOUGH;
@@ -40,37 +44,4 @@ public class ParentalGateInteractor {
             }
         });
     }
-
-    private int calculateAge(final long timestamp) {
-        final Calendar now = Calendar.getInstance();
-        final Calendar birthDate = Calendar.getInstance();
-        birthDate.setTimeInMillis(timestamp);
-
-        if (birthDate.after(now)) {
-            throw new IllegalArgumentException("Can't be born in the future");
-        }
-
-        final int nowYear = now.get(Calendar.YEAR);
-        final int birthYear = birthDate.get(Calendar.YEAR);
-
-        int age = nowYear - birthYear;
-
-        final int nowMonth = now.get(Calendar.MONTH);
-        final int birthMonth = birthDate.get(Calendar.MONTH);
-
-        if (birthMonth > nowMonth) {
-            --age;
-        } else if (nowMonth == birthMonth) {
-            final int day1 = now.get(Calendar.DAY_OF_MONTH);
-            final int day2 = birthDate.get(Calendar.DAY_OF_MONTH);
-
-            if (day2 > day1) {
-                --age;
-            }
-        }
-
-        return age;
-    }
-
-
 }
