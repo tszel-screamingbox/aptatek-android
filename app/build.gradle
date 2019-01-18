@@ -42,8 +42,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 19
-        versionName "0.0.19-lumos-internal"
+        versionCode 20
+        versionName "0.0.20"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
