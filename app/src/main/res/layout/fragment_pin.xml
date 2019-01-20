@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,22 +28,16 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="emptyLayout,fingerpintImage" />
 
-    <TextView
-        android:id="@+id/title"
-        style="@style/Header.Text"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="@string/set.pin.title"
-        app:layout_constraintTop_toBottomOf="@id/headerBarrier" />
-
-    <TextView
-        android:id="@+id/hintTextView"
-        style="@style/General.Text"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/general.distance.small"
-        app:layout_constraintBottom_toTopOf="@id/pinLayout"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginEnd="@dimen/general.distance.mini"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerBarrier"
+        app:titleText="@string/set.pin.title" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/pinLayout"

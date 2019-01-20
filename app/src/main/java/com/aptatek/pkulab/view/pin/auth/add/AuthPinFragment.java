@@ -30,7 +30,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     protected void initObjects(final View view) {
         presenter.initView();
-        titleTextView.setText(R.string.auth_pin_title);
+        mainHeaderView.setTitle(getString(R.string.auth_pin_title));
         messageTextView.setVisibility(View.INVISIBLE);
     }
 
@@ -61,7 +61,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     public void onInvalidPinTyped(final boolean hasReachedAttemptLimit) {
         if (hasReachedAttemptLimit) {
-            hintTextView.setText(R.string.auth_pin_attempt_limit_reached_hint);
+            mainHeaderView.setSubtitle(getString(R.string.auth_pin_attempt_limit_reached_hint));
         }
 
         messageTextView.setVisibility(View.VISIBLE);
@@ -89,13 +89,13 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     public void onFingerprintAvailable() {
         fingerprintImageView.setVisibility(View.VISIBLE);
-        hintTextView.setText(R.string.auth_pin_hint_fingerprint);
+        mainHeaderView.setSubtitle(getString(R.string.auth_pin_hint_fingerprint));
     }
 
     @Override
     public void onFingerprintDisabled() {
         fingerprintImageView.setVisibility(View.GONE);
-        hintTextView.setText(R.string.auth_pin_hint);
+        mainHeaderView.setSubtitle(getString(R.string.auth_pin_hint));
     }
 
     @Override

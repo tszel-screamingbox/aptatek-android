@@ -49,7 +49,7 @@
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
     <dimen name="pin.dial.height">236dp</dimen>
-    <dimen name="pin.header.margin.minimum">68dp</dimen>
+    <dimen name="pin.header.margin.minimum">47dp</dimen>
     <dimen name="pin.message.background.height">40dp</dimen>
 
     <dimen name="fingerprint.size">224dp</dimen>
