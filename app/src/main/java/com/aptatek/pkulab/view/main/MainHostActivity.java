@@ -37,7 +37,6 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
         homeFragment = new HomeFragment();
         switchToFragment(homeFragment);
 
-
         mainSlidingPanelLayout.setEnabled(false);
     }
 
