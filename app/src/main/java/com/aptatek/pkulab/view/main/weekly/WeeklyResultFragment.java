@@ -206,6 +206,6 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void done(int year, int month) {
-
+        presenter.getPageForSelectedMonth(year, month);
     }
 }

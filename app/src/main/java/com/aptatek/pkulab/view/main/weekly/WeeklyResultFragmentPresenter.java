@@ -17,6 +17,7 @@ import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -27,6 +28,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
+import timber.log.Timber;
 
 public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResultFragmentView> {
 
@@ -127,6 +129,15 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         )
                 )
         );
+    }
+
+    public void getPageForSelectedMonth(final int year, final int month) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        final int week = TimeHelper.getWeeksBetween(System.currentTimeMillis(), calendar.getTimeInMillis());
+        Timber.d("");
     }
 
     void getPdfChartData(final int monthsBefore) {
