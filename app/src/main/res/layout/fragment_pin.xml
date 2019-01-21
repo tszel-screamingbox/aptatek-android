@@ -2,31 +2,19 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/emptyLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/pin.header.margin.minimum"
-        android:orientation="vertical" />
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/pin.header.margin.minimum">
 
     <ImageView
         android:id="@+id/fingerpintImage"
         android:layout_width="@dimen/general.distance.big"
         android:layout_height="@dimen/general.distance.big"
-        android:layout_margin="@dimen/general.distance.normal"
         android:src="@drawable/fingerprint"
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.constraint.Barrier
-        android:id="@+id/headerBarrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="emptyLayout,fingerpintImage" />
 
     <com.aptatek.pkulab.widget.HeaderView
         android:id="@+id/header"
@@ -36,7 +24,7 @@
         android:layout_marginEnd="@dimen/general.distance.mini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerBarrier"
+        app:layout_constraintTop_toBottomOf="@id/fingerpintImage"
         app:titleText="@string/set.pin.title" />
 
     <android.support.constraint.ConstraintLayout
@@ -44,10 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/general.distance"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
+        android:layout_marginTop="@dimen/general.distance.big"
         android:layout_marginEnd="@dimen/general.distance"
-        android:layout_marginBottom="@dimen/general.distance.small"
-        app:layout_constraintBottom_toTopOf="@id/messageTextView">
+        app:layout_constraintTop_toBottomOf="@id/header">
 
         <ImageView
             android:id="@+id/pin0"
@@ -109,16 +96,16 @@
         android:id="@+id/messageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance"
-        android:layout_marginEnd="@dimen/general.distance"
-        android:layout_marginBottom="@dimen/general.distance.xsmall"
+        android:layout_marginStart="@dimen/general.distance.32"
+        android:layout_marginTop="@dimen/general.distance.small"
+        android:layout_marginEnd="@dimen/general.distance.32"
         android:fontFamily="@font/nunito_regular"
         android:gravity="center"
         android:padding="@dimen/general.distance.xxxsmall"
         android:textColor="@android:color/white"
         android:textSize="@dimen/font.size.normal"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/buttonsGuideLine" />
+        app:layout_constraintTop_toBottomOf="@+id/pinLayout" />
 
     <android.support.constraint.Guideline
         android:id="@+id/buttonsGuideLine"
