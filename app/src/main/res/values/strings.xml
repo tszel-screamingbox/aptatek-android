@@ -288,4 +288,7 @@
     <string name="pdf.legend.high">High</string>
     <string name="pdf.legend.normal">Normal(%1$s - %2$s)</string>
     <string name="pdf.legend.low">Low</string>
+
+    <string name="month.picker.cancel">Cancel</string>
+    <string name="month.picker.ok">Ok</string>
 </resources>

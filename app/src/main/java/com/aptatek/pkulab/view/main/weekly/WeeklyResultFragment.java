@@ -38,7 +38,9 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.View.inflate;
 
-public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView {
+public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView, MonthPickerDialog.MonthPickerDialogCallback {
+
+    private static final String MONTH_PICKER_DIALOG_TAG = "aptatek.month.picker.dialog.tag";
 
     @Inject
     WeeklyResultFragmentPresenter presenter;
@@ -111,7 +113,9 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @OnClick(R.id.dateText)
     public void onDateTextViewClicked() {
-        MonthPickerDialog.create().show(requireFragmentManager(), "");
+        if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) == null) {
+            MonthPickerDialog.create(this).show(requireFragmentManager(), MONTH_PICKER_DIALOG_TAG);
+        }
     }
 
     private void initAdapter() {
@@ -198,5 +202,10 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
         startActivity(Intent.createChooser(emailIntent, ""));
+    }
+
+    @Override
+    public void done(int year, int month) {
+
     }
 }

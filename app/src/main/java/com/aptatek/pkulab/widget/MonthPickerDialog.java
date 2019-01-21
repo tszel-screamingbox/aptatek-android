@@ -15,18 +15,44 @@ import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MonthPickerDialog extends DialogFragment {
 
-    public static MonthPickerDialog create() {
-        return new MonthPickerDialog();
+    private static final int MIN_MONTH_VALUE = 1;
+    private static final int MAX_MONTH_VALUE = 12;
+    private static final int MIN_YEAR_VALUE = 1;
+
+    public interface MonthPickerDialogCallback {
+        void done(int year, int month);
     }
+
+    public static MonthPickerDialog create(@Nullable final MonthPickerDialogCallback callback) {
+        final MonthPickerDialog monthPickerDialog = new MonthPickerDialog();
+        monthPickerDialog.callback = callback;
+        return monthPickerDialog;
+    }
+
+    @Nullable
+    private MonthPickerDialogCallback callback;
 
     @BindView(R.id.numberPickerMonth)
     NumberPicker monthPicker;
 
     @BindView(R.id.numberPickerYear)
     NumberPicker yearPicker;
+
+    @OnClick(R.id.textViewCancel)
+    public void onCancelClicked() {
+        dismiss();
+    }
+
+    @OnClick(R.id.textViewOk)
+    public void onOkClicked() {
+        if (callback != null) {
+            callback.done(yearPicker.getValue(), monthPicker.getValue());
+        }
+    }
 
     @Nullable
     @Override
@@ -40,10 +66,15 @@ public class MonthPickerDialog extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        monthPicker.setMinValue(1);
-        monthPicker.setMaxValue(12);
+        final Calendar calendar = Calendar.getInstance();
 
-        yearPicker.setMinValue(1);
-        yearPicker.setMaxValue(Calendar.getInstance().get(Calendar.YEAR));
+        monthPicker.setMinValue(MIN_MONTH_VALUE);
+        monthPicker.setMaxValue(MAX_MONTH_VALUE);
+
+        yearPicker.setMinValue(MIN_YEAR_VALUE);
+        yearPicker.setMaxValue(calendar.get(Calendar.YEAR));
+
+        yearPicker.setValue(yearPicker.getMaxValue());
+        monthPicker.setValue(calendar.get(Calendar.MONTH) + 1);
     }
 }
