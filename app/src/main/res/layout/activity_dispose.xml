@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/general.distance.xsmall" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/general.distance.xsmall" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/general.distance.xsmall" />
+
+    <TextView
+        android:id="@+id/dispose_title"
+        style="@style/General.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/dispose.title"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintTop_toTopOf="@+id/guideTop" />
+
+    <TextView
+        android:id="@+id/dispose_message"
+        style="@style/General.Text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/general.distance.xxsmall"
+        android:layout_marginTop="@dimen/general.distance.xxmini"
+        android:text="@string/dispose.message"
+        app:layout_constraintBottom_toTopOf="@id/dispose_image"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/dispose_title"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/dispose_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:layout_marginBottom="@dimen/general.distance.32dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/test_dispose_trash"
+        app:layout_constraintBottom_toTopOf="@id/dispose_done"
+        app:layout_constraintEnd_toEndOf="@id/guideEnd"
+        app:layout_constraintStart_toStartOf="@id/guideStart"
+        app:layout_constraintTop_toBottomOf="@+id/dispose_message" />
+
+    <Button
+        android:id="@+id/dispose_done"
+        style="@style/General.Rounded.Button"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginStart="@dimen/general.distance.32dp"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
+        android:layout_marginBottom="@dimen/general.distance.32dp"
+        android:text="@string/dispose.done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -101,10 +101,13 @@
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
     <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
     <string name="rangeinfo.title">Range info</string>
-    <!-- RangeInfo -->
     <string name="rangeinfo.units.format">Units are in %s</string>
     <string name="rangeinfo.very.high">Very High</string>
     <string name="rangeinfo.veryhigh.value.prefix">over</string>
+    <!-- Waste dispose -->
+    <string name="dispose.title">Waste\nDisposables</string>
+    <string name="dispose.message">Medical waste and needles should be disposed properly, do not place in regular garbage can.</string>
+    <string name="dispose.done">Done</string>
     <!-- Reminder Notification-->
     <string name="reminder.notification.channel.name">Reminder</string>
     <string name="reminder.notification.half.hour">30min</string>
@@ -182,7 +185,7 @@
     <string name="test.result.message.high">WTB Message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.normal">WTB message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.low">WTB message</string> <!-- TODO get proper label... -->
-    <string name="test.result.done">Done</string>
+    <string name="test.result.done">Next</string>
     <string name="test.result.range.info">Range info &#10140;</string>
     <string name="test.result.title.veryhigh">Very High</string>
     <string name="test.result.title.high">High</string> <!-- TODO get proper label... -->

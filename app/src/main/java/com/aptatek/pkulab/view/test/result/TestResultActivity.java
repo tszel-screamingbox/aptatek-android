@@ -16,6 +16,7 @@ import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.rangeinfo.RangeInfoActivity;
+import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.widget.BubbleTextView;
 
 import javax.inject.Inject;
@@ -98,6 +99,7 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
 
     @OnClick(R.id.test_result_done)
     public void onClickDone() {
+        launchActivity(new Intent(this, DisposeActivity.class), false, Animation.FADE);
         finish();
     }
 
