@@ -47,7 +47,7 @@ public class ReminderNotificationFactoryImpl implements ReminderNotificationFact
         halfHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.HALF_HOUR);
 
         return new NotificationCompat.Builder(context, createChannelId())
-                .setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(resourceInteractor.getStringResource(R.string.reminder_notification_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.reminder_notification_message))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

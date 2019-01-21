@@ -16,11 +16,13 @@ import com.aptatek.pkulab.injection.component.DaggerApplicationComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.service.WettingForegroundService;
+import com.crashlytics.android.Crashlytics;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import javax.inject.Inject;
 
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 
@@ -32,6 +34,10 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
     @Inject
     AlarmManager alarmManager;
+    @Inject
+    Crashlytics crashlytics;
+    @Inject
+    Timber.Tree timber;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -46,9 +52,8 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
                 .build();
         applicationComponent.inject(this);
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+        Fabric.with(this, crashlytics);
+        Timber.plant(timber);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
