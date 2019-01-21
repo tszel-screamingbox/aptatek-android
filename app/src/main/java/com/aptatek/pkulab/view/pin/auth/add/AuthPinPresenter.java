@@ -79,8 +79,16 @@ class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> ifViewAttached(AuthPinView::onValidPinTyped),
-                        throwable -> ifViewAttached(view -> view.onInvalidPinTyped(attemptCount == PIN_CODE_ATTEMPT_ERROR_LIMIT)));
+                        throwable -> ifViewAttached(view -> {
+                            if (attemptCount == PIN_CODE_ATTEMPT_ERROR_LIMIT) {
+                                attemptCount = 0;
+                                view.showAlertDialog();
+                            } else {
+                                view.onInvalidPinTyped();
+                            }
+                        }));
     }
+
 
     @Override
     public void detachView() {

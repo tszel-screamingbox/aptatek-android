@@ -5,7 +5,9 @@ import android.view.View;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.data.PinCode;
+import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
+import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.pkulab.view.pin.base.BasePinFragment;
 
@@ -13,6 +15,8 @@ import javax.inject.Inject;
 
 
 public class AuthPinFragment extends BasePinFragment implements AuthPinView {
+
+    private static final String TAG_PIN_DIALOG = "com.aptatek.pkulab.auth.pin";
 
     @Inject
     AuthPinPresenter presenter;
@@ -59,15 +63,25 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     }
 
     @Override
-    public void onInvalidPinTyped(final boolean hasReachedAttemptLimit) {
-        if (hasReachedAttemptLimit) {
-            mainHeaderView.setSubtitle(getString(R.string.auth_pin_attempt_limit_reached_hint));
-        }
-
+    public void onInvalidPinTyped() {
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setText(R.string.auth_pin_message_invalid);
         messageTextView.setBackgroundResource(R.drawable.pin_invalid_message_background);
         fillCircle(R.drawable.pin_circle_filled_red, null);
+    }
+
+    @Override
+    public void showAlertDialog() {
+        onInvalidPinTyped();
+        final AlertDialogModel model = AlertDialogModel.builder()
+                .setTitle(getString(R.string.auth_pin_attempt_limit_reached_title))
+                .setMessage(getString(R.string.auth_pin_attempt_limit_reached_hint))
+                .setPositiveButtonText(getString(R.string.alertdialog_button_ok))
+                .setCancelable(false)
+                .build();
+
+        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(model, null);
+        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_PIN_DIALOG);
     }
 
     @Override
