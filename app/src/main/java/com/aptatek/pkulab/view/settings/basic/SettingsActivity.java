@@ -115,13 +115,8 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     }
 
     @Override
-    public void showFingerprintAuthChecked(final boolean isChecked) {
-        settingsItemAdapter.updateFingerprintItemChecked(isChecked);
-    }
-
-    @Override
-    public void showFingerprintAuthEnabled(final boolean isEnabled) {
-        settingsItemAdapter.updateFingerprintItemEnabled(isEnabled);
+    public void updateFingerprintSetting(boolean isEnabled, boolean isChecked) {
+        settingsItemAdapter.updateFingerprintItem(isEnabled, isChecked);
     }
 
     @Override

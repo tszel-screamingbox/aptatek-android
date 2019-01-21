@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
@@ -85,23 +87,20 @@ public class SettingsItemAdapter extends BaseAdapter<RecyclerView.ViewHolder, Se
                 }
             }
         });
+
+        if (holder instanceof FingerprintItemViewHolder) {
+            ((FingerprintItemViewHolder) holder).switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (settingsItemClickListener != null) {
+                    settingsItemClickListener.onFingerprintAuthToggled(isChecked);
+                }
+            });
+        }
     }
 
-    public void updateFingerprintItemChecked(final boolean isChecked) {
+    public void updateFingerprintItem(final boolean isEnabled, final boolean isChecked) {
         setData(Ix.from(getData()).map(item -> {
                     if (item.getSettingsItem() == SettingsItem.FINGERPRINT_AUTH) {
-                        return new SettingsAdapterItem(item.getSettingsItem(), item.isEnabled(), isChecked);
-                    }
-
-                    return item;
-                }).toList()
-        );
-    }
-
-    public void updateFingerprintItemEnabled(final boolean isEnabled) {
-        setData(Ix.from(getData()).map(item -> {
-                    if (item.getSettingsItem() == SettingsItem.FINGERPRINT_AUTH) {
-                        return new SettingsAdapterItem(item.getSettingsItem(), isEnabled, item.isChecked());
+                        return new SettingsAdapterItem(item.getSettingsItem(), isEnabled, isChecked);
                     }
 
                     return item;
