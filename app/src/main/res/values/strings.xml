@@ -198,10 +198,10 @@
     <string name="test.breakfoil.alert.title">Always Use In-App Timer!</string>
     <string name="test.breakfoil.alert.message">Timing is very important to get accurate results, always follow the testing workflow in the app.</string>
     <string name="test.pokefingertrip.title">Poke Fingertip</string>
-    <string name="test.pokefingertrip.message">Take a prick and poke your fingertip with it until your finger is bleeding</string>
+    <string name="test.pokefingertrip.message">Take a thick lancet and poke your fingertip with it, enough to draw a large round drop of blood from your finger</string>
     <string name="test.collectblood.title">Collect Blood</string>
-    <string name="test.collectblood.message">Screw the cap off the chamber and take a blood sample from your fingertip</string>
-    <string name="test.collectblood.disclaimer">Use enough blood to soak the whole sponge with blood so it\'s completely red</string>
+    <string name="test.collectblood.message">Screw the cap off the chamber and draw a large sample of blood from your fingertip</string>
+    <string name="test.collectblood.disclaimer">Tap the suction tip onto blood so that it completely fills up beyond the edge with blood</string>
     <string name="test.mixsample.title">Mix Sample</string>
     <string name="test.mixsample.message">Screw the cap on the chamber with the red tip inside and twist it to lock into place</string>
     <string name="test.wetting.title">Wetting&#8230;</string>
