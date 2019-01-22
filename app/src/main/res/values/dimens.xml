@@ -12,6 +12,7 @@
     <dimen name="general.button.height.big">64dp</dimen>
     <dimen name="general.button.height.medium">45dp</dimen>
     <dimen name="general.button.side.margin">50dp</dimen>
+    <dimen name="general.button.icon.margin.start">20dp</dimen>
 
     <dimen name="general.distance.xxxxmini">1dp</dimen>
     <dimen name="general.distance.xxxmini">2dp</dimen>
@@ -22,8 +23,8 @@
     <dimen name="general.distance.xxsmall">12dp</dimen>
     <dimen name="general.distance.xsmall">16dp</dimen>
     <dimen name="general.distance.small">24dp</dimen>
-    <dimen name="general.distance">28dp</dimen>
-    <dimen name="general.distance.32">32dp</dimen>
+    <dimen name="general.distance.32dp">32dp</dimen>
+    <dimen name="general.distance">30dp</dimen>
     <dimen name="general.distance.normal">40dp</dimen>
     <dimen name="general.distance.big">54dp</dimen>
     <dimen name="general.distance.xbig">70dp</dimen>

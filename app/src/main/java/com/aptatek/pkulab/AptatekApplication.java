@@ -15,12 +15,14 @@ import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.DaggerApplicationComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.util.Constants;
-import com.aptatek.pkulab.view.test.wetting.WettingReminderService;
+import com.aptatek.pkulab.view.service.WettingForegroundService;
+import com.crashlytics.android.Crashlytics;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import javax.inject.Inject;
 
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 
@@ -32,6 +34,10 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
     @Inject
     AlarmManager alarmManager;
+    @Inject
+    Crashlytics crashlytics;
+    @Inject
+    Timber.Tree timber;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -46,9 +52,8 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
                 .build();
         applicationComponent.inject(this);
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+        Fabric.with(this, crashlytics);
+        Timber.plant(timber);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
@@ -59,7 +64,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
     public void onMoveToForeground() {
         inForeground = true;
         Timber.d("Process.Lifecycle: foreground");
-        stopService(new Intent(this, WettingReminderService.class));
+        stopService(new Intent(this, WettingForegroundService.class));
 
         if (lastForegroundTime > 0L && Math.abs(System.currentTimeMillis() - lastForegroundTime) > Constants.PIN_IDLE_PERIOD_MS) {
             Timber.d("Requesting pin code due to exceeding max idle period");
@@ -75,7 +80,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         inForeground = false;
         lastForegroundTime = System.currentTimeMillis();
         Timber.d("Process.Lifecycle: background");
-        startService(new Intent(this, WettingReminderService.class));
+        startService(new Intent(this, WettingForegroundService.class));
     }
 
     public ApplicationComponent getApplicationComponent() {

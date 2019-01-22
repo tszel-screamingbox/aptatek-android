@@ -3,9 +3,10 @@ package com.aptatek.pkulab.view.connect.scan;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ActivityContext;
 import com.aptatek.pkulab.view.connect.common.BaseConnectScreenPresenter;
 import com.aptatek.pkulab.view.connect.scan.adapter.ScanDeviceAdapterItem;
@@ -24,6 +25,7 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
 
     private final BluetoothInteractor bluetoothInteractor;
     private final ReaderInteractor readerInteractor;
+    private final PreferenceManager preferenceManager;
 
     private Set<ReaderDevice> readerDevices;
 
@@ -32,10 +34,12 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
     @Inject
     public ScanPresenter(@ActivityContext final Context context,
                          final BluetoothInteractor bluetoothInteractor,
-                         final ReaderInteractor readerInteractor) {
+                         final ReaderInteractor readerInteractor,
+                         final PreferenceManager preferenceManager) {
         super(context);
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
+        this.preferenceManager = preferenceManager;
     }
 
     @Override
@@ -76,9 +80,9 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                     ifViewAttached(attachedView -> {
                         switch (event.getConnectionState()) {
                             case CONNECTING:
-                            case BOUND:
                             case CONNECTED:
                             case BONDING_REQUIRED:
+                            case BOND:
                             case DISCONNECTING: {
                                 final List<ScanDeviceAdapterItem> adapterItems = Ix.from(readerDevices)
                                         .map(device -> ScanDeviceAdapterItem.builder()
@@ -93,6 +97,8 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                             }
 
                             case READY: {
+                                final ReaderDevice device = event.getDevice();
+                                preferenceManager.setPairedDevice(device.getMac());
                                 attachedView.showConnected(event.getDevice());
                                 break;
                             }
@@ -117,14 +123,19 @@ public class ScanPresenter extends BaseConnectScreenPresenter<ScanView> {
                     });
                 }));
 
-        disposables.add(readerInteractor.getReaderError()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(error -> {
-                    Timber.e(error);
-                    ifViewAttached(attachedView -> attachedView.showErrorToast(error.getClass().getSimpleName() + ": " + error.getMessage()));
-
-                    // TODO handle error, reset connection state?
-                }));
+//        disposables.add(readerInteractor.getReaderError()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(error -> {
+//                    Timber.e(error);
+//
+//                    if (error instanceof MtuChangeFailedError) {
+//                        ifViewAttached(ScanView::showMtuError);
+//                    } else {
+//                        ifViewAttached(attachedView -> attachedView.showErrorToast(error.getClass().getSimpleName() + ": " + error.getMessage()));
+//                    }
+//
+//                    // TODO handle error, reset connection state?
+//                }));
     }
 
     @Override

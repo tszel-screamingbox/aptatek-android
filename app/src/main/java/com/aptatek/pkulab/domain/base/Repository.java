@@ -9,7 +9,7 @@ import javax.inject.Provider;
  * Interactors should get the data through Repository subclasses.
  */
 
-// TODO use this or modify it to have a proper Repostory layer
+// TODO use this or modify it to have a proper Repository layer
 public abstract class Repository<I, O> {
 
     protected final Mapper<I, O> mapper;

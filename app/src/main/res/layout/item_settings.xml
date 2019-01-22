@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/general.distance.32dp"
+    android:paddingTop="@dimen/general.distance.xsmall"
+    android:paddingEnd="@dimen/general.distance.xsmall"
+    android:paddingBottom="@dimen/general.distance.xsmall"
+    android:background="?selectableItemBackground">
+
+    <TextView
+        android:id="@+id/settings_item_title"
+        style="@style/Settings.Row.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/ic_right_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Settings Item Title" />
+
+    <TextView
+        android:id="@+id/settings_item_description"
+        style="@style/Settings.Row.Description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general.distance.xsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_item_title"
+        tools:text="Settings Item Description\nSettings Item Description" />
+
+</android.support.constraint.ConstraintLayout>

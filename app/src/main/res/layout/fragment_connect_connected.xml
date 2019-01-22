@@ -80,7 +80,8 @@
         app:layout_constraintBottom_toBottomOf="@id/connectedDeviceName"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintTop_toTopOf="@id/connectedDeviceName"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5"
+        android:visibility="gone"/>
 
     <View
         android:layout_width="0dp"

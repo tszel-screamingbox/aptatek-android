@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.injection.module.scan;
 
-import com.aptatek.pkulab.device.bluetooth.BluetoothScannerImpl;
+import com.aptatek.pkulab.device.bluetooth.scanner.BluetoothScannerImpl;
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
 

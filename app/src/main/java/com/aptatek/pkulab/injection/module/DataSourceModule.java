@@ -3,11 +3,11 @@ package com.aptatek.pkulab.injection.module;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.data.datasource.FakeCubeDataGenerator;
-import com.aptatek.pkulab.data.datasource.FakeCubeDataSourceImpl;
+import com.aptatek.pkulab.data.datasource.FakeTestResultDataSourceImpl;
 import com.aptatek.pkulab.data.datasource.PkuRangeDataSourceImpl;
 import com.aptatek.pkulab.data.datasource.WettingDataSourceImpl;
 import com.aptatek.pkulab.device.PreferenceManager;
-import com.aptatek.pkulab.domain.interactor.cube.CubeDataSource;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultDataSource;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeDataSource;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingDataSource;
 
@@ -21,8 +21,8 @@ public class DataSourceModule {
 
     @Singleton
     @Provides
-    public CubeDataSource provideCubeDataSource(final FakeCubeDataGenerator dataGenerator) {
-        return new FakeCubeDataSourceImpl(dataGenerator);
+    public TestResultDataSource provideCubeDataSource(final FakeCubeDataGenerator dataGenerator) {
+        return new FakeTestResultDataSourceImpl(dataGenerator);
     }
 
     @Singleton
