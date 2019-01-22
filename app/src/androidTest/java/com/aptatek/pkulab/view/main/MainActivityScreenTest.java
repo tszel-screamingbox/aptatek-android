@@ -132,7 +132,7 @@ public class MainActivityScreenTest {
 
         showWeeklyFragment();
 
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
@@ -154,7 +154,7 @@ public class MainActivityScreenTest {
 
         showWeeklyFragment();
 
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
@@ -182,7 +182,7 @@ public class MainActivityScreenTest {
         onView(withId(R.id.viewpager)).perform(swipeRight());
         onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));
@@ -209,7 +209,7 @@ public class MainActivityScreenTest {
         onView(withId(R.id.leftArrow)).perform(click());
         onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));
