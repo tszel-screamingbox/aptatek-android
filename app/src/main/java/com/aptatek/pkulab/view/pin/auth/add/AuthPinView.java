@@ -16,8 +16,4 @@ interface AuthPinView extends MvpView {
     void onInvalidFingerprintDetected(@NonNull String message);
 
     void onValidFingerprintDetected();
-
-    void onFingerprintAvailable();
-
-    void onFingerprintDisabled();
 }

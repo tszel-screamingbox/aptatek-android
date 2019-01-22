@@ -44,8 +44,6 @@ public abstract class BasePinFragment extends BaseFragment {
     @BindView(R.id.messageTextView)
     protected TextView messageTextView;
 
-    @BindView(R.id.fingerpintImage)
-    protected ImageView fingerprintImageView;
 
     protected abstract void finishedTyping(PinCode pinCode);
 

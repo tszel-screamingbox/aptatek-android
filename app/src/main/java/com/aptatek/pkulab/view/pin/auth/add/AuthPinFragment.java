@@ -33,7 +33,6 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
 
     @Override
     protected void initObjects(final View view) {
-        presenter.initView();
         mainHeaderView.setTitle(getString(R.string.auth_pin_title));
         messageTextView.setVisibility(View.INVISIBLE);
     }
@@ -98,18 +97,6 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
         messageTextView.setTextColor(this.getResources().getColor(R.color.applicationRed));
         messageTextView.setText(message);
         fillCircle(R.drawable.pin_circle_filled_red, null);
-    }
-
-    @Override
-    public void onFingerprintAvailable() {
-        fingerprintImageView.setVisibility(View.VISIBLE);
-        mainHeaderView.setSubtitle(getString(R.string.auth_pin_hint_fingerprint));
-    }
-
-    @Override
-    public void onFingerprintDisabled() {
-        fingerprintImageView.setVisibility(View.GONE);
-        mainHeaderView.setSubtitle(getString(R.string.auth_pin_hint));
     }
 
     @Override

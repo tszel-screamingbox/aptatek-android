@@ -35,9 +35,6 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.switchFingerprint)
-    SwitchCompat switchFingerPrint;
-
     @BindView(R.id.header)
     HeaderView tvAppVersion;
 

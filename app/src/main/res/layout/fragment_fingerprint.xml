@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/pin.header.margin.minimum">
+    android:layout_marginTop="@dimen/general.distance">
 
     <ImageView
         android:id="@+id/fingerpintImage"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/general.distance"
-        android:layout_marginTop="@dimen/general.distance"
+        android:layout_marginTop="@dimen/general.distance.small"
         android:layout_marginEnd="@dimen/general.distance"
         app:layout_constraintTop_toBottomOf="@id/header">
 
@@ -95,9 +95,9 @@
         android:id="@+id/messageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.32"
+        android:layout_marginStart="@dimen/general.distance.32dp"
         android:layout_marginTop="@dimen/general.distance.small"
-        android:layout_marginEnd="@dimen/general.distance.32"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
         android:fontFamily="@font/nunito_regular"
         android:gravity="center"
         android:padding="@dimen/general.distance.xxxsmall"

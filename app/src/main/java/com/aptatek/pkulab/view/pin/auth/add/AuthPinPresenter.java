@@ -37,14 +37,6 @@ class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
         this.resourceInteractor = resourceInteractor;
     }
 
-    void initView() {
-        if (deviceHelper.isFingperprintAuthAvailable()) {
-            ifViewAttached(AuthPinView::onFingerprintAvailable);
-        } else {
-            ifViewAttached(AuthPinView::onFingerprintDisabled);
-        }
-    }
-
     void startListening() {
         if (!deviceHelper.isFingperprintAuthAvailable()) {
             Timber.d("Fingerprint authentication is not available on this device");
