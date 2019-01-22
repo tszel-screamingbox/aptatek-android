@@ -17,7 +17,7 @@ public final class Constants {
     public static final float DEFAULT_PKU_LOWEST_VALUE = 2f;
     public static final float DEFAULT_PKU_HIGHEST_VALUE = 1155f;
     public static final float FLOAT_COMPARISION_ERROR_MARGIN = 0.0001f;
-    public static final PkuLevelUnits DEFAULT_PKU_LEVEL_UNIT = PkuLevelUnits.MICRO_MOL;
+    public static final PkuLevelUnits DEFAULT_PKU_LEVEL_UNIT = PkuLevelUnits.MILLI_GRAM;
 
     public static final int DAYS_OF_WEEK = 7;
     public static final long COUNTDOWN_REFRESH_PERIOD = 500L;
