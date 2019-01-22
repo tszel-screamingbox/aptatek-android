@@ -13,9 +13,11 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 /**
@@ -45,8 +47,8 @@ public class MainActivityScreenTest {
         onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
         onView(withId(R.id.settingsButton)).check(matches(isDisplayed()));
         onView(withId(R.id.bigSettingsButton)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.titleText)).check(matches(isDisplayed()));
-        onView(withId(R.id.subTitleText)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
 
         onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
 
