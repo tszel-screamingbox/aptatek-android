@@ -102,32 +102,6 @@ public class AuthPinPresenterTest {
     }
 
     /**
-     * Fingerprint authentication is enabled, shows it on the screen.
-     *
-     * @test.expected {@link  AuthPinView#onFingerprintAvailable()  onFingerprintAvailable()}
-     * method is called, without any error.
-     */
-    @Test
-    public void testWhenFingerprintEnable() {
-        when(deviceHelper.isFingperprintAuthAvailable()).thenReturn(true);
-        presenter.initView();
-        verify(view).onFingerprintAvailable();
-    }
-
-    /**
-     * Fingerprint authentication is disable, shows it on the screen.
-     *
-     * @test.expected {@link  AuthPinView#onFingerprintDisabled()  onFingerprintDisabled()}
-     * method is called, without any error.
-     */
-    @Test
-    public void testWhenFingerprintDisable() {
-        when(deviceHelper.isFingperprintAuthAvailable()).thenReturn(false);
-        presenter.initView();
-        verify(view).onFingerprintDisabled();
-    }
-
-    /**
      * Enter a valid PIN code.
      *
      * @test.expected The PIN is valid,{@link  AuthPinView#onValidPinTyped()  onValidPinTyped()}
