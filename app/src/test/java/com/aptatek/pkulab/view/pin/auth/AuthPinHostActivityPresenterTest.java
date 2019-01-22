@@ -31,6 +31,7 @@ public class AuthPinHostActivityPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        presenter = new AuthPinHostActivityPresenter(deviceHelper);
         presenter.attachView(view);
     }
 

@@ -13,10 +13,12 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.hasTextColor;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static java.lang.Thread.sleep;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertTrue;
 
@@ -40,8 +42,8 @@ public class SetPinScreenTest {
     public void testInitialView() {
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.title)).check(matches(withText(R.string.set_pin_title)));
-        onView(withId(R.id.hintTextView)).check(matches(isDisplayed()));
-        onView(withId(R.id.hintTextView)).check(matches(withText(R.string.set_pin_hint)));
+        onView(withId(R.id.header)).check(matches(isDisplayed()));
+        onView(withId(R.id.subtitle)).check(matches(withText(R.string.set_pin_hint)));
         onView(withId(R.id.messageTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(hasChildCount(6)));
@@ -58,10 +60,10 @@ public class SetPinScreenTest {
         enterPin();
         sleep(1000);
         // ConfirmPin
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
-        onView(withId(R.id.title)).check(matches(withText(R.string.confirm_pin_title)));
-        onView(withId(R.id.hintTextView)).check(matches(isDisplayed()));
-        onView(withId(R.id.hintTextView)).check(matches(withText(R.string.confirm_pin_hint)));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.confirm_pin_title)));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.confirm_pin_hint)));
         onView(withId(R.id.messageTextView)).check(matches(not(isDisplayed())));
         // Enter the same pin
         enterPin();
@@ -82,11 +84,12 @@ public class SetPinScreenTest {
         enterPin();
         sleep(1000);
         // ConfirmPin View
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
-        onView(withId(R.id.title)).check(matches(withText(R.string.confirm_pin_title)));
-        onView(withId(R.id.hintTextView)).check(matches(isDisplayed()));
-        onView(withId(R.id.hintTextView)).check(matches(withText(R.string.confirm_pin_hint)));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.confirm_pin_title)));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.confirm_pin_hint)));
         onView(withId(R.id.messageTextView)).check(matches(not(isDisplayed())));
+
         // Enter wrong pin
         onView(withId(R.id.button0)).perform(ViewActions.click());
         onView(withId(R.id.button0)).perform(ViewActions.click());
