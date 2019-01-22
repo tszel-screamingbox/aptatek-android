@@ -10,6 +10,7 @@ import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseRootFrameActivity;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.pin.auth.add.AuthPinFragment;
+import com.aptatek.pkulab.view.pin.auth.add.FingerprintAuthFragment;
 
 import javax.inject.Inject;
 
@@ -29,7 +30,7 @@ public class AuthPinHostActivity extends BaseRootFrameActivity<AuthPinHostActivi
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityStarter.fill(this, savedInstanceState);
-        switchToFragment(new AuthPinFragment());
+        presenter.initView();
     }
 
     @Override
@@ -61,6 +62,16 @@ public class AuthPinHostActivity extends BaseRootFrameActivity<AuthPinHostActivi
     @Override
     public void onBackPressed() {
         // disable
+    }
+
+    @Override
+    public void onAuthPinFragmentShouldLoad() {
+        switchToFragment(new AuthPinFragment());
+    }
+
+    @Override
+    public void onFingerpintAuthShouldLoad() {
+        switchToFragment(new FingerprintAuthFragment());
     }
 }
 
