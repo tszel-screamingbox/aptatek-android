@@ -16,7 +16,6 @@ import com.aptatek.pkulab.data.PinCode;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.widget.HeaderView;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +25,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 public abstract class BasePinFragment extends BaseFragment {
 
