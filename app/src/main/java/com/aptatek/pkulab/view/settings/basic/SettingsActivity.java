@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
 import com.aptatek.pkulab.view.settings.web.WebPageActivityStarter;
@@ -105,6 +106,13 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         recyclerView.setAdapter(settingsItemAdapter);
 
         presenter.getAppVersion();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        final Intent intent = new Intent(this, MainHostActivity.class);
+        launchActivity(intent, true, Animation.FADE);
     }
 
     @Override
