@@ -150,7 +150,7 @@ dependencies {
     implementation appDependencies.timber
 
     // Crashlytics
-    prodImplementation crashlyticsDependencies.crashlytics
+    implementation crashlyticsDependencies.crashlytics
 
     // AutoValue
     implementation autoValueDependencies.api
