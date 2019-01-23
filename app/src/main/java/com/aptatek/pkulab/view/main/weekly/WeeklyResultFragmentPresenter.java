@@ -109,17 +109,15 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     public void loadValidWeeks() {
         disposables.add(cubeInteractor.listAll()
                 .map(cubeDataList -> {
-                    Ix.from(cubeDataList).foreach(cubeData -> {
-                        final int week = TimeHelper.getWeeksBetween(cubeData.getTimestamp(), System.currentTimeMillis());
-                        if (!weekList.contains(week) && cubeData.getPkuLevel().getValue() >= 0) {
-                            weekList.add(week);
-                        }
-                    });
+                    final int week = TimeHelper.getWeeksBetween(Ix.from(cubeDataList).first().getTimestamp(), System.currentTimeMillis());
+
+                    for (int i = 0; i < week + 1; i++) {
+                        weekList.add(i);
+                    }
 
                     if (weekList.isEmpty()) {
                         weekList.add(EMPTY_LIST);
                     }
-                    Collections.reverse(weekList);
 
                     return weekList;
                 })
