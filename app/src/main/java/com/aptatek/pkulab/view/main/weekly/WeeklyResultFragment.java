@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
@@ -113,9 +114,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @OnClick(R.id.dateText)
     public void onDateTextViewClicked() {
-        if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) == null) {
-            MonthPickerDialog.create(this).show(requireFragmentManager(), MONTH_PICKER_DIALOG_TAG);
-        }
+        presenter.showMonthPickerDialog();
     }
 
     private void initAdapter() {
@@ -205,7 +204,14 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     }
 
     @Override
-    public void done(int year, int month) {
+    public void showMonthPickerDialog(final MonthPickerDialogModel monthPickerDialogModel) {
+        if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) == null) {
+            MonthPickerDialog.create(monthPickerDialogModel, this).show(requireFragmentManager(), MONTH_PICKER_DIALOG_TAG);
+        }
+    }
+
+    @Override
+    public void done(final int year, final int month) {
         presenter.getPageForSelectedMonth(year, month);
     }
 }

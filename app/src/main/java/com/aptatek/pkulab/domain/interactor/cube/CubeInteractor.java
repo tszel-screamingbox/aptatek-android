@@ -34,4 +34,7 @@ public class CubeInteractor {
         return dataRepository.getLatest();
     }
 
+    public Single<CubeData> getOldest() {
+        return dataRepository.getOldest();
+    }
 }

@@ -11,5 +11,4 @@ public interface CubeDataSource {
     CubeDataModel getOldestData();
 
     CubeDataModel getLatestData();
-
 }

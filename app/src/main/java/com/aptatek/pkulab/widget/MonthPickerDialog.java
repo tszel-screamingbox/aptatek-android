@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
 
 import java.util.Calendar;
 
@@ -19,17 +20,19 @@ import butterknife.OnClick;
 
 public class MonthPickerDialog extends DialogFragment {
 
-    private static final int MIN_MONTH_VALUE = 1;
+    private static final String KEY_MODEL = "com.aptatek.month.picker.dialog.model";
     private static final int MAX_MONTH_VALUE = 12;
-    private static final int MIN_YEAR_VALUE = 1;
 
     public interface MonthPickerDialogCallback {
         void done(int year, int month);
     }
 
-    public static MonthPickerDialog create(@Nullable final MonthPickerDialogCallback callback) {
+    public static MonthPickerDialog create(@NonNull final MonthPickerDialogModel monthPickerDialogModel, @Nullable final MonthPickerDialogCallback callback) {
         final MonthPickerDialog monthPickerDialog = new MonthPickerDialog();
         monthPickerDialog.callback = callback;
+        final Bundle args = new Bundle();
+        args.putParcelable(KEY_MODEL, monthPickerDialogModel);
+        monthPickerDialog.setArguments(args);
         return monthPickerDialog;
     }
 
@@ -66,12 +69,22 @@ public class MonthPickerDialog extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final MonthPickerDialogModel monthPickerDialogModel;
+
+        if (getArguments() != null) {
+            monthPickerDialogModel = getArguments().getParcelable(KEY_MODEL);
+        } else {
+            monthPickerDialogModel = null;
+        }
+
+        if (monthPickerDialogModel != null) {
+            monthPicker.setMinValue(monthPickerDialogModel.getMinMonth());
+            yearPicker.setMinValue(monthPickerDialogModel.getMinYear());
+        }
+
         final Calendar calendar = Calendar.getInstance();
 
-        monthPicker.setMinValue(MIN_MONTH_VALUE);
         monthPicker.setMaxValue(MAX_MONTH_VALUE);
-
-        yearPicker.setMinValue(MIN_YEAR_VALUE);
         yearPicker.setMaxValue(calendar.get(Calendar.YEAR));
 
         yearPicker.setValue(yearPicker.getMaxValue());

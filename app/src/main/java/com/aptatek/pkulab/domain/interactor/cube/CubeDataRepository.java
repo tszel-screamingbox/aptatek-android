@@ -35,7 +35,7 @@ public class CubeDataRepository extends Repository<CubeData, CubeDataModel> {
     }
 
     // TODO remove as soon as pagination is implemented
-     @NonNull
+    @NonNull
     public Single<List<CubeData>> listAll() {
         return Single.fromCallable(() -> cubeDataSource.getDataBetween(cubeDataSource.getOldestData().getTimestamp(), TimeHelper.getLatestTimeAtGivenDay(System.currentTimeMillis())))
                 .map(mapper::mapListToDomain)
@@ -51,7 +51,13 @@ public class CubeDataRepository extends Repository<CubeData, CubeDataModel> {
 
     @NonNull
     public Single<CubeData> getLatest() {
-        return Single.fromCallable(() -> cubeDataSource.getLatestData())
+        return Single.fromCallable(cubeDataSource::getLatestData)
+                .map(mapper::mapToDomain)
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Single<CubeData> getOldest() {
+        return Single.fromCallable(cubeDataSource::getOldestData)
                 .map(mapper::mapToDomain)
                 .subscribeOn(Schedulers.io());
     }

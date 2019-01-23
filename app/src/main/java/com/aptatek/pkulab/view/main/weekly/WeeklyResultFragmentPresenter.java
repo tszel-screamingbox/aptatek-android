@@ -9,6 +9,7 @@ import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.util.ChartUtils;
@@ -136,8 +137,22 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        final int week = TimeHelper.getWeeksBetween(System.currentTimeMillis(), calendar.getTimeInMillis());
-        Timber.d("");
+    }
+
+    public void showMonthPickerDialog() {
+        disposables.add(cubeInteractor.getOldest()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(cubeData -> {
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(cubeData.getTimestamp());
+
+                    ifViewAttached(attachedView ->
+                            attachedView.showMonthPickerDialog(MonthPickerDialogModel.builder()
+                                    .setMinMonth(calendar.get(Calendar.MONTH + 1))
+                                    .setMinYear(calendar.get(Calendar.YEAR))
+                                    .build())
+                    );
+                }));
     }
 
     void getPdfChartData(final int monthsBefore) {
