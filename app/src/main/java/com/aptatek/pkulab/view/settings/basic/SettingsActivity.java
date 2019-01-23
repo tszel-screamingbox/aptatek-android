@@ -84,16 +84,16 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
             public void onSettingsItemClicked(final SettingsItem item) {
                 switch (item) {
                     case DAILY_REMINDERS:
-                        launchActivity(ReminderSettingsActivity.starter(SettingsActivity.this), false, Animation.FADE);
+                        launchActivity(ReminderSettingsActivity.starter(SettingsActivity.this), false, Animation.LEFT_TO_RIGHT);
                         break;
                     case PHE_PREFERENCES:
-                        launchActivity(RangeSettingsActivity.starter(SettingsActivity.this), false, Animation.FADE);
+                        launchActivity(RangeSettingsActivity.starter(SettingsActivity.this), false, Animation.LEFT_TO_RIGHT);
                         break;
                     case HELP:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), "http://www.google.com"), false, Animation.FADE); // TODO get proper url
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), "http://www.google.com"), false, Animation.LEFT_TO_RIGHT); // TODO get proper url
                         break;
                     case PRIVACY_POLICY:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), "http://www.google.com"), false, Animation.FADE); // TODO get proper url
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), "http://www.google.com"), false, Animation.LEFT_TO_RIGHT); // TODO get proper url
                         break;
                     default:
                         Timber.d("Unhandled settings item clicked: %s", item);

@@ -80,7 +80,7 @@ public class SettingsItemAdapter extends BaseAdapter<RecyclerView.ViewHolder, Se
 
         holder.itemView.setOnClickListener(v -> {
             if (settingsItemClickListener != null) {
-                if (settingsAdapterItem.getSettingsItem() == SettingsItem.FINGERPRINT_AUTH) {
+                if (settingsAdapterItem.getSettingsItem() == SettingsItem.FINGERPRINT_AUTH && settingsAdapterItem.isEnabled()) {
                     settingsItemClickListener.onFingerprintAuthToggled(!settingsAdapterItem.isChecked());
                 } else {
                     settingsItemClickListener.onSettingsItemClicked(settingsAdapterItem.getSettingsItem());

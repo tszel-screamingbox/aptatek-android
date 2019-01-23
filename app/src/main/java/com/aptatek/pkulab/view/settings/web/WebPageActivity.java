@@ -42,4 +42,10 @@ public class WebPageActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+    }
 }
