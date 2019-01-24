@@ -46,7 +46,7 @@ public class ReminderNotificationFactoryImpl implements ReminderNotificationFact
         quarterHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.QUARTER_HOUR);
         halfHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.HALF_HOUR);
 
-        return new NotificationCompat.Builder(context, createChannelId())
+        final Notification notification = new NotificationCompat.Builder(context, createChannelId())
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(resourceInteractor.getStringResource(R.string.reminder_notification_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.reminder_notification_message))
@@ -54,6 +54,7 @@ public class ReminderNotificationFactoryImpl implements ReminderNotificationFact
                 .setColor(resourceInteractor.getColorResource(R.color.applicationPink))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setWhen(0)
+                .setSound(resourceInteractor.getUriForRawFile(R.raw.noti_sound))
                 .setAutoCancel(true)
                 .addAction(0,
                         resourceInteractor.getStringResource(R.string.reminder_notification_now),
@@ -65,6 +66,9 @@ public class ReminderNotificationFactoryImpl implements ReminderNotificationFact
                         resourceInteractor.getStringResource(R.string.reminder_notification_half_hour),
                         PendingIntent.getBroadcast(context, REMINDER_ACTION_HALF_HOUR_REQUEST_CODE, halfHourIntent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
+
+        notification.flags = Notification.FLAG_INSISTENT;
+        return notification;
     }
 
     @Override

@@ -176,7 +176,7 @@
     <string name="test.countdown.notification.channel.name">PkuLab notifications</string>
     <string name="test.wetting.notification.finished.text">Tap to proceed</string>
     <string name="test.wetting.notification.finished.title">Sample wetting complete</string>
-    <string name="test.wetting.notification.inprogress.textformat">Remaining time is %s</string>
+    <string name="test.wetting.notification.inprogress.textformat">Remaining: %s</string>
     <string name="test.wetting.notification.inprogress.title">Sample wetting in progress</string>
     <string name="test.result.message.veryhigh">Contact your physician</string>
     <string name="test.result.message.high">WTB Message</string> <!-- TODO get proper label... -->
