@@ -3,6 +3,7 @@ package com.aptatek.pkulab.domain.interactor.auth;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 
+import com.aptatek.pkulab.data.AptatekDatabase;
 import com.aptatek.pkulab.data.PinCode;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.manager.FingerprintManager;
@@ -19,6 +20,7 @@ public class AuthInteractor {
     private final FingerprintManager fingerprintManager;
     private final KeyStoreManager keyStoreManager;
     private final PreferenceManager preferencesManager;
+    private final AptatekDatabase aptatekDatabase;
 
     private CancellationSignal cancelSignal;
     private Callback callback;
@@ -26,10 +28,12 @@ public class AuthInteractor {
     @Inject
     AuthInteractor(final FingerprintManager fingerprintManager,
                    final PreferenceManager preferencesManager,
-                   final KeyStoreManager keyStoreManager) {
+                   final KeyStoreManager keyStoreManager,
+                   final AptatekDatabase aptatekDatabase) {
         this.fingerprintManager = fingerprintManager;
         this.preferencesManager = preferencesManager;
         this.keyStoreManager = keyStoreManager;
+        this.aptatekDatabase = aptatekDatabase;
     }
 
     public Completable setPinCode(final PinCode pinCode) {
@@ -37,6 +41,7 @@ public class AuthInteractor {
             try {
                 final String encryptedPin = keyStoreManager.encrypt(pinCode);
                 preferencesManager.setEncryptedPin(encryptedPin);
+                aptatekDatabase.reKey(encryptedPin);
             } catch (final KeyStoreError error) {
                 Timber.e(error, "Failed to set pincode");
                 throw new AuthException("Error during decrytpion", error);

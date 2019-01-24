@@ -8,6 +8,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.SpannableStringBuilder;
 
 import com.aptatek.pkulab.data.dao.ReminderDao;
 import com.aptatek.pkulab.data.dao.ReminderDayDao;
@@ -32,6 +33,7 @@ public abstract class AptatekDatabase extends RoomDatabase {
         if (instance == null) {
             instance = creator(databaseName, context, safeHelperFactory);
         }
+
         return instance;
     }
 
@@ -65,4 +67,11 @@ public abstract class AptatekDatabase extends RoomDatabase {
             database.execSQL("CREATE TABLE IF NOT EXISTS test_results(`id` TEXT NOT NULL, `readerId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `pkuLevel` REAL NOT NULL, `sick` INTEGER NOT NULL DEFAULT 0, `fasting` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`))");
         }
     };
+
+    public void reKey(final String newKey) {
+        final SupportSQLiteDatabase writableDatabase = getOpenHelper().getWritableDatabase();
+        if (newKey != null && writableDatabase != null) {
+            SafeHelperFactory.rekey(writableDatabase, new SpannableStringBuilder(newKey));
+        }
+    }
 }

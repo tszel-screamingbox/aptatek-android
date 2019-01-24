@@ -23,9 +23,7 @@ public class DatabaseModule {
     @Provides
     @Named("databasePassPhrase")
     public char[] providePassPhrase() {
-        // TODO compose passphrase from multiple places (e.g static fields)
-        // TODO add salt to composed passphrase + hash it
-        return "TODO:HowSecureIsThis?".toCharArray();
+        return "InitialPassPhraseWillBeReKeyedWithPinLater".toCharArray();
     }
 
     @Provides
