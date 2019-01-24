@@ -134,9 +134,9 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
-        ifViewAttached(attachedView -> {
-            attachedView.scrollToItem(weekList.size() - (TimeHelper.getWeeksBetween(calendar.getTimeInMillis(), System.currentTimeMillis()) + 1));
-        });
+        ifViewAttached(attachedView ->
+                attachedView.scrollToItem(weekList.size()
+                        - (TimeHelper.getWeeksBetween(calendar.getTimeInMillis(), System.currentTimeMillis()) + 1)));
     }
 
     public void showMonthPickerDialog() {
