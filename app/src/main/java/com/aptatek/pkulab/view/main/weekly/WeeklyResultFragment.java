@@ -196,7 +196,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("vnd.android.cursor.dir/email");
         emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                getContext(),
+                requireContext(),
                 BuildConfig.APPLICATION_ID + ".provider",
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
@@ -208,6 +208,11 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
         if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) == null) {
             MonthPickerDialog.create(monthPickerDialogModel, this).show(requireFragmentManager(), MONTH_PICKER_DIALOG_TAG);
         }
+    }
+
+    @Override
+    public void scrollToItem(final int position) {
+        chartViewPager.setCurrentItem(position);
     }
 
     @Override

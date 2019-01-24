@@ -21,7 +21,7 @@ public class FakeCubeDataGenerator {
     private static final long DAY_IN_MILLIS = 1000L * 60 * 60 * 24;
     private static final long MIN_TIME_BETWEEN_MEASURES = 1000L * 60 * 40;
     private static final int MAX_MEASUREMENTS_PER_DAY = 5;
-    private static final int FIRST_DATA_BEFORE_TODAY_IN_DAYS = 7 * 3 - 2;
+    private static final int FIRST_DATA_BEFORE_TODAY_IN_DAYS = 7 * 20 - 2;
     private static final int SICK_CHANCE = 5;
     private static final int FASTING_CHANCE = 10;
 

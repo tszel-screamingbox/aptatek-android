@@ -54,6 +54,7 @@ public class MonthPickerDialog extends DialogFragment {
     public void onOkClicked() {
         if (callback != null) {
             callback.done(yearPicker.getValue(), monthPicker.getValue());
+            dismiss();
         }
     }
 
@@ -78,8 +79,8 @@ public class MonthPickerDialog extends DialogFragment {
         }
 
         if (monthPickerDialogModel != null) {
-            monthPicker.setMinValue(monthPickerDialogModel.getMinMonth());
-            yearPicker.setMinValue(monthPickerDialogModel.getMinYear());
+            monthPicker.setMinValue(1);
+            yearPicker.setMinValue(1);
         }
 
         final Calendar calendar = Calendar.getInstance();

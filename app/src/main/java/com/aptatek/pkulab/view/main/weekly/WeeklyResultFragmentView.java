@@ -23,4 +23,6 @@ interface WeeklyResultFragmentView extends MvpView {
     void onPdfDataReady(PdfEntryData pdfData);
 
     void showMonthPickerDialog(MonthPickerDialogModel monthPickerDialogModel);
+
+    void scrollToItem(int position);
 }

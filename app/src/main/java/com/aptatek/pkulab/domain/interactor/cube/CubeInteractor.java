@@ -15,7 +15,7 @@ public class CubeInteractor {
     private final CubeDataRepository dataRepository;
 
     @Inject
-    CubeInteractor(CubeDataRepository dataRepository) {
+    CubeInteractor(final CubeDataRepository dataRepository) {
         this.dataRepository = dataRepository;
     }
 
