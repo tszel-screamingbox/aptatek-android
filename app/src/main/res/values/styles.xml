@@ -50,6 +50,19 @@
         <item name="android:background">@drawable/ripple_grey_button</item>
     </style>
 
+    <style name="General.Rounded.Gray.Button.Secondary" parent="General.Rounded.Gray.Button">
+        <item name="android:textSize">@dimen/font.size.medium</item>
+        <item name="android:fontFamily">@font/nunito_regular</item>
+        <item name="android:textColor">@color/applicationSolidGray</item>
+        <item name="android:layout_height">@dimen/general.distance.normal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingEnd">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:elevation">0dp</item>
+    </style>
+
     <style name="General.Rounded.Blue.Button" parent="General.Rounded.Button">
         <item name="android:background">@drawable/ripple_blue_button</item>
         <item name="android:textColor">@color/applicationWhite</item>
