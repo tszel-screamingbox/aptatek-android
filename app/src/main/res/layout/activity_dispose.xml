@@ -25,43 +25,29 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/general.distance.xsmall" />
 
-    <TextView
-        android:id="@+id/dispose_title"
-        style="@style/General.Title"
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/dispose_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/dispose.title"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toTopOf="@+id/guideTop" />
-
-    <TextView
-        android:id="@+id/dispose_message"
-        style="@style/General.Text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/general.distance.xxsmall"
-        android:layout_marginTop="@dimen/general.distance.xxmini"
-        android:text="@string/dispose.message"
-        app:layout_constraintBottom_toTopOf="@id/dispose_image"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/dispose_title"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@id/guideTop"
+        app:subTitleText="@string/dispose.message"
+        app:titleText="@string/dispose.title" />
 
     <ImageView
         android:id="@+id/dispose_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scaleType="fitCenter"
         android:layout_marginTop="@dimen/general.distance.xxsmall"
         android:layout_marginBottom="@dimen/general.distance.32dp"
         android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:src="@drawable/test_dispose_trash"
         app:layout_constraintBottom_toTopOf="@id/dispose_done"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/dispose_message" />
+        app:layout_constraintTop_toBottomOf="@+id/dispose_header" />
 
     <Button
         android:id="@+id/dispose_done"
