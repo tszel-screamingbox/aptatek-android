@@ -7,10 +7,9 @@
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/switchActivate"
+        style="@style/SwitchStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:thumb="@drawable/switch_selector"
-        android:track="@drawable/switch_track" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/textViewDayName"

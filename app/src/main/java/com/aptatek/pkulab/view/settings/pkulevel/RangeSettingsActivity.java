@@ -41,6 +41,7 @@ import io.reactivex.processors.FlowableProcessor;
 import timber.log.Timber;
 
 import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
+import static com.aptatek.pkulab.view.base.BaseActivity.Animation.RIGHT_TO_LEFT;
 
 public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, RangeSettingsPresenter> implements RangeSettingsView {
 
@@ -229,6 +230,12 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         presenter.onBackPressed(getValueFromRangeBar(rbRange.getLeftIndex()),
                 getValueFromRangeBar(rbRange.getRightIndex()),
                 getSelectedUnit());
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        setTransitionAnimation(RIGHT_TO_LEFT);
     }
 
     @Override

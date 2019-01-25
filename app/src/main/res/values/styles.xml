@@ -247,6 +247,12 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
+    <style name="SwitchStyle" parent="Theme.AppCompat.Light">
+        <item name="android:thumb">@drawable/switch_selector</item>
+        <item name="trackTint">@color/switchTrack</item>
+        <item name="android:switchMinWidth">@dimen/switch.width</item>
+    </style>
+
     <style name="DefaultDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="android:fontFamily">@font/nunito_black</item>
         <item name="android:textColorPrimary">@color/applicationSolidGray</item>
