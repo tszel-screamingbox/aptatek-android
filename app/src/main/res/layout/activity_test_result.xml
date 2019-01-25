@@ -68,14 +68,12 @@
         android:text="@string/test.result.done"
         app:layout_constraintBottom_toTopOf="@+id/test_result_range_info"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/test_result_bubble" />
+        app:layout_constraintStart_toStartOf="@id/guideStart" />
 
     <TextView
         android:id="@+id/test_result_range_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/general.distance.small"
         android:text="@string/test.result.range.info"
         android:textColor="@color/applicationSolidGray"
