@@ -8,39 +8,25 @@
     android:paddingStart="@dimen/general.distance"
     android:paddingEnd="@dimen/general.distance">
 
-    <TextView
-        android:id="@+id/rangeinfo_title"
-        style="@style/General.Title"
-        android:layout_width="wrap_content"
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/rangeinfo.title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideTop" />
+        app:layout_constraintTop_toTopOf="@+id/guideTop"
+        app:subTitleText="@string/rangeinfo.message"
+        app:titleText="@string/rangeinfo.title" />
 
-    <TextView
-        android:id="@+id/rangeinfo_message"
-        style="@style/General.Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.xxsmall"
-        android:text="@string/rangeinfo.message"
-        app:layout_constraintBottom_toTopOf="@+id/rangeinfo_values"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rangeinfo_title"
-        app:layout_constraintVertical_bias="0.0" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/rangeinfo_values"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/general.distance.small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rangeinfo_message"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
         <com.aptatek.pkulab.widget.RangeInfoRowView
             android:id="@+id/rangeinfo_very_high"
@@ -118,16 +104,18 @@
 
     <Button
         android:id="@+id/rangeinfo_edit"
-        style="@style/General.Rounded.Button"
+        style="@style/General.Rounded.Gray.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
         android:drawableStart="@drawable/ic_settings_dark"
+        android:elevation="0dp"
         android:paddingStart="@dimen/general.button.corner.normal"
         android:text="@string/rangeinfo.edit.level.preferences"
         android:textColor="@color/applicationSolidGray"
         app:layout_constraintBottom_toBottomOf="@id/guideBottom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RtlSymmetry" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideTop"

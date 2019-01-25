@@ -18,6 +18,7 @@ import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.widget.BubbleTextView;
+import com.aptatek.pkulab.widget.HeaderView;
 
 import javax.inject.Inject;
 
@@ -34,10 +35,8 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
     @Inject
     TestResultPresenter presenter;
 
-    @BindView(R.id.test_result_title)
-    TextView tvTitle;
-    @BindView(R.id.test_result_message)
-    TextView tvMessage;
+    @BindView(R.id.header)
+    HeaderView headerView;
     @BindView(R.id.test_result_bubble)
     BubbleTextView bubbleTextView;
 
@@ -75,17 +74,19 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
 
     @Override
     public void render(@NonNull final TestResultState state) {
+        final TextView titleTextView = headerView.getTitleTextView();
+        final TextView subTitleTextView = headerView.getSubtitleTextView();
         if (state.isTitleVisible()) {
-            tvTitle.setText(state.getTitle());
-            tvTitle.setTextColor(state.getColor());
-            tvTitle.setVisibility(View.VISIBLE);
+            titleTextView.setText(state.getTitle());
+            titleTextView.setTextColor(state.getColor());
+            titleTextView.setVisibility(View.VISIBLE);
         } else {
-            tvTitle.setVisibility(View.GONE);
+            titleTextView.setVisibility(View.GONE);
         }
 
         final String message = state.getMessage();
-        tvMessage.setVisibility(TextUtils.isEmpty(message) ? View.INVISIBLE : View.VISIBLE);
-        tvMessage.setText(state.getMessage());
+        subTitleTextView.setVisibility(TextUtils.isEmpty(message) ? View.INVISIBLE : View.VISIBLE);
+        subTitleTextView.setText(state.getMessage());
 
         bubbleTextView.setConfiguration(BubbleTextView.BubbleTextConfiguration.builder()
                 .setCircleColor(state.getColor())

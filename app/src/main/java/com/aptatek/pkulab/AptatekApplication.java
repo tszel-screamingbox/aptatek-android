@@ -34,6 +34,10 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
     @Inject
     AlarmManager alarmManager;
+    @Inject
+    Crashlytics crashlytics;
+    @Inject
+    Timber.Tree timber;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -43,16 +47,13 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
     public void onCreate() {
         super.onCreate();
 
-        Fabric.with(this, new Crashlytics());
-
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
         applicationComponent.inject(this);
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-        }
+        Fabric.with(this, crashlytics);
+        Timber.plant(timber);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 

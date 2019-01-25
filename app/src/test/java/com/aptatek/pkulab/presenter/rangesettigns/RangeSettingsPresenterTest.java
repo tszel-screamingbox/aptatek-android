@@ -103,7 +103,7 @@ public class RangeSettingsPresenterTest {
                 .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
                 .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
-                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
+                .setPkuLevelUnit(PkuLevelUnits.MICRO_MOL)
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .build();
@@ -166,7 +166,7 @@ public class RangeSettingsPresenterTest {
                 .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
                 .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
-                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
+                .setPkuLevelUnit(PkuLevelUnits.MICRO_MOL)
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .build();
@@ -223,13 +223,13 @@ public class RangeSettingsPresenterTest {
                 .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
                 .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
                 .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
-                .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
+                .setPkuLevelUnit(PkuLevelUnits.MICRO_MOL)
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .build();
         doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
 
-        presenter.onBackPressed(Constants.DEFAULT_PKU_NORMAL_FLOOR, Constants.DEFAULT_PKU_NORMAL_CEIL, Constants.DEFAULT_PKU_LEVEL_UNIT);
+        presenter.onBackPressed(Constants.DEFAULT_PKU_NORMAL_FLOOR, Constants.DEFAULT_PKU_NORMAL_CEIL, PkuLevelUnits.MICRO_MOL);
 
         verify(view).finish();
     }

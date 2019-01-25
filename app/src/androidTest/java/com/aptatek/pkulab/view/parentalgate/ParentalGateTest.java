@@ -20,6 +20,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -29,6 +30,7 @@ import static java.util.Calendar.JANUARY;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 import static java.util.Calendar.getInstance;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 /**
@@ -49,8 +51,8 @@ public class ParentalGateTest {
      */
     @Test
     public void testInitialViewsVisible() {
-        onView(withId(R.id.parentalWelcomeTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalWelcomeDescription)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.parentalButton)).check(matches(isDisplayed()));
         onView(withId(R.id.parentalDisclaimer)).check(matches(isDisplayed()));
         onView(withId(R.id.parentalAge)).check(matches(not(isDisplayed())));
@@ -65,8 +67,8 @@ public class ParentalGateTest {
      */
     @Test
     public void testInitialUiValues() {
-        onView(withId(R.id.parentalWelcomeTitle)).check(matches(withText(R.string.parental_welcome_title)));
-        onView(withId(R.id.parentalWelcomeDescription)).check(matches(withText(R.string.parental_welcome_description)));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.parental_welcome_title)));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.parental_welcome_description)));
         onView(withId(R.id.parentalButton)).check(matches(withText(R.string.parental_welcome_enter_birthday)));
         onView(withId(R.id.parentalDisclaimer)).check(matches(withText(R.string.parental_welcome_age_disclaimer)));
     }
