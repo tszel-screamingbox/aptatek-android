@@ -27,6 +27,7 @@ public class PreferenceManager {
     public static final String PREF_PKU_RANGE_UNIT = "aptatek.range.unit";
     public static final String PREF_PKU_RANGE_DIALOG = "aptatek.range.dialog";
     public static final String PREF_PAIRED = "aptatek.device.paired";
+    public static final String PREF_DB_ENCRYPTED_WITH_PIN = "aptatek.database.encrypted";
 
     private final SharedPreferences sharedPreferences;
 
@@ -115,6 +116,14 @@ public class PreferenceManager {
 
     public void setPairedDevice(@Nullable final String device) {
         sharedPreferences.edit().putString(PREF_PAIRED, device).apply();
+    }
+
+    public boolean isDbEncrpytedWithPin() {
+        return sharedPreferences.getBoolean(PREF_DB_ENCRYPTED_WITH_PIN, false);
+    }
+
+    public void setPrefDbEncryptedWithPin() {
+        sharedPreferences.edit().putBoolean(PREF_DB_ENCRYPTED_WITH_PIN, true).apply();
     }
 
     public void clearPreference(final String key) {

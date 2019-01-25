@@ -3,14 +3,16 @@ package com.aptatek.pkulab.domain.interactor.auth;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
 
-import com.aptatek.pkulab.data.AptatekDatabase;
 import com.aptatek.pkulab.data.PinCode;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.manager.FingerprintManager;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreError;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
 
+import java.io.File;
+
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Completable;
 import timber.log.Timber;
@@ -20,7 +22,7 @@ public class AuthInteractor {
     private final FingerprintManager fingerprintManager;
     private final KeyStoreManager keyStoreManager;
     private final PreferenceManager preferencesManager;
-    private final AptatekDatabase aptatekDatabase;
+    private final File dbFile;
 
     private CancellationSignal cancelSignal;
     private Callback callback;
@@ -29,11 +31,11 @@ public class AuthInteractor {
     AuthInteractor(final FingerprintManager fingerprintManager,
                    final PreferenceManager preferencesManager,
                    final KeyStoreManager keyStoreManager,
-                   final AptatekDatabase aptatekDatabase) {
+                   final @Named("databaseFile") File dbFile) {
         this.fingerprintManager = fingerprintManager;
         this.preferencesManager = preferencesManager;
         this.keyStoreManager = keyStoreManager;
-        this.aptatekDatabase = aptatekDatabase;
+        this.dbFile = dbFile;
     }
 
     public Completable setPinCode(final PinCode pinCode) {
@@ -41,7 +43,7 @@ public class AuthInteractor {
             try {
                 final String encryptedPin = keyStoreManager.encrypt(pinCode);
                 preferencesManager.setEncryptedPin(encryptedPin);
-                aptatekDatabase.reKey(encryptedPin);
+                preferencesManager.setPrefDbEncryptedWithPin();
             } catch (final KeyStoreError error) {
                 Timber.e(error, "Failed to set pincode");
                 throw new AuthException("Error during decrytpion", error);
@@ -55,6 +57,12 @@ public class AuthInteractor {
                 final PinCode storedPin = keyStoreManager.decrypt(preferencesManager.getEncryptedPin());
                 if (storedPin == null || !storedPin.equals(pinCode)) {
                     throw new AuthException("Invalid pincode");
+                }
+
+                if (!preferencesManager.isDbEncrpytedWithPin()) {
+                    // delete database first
+                    dbFile.delete();
+                    preferencesManager.setPrefDbEncryptedWithPin();
                 }
             } catch (final KeyStoreError keyStoreError) {
                 throw new AuthException("Error during decrytpion", keyStoreError);

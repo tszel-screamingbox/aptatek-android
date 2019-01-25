@@ -16,7 +16,10 @@ import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.animation.AnimationHelper;
 
+import java.io.File;
 import java.util.Map;
+
+import javax.inject.Named;
 
 public interface ApplicationComponentExposes {
 
@@ -46,4 +49,7 @@ public interface ApplicationComponentExposes {
     PkuRangeDataSource providePkuRangeDataSource();
 
     ReaderManager provideReaderManager();
+
+    @Named("databaseFile")
+    File provideDbFile();
 }
