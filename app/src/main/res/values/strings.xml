@@ -186,8 +186,8 @@
     <string name="test.result.message.high">WTB Message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.normal">WTB message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.low">WTB message</string> <!-- TODO get proper label... -->
+    <string name="test.result.range.info">Range info</string>
     <string name="test.result.done">Next</string>
-    <string name="test.result.range.info">Range info &#10140;</string>
     <string name="test.result.title.veryhigh">Very High</string>
     <string name="test.result.title.high">High</string> <!-- TODO get proper label... -->
     <string name="test.result.title.normal">Normal</string> <!-- TODO get proper label... -->
