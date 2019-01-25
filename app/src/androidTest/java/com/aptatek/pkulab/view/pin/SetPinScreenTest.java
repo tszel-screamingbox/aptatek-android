@@ -1,13 +1,24 @@
 package com.aptatek.pkulab.view.pin;
 
+import android.app.Application;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.data.AptatekDatabase;
+import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
+import com.aptatek.pkulab.injection.component.DaggerAndroidTestComponent;
+import com.aptatek.pkulab.injection.module.ApplicationModule;
+import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.pin.set.SetPinHostActivity;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import javax.inject.Inject;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -20,6 +31,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static java.lang.Thread.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -32,6 +44,19 @@ public class SetPinScreenTest {
     @Rule
     public ActivityTestRule<SetPinHostActivity> activityRule = new ActivityTestRule<>(SetPinHostActivity.class);
 
+    @Inject
+    AptatekDatabase aptatekDatabase;
+
+    @Inject
+    ReminderInteractor reminderInteractor;
+
+    @Before
+    public void setUp() throws Exception {
+        DaggerAndroidTestComponent.builder()
+                .applicationModule(new ApplicationModule(((Application) InstrumentationRegistry.getTargetContext().getApplicationContext())))
+                .build()
+                .inject(this);
+    }
 
     /**
      * Testing the initial view.
@@ -115,6 +140,19 @@ public class SetPinScreenTest {
         assertTrue(activityRule.getActivity().isFinishing());
     }
 
+    @Test
+    public void testDbEncryptedAfterPinSet() throws Exception {
+        testEnterValidPin();
+
+        // init days here
+        reminderInteractor.initializeDays()
+                .test()
+                .assertNoErrors();
+
+        // check if the database works properly
+        assertEquals(Constants.DAYS_OF_WEEK, aptatekDatabase.getReminderDayDao()
+                .getReminderDaysCount());
+    }
 
     private void enterPin() {
         onView(withId(R.id.button1)).perform(ViewActions.click());

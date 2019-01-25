@@ -9,6 +9,7 @@ import com.aptatek.pkulab.injection.module.DeviceModule;
 import com.aptatek.pkulab.injection.module.ReminderModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
+import com.aptatek.pkulab.view.pin.SetPinScreenTest;
 
 import javax.inject.Singleton;
 
@@ -23,5 +24,7 @@ public interface AndroidTestComponent extends ApplicationComponent {
     RangeInfoComponent plus(RangeInfoModule module);
 
     ReminderTestComponent plus(ReminderModule reminderModule);
+
+    void inject(SetPinScreenTest pinScreenTest);
 
 }
