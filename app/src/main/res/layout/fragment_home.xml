@@ -40,21 +40,16 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.77" />
 
-        <TextView
-            android:id="@+id/titleText"
-            style="@style/Header.Text"
-            android:layout_width="match_parent"
+        <com.aptatek.pkulab.widget.HeaderView
+            android:id="@+id/header"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/main.title.noresult"
-            app:layout_constraintTop_toBottomOf="@id/guideTop" />
-
-        <TextView
-            android:id="@+id/subTitleText"
-            style="@style/General.Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/main.title.noresult.hint"
-            app:layout_constraintTop_toBottomOf="@id/titleText" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideTop"
+            app:layout_constraintVertical_bias="0.0"
+            app:subTitleText="@string/main.title.noresult.hint"
+            app:titleText="@string/main.title.noresult" />
 
         <ImageView
             android:id="@+id/playIcon"
@@ -62,11 +57,11 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/general.distance.xsmall"
             android:src="@drawable/ic_bubble_play"
-            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/chartGuide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subTitleText"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            android:visibility="invisible"
             tools:ignore="ContentDescription" />
 
         <com.yarolegovich.discretescrollview.DiscreteScrollView
@@ -77,7 +72,7 @@
             app:layout_constraintBottom_toTopOf="@id/chartGuide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subTitleText" />
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <Button
             android:id="@+id/bigSettingsButton"

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,40 +22,26 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/general.distance.mini" />
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        style="@style/General.Title"
-        android:layout_width="wrap_content"
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/general.distance.normal"
-        android:gravity="center"
-        android:text="@string/settings.title"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleText="@string/settings.title" />
 
-    <TextView
-        android:id="@+id/textViewAppVersion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/font.size.xxmini"
-        android:fontFamily="@font/nunito_regular"
-        android:textColor="@color/applicationSolidGray"
-        android:textSize="@dimen/font.size.xbig"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-        tools:text="App version X.X.X" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/settings_items"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/general.distance.xbig"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewAppVersion"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

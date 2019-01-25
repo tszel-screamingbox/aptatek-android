@@ -4,4 +4,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 interface AuthPinHostActivityView extends MvpView {
 
+    void onAuthPinFragmentShouldLoad();
+
+    void onFingerpintAuthShouldLoad();
 }

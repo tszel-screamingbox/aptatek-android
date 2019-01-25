@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
@@ -17,6 +16,7 @@ import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
 import com.aptatek.pkulab.view.settings.web.WebPageActivityStarter;
+import com.aptatek.pkulab.widget.HeaderView;
 
 import javax.inject.Inject;
 
@@ -36,8 +36,8 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.textViewAppVersion)
-    TextView tvAppVersion;
+    @BindView(R.id.header)
+    HeaderView tvAppVersion;
 
     @BindView(R.id.settings_items)
     RecyclerView recyclerView;
@@ -134,6 +134,6 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
 
     @Override
     public void showAppVersion(final String version) {
-        tvAppVersion.setText(getString(R.string.settings_app_version, version));
+        tvAppVersion.setSubtitle(getString(R.string.settings_app_version, version));
     }
 }
