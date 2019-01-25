@@ -5,31 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/parentalWelcomeTitle"
-        style="@style/General.Title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/parental.welcome.title"
-        app:layout_constraintBottom_toTopOf="@+id/parentalWelcomeDescription"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/guideTop"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/parentalWelcomeDescription"
-        style="@style/General.Text"
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xxsmall"
         android:layout_marginEnd="@dimen/general.distance.xxsmall"
         android:layout_marginBottom="@dimen/general.distance.xsmall"
-        android:text="@string/parental.welcome.description"
         app:layout_constraintBottom_toTopOf="@+id/parentalBirthDate"
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/parentalWelcomeTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/guideTop"
+        app:subTitleText="@string/parental.welcome.description"
+        app:titleText="@string/parental.welcome.title" />
+
 
     <EditText
         android:id="@+id/parentalBirthDate"
@@ -44,7 +33,7 @@
         app:layout_constraintBottom_toTopOf="@+id/parentalButton"
         app:layout_constraintEnd_toEndOf="@+id/guideEnd"
         app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/parentalWelcomeDescription"
+        app:layout_constraintTop_toBottomOf="@+id/header"
         tools:ignore="Autofill,LabelFor,TextFields"
         tools:text="11/11/1984" />
 
