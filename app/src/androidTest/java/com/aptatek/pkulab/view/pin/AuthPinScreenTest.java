@@ -15,9 +15,11 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.hasTextColor;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 /**
@@ -39,9 +41,8 @@ public class AuthPinScreenTest {
      */
     @Test
     public void testInitialView() {
-        onView(withId(R.id.hintTextView)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.messageTextView)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.fingerpintImage)).check(matches(not(isDisplayed())));
         onView(withId(R.id.title)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(isDisplayed()));
         onView(withId(R.id.pinLayout)).check(matches(hasChildCount(6)));
@@ -54,7 +55,6 @@ public class AuthPinScreenTest {
      */
     @Test
     public void testEnterPin() {
-        onView(withId(R.id.fingerpintImage)).check(matches(not(isDisplayed())));
         onView(withId(R.id.button0)).perform(ViewActions.click());
         onView(withId(R.id.button1)).perform(ViewActions.click());
         onView(withId(R.id.button2)).perform(ViewActions.click());

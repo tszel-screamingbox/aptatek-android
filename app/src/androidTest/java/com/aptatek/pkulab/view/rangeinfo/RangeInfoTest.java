@@ -15,7 +15,6 @@ import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.util.Constants;
 
-import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,10 +26,12 @@ import javax.inject.Inject;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 
 /**
  * Tests for the RangeInfo screen.
@@ -65,8 +66,7 @@ public class RangeInfoTest {
      */
     @Test
     public void testInitialViewsVisible() {
-        onView(withId(R.id.rangeinfo_title)).check(matches(isDisplayed()));
-        onView(withId(R.id.rangeinfo_message)).check(matches(isDisplayed()));
+        onView(withId(R.id.header)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeinfo_edit)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeinfo_units)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeinfo_high)).check(matches(isDisplayed()));
@@ -92,14 +92,14 @@ public class RangeInfoTest {
                 .setNormalAbsoluteMaxValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_HIGHEST_VALUE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
                 .build();
 
-        onView(withId(R.id.rangeinfo_title)).check(matches(withText(R.string.rangeinfo_title)));
-        onView(withId(R.id.rangeinfo_message)).check(matches(withText(R.string.rangeinfo_message)));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.rangeinfo_title)));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.rangeinfo_message)));
         onView(withId(R.id.rangeinfo_edit)).check(matches(withText(R.string.rangeinfo_edit_level_preferences)));
         onView(withId(R.id.rangeinfo_units)).check(matches(withText(formatter.formatUnits(pkuInfo))));
-        onView(Matchers.allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_high)))).check(matches(withText(formatter.formatHigh(pkuInfo))));
-        onView(Matchers.allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_very_high)))).check(matches(withText(formatter.formatVeryHigh(pkuInfo))));
-        onView(Matchers.allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_normal)))).check(matches(withText(formatter.formatNormal(pkuInfo))));
-        onView(Matchers.allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_low)))).check(matches(withText(formatter.formatLow(pkuInfo))));
+        onView(allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_high)))).check(matches(withText(formatter.formatHigh(pkuInfo))));
+        onView(allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_very_high)))).check(matches(withText(formatter.formatVeryHigh(pkuInfo))));
+        onView(allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_normal)))).check(matches(withText(formatter.formatNormal(pkuInfo))));
+        onView(allOf(withId(R.id.title), withParent(withId(R.id.rangeinfo_low)))).check(matches(withText(formatter.formatLow(pkuInfo))));
     }
 
     /**

@@ -9,13 +9,11 @@ interface AuthPinView extends MvpView {
 
     void onValidPinTyped();
 
-    void onInvalidPinTyped(boolean hasReachedAttemptLimit);
+    void onInvalidPinTyped();
+
+    void showAlertDialog();
 
     void onInvalidFingerprintDetected(@NonNull String message);
 
     void onValidFingerprintDetected();
-
-    void onFingerprintAvailable();
-
-    void onFingerprintDisabled();
 }

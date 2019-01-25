@@ -13,7 +13,8 @@
     <string name="auth.pin.message.invalid">Incorrect PIN</string>
     <string name="auth.pin.successful">Authentication successful</string>
     <string name="auth.pin.title">Authenticate</string>
-    <string name="auth.pin.attempt.limit.reached.hint">If you forgot your PIN please delete &amp;\nreinstall this application and set a\nnew code. Some data may also be lost</string>
+    <string name="auth.pin.attempt.limit.reached.hint">Delete and reinstall this application and set new code, but some minor data may be lost (e.g. range preferences, reminders) and PIN code will need reset.</string>
+    <string name="auth.pin.attempt.limit.reached.title">Forgot Your PIN Code?</string>
     <!-- ConfirmPin Fragment -->
     <string name="confirm.pin.error">PIN mismatch</string>
     <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
