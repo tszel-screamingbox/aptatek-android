@@ -19,6 +19,7 @@ import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.TestScreens;
+import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
 import com.mklimek.frameviedoview.FrameVideoViewListener;
 
@@ -31,10 +32,8 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
 
     private TestFragmentComponent testFragmentComponent;
 
-    @BindView(R.id.testTitle)
-    protected TextView tvTitle;
-    @BindView(R.id.testMessage)
-    protected TextView tvMessage;
+    @BindView(R.id.header)
+    protected HeaderView titleHeaderView;
     @BindView(R.id.testDisclaimerText)
     @Nullable
     protected TextView tvAlert;
@@ -62,12 +61,12 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
 
     @Override
     public void setTitle(@NonNull final String title) {
-        tvTitle.setText(title);
+        titleHeaderView.setTitle(title);
     }
 
     @Override
     public void setMessage(@NonNull final String message) {
-        tvMessage.setText(message);
+        titleHeaderView.setSubtitle(message);
     }
 
     @Override

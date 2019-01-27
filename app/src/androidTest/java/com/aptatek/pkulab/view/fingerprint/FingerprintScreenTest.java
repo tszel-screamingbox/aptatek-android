@@ -10,9 +10,11 @@ import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 
 /**
  * @test.layer View / Fingerprint
@@ -32,14 +34,12 @@ public class FingerprintScreenTest {
      */
     @Test
     public void testInitialView() {
-        onView(withId(R.id.fingerpintImage)).check(matches(isDisplayed()));
-        onView(withId(R.id.fingerprintTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.fingerprintMessage)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.fingerprint_title)));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.fingerprint_message)));
         onView(withId(R.id.enableButton)).check(matches(isDisplayed()));
         onView(withId(R.id.disableButton)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.fingerprintTitle)).check(matches(withText(R.string.fingerprint_title)));
-        onView(withId(R.id.fingerprintMessage)).check(matches(withText(R.string.fingerprint_message)));
     }
 
     /**
