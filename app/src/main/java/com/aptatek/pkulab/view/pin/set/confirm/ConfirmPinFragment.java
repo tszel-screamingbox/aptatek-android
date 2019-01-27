@@ -19,8 +19,6 @@ import activitystarter.Arg;
 
 public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinView {
 
-    private static final int DELAY = 250;
-
     @Arg
     byte[] pinBytes;
 
@@ -39,8 +37,8 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
 
     @Override
     protected void initObjects(final View view) {
-        titleTextView.setText(R.string.confirm_pin_title);
-        hintTextView.setText(R.string.confirm_pin_hint);
+        mainHeaderView.setTitle(getString(R.string.confirm_pin_title));
+        mainHeaderView.setSubtitle(getString(R.string.confirm_pin_hint));
         messageTextView.setVisibility(View.INVISIBLE);
     }
 

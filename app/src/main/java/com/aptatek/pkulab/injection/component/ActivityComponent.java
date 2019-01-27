@@ -21,6 +21,7 @@ import com.aptatek.pkulab.view.pin.set.SetPinHostActivity;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
 import com.aptatek.pkulab.view.splash.SplashActivity;
+import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.view.toggle.ToggleActivity;
 
 import dagger.Component;
@@ -48,7 +49,8 @@ public interface ActivityComponent {
 
     void inject(MainHostActivity activity);
 
-    // Activities injections should be come here
+    void inject(DisposeActivity disposeActivity);
+
     @ActivityContext
     Context context();
 
@@ -59,4 +61,5 @@ public interface ActivityComponent {
     ChartActivityComponent plus(RangeInfoModule rangeInfoModule, ChartModule chartModule);
 
     ScanActivityComponent plus(ScanModule scanModule);
+
 }

@@ -32,29 +32,16 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.92" />
 
-    <TextView
-        android:id="@+id/turnOnTitle"
-        style="@style/General.Title"
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/connect.turnon.title"
-        app:layout_constraintBottom_toBottomOf="@id/guideBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideTop"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/turnOnMessage"
-        style="@style/General.Text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.small"
-        android:gravity="center"
-        android:text="@string/connect.turnon.message"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/turnOnTitle" />
+        app:layout_constraintVertical_bias="0.0"
+        app:subTitleText="@string/connect.turnon.message"
+        app:titleText="@string/connect.turnon.title" />
 
     <ImageView
         android:id="@+id/turnOnImage"
@@ -65,7 +52,7 @@
         app:layout_constraintBottom_toTopOf="@id/turnOnNext"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@id/turnOnMessage" />
+        app:layout_constraintTop_toBottomOf="@id/header" />
 
     <Button
         android:id="@+id/turnOnNext"

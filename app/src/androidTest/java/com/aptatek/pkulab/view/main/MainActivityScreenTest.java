@@ -13,9 +13,11 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 /**
@@ -45,8 +47,8 @@ public class MainActivityScreenTest {
         onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
         onView(withId(R.id.settingsButton)).check(matches(isDisplayed()));
         onView(withId(R.id.bigSettingsButton)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.titleText)).check(matches(isDisplayed()));
-        onView(withId(R.id.subTitleText)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
 
         onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
 
@@ -130,7 +132,7 @@ public class MainActivityScreenTest {
 
         showWeeklyFragment();
 
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(not(isDisplayed())));
@@ -152,7 +154,7 @@ public class MainActivityScreenTest {
 
         showWeeklyFragment();
 
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.leftArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
@@ -180,7 +182,7 @@ public class MainActivityScreenTest {
         onView(withId(R.id.viewpager)).perform(swipeRight());
         onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));
@@ -207,7 +209,7 @@ public class MainActivityScreenTest {
         onView(withId(R.id.leftArrow)).perform(click());
         onView(withId(R.id.roundedBar)).check(matches(isDisplayed()));
         onView(withId(R.id.buttonPdfExport)).check(matches(isDisplayed()));
-        onView(withId(R.id.title)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.rightArrow)).check(matches(isDisplayed()));
         onView(withId(R.id.dateText)).check(matches(isDisplayed()));
         onView(withId(R.id.label)).check(matches(isDisplayed()));

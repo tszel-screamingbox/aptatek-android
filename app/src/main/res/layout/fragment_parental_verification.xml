@@ -24,7 +24,6 @@
         style="@style/General.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/general.distance.xxsmall"
         app:layout_constraintBottom_toTopOf="@+id/parentalVerificationMessage"
         app:layout_constraintEnd_toStartOf="@+id/guideEnd"
         app:layout_constraintStart_toEndOf="@+id/guideStart"

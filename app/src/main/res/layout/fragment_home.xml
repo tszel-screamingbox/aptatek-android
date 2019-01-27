@@ -40,21 +40,16 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.77" />
 
-        <TextView
-            android:id="@+id/titleText"
-            style="@style/Header.Text"
-            android:layout_width="match_parent"
+        <com.aptatek.pkulab.widget.HeaderView
+            android:id="@+id/header"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/main.title.noresult"
-            app:layout_constraintTop_toBottomOf="@id/guideTop" />
-
-        <TextView
-            android:id="@+id/subTitleText"
-            style="@style/General.Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/main.title.noresult.hint"
-            app:layout_constraintTop_toBottomOf="@id/titleText" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideTop"
+            app:layout_constraintVertical_bias="0.0"
+            app:subTitleText="@string/main.title.noresult.hint"
+            app:titleText="@string/main.title.noresult" />
 
         <ImageView
             android:id="@+id/playIcon"
@@ -62,11 +57,11 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/general.distance.xsmall"
             android:src="@drawable/ic_bubble_play"
-            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@id/chartGuide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subTitleText"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            android:visibility="invisible"
             tools:ignore="ContentDescription" />
 
         <com.yarolegovich.discretescrollview.DiscreteScrollView
@@ -77,7 +72,7 @@
             app:layout_constraintBottom_toTopOf="@id/chartGuide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subTitleText" />
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <Button
             android:id="@+id/bigSettingsButton"
@@ -127,24 +122,15 @@
 
         <Button
             android:id="@+id/weeklyButton"
-            style="@style/General.Rounded.Gray.Button"
+            style="@style/General.Rounded.Gray.Button.Secondary"
             android:layout_width="0dp"
-            android:layout_height="@dimen/general.distance.normal"
             android:layout_marginStart="@dimen/general.distance.32dp"
             android:layout_marginTop="@dimen/general.distance.20dp"
             android:layout_marginEnd="@dimen/general.distance.32dp"
             android:layout_marginBottom="@dimen/general.distance.20dp"
             android:drawableEnd="@drawable/ic_arrow_up"
             android:drawablePadding="@dimen/general.distance.xxsmall"
-            android:elevation="0dp"
-            android:fontFamily="@font/nunito_regular"
-            android:gravity="center"
-            android:paddingStart="@dimen/general.distance.xxsmall"
-            android:paddingTop="0dp"
-            android:paddingEnd="@dimen/general.distance.xxsmall"
-            android:paddingBottom="0dp"
             android:text="@string/main.button.weekly"
-            android:textSize="@dimen/font.size.medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

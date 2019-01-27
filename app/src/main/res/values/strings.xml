@@ -13,7 +13,8 @@
     <string name="auth.pin.message.invalid">Incorrect PIN</string>
     <string name="auth.pin.successful">Authentication successful</string>
     <string name="auth.pin.title">Authenticate</string>
-    <string name="auth.pin.attempt.limit.reached.hint">If you forgot your PIN please delete &amp;\nreinstall this application and set a\nnew code. Some data may also be lost</string>
+    <string name="auth.pin.attempt.limit.reached.hint">Delete and reinstall this application and set new code, but some minor data may be lost (e.g. range preferences, reminders) and PIN code will need reset.</string>
+    <string name="auth.pin.attempt.limit.reached.title">Forgot Your PIN Code?</string>
     <!-- ConfirmPin Fragment -->
     <string name="confirm.pin.error">PIN mismatch</string>
     <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
@@ -101,10 +102,13 @@
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
     <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
     <string name="rangeinfo.title">Range info</string>
-    <!-- RangeInfo -->
     <string name="rangeinfo.units.format">Units are in %s</string>
     <string name="rangeinfo.very.high">Very High</string>
     <string name="rangeinfo.veryhigh.value.prefix">over</string>
+    <!-- Waste dispose -->
+    <string name="dispose.title">Waste\nDisposables</string>
+    <string name="dispose.message">Medical waste and needles should be disposed properly, do not place in regular garbage can.</string>
+    <string name="dispose.done">Done</string>
     <!-- Reminder Notification-->
     <string name="reminder.notification.channel.name">Reminder</string>
     <string name="reminder.notification.half.hour">30min</string>
@@ -182,8 +186,8 @@
     <string name="test.result.message.high">WTB Message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.normal">WTB message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.low">WTB message</string> <!-- TODO get proper label... -->
-    <string name="test.result.done">Done</string>
-    <string name="test.result.range.info">Range info &#10140;</string>
+    <string name="test.result.range.info">Range info</string>
+    <string name="test.result.done">Next</string>
     <string name="test.result.title.veryhigh">Very High</string>
     <string name="test.result.title.high">High</string> <!-- TODO get proper label... -->
     <string name="test.result.title.normal">Normal</string> <!-- TODO get proper label... -->
@@ -198,10 +202,10 @@
     <string name="test.breakfoil.alert.title">Always Use In-App Timer!</string>
     <string name="test.breakfoil.alert.message">Timing is very important to get accurate results, always follow the testing workflow in the app.</string>
     <string name="test.pokefingertrip.title">Poke Fingertip</string>
-    <string name="test.pokefingertrip.message">Take a prick and poke your fingertip with it until your finger is bleeding</string>
+    <string name="test.pokefingertrip.message">Take a thick lancet and poke your fingertip with it, enough to draw a large round drop of blood from your finger</string>
     <string name="test.collectblood.title">Collect Blood</string>
-    <string name="test.collectblood.message">Screw the cap off the chamber and take a blood sample from your fingertip</string>
-    <string name="test.collectblood.disclaimer">Use enough blood to soak the whole sponge with blood so it\'s completely red</string>
+    <string name="test.collectblood.message">Screw the cap off the chamber and draw a large sample of blood from your fingertip</string>
+    <string name="test.collectblood.disclaimer">Tap the suction tip onto blood so that it completely fills up beyond the edge with blood</string>
     <string name="test.mixsample.title">Mix Sample</string>
     <string name="test.mixsample.message">Screw the cap on the chamber with the red tip inside and twist it to lock into place</string>
     <string name="test.wetting.title">Wetting&#8230;</string>

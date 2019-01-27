@@ -29,6 +29,7 @@ import io.reactivex.plugins.RxJavaPlugins;
 import static org.mockito.AdditionalAnswers.answerVoid;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -101,32 +102,6 @@ public class AuthPinPresenterTest {
     }
 
     /**
-     * Fingerprint authentication is enabled, shows it on the screen.
-     *
-     * @test.expected {@link  AuthPinView#onFingerprintAvailable()  onFingerprintAvailable()}
-     * method is called, without any error.
-     */
-    @Test
-    public void testWhenFingerprintEnable() {
-        when(deviceHelper.isFingperprintAuthAvailable()).thenReturn(true);
-        presenter.initView();
-        verify(view).onFingerprintAvailable();
-    }
-
-    /**
-     * Fingerprint authentication is disable, shows it on the screen.
-     *
-     * @test.expected {@link  AuthPinView#onFingerprintDisabled()  onFingerprintDisabled()}
-     * method is called, without any error.
-     */
-    @Test
-    public void testWhenFingerprintDisable() {
-        when(deviceHelper.isFingperprintAuthAvailable()).thenReturn(false);
-        presenter.initView();
-        verify(view).onFingerprintDisabled();
-    }
-
-    /**
      * Enter a valid PIN code.
      *
      * @test.expected The PIN is valid,{@link  AuthPinView#onValidPinTyped()  onValidPinTyped()}
@@ -141,13 +116,31 @@ public class AuthPinPresenterTest {
     /**
      * Enter an invalid PIN code.
      *
-     * @test.expected The PIN is invalid,{@link  AuthPinView#onInvalidPinTyped(boolean hasReachedAttemptLimit)  onInvalidPinTyped()}
+     * @test.expected The PIN is invalid,{@link  AuthPinView#onInvalidPinTyped()  onInvalidPinTyped()}
      * method is called, without any error.
      */
     @Test
     public void testInvalidPin() {
         presenter.verifyPinCode(invalidPin);
-        verify(view).onInvalidPinTyped(false);
+        verify(view).onInvalidPinTyped();
+    }
+
+    /**
+     * Enter an invalid PIN code 5 times.
+     *
+     * @test.expected The PIN is invalid,{@link  AuthPinView#onInvalidPinTyped()  onInvalidPinTyped()}
+     * method is called four times, and then {@link  AuthPinView#showAlertDialog()  showAlertDialog()} method is called, without any error.
+     */
+    @Test
+    public void testInvalidPin5thTimes() {
+        presenter.verifyPinCode(invalidPin);
+        presenter.verifyPinCode(invalidPin);
+        presenter.verifyPinCode(invalidPin);
+        presenter.verifyPinCode(invalidPin);
+        presenter.verifyPinCode(invalidPin);
+
+        verify(view, times(4)).onInvalidPinTyped();
+        verify(view).showAlertDialog();
     }
 
     /**

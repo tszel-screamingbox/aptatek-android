@@ -14,8 +14,9 @@ import android.widget.TextView;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.data.PinCode;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.widget.HeaderView;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 import activitystarter.ActivityStarter;
@@ -24,7 +25,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import timber.log.Timber;
 
 public abstract class BasePinFragment extends BaseFragment {
 
@@ -36,17 +36,12 @@ public abstract class BasePinFragment extends BaseFragment {
     @BindView(R.id.pinLayout)
     protected ConstraintLayout pinCircleConstrainLayout;
 
-    @BindView(R.id.title)
-    protected TextView titleTextView;
-
-    @BindView(R.id.hintTextView)
-    protected TextView hintTextView;
+    @BindView(R.id.header)
+    protected HeaderView mainHeaderView;
 
     @BindView(R.id.messageTextView)
     protected TextView messageTextView;
 
-    @BindView(R.id.fingerpintImage)
-    protected ImageView fingerprintImageView;
 
     protected abstract void finishedTyping(PinCode pinCode);
 
@@ -87,12 +82,8 @@ public abstract class BasePinFragment extends BaseFragment {
         innerFillCircle(pin.length(), R.drawable.pin_circle_filled_grey);
 
         if (pin.length() == PIN_LENGTH) {
-            try {
-                final PinCode pinCode = new PinCode(pin.getBytes("UTF-8"));
-                finishedTyping(pinCode);
-            } catch (final UnsupportedEncodingException e) {
-                Timber.e(e);
-            }
+            final PinCode pinCode = new PinCode(pin.getBytes(StandardCharsets.UTF_8));
+            finishedTyping(pinCode);
         }
     }
 
