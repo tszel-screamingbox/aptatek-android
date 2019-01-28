@@ -220,6 +220,8 @@
     <string name="test.connectitall.message">Push the chamber into the hole in the cassette and insert it into the reader immediately</string>
     <string name="test.testing.title">Testing&#8230;</string>
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
+    <string name="test.selftest.title">Self Checking</string>
+    <string name="test.selftest.message">Reader is doing a self-check to make sure that i can function properly during testing</string>
 
     <!-- Toggle Activity -->
     <string name="toggle.button.connect">Connect Cube</string>

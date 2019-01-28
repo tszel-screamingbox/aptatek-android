@@ -5,12 +5,12 @@ import android.text.format.DateUtils;
 import android.util.Pair;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
@@ -18,6 +18,7 @@ import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
+import com.aptatek.pkulab.view.test.TestScreens;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;
@@ -41,8 +42,8 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private final PkuRangeInteractor rangeInteractor;
     private final DailyChartFormatter dailyChartFormatter;
     private final WettingInteractor wettingInteractor;
-    private final DeviceHelper deviceHelper;
     private final PreferenceManager preferenceManager;
+    private final TestInteractor testInteractor;
     private CompositeDisposable disposables;
 
     @Inject
@@ -51,15 +52,15 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                           final PkuRangeInteractor rangeInteractor,
                           final DailyChartFormatter dailyChartFormatter,
                           final WettingInteractor wettingInteractor,
-                          final DeviceHelper deviceHelper,
-                          final PreferenceManager preferenceManager) {
+                          final PreferenceManager preferenceManager,
+                          final TestInteractor testInteractor) {
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
         this.dailyChartFormatter = dailyChartFormatter;
         this.wettingInteractor = wettingInteractor;
-        this.deviceHelper = deviceHelper;
         this.preferenceManager = preferenceManager;
+        this.testInteractor = testInteractor;
     }
 
     void initRangeDialog() {
@@ -164,6 +165,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
 
     void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
+                .andThen(testInteractor.setLastScreen(TestScreens.TURN_READER_ON))
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
     }

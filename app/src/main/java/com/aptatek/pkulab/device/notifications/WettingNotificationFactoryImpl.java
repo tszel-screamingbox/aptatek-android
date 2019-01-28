@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 
@@ -18,9 +17,6 @@ import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.test.TestActivity;
 
 public class WettingNotificationFactoryImpl extends BaseNotificationFactory implements WettingNotificationFactory {
-
-    private Bundle extrasBundle;
-
     public WettingNotificationFactoryImpl(@ApplicationContext final Context context,
                                           final ResourceInteractor resourceInteractor,
                                           final NotificationManager notificationManager) {
@@ -29,11 +25,6 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
 
     private PendingIntent createContentIntent() {
         final Intent starter = TestActivity.createStarter(context);
-        final Bundle intentExtras = extrasBundle;
-
-        if (intentExtras != null) {
-            starter.putExtras(intentExtras);
-        }
 
         final TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(starter);
@@ -47,7 +38,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
         return new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_inprogress_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_inprogress_textformat, countdown.getRemainingFormattedText()))
-                .setSmallIcon(R.drawable.ic_play)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setProgress(Constants.HUNDRED_PERCENT, getWettingProgress(countdown.getRemainingMillis()), false)
                 .setVibrate(new long[]{0L})
                 .setSound(null)
@@ -66,7 +57,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
         return new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
-                .setSmallIcon(R.drawable.ic_play)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(createContentIntent())
                 .setAutoCancel(true)
                 .build();
@@ -75,18 +66,17 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
     @NonNull
     @Override
     public Notification createCountdownFinishedNotification() {
-        extrasBundle = TestActivity.createForSampleWettingFinishedIntent();
-
         final Notification notification = new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
-                .setSmallIcon(R.drawable.ic_play)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(createContentIntent())
                 .setSound(resourceInteractor.getUriForRawFile(R.raw.noti_sound))
                 .setAutoCancel(true)
                 .build();
 
-        notification.flags = Notification.FLAG_INSISTENT;
+        notification.flags = Notification.FLAG_INSISTENT | Notification.FLAG_AUTO_CANCEL;
+
         return notification;
     }
 
