@@ -208,6 +208,7 @@
     <string name="test.collectblood.disclaimer">Tap the suction tip onto blood so that it completely fills up beyond the edge with blood</string>
     <string name="test.mixsample.title">Mix Sample</string>
     <string name="test.mixsample.message">Screw the cap on the chamber with the red tip inside and twist it to lock into place</string>
+    <string name="test.mixsample.warn">Once the cap is locked, shake the bottle 3 times to mix the blood.</string>
     <string name="test.wetting.title">Wetting&#8230;</string>
     <string name="test.wetting.message">Wait until the sample wetting period ends</string>
     <string name="test.wetting.disclaimer">Keep chamber sitting upright, do not connect it to anything yet</string>
