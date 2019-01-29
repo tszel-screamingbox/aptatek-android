@@ -60,7 +60,7 @@ public class BatteryView extends ConstraintLayout {
 
     private void showBattery(final int level) {
 
-        levelTextView.setText(context.getString(R.string.widget_battery_percentage, 5));
+        levelTextView.setText(context.getString(R.string.widget_battery_percentage, level));
 
         if (level <= BATTERY_LOW) {
             batteryImageView.setImageResource(R.drawable.ic_battery_low);
