@@ -1,8 +1,10 @@
 package com.aptatek.pkulab.widget;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.Locale;
 
@@ -93,8 +96,9 @@ public class PdfExportView extends ConstraintLayout {
     }
 
     private void initChart() {
+        final Typeface typeface = ResourcesCompat.getFont(getContext().getApplicationContext(), R.font.nunito_black);
         final XAxis xAxis = bubbleChart.getXAxis();
-        xAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
+        xAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
         xAxis.setValueFormatter((value, axis) -> {
             if (Float.compare(value, 0f) <= 0 || Float.compare(value, pdfEntryData.getDaysOfMonth()) > 0) {
                 return "";
@@ -109,6 +113,7 @@ public class PdfExportView extends ConstraintLayout {
         final int maxValue = getNextEvenFor(pdfEntryData.getDaysOfMonth());
         xAxis.setAxisMaximum(maxValue);
         xAxis.setLabelCount((maxValue / 2) + 1, true);
+        xAxis.setTypeface(typeface);
 
         final YAxis yAxis = bubbleChart.getAxisLeft();
         final String[] hours = getResources().getStringArray(R.array.weekly_hours);
@@ -124,7 +129,8 @@ public class PdfExportView extends ConstraintLayout {
         yAxis.setAxisMinimum(0f);
         yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES);
         yAxis.setLabelCount(hours.length, true);
-        yAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
+        yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
+        yAxis.setTypeface(typeface);
 
         final BubbleData data = new BubbleData();
         data.addDataSet(pdfEntryData.getBubbleDataSet());

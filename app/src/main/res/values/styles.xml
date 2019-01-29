@@ -146,6 +146,13 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
+    <style name="Pdf.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:textSize">@dimen/font.size.34sp</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="General.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
