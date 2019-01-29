@@ -42,7 +42,7 @@
     <string name="connect.connected.button">Continue to Home Screen</string>
     <!-- Fingerprint Activity -->
     <string name="fingerprint.message">Set up fingerprint access if desired.</string>
-    <string name="fingerprint.option.disable">Disable Fingerprint</string>
+    <string name="fingerprint.option.disable">Decide Later</string>
     <string name="fingerprint.option.enable">Enable Fingerprint</string>
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
     <!-- Home Fragment -->
