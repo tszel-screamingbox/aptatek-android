@@ -1,0 +1,14 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/fullBubble">
+        <shape android:shape="oval">
+            <stroke
+                android:width="@dimen/general.distance.xxxmini"
+                android:color="@color/pkuPdfGray"
+                android:dashWidth="@dimen/general.distance.xxxsmall"
+                android:dashGap="@dimen/general.distance.5dp" />
+            <size
+                android:width="@dimen/pdf.legend.bubble.size"
+                android:height="@dimen/pdf.legend.bubble.size" />
+        </shape>
+    </item>
+</layer-list>

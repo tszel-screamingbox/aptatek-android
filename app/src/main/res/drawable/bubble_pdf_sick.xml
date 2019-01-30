@@ -1,0 +1,28 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/fullBubble">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/graph.bubble.radius.small" />
+
+            <solid android:color="@color/pkuPdfGray" />
+            <size
+                android:width="@dimen/pdf.legend.bubble.size"
+                android:height="@dimen/pdf.legend.bubble.size" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke
+                android:width="@dimen/general.distance.xxxmini"
+                android:color="@android:color/transparent" />
+            <solid android:color="@color/applicationWhite" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke
+                android:width="@dimen/general.distance.xmini"
+                android:color="@android:color/transparent" />
+            <solid android:color="@color/pkuPdfGray" />
+        </shape>
+    </item>
+</layer-list>
