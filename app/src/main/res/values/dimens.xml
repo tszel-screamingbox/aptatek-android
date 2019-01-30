@@ -19,7 +19,6 @@
     <dimen name="general.distance.xxmini">3dp</dimen>
     <dimen name="general.distance.xmini">4dp</dimen>
     <dimen name="general.distance.5dp">5dp</dimen>
-    <dimen name="general.distance.6dp">6dp</dimen>
     <dimen name="general.distance.mini">8dp</dimen>
     <dimen name="general.distance.xxxsmall">10dp</dimen>
     <dimen name="general.distance.xxsmall">12dp</dimen>
