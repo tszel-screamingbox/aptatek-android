@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 
 public class BatteryView extends ConstraintLayout {
 
-    private static final int BATTERY_DEFAULT = 50;
+    private static final int BATTERY_DEFAULT = 100;
     private static final int BATTERY_LOW = 10;
     private static final int BATTERY_NORMAL = 35;
 

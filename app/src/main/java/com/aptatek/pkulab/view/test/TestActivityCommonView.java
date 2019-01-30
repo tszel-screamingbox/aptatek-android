@@ -12,7 +12,7 @@ public interface TestActivityCommonView {
 
     void setBatteryIndicatorVisible(boolean visible);
 
-    void setBatteryPercentageText(@NonNull String percentageText);
+    void setBatteryPercentage(int percentage);
 
     void setProgressVisible(boolean visible);
 

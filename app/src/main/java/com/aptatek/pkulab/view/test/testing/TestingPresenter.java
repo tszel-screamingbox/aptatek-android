@@ -60,7 +60,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_testing_message));
             attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.testing), true);
             attachedView.setBatteryIndicatorVisible(true);
-            attachedView.setBatteryPercentageText("100%");
+            attachedView.setBatteryPercentage(100);
             attachedView.setProgressVisible(true);
             attachedView.setProgressPercentage(0);
         });
