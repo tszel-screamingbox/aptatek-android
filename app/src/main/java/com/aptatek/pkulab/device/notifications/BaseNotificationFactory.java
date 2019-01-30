@@ -17,8 +17,8 @@ abstract class BaseNotificationFactory {
     protected final NotificationManager notificationManager;
 
     BaseNotificationFactory(final Context context,
-                            final ResourceInteractor resourceInteractor,
-                            final NotificationManager notificationManager) {
+                                   final ResourceInteractor resourceInteractor,
+                                   final NotificationManager notificationManager) {
         this.context = context;
         this.resourceInteractor = resourceInteractor;
         this.notificationManager = notificationManager;
@@ -33,12 +33,12 @@ abstract class BaseNotificationFactory {
             final NotificationChannel notificationChannel = new NotificationChannel(
                     getChannelId(),
                     resourceInteractor.getStringResource(R.string.test_countdown_notification_channel_name),
-                    NotificationManager.IMPORTANCE_LOW);
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.enableVibration(false);
+            notificationChannel.setVibrationPattern(new long[]{0L});
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
         return getChannelId();
     }
-
-
 }

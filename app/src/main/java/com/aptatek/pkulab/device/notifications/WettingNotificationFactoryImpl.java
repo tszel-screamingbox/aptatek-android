@@ -47,7 +47,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
         return new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_inprogress_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_inprogress_textformat, countdown.getRemainingFormattedText()))
-                .setSmallIcon(R.drawable.ic_play)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setProgress(Constants.HUNDRED_PERCENT, getWettingProgress(countdown.getRemainingMillis()), false)
                 .setVibrate(new long[]{0L})
                 .setSound(null)
@@ -66,7 +66,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
         return new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
-                .setSmallIcon(R.drawable.ic_play)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(createContentIntent())
                 .setAutoCancel(true)
                 .build();
@@ -80,10 +80,12 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
         final Notification notification = new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
-                .setSmallIcon(R.drawable.ic_play)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentIntent(createContentIntent())
                 .setSound(resourceInteractor.getUriForRawFile(R.raw.noti_sound))
                 .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setWhen(0)
                 .build();
 
         notification.flags = Notification.FLAG_INSISTENT;
