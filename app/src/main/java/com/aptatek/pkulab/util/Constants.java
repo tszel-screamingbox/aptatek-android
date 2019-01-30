@@ -15,7 +15,7 @@ public final class Constants {
     public static final float DEFAULT_PKU_NORMAL_CEIL = 350f;
     public static final float DEFAULT_PKU_HIGH_RANGE = 150f;
     public static final float DEFAULT_PKU_LOWEST_VALUE = 2f;
-    public static final float DEFAULT_PKU_HIGHEST_VALUE = 1155f;
+    public static final float DEFAULT_PKU_HIGHEST_VALUE = 675f;
     public static final float FLOAT_COMPARISION_ERROR_MARGIN = 0.0001f;
     public static final PkuLevelUnits DEFAULT_PKU_LEVEL_UNIT = PkuLevelUnits.MILLI_GRAM;
 
