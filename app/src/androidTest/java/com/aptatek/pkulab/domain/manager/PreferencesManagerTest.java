@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.test.TestScreens;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -69,6 +70,8 @@ public class PreferencesManagerTest {
         preferenceManager.setPkuRangeNormalCeil(Constants.DEFAULT_PKU_NORMAL_CEIL);
         preferenceManager.setPkuRangeUnit(Constants.DEFAULT_PKU_LEVEL_UNIT);
         preferenceManager.setRangeDialogShown(true);
+        preferenceManager.setPairedDevice(TEST);
+        preferenceManager.setTestStatus(TestScreens.BREAK_FOIL);
 
         preferenceManager.clearPreference(PreferenceManager.PREF_ENCRYPTED_PIN);
         preferenceManager.clearPreference(PreferenceManager.PREF_INCUBATION_START);
@@ -79,6 +82,8 @@ public class PreferencesManagerTest {
         preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_NORMAL_FLOOR);
         preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_UNIT);
         preferenceManager.clearPreference(PreferenceManager.PREF_PKU_RANGE_DIALOG);
+        preferenceManager.clearPreference(PreferenceManager.PREF_PAIRED);
+        preferenceManager.clearPreference(PreferenceManager.PREF_TEST_STATUS);
 
         assertNull(preferenceManager.getEncryptedPin());
         assertEquals(preferenceManager.getIncubationStart(), 0L);
@@ -89,6 +94,8 @@ public class PreferencesManagerTest {
         assertEquals(preferenceManager.getPkuRangeNormalFloor(), -1f, 0.1f);
         assertNull(preferenceManager.getPkuRangeUnit());
         assertFalse(preferenceManager.isRangeDialogShown());
+        assertNull(preferenceManager.getPairedDevice());
+        assertEquals(preferenceManager.getTestStatus(), TestScreens.TURN_READER_ON);
     }
 
     @Test
@@ -164,6 +171,28 @@ public class PreferencesManagerTest {
     @Test
     public void testPkuUnitDefault() {
         assertNull(preferenceManager.getPkuRangeUnit());
+    }
+
+    @Test
+    public void testGetPairedDeviceDefault() {
+        assertNull(preferenceManager.getPairedDevice());
+    }
+
+    @Test
+    public void testPairedDeviceSet() {
+        preferenceManager.setPairedDevice(TEST);
+        assertEquals(preferenceManager.getPairedDevice(), TEST);
+    }
+
+    @Test
+    public void testTestStatusDefault() {
+        assertEquals(preferenceManager.getTestStatus(), TestScreens.TURN_READER_ON);
+    }
+
+    @Test
+    public void testTestStatusSet() {
+        preferenceManager.setTestStatus(TestScreens.SELF_TEST);
+        assertEquals(preferenceManager.getTestStatus(), TestScreens.SELF_TEST);
     }
 
 }
