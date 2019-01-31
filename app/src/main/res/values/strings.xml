@@ -42,7 +42,7 @@
     <string name="connect.connected.button">Continue to Home Screen</string>
     <!-- Fingerprint Activity -->
     <string name="fingerprint.message">Set up fingerprint access if desired.</string>
-    <string name="fingerprint.option.disable">Disable Fingerprint</string>
+    <string name="fingerprint.option.disable">Decide Later</string>
     <string name="fingerprint.option.enable">Enable Fingerprint</string>
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
     <!-- Home Fragment -->
@@ -149,7 +149,7 @@
     <string name="settings.reminder.schedule.type.weekly">Weekly</string>
     <string name="settings.reminder.schedule.type.monthly">Monthly</string>
     <string name="settings.reminder.schedule.type.biweekly">Biweekly</string>
-    <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
+    <string name="settings.fingerprint.authentication">Fingerprint Unlock</string>
     <string name="settings.fingerprint.description">Turning it ON will enable the fingerprint scanner to start the application instead of requesting your PIN code on every application start.</string>
     <string name="settings.message.saved">Your settings are saved.</string>
     <string name="settings.title">Settings</string>
@@ -208,6 +208,7 @@
     <string name="test.collectblood.disclaimer">Tap the suction tip onto blood so that it completely fills up beyond the edge with blood</string>
     <string name="test.mixsample.title">Mix Sample</string>
     <string name="test.mixsample.message">Screw the cap on the chamber with the red tip inside and twist it to lock into place</string>
+    <string name="test.mixsample.warn">Once the cap is locked, shake the bottle 3 times to mix the blood.</string>
     <string name="test.wetting.title">Wetting&#8230;</string>
     <string name="test.wetting.message">Wait until the sample wetting period ends</string>
     <string name="test.wetting.disclaimer">Keep chamber sitting upright, do not connect it to anything yet</string>
@@ -220,6 +221,8 @@
     <string name="test.connectitall.message">Push the chamber into the hole in the cassette and insert it into the reader immediately</string>
     <string name="test.testing.title">Testing&#8230;</string>
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
+    <string name="test.selftest.title">Self Checking</string>
+    <string name="test.selftest.message">Reader is doing a self-check to make sure that i can function properly during testing</string>
 
     <!-- Toggle Activity -->
     <string name="toggle.button.connect">Connect Cube</string>

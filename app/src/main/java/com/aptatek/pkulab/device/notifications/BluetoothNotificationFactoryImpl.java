@@ -102,7 +102,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
     }
 
     private NotificationCompat.Builder applyCommonProperties(final NotificationCompat.Builder builder) {
-        return builder.setSmallIcon(R.drawable.ic_play)
+        return builder.setSmallIcon(R.drawable.ic_notification)
                 .setVibrate(new long[]{0L})
                 .setSound(null)
                 .setDefaults(0)

@@ -26,6 +26,7 @@ import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
 import com.aptatek.pkulab.view.test.connectitall.ConnectItAllFragment;
 import com.aptatek.pkulab.view.test.mixsample.MixSampleFragment;
 import com.aptatek.pkulab.view.test.pokefingertip.PokeFingertipFragment;
+import com.aptatek.pkulab.view.test.selftest.SelfTestFragment;
 import com.aptatek.pkulab.view.test.testing.TestingFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
@@ -44,17 +45,10 @@ import static android.view.View.VISIBLE;
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
         implements TestActivityView {
 
-    private static final String KEY_WETTING_FINISHED = "com.aptatek.wetting.finished";
     private static final String TAG_BATTER_DIALOG = "aptatek.main.home.battery.dialog";
 
     public static Intent createStarter(@NonNull final Context context) {
         return new Intent(context, TestActivity.class);
-    }
-
-    public static Bundle createForSampleWettingFinishedIntent() {
-        final Bundle bundle = new Bundle();
-        bundle.putBoolean(KEY_WETTING_FINISHED, true);
-        return bundle;
     }
 
     @Inject
@@ -79,10 +73,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
 
-        if (getIntent().getBooleanExtra(KEY_WETTING_FINISHED, false)) {
-            showScreen(TestScreens.TURN_READER_ON);
-        }
-
         screenPagerIndicator.setDynamicCount(false);
         screenPagerIndicator.setCount(TestScreens.values().length - 1); // Cancel screen is ignored
 
@@ -92,7 +82,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     protected void onStart() {
         super.onStart();
 
-        presenter.showProperScreen(getActiveBaseFragment() != null);
+        presenter.showProperScreen();
     }
 
     @Override
@@ -160,6 +150,10 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             }
             case TURN_READER_ON: {
                 fragment = new TurnReaderOnFragment();
+                break;
+            }
+            case SELF_TEST: {
+                fragment = new SelfTestFragment();
                 break;
             }
             case CONNECT_IT_ALL: {
