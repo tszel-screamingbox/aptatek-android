@@ -16,7 +16,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
 import com.github.mikephil.charting.renderer.BubbleChartRenderer;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
-import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
 
@@ -35,6 +34,7 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
     private static final float BUBBLE_TEXT_SIZE_STEP = 1f;
     private static final String DEMO_TEXT_4_DIGITS = "9999";
     private static final float CIRCLE_BORDER = 2f;
+    private static final float DASHED_LINE_LENGTH = 3f;
 
 
     protected BubbleDataProvider mChart;
@@ -142,7 +142,7 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
             if (strokeColor != 0) {
                 mHighlightPaint.setColor(strokeColor);
                 mHighlightPaint.setStyle(Paint.Style.STROKE);
-                final DashPathEffect effect = new DashPathEffect(new float[]{Utils.convertDpToPixel(6), Utils.convertDpToPixel(3)}, 0);
+                final DashPathEffect effect = new DashPathEffect(new float[]{convertDpToPixel(DASHED_LINE_LENGTH * 2), convertDpToPixel(DASHED_LINE_LENGTH)}, 0);
                 mHighlightPaint.setPathEffect(effect);
                 c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mHighlightPaint);
             }

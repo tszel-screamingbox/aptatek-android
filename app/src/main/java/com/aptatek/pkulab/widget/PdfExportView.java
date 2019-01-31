@@ -17,7 +17,6 @@ import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.Locale;
 
