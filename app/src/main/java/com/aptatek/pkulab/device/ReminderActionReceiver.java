@@ -11,6 +11,7 @@ import com.aptatek.pkulab.injection.component.DaggerBroadcastReceiverComponent;
 import com.aptatek.pkulab.injection.module.ReminderModule;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.test.TestActivity;
+import com.aptatek.pkulab.view.test.TestScreens;
 
 import java.io.Serializable;
 
@@ -25,6 +26,9 @@ public class ReminderActionReceiver extends BroadcastReceiver {
     AlarmManager alarmManager;
 
     @Inject
+    PreferenceManager preferenceManager;
+
+    @Inject
     ReminderNotificationFactory reminderNotificationFactory;
 
     @Override
@@ -37,6 +41,8 @@ public class ReminderActionReceiver extends BroadcastReceiver {
 
         final Serializable actionType = intent.getSerializableExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY);
         if (actionType == ReminderActionType.NOW) {
+            preferenceManager.setTestStatus(TestScreens.TURN_READER_ON);
+
             if (AptatekApplication.get(context).isInForeground()) {
                 context.startActivity(TestActivity.createStarter(context));
             } else {

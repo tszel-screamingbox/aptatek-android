@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.main.home;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
@@ -12,6 +13,7 @@ import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
+import com.aptatek.pkulab.view.test.TestScreens;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -54,9 +56,9 @@ public class HomeFragmentPresenterTest {
     @Mock
     private WettingInteractor wettingInteractor;
     @Mock
-    private DeviceHelper deviceHelper;
-    @Mock
     private PreferenceManager preferenceManager;
+    @Mock
+    private TestInteractor testInteractor;
 
     private final Date date = new Date();
     private HomeFragmentPresenter presenter;
@@ -73,10 +75,10 @@ public class HomeFragmentPresenterTest {
         doReturn(TEST_STRING).when(dailyChartFormatter).formatDate(ArgumentMatchers.anyLong(), ArgumentMatchers.anyBoolean());
         doReturn(TEST_STRING).when(dailyChartFormatter).getNameOfDay(ArgumentMatchers.anyLong());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
-        doReturn(false).when(deviceHelper).isBatteryLow();
+        doReturn(Single.just(TestScreens.TURN_READER_ON)).when(testInteractor).getLastScreen();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, deviceHelper, preferenceManager);
+        presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, preferenceManager, testInteractor);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)

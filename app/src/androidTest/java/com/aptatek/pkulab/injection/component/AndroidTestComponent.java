@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.injection.component;
 
+import com.aptatek.pkulab.domain.interactor.TestInteractorTest;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.injection.module.DataFactoryModule;
 import com.aptatek.pkulab.injection.module.DataMapperModule;
@@ -24,4 +25,5 @@ public interface AndroidTestComponent extends ApplicationComponent {
 
     ReminderTestComponent plus(ReminderModule reminderModule);
 
+    void inject(TestInteractorTest testInteractorTest);
 }
