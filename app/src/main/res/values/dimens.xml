@@ -24,6 +24,7 @@
     <dimen name="general.distance.xsmall">16dp</dimen>
     <dimen name="general.distance.20dp">20dp</dimen>
     <dimen name="general.distance.small">24dp</dimen>
+    <dimen name="general.distance.28dp">28dp</dimen>
     <dimen name="general.distance.32dp">32dp</dimen>
     <dimen name="general.distance">30dp</dimen>
     <dimen name="general.distance.normal">40dp</dimen>
@@ -34,6 +35,10 @@
     <dimen name="general.distance.xxlarge">130dp</dimen>
     <dimen name="general.distance.xxxlarge">180dp</dimen>
     <dimen name="general.distance.enorme">250dp</dimen>
+
+
+    <dimen name="header.title.spacing.extra">-11dp</dimen>
+    <dimen name="header.subtitle.spacing.extra">-3dp</dimen>
 
     <!-- Chart-->
     <dimen name="graph.bubble.size">56dp</dimen>
@@ -54,7 +59,7 @@
 
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
-    <dimen name="pin.dial.height">236dp</dimen>
+    <dimen name="pin.dial.height">232dp</dimen>
     <dimen name="pin.header.margin.minimum">47dp</dimen>
     <dimen name="pin.message.background.height">40dp</dimen>
 

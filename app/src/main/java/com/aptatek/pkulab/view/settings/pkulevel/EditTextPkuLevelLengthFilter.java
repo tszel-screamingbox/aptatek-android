@@ -10,7 +10,8 @@ import javax.inject.Inject;
 
 public class EditTextPkuLevelLengthFilter implements InputFilter {
 
-    private static final int LEVEL_MAX_LENGTH = 4;
+    private static final int LEVEL_MAX_LENGTH_MICRO_MOL = 3;
+    private static final int LEVEL_MAX_LENGTH_MILLI_GRAM = 4;
 
     private PkuLevelUnits currentUnit;
 
@@ -31,7 +32,7 @@ public class EditTextPkuLevelLengthFilter implements InputFilter {
             return "";
         }
 
-        int keep = LEVEL_MAX_LENGTH - (dest.length() - (dend - dstart));
+        int keep = (currentUnit == PkuLevelUnits.MICRO_MOL ? LEVEL_MAX_LENGTH_MICRO_MOL : LEVEL_MAX_LENGTH_MILLI_GRAM) - (dest.length() - (dend - dstart));
         if (keep <= 0) {
             return "";
         } else if (keep >= end - start) {
