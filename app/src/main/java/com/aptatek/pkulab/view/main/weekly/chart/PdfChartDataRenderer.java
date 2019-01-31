@@ -1,6 +1,8 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
@@ -18,6 +20,10 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.util.List;
 
+import static com.github.mikephil.charting.utils.Utils.calcTextHeight;
+import static com.github.mikephil.charting.utils.Utils.convertDpToPixel;
+import static com.github.mikephil.charting.utils.Utils.drawImage;
+
 // Simply copied the BubbleChartRenderer's source.
 // The difference are in this implementation:
 // - in the drawDataSet method since we need custom bubble colors for each entry.
@@ -25,9 +31,11 @@ import java.util.List;
 // - drawValues modified to render text properly positioned
 public class PdfChartDataRenderer extends BubbleChartRenderer {
 
-    private static final float BUBBLE_TEXT_PADDING_RATIO = 0.30f;
-    private static final float BUBBLE_TEXT_SIZE_STEP = 5f;
+    private static final float BUBBLE_TEXT_PADDING_RATIO = 0.1f;
+    private static final float BUBBLE_TEXT_SIZE_STEP = 1f;
     private static final String DEMO_TEXT_4_DIGITS = "9999";
+    private static final float CIRCLE_BORDER = 2f;
+
 
     protected BubbleDataProvider mChart;
 
@@ -38,7 +46,7 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
         mRenderPaint.setStyle(Paint.Style.FILL);
 
         mHighlightPaint.setStyle(Paint.Style.STROKE);
-        mHighlightPaint.setStrokeWidth(Utils.convertDpToPixel(1.5f));
+        mHighlightPaint.setStrokeWidth(convertDpToPixel(1.5f));
     }
 
     @Override
@@ -110,10 +118,12 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
             final int color;
             final int strokeColor;
             final Object data = entry.getData();
+            boolean isSick = false;
             if (data instanceof ChartEntryData) {
                 final ChartEntryData chartEntryData = (ChartEntryData) data;
                 color = chartEntryData.getBubbleColor();
                 strokeColor = chartEntryData.getStrokeColor();
+                isSick = chartEntryData.isSick();
             } else {
                 color = dataSet.getColor((int) entry.getX());
                 strokeColor = color;
@@ -122,8 +132,18 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
             mRenderPaint.setColor(color);
             c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mRenderPaint);
 
+            if (isSick) {
+                final Paint white = new Paint();
+                white.setColor(Color.WHITE);
+                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf - CIRCLE_BORDER, white);
+                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf - CIRCLE_BORDER * 2, mRenderPaint);
+            }
+
             if (strokeColor != 0) {
                 mHighlightPaint.setColor(strokeColor);
+                mHighlightPaint.setStyle(Paint.Style.STROKE);
+                final DashPathEffect effect = new DashPathEffect(new float[]{Utils.convertDpToPixel(6), Utils.convertDpToPixel(3)}, 0);
+                mHighlightPaint.setPathEffect(effect);
                 c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mHighlightPaint);
             }
         }
@@ -162,8 +182,8 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
 
 
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
-                iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
-                iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+                iconsOffset.x = convertDpToPixel(iconsOffset.x);
+                iconsOffset.y = convertDpToPixel(iconsOffset.y);
 
                 for (int j = 0; j < positions.length; j += 2) {
 
@@ -184,7 +204,7 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
                     mValuePaint.setTextSize(findOptimalTextSize(shapeSize, DEMO_TEXT_4_DIGITS, mValuePaint.getTextSize()));
 
                     if (dataSet.isDrawValuesEnabled()) {
-                        final float lineHeight = Utils.calcTextHeight(mValuePaint, DEMO_TEXT_4_DIGITS);
+                        final float lineHeight = calcTextHeight(mValuePaint, DEMO_TEXT_4_DIGITS);
                         drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
                                 y + (0.5f * lineHeight), valueTextColor);
                     }
@@ -193,11 +213,11 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
 
                         Drawable icon = entry.getIcon();
 
-                        Utils.drawImage(
+                        drawImage(
                                 c,
                                 icon,
-                                (int)(x + iconsOffset.x),
-                                (int)(y + iconsOffset.y),
+                                (int) (x + iconsOffset.x),
+                                (int) (y + iconsOffset.y),
                                 icon.getIntrinsicWidth(),
                                 icon.getIntrinsicHeight());
                     }

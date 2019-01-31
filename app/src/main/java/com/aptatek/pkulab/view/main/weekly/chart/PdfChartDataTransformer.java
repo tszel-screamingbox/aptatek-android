@@ -7,8 +7,8 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 
@@ -31,14 +31,13 @@ public class PdfChartDataTransformer extends WeeklyChartDataTransformer {
 
         final ChartUtils.State state = ChartUtils.getState(testResult.getPkuLevel(), rangeInfo);
         final @ColorRes int colorRes = ChartUtils.stateColor(state);
-        @ColorInt int labelColor = resourceInteractor.getColorResource(colorRes);
-        @ColorInt int bubbleColor = adjustAlpha(resourceInteractor.getColorResource(colorRes), 0.2f);
+        @ColorInt int labelColor = resourceInteractor.getColorResource(R.color.applicationWhite);
+        @ColorInt int bubbleColor = resourceInteractor.getColorResource(colorRes);
         @ColorInt int strokeColor = 0;
 
-        if (testResult.isSick()) {
-            labelColor = resourceInteractor.getColorResource(R.color.applicationWhite);
-            bubbleColor = resourceInteractor.getColorResource(colorRes);
-        } else if (testResult.isFasting()) {
+        if (testResult.isFasting()) {
+            labelColor = resourceInteractor.getColorResource(colorRes);
+            bubbleColor = resourceInteractor.getColorResource(R.color.applicationWhite);
             strokeColor = resourceInteractor.getColorResource(colorRes);
         }
 
@@ -47,6 +46,7 @@ public class PdfChartDataTransformer extends WeeklyChartDataTransformer {
                 .setStrokeColor(strokeColor)
                 .setBubbleColor(bubbleColor)
                 .setLabelColor(labelColor)
+                .setSick(testResult.isSick())
                 .build();
     }
 }
