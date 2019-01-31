@@ -29,6 +29,7 @@ public class PreferenceManager {
     public static final String PREF_PKU_RANGE_DIALOG = "aptatek.range.dialog";
     public static final String PREF_PAIRED = "aptatek.device.paired";
     public static final String PREF_TEST_STATUS = "aptatek.test.status";
+    public static final String PREF_DB_ENCRYPTED_WITH_PIN = "aptatek.database.encrypted";
 
     private final SharedPreferences sharedPreferences;
 
@@ -132,6 +133,14 @@ public class PreferenceManager {
 
     public void setTestStatus(final TestScreens testStatus) {
         sharedPreferences.edit().putInt(PREF_TEST_STATUS, testStatus.ordinal()).apply();
+    }
+
+    public boolean isDbEncrpytedWithPin() {
+        return sharedPreferences.getBoolean(PREF_DB_ENCRYPTED_WITH_PIN, false);
+    }
+
+    public void setPrefDbEncryptedWithPin() {
+        sharedPreferences.edit().putBoolean(PREF_DB_ENCRYPTED_WITH_PIN, true).apply();
     }
 
     public void clearPreference(final String key) {
