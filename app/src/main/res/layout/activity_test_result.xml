@@ -16,14 +16,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04" />
+        app:layout_constraintGuide_begin="@dimen/general.distance.32dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.96" />
+        app:layout_constraintGuide_end="@dimen/general.distance.32dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideBubbleStart"
@@ -68,17 +68,17 @@
         android:text="@string/test.result.done"
         app:layout_constraintBottom_toTopOf="@+id/test_result_range_info"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/test_result_bubble" />
+        app:layout_constraintStart_toStartOf="@id/guideStart" />
 
-    <TextView
+    <Button
         android:id="@+id/test_result_range_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/General.Rounded.Gray.Button.Secondary"
+        android:layout_width="0dp"
         android:layout_marginTop="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/general.distance.small"
+        android:drawablePadding="@dimen/general.distance.xxsmall"
+        android:drawableEnd="@drawable/ic_right_arrow"
         android:text="@string/test.result.range.info"
-        android:textColor="@color/applicationSolidGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintHorizontal_bias="0.5"

@@ -78,30 +78,27 @@ public class SettingsItemAdapter extends BaseAdapter<RecyclerView.ViewHolder, Se
 
         holder.itemView.setOnClickListener(v -> {
             if (settingsItemClickListener != null) {
-                if (settingsAdapterItem.getSettingsItem() == SettingsItem.FINGERPRINT_AUTH) {
+                if (settingsAdapterItem.getSettingsItem() == SettingsItem.FINGERPRINT_AUTH && settingsAdapterItem.isEnabled()) {
                     settingsItemClickListener.onFingerprintAuthToggled(!settingsAdapterItem.isChecked());
                 } else {
                     settingsItemClickListener.onSettingsItemClicked(settingsAdapterItem.getSettingsItem());
                 }
             }
         });
+
+        if (holder instanceof FingerprintItemViewHolder) {
+            ((FingerprintItemViewHolder) holder).switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (settingsItemClickListener != null) {
+                    settingsItemClickListener.onFingerprintAuthToggled(isChecked);
+                }
+            });
+        }
     }
 
-    public void updateFingerprintItemChecked(final boolean isChecked) {
+    public void updateFingerprintItem(final boolean isEnabled, final boolean isChecked) {
         setData(Ix.from(getData()).map(item -> {
                     if (item.getSettingsItem() == SettingsItem.FINGERPRINT_AUTH) {
-                        return new SettingsAdapterItem(item.getSettingsItem(), item.isEnabled(), isChecked);
-                    }
-
-                    return item;
-                }).toList()
-        );
-    }
-
-    public void updateFingerprintItemEnabled(final boolean isEnabled) {
-        setData(Ix.from(getData()).map(item -> {
-                    if (item.getSettingsItem() == SettingsItem.FINGERPRINT_AUTH) {
-                        return new SettingsAdapterItem(item.getSettingsItem(), isEnabled, item.isChecked());
+                        return new SettingsAdapterItem(item.getSettingsItem(), isEnabled, isChecked);
                     }
 
                     return item;

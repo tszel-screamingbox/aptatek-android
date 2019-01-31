@@ -49,5 +49,5 @@
     <color name="testPageIndicatorBlue">#20E8CD</color>
     <color name="testPageIndicatorGray">#D3DEE5</color>
 
-    <color name="switchTrack">#D3DEE6</color>
+    <color name="switchTrack">#D3DEE5</color>
 </resources>

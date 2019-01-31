@@ -44,6 +44,9 @@
     <dimen name="graph.bubble.stroke.small">4dp</dimen>
     <dimen name="graph.item.size">208dp</dimen>
 
+    <!-- Switch -->
+    <dimen name="switch.width">56dp</dimen>
+
     <!-- Main -->
     <dimen name="main.bottom.margin">80dp</dimen>
     <dimen name="main.bottom.margin.empty">48dp</dimen>

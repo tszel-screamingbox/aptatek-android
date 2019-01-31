@@ -77,13 +77,17 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
     public Notification createCountdownFinishedNotification() {
         extrasBundle = TestActivity.createForSampleWettingFinishedIntent();
 
-        return new NotificationCompat.Builder(context, createChannel())
+        final Notification notification = new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
                 .setSmallIcon(R.drawable.ic_play)
                 .setContentIntent(createContentIntent())
+                .setSound(resourceInteractor.getUriForRawFile(R.raw.noti_sound))
                 .setAutoCancel(true)
                 .build();
+
+        notification.flags = Notification.FLAG_INSISTENT;
+        return notification;
     }
 
 }
