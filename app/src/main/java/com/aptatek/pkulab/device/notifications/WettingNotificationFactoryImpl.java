@@ -77,7 +77,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
                 .setWhen(0)
                 .build();
 
-        notification.flags = Notification.FLAG_INSISTENT | Notification.FLAG_AUTO_CANCEL;
+        notification.flags |= Notification.FLAG_INSISTENT;
 
         return notification;
     }

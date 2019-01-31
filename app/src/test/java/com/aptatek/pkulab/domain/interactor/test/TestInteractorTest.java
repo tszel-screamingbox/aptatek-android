@@ -21,7 +21,7 @@ public class TestInteractorTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        interactor = new TestInteractor(preferenceManager);
+        interactor = new TestInteractor(preferenceManager, notificationManagerCompat);
     }
 
     @Test
