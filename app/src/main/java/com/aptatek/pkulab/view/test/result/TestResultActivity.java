@@ -100,12 +100,12 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
 
     @OnClick(R.id.test_result_done)
     public void onClickDone() {
-        launchActivity(new Intent(this, DisposeActivity.class), false, Animation.FADE);
+        launchActivity(new Intent(this, DisposeActivity.class));
         finish();
     }
 
     @OnClick(R.id.test_result_range_info)
     public void onClickResults() {
-        startActivity(RangeInfoActivity.starter(this));
+        launchActivity(RangeInfoActivity.starter(this));
     }
 }
