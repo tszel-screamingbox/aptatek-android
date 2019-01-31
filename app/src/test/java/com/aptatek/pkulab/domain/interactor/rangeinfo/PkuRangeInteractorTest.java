@@ -129,7 +129,7 @@ public class PkuRangeInteractorTest {
     @Test
     public void testSaveNormalRangeCallsDataSource() throws Exception {
         final PkuLevel floor = PkuLevel.create(3f, PkuLevelUnits.MILLI_GRAM);
-        final PkuLevel ceil = PkuLevel.create(17.2f, PkuLevelUnits.MILLI_GRAM);
+        final PkuLevel ceil = PkuLevel.create(10.5f, PkuLevelUnits.MILLI_GRAM);
         final TestObserver<Void> test = interactor.saveNormalRange(floor, ceil).test();
         test.assertComplete();
         test.assertNoErrors();
