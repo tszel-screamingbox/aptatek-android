@@ -76,22 +76,11 @@
 
         <Button
             android:id="@+id/bigSettingsButton"
-            style="@style/General.Rounded.Gray.Button"
+            style="@style/Grey.Settings.Button.Big"
             android:layout_width="0dp"
-            android:layout_height="@dimen/general.button.height.big"
-            android:layout_marginStart="@dimen/general.distance.32dp"
-            android:layout_marginTop="@dimen/general.distance.xxsmall"
-            android:layout_marginEnd="@dimen/general.distance.32dp"
-            android:layout_marginBottom="@dimen/main.bottom.margin.empty"
-            android:drawableStart="@drawable/settings_button_background"
-            android:elevation="0dp"
-            android:paddingStart="@dimen/general.button.icon.margin.start"
-            android:text="@string/main.button.settings"
-            android:textColor="@color/applicationSolidGray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
-
 
         <Button
             android:id="@+id/settingsButton"

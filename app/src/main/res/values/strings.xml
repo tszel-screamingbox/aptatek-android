@@ -28,8 +28,8 @@
     <string name="connect.turnon.message">Wait until the display shows "Ready"</string>
     <string name="connect.turnon.notsupported.title">Device Not Supported</string>
     <string name="connect.turnon.notsupported.message">Unfortunately the device you are using is not capable to connect to the reader.</string>
-    <string name="connect.permission.title">Bluetooth &amp; Location Are Required</string>
-    <string name="connect.permission.message">For the functioning of this app you need to connect to Bluetooth and to use your Location.</string>
+    <string name="connect.permission.title">Bluetooth &amp; Location are Required</string>
+    <string name="connect.permission.message">For the functioning of this app, you need to allow access to Bluetooth and location in order to be able to find your bluetooth reader for pairing.</string>
     <string name="connect.permission.button">Grant Missing Permissions</string>
     <string name="connect.scan.title">Available Readers</string>
     <string name="connect.scan.message">Hold on while we are looking for readers around you</string>
@@ -223,7 +223,7 @@
     <string name="test.testing.title">Testing&#8230;</string>
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
     <string name="test.selftest.title">Self Checking</string>
-    <string name="test.selftest.message">Reader is doing a self-check to make sure that i can function properly during testing</string>
+    <string name="test.selftest.message">Reader is doing a self-check to make sure that it can function properly during testing</string>
 
     <!-- Toggle Activity -->
     <string name="toggle.button.connect">Connect Cube</string>

@@ -4,54 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.08" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.92" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.92" />
-
     <com.aptatek.pkulab.widget.HeaderView
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toTopOf="@id/guideTop"
+        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginTop="@dimen/connect.permissions.top.margin"
+        android:layout_marginEnd="@dimen/general.distance.mini"
+        app:layout_constraintBottom_toTopOf="@+id/permissionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:subTitleText="@string/connect.permission.message"
         app:titleText="@string/connect.permission.title" />
 
     <Button
         android:id="@+id/permissionButton"
-        style="@style/General.Rounded.Button"
+        style="@style/Grey.Settings.Button.Big"
         android:layout_width="0dp"
-        android:layout_height="@dimen/general.button.height.big"
-        android:text="@string/connect.permission.button"
-        android:textSize="@dimen/font.size.normal"
-        app:layout_constraintBottom_toTopOf="@id/guideBottom"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
