@@ -15,13 +15,12 @@ public class TestInteractor {
 
     private final PreferenceManager preferenceManager;
 
-    private final NotificationManagerCompat notificationManagerCompat;
+    @Inject
+    NotificationManagerCompat notificationManagerCompat;
 
     @Inject
-    public TestInteractor(final PreferenceManager preferenceManager,
-                          final NotificationManagerCompat notificationManagerCompat) {
+    public TestInteractor(final PreferenceManager preferenceManager) {
         this.preferenceManager = preferenceManager;
-        this.notificationManagerCompat = notificationManagerCompat;
     }
 
     public Single<TestScreens> getLastScreen() {

@@ -3,6 +3,7 @@ package com.aptatek.pkulab.presenter.test.wetting;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.model.Countdown;
 import com.aptatek.pkulab.view.test.wetting.WettingPresenter;
@@ -47,6 +48,9 @@ public class WettingPresenterTest {
     WettingInteractor wettingInteractor;
 
     @Mock
+    TestInteractor testInteractor;
+
+    @Mock
     WettingView view;
 
     private WettingPresenter presenter;
@@ -89,7 +93,7 @@ public class WettingPresenterTest {
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt(), ArgumentMatchers.anyVararg())).thenReturn(TEST_STRING);
         when(wettingInteractor.getWettingCountdown()).thenReturn(countdownProcessor);
 
-        presenter = new WettingPresenter(resourceInteractor, wettingInteractor, testingPresenter);
+        presenter = new WettingPresenter(resourceInteractor, wettingInteractor, testInteractor);
         presenter.attachView(view);
     }
 
