@@ -36,4 +36,7 @@ public final class Constants {
     public static final long PIN_IDLE_PERIOD_MS = 20L * 1000L;
     public static final String PIN_IDLE_ACTION = "requestPinDueToInactivity";
 
+    public static final int WETTING_COUNTDOWN_NOTIFICATION_ID = 2668;
+    public static final int WETTING_FINISHED_NOTIFICATION_ID = 726;
+
 }
