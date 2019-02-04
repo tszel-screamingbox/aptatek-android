@@ -5,12 +5,12 @@ import android.support.annotation.NonNull;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
@@ -136,12 +136,17 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
         final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
 
+        String unitText = resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                ? R.string.rangeinfo_pkulevel_mmol
+                : R.string.rangeinfo_pkulevel_mg);
+        if (!pkuRangeInfo.isDefaultValue()) {
+            unitText = unitText + resourceInteractor.getStringResource(R.string.pdf_export_warn);
+        }
+
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartDateFormatter.getPdfMonthFormat(weekList.size() - monthsBefore - 1))
                 .setFileName(resourceInteractor.getStringResource(R.string.pdf_export_file_name, weeklyChartDateFormatter.getPdfFileNameDateFormat()))
-                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
-                        ? R.string.rangeinfo_pkulevel_mmol
-                        : R.string.rangeinfo_pkulevel_mg))
+                .setUnit(unitText)
                 .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
                         : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalFloorValue()))

@@ -12,7 +12,7 @@
     <item>
         <shape android:shape="oval">
             <stroke
-                android:width="@dimen/general.distance.xxxmini"
+                android:width="@dimen/general.distance.xxmini"
                 android:color="@android:color/transparent" />
             <solid android:color="@color/applicationWhite" />
         </shape>
@@ -20,7 +20,7 @@
     <item>
         <shape android:shape="oval">
             <stroke
-                android:width="@dimen/general.distance.xmini"
+                android:width="@dimen/general.distance.6dp"
                 android:color="@android:color/transparent" />
             <solid android:color="@color/pkuPdfGray" />
         </shape>

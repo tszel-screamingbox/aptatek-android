@@ -56,6 +56,23 @@ public class PkuRangeDataSourceImpl implements PkuRangeDataSource {
     }
 
     @Override
+    public boolean isDefaultValue() {
+        if (getNormalFloorValueMMol() != Constants.DEFAULT_PKU_NORMAL_FLOOR) {
+            return false;
+        }
+
+        if (getNormalCeilValueMMol() != Constants.DEFAULT_PKU_NORMAL_CEIL) {
+            return false;
+        }
+
+        if (getHighCeilValueMMol() != (Constants.DEFAULT_PKU_HIGH_RANGE + Constants.DEFAULT_PKU_NORMAL_CEIL)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public PkuLevelUnits getDisplayUnit() {
         final PkuLevelUnits pkuRangeUnit = preferenceManager.getPkuRangeUnit();
         return pkuRangeUnit == null ? Constants.DEFAULT_PKU_LEVEL_UNIT : pkuRangeUnit;
