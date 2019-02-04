@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:dither="true"
+    android:shape="rectangle"
+    android:useLevel="false">
+    <corners android:radius="@dimen/switch.track.corners" />
+    <solid android:color="@color/switchTrack" />
+    <size
+        android:width="@dimen/switch.track.width"
+        android:height="@dimen/switch.track.height" />
+
+    <stroke
+        android:width="@dimen/switch.track.height"
+        android:color="@color/transparent"/>
+
+</shape>

@@ -261,10 +261,9 @@
         <item name="android:gravity">center_vertical</item>
     </style>
 
-    <style name="SwitchStyle" parent="Theme.AppCompat.Light">
+    <style name="SwitchStyle">
         <item name="android:thumb">@drawable/switch_selector</item>
-        <item name="trackTint">@color/switchTrack</item>
-        <item name="android:switchMinWidth">@dimen/switch.width</item>
+        <item name="track">@drawable/switch_track</item>
     </style>
 
     <style name="DefaultDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
