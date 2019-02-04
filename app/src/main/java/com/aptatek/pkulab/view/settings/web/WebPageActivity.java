@@ -46,6 +46,6 @@ public class WebPageActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

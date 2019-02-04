@@ -69,7 +69,7 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
     @Override
     public void finish() {
         super.finish();
-        setTransitionAnimation(Animation.RIGHT_TO_LEFT);
+        setTransitionAnimation(Animation.LEFT_TO_RIGHT);
     }
 
     @Override
