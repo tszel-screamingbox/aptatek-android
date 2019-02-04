@@ -103,6 +103,8 @@
     <dimen name="test.result.circle.width">20dp</dimen>
 
     <dimen name="test.progressbar.height">12dp</dimen>
+    <dimen name="test.bottombar.height">56dp</dimen>
+    <dimen name="test.top.margin">138dp</dimen>
 
     <dimen name="daily.result.sliding.background.corner">20dp</dimen>
 
