@@ -23,10 +23,6 @@ import timber.log.Timber;
 
 public class WettingForegroundService extends BaseForegroundService {
 
-    private static final int COUNTDOWN_NOTIFICATION_ID = 726;
-    private static final int ERROR_NOTIFICATION_ID = 7263;
-    private static final int FINISHED_NOTIFICATION_ID = 7264;
-
     @Inject
     WettingInteractor wettingInteractor;
 
@@ -40,9 +36,9 @@ public class WettingForegroundService extends BaseForegroundService {
     protected void injectService(final ApplicationComponent component) {
         final TestServiceComponent serviceComponent = DaggerTestServiceComponent.builder()
                 .applicationComponent(component)
-                        .testModule(new TestModule())
-                        .serviceModule(new ServiceModule(this))
-                        .build();
+                .testModule(new TestModule())
+                .serviceModule(new ServiceModule(this))
+                .build();
         serviceComponent.inject(this);
     }
 
@@ -54,7 +50,7 @@ public class WettingForegroundService extends BaseForegroundService {
 
     @Override
     protected void startForeground() {
-        startForeground(COUNTDOWN_NOTIFICATION_ID, countdownNotificationFactory.createCountdownNotification(
+        startForeground(Constants.WETTING_COUNTDOWN_NOTIFICATION_ID, countdownNotificationFactory.createCountdownNotification(
                 Countdown.builder()
                         .setRemainingFormattedText("30:00")
                         .setRemainingMillis(Constants.DEFAULT_WETTING_PERIOD)
@@ -67,24 +63,24 @@ public class WettingForegroundService extends BaseForegroundService {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    countdown -> {
-                        Timber.d("Wetting Countdown: %s", countdown);
-                        notificationManager.notify(COUNTDOWN_NOTIFICATION_ID, countdownNotificationFactory.createCountdownNotification(countdown));
-                    },
-                    error -> {
-                        Timber.d("Wetting Countdown error: %s", error.toString());
-                        stopForeground(false);
-                        if (!(error instanceof WettingNotRunningError)) {
-                            notificationManager.notify(ERROR_NOTIFICATION_ID, countdownNotificationFactory.createCountdownErrorNotification(error));
-                        }
-                        stopSelf();
-                    },
-                    () -> {
-                        Timber.d("Wetting Countdown complete");
-                        stopForeground(false);
-                        notificationManager.notify(FINISHED_NOTIFICATION_ID, countdownNotificationFactory.createCountdownFinishedNotification());
-                        stopSelf();
-                    })
+                        countdown -> {
+                            Timber.d("Wetting Countdown: %s", countdown);
+                            notificationManager.notify(Constants.WETTING_COUNTDOWN_NOTIFICATION_ID, countdownNotificationFactory.createCountdownNotification(countdown));
+                        },
+                        error -> {
+                            Timber.d("Wetting Countdown error: %s", error.toString());
+                            stopForeground(false);
+                            if (!(error instanceof WettingNotRunningError)) {
+                                notificationManager.notify(Constants.WETTING_COUNTDOWN_NOTIFICATION_ID, countdownNotificationFactory.createCountdownErrorNotification(error));
+                            }
+                            stopSelf();
+                        },
+                        () -> {
+                            Timber.d("Wetting Countdown complete");
+                            stopForeground(false);
+                            notificationManager.notify(Constants.WETTING_FINISHED_NOTIFICATION_ID, countdownNotificationFactory.createCountdownFinishedNotification());
+                            stopSelf();
+                        })
         );
     }
 

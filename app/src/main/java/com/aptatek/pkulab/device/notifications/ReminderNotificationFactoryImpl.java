@@ -59,7 +59,7 @@ public class ReminderNotificationFactoryImpl extends BaseNotificationFactory imp
                         PendingIntent.getBroadcast(context, REMINDER_ACTION_HALF_HOUR_REQUEST_CODE, halfHourIntent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
 
-        notification.flags = Notification.FLAG_INSISTENT;
+        notification.flags |= Notification.FLAG_INSISTENT;
         return notification;
     }
 

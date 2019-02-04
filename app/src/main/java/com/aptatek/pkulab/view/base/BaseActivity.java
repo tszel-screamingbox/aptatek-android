@@ -122,6 +122,10 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         return activityComponent;
     }
 
+    public void launchActivity(final Intent intent) {
+        launchActivity(intent, false, Animation.RIGHT_TO_LEFT);
+    }
+
     public void launchActivity(final Intent intent, final boolean clearHistory, final Animation changeAnimation) {
         if (clearHistory) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

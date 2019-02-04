@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.test.wetting;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
@@ -16,13 +17,16 @@ import timber.log.Timber;
 public class WettingPresenter extends TestBasePresenter<WettingView> {
 
     private final WettingInteractor wettingInteractor;
+    private final TestInteractor testingInteractor;
     private CompositeDisposable disposables;
 
     @Inject
     public WettingPresenter(final ResourceInteractor resourceInteractor,
-                            final WettingInteractor wettingInteractor) {
+                            final WettingInteractor wettingInteractor,
+                            final TestInteractor testingInteractor) {
         super(resourceInteractor);
         this.wettingInteractor = wettingInteractor;
+        this.testingInteractor = testingInteractor;
     }
 
     @Override
@@ -60,6 +64,10 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
             attachedView.setDisclaimerViewVisible(true);
             attachedView.setDisclaimerMessage(resourceInteractor.getStringResource(R.string.test_wetting_disclaimer));
         });
+    }
+
+    public void cancelCountdownNotification() {
+        disposables.add(testingInteractor.cancelWettingCountdownNotification().subscribe());
     }
 
     public void resetWetting() {
