@@ -20,7 +20,9 @@ public abstract class PkuRangeInfo {
     public abstract boolean isDefaultValue();
 
     public static PkuRangeInfo.Builder builder() {
-        return new AutoValue_PkuRangeInfo.Builder();
+        return new AutoValue_PkuRangeInfo
+                .Builder()
+                .setDefaultValue(true);
     }
 
     @AutoValue.Builder

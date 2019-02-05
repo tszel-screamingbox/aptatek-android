@@ -190,7 +190,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
 
             return false;
         });
-        etNormalCeil.setFilters(new InputFilter[] { ceilFilter });
+        etNormalCeil.setFilters(new InputFilter[]{ceilFilter});
 
         rangeSet = false;
         presenter.refresh();

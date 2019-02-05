@@ -136,11 +136,14 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
         final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
 
-        String unitText = resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+        final String pkuLevel = resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                 ? R.string.rangeinfo_pkulevel_mmol
                 : R.string.rangeinfo_pkulevel_mg);
-        if (!pkuRangeInfo.isDefaultValue()) {
-            unitText = unitText + resourceInteractor.getStringResource(R.string.pdf_export_warn);
+        final String unitText;
+        if (pkuRangeInfo.isDefaultValue()) {
+            unitText = resourceInteractor.getStringResource(R.string.pdf_export_unit_description, pkuLevel);
+        } else {
+            unitText = resourceInteractor.getStringResource(R.string.pdf_export_unit_description_warn, pkuLevel);
         }
 
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
