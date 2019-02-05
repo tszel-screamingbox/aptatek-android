@@ -55,9 +55,9 @@ public class FakeCubeDataGenerator {
 
     private void ensureCubeDataTimeBetweenRandomData(final List<TestResultDataModel> randomModels, final TestResultDataModel testResultDataModel) {
         final boolean hasCollision = Ix.from(randomModels)
-            .filter(model -> Math.abs(testResultDataModel.getTimestamp() - model.getTimestamp()) < MIN_TIME_BETWEEN_MEASURES)
-            .count()
-            .single() > 0;
+                .filter(model -> Math.abs(testResultDataModel.getTimestamp() - model.getTimestamp()) < MIN_TIME_BETWEEN_MEASURES)
+                .count()
+                .single() > 0;
         if (hasCollision) {
             testResultDataModel.setTimestamp(generateRandomTimeAtGivenDay(testResultDataModel.getTimestamp()));
         }
