@@ -3,7 +3,7 @@ package com.aptatek.pkulab.injection.module;
 import android.app.NotificationManager;
 import android.content.Context;
 
-import com.aptatek.pkulab.device.ReminderNotificationFactoryImpl;
+import com.aptatek.pkulab.device.notifications.ReminderNotificationFactoryImpl;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificationFactory;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;

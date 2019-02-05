@@ -3,17 +3,20 @@ package com.aptatek.pkulab.view.test;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.device.DeviceHelper;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Completable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -26,9 +29,11 @@ import static com.aptatek.pkulab.domain.interactor.wetting.WettingStatus.NOT_STA
 import static com.aptatek.pkulab.domain.interactor.wetting.WettingStatus.RUNNING;
 import static com.aptatek.pkulab.view.test.TestScreens.BREAK_FOIL;
 import static com.aptatek.pkulab.view.test.TestScreens.CANCEL;
+import static com.aptatek.pkulab.view.test.TestScreens.COLLECT_BLOOD;
 import static com.aptatek.pkulab.view.test.TestScreens.TURN_READER_ON;
 import static com.aptatek.pkulab.view.test.TestScreens.WETTING;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,9 +48,10 @@ public class TestActivityPresenterTest {
     private WettingInteractor wettingInteractor;
     @Mock
     private DeviceHelper deviceHelper;
-
     @Mock
     private TestActivityView view;
+    @Mock
+    private TestInteractor testInteractor;
 
     private TestActivityPresenter presenter;
 
@@ -55,8 +61,10 @@ public class TestActivityPresenterTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        doReturn(Single.just(TestScreens.TURN_READER_ON)).when(testInteractor).getLastScreen();
+        doReturn(Completable.complete()).when(testInteractor).setLastScreen(ArgumentMatchers.any());
 
-        presenter = new TestActivityPresenter(wettingInteractor, deviceHelper);
+        presenter = new TestActivityPresenter(wettingInteractor, testInteractor, deviceHelper);
         presenter.attachView(view);
     }
 
@@ -81,7 +89,7 @@ public class TestActivityPresenterTest {
     @Test
     public void testFinishedTest() {
         when(wettingInteractor.getWettingStatus()).thenReturn(Single.just(FINISHED));
-        presenter.showProperScreen(true);
+        presenter.showProperScreen();
         verify(view).showScreen(TURN_READER_ON);
     }
 
@@ -94,7 +102,8 @@ public class TestActivityPresenterTest {
     @Test
     public void testRunningTest() {
         when(wettingInteractor.getWettingStatus()).thenReturn(Single.just(RUNNING));
-        presenter.showProperScreen(true);
+        when(testInteractor.getLastScreen()).thenReturn(Single.just(TestScreens.WETTING));
+        presenter.showProperScreen();
         verify(view).showScreen(WETTING);
     }
 
@@ -106,8 +115,8 @@ public class TestActivityPresenterTest {
      */
     @Test
     public void testNotStartedTest() {
-        when(wettingInteractor.getWettingStatus()).thenReturn(Single.just(NOT_STARTED));
-        presenter.showProperScreen(false);
+        when(testInteractor.getLastScreen()).thenReturn(Single.just(TestScreens.BREAK_FOIL));
+        presenter.showProperScreen();
         verify(view).showScreen(BREAK_FOIL);
     }
 
@@ -131,7 +140,7 @@ public class TestActivityPresenterTest {
      */
     @Test
     public void testShowPreviousScreen() {
-        presenter.onShowPreviousScreen(BREAK_FOIL);
+        presenter.onShowPreviousScreen(COLLECT_BLOOD);
         verify(view).showPreviousScreen();
     }
 

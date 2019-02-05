@@ -34,4 +34,11 @@ public class ConnectItAllFragment extends TestBaseFragment<ConnectItAllView, Con
     public TestScreens getScreen() {
         return TestScreens.CONNECT_IT_ALL;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        presenter.cancelWettingNotification();
+    }
 }

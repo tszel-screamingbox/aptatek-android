@@ -64,6 +64,13 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
         return true;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        presenter.cancelCountdownNotification();
+    }
+
     @NonNull
     @Override
     public WettingPresenter createPresenter() {

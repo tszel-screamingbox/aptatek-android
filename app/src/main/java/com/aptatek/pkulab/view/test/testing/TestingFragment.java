@@ -28,7 +28,7 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     @Override
     public void onTestFinished() {
         getActivity().finish();
-        startActivity(TestResultActivity.starter(getActivity()));
+        getBaseActivity().launchActivity(TestResultActivity.starter(getActivity()));
     }
 
     @NonNull

@@ -3,6 +3,7 @@ package com.aptatek.pkulab.device.notifications;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.os.Build;
 
 import com.aptatek.pkulab.R;
@@ -32,13 +33,18 @@ abstract class BaseNotificationFactory {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final NotificationChannel notificationChannel = new NotificationChannel(
                     getChannelId(),
-                    resourceInteractor.getStringResource(R.string.test_countdown_notification_channel_name),
-                    NotificationManager.IMPORTANCE_LOW);
+                    resourceInteractor.getStringResource(R.string.notification_channel_name),
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setSound(
+                    resourceInteractor.getUriForRawFile(R.raw.noti_sound),
+                    new AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                            .build());
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
         return getChannelId();
     }
-
 
 }
