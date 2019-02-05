@@ -38,6 +38,8 @@
             android:id="@+id/testPageIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/general.distance.xxsmall"
+            android:layout_marginEnd="@dimen/general.distance.xxsmall"
             app:layout_constraintBottom_toBottomOf="@id/testCancelButton"
             app:layout_constraintEnd_toStartOf="@id/testNextButton"
             app:layout_constraintHorizontal_bias="0.5"
