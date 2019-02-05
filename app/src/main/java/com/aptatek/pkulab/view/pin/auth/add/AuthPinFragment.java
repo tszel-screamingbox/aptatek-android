@@ -34,6 +34,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     protected void initObjects(final View view) {
         mainHeaderView.setTitle(getString(R.string.auth_pin_title));
+        mainHeaderView.setSubtitle(getString(R.string.auth_pin_hint));
         messageTextView.setVisibility(View.INVISIBLE);
     }
 
