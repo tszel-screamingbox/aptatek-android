@@ -16,6 +16,8 @@ import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportDialog;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval;
 import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
 import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
 import com.aptatek.pkulab.widget.PdfExportView;
@@ -23,6 +25,7 @@ import com.aptatek.pkulab.widget.PdfExportView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +40,9 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.View.inflate;
 
-public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView {
+public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView, PdfExportDialog.PdfExportDialogCallback {
+
+    private static String PDF_EXPORT_DIALOG_TAG = "aptatek.pdf.export.dialog";
 
     @Inject
     WeeklyResultFragmentPresenter presenter;
@@ -99,7 +104,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @OnClick(R.id.buttonPdfExport)
     public void onPdfExportClicked() {
-        presenter.getPdfChartData(chartViewPager.getCurrentItem());
+        PdfExportDialog.create(this).show(requireFragmentManager(), PDF_EXPORT_DIALOG_TAG);
     }
 
     @OnClick(R.id.rightArrow)
@@ -153,9 +158,9 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     }
 
     @Override
-    public void onPdfDataReady(final PdfEntryData pdfData) {
+    public void onPdfDataReady(final ArrayList<PdfEntryData> data) {
         final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
-        content.setData(pdfData);
+        content.setData(data.get(0));
 
         final PdfDocument document = new PdfDocument();
 
@@ -173,7 +178,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
         document.finishPage(page);
 
-        final File file = new File(getBaseActivity().getFilesDir(), pdfData.getFileName());
+        final File file = new File(getBaseActivity().getFilesDir(), data.get(0).getFileName());
 
         try {
             final FileOutputStream out = new FileOutputStream(file);
@@ -192,5 +197,10 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
         startActivity(Intent.createChooser(emailIntent, ""));
+    }
+
+    @Override
+    public void onIntervalSelected(@NonNull PdfExportInterval pdfExportInterval) {
+        presenter.getPdfChartData(chartViewPager.getCurrentItem(), pdfExportInterval);
     }
 }
