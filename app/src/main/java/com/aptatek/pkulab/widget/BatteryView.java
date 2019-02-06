@@ -20,8 +20,6 @@ public class BatteryView extends ConstraintLayout {
     private static final int BATTERY_LOW = 10;
     private static final int BATTERY_NORMAL = 35;
 
-    private final Context context;
-
     @BindView(R.id.batteryImage)
     ImageView batteryImageView;
     @BindView(R.id.batteryLevel)
@@ -37,7 +35,6 @@ public class BatteryView extends ConstraintLayout {
 
     public BatteryView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
 
         LayoutInflater.from(getContext()).inflate(R.layout.layout_battery_view, this);
 
@@ -60,17 +57,17 @@ public class BatteryView extends ConstraintLayout {
 
     private void showBattery(final int level) {
 
-        levelTextView.setText(context.getString(R.string.widget_battery_percentage, level));
+        levelTextView.setText(getContext().getString(R.string.widget_battery_percentage, level));
 
         if (level <= BATTERY_LOW) {
             batteryImageView.setImageResource(R.drawable.ic_battery_low);
-            levelTextView.setTextColor(ContextCompat.getColor(context, R.color.batteryLevelLow));
+            levelTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.batteryLevelLow));
         } else if (level <= BATTERY_NORMAL) {
             batteryImageView.setImageResource(R.drawable.ic_battery_normal);
-            levelTextView.setTextColor(ContextCompat.getColor(context, R.color.batteryLevelNormal));
+            levelTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.batteryLevelNormal));
         } else {
             batteryImageView.setImageResource(R.drawable.ic_battery_high);
-            levelTextView.setTextColor(ContextCompat.getColor(context, R.color.batteryLevelHigh));
+            levelTextView.setTextColor(ContextCompat.getColor(getContext(), R.color.batteryLevelHigh));
         }
     }
 }
