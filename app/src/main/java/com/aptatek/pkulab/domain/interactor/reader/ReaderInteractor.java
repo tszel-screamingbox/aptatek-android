@@ -2,6 +2,7 @@ package com.aptatek.pkulab.domain.interactor.reader;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultRepository;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
@@ -23,12 +24,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ReaderInteractor {
 
+    private final PreferenceManager preferenceManager;
     private final ReaderManager readerManager;
     private final TestResultRepository testResultRepository;
 
     @Inject
-    public ReaderInteractor(final ReaderManager readerManager,
+    public ReaderInteractor(final PreferenceManager preferenceManager,
+                            final ReaderManager readerManager,
                             final TestResultRepository testResultRepository) {
+        this.preferenceManager = preferenceManager;
         this.readerManager = readerManager;
         this.testResultRepository = testResultRepository;
     }
@@ -36,6 +40,7 @@ public class ReaderInteractor {
     @NonNull
     public Completable connect(@NonNull final ReaderDevice readerDevice) {
         return readerManager.connect(readerDevice)
+                .andThen(Completable.fromAction(() -> preferenceManager.setPairedDevice(readerDevice.getMac())))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -99,5 +104,15 @@ public class ReaderInteractor {
     public Maybe<ReaderDevice> getConnectedReader() {
         return readerManager.getConnectedDevice()
                 .subscribeOn(Schedulers.io());
+    }
+
+    public Maybe<String> getLastConnectedMac() {
+        final String pairedDevice = preferenceManager.getPairedDevice();
+
+        if (pairedDevice == null) {
+            return Maybe.empty();
+        }
+
+        return Maybe.just(pairedDevice);
     }
 }
