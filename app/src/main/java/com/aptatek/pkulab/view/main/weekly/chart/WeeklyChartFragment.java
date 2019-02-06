@@ -19,17 +19,21 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import java.lang.reflect.Field;
+
 import javax.inject.Inject;
 
 import activitystarter.ActivityStarter;
 import activitystarter.Arg;
 import butterknife.BindView;
+import timber.log.Timber;
 
 
 public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView {
 
     private static final float MIN_X = -0.5f;
     private static final float MAX_X = 6.5f;
+    private static final int Y_PADDING = 2;
 
     @Arg
     int weekBefore;
@@ -100,18 +104,29 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
             final int round = Math.round(value);
             final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
 
-            return hours[index];
+            return hours[index + Y_PADDING];
         });
         yAxis.setDrawAxisLine(false);
         yAxis.setDrawGridLines(false);
         yAxis.setInverted(true);
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setAxisMinimum(-1 * Y_PADDING * Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES + (Y_PADDING * Constants.ONE_HOUR_IN_MINUTES));
         yAxis.setLabelCount(hours.length, true);
+
+        // need to use reflection since the Axis.setLabelCount sets 25 as max value...
+        try {
+            final Field mLabelCount = yAxis.getClass().getSuperclass().getDeclaredField("mLabelCount");
+            mLabelCount.setAccessible(true);
+            mLabelCount.set(yAxis, hours.length);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Timber.d("Failed to set mLabelCount");
+        }
+
         yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
         yAxis.setTypeface(typeface);
 
         final BubbleData data = new BubbleData();
+        weeklyBubbleChart.setRendererLeftYAxis(new CustomYAxisRenderer(weeklyBubbleChart));
         weeklyBubbleChart.setData(data);
         weeklyBubbleChart.getAxisRight().setEnabled(false);
         weeklyBubbleChart.getAxisRight().setDrawGridLines(false);
