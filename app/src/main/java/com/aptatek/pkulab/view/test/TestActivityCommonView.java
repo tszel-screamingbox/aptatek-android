@@ -1,7 +1,5 @@
 package com.aptatek.pkulab.view.test;
 
-import android.support.annotation.NonNull;
-
 public interface TestActivityCommonView {
 
     void showNextScreen();
