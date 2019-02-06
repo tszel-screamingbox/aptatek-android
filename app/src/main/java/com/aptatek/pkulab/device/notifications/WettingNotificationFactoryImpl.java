@@ -85,7 +85,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
     @NonNull
     @Override
     public Notification createCountdownFinishedNotification() {
-        final Notification notification = new NotificationCompat.Builder(context, createChannel())
+        return new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
                 .setSmallIcon(R.drawable.ic_notification)
@@ -95,10 +95,6 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setWhen(0)
                 .build();
-
-        notification.flags |= Notification.FLAG_INSISTENT;
-
-        return notification;
     }
 
 }

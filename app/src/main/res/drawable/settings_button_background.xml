@@ -5,8 +5,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/ic_settings"
-            android:tint="@color/applicationSolidGray" />
+            android:src="@drawable/ic_settings" />
     </item>
 
 </layer-list>

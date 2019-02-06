@@ -107,7 +107,7 @@
         style="@style/General.Rounded.Gray.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
-        android:drawableStart="@drawable/ic_settings_dark"
+        android:drawableStart="@drawable/ic_settings"
         android:elevation="0dp"
         android:paddingStart="@dimen/general.button.corner.normal"
         android:text="@string/rangeinfo.edit.level.preferences"

@@ -29,6 +29,7 @@ public class SelfTestPresenter extends TestBasePresenter<SelfTestView> {
             attachedView.setDisclaimerViewVisible(false);
             attachedView.setBatteryIndicatorVisible(true);
             attachedView.setBatteryPercentage(100); // TODO get real data
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.self_check), true);
         });
 
         disposeSubscription();
