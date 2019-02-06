@@ -26,7 +26,7 @@ public class SelfTestFragment extends TestBaseFragment<SelfTestView, SelfTestPre
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_test_selftest;
+        return R.layout.fragment_test_video;
     }
 
     @NonNull

@@ -39,7 +39,7 @@ public class ReminderNotificationFactoryImpl extends BaseNotificationFactory imp
         quarterHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.QUARTER_HOUR);
         halfHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.HALF_HOUR);
 
-        final Notification notification = new NotificationCompat.Builder(context, createChannel())
+        return new NotificationCompat.Builder(context, createChannel())
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(resourceInteractor.getStringResource(R.string.reminder_notification_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.reminder_notification_message))
@@ -58,9 +58,6 @@ public class ReminderNotificationFactoryImpl extends BaseNotificationFactory imp
                         resourceInteractor.getStringResource(R.string.reminder_notification_half_hour),
                         PendingIntent.getBroadcast(context, REMINDER_ACTION_HALF_HOUR_REQUEST_CODE, halfHourIntent, PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
-
-        notification.flags |= Notification.FLAG_INSISTENT;
-        return notification;
     }
 
     @Override

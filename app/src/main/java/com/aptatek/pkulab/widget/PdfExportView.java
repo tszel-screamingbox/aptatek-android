@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.main.weekly.chart.CustomYAxisRenderer;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataRenderer;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.github.mikephil.charting.charts.BubbleChart;
@@ -18,12 +19,16 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class PdfExportView extends ConstraintLayout {
+
+    private static final int Y_PADDING = 2;
 
     @BindView(R.id.textViewTitle)
     TextView tvTitle;
@@ -94,6 +99,7 @@ public class PdfExportView extends ConstraintLayout {
         return input + 1;
     }
 
+    // TODO use the same initChart method as WeeklyChartFragment...
     private void initChart() {
         final Typeface typeface = ResourcesCompat.getFont(getContext().getApplicationContext(), R.font.nunito_black);
         final XAxis xAxis = bubbleChart.getXAxis();
@@ -120,19 +126,32 @@ public class PdfExportView extends ConstraintLayout {
             final int round = Math.round(value);
             final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
 
-            return hours[index];
+            return hours[index + Y_PADDING];
         });
         yAxis.setDrawAxisLine(false);
         yAxis.setDrawGridLines(false);
         yAxis.setInverted(true);
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setAxisMinimum(-1 * Y_PADDING * Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES + (Y_PADDING * Constants.ONE_HOUR_IN_MINUTES));
         yAxis.setLabelCount(hours.length, true);
+        yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
+        yAxis.setTypeface(typeface);
+
+        // need to use reflection since the Axis.setLabelCount sets 25 as max value...
+        try {
+            final Field mLabelCount = yAxis.getClass().getSuperclass().getDeclaredField("mLabelCount");
+            mLabelCount.setAccessible(true);
+            mLabelCount.set(yAxis, hours.length);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Timber.d("Failed to set mLabelCount");
+        }
+
         yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
         yAxis.setTypeface(typeface);
 
         final BubbleData data = new BubbleData();
         data.addDataSet(pdfEntryData.getBubbleDataSet());
+        bubbleChart.setRendererLeftYAxis(new CustomYAxisRenderer(bubbleChart));
         bubbleChart.setData(data);
         bubbleChart.getAxisRight().setEnabled(false);
         bubbleChart.getAxisRight().setDrawGridLines(false);
