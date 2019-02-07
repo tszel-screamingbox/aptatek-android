@@ -48,7 +48,7 @@ public class WeeklyChartDataTransformer {
     @NonNull
     public Single<ChartEntryData> transform(final TestResult testResult) {
         return pkuRangeInteractor.getInfo()
-            .map(rangeInfo -> buildChartEntryData(rangeInfo, testResult));
+                .map(rangeInfo -> buildChartEntryData(rangeInfo, testResult));
     }
 
     protected ChartEntryData buildChartEntryData(final PkuRangeInfo rangeInfo, final TestResult testResult) {
@@ -108,14 +108,4 @@ public class WeeklyChartDataTransformer {
         bubbleEntry.setData(data);
         return bubbleEntry;
     }
-
-    protected int adjustAlpha(@ColorInt final int color, final float alpha) {
-        final int newAlpha = Math.round(Color.alpha(color) * alpha);
-        final int red = Color.red(color);
-        final int green = Color.green(color);
-        final int blue = Color.blue(color);
-
-        return Color.argb(newAlpha, red, green, blue);
-    }
-
 }

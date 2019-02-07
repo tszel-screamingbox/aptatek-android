@@ -21,17 +21,16 @@ public abstract class ChartEntryData {
     public abstract @ColorInt
     int getBubbleColor();
 
-    public abstract @ColorInt
-    int getStrokeColor();
-
     public abstract boolean isSick();
+
+    public abstract boolean isFasting();
 
     public abstract ChartEntryData.Builder toBuilder();
 
     public static ChartEntryData.Builder builder() {
         return new AutoValue_ChartEntryData.Builder()
-                .setStrokeColor(0)
-                .setSick(false);
+                .setSick(false)
+                .setFasting(false);
     }
 
     @AutoValue.Builder
@@ -49,9 +48,9 @@ public abstract class ChartEntryData {
 
         public abstract Builder setBubbleColor(@ColorInt int bubbleColor);
 
-        public abstract Builder setStrokeColor(@ColorInt int strokeColor);
-
         public abstract Builder setSick(boolean isSick);
+
+        public abstract Builder setFasting(boolean isFasting);
 
         public abstract ChartEntryData build();
 

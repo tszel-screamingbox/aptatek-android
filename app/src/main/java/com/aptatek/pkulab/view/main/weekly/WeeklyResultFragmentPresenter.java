@@ -139,12 +139,9 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         final String pkuLevel = resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                 ? R.string.rangeinfo_pkulevel_mmol
                 : R.string.rangeinfo_pkulevel_mg);
-        final String unitText;
-        if (pkuRangeInfo.isDefaultValue()) {
-            unitText = resourceInteractor.getStringResource(R.string.pdf_export_unit_description, pkuLevel);
-        } else {
-            unitText = resourceInteractor.getStringResource(R.string.pdf_export_unit_description_warn, pkuLevel);
-        }
+        final String unitText = resourceInteractor.getStringResource(pkuRangeInfo.isDefaultValue()
+                ? R.string.pdf_export_unit_description
+                : R.string.pdf_export_unit_description_warn, pkuLevel);
 
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartDateFormatter.getPdfMonthFormat(weekList.size() - monthsBefore - 1))

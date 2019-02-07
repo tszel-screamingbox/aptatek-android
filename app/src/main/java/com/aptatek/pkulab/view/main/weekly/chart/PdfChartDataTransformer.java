@@ -33,20 +33,18 @@ public class PdfChartDataTransformer extends WeeklyChartDataTransformer {
         final @ColorRes int colorRes = ChartUtils.stateColor(state);
         @ColorInt int labelColor = resourceInteractor.getColorResource(R.color.applicationWhite);
         @ColorInt int bubbleColor = resourceInteractor.getColorResource(colorRes);
-        @ColorInt int strokeColor = 0;
 
         if (testResult.isFasting()) {
             labelColor = resourceInteractor.getColorResource(colorRes);
             bubbleColor = resourceInteractor.getColorResource(R.color.applicationWhite);
-            strokeColor = resourceInteractor.getColorResource(colorRes);
         }
 
         return chartEntryData.toBuilder()
                 .setX(x)
-                .setStrokeColor(strokeColor)
                 .setBubbleColor(bubbleColor)
                 .setLabelColor(labelColor)
                 .setSick(testResult.isSick())
+                .setFasting(testResult.isFasting())
                 .build();
     }
 }

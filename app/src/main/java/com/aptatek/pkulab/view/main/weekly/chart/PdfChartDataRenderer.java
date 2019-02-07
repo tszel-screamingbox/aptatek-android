@@ -80,11 +80,13 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
         return Math.min(maxBubbleHeight, maxBubbleWidth);
     }
 
-    protected void drawDataSet(Canvas c, IBubbleDataSet dataSet) {
+    protected void drawDataSet(final Canvas c, final IBubbleDataSet dataSet) {
 
-        Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
-
-        float phaseY = mAnimator.getPhaseY();
+        final Transformer trans = mChart.getTransformer(dataSet.getAxisDependency());
+        final float phaseY = mAnimator.getPhaseY();
+        final DashPathEffect effect = new DashPathEffect(new float[]{convertDpToPixel(DASHED_LINE_LENGTH * 2), convertDpToPixel(DASHED_LINE_LENGTH)}, 0);
+        final Paint white = new Paint();
+        white.setColor(Color.WHITE);
 
         mXBounds.set(mChart, dataSet);
 
@@ -103,7 +105,7 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
             pointBuffer[1] = (entry.getY()) * phaseY;
             trans.pointValuesToPixel(pointBuffer);
 
-            float shapeHalf = getShapeSize(entry.getSize(), referenceSize) / 2f;
+            final float shapeHalf = getShapeSize(entry.getSize(), referenceSize) / 2f;
 
             if (!mViewPortHandler.isInBoundsTop(pointBuffer[1] + shapeHalf)
                     || !mViewPortHandler.isInBoundsBottom(pointBuffer[1] - shapeHalf))
@@ -116,33 +118,32 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
                 break;
 
             final int color;
-            final int strokeColor;
+            final int labelColor;
             final Object data = entry.getData();
             boolean isSick = false;
+            boolean isFasting = false;
             if (data instanceof ChartEntryData) {
                 final ChartEntryData chartEntryData = (ChartEntryData) data;
                 color = chartEntryData.getBubbleColor();
-                strokeColor = chartEntryData.getStrokeColor();
+                isFasting = chartEntryData.isFasting();
                 isSick = chartEntryData.isSick();
+                labelColor = chartEntryData.getLabelColor();
             } else {
                 color = dataSet.getColor((int) entry.getX());
-                strokeColor = color;
+                labelColor = color;
             }
 
             mRenderPaint.setColor(color);
             c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mRenderPaint);
 
             if (isSick) {
-                final Paint white = new Paint();
-                white.setColor(Color.WHITE);
                 c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf - CIRCLE_BORDER, white);
                 c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf - CIRCLE_BORDER * 2, mRenderPaint);
             }
 
-            if (strokeColor != 0) {
-                mHighlightPaint.setColor(strokeColor);
+            if (isFasting) {
+                mHighlightPaint.setColor(labelColor);
                 mHighlightPaint.setStyle(Paint.Style.STROKE);
-                final DashPathEffect effect = new DashPathEffect(new float[]{convertDpToPixel(DASHED_LINE_LENGTH * 2), convertDpToPixel(DASHED_LINE_LENGTH)}, 0);
                 mHighlightPaint.setPathEffect(effect);
                 c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mHighlightPaint);
             }
