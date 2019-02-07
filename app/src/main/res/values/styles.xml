@@ -190,6 +190,13 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
+    <style name="Battery.Level.Text" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/pkuLevelNormal</item>
+        <item name="android:textSize">@dimen/font.size.xregular</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="General.Title" parent="General.Text">
         <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:textSize">@dimen/font.size.xxlarge</item>
