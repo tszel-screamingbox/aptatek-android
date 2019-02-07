@@ -4,9 +4,12 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
+import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
+import com.aptatek.pkulab.domain.manager.reader.BluetoothConditionChecker;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanCallbacks;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.device.bluetooth.scanner.BluetoothConditionCheckerImpl;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,14 +28,20 @@ public class BluetoothInteractor {
     private static final long DEFAULT_SCAN_PERIOD_IN_MS = 60 * 1000L;
 
     private final BluetoothScanner bluetoothScanner;
+    private final BluetoothConditionChecker bluetoothConditionChecker;
+    private final BluetoothAdapter bluetoothAdapter;
     private final Set<ReaderDevice> devices = Collections.synchronizedSet(new HashSet<>());
     private final FlowableProcessor<Boolean> scanning = BehaviorProcessor.createDefault(false);
     private final FlowableProcessor<Set<ReaderDevice>> discoveredDevices = BehaviorProcessor.createDefault(Collections.emptySet());
     private final FlowableProcessor<DeviceDiscoveryError> discoveryError = BehaviorProcessor.create();
 
     @Inject
-    public BluetoothInteractor(final BluetoothScanner bluetoothScanner) {
+    public BluetoothInteractor(final BluetoothScanner bluetoothScanner,
+                               final BluetoothConditionChecker bluetoothConditionChecker,
+                               final BluetoothAdapter bluetoothAdapter) {
         this.bluetoothScanner = bluetoothScanner;
+        this.bluetoothConditionChecker = bluetoothConditionChecker;
+        this.bluetoothAdapter = bluetoothAdapter;
 
         bluetoothScanner.setCallbacks(new BluetoothScanCallbacks() {
             @Override
@@ -48,6 +57,22 @@ public class BluetoothInteractor {
                 devices.clear();
             }
         });
+    }
+
+    public Completable checkPermissions() {
+        if (!bluetoothConditionChecker.hasAllPermissions()) {
+            return Completable.error(new MissingPermissionsError());
+        }
+
+        return Completable.complete();
+    }
+
+    public Completable enableBluetoothWhenNecessary() {
+        if (!bluetoothConditionChecker.isBluetoothEnabled()) {
+            return Completable.fromAction(bluetoothAdapter::enable);
+        }
+
+        return Completable.complete();
     }
 
     @NonNull

@@ -10,7 +10,6 @@ import java.util.List;
 public interface TurnReaderOnView extends MvpView {
 
     void displayMissingPermissions();       // need to request permissions
-    void displayEnableBluetoothAdapter();   // need to enable BT
     void displayReaderSelector(@NonNull List<ReaderDevice> readerDevices);  // display selector
     void displaySelfCheckAnimation();       // reader connected, should display self-checking animation
     void onSelfCheckComplete();             // everything's ok, we can proceed

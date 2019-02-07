@@ -3,7 +3,7 @@ package com.aptatek.pkulab.injection.component;
 import com.aptatek.pkulab.injection.component.chart.ChartFragmentComponent;
 import com.aptatek.pkulab.injection.component.home.HomeFragmentComponent;
 import com.aptatek.pkulab.injection.component.parentalgate.ParentalGateFragmentComponent;
-import com.aptatek.pkulab.injection.component.scan.ScanFragmentComponent;
+import com.aptatek.pkulab.injection.component.scan.BluetoothFragmentComponent;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkulab.injection.component.weekly.WeeklyFragmentComponent;
 import com.aptatek.pkulab.injection.module.FragmentModule;
@@ -16,7 +16,6 @@ import com.aptatek.pkulab.injection.scope.FragmentScope;
 import com.aptatek.pkulab.view.connect.connected.ConnectedFragment;
 import com.aptatek.pkulab.view.connect.enablebluetooth.EnableBluetoothFragment;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredFragment;
-import com.aptatek.pkulab.view.connect.turnon.TurnOnFragment;
 import com.aptatek.pkulab.view.parentalgate.verification.ParentalGateVerificationFragment;
 import com.aptatek.pkulab.view.pin.auth.add.AuthPinFragment;
 import com.aptatek.pkulab.view.pin.set.add.AddPinFragment;
@@ -38,8 +37,6 @@ public interface FragmentComponent {
 
     void inject(ParentalGateVerificationFragment parentalGateVerificationFragment);
 
-    void inject(TurnOnFragment turnOnFragment);
-
     void inject(PermissionRequiredFragment permissionRequiredFragment);
 
     void inject(EnableBluetoothFragment enableBluetoothFragment);
@@ -56,6 +53,6 @@ public interface FragmentComponent {
 
     ChartFragmentComponent plus(RangeInfoModule module, ChartModule chartModule);
 
-    ScanFragmentComponent plus(ScanModule scanModule);
+    BluetoothFragmentComponent plus(ScanModule scanModule);
 
 }

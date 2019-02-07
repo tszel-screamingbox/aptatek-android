@@ -17,7 +17,7 @@ import com.aptatek.pkulab.view.connect.connected.ConnectedFragment;
 import com.aptatek.pkulab.view.connect.enablebluetooth.EnableBluetoothFragment;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredFragment;
 import com.aptatek.pkulab.view.connect.scan.ScanFragment;
-import com.aptatek.pkulab.view.connect.turnon.TurnOnFragment;
+import com.aptatek.pkulab.view.connect.turnon.TurnReaderOnConnectFragment;
 
 import javax.inject.Inject;
 
@@ -58,7 +58,7 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
 
         switch (screen) {
             case TURN_ON: {
-                fragment = new TurnOnFragment();
+                fragment = new TurnReaderOnConnectFragment();
                 break;
             }
             case PERMISSION_REQUIRED: {
