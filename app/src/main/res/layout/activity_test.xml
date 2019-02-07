@@ -74,20 +74,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <com.aptatek.pkulab.widget.BatteryView
             android:id="@+id/testBattery"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:drawableStart="@drawable/ic_battery"
-            android:fontFamily="@font/nunito_black"
-            android:gravity="center_vertical"
-            android:textColor="@color/applicationBlack"
-            android:textStyle="bold"
+            android:foregroundGravity="center"
             app:layout_constraintBottom_toBottomOf="@id/testNextButton"
             app:layout_constraintEnd_toEndOf="@id/testNextButton"
             app:layout_constraintStart_toStartOf="@id/testNextButton"
-            app:layout_constraintTop_toTopOf="@+id/testNextButton"
-            tools:text="100%" />
+            app:layout_constraintTop_toTopOf="@+id/testNextButton" />
 
     </android.support.constraint.ConstraintLayout>
 

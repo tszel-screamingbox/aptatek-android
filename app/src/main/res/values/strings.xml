@@ -285,6 +285,8 @@
     <string name="weekly.suffix.dayofmonth.nth">th</string>
     <string name="weekly.title">Weekly Results</string>
 
+    <string name="widget.battery.percentage">%1$d%%</string>
+
     <string name="pdf.export.title">Monthly Results</string>
     <string name="pdf.export.unit.description">All units are in %1$s</string>
     <string name="pdf.export.legend.x">%1$sx</string>

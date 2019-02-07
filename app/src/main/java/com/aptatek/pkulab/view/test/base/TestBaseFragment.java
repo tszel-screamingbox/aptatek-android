@@ -97,13 +97,13 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
             videoView.setup(uri, ContextCompat.getColor(getActivity(), R.color.applicationWhite));
             videoView.setFrameVideoViewListener(new FrameVideoViewListener() {
                 @Override
-                public void mediaPlayerPrepared(MediaPlayer mediaPlayer) {
+                public void mediaPlayerPrepared(final MediaPlayer mediaPlayer) {
                     mediaPlayer.setLooping(shouldLoop);
                     mediaPlayer.start();
                 }
 
                 @Override
-                public void mediaPlayerPrepareFailed(MediaPlayer mediaPlayer, String s) {
+                public void mediaPlayerPrepareFailed(final MediaPlayer mediaPlayer, final String s) {
 
                 }
             });
@@ -121,8 +121,8 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     }
 
     @Override
-    public void setBatteryPercentageText(@NonNull final String percentageText) {
-        runOnTestTestActivityView(view -> view.setBatteryPercentageText(percentageText));
+    public void setBatteryPercentage(final int percentage) {
+        runOnTestTestActivityView(view -> view.setBatteryPercentage(percentage));
     }
 
     @Override
