@@ -1,6 +1,5 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
-import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
