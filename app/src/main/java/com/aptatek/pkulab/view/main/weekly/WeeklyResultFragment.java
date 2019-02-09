@@ -159,24 +159,26 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void onPdfDataReady(final ArrayList<PdfEntryData> data) {
-        final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
-        content.setData(data.get(0));
-
         final PdfDocument document = new PdfDocument();
 
-        final PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
-                getResources().getDimensionPixelSize(R.dimen.pdf_width),
-                getResources().getDimensionPixelSize(R.dimen.pdf_height),
-                1).create();
+        for (PdfEntryData pdfEntryData : data) {
+            final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
+            content.setData(pdfEntryData);
 
-        final PdfDocument.Page page = document.startPage(pageInfo);
+            final PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
+                    getResources().getDimensionPixelSize(R.dimen.pdf_width),
+                    getResources().getDimensionPixelSize(R.dimen.pdf_height),
+                    data.indexOf(pdfEntryData)).create();
 
-        final Canvas canvas = page.getCanvas();
-        canvas.save();
-        content.draw(canvas);
-        canvas.restore();
+            final PdfDocument.Page page = document.startPage(pageInfo);
 
-        document.finishPage(page);
+            final Canvas canvas = page.getCanvas();
+            canvas.save();
+            content.draw(canvas);
+            canvas.restore();
+
+            document.finishPage(page);
+        }
 
         final File file = new File(getBaseActivity().getFilesDir(), data.get(0).getFileName());
 

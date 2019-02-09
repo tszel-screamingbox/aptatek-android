@@ -5,12 +5,12 @@ import android.support.annotation.NonNull;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
@@ -18,22 +18,17 @@ import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.Observable;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
-import timber.log.Timber;
 
 public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResultFragmentView> {
 
@@ -155,7 +150,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         final ArrayList<Single<PdfEntryData>> singles = new ArrayList<>();
 
         for (int i = 0; i < getPdfExportIntervalInMonth(pdfExportInterval); i++) {
-            final long monthsBeforeTimeStamp = TimeHelper.addMonths(-1 * monthsBefore, System.currentTimeMillis());
+            final long monthsBeforeTimeStamp = TimeHelper.addMonths(i, System.currentTimeMillis());
             final long start = TimeHelper.getEarliestTimeAtGivenMonth(monthsBeforeTimeStamp);
             final long end = TimeHelper.getLatestTimeAtGivenMonth(monthsBeforeTimeStamp);
 
@@ -164,8 +159,8 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
         disposables.add(Single.zip(singles, objects -> {
             final ArrayList<PdfEntryData> data = new ArrayList<>();
-            for (int i = 0; i < objects.length; i++) {
-                data.add((PdfEntryData) objects[i]);
+            for (Object object : objects) {
+                data.add((PdfEntryData) object);
             }
             return data;
         }).subscribeOn(Schedulers.computation()).subscribe((pdfEntryDataArrayList, throwable) -> {
