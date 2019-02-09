@@ -109,7 +109,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 .map(cubeDataList -> {
                     final int week = TimeHelper.getWeeksBetween(Ix.from(cubeDataList).first().getTimestamp(), System.currentTimeMillis());
 
-                    for (int i = 0; i < week + 10; i++) {
+                    for (int i = 0; i < week + 2; i++) {
                         weekList.add(i);
                     }
 
