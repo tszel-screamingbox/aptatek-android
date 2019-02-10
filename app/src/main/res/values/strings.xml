@@ -290,7 +290,10 @@
     <string name="pdf.export.legend.x">%1$sx</string>
     <string name="pdf.export.average">Average (+/- %1$s)</string>
     <string name="pdf.export.email.subject">Exported results from PKU LAB</string>
-    <string name="pdf.export.file.name">PKU history %1$s.pdf</string>
+    <string name="pdf.export.last.month.file.name">Last month Phe history - %1$s.pdf</string>
+    <string name="pdf.export.last.three.month.file.name">Last 3 months Phe history - %1$s.pdf</string>
+    <string name="pdf.export.last.six.month.file.name">Last 6 months Phe history - %1$s.pdf</string>
+    <string name="pdf.export.last.year.file.name">Last Year Phe history - %1$s.pdf</string>
     <string name="pdf.export.subtitle.dateformat">MMMM yyyy</string>
     <string name="pdf.export.file.name.dateformat">MM.dd.yyyy</string>
 

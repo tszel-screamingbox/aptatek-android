@@ -203,6 +203,6 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void onIntervalSelected(@NonNull PdfExportInterval pdfExportInterval) {
-        presenter.getPdfChartData(chartViewPager.getCurrentItem(), pdfExportInterval);
+        presenter.getPdfChartData(pdfExportInterval);
     }
 }
