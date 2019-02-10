@@ -163,12 +163,22 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
         final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
 
+        final String pkuLevel = resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                ? R.string.rangeinfo_pkulevel_mmol
+                : R.string.rangeinfo_pkulevel_mg);
+        final String unitText = resourceInteractor.getStringResource(pkuRangeInfo.isDefaultValue()
+                ? R.string.pdf_export_unit_description
+                : R.string.pdf_export_unit_description_warn, pkuLevel);
+
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartDateFormatter.getPdfMonthFormat(monthsBefore))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
                 .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? R.string.rangeinfo_pkulevel_mmol
                         : R.string.rangeinfo_pkulevel_mg))
+                .setFormattedDate(weeklyChartDateFormatter.getPdfMonthFormat(weekList.size() - monthsBefore - 1))
+                .setFileName(getPdfExportFileName(pdfExportInterval))
+                .setUnit(unitText)
                 .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
                         : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalFloorValue()))

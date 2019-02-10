@@ -48,7 +48,7 @@
         android:id="@+id/connectedBatteryLevel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ic_battery_green"
+        android:drawableTop="@drawable/ic_battery_high"
         android:drawablePadding="@dimen/general.distance.xxsmall"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@id/connectedDeviceName"

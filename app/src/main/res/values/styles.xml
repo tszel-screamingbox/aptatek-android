@@ -146,6 +146,20 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
+    <style name="Pdf.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:textSize">@dimen/font.size.34sp</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Pdf.View.Text" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/applicationWhite</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textSize">@dimen/font.size.regular</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="General.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
@@ -174,6 +188,13 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="Battery.Level.Text" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/pkuLevelNormal</item>
+        <item name="android:textSize">@dimen/font.size.xregular</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="General.Title" parent="General.Text">

@@ -83,7 +83,7 @@ public class PdfExportView extends ConstraintLayout {
         averageNumber.setText(String.valueOf(pdfEntryData.getAverageCount()));
         fastingNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getFastingCount()));
         averageText.setText(getResources().getString(R.string.pdf_export_average, String.format(Locale.getDefault(), "%.2f", pdfEntryData.getDeviation())));
-        unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
+        unitDescription.setText(pdfEntryData.getUnit());
         normalText.setText(getResources().getString(R.string.pdf_legend_normal, pdfEntryData.getNormalFloorValue(), pdfEntryData.getNormalCeilValue()));
 
         initChart();
@@ -102,9 +102,8 @@ public class PdfExportView extends ConstraintLayout {
     // TODO use the same initChart method as WeeklyChartFragment...
     private void initChart() {
         final Typeface typeface = ResourcesCompat.getFont(getContext().getApplicationContext(), R.font.nunito_black);
-
         final XAxis xAxis = bubbleChart.getXAxis();
-        xAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
+        xAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
         xAxis.setValueFormatter((value, axis) -> {
             if (Float.compare(value, 0f) <= 0 || Float.compare(value, pdfEntryData.getDaysOfMonth()) > 0) {
                 return "";
@@ -135,6 +134,8 @@ public class PdfExportView extends ConstraintLayout {
         yAxis.setAxisMinimum(-1 * Y_PADDING * Constants.ONE_HOUR_IN_MINUTES);
         yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES + (Y_PADDING * Constants.ONE_HOUR_IN_MINUTES));
         yAxis.setLabelCount(hours.length, true);
+        yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
+        yAxis.setTypeface(typeface);
 
         // need to use reflection since the Axis.setLabelCount sets 25 as max value...
         try {
