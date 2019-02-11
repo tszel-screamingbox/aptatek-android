@@ -34,6 +34,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnPageChange;
+import ix.Ix;
 import timber.log.Timber;
 
 import static android.view.View.INVISIBLE;
@@ -180,7 +181,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
             document.finishPage(page);
         }
 
-        final File file = new File(getBaseActivity().getFilesDir(), data.get(0).getFileName());
+        final File file = new File(getBaseActivity().getFilesDir(), Ix.from(data).first().getFileName());
 
         try {
             final FileOutputStream out = new FileOutputStream(file);
