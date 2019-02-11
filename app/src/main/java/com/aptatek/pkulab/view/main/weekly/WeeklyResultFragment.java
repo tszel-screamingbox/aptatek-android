@@ -42,7 +42,7 @@ import static android.view.View.inflate;
 
 public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView, PdfExportDialog.PdfExportDialogCallback {
 
-    private static String PDF_EXPORT_DIALOG_TAG = "aptatek.pdf.export.dialog";
+    private static final String PDF_EXPORT_DIALOG_TAG = "aptatek.pdf.export.dialog";
 
     @Inject
     WeeklyResultFragmentPresenter presenter;
