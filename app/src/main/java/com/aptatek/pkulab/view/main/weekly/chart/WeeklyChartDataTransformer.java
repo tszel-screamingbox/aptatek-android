@@ -1,6 +1,5 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
-import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
@@ -11,9 +10,9 @@ import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.CubeData;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 import com.github.mikephil.charting.data.BubbleDataSet;
@@ -46,13 +45,13 @@ public class WeeklyChartDataTransformer {
     }
 
     @NonNull
-    public Single<ChartEntryData> transform(final CubeData cubeData) {
+    public Single<ChartEntryData> transform(final TestResult testResult) {
         return pkuRangeInteractor.getInfo()
-                .map(rangeInfo -> buildChartEntryData(rangeInfo, cubeData));
+                .map(rangeInfo -> buildChartEntryData(rangeInfo, testResult));
     }
 
-    protected ChartEntryData buildChartEntryData(final PkuRangeInfo rangeInfo, final CubeData cubeData) {
-        final PkuLevel pkuLevel = cubeData.getPkuLevel();
+    protected ChartEntryData buildChartEntryData(final PkuRangeInfo rangeInfo, final TestResult testResult) {
+        final PkuLevel pkuLevel = testResult.getPkuLevel();
         final PkuLevel levelInProperUnit;
         if (rangeInfo.getPkuLevelUnit() != pkuLevel.getUnit()) {
             levelInProperUnit = PkuLevelConverter.convertTo(pkuLevel, rangeInfo.getPkuLevelUnit());
@@ -60,8 +59,8 @@ public class WeeklyChartDataTransformer {
             levelInProperUnit = pkuLevel;
         }
 
-        final int x = TimeHelper.getDayOfWeek(cubeData.getTimestamp()) - DAY_OFFSET;
-        final int y = TimeHelper.getMinuteOfDay(cubeData.getTimestamp());
+        final int x = TimeHelper.getDayOfWeek(testResult.getTimestamp()) - DAY_OFFSET;
+        final int y = TimeHelper.getMinuteOfDay(testResult.getTimestamp());
         final String label = rangeSettingsValueFormatter.formatRegularValue(levelInProperUnit);
         final ChartUtils.State state = ChartUtils.getState(levelInProperUnit, rangeInfo);
         final @ColorRes int colorRes = ChartUtils.stateColor(state);
@@ -108,14 +107,4 @@ public class WeeklyChartDataTransformer {
         bubbleEntry.setData(data);
         return bubbleEntry;
     }
-
-    protected int adjustAlpha(@ColorInt final int color, final float alpha) {
-        final int newAlpha = Math.round(Color.alpha(color) * alpha);
-        final int red = Color.red(color);
-        final int green = Color.green(color);
-        final int blue = Color.blue(color);
-
-        return Color.argb(newAlpha, red, green, blue);
-    }
-
 }

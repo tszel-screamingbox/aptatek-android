@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/general.distance">
+
+    <ImageView
+        android:id="@+id/fingerpintImage"
+        android:layout_width="@dimen/general.distance.big"
+        android:layout_height="@dimen/general.distance.big"
+        android:src="@drawable/fingerprint"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginEnd="@dimen/general.distance.mini"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fingerpintImage"
+        app:titleText="@string/set.pin.title" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/pinLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/general.distance"
+        android:layout_marginEnd="@dimen/general.distance"
+        android:layout_marginBottom="@dimen/general.distance.small"
+        app:layout_constraintBottom_toTopOf="@id/messageTextView">
+
+        <ImageView
+            android:id="@+id/pin0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pin_circle"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/pin1" />
+
+        <ImageView
+            android:id="@+id/pin1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pin_circle"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toRightOf="@id/pin0"
+            app:layout_constraintRight_toLeftOf="@id/pin2" />
+
+        <ImageView
+            android:id="@+id/pin2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pin_circle"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toRightOf="@id/pin1"
+            app:layout_constraintRight_toLeftOf="@+id/pin3" />
+
+        <ImageView
+            android:id="@+id/pin3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pin_circle"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toRightOf="@id/pin2"
+            app:layout_constraintRight_toRightOf="@+id/pin4" />
+
+        <ImageView
+            android:id="@+id/pin4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/pin_circle"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toRightOf="@id/pin3"
+            app:layout_constraintRight_toLeftOf="@id/pin5" />
+
+        <ImageView
+            android:id="@+id/pin5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/pin_circle"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintLeft_toRightOf="@id/pin4"
+            app:layout_constraintRight_toRightOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance"
+        android:layout_marginEnd="@dimen/general.distance"
+        android:layout_marginBottom="@dimen/general.distance.28dp"
+        android:fontFamily="@font/nunito_semibold"
+        android:gravity="center"
+        android:padding="@dimen/general.distance.xxxsmall"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/font.size.medium"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/dialLayout" />
+
+    <include
+        android:id="@+id/dialLayout"
+        layout="@layout/dial_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/pin.dial.height"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

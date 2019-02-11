@@ -40,21 +40,16 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.77" />
 
-        <TextView
-            android:id="@+id/titleText"
-            style="@style/Header.Text"
-            android:layout_width="match_parent"
+        <com.aptatek.pkulab.widget.HeaderView
+            android:id="@+id/header"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/main.title.noresult"
-            app:layout_constraintTop_toBottomOf="@id/guideTop" />
-
-        <TextView
-            android:id="@+id/subTitleText"
-            style="@style/General.Text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/main.title.noresult.hint"
-            app:layout_constraintTop_toBottomOf="@id/titleText" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideTop"
+            app:layout_constraintVertical_bias="0.0"
+            app:subTitleText="@string/main.title.noresult.hint"
+            app:titleText="@string/main.title.noresult" />
 
         <ImageView
             android:id="@+id/playIcon"
@@ -65,7 +60,8 @@
             app:layout_constraintBottom_toTopOf="@id/chartGuide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subTitleText"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            android:visibility="invisible"
             tools:ignore="ContentDescription" />
 
         <com.yarolegovich.discretescrollview.DiscreteScrollView
@@ -76,20 +72,20 @@
             app:layout_constraintBottom_toTopOf="@id/chartGuide"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subTitleText" />
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <Button
             android:id="@+id/bigSettingsButton"
             style="@style/General.Rounded.Gray.Button"
             android:layout_width="0dp"
             android:layout_height="@dimen/general.button.height.big"
-            android:layout_marginStart="@dimen/general.distance.small"
+            android:layout_marginStart="@dimen/general.distance.32dp"
             android:layout_marginTop="@dimen/general.distance.xxsmall"
-            android:layout_marginEnd="@dimen/general.distance.small"
+            android:layout_marginEnd="@dimen/general.distance.32dp"
             android:layout_marginBottom="@dimen/main.bottom.margin.empty"
             android:drawableStart="@drawable/settings_button_background"
             android:elevation="0dp"
-            android:paddingStart="@dimen/general.button.corner.normal"
+            android:paddingStart="@dimen/general.button.icon.margin.start"
             android:text="@string/main.button.settings"
             android:textColor="@color/applicationSolidGray"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -102,8 +98,8 @@
             style="@style/Grey.Settings.Button"
             android:layout_width="@dimen/general.button.height.big"
             android:layout_height="@dimen/general.button.height.big"
-            android:layout_marginStart="@dimen/general.distance.small"
-            android:layout_marginEnd="@dimen/general.distance.small"
+            android:layout_marginStart="@dimen/general.distance.32dp"
+            android:layout_marginEnd="@dimen/general.distance.xsmall"
             android:layout_marginBottom="@dimen/main.bottom.margin"
             android:elevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -116,7 +112,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/general.button.height.big"
             android:layout_marginTop="@dimen/general.distance.xxsmall"
-            android:layout_marginEnd="@dimen/general.distance.small"
+            android:layout_marginEnd="@dimen/general.distance.32dp"
             android:layout_marginBottom="@dimen/main.bottom.margin"
             android:gravity="center"
             android:text="@string/main.button.new.test"
@@ -126,15 +122,15 @@
 
         <Button
             android:id="@+id/weeklyButton"
-            style="@style/General.Transparent.Button"
+            style="@style/General.Rounded.Gray.Button.Secondary"
             android:layout_width="0dp"
-            android:layout_height="@dimen/main.panel.height"
+            android:layout_marginStart="@dimen/general.distance.32dp"
+            android:layout_marginTop="@dimen/general.distance.20dp"
+            android:layout_marginEnd="@dimen/general.distance.32dp"
+            android:layout_marginBottom="@dimen/general.distance.20dp"
             android:drawableEnd="@drawable/ic_arrow_up"
-            android:gravity="center"
-            android:paddingStart="@dimen/general.distance.xbig"
-            android:paddingEnd="@dimen/general.distance.xbig"
+            android:drawablePadding="@dimen/general.distance.xxsmall"
             android:text="@string/main.button.weekly"
-            android:textSize="@dimen/font.size.medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

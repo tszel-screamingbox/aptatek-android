@@ -9,6 +9,15 @@
         <attr name="backgroundColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="HeaderView">
+        <attr name="titleText" format="string" />
+        <attr name="subTitleText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="BatteryView">
+        <attr name="percentage" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="BubbleTextView">
         <attr name="circleColor" format="color" />
         <attr name="fillColor" format="color" />

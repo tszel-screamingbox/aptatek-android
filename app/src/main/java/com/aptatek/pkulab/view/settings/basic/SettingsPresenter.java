@@ -23,16 +23,16 @@ public class SettingsPresenter extends MvpBasePresenter<SettingsView> {
     }
 
     public void checkFingerprintSettings() {
-        ifViewAttached(attachedView -> {
-            attachedView.showFingerprintAuthEnabled(fingerprintManager.isFingerprintHadrwareDetected());
-            attachedView.showFingerprintAuthChecked(preferenceManager.isFingerprintScanEnabled());
-        });
+        ifViewAttached(attachedView ->
+            attachedView.updateFingerprintSetting(fingerprintManager.isFingerprintHadrwareDetected(), preferenceManager.isFingerprintScanEnabled())
+        );
     }
 
     public void setFingerprintEnabled(final boolean enabled) {
-        preferenceManager.enableFingerprintScan(enabled);
-
-        ifViewAttached(attachedView -> attachedView.showFingerprintAuthChecked(enabled));
+        if (fingerprintManager.isFingerprintHadrwareDetected()) {
+            preferenceManager.enableFingerprintScan(enabled);
+            ifViewAttached(attachedView -> attachedView.updateFingerprintSetting(true, enabled));
+        }
     }
 
     public void getAppVersion() {

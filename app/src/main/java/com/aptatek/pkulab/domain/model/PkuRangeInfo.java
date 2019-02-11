@@ -17,8 +17,12 @@ public abstract class PkuRangeInfo {
 
     public abstract PkuLevelUnits getPkuLevelUnit();
 
+    public abstract boolean isDefaultValue();
+
     public static PkuRangeInfo.Builder builder() {
-        return new AutoValue_PkuRangeInfo.Builder();
+        return new AutoValue_PkuRangeInfo
+                .Builder()
+                .setDefaultValue(true);
     }
 
     @AutoValue.Builder
@@ -34,6 +38,8 @@ public abstract class PkuRangeInfo {
         public abstract Builder setNormalAbsoluteMaxValue(float maxValue);
 
         public abstract Builder setPkuLevelUnit(PkuLevelUnits unit);
+
+        public abstract Builder setDefaultValue(boolean isDefault);
 
         public abstract PkuRangeInfo build();
     }

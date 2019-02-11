@@ -4,26 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/testHeader"
-        layout="@layout/layout_test_title_message"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <Space
+        android:id="@+id/topSpace"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/test.top.margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginTop="@dimen/general.distance.small"
+        android:layout_marginEnd="@dimen/general.distance.mini"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/topBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="header,topSpace" />
 
     <com.mklimek.frameviedoview.FrameVideoView
         android:id="@+id/testVideo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/general.distance.small"
-        android:layout_marginTop="@dimen/general.distance.small"
+        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="986:1080"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/testHeader"
+        app:layout_constraintTop_toBottomOf="@id/topBarrier"
         app:layout_constraintVertical_bias="0.0" />
 
     <include
@@ -31,7 +48,9 @@
         layout="@layout/layout_test_alert"
         android:layout_width="0dp"
         android:layout_height="@dimen/test.alert.height"
-        android:layout_marginBottom="@dimen/general.distance.mini"
+        android:layout_marginStart="@dimen/general.distance.xsmall"
+        android:layout_marginEnd="@dimen/general.distance.xsmall"
+        android:layout_marginBottom="@dimen/test.bottombar.height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

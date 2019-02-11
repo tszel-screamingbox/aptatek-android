@@ -13,7 +13,8 @@
     <string name="auth.pin.message.invalid">Incorrect PIN</string>
     <string name="auth.pin.successful">Authentication successful</string>
     <string name="auth.pin.title">Authenticate</string>
-    <string name="auth.pin.attempt.limit.reached.hint">If you forgot your PIN please delete &amp;\nreinstall this application and set a\nnew code. Some data may also be lost</string>
+    <string name="auth.pin.attempt.limit.reached.hint">Delete and reinstall this application and set new code, but some minor data may be lost (e.g. range preferences, reminders) and PIN code will need reset.</string>
+    <string name="auth.pin.attempt.limit.reached.title">Forgot Your PIN Code?</string>
     <!-- ConfirmPin Fragment -->
     <string name="confirm.pin.error">PIN mismatch</string>
     <string name="confirm.pin.hint">Re-Enter your PIN to make sure\nyou entered it correctly</string>
@@ -41,7 +42,7 @@
     <string name="connect.connected.button">Continue to Home Screen</string>
     <!-- Fingerprint Activity -->
     <string name="fingerprint.message">Set up fingerprint access if desired.</string>
-    <string name="fingerprint.option.disable">Disable Fingerprint</string>
+    <string name="fingerprint.option.disable">Decide Later</string>
     <string name="fingerprint.option.enable">Enable Fingerprint</string>
     <string name="fingerprint.title">Fingerprint\nAuthentication</string>
     <!-- Home Fragment -->
@@ -101,10 +102,13 @@
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
     <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
     <string name="rangeinfo.title">Range info</string>
-    <!-- RangeInfo -->
     <string name="rangeinfo.units.format">Units are in %s</string>
     <string name="rangeinfo.very.high">Very High</string>
     <string name="rangeinfo.veryhigh.value.prefix">over</string>
+    <!-- Waste dispose -->
+    <string name="dispose.title">Waste\nDisposables</string>
+    <string name="dispose.message">Medical waste and needles should be disposed properly, do not place in regular garbage can.</string>
+    <string name="dispose.done">Done</string>
     <!-- Reminder Notification-->
     <string name="reminder.notification.channel.name">Reminder</string>
     <string name="reminder.notification.half.hour">30min</string>
@@ -140,12 +144,12 @@
     <string name="settings.daily.reminder.schedule.type.weekly">w</string>
     <string name="settings.daily.reminder.schedule.type.monthly">m</string>
     <string name="settings.daily.reminder.schedule.type.biweekly">bw</string>
-    <string name="settings.faq">FAQ</string>
+    <string name="settings.help">Help</string>
     <string name="settings.privacy">Privacy Policy</string>
     <string name="settings.reminder.schedule.type.weekly">Weekly</string>
     <string name="settings.reminder.schedule.type.monthly">Monthly</string>
     <string name="settings.reminder.schedule.type.biweekly">Biweekly</string>
-    <string name="settings.fingerprint.authentication">Fingerprint authentication</string>
+    <string name="settings.fingerprint.authentication">Fingerprint Unlock</string>
     <string name="settings.fingerprint.description">Turning it ON will enable the fingerprint scanner to start the application instead of requesting your PIN code on every application start.</string>
     <string name="settings.message.saved">Your settings are saved.</string>
     <string name="settings.title">Settings</string>
@@ -173,17 +177,18 @@
     <string name="test.cancel.navigation.yes">Yes</string>
     <string name="test.cancel.title">Cancel test</string>
     <string name="test.countdown.format">mm:ss</string>
-    <string name="test.countdown.notification.channel.name">PkuLab notifications</string>
+    <string name="notification.channel.name">General Notifications</string>
+    <string name="test.countdown.notification.channel.name">Wetting Countdown notifications</string>
     <string name="test.wetting.notification.finished.text">Tap to proceed</string>
     <string name="test.wetting.notification.finished.title">Sample wetting complete</string>
-    <string name="test.wetting.notification.inprogress.textformat">Remaining time is %s</string>
+    <string name="test.wetting.notification.inprogress.textformat">Remaining: %s</string>
     <string name="test.wetting.notification.inprogress.title">Sample wetting in progress</string>
     <string name="test.result.message.veryhigh">Contact your physician</string>
     <string name="test.result.message.high">WTB Message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.normal">WTB message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.low">WTB message</string> <!-- TODO get proper label... -->
-    <string name="test.result.done">Done</string>
-    <string name="test.result.range.info">Range info &#10140;</string>
+    <string name="test.result.range.info">Range info</string>
+    <string name="test.result.done">Next</string>
     <string name="test.result.title.veryhigh">Very High</string>
     <string name="test.result.title.high">High</string> <!-- TODO get proper label... -->
     <string name="test.result.title.normal">Normal</string> <!-- TODO get proper label... -->
@@ -198,12 +203,13 @@
     <string name="test.breakfoil.alert.title">Always Use In-App Timer!</string>
     <string name="test.breakfoil.alert.message">Timing is very important to get accurate results, always follow the testing workflow in the app.</string>
     <string name="test.pokefingertrip.title">Poke Fingertip</string>
-    <string name="test.pokefingertrip.message">Take a prick and poke your fingertip with it until your finger is bleeding</string>
+    <string name="test.pokefingertrip.message">Take a thick lancet and poke your fingertip with it, enough to draw a large round drop of blood from your finger</string>
     <string name="test.collectblood.title">Collect Blood</string>
-    <string name="test.collectblood.message">Screw the cap off the chamber and take a blood sample from your fingertip</string>
-    <string name="test.collectblood.disclaimer">Use enough blood to soak the whole sponge with blood so it\'s completely red</string>
+    <string name="test.collectblood.message">Screw the cap off the chamber and draw a large sample of blood from your fingertip</string>
+    <string name="test.collectblood.disclaimer">Tap the suction tip onto blood so that it completely fills up beyond the edge with blood</string>
     <string name="test.mixsample.title">Mix Sample</string>
     <string name="test.mixsample.message">Screw the cap on the chamber with the red tip inside and twist it to lock into place</string>
+    <string name="test.mixsample.warn">Once the cap is locked, shake the bottle 3 times to mix the blood.</string>
     <string name="test.wetting.title">Wetting&#8230;</string>
     <string name="test.wetting.message">Wait until the sample wetting period ends</string>
     <string name="test.wetting.disclaimer">Keep chamber sitting upright, do not connect it to anything yet</string>
@@ -216,6 +222,8 @@
     <string name="test.connectitall.message">Push the chamber into the hole in the cassette and insert it into the reader immediately</string>
     <string name="test.testing.title">Testing&#8230;</string>
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
+    <string name="test.selftest.title">Self Checking</string>
+    <string name="test.selftest.message">Reader is doing a self-check to make sure that i can function properly during testing</string>
 
     <!-- Toggle Activity -->
     <string name="toggle.button.connect">Connect Cube</string>
@@ -239,6 +247,8 @@
     <string name="weekly.empty.subtitle">Take your first test</string>
     <string name="weekly.empty.title">No results</string>
     <string-array name="weekly.hours">
+        <item> </item>
+        <item> </item>
         <item> </item>
         <item>1am</item>
         <item>2</item>
@@ -264,6 +274,8 @@
         <item>10</item>
         <item>11pm</item>
         <item> </item>
+        <item> </item>
+        <item> </item>
     </string-array>
     <string name="weekly.subtitle">Week of %s</string>
     <string name="weekly.subtitle.dateformat">MMM d\'%s\' yyyy</string>
@@ -273,9 +285,12 @@
     <string name="weekly.suffix.dayofmonth.nth">th</string>
     <string name="weekly.title">Weekly Results</string>
 
+    <string name="widget.battery.percentage">%1$d%%</string>
+
     <string name="pdf.export.title">Monthly Results</string>
     <string name="pdf.export.unit.description">All units are in %1$s</string>
-    <string name="pdf.export.legend.x">%1$sx</string>
+    <string name="pdf.export.unit.description.warn">All units are in %1$s. In this data export, please note that these \"normal\" range\nprefrences have been changed from the default range.</string>
+    <string name="pdf.export.legend.x">%1$s</string>
     <string name="pdf.export.average">Average (+/- %1$s)</string>
     <string name="pdf.export.email.subject">Exported results from PKU LAB</string>
     <string name="pdf.export.file.name">PKU history %1$s.pdf</string>
@@ -291,4 +306,17 @@
 
     <string name="month.picker.cancel">Cancel</string>
     <string name="month.picker.ok">Ok</string>
+    <string name="bluetooth.notification.connecting.title">Connecting</string>
+    <string name="bluetooth.notification.connecting.message">Please wait while we are trying to connect to the reader…</string>
+    <string name="bluetooth.notification.connected.title">Connected to %1$s</string>
+    <string name="bluetooth.notification.connected.message">Battery level: %1$d %%</string>
+    <string name="bluetooth.notification.sync.title">Syncing data from %1$s</string>
+    <string name="bluetooth.notification.sync.message">Please wait until the process completes</string>
+    <string name="bluetooth.notification.test.running.title">Test is running on %1$s</string>
+    <string name="bluetooth.notification.test.running.message">Please wait until the test completes</string>
+    <string name="bluetooth.notification.test.complete.title">Test ready on %1$s</string>
+    <string name="bluetooth.notification.test.complete.message">Tap to check results</string>
+    <string name="bluetooth.notification.error.title">Failed to communication with reader</string>
+    <string name="bluetooth.notification.error.disconnected.title">Device is disconnected</string>
+    <string name="bluetooth.notification.error.disconnected.message">Tap to retry connection</string>
 </resources>

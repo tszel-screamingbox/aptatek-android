@@ -12,25 +12,35 @@
     <dimen name="general.button.height.big">64dp</dimen>
     <dimen name="general.button.height.medium">45dp</dimen>
     <dimen name="general.button.side.margin">50dp</dimen>
+    <dimen name="general.button.icon.margin.start">20dp</dimen>
 
     <dimen name="general.distance.xxxxmini">1dp</dimen>
     <dimen name="general.distance.xxxmini">2dp</dimen>
     <dimen name="general.distance.xxmini">3dp</dimen>
     <dimen name="general.distance.xmini">4dp</dimen>
+    <dimen name="general.distance.5dp">5dp</dimen>
+    <dimen name="general.distance.6dp">6dp</dimen>
     <dimen name="general.distance.mini">8dp</dimen>
     <dimen name="general.distance.xxxsmall">10dp</dimen>
     <dimen name="general.distance.xxsmall">12dp</dimen>
     <dimen name="general.distance.xsmall">16dp</dimen>
+    <dimen name="general.distance.20dp">20dp</dimen>
     <dimen name="general.distance.small">24dp</dimen>
+    <dimen name="general.distance.28dp">28dp</dimen>
+    <dimen name="general.distance.32dp">32dp</dimen>
     <dimen name="general.distance">30dp</dimen>
     <dimen name="general.distance.normal">40dp</dimen>
-    <dimen name="general.distance.big">56dp</dimen>
+    <dimen name="general.distance.big">54dp</dimen>
     <dimen name="general.distance.xbig">70dp</dimen>
     <dimen name="general.distance.large">80dp</dimen>
     <dimen name="general.distance.xlarge">110dp</dimen>
     <dimen name="general.distance.xxlarge">130dp</dimen>
     <dimen name="general.distance.xxxlarge">180dp</dimen>
     <dimen name="general.distance.enorme">250dp</dimen>
+
+
+    <dimen name="header.title.spacing.extra">-11dp</dimen>
+    <dimen name="header.subtitle.spacing.extra">-3dp</dimen>
 
     <!-- Chart-->
     <dimen name="graph.bubble.size">56dp</dimen>
@@ -41,6 +51,11 @@
     <dimen name="graph.bubble.stroke.small">4dp</dimen>
     <dimen name="graph.item.size">208dp</dimen>
 
+    <!-- Switch -->
+    <dimen name="switch.track.width">56dp</dimen>
+    <dimen name="switch.track.height">16dp</dimen>
+    <dimen name="switch.track.corners">8dp</dimen>
+
     <!-- Main -->
     <dimen name="main.bottom.margin">80dp</dimen>
     <dimen name="main.bottom.margin.empty">48dp</dimen>
@@ -48,8 +63,8 @@
 
     <!-- Pin -->
     <dimen name="pin.circle.size">45dp</dimen>
-    <dimen name="pin.dial.height">236dp</dimen>
-    <dimen name="pin.header.margin.minimum">68dp</dimen>
+    <dimen name="pin.dial.height">232dp</dimen>
+    <dimen name="pin.header.margin.minimum">47dp</dimen>
     <dimen name="pin.message.background.height">40dp</dimen>
 
     <dimen name="fingerprint.size">224dp</dimen>
@@ -68,28 +83,32 @@
     <dimen name="font.size.xxbig">21sp</dimen>
     <dimen name="font.size.large">24sp</dimen>
     <dimen name="font.size.xlarge">31sp</dimen>
+    <dimen name="font.size.34sp">34sp</dimen>
     <dimen name="font.size.xxlarge">42sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
     <dimen name="font.size.wetting">80sp</dimen>
 
 
     <dimen name="font.size.badge">36sp</dimen>
-
-
     <dimen name="font.size.weekly.subtitle">21sp</dimen>
     <dimen name="font.size.weekly.title">34sp</dimen>
 
     <dimen name="rangeinfo.range.row.offset">8dp</dimen>
 
-    <dimen name="pdf.width">1000dp</dimen>
-    <dimen name="pdf.height">800dp</dimen>
+    <dimen name="pdf.width">842dp</dimen>
+    <dimen name="pdf.height">595dp</dimen>
+    <dimen name="pdf.icon.height">59dp</dimen>
+    <dimen name="pdf.icon.width">24dp</dimen>
     <dimen name="pdf.legend.bubble.size">40dp</dimen>
+    <dimen name="pdf.line.spacing">-12dp</dimen>
 
     <dimen name="test.alert.corner">50dp</dimen>
     <dimen name="test.alert.height">100dp</dimen>
     <dimen name="test.result.circle.width">20dp</dimen>
 
     <dimen name="test.progressbar.height">12dp</dimen>
+    <dimen name="test.bottombar.height">56dp</dimen>
+    <dimen name="test.top.margin">162dp</dimen>
 
     <dimen name="daily.result.sliding.background.corner">20dp</dimen>
 

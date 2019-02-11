@@ -9,7 +9,7 @@ import android.util.Pair;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
@@ -32,10 +32,10 @@ public final class ChartUtils {
     }
 
     @NonNull
-    public static List<ChartVM> asChartVMList(final List<CubeData> inputList, final PkuRangeInfo rangeInfo) {
+    public static List<ChartVM> asChartVMList(final List<TestResult> inputList, final PkuRangeInfo rangeInfo) {
         final List<ChartVM> chartVms = new ArrayList<>();
 
-        final Comparator<CubeData> cubeDataComparator = (p1, p2) -> Float.compare(p1.getPkuLevel().getValue(), p2.getPkuLevel().getValue());
+        final Comparator<TestResult> cubeDataComparator = (p1, p2) -> Float.compare(p1.getPkuLevel().getValue(), p2.getPkuLevel().getValue());
         final Comparator<ChartVM> chartVMComparator = (first, second) -> Long.compare(first.getDate().getTime(), second.getDate().getTime());
 
         if (inputList == null || inputList.size() == 0) {
@@ -46,16 +46,16 @@ public final class ChartUtils {
         final long timestampOldestDay = Ix.from(inputList)
                 .filter(cubeData -> cubeData.getPkuLevel().getValue() >= 0)
                 .min((first, second) -> Long.compare(first.getTimestamp(), second.getTimestamp()))
-                .map(CubeData::getTimestamp)
+                .map(TestResult::getTimestamp)
                 .map(TimeHelper::getEarliestTimeAtGivenDay)
                 .first();
         final long nowInDay = TimeHelper.getEarliestTimeAtGivenDay(System.currentTimeMillis());
         final int daysBetween = TimeHelper.getDaysBetween(timestampOldestDay, nowInDay);
         // create an initial map to hold the data for each days passed between today and the first measurement
         // each value is an empty list by default
-        final Map<Long, List<CubeData>> dayToMeasurementsMap = Ix.range(0, daysBetween + 1)
+        final Map<Long, List<TestResult>> dayToMeasurementsMap = Ix.range(0, daysBetween + 1)
                 .map(day -> TimeHelper.getEarliestTimeAtGivenDay(TimeHelper.addDays(day, timestampOldestDay)))
-                .map(day -> new Pair<Long, List<CubeData>>(day, new ArrayList<>()))
+                .map(day -> new Pair<Long, List<TestResult>>(day, new ArrayList<>()))
                 .toMap(pair -> pair.first, pair -> pair.second);
 
         // add the grouped real data to the initial map which holds all days passed since the first measurement
@@ -69,9 +69,9 @@ public final class ChartUtils {
                     }
                 });
 
-        for (final Map.Entry<Long, List<CubeData>> entry : dayToMeasurementsMap.entrySet()) {
-            final List<CubeData> dailyMeasures = entry.getValue();
-            final CubeData dailyHighest = Ix.from(dailyMeasures)
+        for (final Map.Entry<Long, List<TestResult>> entry : dayToMeasurementsMap.entrySet()) {
+            final List<TestResult> dailyMeasures = entry.getValue();
+            final TestResult dailyHighest = Ix.from(dailyMeasures)
                     .max(cubeDataComparator)
                     .first(null);
 

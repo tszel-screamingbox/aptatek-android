@@ -1,14 +1,17 @@
 package com.aptatek.pkulab.widget;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.main.weekly.chart.CustomYAxisRenderer;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataRenderer;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.github.mikephil.charting.charts.BubbleChart;
@@ -16,12 +19,16 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class PdfExportView extends ConstraintLayout {
+
+    private static final int Y_PADDING = 2;
 
     @BindView(R.id.textViewTitle)
     TextView tvTitle;
@@ -76,7 +83,7 @@ public class PdfExportView extends ConstraintLayout {
         averageNumber.setText(String.valueOf(pdfEntryData.getAverageCount()));
         fastingNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getFastingCount()));
         averageText.setText(getResources().getString(R.string.pdf_export_average, String.format(Locale.getDefault(), "%.2f", pdfEntryData.getDeviation())));
-        unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
+        unitDescription.setText(pdfEntryData.getUnit());
         normalText.setText(getResources().getString(R.string.pdf_legend_normal, pdfEntryData.getNormalFloorValue(), pdfEntryData.getNormalCeilValue()));
 
         initChart();
@@ -92,9 +99,11 @@ public class PdfExportView extends ConstraintLayout {
         return input + 1;
     }
 
+    // TODO use the same initChart method as WeeklyChartFragment...
     private void initChart() {
+        final Typeface typeface = ResourcesCompat.getFont(getContext().getApplicationContext(), R.font.nunito_black);
         final XAxis xAxis = bubbleChart.getXAxis();
-        xAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
+        xAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
         xAxis.setValueFormatter((value, axis) -> {
             if (Float.compare(value, 0f) <= 0 || Float.compare(value, pdfEntryData.getDaysOfMonth()) > 0) {
                 return "";
@@ -109,6 +118,7 @@ public class PdfExportView extends ConstraintLayout {
         final int maxValue = getNextEvenFor(pdfEntryData.getDaysOfMonth());
         xAxis.setAxisMaximum(maxValue);
         xAxis.setLabelCount((maxValue / 2) + 1, true);
+        xAxis.setTypeface(typeface);
 
         final YAxis yAxis = bubbleChart.getAxisLeft();
         final String[] hours = getResources().getStringArray(R.array.weekly_hours);
@@ -116,18 +126,32 @@ public class PdfExportView extends ConstraintLayout {
             final int round = Math.round(value);
             final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
 
-            return hours[index];
+            return hours[index + Y_PADDING];
         });
         yAxis.setDrawAxisLine(false);
         yAxis.setDrawGridLines(false);
         yAxis.setInverted(true);
-        yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setAxisMinimum(-1 * Y_PADDING * Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setAxisMaximum(Constants.ONE_DAY_IN_HOURS * Constants.ONE_HOUR_IN_MINUTES + (Y_PADDING * Constants.ONE_HOUR_IN_MINUTES));
         yAxis.setLabelCount(hours.length, true);
-        yAxis.setTextColor(getResources().getColor(R.color.applicationLightGray));
+        yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
+        yAxis.setTypeface(typeface);
+
+        // need to use reflection since the Axis.setLabelCount sets 25 as max value...
+        try {
+            final Field mLabelCount = yAxis.getClass().getSuperclass().getDeclaredField("mLabelCount");
+            mLabelCount.setAccessible(true);
+            mLabelCount.set(yAxis, hours.length);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Timber.d("Failed to set mLabelCount");
+        }
+
+        yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
+        yAxis.setTypeface(typeface);
 
         final BubbleData data = new BubbleData();
         data.addDataSet(pdfEntryData.getBubbleDataSet());
+        bubbleChart.setRendererLeftYAxis(new CustomYAxisRenderer(bubbleChart));
         bubbleChart.setData(data);
         bubbleChart.getAxisRight().setEnabled(false);
         bubbleChart.getAxisRight().setDrawGridLines(false);

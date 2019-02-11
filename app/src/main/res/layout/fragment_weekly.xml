@@ -97,11 +97,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/general.distance.mini"
-        android:background="@color/pkuPdfFasting"
+        android:background="@color/pkuPdfGray"
         android:src="@drawable/ic_pdf"
         app:backgroundTint="@color/applicationWhite"
         app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:rippleColor="@color/pkuPdfFasting" />
+        app:rippleColor="@color/pkuPdfGray" />
 </android.support.constraint.ConstraintLayout>

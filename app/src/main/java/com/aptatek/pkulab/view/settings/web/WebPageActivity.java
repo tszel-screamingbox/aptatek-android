@@ -36,10 +36,16 @@ public class WebPageActivity extends AppCompatActivity {
 
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitle(title);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(url);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

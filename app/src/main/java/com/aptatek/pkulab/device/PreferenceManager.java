@@ -2,9 +2,11 @@ package com.aptatek.pkulab.device;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
+import com.aptatek.pkulab.view.test.TestScreens;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,6 +27,9 @@ public class PreferenceManager {
     public static final String PREF_PKU_RANGE_NORMAL_FLOOR = "aptatek.range.normal.floor";
     public static final String PREF_PKU_RANGE_UNIT = "aptatek.range.unit";
     public static final String PREF_PKU_RANGE_DIALOG = "aptatek.range.dialog";
+    public static final String PREF_PAIRED = "aptatek.device.paired";
+    public static final String PREF_TEST_STATUS = "aptatek.test.status";
+    public static final String PREF_DB_ENCRYPTED_WITH_PIN = "aptatek.database.encrypted";
 
     private final SharedPreferences sharedPreferences;
 
@@ -104,6 +109,38 @@ public class PreferenceManager {
 
     public boolean isRangeDialogShown() {
         return sharedPreferences.getBoolean(PREF_PKU_RANGE_DIALOG, false);
+    }
+
+    @Nullable
+    public String getPairedDevice() {
+        return sharedPreferences.getString(PREF_PAIRED, null);
+    }
+
+    public void setPairedDevice(@Nullable final String device) {
+        sharedPreferences.edit().putString(PREF_PAIRED, device).apply();
+    }
+
+    public TestScreens getTestStatus() {
+        final int screenIndex = sharedPreferences.getInt(PREF_TEST_STATUS, -1);
+        final TestScreens[] testScreens = TestScreens.values();
+
+        if (screenIndex >= 0 && screenIndex < testScreens.length) {
+            return testScreens[screenIndex];
+        }
+
+        return TestScreens.TURN_READER_ON;
+    }
+
+    public void setTestStatus(final TestScreens testStatus) {
+        sharedPreferences.edit().putInt(PREF_TEST_STATUS, testStatus.ordinal()).apply();
+    }
+
+    public boolean isDbEncrpytedWithPin() {
+        return sharedPreferences.getBoolean(PREF_DB_ENCRYPTED_WITH_PIN, false);
+    }
+
+    public void setPrefDbEncryptedWithPin() {
+        sharedPreferences.edit().putBoolean(PREF_DB_ENCRYPTED_WITH_PIN, true).apply();
     }
 
     public void clearPreference(final String key) {

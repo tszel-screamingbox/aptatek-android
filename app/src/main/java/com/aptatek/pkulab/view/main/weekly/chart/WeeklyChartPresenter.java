@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
 import com.aptatek.pkulab.device.time.TimeHelper;
-import com.aptatek.pkulab.domain.interactor.cube.CubeInteractor;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import java.util.Random;
 import javax.inject.Inject;
@@ -11,15 +11,15 @@ import timber.log.Timber;
 
 class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
 
-    private final CubeInteractor cubeInteractor;
+    private final TestResultInteractor testResultInteractor;
     private final WeeklyChartDataTransformer weeklyChartDataTransformer;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject
-    WeeklyChartPresenter(final CubeInteractor cubeInteractor,
+    WeeklyChartPresenter(final TestResultInteractor testResultInteractor,
                          final WeeklyChartDataTransformer weeklyChartDataTransformer) {
-        this.cubeInteractor = cubeInteractor;
+        this.testResultInteractor = testResultInteractor;
         this.weeklyChartDataTransformer = weeklyChartDataTransformer;
     }
 
@@ -29,7 +29,7 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
         final long start = TimeHelper.getEarliestTimeAtGivenWeek(weekBeforeTimestamp);
         final long end = TimeHelper.getLatestTimeAtGivenWeek(weekBeforeTimestamp);
 
-        disposables.add(cubeInteractor.listBetween(start, end)
+        disposables.add(testResultInteractor.listBetween(start, end)
                 .toFlowable()
                 .flatMapIterable(it -> it)
                 .flatMapSingle(weeklyChartDataTransformer::transform)

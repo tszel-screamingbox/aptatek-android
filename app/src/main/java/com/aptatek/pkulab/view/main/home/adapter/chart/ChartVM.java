@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.model.CubeData;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.view.base.list.IListTypeProvider;
 import com.google.auto.value.AutoValue;
@@ -34,7 +34,7 @@ public abstract class ChartVM implements IListTypeProvider {
     int getState();
 
     @NonNull
-    public abstract List<CubeData> getMeasures();
+    public abstract List<TestResult> getMeasures();
 
     public abstract Builder toBuilder();
 
@@ -57,7 +57,7 @@ public abstract class ChartVM implements IListTypeProvider {
 
         public abstract Builder setZoomed(boolean zoomed);
 
-        public abstract Builder setMeasures(@NonNull List<CubeData> measures);
+        public abstract Builder setMeasures(@NonNull List<TestResult> measures);
 
         public abstract Builder setNumberOfMeasures(int numberOfMeasures);
 

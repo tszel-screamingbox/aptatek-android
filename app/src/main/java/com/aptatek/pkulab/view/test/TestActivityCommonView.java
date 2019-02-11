@@ -1,7 +1,5 @@
 package com.aptatek.pkulab.view.test;
 
-import android.support.annotation.NonNull;
-
 public interface TestActivityCommonView {
 
     void showNextScreen();
@@ -12,7 +10,7 @@ public interface TestActivityCommonView {
 
     void setBatteryIndicatorVisible(boolean visible);
 
-    void setBatteryPercentageText(@NonNull String percentageText);
+    void setBatteryPercentage(int percentage);
 
     void setProgressVisible(boolean visible);
 

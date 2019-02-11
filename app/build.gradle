@@ -42,8 +42,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 18
-        versionName "0.0.18"
+        versionCode 20
+        versionName "0.0.20"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -150,7 +150,7 @@ dependencies {
     implementation appDependencies.timber
 
     // Crashlytics
-    prodImplementation crashlyticsDependencies.crashlytics
+    implementation crashlyticsDependencies.crashlytics
 
     // AutoValue
     implementation autoValueDependencies.api

@@ -9,14 +9,17 @@ import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.cube.CubeDataSource;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultDataSource;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeDataSource;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingDataSource;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.animation.AnimationHelper;
 
+import java.io.File;
 import java.util.Map;
+
+import javax.inject.Named;
 
 public interface ApplicationComponentExposes {
 
@@ -39,7 +42,7 @@ public interface ApplicationComponentExposes {
     @ApplicationContext
     Context context();
 
-    CubeDataSource provideCubeDataSource();
+    TestResultDataSource provideCubeDataSource();
 
     WettingDataSource provideWettingDataSource();
 
@@ -47,4 +50,6 @@ public interface ApplicationComponentExposes {
 
     ReaderManager provideReaderManager();
 
+    @Named("databaseFile")
+    File provideDbFile();
 }

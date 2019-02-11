@@ -1,8 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -11,7 +9,8 @@
     <style name="AppTheme.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
+        <item name="android:statusBarColor" tools:targetApi="m">@color/applicationWhite</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:colorControlHighlight">@color/buttonPressed</item>
     </style>
@@ -20,7 +19,6 @@
         <item name="android:fontFamily">@font/nunito_black</item>
         <item name="fontFamily">@font/nunito_black</item>
     </style>
-
 
     <style name="General.Transparent.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height.big</item>
@@ -49,6 +47,19 @@
 
     <style name="General.Rounded.Gray.Button" parent="General.Rounded.Button">
         <item name="android:background">@drawable/ripple_grey_button</item>
+    </style>
+
+    <style name="General.Rounded.Gray.Button.Secondary" parent="General.Rounded.Gray.Button">
+        <item name="android:textSize">@dimen/font.size.medium</item>
+        <item name="android:fontFamily">@font/nunito_regular</item>
+        <item name="android:textColor">@color/applicationSolidGray</item>
+        <item name="android:layout_height">@dimen/general.distance.normal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingEnd">@dimen/general.distance.xxsmall</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:elevation">0dp</item>
     </style>
 
     <style name="General.Rounded.Blue.Button" parent="General.Rounded.Button">
@@ -126,22 +137,27 @@
         <item name="android:layout_margin">@dimen/general.distance.xxxxmini</item>
     </style>
 
-    <style name="Header.Text" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/applicationBlack</item>
-        <item name="android:textSize">@dimen/font.size.xxlarge</item>
-        <item name="android:fontFamily">@font/nunito_black</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center_horizontal</item>
-    </style>
-
     <style name="General.Text" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/applicationMediumGray</item>
+        <item name="android:textColor">@color/applicationSolidGray</item>
         <item name="android:textSize">@dimen/font.size.xbig</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">normal</item>
         <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <style name="Pdf.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:textSize">@dimen/font.size.34sp</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Pdf.View.Text" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/applicationWhite</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textSize">@dimen/font.size.regular</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="General.Toolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -174,6 +190,13 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
+    <style name="Battery.Level.Text" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/pkuLevelNormal</item>
+        <item name="android:textSize">@dimen/font.size.xregular</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="General.Title" parent="General.Text">
         <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:textSize">@dimen/font.size.xxlarge</item>
@@ -203,6 +226,8 @@
         <item name="android:datePickerStyle">@style/Parental.DatePicker</item>
         <item name="android:colorAccent">@color/buttonBlue</item>
         <item name="android:fontFamily">@font/nunito_black</item>
+        <item name="android:textColorPrimary">@color/applicationBlack</item>
+        <item name="android:colorControlNormal">@color/applicationSolidGray</item>
     </style>
 
     <style name="Parental.DatePicker" parent="android:Widget.Material.Light.DatePicker">
@@ -220,12 +245,14 @@
     </style>
 
     <style name="Settings.Row.Title" parent="TextAppearance.AppCompat">
+        <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:textSize">@dimen/font.size.xbig</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
     </style>
 
     <style name="Settings.Row.Description" parent="TextAppearance.AppCompat">
+        <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@color/applicationLightGray</item>
         <item name="android:textSize">@dimen/font.size.normal</item>
         <item name="android:fontFamily">@font/nunito_semibold</item>
@@ -253,6 +280,11 @@
         <item name="android:buttonTint">@color/applicationBlack</item>
         <item name="android:textColor">@color/applicationBlack</item>
         <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="SwitchStyle">
+        <item name="android:thumb">@drawable/switch_selector</item>
+        <item name="track">@drawable/switch_track</item>
     </style>
 
     <style name="DefaultDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">

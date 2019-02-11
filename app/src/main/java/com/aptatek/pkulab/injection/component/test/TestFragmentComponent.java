@@ -8,6 +8,7 @@ import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
 import com.aptatek.pkulab.view.test.connectitall.ConnectItAllFragment;
 import com.aptatek.pkulab.view.test.mixsample.MixSampleFragment;
 import com.aptatek.pkulab.view.test.pokefingertip.PokeFingertipFragment;
+import com.aptatek.pkulab.view.test.selftest.SelfTestFragment;
 import com.aptatek.pkulab.view.test.testing.TestingFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
@@ -34,4 +35,6 @@ public interface TestFragmentComponent {
     void inject(ConnectItAllFragment connectItAllFragment);
 
     void inject(TestingFragment testingFragment);
+
+    void inject(SelfTestFragment selfTestFragment);
 }

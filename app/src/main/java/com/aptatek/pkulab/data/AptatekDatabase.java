@@ -8,17 +8,21 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.SpannableStringBuilder;
 
 import com.aptatek.pkulab.data.dao.ReminderDao;
 import com.aptatek.pkulab.data.dao.ReminderDayDao;
+import com.aptatek.pkulab.data.dao.TestResultDao;
 import com.aptatek.pkulab.data.model.ReminderDataModel;
 import com.aptatek.pkulab.data.model.ReminderDayDataModel;
-import com.aptatek.pkulab.data.model.ReminderScheduleTypeConverter;
+import com.aptatek.pkulab.data.model.TestResultDataModel;
+import com.aptatek.pkulab.data.model.converter.PkuLevelTypeConverter;
+import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
 import com.commonsware.cwac.saferoom.SafeHelperFactory;
 
 
-@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class}, version = 2)
-@TypeConverters({ReminderScheduleTypeConverter.class})
+@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 3)
+@TypeConverters({ReminderScheduleTypeConverter.class, PkuLevelTypeConverter.class})
 public abstract class AptatekDatabase extends RoomDatabase {
 
     private static volatile AptatekDatabase instance;
@@ -29,6 +33,7 @@ public abstract class AptatekDatabase extends RoomDatabase {
         if (instance == null) {
             instance = creator(databaseName, context, safeHelperFactory);
         }
+
         return instance;
     }
 
@@ -36,12 +41,15 @@ public abstract class AptatekDatabase extends RoomDatabase {
 
     public abstract ReminderDayDao getReminderDayDao();
 
+    public abstract TestResultDao getTestResultDao();
+
     private static AptatekDatabase creator(final String databaseName,
                                            final Context context,
                                            final SafeHelperFactory safeHelperFactory) {
         return Room.databaseBuilder(context, AptatekDatabase.class, databaseName)
                 .openHelperFactory(safeHelperFactory)
                 .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_2_3)
                 .build();
     }
 
@@ -51,4 +59,19 @@ public abstract class AptatekDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE reminders ADD COLUMN reminderScheduleType INTEGER NOT NULL DEFAULT 0");
         }
     };
+
+    private static final Migration MIGRATION_2_3 = new Migration(2,3) {
+
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS test_results(`id` TEXT NOT NULL, `readerId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `pkuLevel` REAL NOT NULL, `sick` INTEGER NOT NULL DEFAULT 0, `fasting` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`))");
+        }
+    };
+
+    public void reKey(final String newKey) {
+        final SupportSQLiteDatabase writableDatabase = getOpenHelper().getWritableDatabase();
+        if (newKey != null && writableDatabase != null) {
+            SafeHelperFactory.rekey(writableDatabase, new SpannableStringBuilder(newKey));
+        }
+    }
 }

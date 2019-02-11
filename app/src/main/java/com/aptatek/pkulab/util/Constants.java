@@ -15,9 +15,9 @@ public final class Constants {
     public static final float DEFAULT_PKU_NORMAL_CEIL = 350f;
     public static final float DEFAULT_PKU_HIGH_RANGE = 150f;
     public static final float DEFAULT_PKU_LOWEST_VALUE = 2f;
-    public static final float DEFAULT_PKU_HIGHEST_VALUE = 1155f;
+    public static final float DEFAULT_PKU_HIGHEST_VALUE = 675f;
     public static final float FLOAT_COMPARISION_ERROR_MARGIN = 0.0001f;
-    public static final PkuLevelUnits DEFAULT_PKU_LEVEL_UNIT = PkuLevelUnits.MICRO_MOL;
+    public static final PkuLevelUnits DEFAULT_PKU_LEVEL_UNIT = PkuLevelUnits.MILLI_GRAM;
 
     public static final int DAYS_OF_WEEK = 7;
     public static final long COUNTDOWN_REFRESH_PERIOD = 500L;
@@ -35,5 +35,8 @@ public final class Constants {
 
     public static final long PIN_IDLE_PERIOD_MS = 20L * 1000L;
     public static final String PIN_IDLE_ACTION = "requestPinDueToInactivity";
+
+    public static final int WETTING_COUNTDOWN_NOTIFICATION_ID = 2668;
+    public static final int WETTING_FINISHED_NOTIFICATION_ID = 726;
 
 }

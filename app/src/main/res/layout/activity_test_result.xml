@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,14 +16,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04" />
+        app:layout_constraintGuide_begin="@dimen/general.distance.32dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideEnd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.96" />
+        app:layout_constraintGuide_end="@dimen/general.distance.32dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideBubbleStart"
@@ -40,29 +39,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.76" />
 
-    <TextView
-        android:id="@+id/test_result_title"
-        style="@style/General.Title"
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/general.distance.small"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
         app:layout_constraintTop_toTopOf="@id/guideTop"
-        tools:text="Too high!" />
-
-    <TextView
-        android:id="@+id/test_result_message"
-        style="@style/General.Text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.xxsmall"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/test_result_title"
-        tools:text="Contact your medician" />
+         />
 
     <com.aptatek.pkulab.widget.BubbleTextView
         android:id="@+id/test_result_bubble"
@@ -73,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/test_result_done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/test_result_message" />
+        app:layout_constraintTop_toBottomOf="@+id/header" />
 
     <Button
         android:id="@+id/test_result_done"
@@ -84,17 +68,17 @@
         android:text="@string/test.result.done"
         app:layout_constraintBottom_toTopOf="@+id/test_result_range_info"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
-        app:layout_constraintStart_toStartOf="@id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/test_result_bubble" />
+        app:layout_constraintStart_toStartOf="@id/guideStart" />
 
-    <TextView
+    <Button
         android:id="@+id/test_result_range_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/General.Rounded.Gray.Button.Secondary"
+        android:layout_width="0dp"
         android:layout_marginTop="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/general.distance.small"
+        android:drawablePadding="@dimen/general.distance.xxsmall"
+        android:drawableEnd="@drawable/ic_right_arrow"
         android:text="@string/test.result.range.info"
-        android:textColor="@color/applicationSolidGray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintHorizontal_bias="0.5"

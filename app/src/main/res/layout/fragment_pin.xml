@@ -1,57 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/emptyLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/pin.header.margin.minimum"
-        android:orientation="vertical" />
 
-    <ImageView
-        android:id="@+id/fingerpintImage"
-        android:layout_width="@dimen/general.distance.big"
-        android:layout_height="@dimen/general.distance.big"
-        android:layout_margin="@dimen/general.distance.normal"
-        android:src="@drawable/fingerprint"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.Barrier
-        android:id="@+id/headerBarrier"
-        android:layout_width="wrap_content"
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="emptyLayout,fingerpintImage" />
-
-    <TextView
-        android:id="@+id/title"
-        style="@style/Header.Text"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="@string/set.pin.title"
-        app:layout_constraintTop_toBottomOf="@id/headerBarrier" />
-
-    <TextView
-        android:id="@+id/hintTextView"
-        style="@style/General.Text"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/general.distance.xxxmini"
-        app:layout_constraintBottom_toTopOf="@id/pinLayout"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginTop="@dimen/pin.header.margin.minimum"
+        android:layout_marginEnd="@dimen/general.distance.mini"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleText="@string/set.pin.title" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/pinLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/general.distance"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
         android:layout_marginEnd="@dimen/general.distance"
         android:layout_marginBottom="@dimen/general.distance.small"
         app:layout_constraintBottom_toTopOf="@id/messageTextView">
@@ -118,23 +88,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance"
         android:layout_marginEnd="@dimen/general.distance"
-        android:layout_marginBottom="@dimen/general.distance.xsmall"
-        android:fontFamily="@font/nunito_regular"
+        android:layout_marginBottom="@dimen/general.distance.28dp"
+        android:fontFamily="@font/nunito_semibold"
         android:gravity="center"
         android:padding="@dimen/general.distance.xxxsmall"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/font.size.normal"
+        android:textSize="@dimen/font.size.medium"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/buttonsGuideLine" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/buttonsGuideLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.60" />
+        app:layout_constraintBottom_toTopOf="@id/dialLayout" />
 
     <include
+        android:id="@+id/dialLayout"
         layout="@layout/dial_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/pin.dial.height"

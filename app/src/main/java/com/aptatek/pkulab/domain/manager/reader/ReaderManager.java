@@ -2,30 +2,48 @@ package com.aptatek.pkulab.domain.manager.reader;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.domain.error.ReaderError;
-import com.aptatek.pkulab.domain.model.ReaderConnectionEvent;
-import com.aptatek.pkulab.domain.model.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
+import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
+import com.aptatek.pkulab.domain.model.reader.Error;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
+import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 
+import java.util.List;
+
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Single;
 
 public interface ReaderManager {
 
-    void connect(@NonNull ReaderDevice readerDevice);
+    // on-demand operations / read characteristics
+    Completable connect(@NonNull ReaderDevice readerDevice);
 
-    void disconnect();
+    Completable changeMtu(int mtuSize);
 
-    void queryBatteryLevel();
+    Completable disconnect();
 
-    void queryCartridgeId();
+    Single<Integer> getBatteryLevel();
 
-    Flowable<ReaderConnectionEvent> connectionEvents();
+    Single<CartridgeInfo> getCartridgeInfo();
 
-    Flowable<ReaderError> readerErrors();
+    Single<Integer> getNumberOfResults();
 
-    Flowable<Integer> batteryLevel();
+    Single<TestResult> getResult(@NonNull String id);
 
-    Flowable<String> cartridgeId();
+    Single<List<TestResult>> syncResults();
 
-    // TODO gather other characteristics
+    Single<Error> getError();
+
+    Maybe<ReaderDevice> getConnectedDevice();
+
+    // hot observables / notify characteristics
+    Flowable<ConnectionEvent> connectionEvents();
+
+    Flowable<Integer> mtuSize();
+
+    Flowable<WorkflowState> workflowState();
 
 }

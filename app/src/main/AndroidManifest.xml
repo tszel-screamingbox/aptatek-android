@@ -23,6 +23,14 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup,android:label">
 
+        <meta-data
+            android:name="firebase_analytics_collection_deactivated"
+            android:value="true" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="76a95bdc32d1d4a9c4b6ea932959893135837287" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -32,10 +40,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
-        <meta-data
-            android:name="firebase_analytics_collection_deactivated"
-            android:value="true" />
 
         <activity
             android:name=".view.pin.auth.AuthPinHostActivity"
@@ -141,10 +145,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen"/>
 
+        <activity android:name=".view.test.dispose.DisposeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen"/>
+
         <receiver android:name=".device.AlarmReceiver" />
         <receiver android:name=".device.ReminderActionReceiver" />
 
-        <service android:name=".view.test.wetting.WettingReminderService" />
+        <service android:name=".view.service.BluetoothService" />
+        <service android:name=".view.service.WettingForegroundService" />
 
         <receiver android:name=".device.BootCompletedReceiver">
             <intent-filter>

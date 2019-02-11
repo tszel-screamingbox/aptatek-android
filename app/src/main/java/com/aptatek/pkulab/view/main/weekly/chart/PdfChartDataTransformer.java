@@ -7,8 +7,8 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.CubeData;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 
@@ -24,29 +24,27 @@ public class PdfChartDataTransformer extends WeeklyChartDataTransformer {
     }
 
     @Override
-    protected ChartEntryData buildChartEntryData(final PkuRangeInfo rangeInfo, final CubeData cubeData) {
-        final ChartEntryData chartEntryData = super.buildChartEntryData(rangeInfo, cubeData);
+    protected ChartEntryData buildChartEntryData(final PkuRangeInfo rangeInfo, final TestResult testResult) {
+        final ChartEntryData chartEntryData = super.buildChartEntryData(rangeInfo, testResult);
 
-        final float x = TimeHelper.getDayOfMonth(cubeData.getTimestamp());
+        final float x = TimeHelper.getDayOfMonth(testResult.getTimestamp());
 
-        final ChartUtils.State state = ChartUtils.getState(cubeData.getPkuLevel(), rangeInfo);
+        final ChartUtils.State state = ChartUtils.getState(testResult.getPkuLevel(), rangeInfo);
         final @ColorRes int colorRes = ChartUtils.stateColor(state);
-        @ColorInt int labelColor = resourceInteractor.getColorResource(colorRes);
-        @ColorInt int bubbleColor = adjustAlpha(resourceInteractor.getColorResource(colorRes), 0.2f);
-        @ColorInt int strokeColor = 0;
+        @ColorInt int labelColor = resourceInteractor.getColorResource(R.color.applicationWhite);
+        @ColorInt int bubbleColor = resourceInteractor.getColorResource(colorRes);
 
-        if (cubeData.isSick()) {
-            labelColor = resourceInteractor.getColorResource(R.color.applicationWhite);
-            bubbleColor = resourceInteractor.getColorResource(colorRes);
-        } else if (cubeData.isFasting()) {
-            strokeColor = resourceInteractor.getColorResource(colorRes);
+        if (testResult.isFasting()) {
+            labelColor = resourceInteractor.getColorResource(colorRes);
+            bubbleColor = resourceInteractor.getColorResource(R.color.applicationWhite);
         }
 
         return chartEntryData.toBuilder()
                 .setX(x)
-                .setStrokeColor(strokeColor)
                 .setBubbleColor(bubbleColor)
                 .setLabelColor(labelColor)
+                .setSick(testResult.isSick())
+                .setFasting(testResult.isFasting())
                 .build();
     }
 }
