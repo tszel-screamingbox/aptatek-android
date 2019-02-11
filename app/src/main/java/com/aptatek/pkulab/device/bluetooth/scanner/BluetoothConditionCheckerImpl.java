@@ -2,6 +2,7 @@ package com.aptatek.pkulab.device.bluetooth.scanner;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.support.v4.content.PermissionChecker;
 
 import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
@@ -34,6 +35,11 @@ public class BluetoothConditionCheckerImpl implements BluetoothConditionChecker 
         }
 
         return missingPermissions;
+    }
+
+    @Override
+    public boolean hasBleFeature() {
+        return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
     }
 
     @Override

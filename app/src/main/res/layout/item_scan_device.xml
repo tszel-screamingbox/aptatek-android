@@ -1,72 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scanDeviceName"
+    style="@style/General.Text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingEnd="@dimen/general.distance.small"
-    android:paddingStart="@dimen/general.distance.small">
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65" />
-
-    <TextView
-        android:id="@+id/scanDeviceName"
-        style="@style/General.Text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        android:lines="1"
-        app:layout_constraintBottom_toTopOf="@id/scanDeviceAddress"
-        app:layout_constraintEnd_toStartOf="@id/guideButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Lumos Reader01" />
-
-    <TextView
-        android:id="@+id/scanDeviceAddress"
-        style="@style/General.Text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="start"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideButton"
-        app:layout_constraintStart_toStartOf="@id/scanDeviceName"
-        app:layout_constraintTop_toBottomOf="@+id/scanDeviceName"
-        tools:text="AA:BB:CC:DD:EE" />
-
-    <include
-        layout="@layout/layout_scan_device_connect"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.small"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/guideButton"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/applicationSolidGray"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <View
-        android:id="@+id/scanDeviceBlur"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.5"
-        android:background="@color/applicationWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-</android.support.constraint.ConstraintLayout>
+    android:gravity="center"
+    android:lines="1"
+    android:paddingStart="@dimen/general.distance.20dp"
+    android:paddingTop="@dimen/general.distance.20dp"
+    android:paddingEnd="@dimen/general.distance.20dp"
+    android:paddingBottom="@dimen/general.distance.20dp"
+    tools:text="Reader HC6" />

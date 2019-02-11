@@ -117,6 +117,10 @@
         <item name="android:progressTint">@color/testPageIndicatorBlue</item>
     </style>
 
+    <style name="Scan.Progress" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:progressTint">@color/applicationGreen</item>
+    </style>
+
     <style name="Grey.Settings.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:background">@drawable/settings_button_background</item>
         <item name="android:layout_width">@dimen/general.button.height.big</item>

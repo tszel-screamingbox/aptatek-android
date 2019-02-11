@@ -34,12 +34,12 @@ public class PermissionRequiredFragment extends BaseConnectScreenFragment<Permis
         fragmentComponent.inject(this);
     }
 
-    @Override
-    public void onActivityResumed() {
-        if (presenter.hasAllPermissions()) {
-            navigateBack();
-        }
-    }
+//    @Override
+//    public void onActivityResumed() {
+//        if (presenter.hasAllPermissions()) {
+//            navigateBack();
+//        }
+//    }
 
     @NonNull
     @Override
@@ -49,7 +49,7 @@ public class PermissionRequiredFragment extends BaseConnectScreenFragment<Permis
 
     @OnClick(R.id.permissionButton)
     public void onGrantMissingPermissionsClick() {
-        presenter.grantPermissions();
+//        presenter.grantPermissions();
     }
 
     @Override

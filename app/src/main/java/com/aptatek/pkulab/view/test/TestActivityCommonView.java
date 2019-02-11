@@ -18,4 +18,8 @@ public interface TestActivityCommonView {
 
     void setProgressPercentage(int percentage);
 
+    void setDisclaimerViewVisible(boolean visible);
+
+    void setDisclaimerMessage(@NonNull String message);
+
 }

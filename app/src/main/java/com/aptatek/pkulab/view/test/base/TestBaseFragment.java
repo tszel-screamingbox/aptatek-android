@@ -4,10 +4,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
@@ -34,12 +32,6 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
 
     @BindView(R.id.header)
     protected HeaderView titleHeaderView;
-    @BindView(R.id.testDisclaimerText)
-    @Nullable
-    protected TextView tvAlert;
-    @BindView(R.id.testDisclaimer)
-    @Nullable
-    protected ConstraintLayout disclaimerContainer;
     @BindView(R.id.testVideo)
     @Nullable
     protected FrameVideoView videoView;
@@ -67,20 +59,6 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     @Override
     public void setMessage(@NonNull final String message) {
         titleHeaderView.setSubtitle(message);
-    }
-
-    @Override
-    public void setDisclaimerViewVisible(final boolean visible) {
-        if (disclaimerContainer != null) {
-            disclaimerContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    @Override
-    public void setDisclaimerMessage(@NonNull final String message) {
-        if (tvAlert != null) {
-            tvAlert.setText(message);
-        }
     }
 
     @Override
@@ -143,6 +121,16 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     @Override
     public void showPreviousScreen() {
         runOnTestTestActivityView(TestActivityCommonView::showPreviousScreen);
+    }
+
+    @Override
+    public void setDisclaimerViewVisible(final boolean visible) {
+        runOnTestTestActivityView(view -> view.setDisclaimerViewVisible(visible));
+    }
+
+    @Override
+    public void setDisclaimerMessage(@NonNull final String message) {
+        runOnTestTestActivityView(view -> view.setDisclaimerMessage(message));
     }
 
     @Override

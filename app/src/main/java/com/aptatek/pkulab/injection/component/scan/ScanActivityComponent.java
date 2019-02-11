@@ -11,4 +11,5 @@ public interface ScanActivityComponent {
 
     void inject(ConnectReaderActivity activity);
 
+
 }

@@ -1,28 +1,24 @@
 package com.aptatek.pkulab.view.connect.turnon;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
-import com.aptatek.pkulab.injection.qualifier.ActivityContext;
-import com.aptatek.pkulab.view.connect.ConnectReaderScreen;
-import com.aptatek.pkulab.view.connect.common.BaseConnectScreenPresenter;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenterImpl;
+import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
-public class TurnReaderOnConnectPresenter extends BaseConnectScreenPresenter<TurnReaderOnConnectView> implements TurnReaderOnPresenter<TurnReaderOnConnectView> {
+public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnConnectView> implements TurnReaderOnPresenter<TurnReaderOnConnectView> {
 
     private final TurnReaderOnPresenterImpl wrapped;
 
     @Inject
-    public TurnReaderOnConnectPresenter(@ActivityContext final Context context,
+    public TurnReaderOnConnectPresenter(
                                         final BluetoothInteractor bluetoothInteractor,
                                         final ReaderInteractor readerInteractor) {
-        super(context);
         wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor);
     }
 
@@ -39,16 +35,6 @@ public class TurnReaderOnConnectPresenter extends BaseConnectScreenPresenter<Tur
     }
 
     @Override
-    protected void onRequiredConditionsMet() {
-//        ifViewAttached(attachedView -> attachedView.showScreen(ConnectReaderScreen.SCAN));
-    }
-
-    @Override
-    protected void onMissingPermissionsFound() {
-        requestMissingPermissions();
-    }
-
-    @Override
     public void onResumed() {
         wrapped.onResumed();
     }
@@ -56,5 +42,10 @@ public class TurnReaderOnConnectPresenter extends BaseConnectScreenPresenter<Tur
     @Override
     public void onPaused() {
         wrapped.onPaused();
+    }
+
+    @Override
+    public void connectTo(final @NonNull ReaderDevice readerDevice) {
+        wrapped.connectTo(readerDevice);
     }
 }

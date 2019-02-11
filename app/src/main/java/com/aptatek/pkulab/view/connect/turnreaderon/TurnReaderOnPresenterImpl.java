@@ -1,9 +1,13 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
+import android.support.annotation.NonNull;
+
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
+import com.aptatek.pkulab.domain.interactor.reader.MissingBleFeatureError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -13,6 +17,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import ix.Ix;
 import timber.log.Timber;
@@ -61,6 +66,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                                 })
                                         )
                                 ))
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(devices -> ifViewAttached(attachedView -> {
                                     switch (devices.size()) {
                                         case 0: {
@@ -82,6 +88,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                     
                                     if (error instanceof MissingPermissionsError) {
                                         ifViewAttached(TurnReaderOnView::displayMissingPermissions);
+                                    } else if (error instanceof MissingBleFeatureError) {
+                                        ifViewAttached(TurnReaderOnView::showDeviceNotSupportedDialog);
                                     }
                                 }
                         )
@@ -122,5 +130,12 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     @Override
     public void onPaused() {
         // what to do?
+    }
+
+    @Override
+    public void connectTo(final @NonNull ReaderDevice readerDevice) {
+        disposables.add(readerInteractor.connect(readerDevice)
+                .subscribe()
+        );
     }
 }

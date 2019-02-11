@@ -15,14 +15,6 @@ public class ScanDeviceViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.scanDeviceName)
     TextView tvName;
-    @BindView(R.id.scanDeviceAddress)
-    TextView tvAddress;
-    @BindView(R.id.scanConnectButton)
-    View btnConnect;
-    @BindView(R.id.scanConnectProgress)
-    View pbConnecting;
-    @BindView(R.id.scanDeviceBlur)
-    View vBlur;
 
     private ConnectClickListener connectClickListener;
     private ScanDeviceAdapterItem adapterItem;
@@ -37,15 +29,9 @@ public class ScanDeviceViewHolder extends RecyclerView.ViewHolder {
     void bind(final @NonNull ScanDeviceAdapterItem adapterItem) {
         this.adapterItem = adapterItem;
         tvName.setText(adapterItem.getName());
-        tvAddress.setText(adapterItem.getMacAddress());
-
-        btnConnect.setVisibility(adapterItem.isConnectingToThis() ? View.GONE : View.VISIBLE);
-        pbConnecting.setVisibility(adapterItem.isConnectingToThis() ? View.VISIBLE : View.GONE);
-
-        vBlur.setVisibility(adapterItem.isEnabled() || adapterItem.isConnectingToThis() ? View.GONE : View.VISIBLE);
     }
 
-    @OnClick(R.id.scanConnectButton)
+    @OnClick(R.id.scanDeviceName)
     void onClickConnect() {
         if (connectClickListener != null) {
             connectClickListener.onConnectClick(adapterItem);

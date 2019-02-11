@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface TurnReaderOnView extends MvpView {
 
+    void showDeviceNotSupportedDialog();    // no ble feature
     void displayMissingPermissions();       // need to request permissions
     void displayReaderSelector(@NonNull List<ReaderDevice> readerDevices);  // display selector
     void displaySelfCheckAnimation();       // reader connected, should display self-checking animation

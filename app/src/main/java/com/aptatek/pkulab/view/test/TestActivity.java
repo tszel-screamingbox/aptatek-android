@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
@@ -66,6 +67,12 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     ConstraintLayout bottomBar;
     @BindView(R.id.testPageIndicator)
     PageIndicatorView screenPagerIndicator;
+    @BindView(R.id.testDisclaimerText)
+    @Nullable
+    protected TextView tvDisclaimer;
+    @BindView(R.id.testDisclaimer)
+    @Nullable
+    protected ConstraintLayout disclaimerContainer;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -234,5 +241,19 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setProgressPercentage(final int percentage) {
         testProgress.setProgress(percentage);
+    }
+
+    @Override
+    public void setDisclaimerViewVisible(final boolean visible) {
+        if (disclaimerContainer != null) {
+            disclaimerContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @Override
+    public void setDisclaimerMessage(@NonNull final String message) {
+        if (tvDisclaimer != null) {
+            tvDisclaimer.setText(message);
+        }
     }
 }

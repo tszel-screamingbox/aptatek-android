@@ -5,6 +5,4 @@ import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnView;
 
 public interface TurnReaderOnConnectView extends BaseConnectScreenView, TurnReaderOnView {
 
-    void showDeviceNotSupported();
-
 }

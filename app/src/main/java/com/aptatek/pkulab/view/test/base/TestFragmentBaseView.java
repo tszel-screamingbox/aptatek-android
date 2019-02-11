@@ -15,10 +15,6 @@ public interface TestFragmentBaseView extends MvpView, TestActivityCommonView {
 
     void setMessage(@NonNull String message);
 
-    void setDisclaimerViewVisible(boolean visible);
-
-    void setDisclaimerMessage(@NonNull String message);
-
     void showAlertDialog(@NonNull AlertDialogModel alertDialogModel, @Nullable AlertDialogDecisionListener listener);
 
     void playVideo(@NonNull Uri uri, boolean shouldLoop);

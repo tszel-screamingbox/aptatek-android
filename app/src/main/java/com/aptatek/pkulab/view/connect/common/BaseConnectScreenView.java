@@ -2,12 +2,13 @@ package com.aptatek.pkulab.view.connect.common;
 
 import android.support.annotation.NonNull;
 
-import java.util.List;
+import com.aptatek.pkulab.view.connect.ConnectReaderScreen;
+import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-public interface BaseConnectScreenView extends ConnectCommonView {
+public interface BaseConnectScreenView extends MvpView {
 
-    void requestMissingPermissions(@NonNull List<String> permissions);
+    void showScreen(@NonNull ConnectReaderScreen screen);
 
-    void onActivityResumed();
+    void navigateBack();
 
 }

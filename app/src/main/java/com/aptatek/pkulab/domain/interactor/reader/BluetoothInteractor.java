@@ -9,7 +9,6 @@ import com.aptatek.pkulab.domain.manager.reader.BluetoothConditionChecker;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanCallbacks;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
-import com.aptatek.pkulab.device.bluetooth.scanner.BluetoothConditionCheckerImpl;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -47,6 +46,17 @@ public class BluetoothInteractor {
             @Override
             public void onDeviceDiscovered(@NonNull final ReaderDevice device) {
                 if (devices.add(device)) {
+                    devices.add(new ReaderDevice() {
+                        @Override
+                        public String getName() {
+                            return "I am dummy";
+                        }
+
+                        @Override
+                        public String getMac() {
+                            return "dont connect";
+                        }
+                    });
                     discoveredDevices.onNext(Collections.unmodifiableSet(devices));
                 }
             }
@@ -68,6 +78,10 @@ public class BluetoothInteractor {
     }
 
     public Completable enableBluetoothWhenNecessary() {
+        if (!bluetoothConditionChecker.hasBleFeature()) {
+            return Completable.error(new MissingBleFeatureError());
+        }
+
         if (!bluetoothConditionChecker.isBluetoothEnabled()) {
             return Completable.fromAction(bluetoothAdapter::enable);
         }

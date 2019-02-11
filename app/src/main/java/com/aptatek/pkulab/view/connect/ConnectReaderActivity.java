@@ -12,11 +12,7 @@ import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.injection.module.scan.ScanModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
-import com.aptatek.pkulab.view.connect.common.BaseConnectScreenView;
-import com.aptatek.pkulab.view.connect.connected.ConnectedFragment;
-import com.aptatek.pkulab.view.connect.enablebluetooth.EnableBluetoothFragment;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredFragment;
-import com.aptatek.pkulab.view.connect.scan.ScanFragment;
 import com.aptatek.pkulab.view.connect.turnon.TurnReaderOnConnectFragment;
 
 import javax.inject.Inject;
@@ -66,19 +62,6 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
                 fragment = new PermissionRequiredFragment();
                 break;
             }
-            case ENABLE_BLUETOOTH: {
-                addToBackstack = true;
-                fragment = new EnableBluetoothFragment();
-                break;
-            }
-            case SCAN: {
-                fragment = new ScanFragment();
-                break;
-            }
-            case CONNECTED: {
-                fragment = new ConnectedFragment();
-                break;
-            }
             default: {
                 Timber.d("Unhandled screen: %s", screen);
                 throw new IllegalArgumentException("Unhandled screen: " + screen);
@@ -86,15 +69,6 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
         }
 
         showFragment(fragment, addToBackstack);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (getActiveBaseFragment() instanceof BaseConnectScreenView) {
-            ((BaseConnectScreenView) getActiveBaseFragment()).onActivityResumed();
-        }
     }
 
     @Override

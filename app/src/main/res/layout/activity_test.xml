@@ -14,6 +14,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/testDisclaimer"
+        layout="@layout/layout_test_alert"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/test.alert.height"
+        android:layout_marginStart="@dimen/general.distance.xsmall"
+        android:layout_marginEnd="@dimen/general.distance.xsmall"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/bottomBar"
         android:layout_width="0dp"

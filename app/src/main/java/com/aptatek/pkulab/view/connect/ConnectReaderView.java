@@ -1,8 +1,7 @@
 package com.aptatek.pkulab.view.connect;
 
-import com.aptatek.pkulab.view.connect.common.ConnectCommonView;
+import com.aptatek.pkulab.view.connect.common.BaseConnectScreenView;
 
-public interface ConnectReaderView extends ConnectCommonView {
-
+public interface ConnectReaderView extends BaseConnectScreenView {
 
 }
