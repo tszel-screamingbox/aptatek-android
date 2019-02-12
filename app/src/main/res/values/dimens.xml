@@ -109,5 +109,9 @@
     <dimen name="daily.result.sliding.background.corner">20dp</dimen>
 
     <dimen name="connect.permissions.top.margin">128dp</dimen>
+    <dimen name="connect.scan.dialog.width">328dp</dimen>
+    <dimen name="connect.scan.dialog.height">416dp</dimen>
+    <dimen name="connect.scan.item.height">64dp</dimen>
+    <dimen name="connect.scan.list.height">192dp</dimen>
 
 </resources>

@@ -46,17 +46,6 @@ public class BluetoothInteractor {
             @Override
             public void onDeviceDiscovered(@NonNull final ReaderDevice device) {
                 if (devices.add(device)) {
-                    devices.add(new ReaderDevice() {
-                        @Override
-                        public String getName() {
-                            return "I am dummy";
-                        }
-
-                        @Override
-                        public String getMac() {
-                            return "dont connect";
-                        }
-                    });
                     discoveredDevices.onNext(Collections.unmodifiableSet(devices));
                 }
             }
