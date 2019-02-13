@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.connect;
+package com.aptatek.pkulab.view.connect.onboarding;
 
 public enum ConnectReaderScreen {
 

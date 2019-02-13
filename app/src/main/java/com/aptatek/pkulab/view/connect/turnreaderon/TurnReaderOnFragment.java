@@ -1,7 +1,9 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
+import android.annotation.TargetApi;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -14,15 +16,15 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
-import com.aptatek.pkulab.view.connect.scan.adapter.ScanDeviceAdapter;
-import com.aptatek.pkulab.view.connect.scan.adapter.ScanDeviceAdapterItem;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
-import com.aptatek.pkulab.view.settings.basic.SettingsAdapterItem;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
 import com.mklimek.frameviedoview.FrameVideoViewListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -34,6 +36,8 @@ import ix.Ix;
 public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends TurnReaderOnPresenter<V>> extends BaseFragment<V, P> implements TurnReaderOnView {
 
     private static final String TAG_SCAN = "pkulab.scan.devices";
+    private static final String TAG_NOT_SUPPORTED = "pkulab.scan.devicenotsupported";
+    private static final int REQ_PERMISSION = 737;
 
     @BindView(R.id.header)
     protected HeaderView headerView;
@@ -102,27 +106,21 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     }
 
     @Override
-    public void displayMissingPermissions() {
-        Toast.makeText(getActivity(), "displayMissingPermissions", Toast.LENGTH_SHORT).show();
-        // TODO display permission screen
-    }
-
-    @Override
     public void displayReaderSelector(@NonNull final List<ReaderDevice> readerDevices) {
         ScanDialogFragment scanDialogFragment = findScanDialogFragment();
         if (scanDialogFragment == null) {
             scanDialogFragment = ScanDialogFragment.create(
                     new ScanDialogFragment.ScanListener() {
-                       @Override
-                       public void onConnectTo(@NonNull final ReaderDevice device) {
-                           presenter.connectTo(device);
-                       }
+                        @Override
+                        public void onConnectTo(@NonNull final ReaderDevice device) {
+                            presenter.connectTo(device);
+                        }
 
-                       @Override
-                       public void onCancelled() {
-                           Toast.makeText(getActivity(), "what to do now?", Toast.LENGTH_SHORT).show();
-                       }
-                   }
+                        @Override
+                        public void onCancelled() {
+                            Toast.makeText(getActivity(), "what to do now?", Toast.LENGTH_SHORT).show();
+                        }
+                    }
             );
             scanDialogFragment.show(getChildFragmentManager(), TAG_SCAN);
         }
@@ -163,11 +161,39 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
         AlertDialogFragment.create(alertDialogModel, decision ->
                 getActivity().finish()
-        ).show(getChildFragmentManager(), "notsupported");
+        ).show(getChildFragmentManager(), TAG_NOT_SUPPORTED);
     }
 
     @OnClick(R.id.turnReaderOnNoDeviceAvailable)
     void onNoReaderAvailableClick() {
         Toast.makeText(getActivity(), "TODO: handle click", Toast.LENGTH_SHORT).show();
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void requestPermissions(@NonNull final List<String> missing) {
+        requestPermissions(missing.toArray(new String[0]), REQ_PERMISSION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(final int requestCode,
+                                           @NonNull final String[] permissions,
+                                           @NonNull final int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQ_PERMISSION) {
+            final List<PermissionResult> permissionResults = Ix.zip(Arrays.asList(permissions), boxedList(grantResults), PermissionResult::create).toList();
+            presenter.evaluatePermissionResults(permissionResults);
+        }
+    }
+
+    private List<Integer> boxedList(@NonNull final int[] primitives) {
+        final List<Integer> boxed = new ArrayList<>();
+
+        for (int primitive : primitives) {
+            boxed.add(primitive);
+        }
+
+        return boxed;
     }
 }

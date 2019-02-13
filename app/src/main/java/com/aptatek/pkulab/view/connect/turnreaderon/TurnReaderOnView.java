@@ -3,11 +3,11 @@ package com.aptatek.pkulab.view.connect.turnreaderon;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
-import com.hannesdorfmann.mosby3.mvp.MvpView;
+import com.aptatek.pkulab.view.connect.common.BaseConnectView;
 
 import java.util.List;
 
-public interface TurnReaderOnView extends MvpView {
+public interface TurnReaderOnView extends BaseConnectView {
 
     void showDeviceNotSupportedDialog();    // no ble feature
     void displayMissingPermissions();       // need to request permissions

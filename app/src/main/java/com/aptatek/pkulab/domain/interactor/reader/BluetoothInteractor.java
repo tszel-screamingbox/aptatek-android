@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.reader;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
@@ -8,6 +10,7 @@ import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothConditionChecker;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.injection.qualifier.ActivityContext;
 
 import java.util.Set;
 
@@ -34,9 +37,9 @@ public class BluetoothInteractor {
         this.bluetoothAdapter = bluetoothAdapter;
     }
 
-    public Completable checkPermissions() {
+    public Completable checkPermissions(final Activity activity) {
         if (!bluetoothConditionChecker.hasAllPermissions()) {
-            return Completable.error(new MissingPermissionsError());
+            return Completable.error(new MissingPermissionsError(bluetoothConditionChecker.shouldShowRationale(activity), bluetoothConditionChecker.getMissingPermissions()));
         }
 
         return Completable.complete();

@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
 import android.support.annotation.NonNull;
+import android.support.v4.content.PermissionChecker;
 
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
@@ -9,11 +10,12 @@ import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+import com.aptatek.pkulab.view.connect.permission.PermissionRequiredView;
+import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -30,70 +32,15 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     private final ReaderInteractor readerInteractor;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    @Inject
     public TurnReaderOnPresenterImpl(final BluetoothInteractor bluetoothInteractor,
-                              final ReaderInteractor readerInteractor) {
+                                     final ReaderInteractor readerInteractor) {
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
     }
 
     @Override
     public void onResumed() {
-        disposables.add(
-                bluetoothInteractor.checkPermissions()
-                        .andThen(bluetoothInteractor.enableBluetoothWhenNecessary())
-                        .andThen(bluetoothInteractor.isScanning()
-                                .take(1)
-                                .flatMapCompletable(isScanning -> {
-                                    if (isScanning) {
-                                        return Completable.complete();
-                                    }
-
-                                    return bluetoothInteractor.startScan(Long.MAX_VALUE);
-                                })
-                                .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, (tick -> tick >= INITIAL_SCAN_PERIOD), (tick -> INITIAL_SCAN_PERIOD - tick))
-                                        .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
-                                                .take(1)
-                                                .firstOrError()
-                                                .map(devices -> Ix.from(devices).toList())
-                                                .flatMap(devices -> {
-                                                    if (devices.size() == 1) {
-                                                        return readerInteractor.connect(devices.get(0))
-                                                                .andThen(Single.just(devices));
-                                                    }
-
-                                                    return Single.just(devices);
-                                                })
-                                        )
-                                ))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(devices -> ifViewAttached(attachedView -> {
-                                    switch (devices.size()) {
-                                        case 0: {
-                                            attachedView.displayNoReaderAvailable();
-                                            break;
-                                        }
-                                        case 1: {
-                                            attachedView.displaySelfCheckAnimation();
-                                            break;
-                                        }
-                                        default: {
-                                            attachedView.displayReaderSelector(devices);
-                                            break;
-                                        }
-                                    }
-                                }),
-                                error -> {
-                                    Timber.d("no luck bro: %s", error);
-                                    
-                                    if (error instanceof MissingPermissionsError) {
-                                        ifViewAttached(TurnReaderOnView::displayMissingPermissions);
-                                    } else if (error instanceof MissingBleFeatureError) {
-                                        ifViewAttached(TurnReaderOnView::showDeviceNotSupportedDialog);
-                                    }
-                                }
-                        )
-        );
+        checkPermissions();
 
         disposables.add(
                 bluetoothInteractor.getDiscoveredDevices()
@@ -124,7 +71,6 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         );
 
         // TODO add error handling
-
     }
 
     @Override
@@ -138,4 +84,84 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 .subscribe()
         );
     }
+
+    @Override
+    public void checkPermissions() {
+        ifViewAttached(view ->
+                disposables.add(
+                        bluetoothInteractor.checkPermissions(((TurnReaderOnFragment) view).getActivity())
+                                .andThen(bluetoothInteractor.enableBluetoothWhenNecessary())
+                                .andThen(bluetoothInteractor.isScanning()
+                                        .take(1)
+                                        .flatMapCompletable(isScanning -> {
+                                            if (isScanning) {
+                                                return Completable.complete();
+                                            }
+
+                                            return bluetoothInteractor.startScan(Long.MAX_VALUE);
+                                        })
+                                        .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, (tick -> tick >= INITIAL_SCAN_PERIOD), (tick -> INITIAL_SCAN_PERIOD - tick))
+                                                .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
+                                                        .take(1)
+                                                        .firstOrError()
+                                                        .map(devices -> Ix.from(devices).toList())
+                                                        .flatMap(devices -> {
+                                                            if (devices.size() == 1) {
+                                                                return readerInteractor.connect(devices.get(0))
+                                                                        .andThen(Single.just(devices));
+                                                            }
+
+                                                            return Single.just(devices);
+                                                        })
+                                                )
+                                        ))
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(devices -> ifViewAttached(attachedView -> {
+                                            switch (devices.size()) {
+                                                case 0: {
+                                                    attachedView.displayNoReaderAvailable();
+                                                    break;
+                                                }
+                                                case 1: {
+                                                    attachedView.displaySelfCheckAnimation();
+                                                    break;
+                                                }
+                                                default: {
+                                                    attachedView.displayReaderSelector(devices);
+                                                    break;
+                                                }
+                                            }
+                                        }),
+                                        error -> {
+                                            Timber.d("Error during connection: %s", error);
+
+                                            if (error instanceof MissingPermissionsError) {
+                                                final MissingPermissionsError missingPermissionsError = (MissingPermissionsError) error;
+                                                ifViewAttached(attachedView ->
+                                                        attachedView.requestPermissions(missingPermissionsError.getMissingPermissions())
+                                                );
+                                            } else if (error instanceof MissingBleFeatureError) {
+                                                ifViewAttached(TurnReaderOnView::showDeviceNotSupportedDialog);
+                                            }
+                                        }
+                                )
+                )
+        );
+    }
+
+    @Override
+    public void evaluatePermissionResults(final List<PermissionResult> results) {
+        final Boolean hasAllPermissions = Ix.from(results)
+                .map(PermissionResult::getResult)
+                .map(result -> result == PermissionChecker.PERMISSION_GRANTED)
+                .scan((prev, current) -> prev && current)
+                .single(false);
+
+        if (hasAllPermissions) {
+            checkPermissions();
+        } else {
+            ifViewAttached(TurnReaderOnView::displayMissingPermissions);
+        }
+    }
+
 }

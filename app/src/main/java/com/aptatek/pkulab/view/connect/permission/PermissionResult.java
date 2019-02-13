@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.connect.common;
+package com.aptatek.pkulab.view.connect.permission;
 
 import android.support.annotation.NonNull;
 

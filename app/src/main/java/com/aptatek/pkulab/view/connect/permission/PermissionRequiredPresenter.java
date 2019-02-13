@@ -1,28 +1,11 @@
 package com.aptatek.pkulab.view.connect.permission;
 
-import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.aptatek.pkulab.view.connect.common.BaseConnectPresenter;
 
-import javax.inject.Inject;
+import java.util.List;
 
-public class PermissionRequiredPresenter extends MvpBasePresenter<PermissionRequiredView> {
+public interface PermissionRequiredPresenter<V extends PermissionRequiredView> extends BaseConnectPresenter<V> {
 
-    @Inject
-    public PermissionRequiredPresenter() {
-    }
-
-//    @SuppressLint("NewApi")
-//    public void grantPermissions() {
-//        if (context instanceof AppCompatActivity) {
-//            final AppCompatActivity activityContext = (AppCompatActivity) this.context;
-//            final boolean showBluetoothRationale = activityContext.shouldShowRequestPermissionRationale(Manifest.permission.BLUETOOTH);
-//            final boolean showLocationRationale = activityContext.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION);
-//
-//            if (showBluetoothRationale || showLocationRationale) {
-//                requestMissingPermissions();
-//            } else {
-//                ifViewAttached(PermissionRequiredView::navigateToAppSettings);
-//            }
-//        }
-//    }
+    void evaluatePermissionResults(List<PermissionResult> results);
 
 }

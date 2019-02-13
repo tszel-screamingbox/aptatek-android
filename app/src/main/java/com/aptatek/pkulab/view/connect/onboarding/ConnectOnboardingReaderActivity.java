@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.connect;
+package com.aptatek.pkulab.view.connect.onboarding;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,17 +11,17 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
-import com.aptatek.pkulab.view.connect.permission.PermissionRequiredFragment;
-import com.aptatek.pkulab.view.connect.turnon.TurnReaderOnConnectFragment;
+import com.aptatek.pkulab.view.connect.onboarding.permission.PermissionRequiredOnboardingFragment;
+import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectFragment;
 
 import javax.inject.Inject;
 
 import timber.log.Timber;
 
-public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, ConnectReaderPresenter> implements ConnectReaderView {
+public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderView, ConnectReaderPresenter> implements ConnectReaderView {
 
     public static Intent starter(final Context context) {
-        return new Intent(context, ConnectReaderActivity.class);
+        return new Intent(context, ConnectOnboardingReaderActivity.class);
     }
 
     @Inject
@@ -58,7 +58,7 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
             }
             case PERMISSION_REQUIRED: {
                 addToBackstack = true;
-                fragment = new PermissionRequiredFragment();
+                fragment = new PermissionRequiredOnboardingFragment();
                 break;
             }
             default: {

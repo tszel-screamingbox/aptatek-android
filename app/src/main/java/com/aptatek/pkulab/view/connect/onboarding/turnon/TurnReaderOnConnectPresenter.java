@@ -1,13 +1,16 @@
-package com.aptatek.pkulab.view.connect.turnon;
+package com.aptatek.pkulab.view.connect.onboarding.turnon;
 
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenterImpl;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -16,8 +19,7 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     private final TurnReaderOnPresenterImpl wrapped;
 
     @Inject
-    public TurnReaderOnConnectPresenter(
-                                        final BluetoothInteractor bluetoothInteractor,
+    public TurnReaderOnConnectPresenter(final BluetoothInteractor bluetoothInteractor,
                                         final ReaderInteractor readerInteractor) {
         wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor);
     }
@@ -35,6 +37,11 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     }
 
     @Override
+    public void checkPermissions() {
+        wrapped.checkPermissions();
+    }
+
+    @Override
     public void onResumed() {
         wrapped.onResumed();
     }
@@ -47,5 +54,10 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     @Override
     public void connectTo(final @NonNull ReaderDevice readerDevice) {
         wrapped.connectTo(readerDevice);
+    }
+
+    @Override
+    public void evaluatePermissionResults(final List<PermissionResult> results) {
+        wrapped.evaluatePermissionResults(results);
     }
 }

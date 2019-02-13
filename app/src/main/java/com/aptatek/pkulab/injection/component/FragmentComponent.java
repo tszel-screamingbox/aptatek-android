@@ -11,8 +11,8 @@ import com.aptatek.pkulab.injection.module.parentalgate.ParentalGateModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.injection.scope.FragmentScope;
-import com.aptatek.pkulab.view.connect.permission.PermissionRequiredFragment;
-import com.aptatek.pkulab.view.connect.turnon.TurnReaderOnConnectFragment;
+import com.aptatek.pkulab.view.connect.onboarding.permission.PermissionRequiredOnboardingFragment;
+import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectFragment;
 import com.aptatek.pkulab.view.parentalgate.verification.ParentalGateVerificationFragment;
 import com.aptatek.pkulab.view.pin.auth.add.AuthPinFragment;
 import com.aptatek.pkulab.view.pin.set.add.AddPinFragment;
@@ -34,7 +34,7 @@ public interface FragmentComponent {
 
     void inject(ParentalGateVerificationFragment parentalGateVerificationFragment);
 
-    void inject(PermissionRequiredFragment permissionRequiredFragment);
+    void inject(PermissionRequiredOnboardingFragment fragment);
 
     void inject(TurnReaderOnConnectFragment fragment);
 
