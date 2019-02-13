@@ -3,7 +3,6 @@ package com.aptatek.pkulab.view.connect.turnon;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.injection.component.FragmentComponent;
-import com.aptatek.pkulab.injection.module.scan.ScanModule;
 import com.aptatek.pkulab.view.connect.ConnectReaderScreen;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnFragment;
 
@@ -22,7 +21,7 @@ public class TurnReaderOnConnectFragment extends TurnReaderOnFragment<TurnReader
 
     @Override
     protected void injectFragment(final FragmentComponent fragmentComponent) {
-        fragmentComponent.plus(new ScanModule()).inject(this);
+        fragmentComponent.inject(this);
     }
 
     @Override

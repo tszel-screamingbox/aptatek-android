@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
-import com.aptatek.pkulab.injection.module.scan.ScanModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredFragment;
@@ -21,7 +20,7 @@ import timber.log.Timber;
 
 public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, ConnectReaderPresenter> implements ConnectReaderView {
 
-    public static Intent starter(Context context) {
+    public static Intent starter(final Context context) {
         return new Intent(context, ConnectReaderActivity.class);
     }
 
@@ -29,7 +28,7 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
     ConnectReaderPresenter presenter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_connect);
@@ -38,8 +37,8 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
     }
 
     @Override
-    protected void injectActivity(ActivityComponent activityComponent) {
-        activityComponent.plus(new ScanModule()).inject(this);
+    protected void injectActivity(final ActivityComponent activityComponent) {
+        activityComponent.inject(this);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class ConnectReaderActivity extends BaseActivity<ConnectReaderView, Conne
     }
 
     @Override
-    public void showScreen(@NonNull ConnectReaderScreen screen) {
+    public void showScreen(@NonNull final ConnectReaderScreen screen) {
         final BaseFragment fragment;
         boolean addToBackstack = false;
 

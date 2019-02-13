@@ -1,17 +1,24 @@
 package com.aptatek.pkulab.device.bluetooth.scanner;
 
+import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
-import com.aptatek.pkulab.domain.manager.reader.BluetoothScanCallbacks;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.processors.BehaviorProcessor;
+import io.reactivex.processors.FlowableProcessor;
 import no.nordicsemi.android.support.v18.scanner.BluetoothLeScannerCompat;
 import no.nordicsemi.android.support.v18.scanner.ScanCallback;
 import no.nordicsemi.android.support.v18.scanner.ScanFilter;
@@ -25,10 +32,12 @@ public class BluetoothScannerImpl implements BluetoothScanner {
     private final ScanSettings scanSettings;
     private final List<ScanFilter> scanFilters;
     private final BluetoothLeScannerCompat bluetoothLeScanner;
+    private final Set<ReaderDevice> devices = Collections.synchronizedSet(new HashSet<>());
+    private final FlowableProcessor<Boolean> scanningProcessor = BehaviorProcessor.createDefault(false);
+    private final FlowableProcessor<Set<ReaderDevice>> discoveredDevicesProcessor = BehaviorProcessor.createDefault(Collections.emptySet());
+    private final FlowableProcessor<DeviceDiscoveryError> discoveryErrorProcessor = BehaviorProcessor.create();
 
     private volatile boolean scanning;
-
-    private BluetoothScanCallbacks callbacks;
 
     @Inject
     public BluetoothScannerImpl(@NonNull final ScanSettings scanSettings,
@@ -39,8 +48,10 @@ public class BluetoothScannerImpl implements BluetoothScanner {
             public void onScanResult(final int callbackType, final ScanResult result) {
                 Timber.d("scanResult: callbackType [%d], result [%s]", callbackType, result);
 
-                if (callbacks != null) {
-                    callbacks.onDeviceDiscovered(new BluetoothReaderDevice(result.getDevice()));
+                final BluetoothDevice device = result.getDevice();
+                final BluetoothReaderDevice readerDevice = new BluetoothReaderDevice(device);
+                if (devices.add(readerDevice)) {
+                    discoveredDevicesProcessor.onNext(Collections.unmodifiableSet(devices));
                 }
             }
 
@@ -53,9 +64,7 @@ public class BluetoothScannerImpl implements BluetoothScanner {
             public void onScanFailed(final int errorCode) {
                 Timber.d("scanFailed: errorCode [%d]", errorCode);
 
-                if (callbacks != null) {
-                    callbacks.onFailure(new DeviceDiscoveryError(errorCode));
-                }
+                discoveryErrorProcessor.onNext(new DeviceDiscoveryError(errorCode));
             }
         };
 
@@ -65,35 +74,48 @@ public class BluetoothScannerImpl implements BluetoothScanner {
     }
 
     @Override
-    public boolean isScanning() {
-        return scanning;
+    public Flowable<Boolean> isScanning() {
+        return scanningProcessor;
     }
 
     @Override
-    public void startScan() {
-        if (scanning) {
-            Timber.d("Attempting to call startScan while a scan is already running");
-            return;
-        }
-
-        synchronized (BluetoothScannerImpl.class) {
-            bluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
-            scanning = true;
-        }
-    }
-
-    @Override
-    public void stopScan() {
-        if (scanning) {
-            synchronized (BluetoothScannerImpl.class) {
-                bluetoothLeScanner.stopScan(scanCallback);
-                scanning = false;
+    public Completable startScan() {
+        return Completable.fromAction(() -> {
+            if (scanning) {
+                Timber.d("Attempting to call startScan while a scan is already running");
+                return;
             }
-        }
+
+            synchronized (BluetoothScannerImpl.class) {
+                bluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
+                scanning = true;
+                scanningProcessor.onNext(true);
+                devices.clear();
+                discoveredDevicesProcessor.onNext(Collections.unmodifiableSet(devices));
+            }
+        });
     }
 
     @Override
-    public void setCallbacks(@Nullable final BluetoothScanCallbacks callbacks) {
-        this.callbacks = callbacks;
+    public Completable stopScan() {
+        return Completable.fromAction(() -> {
+            if (scanning) {
+                synchronized (BluetoothScannerImpl.class) {
+                    bluetoothLeScanner.stopScan(scanCallback);
+                    scanning = false;
+                    scanningProcessor.onNext(false);
+                }
+            }
+        });
+    }
+
+    @Override
+    public Flowable<Set<ReaderDevice>> getDiscoveredDevices() {
+        return discoveredDevicesProcessor;
+    }
+
+    @Override
+    public Flowable<DeviceDiscoveryError> getDiscoveryErrors() {
+        return discoveryErrorProcessor;
     }
 }

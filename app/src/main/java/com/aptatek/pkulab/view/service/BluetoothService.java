@@ -15,7 +15,6 @@ import com.aptatek.pkulab.injection.component.bluetooth.BluetoothComponent;
 import com.aptatek.pkulab.injection.component.bluetooth.DaggerBluetoothComponent;
 import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
-import com.aptatek.pkulab.injection.module.scan.ScanModule;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +48,6 @@ public class BluetoothService extends BaseForegroundService {
         final BluetoothComponent bluetoothComponent = DaggerBluetoothComponent.builder()
                 .applicationComponent(component)
                 .serviceModule(new ServiceModule(this))
-                .scanModule(new ScanModule())
                 .bluetoothServiceModule(new BluetoothServiceModule())
                 .build();
         bluetoothComponent.inject(this);

@@ -1,15 +1,23 @@
 package com.aptatek.pkulab.domain.manager.reader;
 
-import android.support.annotation.Nullable;
+import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+
+import java.util.Set;
+
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 
 public interface BluetoothScanner {
 
-    boolean isScanning();
+    Completable startScan();
 
-    void startScan();
+    Completable stopScan();
 
-    void stopScan();
+    Flowable<Boolean> isScanning();
 
-    void setCallbacks(@Nullable BluetoothScanCallbacks callbacks);
+    Flowable<Set<ReaderDevice>> getDiscoveredDevices();
+
+    Flowable<DeviceDiscoveryError> getDiscoveryErrors();
 
 }

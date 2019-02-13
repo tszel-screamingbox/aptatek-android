@@ -3,16 +3,15 @@ package com.aptatek.pkulab.injection.component;
 import android.content.Context;
 
 import com.aptatek.pkulab.injection.component.chart.ChartActivityComponent;
-import com.aptatek.pkulab.injection.component.scan.ScanActivityComponent;
 import com.aptatek.pkulab.injection.component.rangeinfo.RangeInfoActivityComponent;
 import com.aptatek.pkulab.injection.component.test.TestActivityComponent;
 import com.aptatek.pkulab.injection.module.ActivityModule;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
-import com.aptatek.pkulab.injection.module.scan.ScanModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.injection.qualifier.ActivityContext;
 import com.aptatek.pkulab.injection.scope.ActivityScope;
+import com.aptatek.pkulab.view.connect.ConnectReaderActivity;
 import com.aptatek.pkulab.view.fingerprint.FingerprintActivity;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.parentalgate.ParentalGateActivity;
@@ -51,6 +50,8 @@ public interface ActivityComponent {
 
     void inject(DisposeActivity disposeActivity);
 
+    void inject(ConnectReaderActivity connectReaderActivity);
+
     @ActivityContext
     Context context();
 
@@ -59,7 +60,5 @@ public interface ActivityComponent {
     RangeInfoActivityComponent plus(RangeInfoModule module);
 
     ChartActivityComponent plus(RangeInfoModule rangeInfoModule, ChartModule chartModule);
-
-    ScanActivityComponent plus(ScanModule scanModule);
 
 }
