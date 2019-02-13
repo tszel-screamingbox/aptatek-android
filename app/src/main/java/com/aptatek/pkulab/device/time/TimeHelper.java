@@ -111,7 +111,7 @@ public final class TimeHelper {
         return LocalDate.fromDateFields(new Date(timestamp));
     }
 
-    private static LocalDateTime timeFromTimestamp(final long timestamp) {
+    public static LocalDateTime timeFromTimestamp(final long timestamp) {
         return LocalDateTime.fromDateFields(new Date(timestamp));
     }
 

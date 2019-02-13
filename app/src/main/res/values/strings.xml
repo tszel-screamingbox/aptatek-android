@@ -292,6 +292,7 @@
     <string name="pdf.export.unit.description.warn">All units are in %1$s. In this data export, please note that these \"normal\" range\nprefrences have been changed from the default range.</string>
     <string name="pdf.export.legend.x">%1$s</string>
     <string name="pdf.export.average">Average (+/- %1$s)</string>
+    <string name="pdf.export.csv.subject">Export from PKU Lab</string>
     <string name="pdf.export.email.subject">Exported results from PKU LAB</string>
     <string name="pdf.export.file.name">PKU history %1$s.pdf</string>
     <string name="pdf.export.subtitle.dateformat">MMMM yyyy</string>

@@ -13,6 +13,7 @@ import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
+import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -38,6 +39,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     private final WeeklyChartDateFormatter weeklyChartDateFormatter;
     private final List<Integer> weekList = new ArrayList<>();
     private final PdfChartDataTransformer pdfChartDataTransformer;
+    private final CsvExport csvExport;
 
     private CompositeDisposable disposables;
 
@@ -46,12 +48,14 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                                          final ResourceInteractor resourceInteractor,
                                          final PkuRangeInteractor rangeInteractor,
                                          final WeeklyChartDateFormatter weeklyChartDateFormatter,
-                                         final PdfChartDataTransformer pdfChartDataTransformer) {
+                                         final PdfChartDataTransformer pdfChartDataTransformer,
+                                         final CsvExport csvExport) {
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
         this.weeklyChartDateFormatter = weeklyChartDateFormatter;
         this.pdfChartDataTransformer = pdfChartDataTransformer;
+        this.csvExport = csvExport;
     }
 
     @Override
@@ -126,6 +130,14 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                                 attachedView.displayValidWeekList(validWeeks)
                         )
                 )
+        );
+    }
+
+    void getCsvData() {
+        disposables.add(testResultInteractor.listAll()
+                .flatMap(csvExport::generateCsv)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(file -> ifViewAttached(view -> view.onCsvDataReady(file)))
         );
     }
 

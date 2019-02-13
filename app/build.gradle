@@ -191,6 +191,9 @@ dependencies {
     // JSON
     implementation jsonDependencies.gson
 
+    // CSV
+    implementation csvDependencies.openCsv
+
     // Tests
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockito

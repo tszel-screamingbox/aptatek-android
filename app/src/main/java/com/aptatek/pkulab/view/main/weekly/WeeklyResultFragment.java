@@ -25,11 +25,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import butterknife.OnPageChange;
 import timber.log.Timber;
 
@@ -100,6 +102,12 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @OnClick(R.id.buttonPdfExport)
     public void onPdfExportClicked() {
         presenter.getPdfChartData(chartViewPager.getCurrentItem());
+    }
+
+    @OnLongClick(R.id.buttonPdfExport)
+    public boolean onCsvExportClicked() {
+        presenter.getCsvData();
+        return true;
     }
 
     @OnClick(R.id.rightArrow)
@@ -180,14 +188,26 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
             document.writeTo(out);
             document.close();
             out.close();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Timber.d(e);
         }
 
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("vnd.android.cursor.dir/email");
         emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                getContext(),
+                Objects.requireNonNull(getContext()),
+                BuildConfig.APPLICATION_ID + ".provider",
+                file));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
+        startActivity(Intent.createChooser(emailIntent, ""));
+    }
+
+    @Override
+    public void onCsvDataReady(final File file) {
+        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("vnd.android.cursor.dir/email");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                Objects.requireNonNull(getContext()),
                 BuildConfig.APPLICATION_ID + ".provider",
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
