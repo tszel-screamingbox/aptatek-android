@@ -134,6 +134,11 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     }
 
     @Override
+    public void setNextButtonVisible(final boolean visible) {
+        runOnTestTestActivityView(view -> view.setNextButtonVisible(visible));
+    }
+
+    @Override
     public boolean onNextPressed() {
         return false;
     }

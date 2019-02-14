@@ -19,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_marginStart="@dimen/general.distance.32dp"
         android:layout_marginEnd="@dimen/general.distance.32dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/general.distance.20dp"
         android:drawableEnd="@drawable/ic_arrow_up"
         android:text="@string/connect.turnon.no.reader.available"
         android:visibility="gone"

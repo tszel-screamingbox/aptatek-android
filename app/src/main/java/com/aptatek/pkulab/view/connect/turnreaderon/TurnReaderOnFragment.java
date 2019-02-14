@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
+import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
 import com.mklimek.frameviedoview.FrameVideoViewListener;
@@ -64,6 +66,11 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         headerView.setTitle(resourceInteractor.getStringResource(R.string.test_turnreaderon_title));
         headerView.setSubtitle(resourceInteractor.getStringResource(R.string.test_turnreaderon_message));
         playVideo(resourceInteractor.getUriForRawFile(R.raw.turn_reader_on), true);
+
+        if (getActivity() instanceof TestActivity) {
+            final ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) noReaderAvailable.getLayoutParams();
+            layoutParams.bottomMargin += resourceInteractor.getDimension(R.dimen.test_bottombar_height);
+        }
     }
 
     protected void playVideo(@NonNull final Uri uri, final boolean shouldLoop) {
@@ -135,7 +142,6 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @Override
     public void displaySelfCheckAnimation() {
-        Toast.makeText(getActivity(), "displaySelfCheckAnimation", Toast.LENGTH_SHORT).show();
         playVideo(resourceInteractor.getUriForRawFile(R.raw.self_check), true);
     }
 

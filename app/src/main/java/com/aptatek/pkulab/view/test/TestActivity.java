@@ -27,9 +27,8 @@ import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
 import com.aptatek.pkulab.view.test.connectitall.ConnectItAllFragment;
 import com.aptatek.pkulab.view.test.mixsample.MixSampleFragment;
 import com.aptatek.pkulab.view.test.pokefingertip.PokeFingertipFragment;
-import com.aptatek.pkulab.view.test.selftest.SelfTestFragment;
 import com.aptatek.pkulab.view.test.testing.TestingFragment;
-import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnFragment;
+import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
 import com.rd.PageIndicatorView;
 
@@ -82,7 +81,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
         screenPagerIndicator.setDynamicCount(false);
         screenPagerIndicator.setCount(TestScreens.values().length - 1); // Cancel screen is ignored
-
     }
 
     @Override
@@ -132,7 +130,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @Override
     public void showScreen(@NonNull final TestScreens screen) {
-        final TestBaseFragment fragment;
+        final BaseFragment fragment;
 
         switch (screen) {
             case CANCEL: {
@@ -156,11 +154,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
                 break;
             }
             case TURN_READER_ON: {
-                fragment = new TurnReaderOnFragment();
-                break;
-            }
-            case SELF_TEST: {
-                fragment = new SelfTestFragment();
+                fragment = new TurnReaderOnTestFragment();
                 break;
             }
             case CONNECT_IT_ALL: {
@@ -255,5 +249,10 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         if (tvDisclaimer != null) {
             tvDisclaimer.setText(message);
         }
+    }
+
+    @Override
+    public void setNextButtonVisible(final boolean visible) {
+        nextButton.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 }

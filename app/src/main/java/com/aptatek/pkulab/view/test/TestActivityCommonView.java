@@ -22,4 +22,6 @@ public interface TestActivityCommonView {
 
     void setDisclaimerMessage(@NonNull String message);
 
+    void setNextButtonVisible(boolean visible);
+
 }
