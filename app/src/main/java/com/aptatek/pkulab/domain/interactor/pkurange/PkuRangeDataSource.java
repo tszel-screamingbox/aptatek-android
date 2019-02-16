@@ -20,5 +20,7 @@ public interface PkuRangeDataSource {
 
     float getNormalFloorAbsoluteMinMMol();
 
+    boolean isDefaultValue();
+
     PkuLevelUnits getDisplayUnit();
 }

@@ -97,8 +97,8 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
     }
 
     @Override
-    public void setBatteryPercentageText(@NonNull final String percentageText) {
-        // do nothing here
+    public void setBatteryPercentage(final int percentage) {
+        runOnTestTestActivityView(view -> view.setBatteryPercentage(percentage));
     }
 
     @Override

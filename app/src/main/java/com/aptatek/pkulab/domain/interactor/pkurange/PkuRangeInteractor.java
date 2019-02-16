@@ -60,6 +60,7 @@ public class PkuRangeInteractor {
                 .setNormalFloorValue(getValueInUnit(dataSource.getNormalFloorValueMMol(), PkuLevelUnits.MICRO_MOL, displayUnit))
                 .setNormalAbsoluteMinValue(getValueInUnit(dataSource.getNormalFloorAbsoluteMinMMol(), PkuLevelUnits.MICRO_MOL, displayUnit))
                 .setNormalAbsoluteMaxValue(getValueInUnit(dataSource.getNormalCeilAbsoluteMaxMMol(), PkuLevelUnits.MICRO_MOL, displayUnit))
+                .setDefaultValue(dataSource.isDefaultValue())
                 .build();
     }
 

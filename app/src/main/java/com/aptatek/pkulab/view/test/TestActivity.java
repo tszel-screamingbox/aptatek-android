@@ -30,6 +30,7 @@ import com.aptatek.pkulab.view.test.pokefingertip.PokeFingertipFragment;
 import com.aptatek.pkulab.view.test.testing.TestingFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
+import com.aptatek.pkulab.widget.BatteryView;
 import com.rd.PageIndicatorView;
 
 import javax.inject.Inject;
@@ -61,7 +62,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @BindView(R.id.testProgress)
     ProgressBar testProgress;
     @BindView(R.id.testBattery)
-    TextView battery;
+    BatteryView battery;
     @BindView(R.id.bottomBar)
     ConstraintLayout bottomBar;
     @BindView(R.id.testPageIndicator)
@@ -222,8 +223,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     }
 
     @Override
-    public void setBatteryPercentageText(final @NonNull String percentageText) {
-        battery.setText(percentageText);
+    public void setBatteryPercentage(final int percentage) {
+        battery.setBatteryLevel(percentage);
     }
 
     @Override
