@@ -31,7 +31,7 @@ public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderV
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_connect);
+        setContentView(R.layout.layout_content_frame);
 
         showScreen(ConnectReaderScreen.TURN_ON);
     }
@@ -43,7 +43,7 @@ public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderV
 
     @Override
     public int getFrameLayoutId() {
-        return R.id.connectFrame;
+        return R.id.container;
     }
 
     @Override

@@ -137,7 +137,7 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
-            android:name=".view.connect.ConnectReaderActivity"
+            android:name=".view.connect.onboarding.ConnectOnboardingReaderActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen"/>
 
@@ -148,6 +148,10 @@
 
         <activity
             android:name=".view.test.dispose.DisposeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen" />
+
+        <activity android:name=".view.test.turnreaderon.permission.PermissionRequiredOnTestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 

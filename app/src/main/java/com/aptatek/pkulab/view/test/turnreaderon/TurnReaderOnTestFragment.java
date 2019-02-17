@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.test.turnreaderon;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
 import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
+import com.aptatek.pkulab.view.test.turnreaderon.permission.PermissionRequiredOnTestActivity;
 
 import javax.inject.Inject;
 
@@ -47,7 +49,7 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
 
     @Override
     public void displayMissingPermissions() {
-        // TODO permission screen
+        getBaseActivity().launchActivity(new Intent(getActivity(), PermissionRequiredOnTestActivity.class));
     }
 
     @Override
@@ -88,7 +90,7 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
 
     @Override
     public void setBottomBarVisible(final boolean visible) {
-        // do nothing here
+        runOnTestTestActivityView(view -> view.setBottomBarVisible(visible));
     }
 
     @Override
@@ -124,6 +126,11 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
     @Override
     public void setNextButtonVisible(final boolean visible) {
         runOnTestTestActivityView(view -> view.setNextButtonVisible(visible));
+    }
+
+    @Override
+    public TestScreens getScreen() {
+        return TestScreens.TURN_READER_ON;
     }
 
     private void runOnTestTestActivityView(final TestActivityViewAction action) {

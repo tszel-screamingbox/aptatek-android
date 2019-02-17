@@ -16,7 +16,6 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.test.TestActivityCommonView;
-import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
 import com.mklimek.frameviedoview.FrameVideoViewListener;
@@ -185,5 +184,4 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
         void run(TestActivityCommonView view);
     }
 
-    public abstract TestScreens getScreen();
 }

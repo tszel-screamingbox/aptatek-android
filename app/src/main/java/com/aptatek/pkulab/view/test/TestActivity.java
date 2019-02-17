@@ -21,6 +21,7 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
+import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 import com.aptatek.pkulab.view.test.breakfoil.BreakFoilFragment;
 import com.aptatek.pkulab.view.test.canceltest.CancelTestFragment;
 import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
@@ -184,7 +185,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     }
 
     private TestScreens getCurrentScreen() {
-        return ((TestBaseFragment) getActiveBaseFragment()).getScreen();
+        return ((TestFragmentBaseView) getActiveBaseFragment()).getScreen();
     }
 
     @Override

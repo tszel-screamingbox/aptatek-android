@@ -3,7 +3,6 @@ package com.aptatek.pkulab.view.test;
 public enum TestScreens {
 
     TURN_READER_ON,
-    SELF_TEST,
     BREAK_FOIL,
     POKE_FINGERTIP,
     COLLECT_BLOOD,

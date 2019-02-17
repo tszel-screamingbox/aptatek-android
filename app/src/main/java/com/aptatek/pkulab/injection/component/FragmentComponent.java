@@ -18,6 +18,7 @@ import com.aptatek.pkulab.view.pin.auth.add.AuthPinFragment;
 import com.aptatek.pkulab.view.pin.set.add.AddPinFragment;
 import com.aptatek.pkulab.view.pin.set.confirm.ConfirmPinFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestFragment;
+import com.aptatek.pkulab.view.test.turnreaderon.permission.PermissionRequiredOnTestFragment;
 
 import dagger.Component;
 
@@ -40,6 +41,8 @@ public interface FragmentComponent {
     void inject(TurnReaderOnConnectFragment fragment);
 
     void inject(TurnReaderOnTestFragment fragment);
+
+    void inject(PermissionRequiredOnTestFragment permissionRequiredOnTestFragment);
 
     HomeFragmentComponent plus(TestModule testModule, RangeInfoModule rangeInfoModule, ChartModule chartModule);
 
