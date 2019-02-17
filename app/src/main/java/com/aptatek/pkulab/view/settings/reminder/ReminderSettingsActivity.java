@@ -77,7 +77,7 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder_settings);
         ButterKnife.bind(this);
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(R.string.reminder_settings_toolbar_title);
 
         setSupportActionBar(toolbar);
