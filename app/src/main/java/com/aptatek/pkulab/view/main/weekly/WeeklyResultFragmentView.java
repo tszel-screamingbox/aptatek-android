@@ -1,9 +1,9 @@
 package com.aptatek.pkulab.view.main.weekly;
 
+import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-import java.io.File;
 import java.util.List;
 
 interface WeeklyResultFragmentView extends MvpView {
@@ -22,5 +22,5 @@ interface WeeklyResultFragmentView extends MvpView {
 
     void onPdfDataReady(PdfEntryData pdfData);
 
-    void onCsvDataReady(File file);
+    void onCsvDataReady(Attachment attachment);
 }

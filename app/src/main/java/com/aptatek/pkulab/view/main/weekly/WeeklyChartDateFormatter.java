@@ -7,4 +7,10 @@ public interface WeeklyChartDateFormatter {
     String getPdfFileNameDateFormat();
 
     String getPdfMonthFormat(final int weeksBeforeNow);
+
+    String getFormattedCsvFileName();
+
+    String getFormattedCsvColumn(long timeInMillis);
+
+    String getFormattedCsvBody(long startDate, long endDate, String version);
 }

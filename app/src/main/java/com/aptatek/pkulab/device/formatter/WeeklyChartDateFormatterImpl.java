@@ -11,7 +11,8 @@ import com.aptatek.pkulab.view.main.weekly.WeeklyChartDateFormatter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+
+import static java.util.Locale.getDefault;
 
 public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
 
@@ -27,7 +28,7 @@ public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
         final Date actualDate = new Date(actualWeekTimestamp);
         final String pattern = resourceInteractor.getStringResource(R.string.weekly_subtitle_dateformat,
                 resourceInteractor.getStringResource(getDayOfMothSuffix(TimeHelper.getDayOfMonth(actualWeekTimestamp))));
-        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, getDefault());
         final String formattedDate = simpleDateFormat.format(actualDate);
 
         return resourceInteractor.getStringResource(R.string.weekly_subtitle, formattedDate);
@@ -37,7 +38,7 @@ public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
     public String getPdfFileNameDateFormat() {
         final Date date = Calendar.getInstance().getTime();
 
-        final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.pdf_export_file_name_dateformat), Locale.getDefault());
+        final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.pdf_export_file_name_dateformat), getDefault());
         return df.format(date);
     }
 
@@ -46,10 +47,32 @@ public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
         final long actualWeekTimestamp = TimeHelper.addWeeks(-1 * weeksBeforeNow, System.currentTimeMillis());
         final Date actualDate = new Date(actualWeekTimestamp);
         final SimpleDateFormat simpleDateFormat =
-                new SimpleDateFormat(resourceInteractor.getStringResource(R.string.pdf_export_subtitle_dateformat), Locale.getDefault());
+                new SimpleDateFormat(resourceInteractor.getStringResource(R.string.pdf_export_subtitle_dateformat), getDefault());
 
         final String format = simpleDateFormat.format(actualDate);
         return format.substring(0, 1).toUpperCase() + format.substring(1);
+    }
+
+    @Override
+    public String getFormattedCsvFileName() {
+        final Date date = Calendar.getInstance().getTime();
+
+        final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.csv_export_file_name_format), getDefault());
+        return df.format(date);
+    }
+
+    @Override
+    public String getFormattedCsvColumn(final long timeInMillis) {
+        final Date date = new Date(timeInMillis);
+
+        final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.csv_export_file_name_format), getDefault());
+        return df.format(date);
+    }
+
+    @Override
+    public String getFormattedCsvBody(final long startDate, final long endDate, final String version) {
+        final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.csv_export_body_format), getDefault());
+        return resourceInteractor.getStringResource(R.string.csv_export_body, df.format(startDate), df.format(endDate), version);
     }
 
     @StringRes

@@ -1,14 +1,15 @@
 package com.aptatek.pkulab.view.main.weekly;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
+import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,8 @@ public class WeeklyResultFragmentPresenterTest {
     private WeeklyChartDateFormatter weeklyChartDateFormatter;
     @Mock
     private PdfChartDataTransformer pdfChartDataTransformer;
+    @Mock
+    private CsvExport csvExport;
 
     private WeeklyResultFragmentPresenter presenter;
     private List<TestResult> testResultList = new ArrayList<>();
@@ -85,7 +88,8 @@ public class WeeklyResultFragmentPresenterTest {
                 resourceInteractor,
                 pkuRangeInteractor,
                 weeklyChartDateFormatter,
-                pdfChartDataTransformer);
+                pdfChartDataTransformer,
+                csvExport);
         presenter.attachView(view);
     }
 

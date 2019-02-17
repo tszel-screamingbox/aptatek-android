@@ -15,6 +15,7 @@ import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
 import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
@@ -203,14 +204,15 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     }
 
     @Override
-    public void onCsvDataReady(final File file) {
+    public void onCsvDataReady(final Attachment attachment) {
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("vnd.android.cursor.dir/email");
         emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
                 Objects.requireNonNull(getContext()),
                 BuildConfig.APPLICATION_ID + ".provider",
-                file));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
+                attachment.getCsvFile()));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.csv_export_subject));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, attachment.getBody());
         startActivity(Intent.createChooser(emailIntent, ""));
     }
 }

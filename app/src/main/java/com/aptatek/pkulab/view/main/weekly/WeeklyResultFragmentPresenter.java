@@ -135,9 +135,12 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
     void getCsvData() {
         disposables.add(testResultInteractor.listAll()
-                .flatMap(csvExport::generateCsv)
+                .flatMap(results -> {
+                    final String name = resourceInteractor.getStringResource(R.string.csv_export_file_name, weeklyChartDateFormatter.getFormattedCsvFileName());
+                    return csvExport.generateAttachment(results, name);
+                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(file -> ifViewAttached(view -> view.onCsvDataReady(file)))
+                .subscribe(attachment -> ifViewAttached(view -> view.onCsvDataReady(attachment)))
         );
     }
 
