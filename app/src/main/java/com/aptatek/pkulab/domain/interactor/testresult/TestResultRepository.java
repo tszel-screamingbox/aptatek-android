@@ -78,7 +78,7 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
 
     @NonNull
     public Single<TestResult> getOldest() {
-        return Single.fromCallable(testResultDataSource::getLatestData)
+        return Single.fromCallable(testResultDataSource::getOldestData)
                 .map(mapper::mapToDomain);
     }
 

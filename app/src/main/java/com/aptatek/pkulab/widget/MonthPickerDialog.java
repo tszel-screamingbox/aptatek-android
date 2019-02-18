@@ -24,7 +24,7 @@ public class MonthPickerDialog extends DialogFragment {
     private static final int MAX_MONTH_VALUE = 12;
 
     public interface MonthPickerDialogCallback {
-        void done(int year, int month);
+        void onPick(int year, int month);
     }
 
     public static MonthPickerDialog create(@NonNull final MonthPickerDialogModel monthPickerDialogModel, @Nullable final MonthPickerDialogCallback callback) {
@@ -53,7 +53,7 @@ public class MonthPickerDialog extends DialogFragment {
     @OnClick(R.id.textViewOk)
     public void onOkClicked() {
         if (callback != null) {
-            callback.done(yearPicker.getValue(), monthPicker.getValue());
+            callback.onPick(yearPicker.getValue(), monthPicker.getValue());
             dismiss();
         }
     }
