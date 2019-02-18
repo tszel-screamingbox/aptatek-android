@@ -25,7 +25,6 @@ import com.aptatek.pkulab.widget.PdfExportView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -159,7 +158,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     }
 
     @Override
-    public void onPdfDataReady(final ArrayList<PdfEntryData> data) {
+    public void onPdfDataReady(final List<PdfEntryData> data) {
         final PdfDocument document = new PdfDocument();
 
         for (PdfEntryData pdfEntryData : data) {

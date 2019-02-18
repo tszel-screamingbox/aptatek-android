@@ -3,7 +3,6 @@ package com.aptatek.pkulab.view.main.weekly;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 interface WeeklyResultFragmentView extends MvpView {
@@ -20,6 +19,6 @@ interface WeeklyResultFragmentView extends MvpView {
 
     void displayValidWeekList(List<Integer> validWeeks);
 
-    void onPdfDataReady(ArrayList<PdfEntryData> data);
+    void onPdfDataReady(List<PdfEntryData> data);
 
 }

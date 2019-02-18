@@ -136,7 +136,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     }
 
     void getPdfChartData(final PdfExportInterval pdfExportInterval) {
-        final ArrayList<Single<PdfEntryData>> singles = new ArrayList<>();
+        final List<Single<PdfEntryData>> singles = new ArrayList<>();
 
         for (int i = 0; i < getPdfExportIntervalInMonth(pdfExportInterval); i++) {
             final long monthsBeforeTimeStamp = TimeHelper.addMonths(i, System.currentTimeMillis());
@@ -146,17 +146,9 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
             singles.add(generatePdfEntryDataForMonth(pdfExportInterval, i, start, end));
         }
 
-        disposables.add(Single.zip(singles, objects -> {
-            final ArrayList<PdfEntryData> data = new ArrayList<>();
-            for (Object object : objects) {
-                data.add((PdfEntryData) object);
-            }
-            return data;
-        }).subscribeOn(Schedulers.computation()).subscribe((pdfEntryDataArrayList, throwable) -> {
-            ifViewAttached(view -> {
-                view.onPdfDataReady(pdfEntryDataArrayList);
-            });
-        }));
+        disposables.add(Single.merge(singles).toList()
+                .subscribeOn(Schedulers.computation()).subscribe((pdfEntryDataArrayList, throwable)
+                        -> ifViewAttached(view -> view.onPdfDataReady(pdfEntryDataArrayList))));
     }
 
     private Single<PdfEntryData> generatePdfEntryDataForMonth(final PdfExportInterval pdfExportInterval, final int monthsBefore, final long start, final long end) {
