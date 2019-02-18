@@ -29,14 +29,15 @@ public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormat
         return units == PkuLevelUnits.MICRO_MOL ? FORMAT_MICRO_MOL : FORMAT_MILLI_GRAM;
     }
 
-    private String getProperUnits(final PkuLevelUnits units) {
+    private float getProperOffset(final PkuLevelUnits units) {
+        return units == PkuLevelUnits.MICRO_MOL ? OFFSET_MICRO_MOL : OFFSET_MILLI_GRAM;
+    }
+
+    @Override
+    public String getProperUnits(final PkuLevelUnits units) {
         return resourceInteractor.getStringResource(units == PkuLevelUnits.MICRO_MOL
                 ? R.string.rangeinfo_pkulevel_mmol
                 : R.string.rangeinfo_pkulevel_mg);
-    }
-
-    private float getProperOffset(final PkuLevelUnits units) {
-        return units == PkuLevelUnits.MICRO_MOL ? OFFSET_MICRO_MOL : OFFSET_MILLI_GRAM;
     }
 
     @Override
