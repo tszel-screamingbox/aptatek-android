@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.view.rangeinfo;
 
+import com.aptatek.pkulab.domain.model.PkuLevel;
+import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 
 public interface PkuValueFormatter {
@@ -14,4 +16,5 @@ public interface PkuValueFormatter {
 
     String formatUnits(PkuRangeInfo info);
 
+    String formatFromUnits(PkuLevelUnits units);
 }

@@ -111,7 +111,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
             }
         });
 
-        presenter.initRangeDialog();
+        presenter.initView();
     }
 
     @Override
@@ -257,6 +257,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                     }
                 });
         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_RANGE_DIALOG);
+    }
+
+    @Override
+    public void updateUnitText(final String text) {
+        System.out.println("asas " + text);
     }
 
     @Override
