@@ -42,9 +42,9 @@ public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
     }
 
     @Override
-    public String getPdfMonthFormat(final int weeksBeforeNow) {
-        final long actualWeekTimestamp = TimeHelper.addWeeks(-1 * weeksBeforeNow, System.currentTimeMillis());
-        final Date actualDate = new Date(actualWeekTimestamp);
+    public String getPdfMonthFormat(final int monthsBeforeNow) {
+        final long actualMonthTimestamp = TimeHelper.addMonths(-1 * monthsBeforeNow, System.currentTimeMillis());
+        final Date actualDate = new Date(actualMonthTimestamp);
         final SimpleDateFormat simpleDateFormat =
                 new SimpleDateFormat(resourceInteractor.getStringResource(R.string.pdf_export_subtitle_dateformat), Locale.getDefault());
 
