@@ -1,7 +1,6 @@
 package com.aptatek.pkulab.view.test.result;
 
 import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
 
@@ -10,7 +9,8 @@ public abstract class TestResultState {
 
     public abstract String getTitle();
 
-    public abstract @ColorInt int getColor();
+    public abstract @ColorInt
+    int getColor();
 
     public abstract String getFormattedPkuValue();
 
