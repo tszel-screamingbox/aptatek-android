@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
     android:paddingStart="@dimen/general.distance.32dp"
     android:paddingTop="@dimen/general.distance.xsmall"
     android:paddingEnd="@dimen/general.distance.xsmall"
-    android:paddingBottom="@dimen/general.distance.xsmall"
-    android:background="?selectableItemBackground">
+    android:paddingBottom="@dimen/general.distance.xsmall">
 
     <TextView
         android:id="@+id/settings_item_title"
         style="@style/Settings.Row.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/ic_right_arrow"
+        android:drawableEnd="@drawable/ic_arrow_right"
+        android:drawableTint="@color/arrowGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

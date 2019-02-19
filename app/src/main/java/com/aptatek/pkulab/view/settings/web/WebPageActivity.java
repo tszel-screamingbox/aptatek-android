@@ -34,7 +34,7 @@ public class WebPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
 
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(title);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());

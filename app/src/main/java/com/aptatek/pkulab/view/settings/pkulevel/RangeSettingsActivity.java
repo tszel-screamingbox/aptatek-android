@@ -91,7 +91,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_range_settings);
         ButterKnife.bind(this);
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(R.string.settings_units_title);
 
         setSupportActionBar(toolbar);
