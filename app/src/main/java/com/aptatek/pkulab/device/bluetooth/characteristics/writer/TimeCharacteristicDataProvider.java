@@ -27,7 +27,7 @@ public class TimeCharacteristicDataProvider implements CharacteristicDataProvide
         final UpdateTimeResponse updateTimeResponse = new UpdateTimeResponse();
         final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         updateTimeResponse.setYear(calendar.get(Calendar.YEAR));
-        updateTimeResponse.setMonth(calendar.get(Calendar.MONTH));
+        updateTimeResponse.setMonth(calendar.get(Calendar.MONTH) + 1);
         updateTimeResponse.setDay(calendar.get(Calendar.DAY_OF_MONTH));
         updateTimeResponse.setHour(calendar.get(Calendar.HOUR_OF_DAY));
         updateTimeResponse.setMinute(calendar.get(Calendar.MINUTE));

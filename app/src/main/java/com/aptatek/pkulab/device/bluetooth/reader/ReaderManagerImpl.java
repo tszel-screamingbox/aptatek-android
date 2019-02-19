@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.mapper.CartridgeInfoMapper;
 import com.aptatek.pkulab.device.bluetooth.mapper.ErrorMapper;
+import com.aptatek.pkulab.device.bluetooth.mapper.TestProgressMapper;
 import com.aptatek.pkulab.device.bluetooth.mapper.TestResultMapper;
 import com.aptatek.pkulab.device.bluetooth.mapper.WorkflowStateMapper;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
@@ -13,6 +14,7 @@ import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ErrorResponse;
 import com.aptatek.pkulab.device.bluetooth.model.NumPreviousResultsResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
+import com.aptatek.pkulab.device.bluetooth.model.TestProgressResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.error.DeviceBondingFailedError;
@@ -26,6 +28,7 @@ import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 
@@ -49,6 +52,7 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<ConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ConnectionEvent.create(null, ConnectionState.DISCONNECTED));
     private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
+    private final FlowableProcessor<TestProgress> testProgressProcessor = BehaviorProcessor.create();
     private final Map<Class<?>, Mapper<?, ?>> mappers;
 
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager, Map<Class<?>, Mapper<?, ?>> mappers) {
@@ -88,21 +92,20 @@ public class ReaderManagerImpl implements ReaderManager {
             @Override
             public void onDeviceReady(final @NonNull BluetoothDevice device) {
                 Timber.d("onDeviceReady device [%s]", device.getAddress());
-                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+//                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
                     connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
-                }
+//                }
             }
 
             @Override
             public void onBondingRequired(final @NonNull BluetoothDevice device) {
                 Timber.d("onBondingRequired: device [%s]", device.getAddress());
-                //connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.BONDING_REQUIRED));
             }
 
             @Override
             public void onBonded(final @NonNull BluetoothDevice device) {
                 Timber.d("onBonded: device [%s]", device.getAddress());
-                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
+//                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
             }
 
             @Override
@@ -149,14 +152,24 @@ public class ReaderManagerImpl implements ReaderManager {
                 Timber.d("onWorkflowStateChanged: %s", workflowStateResponse);
                 workflowStateProcessor.onNext(((WorkflowStateMapper) mappers.get(WorkflowStateResponse.class)).mapToDomain(workflowStateResponse));
             }
+
+            @Override
+            public void onTestProgressChanged(@NonNull final TestProgressResponse testProgressResponse) {
+                Timber.d("onTestProgressChanged: %s", testProgressResponse);
+                testProgressProcessor.onNext(((TestProgressMapper) mappers.get(TestProgressResponse.class)).mapToDomain(testProgressResponse));
+            }
         });
     }
 
     @Override
     public Completable connect(@NonNull final ReaderDevice readerDevice) {
         if (readerDevice instanceof BluetoothReaderDevice) {
-            return lumosReaderManager.connectAndBound(((BluetoothReaderDevice) readerDevice).getBluetoothDevice())
-                    .andThen(changeMtu(LumosReaderConstants.MTU_SIZE));
+            return lumosReaderManager.connectCompletable(((BluetoothReaderDevice) readerDevice).getBluetoothDevice())
+                    .andThen(connectionStateProcessor.filter(event -> event.getConnectionState() == ConnectionState.READY)
+                            .take(1)
+                            .singleOrError()
+                            .ignoreElement()
+                    );
         } else {
             Timber.e("Unhandled ReaderDevice implementation received!");
             return Completable.complete();
@@ -169,7 +182,7 @@ public class ReaderManagerImpl implements ReaderManager {
     }
 
     @Override
-    public Completable changeMtu(int mtuSize) {
+    public Completable changeMtu(final int mtuSize) {
         return lumosReaderManager.changeMtu(mtuSize);
     }
 
@@ -215,12 +228,11 @@ public class ReaderManagerImpl implements ReaderManager {
                 .flatMap(deviceId ->
                         lumosReaderManager.syncResults()
                                 .map(list -> {
-                                            int counter = 0;
+
                                             final List<TestResult> mapped = new ArrayList<>();
                                             final Mapper<TestResult, ResultResponse> mapper = (TestResultMapper) mappers.get(ResultResponse.class);
 
                                             for (ResultResponse resultResponse : list) {
-                                                resultResponse.setId(resultResponse.getDate() + ++counter); // TODO wait for fw update
                                                 mapped.add(mapper.mapToDomain(resultResponse)
                                                         .toBuilder()
                                                         .setReaderId(deviceId)
@@ -248,4 +260,8 @@ public class ReaderManagerImpl implements ReaderManager {
         return workflowStateProcessor;
     }
 
+    @Override
+    public Flowable<TestProgress> testProgress() {
+        return testProgressProcessor;
+    }
 }

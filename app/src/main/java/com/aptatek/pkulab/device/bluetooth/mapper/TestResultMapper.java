@@ -29,10 +29,10 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
     @Override
     public TestResult mapToDomain(final ResultResponse dataModel) {
         return TestResult.builder()
-                .setId(dataModel.getId())
+                .setId(dataModel.getDate())
                 .setPkuLevel(parsePkuLevel(dataModel))
                 .setTimestamp(DateParser.tryParseDate(dataModel.getDate()))
-                .setReaderId(dataModel.getId()) // TODO
+                .setReaderId("dummy")
                 .build();
     }
 
@@ -43,7 +43,7 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
 
     @Override
     public ResultResponse mapToData(final TestResult domainModel) {
-        return new ResultResponse(); // TODO
+        return new ResultResponse(); // won't be used in this way
     }
 
     @Nullable

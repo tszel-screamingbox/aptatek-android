@@ -101,6 +101,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                             return bluetoothInteractor.startScan(Long.MAX_VALUE);
                                         })
                                         .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, (tick -> tick >= INITIAL_SCAN_PERIOD), (tick -> INITIAL_SCAN_PERIOD - tick))
+                                                .take(1)
                                                 .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
                                                         .take(1)
                                                         .firstOrError()

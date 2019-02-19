@@ -5,14 +5,17 @@ import com.aptatek.pkulab.data.mapper.ReminderMapper;
 import com.aptatek.pkulab.data.mapper.TestResultMapper;
 import com.aptatek.pkulab.device.bluetooth.mapper.CartridgeInfoMapper;
 import com.aptatek.pkulab.device.bluetooth.mapper.ErrorMapper;
+import com.aptatek.pkulab.device.bluetooth.mapper.TestProgressMapper;
 import com.aptatek.pkulab.device.bluetooth.mapper.WorkflowStateMapper;
 import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ErrorResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
+import com.aptatek.pkulab.device.bluetooth.model.TestProgressResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.model.Reminder;
 import com.aptatek.pkulab.domain.model.ReminderDay;
+import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.injection.qualifier.ClassKey;
 
@@ -47,6 +50,11 @@ public abstract class DataMapperModule {
     @IntoMap
     @ClassKey(ResultResponse.class)
     public abstract Mapper<?, ?> bindResultResponseMapper(com.aptatek.pkulab.device.bluetooth.mapper.TestResultMapper mapper);
+
+    @Binds
+    @IntoMap
+    @ClassKey(TestProgressResponse.class)
+    public abstract Mapper<?, ?> bindTestProgressResponseMapper(TestProgressMapper mapper);
 
     @Binds
     @IntoMap
