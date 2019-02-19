@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.main.weekly;
 
-public interface WeeklyChartDateFormatter {
+public interface WeeklyChartResourceFormatter {
 
     String getWeeklyChartTitle(final int weeksBeforeNow);
 

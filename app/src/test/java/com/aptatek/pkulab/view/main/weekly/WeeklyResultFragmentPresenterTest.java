@@ -45,7 +45,7 @@ public class WeeklyResultFragmentPresenterTest {
     @Mock
     private PkuRangeInteractor pkuRangeInteractor;
     @Mock
-    private WeeklyChartDateFormatter weeklyChartDateFormatter;
+    private WeeklyChartResourceFormatter weeklyChartResourceFormatter;
     @Mock
     private PdfChartDataTransformer pdfChartDataTransformer;
     @Mock
@@ -78,7 +78,7 @@ public class WeeklyResultFragmentPresenterTest {
         testResultList.add(testResult);
 
 
-        doReturn(TEST_STRING).when(weeklyChartDateFormatter).getWeeklyChartTitle(ArgumentMatchers.anyInt());
+        doReturn(TEST_STRING).when(weeklyChartResourceFormatter).getWeeklyChartTitle(ArgumentMatchers.anyInt());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
         when(pkuRangeInteractor.getInfo()).thenReturn(Single.just(rangeInfo));
         when(testResultInteractor.listAll()).thenReturn(Single.just(testResultList));
@@ -87,7 +87,7 @@ public class WeeklyResultFragmentPresenterTest {
                 testResultInteractor,
                 resourceInteractor,
                 pkuRangeInteractor,
-                weeklyChartDateFormatter,
+                weeklyChartResourceFormatter,
                 pdfChartDataTransformer,
                 csvExport);
         presenter.attachView(view);

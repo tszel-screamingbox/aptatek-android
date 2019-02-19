@@ -6,7 +6,7 @@ import android.support.v4.util.Preconditions;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.view.main.weekly.WeeklyChartDateFormatter;
+import com.aptatek.pkulab.view.main.weekly.WeeklyChartResourceFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,11 +14,11 @@ import java.util.Date;
 
 import static java.util.Locale.getDefault;
 
-public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
+public class WeeklyChartResourceFormatterImpl implements WeeklyChartResourceFormatter {
 
     private final ResourceInteractor resourceInteractor;
 
-    public WeeklyChartDateFormatterImpl(final ResourceInteractor resourceInteractor) {
+    public WeeklyChartResourceFormatterImpl(final ResourceInteractor resourceInteractor) {
         this.resourceInteractor = resourceInteractor;
     }
 
@@ -58,7 +58,8 @@ public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
         final Date date = Calendar.getInstance().getTime();
 
         final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.csv_export_file_name_format), getDefault());
-        return df.format(date);
+        df.format(date);
+        return resourceInteractor.getStringResource(R.string.csv_export_file_name, df.format(date));
     }
 
     @Override

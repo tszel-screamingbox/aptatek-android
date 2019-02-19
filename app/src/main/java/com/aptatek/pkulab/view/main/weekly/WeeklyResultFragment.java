@@ -30,7 +30,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -223,7 +222,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("vnd.android.cursor.dir/email");
         emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                Objects.requireNonNull(getContext()),
+                requireContext(),
                 BuildConfig.APPLICATION_ID + ".provider",
                 attachment.getCsvFile()));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.csv_export_subject));

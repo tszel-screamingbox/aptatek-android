@@ -5,7 +5,7 @@ import android.content.Context;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
-import com.aptatek.pkulab.view.main.weekly.WeeklyChartDateFormatter;
+import com.aptatek.pkulab.view.main.weekly.WeeklyChartResourceFormatter;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
@@ -21,12 +21,12 @@ import ix.Ix;
 public class CsvExport {
 
     private final Context context;
-    private final WeeklyChartDateFormatter formatter;
+    private final WeeklyChartResourceFormatter formatter;
     private final DeviceHelper deviceHelper;
 
     @Inject
     public CsvExport(final @ApplicationContext Context context,
-                     final WeeklyChartDateFormatter formatter,
+                     final WeeklyChartResourceFormatter formatter,
                      final DeviceHelper deviceHelper) {
         this.context = context;
         this.formatter = formatter;
