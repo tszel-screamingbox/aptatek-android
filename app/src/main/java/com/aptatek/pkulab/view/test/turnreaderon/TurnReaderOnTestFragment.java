@@ -12,6 +12,7 @@ import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
@@ -42,14 +43,12 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
 
     @Override
     public void onSelfCheckComplete() {
-        super.onSelfCheckComplete();
-
-        // TODO proceed
+        runOnTestTestActivityView(TestActivityCommonView::showNextScreen);
     }
 
     @Override
     public void displayMissingPermissions() {
-        getBaseActivity().launchActivity(new Intent(getActivity(), PermissionRequiredOnTestActivity.class));
+        getBaseActivity().launchActivity(new Intent(requireActivity(), PermissionRequiredOnTestActivity.class));
     }
 
     @Override

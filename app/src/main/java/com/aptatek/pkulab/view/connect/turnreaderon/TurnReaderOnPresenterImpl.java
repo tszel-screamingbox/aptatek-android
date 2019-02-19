@@ -62,7 +62,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                         }
                                     }
                                 }),
-                                error -> Timber.d("no luck bro: %s", error)));
+                                error -> Timber.d("Error during device discovery: %s", error)));
 
         disposables.add(
                 readerInteractor.getWorkflowState()

@@ -49,8 +49,9 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
     @Nullable
     private PkuLevel parsePkuLevel(final ResultResponse resultResponse) {
         try {
-            final float value = Float.parseFloat(resultResponse.getResult());
-            final PkuLevelUnits unit = parseUnit(resultResponse.getUnits());
+            final ResultResponse.ResultData resultData = resultResponse.getResult().get(0);
+            final float value = resultData.getNumericalResult();
+            final PkuLevelUnits unit = parseUnit(resultData.getUnits());
             return PkuLevel.create(value, unit);
         } catch (Exception ex) {
             Timber.d("Failed to parse pkuLevel from result response: %s", resultResponse);

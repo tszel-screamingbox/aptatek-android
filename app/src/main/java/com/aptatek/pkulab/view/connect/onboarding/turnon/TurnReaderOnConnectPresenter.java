@@ -14,14 +14,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
+
 public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnConnectView> implements TurnReaderOnPresenter<TurnReaderOnConnectView> {
 
     private final TurnReaderOnPresenterImpl wrapped;
+    private final ReaderInteractor readerInteractor;
+    private Disposable disposable;
 
     @Inject
     public TurnReaderOnConnectPresenter(final BluetoothInteractor bluetoothInteractor,
                                         final ReaderInteractor readerInteractor) {
         wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor);
+        this.readerInteractor = readerInteractor;
     }
 
     @Override
@@ -34,6 +40,8 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     public void detachView() {
         wrapped.detachView();
         super.detachView();
+
+        disposeDisposable();
     }
 
     @Override
@@ -59,5 +67,21 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     @Override
     public void evaluatePermissionResults(final List<PermissionResult> results) {
         wrapped.evaluatePermissionResults(results);
+    }
+
+    public void syncData() {
+        disposeDisposable();
+        disposable = readerInteractor.syncResults()
+                .subscribe(
+                        ignored -> ifViewAttached(TurnReaderOnConnectView::navigateToHome),
+                        error -> Timber.d("Error while running syncResults: %s", error)
+                );
+    }
+
+    private void disposeDisposable() {
+        if (disposable != null) {
+            disposable.dispose();
+            disposable = null;
+        }
     }
 }

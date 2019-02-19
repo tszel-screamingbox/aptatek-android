@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.connect.onboarding.turnon;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
@@ -7,6 +8,7 @@ import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectReaderScreen;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectReaderView;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnFragment;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 
 import javax.inject.Inject;
 
@@ -45,5 +47,15 @@ public class TurnReaderOnConnectFragment extends TurnReaderOnFragment<TurnReader
         if (activity instanceof ConnectReaderView) {
             ((ConnectReaderView) activity).navigateBack();
         }
+    }
+
+    @Override
+    public void onSelfCheckComplete() {
+        presenter.syncData();
+    }
+
+    @Override
+    public void navigateToHome() {
+        getBaseActivity().launchActivity(new Intent(requireActivity(), MainHostActivity.class));
     }
 }

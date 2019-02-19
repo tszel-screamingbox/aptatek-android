@@ -257,7 +257,15 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Flowable<WorkflowState> workflowState() {
-        return workflowStateProcessor;
+        return Flowable.concat(
+                connectionStateProcessor.filter(event -> event.getConnectionState() == ConnectionState.READY)
+                    .take(1)
+                    .flatMap(ignored -> lumosReaderManager.<WorkflowStateResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE)
+                        .map(workflowStateResponse -> ((WorkflowStateMapper) mappers.get(WorkflowStateResponse.class)).mapToDomain(workflowStateResponse))
+                        .toFlowable()
+                    ),
+                workflowStateProcessor
+        );
     }
 
     @Override

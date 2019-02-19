@@ -14,7 +14,6 @@ import com.aptatek.pkulab.device.bluetooth.characteristics.writer.Characteristic
 import com.aptatek.pkulab.device.bluetooth.characteristics.writer.RequestResultCharacteristicDataProvider;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicReadError;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicWriteError;
-import com.aptatek.pkulab.device.bluetooth.error.FailedToBondError;
 import com.aptatek.pkulab.device.bluetooth.error.NoValueReceivedError;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
@@ -28,6 +27,7 @@ import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -207,8 +207,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME, null);
     }
 
-    public Single<ResultResponse> getResult(@NonNull final String id) {
+    public Single<ResultResponse>  getResult(@NonNull final String id) {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT, new RequestResultCharacteristicDataProvider.RequestResultData(id))
+                .delay(300, TimeUnit.MILLISECONDS) // this delay is required because the reader needs some time to actually write the Result characteristic...
                 .andThen(readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT));
     }
 

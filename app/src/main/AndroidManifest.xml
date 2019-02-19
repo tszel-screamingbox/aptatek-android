@@ -139,7 +139,13 @@
         <activity
             android:name=".view.connect.onboarding.ConnectOnboardingReaderActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:theme="@style/AppTheme.FullScreen">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
 
         <activity
             android:name=".view.settings.web.WebPageActivity"

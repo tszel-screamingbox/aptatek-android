@@ -146,12 +146,6 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     }
 
     @Override
-    public void onSelfCheckComplete() {
-        Toast.makeText(getActivity(), "onSelfCheckComplete", Toast.LENGTH_SHORT).show();
-        // TODO next screen
-    }
-
-    @Override
     public void displayNoReaderAvailable() {
         noReaderAvailable.setVisibility(View.VISIBLE);
     }
