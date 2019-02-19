@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.main.weekly;
 
+import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
 import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
@@ -20,7 +21,11 @@ interface WeeklyResultFragmentView extends MvpView {
 
     void displayValidWeekList(List<Integer> validWeeks);
 
-    void onPdfDataReady(PdfEntryData pdfData);
+    void onPdfDataReady(List<PdfEntryData> data);
 
     void onCsvDataReady(Attachment attachment);
+
+    void showMonthPickerDialog(MonthPickerDialogModel monthPickerDialogModel);
+
+    void scrollToItem(int position);
 }
