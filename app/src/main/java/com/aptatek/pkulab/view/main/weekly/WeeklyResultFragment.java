@@ -16,6 +16,8 @@ import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportDialog;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval;
 import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
 import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
 import com.aptatek.pkulab.widget.PdfExportView;
@@ -31,13 +33,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnPageChange;
+import ix.Ix;
 import timber.log.Timber;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.View.inflate;
 
-public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView {
+public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView, PdfExportDialog.PdfExportDialogCallback {
+
+    private static final String PDF_EXPORT_DIALOG_TAG = "aptatek.pdf.export.dialog";
 
     @Inject
     WeeklyResultFragmentPresenter presenter;
@@ -99,7 +104,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @OnClick(R.id.buttonPdfExport)
     public void onPdfExportClicked() {
-        presenter.getPdfChartData(chartViewPager.getCurrentItem());
+        PdfExportDialog.create(this).show(requireFragmentManager(), PDF_EXPORT_DIALOG_TAG);
     }
 
     @OnClick(R.id.rightArrow)
@@ -153,27 +158,29 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     }
 
     @Override
-    public void onPdfDataReady(final PdfEntryData pdfData) {
-        final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
-        content.setData(pdfData);
-
+    public void onPdfDataReady(final List<PdfEntryData> data) {
         final PdfDocument document = new PdfDocument();
 
-        final PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
-                getResources().getDimensionPixelSize(R.dimen.pdf_width),
-                getResources().getDimensionPixelSize(R.dimen.pdf_height),
-                1).create();
+        for (PdfEntryData pdfEntryData : data) {
+            final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
+            content.setData(pdfEntryData);
 
-        final PdfDocument.Page page = document.startPage(pageInfo);
+            final PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
+                    getResources().getDimensionPixelSize(R.dimen.pdf_width),
+                    getResources().getDimensionPixelSize(R.dimen.pdf_height),
+                    data.indexOf(pdfEntryData)).create();
 
-        final Canvas canvas = page.getCanvas();
-        canvas.save();
-        content.draw(canvas);
-        canvas.restore();
+            final PdfDocument.Page page = document.startPage(pageInfo);
 
-        document.finishPage(page);
+            final Canvas canvas = page.getCanvas();
+            canvas.save();
+            content.draw(canvas);
+            canvas.restore();
 
-        final File file = new File(getBaseActivity().getFilesDir(), pdfData.getFileName());
+            document.finishPage(page);
+        }
+
+        final File file = new File(getBaseActivity().getFilesDir(), Ix.from(data).first().getFileName());
 
         try {
             final FileOutputStream out = new FileOutputStream(file);
@@ -192,5 +199,10 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
         startActivity(Intent.createChooser(emailIntent, ""));
+    }
+
+    @Override
+    public void onIntervalSelected(@NonNull PdfExportInterval pdfExportInterval) {
+        presenter.getPdfChartData(pdfExportInterval);
     }
 }

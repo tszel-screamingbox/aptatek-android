@@ -19,6 +19,6 @@ interface WeeklyResultFragmentView extends MvpView {
 
     void displayValidWeekList(List<Integer> validWeeks);
 
-    void onPdfDataReady(PdfEntryData pdfData);
+    void onPdfDataReady(List<PdfEntryData> data);
 
 }

@@ -14,6 +14,7 @@ import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -129,10 +131,27 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         );
     }
 
-    void getPdfChartData(final int monthsBefore) {
-        final long monthsBeforeTimeStamp = TimeHelper.addMonths(-1 * monthsBefore, System.currentTimeMillis());
-        final long start = TimeHelper.getEarliestTimeAtGivenMonth(monthsBeforeTimeStamp);
-        final long end = TimeHelper.getLatestTimeAtGivenMonth(monthsBeforeTimeStamp);
+    List<Integer> getValidWeeks() {
+        return weekList;
+    }
+
+    void getPdfChartData(final PdfExportInterval pdfExportInterval) {
+        final List<Single<PdfEntryData>> singles = new ArrayList<>();
+
+        for (int i = 0; i < getPdfExportIntervalInMonth(pdfExportInterval); i++) {
+            final long monthsBeforeTimeStamp = TimeHelper.addMonths(i, System.currentTimeMillis());
+            final long start = TimeHelper.getEarliestTimeAtGivenMonth(monthsBeforeTimeStamp);
+            final long end = TimeHelper.getLatestTimeAtGivenMonth(monthsBeforeTimeStamp);
+
+            singles.add(generatePdfEntryDataForMonth(pdfExportInterval, i, start, end));
+        }
+
+        disposables.add(Single.merge(singles).toList()
+                .subscribeOn(Schedulers.computation()).subscribe((pdfEntryDataArrayList, throwable)
+                        -> ifViewAttached(view -> view.onPdfDataReady(pdfEntryDataArrayList))));
+    }
+
+    private Single<PdfEntryData> generatePdfEntryDataForMonth(final PdfExportInterval pdfExportInterval, final int monthsBefore, final long start, final long end) {
 
         final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
 
@@ -144,8 +163,13 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 : R.string.pdf_export_unit_description_warn, pkuLevel);
 
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
+                .setFormattedDate(weeklyChartDateFormatter.getPdfMonthFormat(monthsBefore))
+                .setFileName(getPdfExportFileName(pdfExportInterval))
+                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                        ? R.string.rangeinfo_pkulevel_mmol
+                        : R.string.rangeinfo_pkulevel_mg))
                 .setFormattedDate(weeklyChartDateFormatter.getPdfMonthFormat(weekList.size() - monthsBefore - 1))
-                .setFileName(resourceInteractor.getStringResource(R.string.pdf_export_file_name, weeklyChartDateFormatter.getPdfFileNameDateFormat()))
+                .setFileName(getPdfExportFileName(pdfExportInterval))
                 .setUnit(unitText)
                 .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
@@ -154,7 +178,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         ? String.valueOf((int) pkuRangeInfo.getNormalCeilValue())
                         : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalCeilValue()));
 
-        disposables.add(testResultInteractor.listBetween(start, end)
+        return testResultInteractor.listBetween(start, end)
                 .toFlowable()
                 .map(list -> {
                     int fastingCount = 0;
@@ -217,16 +241,8 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                             .setBubbleDataSet(bubbleDataSet)
                             .setDaysOfMonth(TimeHelper.getDaysBetween(start, end));
 
-                    return pdfEntryDataBuilder;
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dataSet ->
-                        ifViewAttached(attachedView -> attachedView.onPdfDataReady(dataSet.build()))
-                ));
-    }
-
-    List<Integer> getValidWeeks() {
-        return weekList;
+                    return pdfEntryDataBuilder.build();
+                });
     }
 
     private double getDeviation(final List<TestResult> table) {
@@ -256,5 +272,29 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
             total += currentNum;
         }
         return total / table.size();
+    }
+
+    private int getPdfExportIntervalInMonth(final PdfExportInterval pdfExportInterval) {
+        if (pdfExportInterval == PdfExportInterval.LAST_MONTH) {
+            return 1;
+        } else if (pdfExportInterval == PdfExportInterval.LAST_THREE_MONTHS) {
+            return 3;
+        } else if (pdfExportInterval == PdfExportInterval.LAST_HALF_YEAR) {
+            return 6;
+        } else {
+            return 12;
+        }
+    }
+
+    private String getPdfExportFileName(final PdfExportInterval pdfExportInterval) {
+        if (pdfExportInterval == PdfExportInterval.LAST_MONTH) {
+            return resourceInteractor.getFormattedString(R.string.pdf_export_last_month_file_name, weeklyChartDateFormatter.getPdfFileNameDateFormat());
+        } else if (pdfExportInterval == PdfExportInterval.LAST_THREE_MONTHS) {
+            return resourceInteractor.getFormattedString(R.string.pdf_export_last_three_month_file_name, weeklyChartDateFormatter.getPdfFileNameDateFormat());
+        } else if (pdfExportInterval == PdfExportInterval.LAST_HALF_YEAR) {
+            return resourceInteractor.getFormattedString(R.string.pdf_export_last_six_month_file_name, weeklyChartDateFormatter.getPdfFileNameDateFormat());
+        } else {
+            return resourceInteractor.getFormattedString(R.string.pdf_export_last_year_file_name, weeklyChartDateFormatter.getPdfFileNameDateFormat());
+        }
     }
 }
