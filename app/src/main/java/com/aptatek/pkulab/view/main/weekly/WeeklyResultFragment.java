@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
@@ -20,6 +21,7 @@ import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportDialog;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval;
 import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
 import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
+import com.aptatek.pkulab.widget.MonthPickerDialog;
 import com.aptatek.pkulab.widget.PdfExportView;
 
 import java.io.File;
@@ -40,8 +42,9 @@ import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.View.inflate;
 
-public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView, PdfExportDialog.PdfExportDialogCallback {
+public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView, PdfExportDialog.PdfExportDialogCallback, MonthPickerDialog.MonthPickerDialogCallback {
 
+    private static final String MONTH_PICKER_DIALOG_TAG = "aptatek.month.picker.dialog.tag";
     private static final String PDF_EXPORT_DIALOG_TAG = "aptatek.pdf.export.dialog";
 
     @Inject
@@ -111,6 +114,11 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     public void onRightArrowClicked() {
         final int currentPage = chartViewPager.getCurrentItem();
         presenter.showPage(currentPage + 1);
+    }
+
+    @OnClick(R.id.dateText)
+    public void onDateTextViewClicked() {
+        presenter.showMonthPickerDialog();
     }
 
     private void initAdapter() {
@@ -194,7 +202,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("vnd.android.cursor.dir/email");
         emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                getContext(),
+                requireContext(),
                 BuildConfig.APPLICATION_ID + ".provider",
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
@@ -204,5 +212,22 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @Override
     public void onIntervalSelected(@NonNull PdfExportInterval pdfExportInterval) {
         presenter.getPdfChartData(pdfExportInterval);
+    }
+
+    @Override
+    public void showMonthPickerDialog(final MonthPickerDialogModel monthPickerDialogModel) {
+        if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) == null) {
+            MonthPickerDialog.create(monthPickerDialogModel, this).show(requireFragmentManager(), MONTH_PICKER_DIALOG_TAG);
+        }
+    }
+
+    @Override
+    public void scrollToItem(final int position) {
+        chartViewPager.setCurrentItem(position);
+    }
+
+    @Override
+    public void onPick(final int year, final int month) {
+        presenter.getPageForSelectedMonth(year, month);
     }
 }

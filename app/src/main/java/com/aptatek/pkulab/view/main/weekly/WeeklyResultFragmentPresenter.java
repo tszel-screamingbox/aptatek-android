@@ -7,6 +7,7 @@ import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
@@ -18,7 +19,7 @@ import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -108,17 +109,15 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     public void loadValidWeeks() {
         disposables.add(testResultInteractor.listAll()
                 .map(cubeDataList -> {
-                    Ix.from(cubeDataList).foreach(cubeData -> {
-                        final int week = TimeHelper.getWeeksBetween(cubeData.getTimestamp(), System.currentTimeMillis());
-                        if (!weekList.contains(week) && cubeData.getPkuLevel().getValue() >= 0) {
-                            weekList.add(week);
-                        }
-                    });
+                    final int week = TimeHelper.getWeeksBetween(Ix.from(cubeDataList).first().getTimestamp(), System.currentTimeMillis());
+
+                    for (int i = 0; i < week + 2; i++) {
+                        weekList.add(i);
+                    }
 
                     if (weekList.isEmpty()) {
                         weekList.add(EMPTY_LIST);
                     }
-                    Collections.reverse(weekList);
 
                     return weekList;
                 })
@@ -133,6 +132,33 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
     List<Integer> getValidWeeks() {
         return weekList;
+    }
+
+    public void getPageForSelectedMonth(final int year, final int month) {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+
+        ifViewAttached(attachedView ->
+                attachedView.scrollToItem(weekList.size()
+                        - (TimeHelper.getWeeksBetween(calendar.getTimeInMillis(), System.currentTimeMillis()) + 1)));
+    }
+
+    public void showMonthPickerDialog() {
+        disposables.add(testResultInteractor.getOldest()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(testResult -> {
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(testResult.getTimestamp());
+
+                    ifViewAttached(attachedView ->
+                            attachedView.showMonthPickerDialog(MonthPickerDialogModel.builder()
+                                    .setMinMonth(calendar.get(Calendar.MONTH + 1))
+                                    .setMinYear(calendar.get(Calendar.YEAR))
+                                    .build())
+                    );
+                }));
     }
 
     void getPdfChartData(final PdfExportInterval pdfExportInterval) {
