@@ -17,7 +17,6 @@ import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -105,10 +104,10 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     // TODO should not get ALL data at once...
     public void loadValidWeeks() {
         disposables.add(testResultInteractor.listAll()
-                .map(cubeDataList -> {
-                    Ix.from(cubeDataList).foreach(cubeData -> {
-                        final int week = TimeHelper.getWeeksBetween(cubeData.getTimestamp(), System.currentTimeMillis());
-                        if (!weekList.contains(week) && cubeData.getPkuLevel().getValue() >= 0) {
+                .map(testResults -> {
+                    Ix.from(testResults).foreach(testResult -> {
+                        final int week = TimeHelper.getWeeksBetween(TimeHelper.getEarliestTimeAtGivenWeek(testResult.getTimestamp()), TimeHelper.getEarliestTimeAtGivenWeek(System.currentTimeMillis()));
+                        if (!weekList.contains(week) && testResult.getPkuLevel().getValue() >= 0) {
                             weekList.add(week);
                         }
                     });
@@ -116,15 +115,20 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                     if (weekList.isEmpty()) {
                         weekList.add(EMPTY_LIST);
                     }
-                    Collections.reverse(weekList);
 
-                    return weekList;
+                    return Ix.from(weekList)
+                            .orderBy(Integer::compare)
+                            .reverse()
+                            .toList();
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(validWeeks ->
-                        ifViewAttached(attachedView ->
-                                attachedView.displayValidWeekList(validWeeks)
-                        )
+                .subscribe(validWeeks -> {
+                            weekList.clear();
+                            weekList.addAll(validWeeks);
+                            ifViewAttached(attachedView ->
+                                    attachedView.displayValidWeekList(validWeeks)
+                            );
+                        }
                 )
         );
     }
@@ -237,10 +241,10 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         for (int i = 0; i < table.size(); i++) {
             final float val = table.get(i).getPkuLevel().getValue();
 
-            final double squrDiffToMean = Math.pow(val - mean, 2);
+            final double sqrDiffToMean = Math.pow(val - mean, 2);
 
 
-            temp += squrDiffToMean;
+            temp += sqrDiffToMean;
         }
 
         final double meanOfDiffs = temp / (double) (table.size());

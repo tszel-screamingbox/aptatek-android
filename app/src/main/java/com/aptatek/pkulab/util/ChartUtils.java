@@ -60,7 +60,7 @@ public final class ChartUtils {
 
         // add the grouped real data to the initial map which holds all days passed since the first measurement
         Ix.from(inputList)
-                .map(cubeData -> new Pair<>(TimeHelper.getEarliestTimeAtGivenDay(cubeData.getTimestamp()), cubeData))
+                .map(testResult -> new Pair<>(TimeHelper.getEarliestTimeAtGivenDay(testResult.getTimestamp()), testResult))
                 .foreach(pair -> {
                     if (dayToMeasurementsMap.containsKey(pair.first)) {
                         dayToMeasurementsMap.get(pair.first).add(pair.second);

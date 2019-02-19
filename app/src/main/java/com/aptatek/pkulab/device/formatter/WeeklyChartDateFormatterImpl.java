@@ -23,7 +23,7 @@ public class WeeklyChartDateFormatterImpl implements WeeklyChartDateFormatter {
 
     @Override
     public String getWeeklyChartTitle(final int weeksBeforeNow) {
-        final long actualWeekTimestamp = TimeHelper.addWeeks(-1 * weeksBeforeNow, System.currentTimeMillis());
+        final long actualWeekTimestamp = TimeHelper.addWeeks(-1 * weeksBeforeNow, TimeHelper.getEarliestTimeAtGivenWeek(System.currentTimeMillis()));
         final Date actualDate = new Date(actualWeekTimestamp);
         final String pattern = resourceInteractor.getStringResource(R.string.weekly_subtitle_dateformat,
                 resourceInteractor.getStringResource(getDayOfMothSuffix(TimeHelper.getDayOfMonth(actualWeekTimestamp))));

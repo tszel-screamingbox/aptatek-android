@@ -37,8 +37,11 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
                 .toList()
                 .flatMap(weeklyChartDataTransformer::transformEntries)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dataSet ->
-                        ifViewAttached(attachedView -> attachedView.displayChartData(dataSet))
+                .subscribe(dataSet -> {
+                            if (dataSet.getEntryCount() > 0) {
+                                ifViewAttached(attachedView -> attachedView.displayChartData(dataSet));
+                            }
+                        }
                 ));
 
     }

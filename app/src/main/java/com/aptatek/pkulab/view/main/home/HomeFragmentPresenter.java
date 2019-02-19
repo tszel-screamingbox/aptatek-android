@@ -75,7 +75,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         disposables.add(
                 rangeInteractor.getInfo()
                         .flatMap(rangeInfo -> {
-                            final long now = new Date().getTime();
+                            final long now = System.currentTimeMillis();
                             final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, now);
                             return testResultInteractor.listBetween(past, now)
                                     .map(list -> new Pair<>(rangeInfo, list));

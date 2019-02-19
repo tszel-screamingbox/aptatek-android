@@ -209,7 +209,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     public Single<ResultResponse>  getResult(@NonNull final String id) {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT, new RequestResultCharacteristicDataProvider.RequestResultData(id))
-                .delay(300, TimeUnit.MILLISECONDS) // this delay is required because the reader needs some time to actually write the Result characteristic...
+                .delay(500, TimeUnit.MILLISECONDS) // this delay is required because the reader needs some time to actually write the Result characteristic...
                 .andThen(readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT));
     }
 
