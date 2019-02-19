@@ -78,8 +78,11 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
 
     @NonNull
     public Single<TestResult> getOldest() {
-        return Single.fromCallable(testResultDataSource::getOldestData)
-                .map(mapper::mapToDomain);
+        final Single<TestResultDataModel> oldest = testResultDao.getNumberOfRecords()
+                .flatMap(numberOfRecords -> numberOfRecords == 0 ? mockLatest() : testResultDao.getOldestResult());
+
+        return oldest.map(mapper::mapToDomain)
+                .subscribeOn(Schedulers.io());
     }
 
     private Single<TestResultDataModel> mockLatest() {
