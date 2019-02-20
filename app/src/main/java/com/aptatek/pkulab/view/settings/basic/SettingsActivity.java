@@ -90,10 +90,10 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
                         launchActivity(RangeSettingsActivity.starter(SettingsActivity.this));
                         break;
                     case HELP:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), "http://www.google.com")); // TODO get proper url
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), "https://pkulab.webflow.io/help"));
                         break;
                     case PRIVACY_POLICY:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), "http://www.google.com")); // TODO get proper url
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), "https://pkulab.webflow.io/privacy"));
                         break;
                     default:
                         Timber.d("Unhandled settings item clicked: %s", item);
