@@ -2,25 +2,35 @@ package com.aptatek.pkulab.view.test.turnreaderon;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
-import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
-import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.test.TestActivityCommonView;
+import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
-import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.permission.PermissionRequiredOnTestActivity;
 
 import javax.inject.Inject;
 
 public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnTestView, TurnReaderOnTestPresenter> implements TurnReaderOnTestView {
+
+    private static final String KEY_NEXT_SCREEN = "pkulab.test.nextscreen";
+
+    public static TurnReaderOnTestFragment create(@NonNull final TestScreens navigateHereAfterConnection) {
+        final Bundle args = new Bundle();
+        args.putInt(KEY_NEXT_SCREEN, navigateHereAfterConnection.ordinal());
+
+        final TurnReaderOnTestFragment fragment = new TurnReaderOnTestFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     @Inject
     TurnReaderOnTestPresenter presenter;
@@ -49,7 +59,15 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
 
     @Override
     public void onSelfCheckComplete() {
-        runOnTestTestActivityView(TestActivityCommonView::showNextScreen);
+        if (getArguments() == null) {
+            runOnTestTestActivityView(TestActivityCommonView::showNextScreen);
+        } else {
+            final int testScreenOrdinal = getArguments().getInt(KEY_NEXT_SCREEN);
+            final TestScreens nextScreen = TestScreens.values()[testScreenOrdinal];
+            if (getActivity() instanceof TestActivityView) {
+                ((TestActivityView) getActivity()).showScreen(nextScreen);
+            }
+        }
     }
 
     @Override

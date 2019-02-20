@@ -2,6 +2,7 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -258,11 +259,13 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     }
 
     public Maybe<ReaderDevice> getConnectedDevice() {
-        final BluetoothDevice bluetoothDevice = getBluetoothDevice();
-        if (bluetoothDevice == null) {
-            return Maybe.never();
-        }
-
-        return Maybe.just(new BluetoothReaderDevice(bluetoothDevice));
+        return Maybe.create(emitter -> {
+            final BluetoothDevice bluetoothDevice = getBluetoothDevice();
+            if (bluetoothDevice != null && getConnectionState() == BluetoothProfile.STATE_CONNECTED) {
+                emitter.onSuccess(new BluetoothReaderDevice(bluetoothDevice));
+            } else {
+                emitter.onComplete();
+            }
+        });
     }
 }

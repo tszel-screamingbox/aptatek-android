@@ -2,13 +2,9 @@ package com.aptatek.pkulab.view.test.wetting;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
-import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
-
-import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
 
@@ -21,18 +17,15 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
 
     private final WettingInteractor wettingInteractor;
     private final TestInteractor testingInteractor;
-    private final ReaderInteractor readerInteractor;
     private CompositeDisposable disposables;
 
     @Inject
     public WettingPresenter(final ResourceInteractor resourceInteractor,
                             final WettingInteractor wettingInteractor,
-                            final TestInteractor testingInteractor,
-                            final ReaderInteractor readerInteractor) {
+                            final TestInteractor testingInteractor) {
         super(resourceInteractor);
         this.wettingInteractor = wettingInteractor;
         this.testingInteractor = testingInteractor;
-        this.readerInteractor = readerInteractor;
     }
 
     @Override
@@ -44,10 +37,10 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
         disposables.add(wettingInteractor.getWettingCountdown()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(countdown ->
-                    ifViewAttached(attachedView -> attachedView.showCountdown(countdown.getRemainingFormattedText())),
-                    Timber::e,
-                    this::checkReaderConnection
+                .subscribe(
+                        countdown -> ifViewAttached(attachedView -> attachedView.showCountdown(countdown.getRemainingFormattedText())),
+                        Timber::e,
+                        () -> ifViewAttached(WettingView::showNextScreen)
                 )
         );
     }
@@ -80,26 +73,7 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
         disposables.add(
                 wettingInteractor.resetWetting()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::checkReaderConnection)
-        );
-    }
-
-    public void checkReaderConnection() {
-        disposables.add(
-                readerInteractor.getConnectedReader()
-                    .toSingle()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            (readerDevice -> ifViewAttached(TestActivityCommonView::showNextScreen)),
-                            error -> {
-                                if (error instanceof NoSuchElementException) { // no connected reader
-                                    ifViewAttached(WettingView::showTurnReaderOn);
-                                } else {
-                                    Timber.d("unhandled error during getConnectedReader: %s", error);
-                                }
-
-                            }
-                    )
+                        .subscribe(() -> ifViewAttached(WettingView::showNextScreen))
         );
     }
 }

@@ -11,8 +11,9 @@ import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class ConnectItAllPresenter extends TestBasePresenter<ConnectItAllView> {
 
@@ -46,6 +47,8 @@ public class ConnectItAllPresenter extends TestBasePresenter<ConnectItAllView> {
                                 .take(1)
                                 .singleOrError()
                         )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 ignored -> ifViewAttached(ConnectItAllView::showNextScreen),
                                 error -> {

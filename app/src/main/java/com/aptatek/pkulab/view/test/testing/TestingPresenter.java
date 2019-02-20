@@ -45,6 +45,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .toFlowable()
                         .flatMap(ignored -> readerInteractor.getTestProgress()
                                 .takeUntil(testProgress -> testProgress.getPercent() == 100))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 testProgress -> {
                                     Timber.d("Test Progress update: %s", testProgress);
@@ -68,6 +70,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .flatMap(device -> readerInteractor.getBatteryLevel()
                                 .repeatWhen(objects -> objects.flatMap(ignored -> Countdown.countdown(BATTERY_REFRESH_PERIOD, (tick) -> tick >= BATTERY_REFRESH_PERIOD, (tick) -> BATTERY_REFRESH_PERIOD - tick))))
                         .takeUntil(readerInteractor.getTestProgress().filter(testProgress -> testProgress.getPercent() == 100))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 batteryPercent -> ifViewAttached(attachedView -> attachedView.setBatteryPercentage(batteryPercent)),
                                 error -> Timber.d("Error during battery level fetch: %s", error)

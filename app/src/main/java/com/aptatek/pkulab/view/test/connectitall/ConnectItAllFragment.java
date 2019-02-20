@@ -47,7 +47,7 @@ public class ConnectItAllFragment extends TestBaseFragment<ConnectItAllView, Con
     @Override
     public void showTurnReaderOn() {
         if (getActivity() instanceof TestActivityView) {
-            ((TestActivityView) getActivity()).showScreen(TestScreens.TURN_READER_ON);
+            ((TestActivityView) getActivity()).showTurnReaderOn();
         }
     }
 }

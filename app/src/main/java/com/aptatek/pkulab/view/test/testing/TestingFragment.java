@@ -47,7 +47,7 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     @Override
     public void showTurnReaderOn() {
         if (getActivity() instanceof TestActivityView) {
-            ((TestActivityView) getActivity()).showScreen(TestScreens.TURN_READER_ON);
+            ((TestActivityView) getActivity()).showTurnReaderOn();
         }
     }
 }

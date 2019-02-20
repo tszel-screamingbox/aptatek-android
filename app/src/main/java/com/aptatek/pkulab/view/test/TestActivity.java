@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -133,6 +136,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void showScreen(@NonNull final TestScreens screen) {
         final BaseFragment fragment;
+        boolean addToBackStack = true;
+        boolean withAnimation = true;
 
         switch (screen) {
             case CANCEL: {
@@ -153,18 +158,23 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             }
             case WETTING: {
                 fragment = new WettingFragment();
+                addToBackStack = false;
                 break;
             }
             case TURN_READER_ON: {
                 fragment = new TurnReaderOnTestFragment();
+                withAnimation = false;
+                addToBackStack = false;
                 break;
             }
             case CONNECT_IT_ALL: {
                 fragment = new ConnectItAllFragment();
+                addToBackStack = false;
                 break;
             }
             case TESTING: {
                 fragment = new TestingFragment();
+                addToBackStack = false;
                 break;
             }
             case BREAK_FOIL:
@@ -174,9 +184,30 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             }
         }
 
-        switchToFragment(fragment);
+        showFragment(fragment, addToBackStack, withAnimation);
         screenPagerIndicator.setSelection(screen.ordinal());
         presenter.checkBattery();
+    }
+
+    private void showFragment(final Fragment fragment, final boolean addToBackStack, final boolean withAnimation) {
+        final FragmentManager fm = getSupportFragmentManager();
+
+        final FragmentTransaction transaction = fm.beginTransaction();
+        if (withAnimation) {
+            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
+                    android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        }
+        final String tag = fragment.getClass().getName();
+        transaction.replace(getFrameLayoutId(), fragment, tag);
+        if (addToBackStack) {
+            transaction.addToBackStack(tag);
+        }
+        transaction.commitAllowingStateLoss();
+    }
+
+    @Override
+    public void showTurnReaderOn() {
+        showFragment(TurnReaderOnTestFragment.create(getCurrentScreen()), false, false);
     }
 
     @Override
