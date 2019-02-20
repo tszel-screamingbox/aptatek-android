@@ -10,7 +10,6 @@ import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
-import com.aptatek.pkulab.view.connect.permission.PermissionRequiredView;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -46,6 +45,15 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 bluetoothInteractor.getDiscoveredDevices()
                         .skip(INITIAL_SCAN_PERIOD, TimeUnit.MILLISECONDS)
                         .map(devices -> Ix.from(devices).toList())
+                        .take(1)
+                        .flatMapSingle(devices -> {
+                            if (devices.size() == 1) {
+                                return readerInteractor.connect(devices.get(0))
+                                        .andThen(Single.just(devices));
+                            }
+
+                            return Single.just(devices);
+                        })
                         .subscribe(devices -> ifViewAttached(attachedView -> {
                                     switch (devices.size()) {
                                         case 0: {

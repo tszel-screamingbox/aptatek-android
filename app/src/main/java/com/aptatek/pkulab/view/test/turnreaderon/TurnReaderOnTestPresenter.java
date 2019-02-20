@@ -2,10 +2,10 @@ package com.aptatek.pkulab.view.test.turnreaderon;
 
 import android.support.annotation.NonNull;
 
-import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
@@ -16,9 +16,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
+
 public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTestView> implements TurnReaderOnPresenter<TurnReaderOnTestView> {
 
     private final TurnReaderOnPresenterImpl wrapped;
+    private final ReaderInteractor readerInteractor;
+
+    private Disposable disposable;
 
     @Inject
     public TurnReaderOnTestPresenter(final ResourceInteractor resourceInteractor,
@@ -26,6 +31,7 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                                      final ReaderInteractor readerInteractor) {
         super(resourceInteractor);
         wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor);
+        this.readerInteractor = readerInteractor;
     }
 
     @Override
@@ -37,6 +43,9 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
     @Override
     public void detachView() {
         wrapped.detachView();
+
+        disposeSubscription();
+
         super.detachView();
     }
 
@@ -68,5 +77,24 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
     @Override
     public void checkPermissions() {
         wrapped.checkPermissions();
+    }
+
+    public void getBatteryLevel() {
+        disposeSubscription();
+        disposable = readerInteractor.getReaderConnectionEvents()
+                .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
+                .take(1)
+                .flatMapSingle(ignored -> readerInteractor.getBatteryLevel())
+                .subscribe(batteryPercent -> ifViewAttached(attachedView -> {
+                    attachedView.setBatteryIndicatorVisible(true);
+                    attachedView.setBatteryPercentage(batteryPercent);
+                }));
+    }
+
+    private void disposeSubscription() {
+        if (disposable != null) {
+            disposable.dispose();
+            disposable = null;
+        }
     }
 }

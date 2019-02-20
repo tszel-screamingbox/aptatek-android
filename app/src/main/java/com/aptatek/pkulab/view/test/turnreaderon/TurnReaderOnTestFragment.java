@@ -42,6 +42,12 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
     }
 
     @Override
+    public void displaySelfCheckAnimation() {
+        super.displaySelfCheckAnimation();
+        presenter.getBatteryLevel();
+    }
+
+    @Override
     public void onSelfCheckComplete() {
         runOnTestTestActivityView(TestActivityCommonView::showNextScreen);
     }
