@@ -55,7 +55,8 @@ public class BluetoothService extends BaseForegroundService {
 
     @Override
     protected Single<Boolean> shouldStart() {
-        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()));
+//        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()));
+        return Single.fromCallable(() -> false);
     }
 
     @Override
