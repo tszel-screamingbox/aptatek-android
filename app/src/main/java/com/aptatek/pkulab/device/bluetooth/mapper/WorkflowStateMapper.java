@@ -33,6 +33,18 @@ public class WorkflowStateMapper implements Mapper<WorkflowState, WorkflowStateR
             case "READY": {
                 return WorkflowState.READY;
             }
+            case "POST-TEST": {
+                return WorkflowState.POST_TEST;
+            }
+            case "READING CASSETTE": {
+                return WorkflowState.READING_CASSETTE;
+            }
+            case "SELF-TEST": {
+                return WorkflowState.SELF_TEST;
+            }
+            case "USED CASSETTE ERROR": {
+                return WorkflowState.USED_CASSETTE_ERROR;
+            }
             case "default":
             default: {
                 return WorkflowState.DEFAULT;

@@ -1,9 +1,11 @@
 package com.aptatek.pkulab.view.test.connectitall;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 
@@ -40,5 +42,12 @@ public class ConnectItAllFragment extends TestBaseFragment<ConnectItAllView, Con
         super.onResume();
 
         presenter.cancelWettingNotification();
+    }
+
+    @Override
+    public void showTurnReaderOn() {
+        if (getActivity() instanceof TestActivityView) {
+            ((TestActivityView) getActivity()).showScreen(TestScreens.TURN_READER_ON);
+        }
     }
 }

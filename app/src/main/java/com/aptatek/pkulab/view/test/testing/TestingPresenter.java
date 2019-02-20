@@ -2,27 +2,35 @@ package com.aptatek.pkulab.view.test.testing;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
+import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
+import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.model.reader.ConnectionState;
+import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class TestingPresenter extends TestBasePresenter<TestingView> {
 
-    private static final long TICK_INTERVAL = 1L;
-    private static final long TEST_PERIOD = 15L;
+    private static final long BATTERY_REFRESH_PERIOD = 10 * 1000L;
 
+    private final ReaderInteractor readerInteractor;
     private CompositeDisposable disposables;
 
     @Inject
-    public TestingPresenter(final ResourceInteractor resourceInteractor) {
+    public TestingPresenter(final ResourceInteractor resourceInteractor,
+                            final ReaderInteractor readerInteractor) {
         super(resourceInteractor);
+        this.readerInteractor = readerInteractor;
     }
 
     @Override
@@ -31,16 +39,59 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
         disposables = new CompositeDisposable();
 
-        disposables.add(Flowable.interval(TICK_INTERVAL, TimeUnit.SECONDS)
-                .takeUntil(tick -> tick >= TEST_PERIOD)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tick -> {
-                    final int percent = (int)((tick / (float) TEST_PERIOD) * 100f);
-                    ifViewAttached(attachedView -> attachedView.setProgressPercentage(percent));
-                },
-                    Timber::e,
-                    () -> ifViewAttached(TestingView::onTestFinished)
-                )
+        disposables.add(
+                readerInteractor.getConnectedReader()
+                        .toSingle()
+                        .toFlowable()
+                        .flatMap(ignored -> readerInteractor.getTestProgress()
+                                .takeUntil(testProgress -> testProgress.getPercent() == 100))
+                        .subscribe(
+                                testProgress -> {
+                                    Timber.d("Test Progress update: %s", testProgress);
+                                    ifViewAttached(attachedView -> attachedView.setProgressPercentage(testProgress.getPercent()));
+                                },
+                                error -> {
+                                    if (error instanceof NoSuchElementException) {
+                                        ifViewAttached(TestingView::showTurnReaderOn);
+                                    } else {
+                                        Timber.d("Unhandled exception during Test: %s", error);
+                                    }
+                                },
+                                () -> Timber.d("Test complete")
+                        )
+        );
+
+        disposables.add(
+                readerInteractor.getReaderConnectionEvents()
+                        .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
+                        .take(1)
+                        .flatMap(device -> readerInteractor.getBatteryLevel()
+                                .repeatWhen(objects -> objects.flatMap(ignored -> Countdown.countdown(BATTERY_REFRESH_PERIOD, (tick) -> tick >= BATTERY_REFRESH_PERIOD, (tick) -> BATTERY_REFRESH_PERIOD - tick))))
+                        .takeUntil(readerInteractor.getTestProgress().filter(testProgress -> testProgress.getPercent() == 100))
+                        .subscribe(
+                                batteryPercent -> ifViewAttached(attachedView -> attachedView.setBatteryPercentage(batteryPercent)),
+                                error -> Timber.d("Error during battery level fetch: %s", error)
+                        )
+        );
+
+        disposables.add(
+                readerInteractor.getTestProgress()
+                        .filter(testProgress -> testProgress.getPercent() == 100)
+                        .take(1)
+                        .map(TestProgress::getStart)
+                        .map(String::valueOf)
+                        .delay(1, TimeUnit.SECONDS)
+                        .flatMapSingle(readerInteractor::getResult)
+                        .flatMapCompletable(readerInteractor::saveResult)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                () -> {
+                                    Timber.d("Result successfully saved");
+                                    ifViewAttached(TestingView::onTestFinished);
+                                },
+                                error -> Timber.d("Error while getting latest result: %s", error)
+                        )
         );
     }
 
@@ -60,7 +111,6 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_testing_message));
             attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.testing), true);
             attachedView.setBatteryIndicatorVisible(true);
-            attachedView.setBatteryPercentage(100);
             attachedView.setProgressVisible(true);
             attachedView.setProgressPercentage(0);
         });

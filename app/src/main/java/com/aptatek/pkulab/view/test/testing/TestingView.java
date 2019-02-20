@@ -6,4 +6,6 @@ public interface TestingView extends TestFragmentBaseView {
 
     void onTestFinished();
 
+    void showTurnReaderOn();
+
 }

@@ -9,9 +9,11 @@ import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,6 +21,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -101,11 +104,13 @@ public class ReaderInteractor {
                 .subscribeOn(Schedulers.io());
     }
 
+    @NonNull
     public Maybe<ReaderDevice> getConnectedReader() {
         return readerManager.getConnectedDevice()
                 .subscribeOn(Schedulers.io());
     }
 
+    @NonNull
     public Maybe<String> getLastConnectedMac() {
         final String pairedDevice = preferenceManager.getPairedDevice();
 
@@ -114,5 +119,17 @@ public class ReaderInteractor {
         }
 
         return Maybe.just(pairedDevice);
+    }
+
+    @NonNull
+    public Flowable<TestProgress> getTestProgress() {
+        return readerManager.testProgress()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Completable saveResult(@NonNull final TestResult testResult) {
+        return testResultRepository.insertAll(Collections.singletonList(testResult))
+                .subscribeOn(Schedulers.io());
     }
 }

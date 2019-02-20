@@ -1,15 +1,18 @@
 package com.aptatek.pkulab.view.test.wetting;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
+import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
+import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 
 import javax.inject.Inject;
 
@@ -39,9 +42,9 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
     }
 
     @Override
-    public void onCountdownFinished() {
+    public void showTurnReaderOn() {
         if (getActivity() instanceof TestActivityView) {
-            ((TestActivityView) getActivity()).showNextScreen();
+            ((TestActivityView) getActivity()).showScreen(TestScreens.TURN_READER_ON);
         }
     }
 

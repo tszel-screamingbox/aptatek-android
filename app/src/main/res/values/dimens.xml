@@ -109,6 +109,7 @@
     <dimen name="test.progressbar.height">12dp</dimen>
     <dimen name="test.bottombar.height">56dp</dimen>
     <dimen name="test.top.margin">162dp</dimen>
+    <dimen name="test.countdown.bottom.margin">156dp</dimen> <!-- bottombar.height + alert.height -->
 
     <dimen name="daily.result.sliding.background.corner">20dp</dimen>
 

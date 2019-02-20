@@ -93,7 +93,7 @@ public class WettingPresenterTest {
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt(), ArgumentMatchers.anyVararg())).thenReturn(TEST_STRING);
         when(wettingInteractor.getWettingCountdown()).thenReturn(countdownProcessor);
 
-        presenter = new WettingPresenter(resourceInteractor, wettingInteractor, testInteractor);
+        presenter = new WettingPresenter(resourceInteractor, wettingInteractor, readerInteractor, testInteractor);
         presenter.attachView(view);
     }
 
