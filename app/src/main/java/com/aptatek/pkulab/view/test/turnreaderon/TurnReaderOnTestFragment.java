@@ -59,15 +59,7 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
 
     @Override
     public void onSelfCheckComplete() {
-        if (getArguments() == null) {
-            runOnTestTestActivityView(TestActivityCommonView::showNextScreen);
-        } else {
-            final int testScreenOrdinal = getArguments().getInt(KEY_NEXT_SCREEN);
-            final TestScreens nextScreen = TestScreens.values()[testScreenOrdinal];
-            if (getActivity() instanceof TestActivityView) {
-                ((TestActivityView) getActivity()).showScreen(nextScreen);
-            }
-        }
+        presenter.tmpSyncData();
     }
 
     @Override
@@ -166,4 +158,16 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
         void run(TestActivityCommonView view);
     }
 
+    @Override
+    public void tmpProceed() {
+        if (getArguments() == null) {
+            runOnTestTestActivityView(TestActivityCommonView::showNextScreen);
+        } else {
+            final int testScreenOrdinal = getArguments().getInt(KEY_NEXT_SCREEN);
+            final TestScreens nextScreen = TestScreens.values()[testScreenOrdinal];
+            if (getActivity() instanceof TestActivityView) {
+                ((TestActivityView) getActivity()).showScreen(nextScreen);
+            }
+        }
+    }
 }

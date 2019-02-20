@@ -7,6 +7,7 @@ import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectView;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenterImpl;
@@ -16,14 +17,16 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTestView> implements TurnReaderOnPresenter<TurnReaderOnTestView> {
 
     private final TurnReaderOnPresenterImpl wrapped;
     private final ReaderInteractor readerInteractor;
 
-    private Disposable disposable;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject
     public TurnReaderOnTestPresenter(final ResourceInteractor resourceInteractor,
@@ -44,7 +47,7 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
     public void detachView() {
         wrapped.detachView();
 
-        disposeSubscription();
+        disposables.dispose();
 
         super.detachView();
     }
@@ -80,21 +83,26 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
     }
 
     public void getBatteryLevel() {
-        disposeSubscription();
-        disposable = readerInteractor.getReaderConnectionEvents()
+        disposables.add(
+                readerInteractor.getReaderConnectionEvents()
                 .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
                 .take(1)
                 .flatMapSingle(ignored -> readerInteractor.getBatteryLevel())
                 .subscribe(batteryPercent -> ifViewAttached(attachedView -> {
                     attachedView.setBatteryIndicatorVisible(true);
                     attachedView.setBatteryPercentage(batteryPercent);
-                }));
+                }))
+        );
     }
 
-    private void disposeSubscription() {
-        if (disposable != null) {
-            disposable.dispose();
-            disposable = null;
-        }
+    public void tmpSyncData() {
+        disposables.add(
+                readerInteractor.syncResults()
+                        .subscribe(
+                                ignored -> ifViewAttached(TurnReaderOnTestView::tmpProceed),
+                                error -> Timber.d("Error while running syncResults: %s", error)
+                        )
+        );
     }
+
 }
