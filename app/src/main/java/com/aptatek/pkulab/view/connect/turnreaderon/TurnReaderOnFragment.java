@@ -37,7 +37,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import ix.Ix;
 
-public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends TurnReaderOnPresenter<V>> extends BaseFragment<V, P> implements TurnReaderOnView {
+public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends TurnReaderOnPresenter<V>> extends BaseFragment<V, P> implements TurnReaderOnView, ScanDialogFragment.ScanListener {
 
     private static final String TAG_SCAN = "pkulab.scan.devices";
     private static final String TAG_NOT_SUPPORTED = "pkulab.scan.devicenotsupported";
@@ -119,17 +119,8 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         ScanDialogFragment scanDialogFragment = findScanDialogFragment();
         if (scanDialogFragment == null) {
             scanDialogFragment = ScanDialogFragment.create(
-                    new ScanDialogFragment.ScanListener() {
-                        @Override
-                        public void onConnectTo(@NonNull final ReaderDevice device) {
-                            presenter.connectTo(device);
-                        }
-
-                        @Override
-                        public void onCancelled() {
-                            Toast.makeText(getActivity(), "what to do now?", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                    this,
+                    isSkipable()
             );
             scanDialogFragment.show(getChildFragmentManager(), TAG_SCAN);
         }
@@ -189,6 +180,16 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         }
     }
 
+    @Override
+    public void onDeviceChosen(@NonNull final ReaderDevice device) {
+        presenter.connectTo(device);
+    }
+
+    @Override
+    public void onConnectSkip() {
+        // should be implemented in one special case only: when the phone detects an unfinished test after wetting.
+    }
+
     private List<Integer> boxedList(@NonNull final int[] primitives) {
         final List<Integer> boxed = new ArrayList<>();
 
@@ -197,5 +198,13 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         }
 
         return boxed;
+    }
+
+    /**
+     * Turn Reader On is meant to be skippable only in one case: when the phone detects an unfinished test after wetting.
+     * @return
+     */
+    protected boolean isSkipable() {
+        return false;
     }
 }

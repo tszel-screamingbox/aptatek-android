@@ -28,12 +28,11 @@ import ix.Ix;
 
 public class ScanDialogFragment extends DialogFragment {
 
-    private ScanDeviceAdapter adapter;
-
-    public static ScanDialogFragment create(final ScanListener listener) {
+    public static ScanDialogFragment create(final ScanListener listener, final boolean cancellable) {
         final ScanDialogFragment scanDialogFragment = new ScanDialogFragment();
         scanDialogFragment.listener = listener;
         scanDialogFragment.adapter = new ScanDeviceAdapter();
+        scanDialogFragment.cancellable = cancellable;
 
         return scanDialogFragment;
     }
@@ -42,14 +41,18 @@ public class ScanDialogFragment extends DialogFragment {
     RecyclerView recyclerView;
     @BindViews({R.id.scanProgress, R.id.scanProgressText})
     List<View> scanProgress;
+    @BindView(R.id.scanCancel)
+    View scanCancel;
 
 
     public interface ScanListener {
-        void onConnectTo(@NonNull ReaderDevice device);
-        void onCancelled();
+        void onDeviceChosen(@NonNull ReaderDevice device);
+        void onConnectSkip();
     }
 
     private ScanListener listener;
+    private ScanDeviceAdapter adapter;
+    private boolean cancellable;
 
     @NonNull
     @Override
@@ -87,12 +90,14 @@ public class ScanDialogFragment extends DialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter.setConnectClickListener(item -> {
             if (listener != null) {
-                listener.onConnectTo(item.getReaderDevice());
+                listener.onDeviceChosen(item.getReaderDevice());
                 dismiss();
             }
         });
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new ScanDialogItemDecoration());
+
+        scanCancel.setVisibility(cancellable ? View.VISIBLE : View.GONE);
 
         return inflated;
     }
@@ -100,7 +105,7 @@ public class ScanDialogFragment extends DialogFragment {
     @OnClick(R.id.scanCancel)
     void onCancel() {
         if (listener != null) {
-            listener.onCancelled();
+            listener.onConnectSkip();
         }
 
         dismiss();
