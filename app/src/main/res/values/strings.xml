@@ -300,6 +300,12 @@
     <string name="pdf.export.subtitle.dateformat">MMMM yyyy</string>
     <string name="pdf.export.file.name.dateformat">MM.dd.yyyy</string>
 
+    <string name="csv.export.body">Phe test results from %1$s - %2$s exported from PKU Lab app v%3$s</string>
+    <string name="csv.export.body.format">dd.MM.yyyy</string>
+    <string name="csv.export.file.name">PKU Results - %1$s.csv</string>
+    <string name="csv.export.file.name.format">yyyy.MM.dd HH:mm:ss</string>
+    <string name="csv.export.subject">Export from PKU Lab</string>
+
     <string name="pdf.legend.fasting">Fasting</string>
     <string name="pdf.legend.sick">Sick</string>
     <string name="pdf.legend.very.high">Very High</string>

@@ -1,14 +1,15 @@
 package com.aptatek.pkulab.view.main.weekly;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
+import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,9 +45,11 @@ public class WeeklyResultFragmentPresenterTest {
     @Mock
     private PkuRangeInteractor pkuRangeInteractor;
     @Mock
-    private WeeklyChartDateFormatter weeklyChartDateFormatter;
+    private WeeklyChartResourceFormatter weeklyChartResourceFormatter;
     @Mock
     private PdfChartDataTransformer pdfChartDataTransformer;
+    @Mock
+    private CsvExport csvExport;
 
     private WeeklyResultFragmentPresenter presenter;
     private List<TestResult> testResultList = new ArrayList<>();
@@ -75,7 +78,7 @@ public class WeeklyResultFragmentPresenterTest {
         testResultList.add(testResult);
 
 
-        doReturn(TEST_STRING).when(weeklyChartDateFormatter).getWeeklyChartTitle(ArgumentMatchers.anyInt());
+        doReturn(TEST_STRING).when(weeklyChartResourceFormatter).getWeeklyChartTitle(ArgumentMatchers.anyInt());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
         when(pkuRangeInteractor.getInfo()).thenReturn(Single.just(rangeInfo));
         when(testResultInteractor.listAll()).thenReturn(Single.just(testResultList));
@@ -84,8 +87,9 @@ public class WeeklyResultFragmentPresenterTest {
                 testResultInteractor,
                 resourceInteractor,
                 pkuRangeInteractor,
-                weeklyChartDateFormatter,
-                pdfChartDataTransformer);
+                weeklyChartResourceFormatter,
+                pdfChartDataTransformer,
+                csvExport);
         presenter.attachView(view);
     }
 
