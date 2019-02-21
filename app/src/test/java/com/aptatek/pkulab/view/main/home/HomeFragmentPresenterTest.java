@@ -1,18 +1,18 @@
 package com.aptatek.pkulab.view.main.home;
 
-import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
+import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
-import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
+import com.aptatek.pkulab.view.rangeinfo.PkuValueFormatter;
 import com.aptatek.pkulab.view.test.TestScreens;
 
 import org.junit.Before;
@@ -59,6 +59,8 @@ public class HomeFragmentPresenterTest {
     private PreferenceManager preferenceManager;
     @Mock
     private TestInteractor testInteractor;
+    @Mock
+    private PkuValueFormatter pkuValueFormatter;
 
     private final Date date = new Date();
     private HomeFragmentPresenter presenter;
@@ -78,7 +80,7 @@ public class HomeFragmentPresenterTest {
         doReturn(Single.just(TestScreens.TURN_READER_ON)).when(testInteractor).getLastScreen();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, preferenceManager, testInteractor);
+        presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, preferenceManager, testInteractor, pkuValueFormatter);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)
@@ -142,7 +144,7 @@ public class HomeFragmentPresenterTest {
     @Test
     public void testRangeDialog() {
         when(preferenceManager.isRangeDialogShown()).thenReturn(false);
-        presenter.initRangeDialog();
+        presenter.initView();
         verify(view).showRangeDialog();
     }
 }

@@ -61,4 +61,12 @@ public class PkuValueFormatterImpl implements PkuValueFormatter {
                 : R.string.rangeinfo_pkulevel_mg)
         );
     }
+
+    @Override
+    public String formatFromUnits(final PkuLevelUnits units) {
+        return interactor.getStringResource(R.string.rangeinfo_units_format, interactor.getStringResource(units == PkuLevelUnits.MICRO_MOL
+                ? R.string.rangeinfo_pkulevel_mmol
+                : R.string.rangeinfo_pkulevel_mg)
+        );
+    }
 }
