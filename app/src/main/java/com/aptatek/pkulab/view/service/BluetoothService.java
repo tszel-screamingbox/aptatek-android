@@ -1,7 +1,6 @@
 package com.aptatek.pkulab.view.service;
 
 import android.support.v4.app.NotificationManagerCompat;
-import android.text.TextUtils;
 import android.util.Pair;
 
 import com.aptatek.pkulab.device.PreferenceManager;

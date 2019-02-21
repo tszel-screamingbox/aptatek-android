@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.common.BaseConnectPresenter;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 
 import java.util.List;
 

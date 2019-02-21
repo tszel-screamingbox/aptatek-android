@@ -3,15 +3,12 @@ package com.aptatek.pkulab.view.connect.permission;
 import android.support.v4.content.PermissionChecker;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
-import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
-import com.aptatek.pkulab.view.connect.onboarding.ConnectReaderScreen;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import ix.Ix;
-import timber.log.Timber;
 
 public class PermissionRequiredPresenterImpl extends MvpBasePresenter<PermissionRequiredView> implements PermissionRequiredPresenter<PermissionRequiredView> {
 

@@ -22,7 +22,6 @@ import com.aptatek.pkulab.view.test.TestScreens;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;

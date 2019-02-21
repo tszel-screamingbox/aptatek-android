@@ -1,7 +1,6 @@
 package com.aptatek.pkulab.view.test.connectitall;
 
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;

@@ -10,7 +10,6 @@ import android.support.v4.content.PermissionChecker;
 
 import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothConditionChecker;
-import com.aptatek.pkulab.injection.qualifier.ActivityContext;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
 import java.util.ArrayList;

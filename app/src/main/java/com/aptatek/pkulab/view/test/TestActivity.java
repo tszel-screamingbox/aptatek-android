@@ -273,7 +273,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setDisclaimerViewVisible(final boolean visible) {
         if (disclaimerContainer != null) {
-            disclaimerContainer.setVisibility(visible ? View.VISIBLE : View.GONE);
+            disclaimerContainer.setVisibility(visible ? VISIBLE : GONE);
         }
     }
 
@@ -286,6 +286,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @Override
     public void setNextButtonVisible(final boolean visible) {
-        nextButton.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+        nextButton.setVisibility(visible ? VISIBLE : INVISIBLE);
     }
 }
