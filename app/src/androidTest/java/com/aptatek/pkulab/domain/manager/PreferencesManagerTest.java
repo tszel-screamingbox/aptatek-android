@@ -191,8 +191,8 @@ public class PreferencesManagerTest {
 
     @Test
     public void testTestStatusSet() {
-        preferenceManager.setTestStatus(TestScreens.SELF_TEST);
-        assertEquals(preferenceManager.getTestStatus(), TestScreens.SELF_TEST);
+        preferenceManager.setTestStatus(TestScreens.CONNECT_IT_ALL);
+        assertEquals(preferenceManager.getTestStatus(), TestScreens.CONNECT_IT_ALL);
     }
 
 }
