@@ -329,6 +329,9 @@
     <string name="bluetooth.notification.error.title">Failed to communication with reader</string>
     <string name="bluetooth.notification.error.disconnected.title">Device is disconnected</string>
     <string name="bluetooth.notification.error.disconnected.message">Tap to retry connection</string>
+
+    <string name="low.device.storage.detected.title">Phone Storage Full</string>
+    <string name="low.device.storage.detected.description">The memory on your phone is almost full - unable to store more Phe data in this application until you remove some other content from your phone to make more storage space available.</string>
     <string name="pdf.export.dialog.title">Export Results</string>
     <string name="pdf.export.dialog.last.month">Last Month</string>
     <string name="pdf.export.dialog.last.three.months">Last 3 Months</string>

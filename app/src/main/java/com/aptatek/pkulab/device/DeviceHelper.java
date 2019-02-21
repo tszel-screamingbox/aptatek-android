@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Environment;
+import android.os.StatFs;
 
 import com.aptatek.pkulab.domain.manager.FingerprintManager;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
@@ -27,6 +29,7 @@ import static android.os.BatteryManager.EXTRA_SCALE;
 public class DeviceHelper {
 
     private static final float BATTERY_LEVEL_LOW = 0.2f;
+    private static final int MINIMUM_STORAGE_LIMIT = (1024 * 1024) * 100;
 
     private final Context context;
     private final FingerprintManager fingerprintManager;
@@ -53,6 +56,10 @@ public class DeviceHelper {
         return hasEnrolledFingerprints()
                 && hasEnrolledFingerprints()
                 && preferenceManager.isFingerprintScanEnabled();
+    }
+
+    public boolean isStorageLimitReached() {
+        return new StatFs(Environment.getDataDirectory().getPath()).getAvailableBytes() < MINIMUM_STORAGE_LIMIT;
     }
 
     public boolean isRooted() {

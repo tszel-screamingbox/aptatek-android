@@ -2,6 +2,7 @@ package com.aptatek.pkulab.presenter.splash;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
@@ -111,14 +112,14 @@ public class SplashPresenterTest {
     /**
      * Testing detect rooted device
      *
-     * @test.expected {@link  SplashActivityView#onRootedDeviceDetected()  onRootedDeviceDetected()}
+     * @test.expected {@link  SplashActivityView#showAlertDialog(Integer, Integer)}
      * method is called, without any error.
      */
     @Test
     public void testRootedDevice() {
         when(deviceHelper.isRooted()).thenReturn(true);
         presenter.attachView(view);
-        verify(view).onRootedDeviceDetected();
+        verify(view).showAlertDialog(R.string.splash_root_alert_title, R.string.splash_root_alert);
     }
 
     /**

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
 import com.aptatek.pkulab.R;
@@ -74,10 +75,10 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
     }
 
     @Override
-    public void onRootedDeviceDetected() {
+    public void showAlertDialog(@StringRes int title, @StringRes int message) {
         final AlertDialogModel model = AlertDialogModel.builder()
-                .setTitle(getString(R.string.splash_root_alert_title))
-                .setMessage(getString(R.string.splash_root_alert))
+                .setTitle(getString(title))
+                .setMessage(getString(message))
                 .setNegativeButtonText(getString(R.string.alertdialog_button_no))
                 .setPositiveButtonText(getString(R.string.alertdialog_button_yes))
                 .setCancelable(false)

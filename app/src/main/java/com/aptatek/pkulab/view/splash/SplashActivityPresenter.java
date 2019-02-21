@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.splash;
 
 import android.support.annotation.NonNull;
 
+import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
@@ -42,15 +43,19 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
         compositeDisposable.add(Flowable.timer(DELAY_IN_MILLISEC, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ignored -> checkRoot()));
-    }
+                .subscribe(ignored -> ifViewAttached(attachedView -> {
+                    if (deviceHelper.isRooted()) {
+                        attachedView.showAlertDialog(R.string.splash_root_alert_title, R.string.splash_root_alert);
+                        return;
+                    }
 
-    private void checkRoot() {
-        if (deviceHelper.isRooted()) {
-            ifViewAttached(SplashActivityView::onRootedDeviceDetected);
-        } else {
-            switchToNextActivity();
-        }
+                    if (deviceHelper.isStorageLimitReached()) {
+                        attachedView.showAlertDialog(R.string.low_device_storage_detected_title, R.string.low_device_storage_detected_description);
+                        return;
+                    }
+
+                    switchToNextActivity();
+                })));
     }
 
     public void switchToNextActivity() {
