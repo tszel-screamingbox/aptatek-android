@@ -21,7 +21,6 @@ import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
 import com.aptatek.pkulab.view.splash.SplashActivity;
 import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
-import com.aptatek.pkulab.view.toggle.ToggleActivity;
 
 import dagger.Component;
 
@@ -37,8 +36,6 @@ public interface ActivityComponent {
     void inject(SetPinHostActivity activity);
 
     void inject(SplashActivity activity);
-
-    void inject(ToggleActivity activity);
 
     void inject(ParentalGateActivity activity);
 

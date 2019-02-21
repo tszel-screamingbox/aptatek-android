@@ -226,14 +226,6 @@
     <string name="test.selftest.title">Self Checking</string>
     <string name="test.selftest.message">Reader is doing a self-check to make sure that it can function properly during testing</string>
 
-    <!-- Toggle Activity -->
-    <string name="toggle.button.connect">Connect Cube</string>
-    <string name="toggle.button.new.test">New Test</string>
-    <string name="toggle.button.result">Your Results</string>
-    <string name="toggle.button.settings">Settings</string>
-    <string name="toggle.button.toggle">Toggle</string>
-    <string name="toggle.cube.connected">● Cube Connected</string>
-    <string name="toggle.cube.disconnected">● Cube Disconnected</string>
     <!-- WeeklyResult Activity -->
     <string name="weekly.chart.label">Phe levels are in %s</string>
     <string-array name="weekly.days">

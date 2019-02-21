@@ -89,11 +89,6 @@
         </activity>
 
         <activity
-            android:name=".view.toggle.ToggleActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
-
-        <activity
             android:name=".view.settings.reminder.ReminderSettingsActivity"
             android:parentActivityName=".view.settings.basic.SettingsActivity"
             android:screenOrientation="portrait"
