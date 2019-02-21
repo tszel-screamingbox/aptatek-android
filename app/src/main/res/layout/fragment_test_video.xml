@@ -43,16 +43,4 @@
         app:layout_constraintTop_toBottomOf="@id/topBarrier"
         app:layout_constraintVertical_bias="0.0" />
 
-    <include
-        android:id="@+id/testDisclaimer"
-        layout="@layout/layout_test_alert"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/test.alert.height"
-        android:layout_marginStart="@dimen/general.distance.xsmall"
-        android:layout_marginEnd="@dimen/general.distance.xsmall"
-        android:layout_marginBottom="@dimen/test.bottombar.height"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
 </android.support.constraint.ConstraintLayout>

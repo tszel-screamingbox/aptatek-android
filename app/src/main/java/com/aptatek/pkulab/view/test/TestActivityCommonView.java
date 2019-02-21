@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.view.test;
 
+import android.support.annotation.NonNull;
+
 public interface TestActivityCommonView {
 
     void showNextScreen();
@@ -15,5 +17,11 @@ public interface TestActivityCommonView {
     void setProgressVisible(boolean visible);
 
     void setProgressPercentage(int percentage);
+
+    void setDisclaimerViewVisible(boolean visible);
+
+    void setDisclaimerMessage(@NonNull String message);
+
+    void setNextButtonVisible(boolean visible);
 
 }

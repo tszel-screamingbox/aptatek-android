@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:paddingStart="@dimen/general.distance.xmini"
-    android:paddingEnd="@dimen/general.distance.xmini">
+    android:paddingStart="@dimen/general.distance.32dp"
+    android:paddingEnd="@dimen/general.distance.32dp"
+    android:paddingBottom="@dimen/general.distance.32dp">
 
     <com.aptatek.pkulab.widget.HeaderView
         android:id="@+id/header"
@@ -25,7 +26,7 @@
         android:layout_height="@dimen/general.button.height.big"
         android:layout_marginEnd="@dimen/general.distance.xsmall"
         android:elevation="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/guideBottom"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/testOkButton" />
 
@@ -37,15 +38,8 @@
         android:layout_marginTop="@dimen/general.distance.xxsmall"
         android:gravity="center"
         android:text="@string/test.cancel.navigation.yes"
-        app:layout_constraintBottom_toBottomOf="@id/guideBottom"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/testCancelButton"
         app:layout_constraintRight_toRightOf="parent" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.96" />
 
 </android.support.constraint.ConstraintLayout>

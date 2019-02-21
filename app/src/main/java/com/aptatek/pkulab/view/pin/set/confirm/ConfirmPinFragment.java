@@ -8,7 +8,7 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.data.PinCode;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
-import com.aptatek.pkulab.view.connect.ConnectReaderActivity;
+import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.fingerprint.FingerprintActivity;
 import com.aptatek.pkulab.view.pin.base.BasePinFragment;
 
@@ -60,7 +60,7 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
 
     @Override
     public void onConnectReaderShouldLoad() {
-        getBaseActivity().launchActivity(ConnectReaderActivity.starter(getActivity()), true, BaseActivity.Animation.RIGHT_TO_LEFT);
+        getBaseActivity().launchActivity(ConnectOnboardingReaderActivity.starter(getActivity()), true, BaseActivity.Animation.RIGHT_TO_LEFT);
     }
 
     @Override

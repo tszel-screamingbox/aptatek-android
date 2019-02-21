@@ -1,7 +1,6 @@
 package com.aptatek.pkulab.view.service;
 
 import android.support.v4.app.NotificationManagerCompat;
-import android.text.TextUtils;
 import android.util.Pair;
 
 import com.aptatek.pkulab.device.PreferenceManager;
@@ -15,7 +14,6 @@ import com.aptatek.pkulab.injection.component.bluetooth.BluetoothComponent;
 import com.aptatek.pkulab.injection.component.bluetooth.DaggerBluetoothComponent;
 import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
-import com.aptatek.pkulab.injection.module.scan.ScanModule;
 
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +47,6 @@ public class BluetoothService extends BaseForegroundService {
         final BluetoothComponent bluetoothComponent = DaggerBluetoothComponent.builder()
                 .applicationComponent(component)
                 .serviceModule(new ServiceModule(this))
-                .scanModule(new ScanModule())
                 .bluetoothServiceModule(new BluetoothServiceModule())
                 .build();
         bluetoothComponent.inject(this);
@@ -57,7 +54,8 @@ public class BluetoothService extends BaseForegroundService {
 
     @Override
     protected Single<Boolean> shouldStart() {
-        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()));
+//        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()));
+        return Single.fromCallable(() -> false);
     }
 
     @Override

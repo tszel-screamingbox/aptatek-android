@@ -2,6 +2,7 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,11 +15,11 @@ import com.aptatek.pkulab.device.bluetooth.characteristics.writer.Characteristic
 import com.aptatek.pkulab.device.bluetooth.characteristics.writer.RequestResultCharacteristicDataProvider;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicReadError;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicWriteError;
-import com.aptatek.pkulab.device.bluetooth.error.FailedToBondError;
 import com.aptatek.pkulab.device.bluetooth.error.NoValueReceivedError;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
+import com.aptatek.pkulab.device.bluetooth.model.TestProgressResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
@@ -27,6 +28,7 @@ import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -72,7 +74,19 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
             @Override
             protected void initialize() {
-                updateTime().subscribe();
+                createBond()
+                        .done(device -> Timber.d("Bonded to device: [%s]", device.getAddress()))
+                        .fail((device, status) -> Timber.d("Failed to bond: device [%s], status [%d]", device.getAddress(), status))
+                        .enqueue();
+
+                requestMtu(LumosReaderConstants.MTU_SIZE)
+                        .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
+                        .done(device -> Timber.d("Mtu change successful"))
+                        .fail((device, status) -> {
+                            Timber.d("Mtu change failed: status [%d]", status);
+                            mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+                        })
+                        .enqueue();
 
                 // WORKFLOW STATE
                 setNotificationCallback(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE))
@@ -84,6 +98,19 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .fail((device, status) -> Timber.d("Failed to enable Workflow State notifications: device [%s], status [%d]", device.getAddress(), status))
                         .done(device -> Timber.d("Successfully enabled Workflow State notifications: device [%s]", device.getAddress()))
                         .enqueue();
+
+                // TEST PROGRESS
+                setNotificationCallback(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_TEST_PROGRESS))
+                        .with((device, data) -> {
+                            Timber.d("Test progress update: device [%s], data [%s]", device.getAddress(), data.toString());
+                            mCallbacks.onTestProgressChanged(((TestProgressResponse) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_TEST_PROGRESS).read(data)));
+                        });
+                enableNotifications(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_TEST_PROGRESS))
+                        .fail((device, status) -> Timber.d("Failed to enable Test Progress notifications: device [%s], status [%d]", device.getAddress(), status))
+                        .done(device -> Timber.d("Successfully enabled Test Progress notifications: device [%s]", device.getAddress()))
+                        .enqueue();
+
+                updateTime().subscribe();
             }
 
         };
@@ -142,31 +169,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                             Timber.d("writeCharacteristic completed successfully");
                             emitter.onComplete();
                         })
-                .enqueue()
-        );
-    }
-
-    public Completable connectAndBound(@NonNull final BluetoothDevice bluetoothDevice) {
-        return connectCompletable(bluetoothDevice)
-                .andThen(bondCompletable());
-    }
-
-    private Completable bondCompletable() {
-        return Completable.create(emitter ->
-                createBond()
-                        .done(device -> {
-                            Timber.d("Bonded to device: [%s]", device.getAddress());
-                            emitter.onComplete();
-                        })
-                        .fail((device, status) -> {
-                            Timber.d("Failed to bond: device [%s], status [%d]", device.getAddress(), status);
-                            emitter.onError(new FailedToBondError(device, status));
-                        })
                         .enqueue()
         );
     }
 
-    private Completable connectCompletable(@NonNull final BluetoothDevice bluetoothDevice) {
+    public Completable connectCompletable(@NonNull final BluetoothDevice bluetoothDevice) {
         return Completable.fromAction(() ->
                 connect(bluetoothDevice)
                         .useAutoConnect(true)
@@ -189,11 +196,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                                     emitter.onComplete();
                                 }
                         ).fail((device, status) -> {
-                            Timber.d("Mtu change failed: status [%d]", status);
-                            mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
-                            emitter.onError(new MtuChangeFailedError());
+                    Timber.d("Mtu change failed: status [%d]", status);
+                    mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+                    emitter.onError(new MtuChangeFailedError());
                 })
-                .enqueue()
+                        .enqueue()
         );
     }
 
@@ -201,8 +208,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME, null);
     }
 
-    public Single<ResultResponse> getResult(@NonNull final String id) {
+    public Single<ResultResponse>  getResult(@NonNull final String id) {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT, new RequestResultCharacteristicDataProvider.RequestResultData(id))
+                .delay(500, TimeUnit.MILLISECONDS) // this delay is required because the reader needs some time to actually write the Result characteristic...
                 .andThen(readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT));
     }
 
@@ -251,11 +259,13 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     }
 
     public Maybe<ReaderDevice> getConnectedDevice() {
-        final BluetoothDevice bluetoothDevice = getBluetoothDevice();
-        if (bluetoothDevice == null) {
-            return Maybe.never();
-        }
-
-        return Maybe.just(new BluetoothReaderDevice(bluetoothDevice));
+        return Maybe.create(emitter -> {
+            final BluetoothDevice bluetoothDevice = getBluetoothDevice();
+            if (bluetoothDevice != null && getConnectionState() == BluetoothProfile.STATE_CONNECTED) {
+                emitter.onSuccess(new BluetoothReaderDevice(bluetoothDevice));
+            } else {
+                emitter.onComplete();
+            }
+        });
     }
 }

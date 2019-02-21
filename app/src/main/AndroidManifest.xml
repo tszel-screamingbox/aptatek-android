@@ -89,11 +89,6 @@
         </activity>
 
         <activity
-            android:name=".view.toggle.ToggleActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen" />
-
-        <activity
             android:name=".view.settings.reminder.ReminderSettingsActivity"
             android:parentActivityName=".view.settings.basic.SettingsActivity"
             android:screenOrientation="portrait"
@@ -137,17 +132,29 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
-            android:name=".view.connect.ConnectReaderActivity"
+            android:name=".view.connect.onboarding.ConnectOnboardingReaderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.FullScreen">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name=".view.settings.web.WebPageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.settings.web.WebPageActivity"
+        <activity
+            android:name=".view.test.dispose.DisposeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.dispose.DisposeActivity"
+        <activity android:name=".view.test.turnreaderon.permission.PermissionRequiredOnTestActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"/>
+            android:theme="@style/AppTheme.FullScreen" />
 
         <receiver android:name=".device.AlarmReceiver" />
         <receiver android:name=".device.ReminderActionReceiver" />
@@ -157,7 +164,7 @@
 
         <receiver android:name=".device.BootCompletedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>

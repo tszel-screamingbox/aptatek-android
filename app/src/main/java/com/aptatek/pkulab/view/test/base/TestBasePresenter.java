@@ -19,6 +19,7 @@ public abstract class TestBasePresenter<V extends TestFragmentBaseView> extends 
             attachedView.setBatteryIndicatorVisible(false);
             attachedView.setProgressVisible(false);
             attachedView.setDisclaimerViewVisible(false);
+            attachedView.setNextButtonVisible(true);
         });
 
         initUi();

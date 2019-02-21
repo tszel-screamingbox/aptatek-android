@@ -49,6 +49,19 @@
         <item name="android:background">@drawable/ripple_grey_button</item>
     </style>
 
+    <style name="Grey.Settings.Button.Big" parent="General.Rounded.Gray.Button">
+        <item name="android:elevation">0dp</item>
+        <item name="android:layout_height">@dimen/general.button.height.big</item>
+        <item name="android:layout_marginStart">@dimen/general.distance.32dp</item>
+        <item name="android:layout_marginEnd">@dimen/general.distance.32dp</item>
+        <item name="android:layout_marginTop">@dimen/general.distance.xxsmall</item>
+        <item name="android:layout_marginBottom">@dimen/main.bottom.margin.empty</item>
+        <item name="android:drawableStart">@drawable/settings_button_background</item>
+        <item name="android:paddingStart">@dimen/general.button.icon.margin.start</item>
+        <item name="android:text">@string/main.button.settings</item>
+        <item name="android:textColor">@color/applicationSolidGray</item>
+    </style>
+
     <style name="General.Rounded.Gray.Button.Secondary" parent="General.Rounded.Gray.Button">
         <item name="android:textSize">@dimen/font.size.medium</item>
         <item name="android:fontFamily">@font/nunito_regular</item>
@@ -102,6 +115,10 @@
 
     <style name="Test.Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressTint">@color/testPageIndicatorBlue</item>
+    </style>
+
+    <style name="Scan.Progress" parent="Widget.AppCompat.ProgressBar">
+        <item name="android:progressTint">@color/applicationGreen</item>
     </style>
 
     <style name="Grey.Settings.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
@@ -188,6 +205,7 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center_horizontal</item>
+        <item name="android:lineSpacingExtra">-29sp</item>
     </style>
 
     <style name="Battery.Level.Text" parent="TextAppearance.AppCompat">

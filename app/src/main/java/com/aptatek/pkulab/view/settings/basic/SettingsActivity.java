@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
@@ -90,10 +91,10 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
                         launchActivity(RangeSettingsActivity.starter(SettingsActivity.this));
                         break;
                     case HELP:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), "http://www.google.com")); // TODO get proper url
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), Constants.URL_HELP));
                         break;
                     case PRIVACY_POLICY:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), "http://www.google.com")); // TODO get proper url
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), Constants.URL_PRIVACY));
                         break;
                     default:
                         Timber.d("Unhandled settings item clicked: %s", item);

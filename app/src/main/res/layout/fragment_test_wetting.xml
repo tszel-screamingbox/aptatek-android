@@ -7,19 +7,19 @@
 
     <Space
         android:id="@+id/topSpace"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/test.top.margin" />
+        android:layout_height="@dimen/test.top.margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.aptatek.pkulab.widget.HeaderView
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.mini"
-        android:layout_marginEnd="@dimen/general.distance.mini"
         android:layout_marginTop="@dimen/general.distance.small"
+        android:layout_marginEnd="@dimen/general.distance.mini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,17 +29,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="header,topSpace"/>
+        app:constraint_referenced_ids="header,topSpace" />
 
     <ImageView
         android:id="@+id/testWettingImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/general.distance.xxsmall"
-        android:layout_marginBottom="@dimen/general.distance.small"
+        android:layout_marginBottom="@dimen/test.bottombar.height"
         android:adjustViewBounds="true"
         android:src="@drawable/ic_wetting"
-        app:layout_constraintBottom_toTopOf="@id/testDisclaimer"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBarrier" />
@@ -49,22 +49,13 @@
         style="@style/Wetting.Countdown"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/test.countdown.bottom.margin"
         android:lines="1"
-        app:layout_constraintBottom_toBottomOf="@+id/testWettingImage"
+        app:layout_constraintBottom_toBottomOf="@id/testWettingImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/testWettingImage"
+        app:layout_constraintVertical_bias="0.5"
         tools:text="29:55" />
-
-    <include
-        android:id="@+id/testDisclaimer"
-        layout="@layout/layout_test_alert"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/test.alert.height"
-        android:layout_marginStart="@dimen/general.distance.xsmall"
-        android:layout_marginEnd="@dimen/general.distance.xsmall"
-        android:layout_marginBottom="@dimen/test.bottombar.height"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

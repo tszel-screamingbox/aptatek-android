@@ -3,12 +3,13 @@ package com.aptatek.pkulab.injection.module;
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.BatteryLevelReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.CartridgeIdReader;
+import com.aptatek.pkulab.device.bluetooth.characteristics.reader.CharacteristicReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.ErrorReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.NumResultsReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.ResultReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.SyncResponseReader;
+import com.aptatek.pkulab.device.bluetooth.characteristics.reader.TestProgressReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.WorkflowStateReader;
-import com.aptatek.pkulab.device.bluetooth.characteristics.reader.CharacteristicReader;
 
 import dagger.Binds;
 import dagger.Module;
@@ -37,6 +38,11 @@ public interface DeviceCharacteristicReaderModule {
     @IntoMap
     @StringKey(LumosReaderConstants.READER_CHAR_RESULT)
     CharacteristicReader bindResultReader(final ResultReader reader);
+
+    @Binds
+    @IntoMap
+    @StringKey(LumosReaderConstants.READER_CHAR_TEST_PROGRESS)
+    CharacteristicReader bindTestProgressReader(final TestProgressReader reader);
     
     @Binds
     @IntoMap

@@ -4,7 +4,6 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
-import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
@@ -38,10 +37,10 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
         disposables.add(wettingInteractor.getWettingCountdown()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(countdown ->
-                    ifViewAttached(attachedView -> attachedView.showCountdown(countdown.getRemainingFormattedText())),
-                    Timber::e,
-                    () -> ifViewAttached(WettingView::onCountdownFinished)
+                .subscribe(
+                        countdown -> ifViewAttached(attachedView -> attachedView.showCountdown(countdown.getRemainingFormattedText())),
+                        Timber::e,
+                        () -> ifViewAttached(WettingView::showNextScreen)
                 )
         );
     }
@@ -73,7 +72,8 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
     public void resetWetting() {
         disposables.add(
                 wettingInteractor.resetWetting()
-                        .subscribe(() -> ifViewAttached(TestActivityCommonView::showNextScreen))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> ifViewAttached(WettingView::showNextScreen))
         );
     }
 }

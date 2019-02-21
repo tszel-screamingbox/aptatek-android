@@ -137,7 +137,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @OnPageChange(R.id.viewpager)
     public void onPageChanged(final int state) {
-        presenter.subTitle(presenter.getValidWeeks().size() - state - 1);
+        presenter.subTitle(state);
         presenter.updateArrows(state);
     }
 
@@ -170,7 +170,9 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     public void displayValidWeekList(final List<Integer> validWeeks) {
         swipeAdapter.setData(validWeeks);
         chartViewPager.disableSwipe(false);
-        chartViewPager.setCurrentItem(validWeeks.size() - 1);
+        final int initialPage = validWeeks.size() - 1;
+        chartViewPager.setCurrentItem(initialPage);
+        onPageChanged(initialPage);
     }
 
     @Override

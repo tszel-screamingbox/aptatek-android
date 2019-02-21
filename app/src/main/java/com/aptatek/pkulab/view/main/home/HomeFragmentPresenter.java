@@ -23,7 +23,6 @@ import com.aptatek.pkulab.view.test.TestScreens;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -82,7 +81,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         disposables.add(
                 rangeInteractor.getInfo()
                         .flatMap(rangeInfo -> {
-                            final long now = new Date().getTime();
+                            final long now = System.currentTimeMillis();
                             final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, now);
                             return testResultInteractor.listBetween(past, now)
                                     .map(list -> new Pair<>(rangeInfo, list));

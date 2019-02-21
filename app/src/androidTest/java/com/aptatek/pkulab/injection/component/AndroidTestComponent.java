@@ -9,6 +9,7 @@ import com.aptatek.pkulab.injection.module.DatabaseModule;
 import com.aptatek.pkulab.injection.module.DeviceModule;
 import com.aptatek.pkulab.injection.module.ReminderModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
+import com.aptatek.pkulab.injection.module.scan.ScanModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.pin.SetPinScreenTest;
 
@@ -17,7 +18,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, DataFactoryModule.class, DatabaseModule.class, DataMapperModule.class, DataSourceModule.class, DeviceModule.class})
+@Component(modules = {ApplicationModule.class, DataFactoryModule.class, DatabaseModule.class, DataMapperModule.class, DataSourceModule.class, DeviceModule.class, ScanModule.class})
 public interface AndroidTestComponent extends ApplicationComponent {
 
     TestComponent plus(TestModule module);

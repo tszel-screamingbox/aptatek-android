@@ -109,7 +109,14 @@
     <dimen name="test.progressbar.height">12dp</dimen>
     <dimen name="test.bottombar.height">56dp</dimen>
     <dimen name="test.top.margin">162dp</dimen>
+    <dimen name="test.countdown.bottom.margin">156dp</dimen> <!-- bottombar.height + alert.height -->
 
     <dimen name="daily.result.sliding.background.corner">20dp</dimen>
+
+    <dimen name="connect.permissions.top.margin">128dp</dimen>
+    <dimen name="connect.scan.dialog.width">328dp</dimen>
+    <dimen name="connect.scan.dialog.height">416dp</dimen>
+    <dimen name="connect.scan.item.height">64dp</dimen>
+    <dimen name="connect.scan.list.height">192dp</dimen>
 
 </resources>

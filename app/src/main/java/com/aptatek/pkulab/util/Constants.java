@@ -39,4 +39,7 @@ public final class Constants {
     public static final int WETTING_COUNTDOWN_NOTIFICATION_ID = 2668;
     public static final int WETTING_FINISHED_NOTIFICATION_ID = 726;
 
+    public static final String URL_HELP = "https://pkulab.webflow.io/help";
+    public static final String URL_PRIVACY = "https://pkulab.webflow.io/privacy";
+
 }

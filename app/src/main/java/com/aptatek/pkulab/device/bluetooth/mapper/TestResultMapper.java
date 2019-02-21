@@ -29,10 +29,10 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
     @Override
     public TestResult mapToDomain(final ResultResponse dataModel) {
         return TestResult.builder()
-                .setId(dataModel.getId())
+                .setId(dataModel.getDate())
                 .setPkuLevel(parsePkuLevel(dataModel))
                 .setTimestamp(DateParser.tryParseDate(dataModel.getDate()))
-                .setReaderId(dataModel.getId()) // TODO
+                .setReaderId("dummy")
                 .build();
     }
 
@@ -43,14 +43,15 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
 
     @Override
     public ResultResponse mapToData(final TestResult domainModel) {
-        return new ResultResponse(); // TODO
+        return new ResultResponse(); // won't be used in this way
     }
 
     @Nullable
     private PkuLevel parsePkuLevel(final ResultResponse resultResponse) {
         try {
-            final float value = Float.parseFloat(resultResponse.getResult());
-            final PkuLevelUnits unit = parseUnit(resultResponse.getUnits());
+            final ResultResponse.ResultData resultData = resultResponse.getResult().get(0);
+            final float value = resultData.getNumericalResult();
+            final PkuLevelUnits unit = parseUnit(resultData.getUnits());
             return PkuLevel.create(value, unit);
         } catch (Exception ex) {
             Timber.d("Failed to parse pkuLevel from result response: %s", resultResponse);

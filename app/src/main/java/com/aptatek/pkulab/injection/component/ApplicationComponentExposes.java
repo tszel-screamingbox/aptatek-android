@@ -12,6 +12,9 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultDataSource;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeDataSource;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingDataSource;
+import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
+import com.aptatek.pkulab.domain.manager.reader.BluetoothConditionChecker;
+import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.animation.AnimationHelper;
@@ -47,6 +50,12 @@ public interface ApplicationComponentExposes {
     WettingDataSource provideWettingDataSource();
 
     PkuRangeDataSource providePkuRangeDataSource();
+
+    BluetoothAdapter provideBluetoothAdapter();
+
+    BluetoothScanner provideBluetoothScanner();
+
+    BluetoothConditionChecker provideBluetoothConditionChecker();
 
     ReaderManager provideReaderManager();
 

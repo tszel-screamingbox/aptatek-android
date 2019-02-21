@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
@@ -40,5 +41,12 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     @Override
     public TestScreens getScreen() {
         return TestScreens.TESTING;
+    }
+
+    @Override
+    public void showTurnReaderOn() {
+        if (getActivity() instanceof TestActivityView) {
+            ((TestActivityView) getActivity()).showTurnReaderOn();
+        }
     }
 }

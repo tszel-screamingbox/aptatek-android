@@ -7,7 +7,6 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
-import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 
@@ -36,13 +35,6 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
     @Override
     public void showCountdown(@NonNull final String countdownRemaining) {
         tvCountdown.setText(countdownRemaining);
-    }
-
-    @Override
-    public void onCountdownFinished() {
-        if (getActivity() instanceof TestActivityView) {
-            ((TestActivityView) getActivity()).showNextScreen();
-        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 
@@ -45,5 +46,7 @@ public interface ReaderManager {
     Flowable<Integer> mtuSize();
 
     Flowable<WorkflowState> workflowState();
+
+    Flowable<TestProgress> testProgress();
 
 }

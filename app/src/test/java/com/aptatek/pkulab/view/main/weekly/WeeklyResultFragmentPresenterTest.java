@@ -137,7 +137,7 @@ public class WeeklyResultFragmentPresenterTest {
     public void testUpdateArrow() {
         presenter.loadValidWeeks();
         presenter.updateArrows(presenter.getValidWeeks().size() - 1);
-        verify(view).onUpdateLeftArrow(true);
+        verify(view).onUpdateLeftArrow(false);
         verify(view).onUpdateRightArrow(false);
     }
 }

@@ -94,8 +94,8 @@ ext {
             yodatime          : '2.9.9.4',
 
             // Bluetooth
-            nordicBle         : '2.0.3',
-            nordicScanner     : '1.1.0',
+            nordicBle         : '2.1.0',
+            nordicScanner     : '1.4.0',
 
             // gson
             gson              : '2.8.5',
