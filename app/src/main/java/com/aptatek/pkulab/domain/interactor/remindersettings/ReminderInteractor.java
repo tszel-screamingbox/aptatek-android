@@ -21,6 +21,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
+// TODO use repository
 public class ReminderInteractor {
 
     private final ReminderDayDao reminderDayDao;
@@ -43,7 +44,7 @@ public class ReminderInteractor {
 
     public Single<List<ReminderDay>> listReminderDays() {
         return initializeDays().andThen(
-                reminderDayDao.getReminderDays()
+                Single.fromCallable(reminderDayDao::getReminderDays)
                         .subscribeOn(Schedulers.computation())
                         .map(reminderDayMapper::mapListToDomain)
                         .toObservable()
@@ -111,7 +112,7 @@ public class ReminderInteractor {
     }
 
     public Observable<List<Reminder>> listReminders(final int weekDay) {
-        return reminderDao.getReminders(weekDay)
+        return Single.fromCallable(() -> reminderDao.getReminders(weekDay))
                 .map(reminderMapper::mapListToDomain)
                 .toObservable();
     }
