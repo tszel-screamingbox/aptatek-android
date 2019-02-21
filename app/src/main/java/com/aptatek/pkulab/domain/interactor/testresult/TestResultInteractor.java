@@ -34,4 +34,7 @@ public class TestResultInteractor {
         return dataRepository.getLatest();
     }
 
+    public Single<TestResult> getOldest() {
+        return dataRepository.getOldest();
+    }
 }

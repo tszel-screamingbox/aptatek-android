@@ -98,7 +98,10 @@ ext {
             nordicScanner     : '1.4.0',
 
             // gson
-            gson              : '2.8.5'
+            gson              : '2.8.5',
+
+            // CSV export
+            csv               : '4.5'
 
     ]
 
@@ -222,5 +225,9 @@ ext {
 
     jsonDependencies = [
             gson      : "com.google.code.gson:gson:$versions.gson"
+    ]
+
+    csvDependencies = [
+            openCsv   : "com.opencsv:opencsv:$versions.csv"
     ]
 }

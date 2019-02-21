@@ -18,6 +18,7 @@ import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
+import com.aptatek.pkulab.view.rangeinfo.PkuValueFormatter;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -43,6 +44,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private final WettingInteractor wettingInteractor;
     private final PreferenceManager preferenceManager;
     private final TestInteractor testInteractor;
+    private final PkuValueFormatter pkuValueFormatter;
     private CompositeDisposable disposables;
 
     @Inject
@@ -52,7 +54,8 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                           final DailyChartFormatter dailyChartFormatter,
                           final WettingInteractor wettingInteractor,
                           final PreferenceManager preferenceManager,
-                          final TestInteractor testInteractor) {
+                          final TestInteractor testInteractor,
+                          final PkuValueFormatter pkuValueFormatter) {
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
@@ -60,13 +63,17 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         this.wettingInteractor = wettingInteractor;
         this.preferenceManager = preferenceManager;
         this.testInteractor = testInteractor;
+        this.pkuValueFormatter = pkuValueFormatter;
     }
 
-    void initRangeDialog() {
+    void initView() {
         if (!preferenceManager.isRangeDialogShown()) {
             preferenceManager.setRangeDialogShown(true);
             ifViewAttached(HomeFragmentView::showRangeDialog);
         }
+
+        final String unit = pkuValueFormatter.formatFromUnits(preferenceManager.getPkuRangeUnit());
+        ifViewAttached(view -> view.updateUnitText(unit));
     }
 
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts

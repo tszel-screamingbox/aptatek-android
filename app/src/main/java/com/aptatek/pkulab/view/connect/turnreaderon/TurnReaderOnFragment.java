@@ -10,7 +10,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;

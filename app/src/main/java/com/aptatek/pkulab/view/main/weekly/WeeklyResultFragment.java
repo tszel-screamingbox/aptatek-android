@@ -11,13 +11,18 @@ import android.widget.TextView;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportDialog;
+import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval;
 import com.aptatek.pkulab.view.main.weekly.swipe.CustomViewPager;
 import com.aptatek.pkulab.view.main.weekly.swipe.SwipeAdapter;
+import com.aptatek.pkulab.widget.MonthPickerDialog;
 import com.aptatek.pkulab.widget.PdfExportView;
 
 import java.io.File;
@@ -30,14 +35,19 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import butterknife.OnPageChange;
+import ix.Ix;
 import timber.log.Timber;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.View.inflate;
 
-public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView {
+public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView, PdfExportDialog.PdfExportDialogCallback, MonthPickerDialog.MonthPickerDialogCallback {
+
+    private static final String MONTH_PICKER_DIALOG_TAG = "aptatek.month.picker.dialog.tag";
+    private static final String PDF_EXPORT_DIALOG_TAG = "aptatek.pdf.export.dialog";
 
     @Inject
     WeeklyResultFragmentPresenter presenter;
@@ -99,13 +109,24 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @OnClick(R.id.buttonPdfExport)
     public void onPdfExportClicked() {
-        presenter.getPdfChartData(chartViewPager.getCurrentItem());
+        PdfExportDialog.create(this).show(requireFragmentManager(), PDF_EXPORT_DIALOG_TAG);
+    }
+
+    @OnLongClick(R.id.buttonPdfExport)
+    public boolean onCsvExportClicked() {
+        presenter.getCsvData();
+        return true;
     }
 
     @OnClick(R.id.rightArrow)
     public void onRightArrowClicked() {
         final int currentPage = chartViewPager.getCurrentItem();
         presenter.showPage(currentPage + 1);
+    }
+
+    @OnClick(R.id.dateText)
+    public void onDateTextViewClicked() {
+        presenter.showMonthPickerDialog();
     }
 
     private void initAdapter() {
@@ -155,44 +176,81 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     }
 
     @Override
-    public void onPdfDataReady(final PdfEntryData pdfData) {
-        final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
-        content.setData(pdfData);
-
+    public void onPdfDataReady(final List<PdfEntryData> data) {
         final PdfDocument document = new PdfDocument();
 
-        final PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
-                getResources().getDimensionPixelSize(R.dimen.pdf_width),
-                getResources().getDimensionPixelSize(R.dimen.pdf_height),
-                1).create();
+        for (PdfEntryData pdfEntryData : data) {
+            final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
+            content.setData(pdfEntryData);
 
-        final PdfDocument.Page page = document.startPage(pageInfo);
+            final PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
+                    getResources().getDimensionPixelSize(R.dimen.pdf_width),
+                    getResources().getDimensionPixelSize(R.dimen.pdf_height),
+                    data.indexOf(pdfEntryData)).create();
 
-        final Canvas canvas = page.getCanvas();
-        canvas.save();
-        content.draw(canvas);
-        canvas.restore();
+            final PdfDocument.Page page = document.startPage(pageInfo);
 
-        document.finishPage(page);
+            final Canvas canvas = page.getCanvas();
+            canvas.save();
+            content.draw(canvas);
+            canvas.restore();
 
-        final File file = new File(getBaseActivity().getFilesDir(), pdfData.getFileName());
+            document.finishPage(page);
+        }
+
+        final File file = new File(getBaseActivity().getFilesDir(), Ix.from(data).first().getFileName());
 
         try {
             final FileOutputStream out = new FileOutputStream(file);
             document.writeTo(out);
             document.close();
             out.close();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Timber.d(e);
         }
 
         final Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("vnd.android.cursor.dir/email");
         emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                getContext(),
+                requireContext(),
                 BuildConfig.APPLICATION_ID + ".provider",
                 file));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.pdf_export_email_subject));
         startActivity(Intent.createChooser(emailIntent, ""));
+    }
+
+    @Override
+    public void onCsvDataReady(final Attachment attachment) {
+        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("vnd.android.cursor.dir/email");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                requireContext(),
+                BuildConfig.APPLICATION_ID + ".provider",
+                attachment.getCsvFile()));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.csv_export_subject));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, attachment.getBody());
+        startActivity(Intent.createChooser(emailIntent, ""));
+    }
+
+    @Override
+    public void onIntervalSelected(@NonNull PdfExportInterval pdfExportInterval) {
+        presenter.getPdfChartData(pdfExportInterval);
+    }
+
+    @Override
+    public void showMonthPickerDialog(final MonthPickerDialogModel monthPickerDialogModel) {
+        if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) == null) {
+            MonthPickerDialog.create(monthPickerDialogModel, this).show(requireFragmentManager(), MONTH_PICKER_DIALOG_TAG);
+        }
+    }
+
+    @Override
+    public void scrollToItem(final int position) {
+        chartViewPager.setCurrentItem(position);
+    }
+
+    @Override
+    public void onPick(final int year, final int month) {
+        presenter.getPageForSelectedMonth(year, month);
     }
 }
