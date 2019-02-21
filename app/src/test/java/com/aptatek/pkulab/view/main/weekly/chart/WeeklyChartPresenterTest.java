@@ -3,9 +3,9 @@ package com.aptatek.pkulab.view.main.weekly.chart;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 
@@ -47,6 +47,8 @@ public class WeeklyChartPresenterTest {
     private TestResultInteractor testResultInteractor;
     @Mock
     private WeeklyChartDataTransformer weeklyChartDataTransformer;
+    @Mock
+    private RandomGenerator randomGenerator;
 
     private WeeklyChartPresenter presenter;
     private BubbleDataSet bubbleDataSet;
@@ -122,8 +124,9 @@ public class WeeklyChartPresenterTest {
         when(testResultInteractor.listBetween(anyLong(), anyLong())).thenReturn(Single.just(testResultList));
         when(weeklyChartDataTransformer.transform(ArgumentMatchers.any(TestResult.class))).thenReturn(Single.just(chartEntryData));
         when(weeklyChartDataTransformer.transformEntries(ArgumentMatchers.anyList())).thenReturn(Single.just(bubbleDataSet));
+        when(randomGenerator.maybe()).thenReturn(true);
 
-        presenter = new WeeklyChartPresenter(testResultInteractor, weeklyChartDataTransformer);
+        presenter = new WeeklyChartPresenter(testResultInteractor, weeklyChartDataTransformer, randomGenerator);
         presenter.attachView(view);
     }
 

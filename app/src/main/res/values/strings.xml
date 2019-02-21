@@ -183,6 +183,7 @@
     <string name="test.wetting.notification.finished.title">Sample wetting complete</string>
     <string name="test.wetting.notification.inprogress.textformat">Remaining: %s</string>
     <string name="test.wetting.notification.inprogress.title">Sample wetting in progress</string>
+    <string name="test.result.message">Please consult your medical team before making adjustments to your routine</string>
     <string name="test.result.message.veryhigh">Contact your physician</string>
     <string name="test.result.message.high">WTB Message</string> <!-- TODO get proper label... -->
     <string name="test.result.message.normal">WTB message</string> <!-- TODO get proper label... -->

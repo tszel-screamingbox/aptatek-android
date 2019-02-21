@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
-import android.view.View;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
@@ -76,17 +74,10 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
     public void render(@NonNull final TestResultState state) {
         final TextView titleTextView = headerView.getTitleTextView();
         final TextView subTitleTextView = headerView.getSubtitleTextView();
-        if (state.isTitleVisible()) {
-            titleTextView.setText(state.getTitle());
-            titleTextView.setTextColor(state.getColor());
-            titleTextView.setVisibility(View.VISIBLE);
-        } else {
-            titleTextView.setVisibility(View.GONE);
-        }
 
-        final String message = state.getMessage();
-        subTitleTextView.setVisibility(TextUtils.isEmpty(message) ? View.INVISIBLE : View.VISIBLE);
-        subTitleTextView.setText(state.getMessage());
+        titleTextView.setText(state.getTitle());
+        titleTextView.setTextColor(state.getColor());
+        subTitleTextView.setText(R.string.test_result_message);
 
         bubbleTextView.setConfiguration(BubbleTextView.BubbleTextConfiguration.builder()
                 .setCircleColor(state.getColor())
@@ -94,7 +85,7 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
                 .setFillColor(ContextCompat.getColor(this, R.color.applicationWhite))
                 .setTextColor(state.getColor())
                 .setPrimaryText(state.getFormattedPkuValue())
-                .setSecondaryText(state.getTitle())
+                .setSecondaryText(state.getPkuUnit())
                 .build());
     }
 
