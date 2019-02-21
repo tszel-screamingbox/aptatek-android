@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -40,6 +41,8 @@ public class WebPageActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         webView.setWebViewClient(new WebViewClient());
+        final WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
         webView.loadUrl(url);
     }
 

@@ -16,10 +16,12 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
+import com.aptatek.pkulab.view.settings.web.WebPageActivityStarter;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
@@ -74,7 +76,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     }
 
     protected void playVideo(@NonNull final Uri uri, final boolean shouldLoop) {
-        videoView.setup(uri, ContextCompat.getColor(getActivity(), R.color.applicationWhite));
+        videoView.setup(uri, ContextCompat.getColor(requireContext(), R.color.applicationWhite));
         videoView.setFrameVideoViewListener(new FrameVideoViewListener() {
             @Override
             public void mediaPlayerPrepared(MediaPlayer mediaPlayer) {
@@ -160,13 +162,13 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
                 .build();
 
         AlertDialogFragment.create(alertDialogModel, decision ->
-                getActivity().finish()
+                requireActivity().finish()
         ).show(getChildFragmentManager(), TAG_NOT_SUPPORTED);
     }
 
     @OnClick(R.id.turnReaderOnNoDeviceAvailable)
     void onNoReaderAvailableClick() {
-        Toast.makeText(getActivity(), "TODO: handle click", Toast.LENGTH_SHORT).show();
+        getBaseActivity().launchActivity(WebPageActivityStarter.getIntent(requireContext(), resourceInteractor.getStringResource(R.string.settings_help), Constants.URL_HELP));
     }
 
     @TargetApi(Build.VERSION_CODES.M)
