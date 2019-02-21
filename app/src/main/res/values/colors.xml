@@ -57,4 +57,5 @@
     <color name="testPageIndicatorGray">#D3DEE5</color>
 
     <color name="switchTrack">#D3DEE5</color>
+    <color name="arrowGray">#D3DEE6</color>
 </resources>

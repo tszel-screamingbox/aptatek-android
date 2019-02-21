@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
@@ -85,6 +86,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @BindView(R.id.panelLayout)
     SlidingUpPanelLayout panelLayout;
 
+    @BindView(R.id.unitText)
+    TextView unitTextView;
+
     @Override
     public String getTitle() {
         return null;
@@ -111,7 +115,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
             }
         });
 
-        presenter.initRangeDialog();
+        presenter.initView();
     }
 
     @Override
@@ -179,6 +183,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         ((MainHostActivity) getBaseActivity()).enableSlidingPanel();
         bubbleScrollView.setVisibility(VISIBLE);
         buttonsGroup.setVisibility(VISIBLE);
+        unitTextView.setVisibility(VISIBLE);
         playIcon.setVisibility(GONE);
         bigSettingsButton.setVisibility(GONE);
         chartAdapter.setItems(data);
@@ -257,6 +262,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                     }
                 });
         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_RANGE_DIALOG);
+    }
+
+    @Override
+    public void updateUnitText(final String text) {
+        unitTextView.setText(text);
     }
 
     @Override

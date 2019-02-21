@@ -67,7 +67,7 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
 
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle("");
 
         setSupportActionBar(toolbar);

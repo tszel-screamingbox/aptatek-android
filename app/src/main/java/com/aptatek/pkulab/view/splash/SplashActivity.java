@@ -75,7 +75,7 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
     }
 
     @Override
-    public void showAlertDialog(@StringRes Integer title, @StringRes Integer message) {
+    public void showAlertDialog(@StringRes int title, @StringRes int message) {
         final AlertDialogModel model = AlertDialogModel.builder()
                 .setTitle(getString(title))
                 .setMessage(getString(message))

@@ -29,7 +29,7 @@ public class BubbleTextView extends View {
 
     private static final boolean DRAW_HELPERS = false;
     private static final float DEFAULT_PADDING = 0.8f;
-    private static final float TEXT_SIZE_DECREASE_RATIO = 0.1f;
+    private static final float TEXT_SIZE_DECREASE_RATIO = 0.2f;
     private static final float MIN_TEXT_SIZE_DECREASE = 10f;
     private static final double PRIMARY_TO_SECONDARY_RATIO = 0.7d;
 

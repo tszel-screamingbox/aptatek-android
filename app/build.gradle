@@ -42,8 +42,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 20
-        versionName "0.0.20"
+        versionCode 21
+        versionName "0.0.21"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -190,6 +190,9 @@ dependencies {
 
     // JSON
     implementation jsonDependencies.gson
+
+    // CSV
+    implementation csvDependencies.openCsv
 
     // Tests
     testImplementation testDependencies.junit
