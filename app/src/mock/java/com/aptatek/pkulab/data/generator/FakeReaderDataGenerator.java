@@ -72,9 +72,10 @@ public class FakeReaderDataGenerator {
         final long now = System.currentTimeMillis();
         final int monthsBeforeNow = dataFactory.getNumberBetween(4, 10);
         final long start = TimeHelper.addMonths(-1 * monthsBeforeNow, now);
+        final long end = TimeHelper.addDays(-1, now);
 
         testResults.clear();
-        testResults.addAll(generateDataBetween(start, now));
+        testResults.addAll(generateDataBetween(start, end));
     }
 
     @NonNull
@@ -85,7 +86,7 @@ public class FakeReaderDataGenerator {
         for (int day = 0; day <= daysBetween; day++) {
             final int numOfMeasurementsThatDay = dataFactory.getNumberUpTo(MAX_MEASUREMENTS_PER_DAY);
             for (int measurement = 0; measurement < numOfMeasurementsThatDay; measurement++) {
-                final TestResult result = correctTimestampWhenNecessary(results, generateDataForGivenDay(TimeHelper.addDays(day, begin), null));
+                final TestResult result = correctTimestampWhenNecessary(results, generateDataForGivenDay(TimeHelper.addDays(day, begin), null, false));
                 results.add(result);
             }
         }
@@ -104,12 +105,12 @@ public class FakeReaderDataGenerator {
                 : result;
     }
 
-    private TestResult generateDataForGivenDay(final long timestamp, final String id) {
+    private TestResult generateDataForGivenDay(final long timestamp, final String id, final boolean useExactTime) {
         return TestResult.builder()
                 .setReaderId(dataFactory.getRandomChars(10))
                 .setId(id == null ? dataFactory.getRandomChars(10) : id)
                 .setPkuLevel(PkuLevel.create(dataFactory.getNumberUpTo((int) Constants.DEFAULT_PKU_HIGHEST_VALUE), PkuLevelUnits.MICRO_MOL))
-                .setTimestamp(generateRandomTimeAtGivenDay(timestamp))
+                .setTimestamp(useExactTime ? timestamp : generateRandomTimeAtGivenDay(timestamp))
                 .setSick(dataFactory.chance(SICK_CHANCE))
                 .setFasting(dataFactory.chance(FASTING_CHANCE))
                 .build();
@@ -122,12 +123,6 @@ public class FakeReaderDataGenerator {
     }
 
     public TestResult getResult(final String id) {
-        final boolean hasResultWithId = Ix.from(testResults).map(TestResult::getId).count().single() == 1;
-        if (!hasResultWithId) {
-            final TestResult testResult = generateDataForGivenDay(System.currentTimeMillis(), id);
-            testResults.add(testResult);
-        }
-
-        return Ix.from(testResults).filter(result -> result.getId().equals(id)).single();
+        return generateDataForGivenDay(System.currentTimeMillis(), id, true);
     }
 }

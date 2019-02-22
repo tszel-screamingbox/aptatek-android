@@ -6,12 +6,13 @@ import com.aptatek.pkulab.data.generator.FakeReaderDataGenerator;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
-import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -20,17 +21,8 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
-import io.reactivex.processors.BehaviorProcessor;
-import io.reactivex.processors.FlowableProcessor;
 
 public class MockReaderManager implements ReaderManager {
-
-    private final FlowableProcessor<ConnectionEvent> connectionEventProcessor = BehaviorProcessor.createDefault(ConnectionEvent.create(null, ConnectionState.DISCONNECTED));
-    private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
-    private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
-    private final FlowableProcessor<TestProgress> testProgressProcessor = BehaviorProcessor.create();
-
-    private volatile ReaderDevice connectedDevice;
 
     private final FakeReaderDataGenerator dataGenerator;
 
@@ -40,35 +32,17 @@ public class MockReaderManager implements ReaderManager {
 
     @Override
     public Completable connect(@NonNull final ReaderDevice readerDevice) {
-        return Completable.complete()
-                .delay(1, TimeUnit.SECONDS)
-                .doOnComplete(() -> {
-                    connectedDevice = readerDevice;
-                    Flowable.fromArray(ConnectionState.CONNECTING, ConnectionState.CONNECTED, ConnectionState.READY)
-                            .delay(500, TimeUnit.MILLISECONDS)
-                            .map(state -> ConnectionEvent.create(readerDevice, state))
-                            .subscribe(connectionEventProcessor::onNext);
-                });
+        return Completable.error(new NotImplementedException("dont use it in mock"));
     }
 
     @Override
     public Completable changeMtu(final int mtuSize) {
-        return Completable.complete()
-                .delay(1, TimeUnit.SECONDS)
-                .doOnComplete(() -> mtuSizeProcessor.onNext(mtuSize));
+        return Completable.error(new NotImplementedException("dont use it in mock"));
     }
 
     @Override
     public Completable disconnect() {
-        return Completable.complete()
-                .delay(1, TimeUnit.SECONDS)
-                .doOnComplete(() -> {
-                    Flowable.fromArray(ConnectionState.DISCONNECTING, ConnectionState.DISCONNECTED)
-                            .delay(500, TimeUnit.MILLISECONDS)
-                            .map(state -> ConnectionEvent.create(connectedDevice, state))
-                            .subscribe(connectionEventProcessor::onNext);
-                    connectedDevice = null;
-                });
+        return Completable.error(new NotImplementedException("dont use it in mock"));
     }
 
     @Override
@@ -96,8 +70,7 @@ public class MockReaderManager implements ReaderManager {
 
     @Override
     public Single<List<TestResult>> syncResults() {
-        return Single.fromCallable(dataGenerator::getTestResults)
-                .delay(5, TimeUnit.SECONDS);
+        return Single.fromCallable(dataGenerator::getTestResults);
     }
 
     @Override
@@ -107,32 +80,26 @@ public class MockReaderManager implements ReaderManager {
 
     @Override
     public Maybe<ReaderDevice> getConnectedDevice() {
-        return Maybe.create(emitter -> {
-            if (connectedDevice == null) {
-                emitter.onComplete();
-            }
-
-            emitter.onSuccess(connectedDevice);
-        });
+        return Maybe.empty();
     }
 
     @Override
     public Flowable<ConnectionEvent> connectionEvents() {
-        return connectionEventProcessor;
+        return Flowable.empty();
     }
 
     @Override
     public Flowable<Integer> mtuSize() {
-        return mtuSizeProcessor;
+        return Flowable.empty();
     }
 
     @Override
     public Flowable<WorkflowState> workflowState() {
-        return workflowStateProcessor;
+        return Flowable.empty();
     }
 
     @Override
     public Flowable<TestProgress> testProgress() {
-        return testProgressProcessor;
+        return Flowable.empty();
     }
 }
