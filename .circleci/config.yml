@@ -65,10 +65,10 @@ references:
   android_config: &android_config
     working_directory: *workspace
     docker:
-      - image: circleci/android:api-27-node8-alpha
+      - image: circleci/android:api-28
     environment:
       TERM: dumb
-      _JAVA_OPTIONS: "-Xmx2048m -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+      _JAVA_OPTIONS: "-Xmx2048m"
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m"'
   gcloud_config: &gcloud_config
     working_directory: *workspace
@@ -129,7 +129,7 @@ references:
 
 jobs:
 
-  ## Build debug APK and instrumented test APK
+  ## Build PROD debug APK and instrumented test APK
 
   build_debug:
     <<: *android_config
@@ -147,14 +147,14 @@ jobs:
       - *export_gservices_key
       - *decode_gservices_key
       - run:
-          name: Gradle build (debug)
-          command: ./gradlew -PciBuild=true :app:assembleProdDebug :app:assembleMockDebug :app:assembleAndroidTest
+          name: Gradle build (PROD debug)
+          command: ./gradlew :app:clean :app:assembleProdDebug :app:assembleAndroidTest
       - *persist_debug_workspace
       - store_artifacts:
           path: app/build/outputs/apk/
           destination: /apk/
 
-  ## Build release APK
+  ## Build PROD release APK
 
   build_release:
     <<: *android_config
@@ -172,8 +172,36 @@ jobs:
       - *export_gservices_key
       - *decode_gservices_key
       - run:
-          name: Gradle build (release)
+          name: Gradle build (PROD release)
           command: ./gradlew -PciBuild=true :app:assembleProdRelease
+      - *persist_release_workspace
+      - store_artifacts:
+          path: app/build/outputs/apk/
+          destination: /apk/
+      - store_artifacts:
+          path: app/build/outputs/mapping/
+          destination: /mapping/
+
+  ## Build MOCK release APK
+
+  build_mock:
+    <<: *android_config
+    steps:
+      - checkout
+      - *restore_cache
+      - *grant_permission
+      - *accept_licenses
+      - run:
+          name: Download dependencies
+          command: ./gradlew androidDependencies
+      - *save_cache
+      - *export_android_key
+      - *decode_android_key
+      - *export_gservices_key
+      - *decode_gservices_key
+      - run:
+          name: Gradle build (MOCK release)
+          command: ./gradlew -PciBuild=true :app:assembleMockRelease
       - *persist_release_workspace
       - store_artifacts:
           path: app/build/outputs/apk/
@@ -317,6 +345,8 @@ workflows:
       - build_debug:
           <<: *deploy_filter_dependencies
       - build_release:
+          <<: *deploy_filter_dependencies
+      - build_mock:
           <<: *deploy_filter_dependencies
       - check_quality:
           <<: *deploy_filter_dependencies
