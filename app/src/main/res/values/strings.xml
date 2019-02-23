@@ -330,4 +330,10 @@
     <string name="pdf.export.dialog.last.three.months">Last 3 Months</string>
     <string name="pdf.export.dialog.last.half.year">Last 6 Months</string>
     <string name="pdf.export.dialog.last.year">Last Year</string>
+    
+    <string name="faq.report.issue.title">Report Issue</string>
+    <string name="faq.report.issue.data.corruption">Data Corruption</string>
+    <string name="faq.report.issue.connection.error">Connection Error</string>
+    <string name="faq.report.issue.other">Other</string>
+
 </resources>
