@@ -4,6 +4,7 @@ import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,15 +23,20 @@ import static org.hamcrest.Matchers.not;
 
 /**
  * @test.layer View / Main
- * @test.feature MainHostActivity, BubbleChart, Weekly Chart
+ * @test.feature ConnectOnboardingReaderActivity, MainHostActivity, BubbleChart, Weekly Chart
  * @test.type Instrumented unit tests
  */
 public class MainActivityScreenTest {
 
     @Rule
-    public ActivityTestRule<MainHostActivity> activityRule = new ActivityTestRule<>(MainHostActivity.class);
+    public ActivityTestRule<ConnectOnboardingReaderActivity> activityRule = new ActivityTestRule<>(ConnectOnboardingReaderActivity.class);
 
-    // TODO need to mock at least presentation layer as soon as we get official decision
+    private void navigateToMainScreen() throws InterruptedException {
+        onView(withId(R.id.turnReaderOnSkip)).check(matches(isDisplayed()));
+        onView(withId(R.id.turnReaderOnSkip)).perform(click());
+
+        Thread.sleep(2000L);
+    }
 
     /**
      * Testing the initial view elements.
@@ -39,6 +45,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testInitialView() throws Exception {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
@@ -61,7 +69,9 @@ public class MainActivityScreenTest {
      * @test.expected After clicking on the button, the activity is changed to the new.
      */
     @Test
-    public void testGoToRangeSettings() {
+    public void testGoToRangeSettings() throws InterruptedException {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button1)).perform(click());
         assert (activityRule.getActivity().isFinishing());
@@ -74,6 +84,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testGoToSettings() throws Exception {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
@@ -92,6 +104,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testGoToNewTest() throws Exception {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
@@ -110,6 +124,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testShowChart() throws Exception {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
@@ -127,6 +143,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testInitialWeeklyResult() throws Exception {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
@@ -149,6 +167,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testWeeklyPlayIconClicked() throws Exception {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
@@ -173,6 +193,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testSwipe() throws Exception {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
@@ -200,6 +222,8 @@ public class MainActivityScreenTest {
      */
     @Test
     public void testPagination() throws Exception {
+        navigateToMainScreen();
+
         onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
         onView(withId(android.R.id.button2)).perform(click());
 
