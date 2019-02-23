@@ -8,8 +8,6 @@ import com.aptatek.pkulab.data.model.ReminderDayDataModel;
 
 import java.util.List;
 
-import io.reactivex.Single;
-
 @Dao
 public interface ReminderDayDao {
 
@@ -17,7 +15,7 @@ public interface ReminderDayDao {
     void insertAll(List<ReminderDayDataModel> days);
 
     @Query("SELECT * FROM reminderDays")
-    Single<List<ReminderDayDataModel>> getReminderDays();
+    List<ReminderDayDataModel> getReminderDays();
 
     @Query("SELECT COUNT(*) FROM reminderDays")
     int getReminderDaysCount();

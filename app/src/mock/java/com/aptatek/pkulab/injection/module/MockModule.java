@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class DataFactoryModule {
+public class MockModule {
 
     @Provides
     public DataFactory provideDataFactory() {

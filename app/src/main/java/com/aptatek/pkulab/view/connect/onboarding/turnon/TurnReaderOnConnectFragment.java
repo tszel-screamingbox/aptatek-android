@@ -3,7 +3,9 @@ package com.aptatek.pkulab.view.connect.onboarding.turnon;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 
+import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectReaderScreen;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectReaderView;
@@ -12,7 +14,13 @@ import com.aptatek.pkulab.view.main.MainHostActivity;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.OnClick;
+
 public class TurnReaderOnConnectFragment extends TurnReaderOnFragment<TurnReaderOnConnectView, TurnReaderOnConnectPresenter> implements TurnReaderOnConnectView {
+
+    @BindView(R.id.turnReaderOnSkip)
+    View btnSkip;
 
     @Inject
     TurnReaderOnConnectPresenter presenter;
@@ -57,5 +65,15 @@ public class TurnReaderOnConnectFragment extends TurnReaderOnFragment<TurnReader
     @Override
     public void navigateToHome() {
         getBaseActivity().launchActivity(new Intent(requireActivity(), MainHostActivity.class));
+    }
+
+    @Override
+    public void displaySkipButton() {
+        btnSkip.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.turnReaderOnSkip)
+    void onSkipClicked() {
+        presenter.syncData();
     }
 }

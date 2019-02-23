@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
@@ -125,6 +126,13 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             if (!willHandle) {
                 showNextScreen();
             }
+        }
+    }
+
+    @OnClick(R.id.testBattery)
+    void onBatteryClicked() {
+        if (BuildConfig.FLAVOR.equals("mock")) {
+            showNextScreen();
         }
     }
 

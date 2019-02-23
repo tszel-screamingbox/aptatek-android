@@ -17,7 +17,7 @@ import dagger.Module;
 import dagger.Provides;
 import timber.log.Timber;
 
-@Module
+@Module(includes = DatabaseMapperModule.class)
 public class DatabaseModule {
 
     @Provides

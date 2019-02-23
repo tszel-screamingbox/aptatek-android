@@ -77,13 +77,13 @@ android {
     productFlavors {
 
         mock {
-            applicationIdSuffix "mock"
+            applicationIdSuffix ".mock"
             versionNameSuffix "-mock"
             dimension "mock"
         }
 
         prod {
-
+            dimension "mock"
         }
 
     }
@@ -143,7 +143,6 @@ dependencies {
     // Database
     implementation databaseDependencies.room
     annotationProcessor databaseDependencies.compiler
-    implementation databaseDependencies.rxjava
     implementation databaseDependencies.sqlcipher
 
     // Logger framework
@@ -185,14 +184,17 @@ dependencies {
     implementation timeDependencies.yodatime
 
     // Bluetooth
-    implementation bluetoothDependencies.nordicBle
-    implementation bluetoothDependencies.scanner
+    prodImplementation bluetoothDependencies.nordicBle
+    prodImplementation bluetoothDependencies.scanner
 
     // JSON
     implementation jsonDependencies.gson
 
     // CSV
     implementation csvDependencies.openCsv
+
+    // Mock data
+    mockImplementation appDependencies.dataFactory
 
     // Tests
     testImplementation testDependencies.junit
@@ -215,8 +217,6 @@ dependencies {
     }
     androidTestAnnotationProcessor daggerDependencies.compiler
     androidTestCompileOnly daggerDependencies.annotations
-    implementation appDependencies.dataFactory
-    // TODO temporarily added to PROD flavor, only for the fake cube data generation.
     androidTestUtil testDependencies.orchestrator
 
 }
@@ -346,12 +346,6 @@ task jacocoTestReport(type: JacocoReport, dependsOn: 'testProdDebugUnitTest') {
                 file.renameTo(file.path.replace('$$', '$'))
             }
         }
-    }
-}
-
-android.variantFilter { variant ->
-    if (variant.buildType.name == 'release' && variant.getFlavors().get(0).name == 'mock') {
-        variant.setIgnore(true)
     }
 }
 
