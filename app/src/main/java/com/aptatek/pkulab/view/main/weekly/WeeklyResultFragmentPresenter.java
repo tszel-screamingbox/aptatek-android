@@ -192,7 +192,9 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         }
 
         disposables.add(Single.merge(singles).toList()
-                .subscribeOn(Schedulers.computation()).subscribe((pdfEntryDataArrayList, throwable)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((pdfEntryDataArrayList, throwable)
                         -> ifViewAttached(view -> view.onPdfDataReady(pdfEntryDataArrayList))));
     }
 
