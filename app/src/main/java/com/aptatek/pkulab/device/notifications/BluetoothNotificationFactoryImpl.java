@@ -63,9 +63,8 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
 
     private Notification createSyncingDataNotification(final SyncingData message) {
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
-                .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_sync_title, message.getDevice().getMac()))
+                .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_sync_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_sync_message)))
-                .setProgress(0, message.getProgressPercent(), false)
                 .build();
     }
 

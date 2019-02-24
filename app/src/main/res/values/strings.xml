@@ -180,8 +180,8 @@
     <string name="test.countdown.format">mm:ss</string>
     <string name="notification.channel.name">General Notifications</string>
     <string name="test.countdown.notification.channel.name">Wetting Countdown notifications</string>
-    <string name="test.wetting.notification.finished.text">Tap to proceed</string>
-    <string name="test.wetting.notification.finished.title">Sample wetting complete</string>
+    <string name="test.wetting.notification.finished.text">Tap to continue test</string>
+    <string name="test.wetting.notification.finished.title">Sample Ready</string>
     <string name="test.wetting.notification.inprogress.textformat">Remaining: %s</string>
     <string name="test.wetting.notification.inprogress.title">Sample wetting in progress</string>
     <string name="test.result.message">Please consult your medical team before making adjustments to your routine</string>
@@ -313,13 +313,13 @@
     <string name="bluetooth.notification.connecting.message">Please wait while we are trying to connect to the reader…</string>
     <string name="bluetooth.notification.connected.title">Connected to %1$s</string>
     <string name="bluetooth.notification.connected.message">Battery level: %1$d %%</string>
-    <string name="bluetooth.notification.sync.title">Syncing data from %1$s</string>
-    <string name="bluetooth.notification.sync.message">Please wait until the process completes</string>
+    <string name="bluetooth.notification.sync.title">Syncing data from the Reader</string>
+    <string name="bluetooth.notification.sync.message">Please wait until the process is completed.</string>
     <string name="bluetooth.notification.test.running.title">Test is running on %1$s</string>
     <string name="bluetooth.notification.test.running.message">Please wait until the test completes</string>
     <string name="bluetooth.notification.test.complete.title">Test ready on %1$s</string>
     <string name="bluetooth.notification.test.complete.message">Tap to check results</string>
-    <string name="bluetooth.notification.error.title">Failed to communication with reader</string>
+    <string name="bluetooth.notification.error.title">Failed to communicate with reader</string>
     <string name="bluetooth.notification.error.disconnected.title">Device is disconnected</string>
     <string name="bluetooth.notification.error.disconnected.message">Tap to retry connection</string>
 

@@ -35,19 +35,13 @@ public interface BluetoothNotificationFactory {
     static class SyncingData implements NotificationData {
 
         private final ReaderDevice device;
-        private final int progressPercent;
 
-        public SyncingData(ReaderDevice device, int progressPercent) {
+        public SyncingData(ReaderDevice device) {
             this.device = device;
-            this.progressPercent = progressPercent;
         }
 
         public ReaderDevice getDevice() {
             return device;
-        }
-
-        public int getProgressPercent() {
-            return progressPercent;
         }
     }
 
