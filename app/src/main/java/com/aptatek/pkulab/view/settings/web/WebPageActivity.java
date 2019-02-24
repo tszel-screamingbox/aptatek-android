@@ -1,16 +1,23 @@
 package com.aptatek.pkulab.view.settings.web;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.ReportIssue;
+import com.aptatek.pkulab.domain.model.ReportIssueType;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsPresenter;
 
@@ -22,7 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter> implements WebPageView {
+public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter> implements WebPageView, ReportIssueDialog.ReportIssueDialogCallback {
 
     @Inject
     WebPagePresenter presenter;
@@ -41,7 +48,7 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
 
     @Override
     protected void injectActivity(ActivityComponent activityComponent) {
-        getActivityComponent().inject(this);
+        getActivityComponent().plus(new ChartModule()).inject(this);
     }
 
     @NonNull
@@ -75,12 +82,30 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
 
     @OnClick(R.id.btnReport)
     public void onReportButtonClicked() {
-        ReportIssueDialog.create().show(getSupportFragmentManager(), "");
+        ReportIssueDialog.create(this).show(getSupportFragmentManager(), "");
     }
 
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onIssueTypeSelected(final ReportIssueType reportIssueType) {
+        presenter.generateAttachment();
+    }
+
+    @Override
+    public void sendIssueEmail(final ReportIssue reportIssue) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("vnd.android.cursor.dir/email");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                reportIssue.getCsvFile()));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, reportIssue.getTitle());
+        emailIntent.putExtra(Intent.EXTRA_TEXT, reportIssue.getDescription());
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 }

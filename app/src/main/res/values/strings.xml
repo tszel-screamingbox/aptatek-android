@@ -336,4 +336,6 @@
     <string name="faq.report.issue.connection.error">Connection Error</string>
     <string name="faq.report.issue.other">Other</string>
 
+    <string name="faq.report.issue.email.description">Report Data\nPhone Type: %1$s\nModel: %2$s\nBuild Number: %3$s\nAndroid Version: %4$s\nAvailable Space: %5$s</string>
+
 </resources>

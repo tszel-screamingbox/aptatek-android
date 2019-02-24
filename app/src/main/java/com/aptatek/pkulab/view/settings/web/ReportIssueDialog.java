@@ -10,29 +10,44 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.ReportIssueType;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ReportIssueDialog extends DialogFragment {
 
-    public static ReportIssueDialog create(){
-        return new ReportIssueDialog();
+    public interface ReportIssueDialogCallback {
+        void onIssueTypeSelected(ReportIssueType reportIssueType);
     }
+
+    public static ReportIssueDialog create(@NonNull final ReportIssueDialogCallback reportIssueDialogCallback) {
+        final ReportIssueDialog reportIssueDialog = new ReportIssueDialog();
+        reportIssueDialog.reportIssueDialogCallback = reportIssueDialogCallback;
+        return reportIssueDialog;
+    }
+
+    private ReportIssueDialogCallback reportIssueDialogCallback;
 
     @OnClick(R.id.btnDataCorruption)
     public void onDataCorruptionClicked() {
-
+        if (reportIssueDialogCallback != null) {
+            reportIssueDialogCallback.onIssueTypeSelected(ReportIssueType.DATA_CORRUPTION);
+        }
     }
 
     @OnClick(R.id.btnConnectionError)
     public void onConnectionIssueClicked() {
-
+        if (reportIssueDialogCallback != null) {
+            reportIssueDialogCallback.onIssueTypeSelected(ReportIssueType.CONNECTION_ERROR);
+        }
     }
 
     @OnClick(R.id.btnOther)
     public void onOtherClicked() {
-
+        if (reportIssueDialogCallback != null) {
+            reportIssueDialogCallback.onIssueTypeSelected(ReportIssueType.OTHER);
+        }
     }
 
     @Override
