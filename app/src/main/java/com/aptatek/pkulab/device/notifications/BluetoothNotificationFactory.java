@@ -2,8 +2,7 @@ package com.aptatek.pkulab.device.notifications;
 
 import android.app.Notification;
 import android.support.annotation.NonNull;
-
-import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import android.support.v4.app.NotificationManagerCompat;
 
 public interface BluetoothNotificationFactory {
 
@@ -13,18 +12,12 @@ public interface BluetoothNotificationFactory {
 
     }
 
-    static class ConnectedToDevice implements NotificationData {
+    static class ConnectedToDeviceSilently implements NotificationData {
 
-        private final ReaderDevice device;
         private final int batteryPercent;
 
-        public ConnectedToDevice(ReaderDevice device, int batteryPercent) {
-            this.device = device;
+        public ConnectedToDeviceSilently(int batteryPercent) {
             this.batteryPercent = batteryPercent;
-        }
-
-        public ReaderDevice getDevice() {
-            return device;
         }
 
         public int getBatteryPercent() {
@@ -32,61 +25,29 @@ public interface BluetoothNotificationFactory {
         }
     }
 
-    static class SyncingData implements NotificationData {
+    static class ConnectedToDeviceTestWorkflow implements NotificationData {
 
-        private final ReaderDevice device;
-
-        public SyncingData(ReaderDevice device) {
-            this.device = device;
-        }
-
-        public ReaderDevice getDevice() {
-            return device;
-        }
     }
 
-    static class RunningTest implements NotificationData {
-
-        private final ReaderDevice device;
-
-        public RunningTest(ReaderDevice device) {
-            this.device = device;
-        }
-
-        public ReaderDevice getDevice() {
-            return device;
-        }
+    static class SyncingData implements NotificationData {
 
     }
 
     static class TestComplete implements NotificationData {
 
-        private final ReaderDevice device;
-
-        public TestComplete(ReaderDevice device) {
-            this.device = device;
-        }
-
-        public ReaderDevice getDevice() {
-            return device;
-        }
     }
 
-    static class CommunicationError implements NotificationData {
+    static class BluetoothError implements NotificationData {
 
         private final String reason;
 
-        public CommunicationError(String reason) {
+        public BluetoothError(String reason) {
             this.reason = reason;
         }
 
         public String getReason() {
             return reason;
         }
-
-    }
-
-    static class DeviceDisconnected implements NotificationData {
 
     }
 
