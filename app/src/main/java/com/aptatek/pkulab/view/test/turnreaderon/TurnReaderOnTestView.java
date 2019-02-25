@@ -5,6 +5,4 @@ import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 
 public interface TurnReaderOnTestView extends TestFragmentBaseView, TurnReaderOnView {
 
-    void tmpProceed();
-
 }

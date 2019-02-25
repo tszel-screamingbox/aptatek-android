@@ -17,7 +17,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
-import timber.log.Timber;
 
 public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTestView> implements TurnReaderOnPresenter<TurnReaderOnTestView> {
 
@@ -90,16 +89,6 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                     attachedView.setBatteryIndicatorVisible(true);
                     attachedView.setBatteryPercentage(batteryPercent);
                 }))
-        );
-    }
-
-    public void tmpSyncData() {
-        disposables.add(
-                readerInteractor.syncResults()
-                        .subscribe(
-                                ignored -> ifViewAttached(TurnReaderOnTestView::tmpProceed),
-                                error -> Timber.d("Error while running syncResults: %s", error)
-                        )
         );
     }
 
