@@ -19,7 +19,10 @@ import com.aptatek.pkulab.domain.model.ReportIssueType;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
+import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsPresenter;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -28,8 +31,12 @@ import activitystarter.Arg;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter> implements WebPageView, ReportIssueDialog.ReportIssueDialogCallback {
+
+    private static final int SEND_ATTACHMENT_REQUEST_CODE = 9921;
+    private static final String ISSUE_PICKER_DIALOG_TAG = "aptatek.issue.pickor.dialog.tag";
 
     @Inject
     WebPagePresenter presenter;
@@ -82,7 +89,7 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
 
     @OnClick(R.id.btnReport)
     public void onReportButtonClicked() {
-        ReportIssueDialog.create(this).show(getSupportFragmentManager(), "");
+        ReportIssueDialog.create(this).show(getSupportFragmentManager(), ISSUE_PICKER_DIALOG_TAG);
     }
 
     @Override
@@ -93,19 +100,34 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
 
     @Override
     public void onIssueTypeSelected(final ReportIssueType reportIssueType) {
-        presenter.generateAttachment();
+        presenter.generateAttachment(reportIssueType);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (getSupportFragmentManager().findFragmentByTag(ISSUE_PICKER_DIALOG_TAG) != null) {
+            ((ReportIssueDialog) getSupportFragmentManager().findFragmentByTag(ISSUE_PICKER_DIALOG_TAG)).dismiss();
+        }
     }
 
     @Override
     public void sendIssueEmail(final ReportIssue reportIssue) {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        final ArrayList<Uri> attachments = new ArrayList<>();
+
+        for (final Attachment attachment : reportIssue.getAttachments()) {
+            attachments.add(FileProvider.getUriForFile(
+                    this,
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    attachment.getCsvFile()));
+        }
+
+        final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         emailIntent.setType("vnd.android.cursor.dir/email");
-        emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
-                this,
-                BuildConfig.APPLICATION_ID + ".provider",
-                reportIssue.getCsvFile()));
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{reportIssue.getTargetEmail()});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, reportIssue.getTitle());
         emailIntent.putExtra(Intent.EXTRA_TEXT, reportIssue.getDescription());
-        startActivity(Intent.createChooser(emailIntent, "Send email..."));
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
+        startActivityForResult(Intent.createChooser(emailIntent, getString(R.string.faq_report_issue_dialog_title)), SEND_ATTACHMENT_REQUEST_CODE);
     }
 }
