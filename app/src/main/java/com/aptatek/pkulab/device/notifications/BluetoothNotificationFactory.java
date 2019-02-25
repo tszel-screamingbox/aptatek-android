@@ -2,14 +2,13 @@ package com.aptatek.pkulab.device.notifications;
 
 import android.app.Notification;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationManagerCompat;
 
 public interface BluetoothNotificationFactory {
 
-    interface NotificationData {}
+    interface NotificationData {
+    }
 
     class ConnectingToDevice implements NotificationData {
-
     }
 
     static class ConnectedToDeviceSilently implements NotificationData {
@@ -51,7 +50,26 @@ public interface BluetoothNotificationFactory {
 
     }
 
+    static final class DisplayNotification {
+
+        private final int id;
+        private final Notification notification;
+
+        public DisplayNotification(final int id, final Notification notification) {
+            this.id = id;
+            this.notification = notification;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public Notification getNotification() {
+            return notification;
+        }
+    }
+
     @NonNull
-    Notification createNotification(@NonNull NotificationData notificationData);
+    DisplayNotification createNotification(@NonNull NotificationData notificationData);
 
 }

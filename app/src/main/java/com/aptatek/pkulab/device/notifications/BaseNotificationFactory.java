@@ -33,7 +33,7 @@ abstract class BaseNotificationFactory {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final NotificationChannel notificationChannel = new NotificationChannel(
                     getChannelId(),
-                    resourceInteractor.getStringResource(R.string.notification_channel_name),
+                    resourceInteractor.getStringResource(R.string.notification_channel_general),
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.enableVibration(true);
             notificationChannel.setSound(

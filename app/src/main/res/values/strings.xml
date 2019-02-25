@@ -178,7 +178,9 @@
     <string name="test.cancel.navigation.yes">Yes</string>
     <string name="test.cancel.title">Cancel test</string>
     <string name="test.countdown.format">mm:ss</string>
-    <string name="notification.channel.name">General Notifications</string>
+    <string name="notification.channel.general">General Notifications</string>
+    <string name="notification.channel.reader.events">Reader Events</string>
+    <string name="notification.channel.reader.status">Reader Status</string>
     <string name="test.countdown.notification.channel.name">Wetting Countdown notifications</string>
     <string name="test.wetting.notification.finished.text">Tap to continue test</string>
     <string name="test.wetting.notification.finished.title">Sample Ready</string>

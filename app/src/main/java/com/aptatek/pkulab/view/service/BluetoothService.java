@@ -38,8 +38,6 @@ public class BluetoothService extends BaseForegroundService {
 
     private static final long INITIAL_SCAN_PERIOD = 5000L;
 
-    private static final int BT_NOTIFICATION_ID = 258;
-
     @Inject
     PreferenceManager preferenceManager;
 
@@ -72,7 +70,8 @@ public class BluetoothService extends BaseForegroundService {
 
     @Override
     protected void startForeground() {
-        startForeground(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectingToDevice()));
+        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectingToDevice());
+        startForeground(notification.getId(), notification.getNotification());
 
         checkConnection();
     }
@@ -111,13 +110,14 @@ public class BluetoothService extends BaseForegroundService {
                         .repeatWhen(objectFlowable -> objectFlowable.delay(1, TimeUnit.MINUTES))
                         .takeUntil(readerInteractor.getReaderConnectionEvents()
                                 .map(ConnectionEvent::getConnectionState)
-                                .filter(state -> state == ConnectionState.DISCONNECTING)
+                                .filter(state -> state == ConnectionState.DISCONNECTING || state == ConnectionState.DISCONNECTED)
                         )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(percent -> {
                                     Timber.d("Battery update: %d", percent);
-                                    notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDeviceSilently(percent)));
+                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDeviceSilently(percent));
+                                    notificationManager.notify(notification.getId(), notification.getNotification());
                                 }, error -> {
                                     Timber.d("Error while reading battery: %s", error);
                                     // stop service
@@ -146,12 +146,13 @@ public class BluetoothService extends BaseForegroundService {
                                 .flatMapSingle(testId -> readerInteractor.getResult(testId))
                                 .flatMapCompletable(testResult -> readerInteractor.saveResult(testResult))
                         )
-                        .repeatWhen(objectFlowable -> objectFlowable.flatMap(ignored -> readerInteractor.getWorkflowState().filter(workflowState -> workflowState == WorkflowState.TEST_RUNNING)))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                                     Timber.d("checkWorkflowState: Test result successfully saved");
-                                    notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete()));
+                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete());
+                                    notificationManager.notify(notification.getId(), notification.getNotification());
+                                    checkWorkflowSate();
                                 },
                                 error -> {
                                     Timber.d("Error during checkWorkflowSate: %s", error);
@@ -180,7 +181,7 @@ public class BluetoothService extends BaseForegroundService {
                                         .firstOrError()
                                         .map(devices -> Ix.from(devices).toList())
                                         .flatMap(devices -> bluetoothInteractor.stopScan()
-                                                    .andThen(Single.just(devices))
+                                                .andThen(Single.just(devices))
                                         )
                                 )
                         )
@@ -210,12 +211,14 @@ public class BluetoothService extends BaseForegroundService {
                                     if (error instanceof MissingPermissionsError) {
                                         final MissingPermissionsError missingPermissionsError = (MissingPermissionsError) error;
                                         // TODO what to do here?
-                                        notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage())));
+                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage()));
+                                        notificationManager.notify(notification.getId(), notification.getNotification());
                                         stopForeground(false);
                                         stopSelf();
                                     } else if (error instanceof MissingBleFeatureError) {
                                         // TODO fail gracefully?
-                                        notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage())));
+                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage()));
+                                        notificationManager.notify(notification.getId(), notification.getNotification());
                                         stopForeground(false);
                                         stopSelf();
                                     } else {
@@ -241,7 +244,8 @@ public class BluetoothService extends BaseForegroundService {
                                     if (silentFlow) {
                                         syncData();
                                     } else {
-                                        notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDeviceTestWorkflow()));
+                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDeviceTestWorkflow());
+                                        notificationManager.notify(notification.getId(), notification.getNotification());
                                     }
 
                                 },
@@ -257,19 +261,24 @@ public class BluetoothService extends BaseForegroundService {
     private void syncData() {
         disposables.add(
                 readerInteractor.getReaderConnectionEvents()
-                .map(ConnectionEvent::getConnectionState)
-                .filter(state -> state == ConnectionState.READY)
-                .take(1)
-                .flatMapSingle(ignored -> readerInteractor.syncResults())
-                .singleOrError()
-                .subscribe(ignored -> {
-                    Timber.d("syncData successfully saved %d results", ignored.size());
-                    showConnectedNotification();
-                }, error -> {
-                    Timber.d("syncData error: %s", error);
-                    stopForeground(true);
-                    stopSelf();
-                })
+                        .map(ConnectionEvent::getConnectionState)
+                        .filter(state -> state == ConnectionState.READY)
+                        .take(1)
+                        .doOnNext(ignored -> {
+                            Timber.d("syncData: showing notification");
+                            final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.SyncingData());
+                            notificationManager.notify(notification.getId(), notification.getNotification());
+                        })
+                        .flatMapSingle(ignored -> readerInteractor.syncResults())
+                        .singleOrError()
+                        .subscribe(ignored -> {
+                            Timber.d("syncData successfully saved %d results", ignored.size());
+                            showConnectedNotification();
+                        }, error -> {
+                            Timber.d("syncData error: %s", error);
+                            stopForeground(true);
+                            stopSelf();
+                        })
         );
     }
 
@@ -277,7 +286,8 @@ public class BluetoothService extends BaseForegroundService {
         disposables.add(bluetoothInteractor.getDiscoveryError()
                 .subscribe(error -> {
                     Timber.d("Received error during discovery: %s", error);
-                    notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage())));
+                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage()));
+                    notificationManager.notify(notification.getId(), notification.getNotification());
                     stopForeground(false);
                 })
         );
