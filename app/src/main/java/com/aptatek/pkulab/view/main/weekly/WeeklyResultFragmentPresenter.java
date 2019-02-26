@@ -215,7 +215,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? R.string.rangeinfo_pkulevel_mmol
                         : R.string.rangeinfo_pkulevel_mg))
-                .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(weekList.size() - monthsBefore - 1))
+                .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
                 .setUnit(unitText)
                 .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
@@ -262,18 +262,16 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         if (testResult.isSick()) {
                             sickCount++;
                         }
-
-                        pdfEntryDataBuilder
-                                .setFastingCount(fastingCount)
-                                .setLowCount(low)
-                                .setNormalCount(normal)
-                                .setHighCount(high)
-                                .setVeryHighCount(veryHigh)
-                                .setSickCount(sickCount);
                     }
 
                     pdfEntryDataBuilder
                             .setAverageCount((int) (fullCount / list.size()))
+                            .setFastingCount(fastingCount)
+                            .setLowCount(low)
+                            .setNormalCount(normal)
+                            .setHighCount(high)
+                            .setVeryHighCount(veryHigh)
+                            .setSickCount(sickCount)
                             .setDeviation(getDeviation(list));
 
                     return list;
@@ -313,6 +311,10 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
     private double mean(final List<TestResult> table) {
         int total = 0;
+
+        if (table.isEmpty()) {
+            return total;
+        }
 
         for (int i = 0; i < table.size(); i++) {
             final float currentNum = table.get(i).getPkuLevel().getValue();
