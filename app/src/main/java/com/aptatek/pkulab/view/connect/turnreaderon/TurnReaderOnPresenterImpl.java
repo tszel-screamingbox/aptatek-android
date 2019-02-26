@@ -14,12 +14,14 @@ import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.NoSuchElementException;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 import timber.log.Timber;
 
@@ -41,43 +43,6 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     public void onResumed() {
         checkPermissions();
 
-        disposables.add(
-                bluetoothInteractor.getDiscoveredDevices()
-                        .skip(INITIAL_SCAN_PERIOD, TimeUnit.MILLISECONDS)
-                        .map(devices -> Ix.from(devices).toList())
-                        .take(1)
-                        .flatMapSingle(devices -> {
-                            if (devices.size() == 1) {
-                                return readerInteractor.connect(devices.get(0))
-                                        .andThen(Single.just(devices));
-                            }
-
-                            return Single.just(devices);
-                        })
-                        .subscribe(devices -> ifViewAttached(attachedView -> {
-                                    switch (devices.size()) {
-                                        case 0: {
-                                            // do nothing here
-                                            break;
-                                        }
-                                        case 1: {
-                                            attachedView.displaySelfCheckAnimation();
-                                            break;
-                                        }
-                                        default: {
-                                            attachedView.displayReaderSelector(devices);
-                                            break;
-                                        }
-                                    }
-                                }),
-                                error -> Timber.d("Error during device discovery: %s", error)));
-
-        disposables.add(
-                readerInteractor.getWorkflowState()
-                        .filter(workflowState -> workflowState == WorkflowState.READY || workflowState == WorkflowState.DEFAULT)
-                        .subscribe(ignored -> ifViewAttached(TurnReaderOnView::onSelfCheckComplete))
-        );
-
         // TODO add error handling
     }
 
@@ -88,9 +53,20 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
 
     @Override
     public void connectTo(final @NonNull ReaderDevice readerDevice) {
-        disposables.add(readerInteractor.connect(readerDevice)
-                .subscribe()
+        disposables.add(
+                readerInteractor.connect(readerDevice)
+                        .andThen(bluetoothInteractor.stopScan())
+                        .subscribe(this::waitForWorkflowStateChange,
+                                error -> {
+                                    Timber.d("connectTo error: %s", error);
+
+                                    resetFlow();
+                                })
         );
+    }
+
+    private void resetFlow() {
+        disposables.add(readerInteractor.disconnect().subscribe(this::checkPermissions));
     }
 
     @Override
@@ -99,49 +75,20 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 disposables.add(
                         bluetoothInteractor.checkPermissions(((TurnReaderOnFragment) view).getActivity())
                                 .andThen(bluetoothInteractor.enableBluetoothWhenNecessary())
-                                .andThen(bluetoothInteractor.isScanning()
-                                        .take(1)
-                                        .flatMapCompletable(isScanning -> {
-                                            if (isScanning) {
-                                                return Completable.complete();
-                                            }
-
-                                            return bluetoothInteractor.startScan(Long.MAX_VALUE);
-                                        })
-                                        .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
-                                                .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
-                                                        .take(1)
-                                                        .firstOrError()
-                                                        .map(devices -> Ix.from(devices).toList())
-                                                        .flatMap(devices -> {
-                                                            if (devices.size() == 1) {
-                                                                return readerInteractor.connect(devices.get(0))
-                                                                        .andThen(Single.just(devices));
-                                                            }
-
-                                                            return Single.just(devices);
-                                                        })
-                                                )
-                                        ))
+                                .andThen(readerInteractor.getConnectedReader()
+                                        .toSingle())
+                                .flatMap(ignored ->
+                                        // we have a connected reader, lets check its workflow state...
+                                        readerInteractor.getWorkflowState()
+                                                .take(1)
+                                                .singleOrError()
+                                )
+                                .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(devices -> ifViewAttached(attachedView -> {
-                                            switch (devices.size()) {
-                                                case 0: {
-                                                    attachedView.displayNoReaderAvailable();
-                                                    break;
-                                                }
-                                                case 1: {
-                                                    attachedView.displaySelfCheckAnimation();
-                                                    break;
-                                                }
-                                                default: {
-                                                    attachedView.displayReaderSelector(devices);
-                                                    break;
-                                                }
-                                            }
-                                        }),
+                                .subscribe(
+                                        this::handleWorkflowState,
                                         error -> {
-                                            Timber.d("Error during connection: %s", error);
+                                            Timber.d("Error checkPermission: %s", error);
 
                                             if (error instanceof MissingPermissionsError) {
                                                 final MissingPermissionsError missingPermissionsError = (MissingPermissionsError) error;
@@ -150,10 +97,119 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                                 );
                                             } else if (error instanceof MissingBleFeatureError) {
                                                 ifViewAttached(TurnReaderOnView::showDeviceNotSupportedDialog);
+                                            } else if (error instanceof NoSuchElementException) {
+                                                // no connected reader
+                                                startConnectionFlow();
                                             }
                                         }
                                 )
                 )
+        );
+    }
+
+    private void waitForWorkflowStateChange() {
+        disposables.add(
+                Countdown.countdown(5000L, tick -> tick >= 1, tick -> tick)
+                        .take(1)
+                        .flatMap(ignored -> readerInteractor.getWorkflowState())
+                        .take(1)
+                        .subscribe(this::handleWorkflowState)
+        );
+    }
+
+    private void handleWorkflowState(final WorkflowState workflowState) {
+        switch (workflowState) {
+            case READY:
+            case TEST_RUNNING:
+            case TEST_COMPLETE:
+            case POST_TEST: {
+                ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
+                break;
+            }
+            case SELF_TEST: {
+                ifViewAttached(TurnReaderOnView::displaySelfCheckAnimation);
+                break;
+            }
+            default: {
+                // TODO need to handle those cases ....
+                Timber.d("unhandled workflow state: %s", workflowState);
+
+                waitForWorkflowStateChange();
+
+                break;
+            }
+        }
+    }
+
+    private void startConnectionFlow() {
+        disposables.add(
+                bluetoothInteractor.isScanning()
+                        .take(1)
+                        .flatMapCompletable(isScanning -> {
+                            if (isScanning) {
+                                return Completable.complete();
+                            }
+
+                            return bluetoothInteractor.startScan(Long.MAX_VALUE);
+                        })
+                        .andThen(processReaderDevicesFlowable())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                this::handleDiscoveredDevices,
+                                error -> {
+                                    Timber.d("Error in startConnectionFlow: %s", error);
+
+                                    resetFlow();
+                                })
+        );
+    }
+
+    private Flowable<List<ReaderDevice>> processReaderDevicesFlowable() {
+        return Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
+                .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
+                        .take(1)
+                        .firstOrError()
+                        .map(devices -> Ix.from(devices).toList())
+                        .flatMap(devices -> {
+                            if (devices.size() == 1) {
+                                return readerInteractor.connect(devices.get(0))
+                                        .andThen(bluetoothInteractor.stopScan())
+                                        .andThen(Single.just(devices));
+                            }
+
+                            return Single.just(devices);
+                        })
+                );
+    }
+
+    private void handleDiscoveredDevices(List<ReaderDevice> devices) {
+        switch (devices.size()) {
+            case 0: {
+                ifViewAttached(TurnReaderOnView::displayNoReaderAvailable);
+                waitForScanResults();
+                break;
+            }
+            case 1: {
+                ifViewAttached(TurnReaderOnView::displaySelfCheckAnimation);
+                waitForWorkflowStateChange();
+                break;
+            }
+            default: {
+                ifViewAttached(attachedView -> attachedView.displayReaderSelector(devices));
+                break;
+            }
+        }
+    }
+
+    private void waitForScanResults() {
+        disposables.add(
+                processReaderDevicesFlowable()
+                        .subscribe(
+                                this::handleDiscoveredDevices,
+                                error -> {
+                                    Timber.d("Error in waitForScanResults: %s", error);
+                                })
         );
     }
 
