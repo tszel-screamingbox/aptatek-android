@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,7 +10,9 @@
         android:id="@+id/switchActivate"
         style="@style/SwitchStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewDayName"
@@ -26,14 +29,15 @@
 
     <ImageView
         android:id="@+id/imageAddNewReminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/general.distance.small"
+        android:layout_width="@dimen/general.distance.64dp"
+        android:layout_height="0dp"
+        android:scaleType="center"
         android:src="@drawable/ic_add"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/textViewDayName"
+        app:layout_constraintBottom_toBottomOf="@id/switchActivate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textViewDayName" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewReminders"

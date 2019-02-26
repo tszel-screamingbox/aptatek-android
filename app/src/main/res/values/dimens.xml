@@ -31,6 +31,7 @@
     <dimen name="general.distance">30dp</dimen>
     <dimen name="general.distance.normal">40dp</dimen>
     <dimen name="general.distance.big">54dp</dimen>
+    <dimen name="general.distance.64dp">64dp</dimen>
     <dimen name="general.distance.xbig">70dp</dimen>
     <dimen name="general.distance.large">80dp</dimen>
     <dimen name="general.distance.xlarge">110dp</dimen>
@@ -109,7 +110,8 @@
     <dimen name="test.progressbar.height">12dp</dimen>
     <dimen name="test.bottombar.height">56dp</dimen>
     <dimen name="test.top.margin">162dp</dimen>
-    <dimen name="test.countdown.bottom.margin">156dp</dimen> <!-- bottombar.height + alert.height -->
+    <dimen name="test.countdown.bottom.margin">156dp
+    </dimen> <!-- bottombar.height + alert.height -->
 
     <dimen name="daily.result.sliding.background.corner">20dp</dimen>
 
