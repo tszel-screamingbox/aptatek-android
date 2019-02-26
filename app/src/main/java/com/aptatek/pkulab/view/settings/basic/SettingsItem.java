@@ -10,12 +10,15 @@ public enum SettingsItem {
     DAILY_REMINDERS(R.string.settings_daily_reminders, R.string.settings_daily_reminder_description),
     PHE_PREFERENCES(R.string.settings_units_title, R.string.settings_units_description),
     HELP(R.string.settings_help, 0),
-    PRIVACY_POLICY(R.string.settings_privacy, 0);
+    PRIVACY_POLICY(R.string.settings_privacy, 0),
+    TERMS_AND_CONDITIONS(R.string.settings_terms, 0);
 
-    private @StringRes int titleRes;
-    private @StringRes int descriptionRes;
+    private @StringRes
+    int titleRes;
+    private @StringRes
+    int descriptionRes;
 
-    SettingsItem(int titleRes, int descriptionRes) {
+    SettingsItem(final int titleRes, final int descriptionRes) {
         this.titleRes = titleRes;
         this.descriptionRes = descriptionRes;
     }
