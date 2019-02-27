@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
-import com.aptatek.pkulab.domain.model.Reminder;
 import com.aptatek.pkulab.domain.model.ReminderDay;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
@@ -20,7 +19,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 import ix.Ix;
-import ix.IxConsumer;
 
 public class CsvExport {
 

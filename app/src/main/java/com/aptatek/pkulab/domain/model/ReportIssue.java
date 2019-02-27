@@ -3,7 +3,6 @@ package com.aptatek.pkulab.domain.model;
 import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.google.auto.value.AutoValue;
 
-import java.io.File;
 import java.util.List;
 
 @AutoValue

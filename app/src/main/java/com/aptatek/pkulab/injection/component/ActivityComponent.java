@@ -20,7 +20,6 @@ import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.pkulab.view.pin.set.SetPinHostActivity;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
-import com.aptatek.pkulab.view.settings.web.WebPageActivity;
 import com.aptatek.pkulab.view.splash.SplashActivity;
 import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 
