@@ -228,6 +228,8 @@
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
     <string name="test.selftest.title">Self Checking</string>
     <string name="test.selftest.message">Reader is doing a self-check to make sure that it can function properly during testing</string>
+    <string name="test.alert.used.cassette.title">Used Cassette Error</string>
+    <string name="test.alert.used.cassette.message">Everything from prior blood test needs to be removed from the reader - it needs to be empty before beginning a new test</string>
 
     <!-- WeeklyResult Activity -->
     <string name="weekly.chart.label">Phe levels are in %s</string>

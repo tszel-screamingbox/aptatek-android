@@ -209,14 +209,11 @@ public class BluetoothService extends BaseForegroundService {
                                     Timber.d("Error during startScanAndAutoConnect: %s", error);
 
                                     if (error instanceof MissingPermissionsError) {
-                                        final MissingPermissionsError missingPermissionsError = (MissingPermissionsError) error;
-                                        // TODO what to do here?
                                         final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage()));
                                         notificationManager.notify(notification.getId(), notification.getNotification());
                                         stopForeground(false);
                                         stopSelf();
                                     } else if (error instanceof MissingBleFeatureError) {
-                                        // TODO fail gracefully?
                                         final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage()));
                                         notificationManager.notify(notification.getId(), notification.getNotification());
                                         stopForeground(false);

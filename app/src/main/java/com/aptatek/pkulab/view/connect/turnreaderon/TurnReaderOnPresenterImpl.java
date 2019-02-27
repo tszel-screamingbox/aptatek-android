@@ -21,6 +21,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 import timber.log.Timber;
@@ -32,11 +33,19 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     private final BluetoothInteractor bluetoothInteractor;
     private final ReaderInteractor readerInteractor;
     private final CompositeDisposable disposables = new CompositeDisposable();
+    private Function<WorkflowState, Boolean> workflowStateHandler;
 
     public TurnReaderOnPresenterImpl(final BluetoothInteractor bluetoothInteractor,
                                      final ReaderInteractor readerInteractor) {
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
+    }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+
+        disposables.dispose();
     }
 
     @Override
@@ -49,6 +58,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     @Override
     public void onPaused() {
         // what to do?
+        // TODO start explicit flow!
     }
 
     @Override
@@ -119,22 +129,25 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
 
     private void handleWorkflowState(final WorkflowState workflowState) {
         switch (workflowState) {
-            case READY:
-            case TEST_RUNNING:
-            case TEST_COMPLETE:
-            case POST_TEST: {
+            case READY: {
                 ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
                 break;
             }
-            case SELF_TEST: {
-                ifViewAttached(TurnReaderOnView::displaySelfCheckAnimation);
-                break;
-            }
+            case SELF_TEST:
             default: {
-                // TODO need to handle those cases ....
-                Timber.d("unhandled workflow state: %s", workflowState);
+                try {
+                    final boolean handled = workflowStateHandler.apply(workflowState);
+                    if (!handled) {
+                        Timber.d("unhandled workflow state: %s", workflowState);
+                        waitForWorkflowStateChange();
+                    }
 
-                waitForWorkflowStateChange();
+                } catch (final Exception e) {
+                    Timber.d("Unexpected error: %s", e);
+                    waitForWorkflowStateChange();
+                }
+
+                ifViewAttached(TurnReaderOnView::displaySelfCheckAnimation);
 
                 break;
             }
@@ -183,7 +196,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 );
     }
 
-    private void handleDiscoveredDevices(List<ReaderDevice> devices) {
+    private void handleDiscoveredDevices(final List<ReaderDevice> devices) {
         switch (devices.size()) {
             case 0: {
                 ifViewAttached(TurnReaderOnView::displayNoReaderAvailable);
@@ -191,7 +204,6 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 break;
             }
             case 1: {
-                ifViewAttached(TurnReaderOnView::displaySelfCheckAnimation);
                 waitForWorkflowStateChange();
                 break;
             }
@@ -226,6 +238,10 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         } else {
             ifViewAttached(TurnReaderOnView::displayMissingPermissions);
         }
+    }
+
+    public void setWorkflowStateHandler(final Function<WorkflowState, Boolean> workflowStateHandler) {
+        this.workflowStateHandler = workflowStateHandler;
     }
 
 }

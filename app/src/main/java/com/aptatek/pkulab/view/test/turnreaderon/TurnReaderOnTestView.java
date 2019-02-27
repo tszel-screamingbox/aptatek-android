@@ -5,4 +5,12 @@ import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 
 public interface TurnReaderOnTestView extends TestFragmentBaseView, TurnReaderOnView {
 
+    void showTestingScreen();
+
+    void showConnectItAllScreen();
+
+    void showTestResultScreen();
+
+    void showUsedCassetteError();
+
 }
