@@ -80,12 +80,12 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     void loadData() {
         disposables.add(
                 rangeInteractor.getInfo()
-                        .flatMap(rangeInfo -> {
-                            final long now = System.currentTimeMillis();
-                            final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, now);
-                            return testResultInteractor.listBetween(past, now)
-                                    .map(list -> new Pair<>(rangeInfo, list));
-                        })
+                        .flatMap(rangeInfo -> testResultInteractor.getLatest()
+                                .flatMap(latest -> {
+                                    final long latestTimestamp = latest.getTimestamp();
+                                    final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, latestTimestamp);
+                                    return testResultInteractor.listBetween(past, latestTimestamp);
+                                }).map(list -> new Pair<>(rangeInfo, list)))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
                             if (pair.second.isEmpty()) {
