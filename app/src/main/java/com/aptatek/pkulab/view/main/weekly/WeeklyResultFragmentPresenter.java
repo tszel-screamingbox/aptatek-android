@@ -184,14 +184,14 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         final List<Single<PdfEntryData>> singles = new ArrayList<>();
 
         for (int i = 0; i < getPdfExportIntervalInMonth(pdfExportInterval); i++) {
-            final long monthsBeforeTimeStamp = TimeHelper.addMonths(i, System.currentTimeMillis());
+            final long monthsBeforeTimeStamp = TimeHelper.addMonths(i * -1, System.currentTimeMillis());
             final long start = TimeHelper.getEarliestTimeAtGivenMonth(monthsBeforeTimeStamp);
             final long end = TimeHelper.getLatestTimeAtGivenMonth(monthsBeforeTimeStamp);
 
             singles.add(generatePdfEntryDataForMonth(pdfExportInterval, i, start, end));
         }
 
-        disposables.add(Single.merge(singles).toList()
+        disposables.add(Single.concat(singles).toList()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((pdfEntryDataArrayList, throwable)
@@ -210,11 +210,6 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 : R.string.pdf_export_unit_description_warn, pkuLevel);
 
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
-                .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
-                .setFileName(getPdfExportFileName(pdfExportInterval))
-                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
-                        ? R.string.rangeinfo_pkulevel_mmol
-                        : R.string.rangeinfo_pkulevel_mg))
                 .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
                 .setUnit(unitText)
@@ -265,7 +260,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                     }
 
                     pdfEntryDataBuilder
-                            .setAverageCount((int) (fullCount / list.size()))
+                            .setAverageCount(list.size() != 0 ? (int) (fullCount / list.size()) : 0)
                             .setFastingCount(fastingCount)
                             .setLowCount(low)
                             .setNormalCount(normal)
