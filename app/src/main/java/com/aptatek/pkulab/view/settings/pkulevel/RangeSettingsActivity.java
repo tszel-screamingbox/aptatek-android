@@ -253,7 +253,8 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
                     if (decision == AlertDialogDecisions.POSITIVE) {
                         requestPin();
                     } else {
-                        finish();
+                        rangeSet = false;
+                        presenter.refresh();
                     }
                 });
         alertDialogFragment.show(getSupportFragmentManager(), TAG_CONFIRM_DIALOG);
