@@ -8,8 +8,6 @@ import com.aptatek.pkulab.data.model.ReminderDataModel;
 
 import java.util.List;
 
-import io.reactivex.Single;
-
 @Dao
 public interface ReminderDao {
 
@@ -17,7 +15,7 @@ public interface ReminderDao {
     void insert(ReminderDataModel reminderDataModel);
 
     @Query("SELECT * FROM reminders WHERE weekDay = :weekDay")
-    Single<List<ReminderDataModel>> getReminders(int weekDay);
+    List<ReminderDataModel> getReminders(int weekDay);
 
     @Query("UPDATE reminders SET hour = :hour, minute = :minute, reminderScheduleType = :reminderScheduleDataType WHERE id = :id")
     void updateReminder(String id, int hour, int minute, int reminderScheduleDataType);

@@ -67,7 +67,7 @@
         <com.yarolegovich.discretescrollview.DiscreteScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/general.distance.xsmall"
             app:layout_constraintBottom_toTopOf="@id/chartGuide"
             app:layout_constraintEnd_toEndOf="parent"
@@ -78,15 +78,15 @@
             android:id="@+id/unitText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.xxxsmall"
             android:fontFamily="@font/nunito_regular"
             android:gravity="center_horizontal"
             android:textColor="@color/applicationSolidGray"
             android:textSize="@dimen/font.size.medium"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/newTestButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chartGuide"
+            app:layout_constraintTop_toBottomOf="@+id/scrollView"
             tools:text="Test" />
 
         <Button

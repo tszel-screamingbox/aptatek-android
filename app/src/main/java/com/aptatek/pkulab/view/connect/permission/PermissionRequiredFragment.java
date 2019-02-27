@@ -26,7 +26,7 @@ public abstract class PermissionRequiredFragment<V extends PermissionRequiredVie
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_connect_permission;
+        return R.layout.fragment_reader_permission;
     }
 
     @Override

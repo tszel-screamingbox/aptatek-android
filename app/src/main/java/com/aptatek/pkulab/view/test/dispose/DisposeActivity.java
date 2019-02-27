@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.test.dispose;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
+import com.aptatek.pkulab.view.main.MainHostActivity;
 
 import javax.inject.Inject;
 
@@ -45,7 +47,7 @@ public class DisposeActivity extends BaseActivity<DisposeView, DisposePresenter>
 
     @OnClick(R.id.dispose_done)
     public void onClickDone() {
-        finish();
+        final Intent intent = new Intent(this, MainHostActivity.class);
+        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
     }
-
 }

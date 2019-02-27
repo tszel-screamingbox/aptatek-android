@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.testresult;
 
+import android.support.annotation.NonNull;
+
 import com.aptatek.pkulab.data.model.TestResultDataModel;
 
 import java.util.List;
@@ -11,5 +13,7 @@ public interface TestResultDataSource {
     TestResultDataModel getOldestData();
 
     TestResultDataModel getLatestData();
+
+    void insertAll(@NonNull List<TestResultDataModel> dataModels);
 
 }
