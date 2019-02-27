@@ -180,6 +180,10 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
         final PdfDocument document = new PdfDocument();
 
         for (PdfEntryData pdfEntryData : data) {
+            if (pdfEntryData.getBubbleDataSet().getEntryCount() == 0) {
+                continue;
+            }
+
             final PdfExportView content = (PdfExportView) inflate(getContext(), R.layout.view_pdf_export, null);
             content.setData(pdfEntryData);
 

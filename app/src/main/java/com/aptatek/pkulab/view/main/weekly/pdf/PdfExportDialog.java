@@ -34,6 +34,7 @@ public class PdfExportDialog extends DialogFragment {
         if(callback != null){
             callback.onIntervalSelected(PdfExportInterval.LAST_MONTH);
         }
+        dismiss();
     }
 
     @OnClick(R.id.btnLastThreeMonth)
@@ -41,6 +42,7 @@ public class PdfExportDialog extends DialogFragment {
         if(callback != null){
             callback.onIntervalSelected(PdfExportInterval.LAST_THREE_MONTHS);
         }
+        dismiss();
     }
 
     @OnClick(R.id.btnLastHalfYear)
@@ -48,6 +50,7 @@ public class PdfExportDialog extends DialogFragment {
         if(callback != null){
             callback.onIntervalSelected(PdfExportInterval.LAST_HALF_YEAR);
         }
+        dismiss();
     }
 
     @OnClick(R.id.btnLastYear)
@@ -55,6 +58,7 @@ public class PdfExportDialog extends DialogFragment {
         if(callback != null){
             callback.onIntervalSelected(PdfExportInterval.LAST_YEAR);
         }
+        dismiss();
     }
 
     @Override

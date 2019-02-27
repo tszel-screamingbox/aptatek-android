@@ -184,14 +184,14 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         final List<Single<PdfEntryData>> singles = new ArrayList<>();
 
         for (int i = 0; i < getPdfExportIntervalInMonth(pdfExportInterval); i++) {
-            final long monthsBeforeTimeStamp = TimeHelper.addMonths(i, System.currentTimeMillis());
+            final long monthsBeforeTimeStamp = TimeHelper.addMonths(i * -1, System.currentTimeMillis());
             final long start = TimeHelper.getEarliestTimeAtGivenMonth(monthsBeforeTimeStamp);
             final long end = TimeHelper.getLatestTimeAtGivenMonth(monthsBeforeTimeStamp);
 
             singles.add(generatePdfEntryDataForMonth(pdfExportInterval, i, start, end));
         }
 
-        disposables.add(Single.merge(singles).toList()
+        disposables.add(Single.concat(singles).toList()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((pdfEntryDataArrayList, throwable)
@@ -211,11 +211,6 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
-                .setFileName(getPdfExportFileName(pdfExportInterval))
-                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
-                        ? R.string.rangeinfo_pkulevel_mmol
-                        : R.string.rangeinfo_pkulevel_mg))
-                .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(weekList.size() - monthsBefore - 1))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
                 .setUnit(unitText)
                 .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
@@ -262,18 +257,16 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         if (testResult.isSick()) {
                             sickCount++;
                         }
-
-                        pdfEntryDataBuilder
-                                .setFastingCount(fastingCount)
-                                .setLowCount(low)
-                                .setNormalCount(normal)
-                                .setHighCount(high)
-                                .setVeryHighCount(veryHigh)
-                                .setSickCount(sickCount);
                     }
 
                     pdfEntryDataBuilder
-                            .setAverageCount((int) (fullCount / list.size()))
+                            .setAverageCount(list.size() != 0 ? (int) (fullCount / list.size()) : 0)
+                            .setFastingCount(fastingCount)
+                            .setLowCount(low)
+                            .setNormalCount(normal)
+                            .setHighCount(high)
+                            .setVeryHighCount(veryHigh)
+                            .setSickCount(sickCount)
                             .setDeviation(getDeviation(list));
 
                     return list;
@@ -313,6 +306,10 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
     private double mean(final List<TestResult> table) {
         int total = 0;
+
+        if (table.isEmpty()) {
+            return total;
+        }
 
         for (int i = 0; i < table.size(); i++) {
             final float currentNum = table.get(i).getPkuLevel().getValue();
