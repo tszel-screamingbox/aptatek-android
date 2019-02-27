@@ -7,10 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
@@ -47,11 +50,17 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
     @BindView(R.id.webView)
     WebView webView;
 
+    @BindView(R.id.btnReport)
+    Button reportIssue;
+
     @Arg
     String title;
 
     @Arg
     String url;
+
+    @Arg
+    Boolean reportVisible;
 
     @Override
     protected void injectActivity(ActivityComponent activityComponent) {
@@ -85,6 +94,10 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
         final WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         webView.loadUrl(url);
+
+        if (reportVisible) {
+            reportIssue.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.btnReport)

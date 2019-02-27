@@ -55,8 +55,9 @@ public class CsvExport {
 
             writer.writeAll(data);
             writer.close();
-            final long startDate = results.get(0).getTimestamp();
-            final long endDate = results.get(results.size() - 1).getTimestamp();
+
+            final long startDate = results.isEmpty() ? 0L : results.get(0).getTimestamp();
+            final long endDate = results.isEmpty() ? 0L : results.get(results.size() - 1).getTimestamp();
             final String body = formatter.getFormattedCsvBody(startDate, endDate, deviceHelper.getAppVersion());
             return Attachment.create(file, body);
         });

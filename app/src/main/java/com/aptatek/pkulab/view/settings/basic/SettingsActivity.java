@@ -91,13 +91,13 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
                         launchActivity(RangeSettingsActivity.starter(SettingsActivity.this));
                         break;
                     case HELP:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), Constants.URL_HELP));
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), Constants.URL_HELP, true));
                         break;
                     case PRIVACY_POLICY:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), Constants.URL_PRIVACY));
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), Constants.URL_PRIVACY, false));
                         break;
                     case TERMS_AND_CONDITIONS:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_terms), Constants.URL_TERMS));
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_terms), Constants.URL_TERMS, false));
                         break;
                     default:
                         Timber.d("Unhandled settings item clicked: %s", item);

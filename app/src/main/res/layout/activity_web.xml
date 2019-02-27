@@ -40,6 +40,7 @@
         android:layout_marginRight="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/general.distance.20dp"
         android:text="@string/faq.report.issue.title"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
