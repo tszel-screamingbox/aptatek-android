@@ -23,12 +23,14 @@
     <dimen name="general.distance.mini">8dp</dimen>
     <dimen name="general.distance.xxxsmall">10dp</dimen>
     <dimen name="general.distance.xxsmall">12dp</dimen>
+    <dimen name="general.distance.14dp">14dp</dimen>
     <dimen name="general.distance.xsmall">16dp</dimen>
     <dimen name="general.distance.20dp">20dp</dimen>
     <dimen name="general.distance.small">24dp</dimen>
     <dimen name="general.distance.28dp">28dp</dimen>
     <dimen name="general.distance.32dp">32dp</dimen>
     <dimen name="general.distance">30dp</dimen>
+    <dimen name="general.distance.36dp">36dp</dimen>
     <dimen name="general.distance.normal">40dp</dimen>
     <dimen name="general.distance.big">54dp</dimen>
     <dimen name="general.distance.xbig">70dp</dimen>
