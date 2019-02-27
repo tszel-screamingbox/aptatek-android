@@ -147,6 +147,7 @@
     <string name="settings.daily.reminder.schedule.type.biweekly">bw</string>
     <string name="settings.help">Help</string>
     <string name="settings.privacy">Privacy Policy</string>
+    <string name="settings.terms">Terms &amp; Conditions</string>
     <string name="settings.reminder.schedule.type.weekly">Weekly</string>
     <string name="settings.reminder.schedule.type.monthly">Monthly</string>
     <string name="settings.reminder.schedule.type.biweekly">Biweekly</string>

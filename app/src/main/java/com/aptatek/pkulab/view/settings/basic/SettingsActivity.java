@@ -96,6 +96,9 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
                     case PRIVACY_POLICY:
                         launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), Constants.URL_PRIVACY));
                         break;
+                    case TERMS_AND_CONDITIONS:
+                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_terms), Constants.URL_TERMS));
+                        break;
                     default:
                         Timber.d("Unhandled settings item clicked: %s", item);
                         break;
@@ -124,7 +127,7 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     }
 
     @Override
-    public void updateFingerprintSetting(boolean isEnabled, boolean isChecked) {
+    public void updateFingerprintSetting(final boolean isEnabled, final boolean isChecked) {
         settingsItemAdapter.updateFingerprintItem(isEnabled, isChecked);
     }
 

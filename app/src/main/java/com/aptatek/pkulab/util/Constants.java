@@ -41,5 +41,6 @@ public final class Constants {
 
     public static final String URL_HELP = "https://pkulab.webflow.io/help";
     public static final String URL_PRIVACY = "https://pkulab.webflow.io/privacy";
+    public static final String URL_TERMS = "https://pkulab.webflow.io/tc";
 
 }
