@@ -59,7 +59,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                                                 .setColor(getColorForLevel(pkuLevel, rangeInfo))
                                                 .setFormattedPkuValue(getFormattedPkuValue(pkuLevel, rangeInfo))
                                                 .setPkuLevelText(getPkuLevelText(pkuLevel, rangeInfo))
-                                                .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(pkuLevel.getUnit()))
+                                                .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(rangeInfo.getPkuLevelUnit()))
                                                 .build())
                 )
                         .observeOn(AndroidSchedulers.mainThread())
