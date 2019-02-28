@@ -2,7 +2,6 @@ package com.aptatek.pkulab.view.settings.reminder.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -60,9 +59,6 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
         @BindView(R.id.recyclerViewReminders)
         RecyclerView recyclerViewReminders;
 
-        @BindView(R.id.itemLayout)
-        ConstraintLayout itemConstraintLayout;
-
         ReminderSettingsViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -92,7 +88,7 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
                 }
             });
 
-            itemConstraintLayout.setOnClickListener(v -> switchActivate.setChecked(!switchActivate.isChecked()));
+            itemView.setOnClickListener(v -> switchActivate.setChecked(!switchActivate.isChecked()));
 
             recyclerViewReminders.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
                 @Override
