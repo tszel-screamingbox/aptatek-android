@@ -13,4 +13,8 @@ public interface WeeklyChartResourceFormatter {
     String getFormattedCsvColumn(long timeInMillis);
 
     String getFormattedCsvBody(long startDate, long endDate, String version);
+
+    String getFormattedRemindersCsvFileName();
+
+    String getFormattedPkuRangeInfoCsvFileName();
 }

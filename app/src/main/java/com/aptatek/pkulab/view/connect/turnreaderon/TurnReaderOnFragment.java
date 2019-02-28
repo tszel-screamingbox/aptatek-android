@@ -158,7 +158,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @OnClick(R.id.turnReaderOnNoDeviceAvailable)
     void onNoReaderAvailableClick() {
-        getBaseActivity().launchActivity(WebPageActivityStarter.getIntent(requireContext(), resourceInteractor.getStringResource(R.string.settings_help), Constants.URL_HELP));
+        getBaseActivity().launchActivity(WebPageActivityStarter.getIntent(requireContext(), resourceInteractor.getStringResource(R.string.settings_help), Constants.URL_HELP, true));
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -201,6 +201,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     /**
      * Turn Reader On is meant to be skippable only in one case: when the phone detects an unfinished test after wetting.
+     *
      * @return
      */
     protected boolean isSkipable() {

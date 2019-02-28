@@ -298,6 +298,8 @@
     <string name="csv.export.body">Phe test results from %1$s - %2$s exported from PKU Lab app v%3$s</string>
     <string name="csv.export.body.format">dd.MM.yyyy</string>
     <string name="csv.export.file.name">PKU Results - %1$s.csv</string>
+    <string name="csv.export.reminders.file.name">Reminders - %1$s.csv</string>
+    <string name="csv.export.pku.range.info.file.name">PKU Range Info - %1$s.csv</string>
     <string name="csv.export.file.name.format">yyyy.MM.dd HH:mm:ss</string>
     <string name="csv.export.subject">Export from PKU Lab</string>
 
@@ -331,4 +333,14 @@
     <string name="pdf.export.dialog.last.three.months">Last 3 Months</string>
     <string name="pdf.export.dialog.last.half.year">Last 6 Months</string>
     <string name="pdf.export.dialog.last.year">Last Year</string>
+    
+    <string name="faq.report.issue.title">Report Issue</string>
+    <string name="faq.report.issue.data.corruption">Data Corruption</string>
+    <string name="faq.report.issue.connection.error">Connection Error</string>
+    <string name="faq.report.issue.other">Other</string>
+
+    <string name="faq.report.issue.email.description">Report Data\nPhone Type: %1$s\nModel: %2$s\nBuild Number: %3$s\nAndroid Version: %4$s\nAvailable Space: %5$s\n\nWe will only collect the basic information necessary to solve the specific concern you are reporting.\n\nCan you please describe what happened?</string>
+    <string name="faq.report.issue.dialog.title">Send issue</string>
+    <string name="faq.report.issue.email.title">Error Report - %1$s</string>
+    <string name="faq.report.issue.email.target">help@pkulabkit.com</string>
 </resources>

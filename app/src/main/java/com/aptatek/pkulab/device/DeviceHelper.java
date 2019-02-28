@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
 
@@ -65,6 +66,22 @@ public class DeviceHelper {
     public boolean isRooted() {
         final RootBeer rootBeer = new RootBeer(context);
         return rootBeer.isRootedWithoutBusyBoxCheck();
+    }
+
+    public String getDeviceModel() {
+        return Build.MODEL;
+    }
+
+    public String getDeviceBrand() {
+        return Build.BRAND;
+    }
+
+    public String getDeviceOsVersion() {
+        return Build.VERSION.RELEASE;
+    }
+
+    public String getAvailableBytes() {
+        return String.valueOf(new StatFs(Environment.getDataDirectory().getPath()).getAvailableBytes());
     }
 
     public boolean isBatteryLow() {
