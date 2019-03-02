@@ -8,8 +8,6 @@ import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
-import com.aptatek.pkulab.domain.interactor.reader.MissingBleFeatureError;
-import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
@@ -97,8 +95,7 @@ public class BluetoothService extends BaseForegroundService {
                                         startScanAndAutoConnect();
                                     } else {
                                         // stop gracefully
-                                        stopForeground(true);
-                                        stopSelf();
+                                        failSilently();
                                     }
                                 })
         );
@@ -121,14 +118,12 @@ public class BluetoothService extends BaseForegroundService {
                                 }, error -> {
                                     Timber.d("Error while reading battery: %s", error);
                                     // stop service
-                                    stopForeground(true);
-                                    stopSelf();
+                                    failSilently();
                                 },
                                 () -> {
                                     Timber.d("Battery updates finished");
                                     // stop service
-                                    stopForeground(true);
-                                    stopSelf();
+                                    failSilently();
                                 })
         );
     }
@@ -156,8 +151,7 @@ public class BluetoothService extends BaseForegroundService {
                                 },
                                 error -> {
                                     Timber.d("Error during checkWorkflowSate: %s", error);
-                                    stopForeground(true);
-                                    stopSelf();
+                                    failSilently();
                                 })
         );
     }
@@ -199,33 +193,22 @@ public class BluetoothService extends BaseForegroundService {
                                         default: {
                                             Timber.d("startScanAndAutoConnect didn't find any reader device, stopping service...");
                                             // terminate service
-                                            stopForeground(true);
-                                            stopSelf();
+                                            failSilently();
                                             break;
                                         }
                                     }
                                 },
                                 error -> {
                                     Timber.d("Error during startScanAndAutoConnect: %s", error);
-
-                                    if (error instanceof MissingPermissionsError) {
-                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage()));
-                                        notificationManager.notify(notification.getId(), notification.getNotification());
-                                        stopForeground(false);
-                                        stopSelf();
-                                    } else if (error instanceof MissingBleFeatureError) {
-                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage()));
-                                        notificationManager.notify(notification.getId(), notification.getNotification());
-                                        stopForeground(false);
-                                        stopSelf();
-                                    } else {
-                                        stopForeground(true);
-                                        stopSelf();
-                                    }
+                                    failSilently();
                                 })
         );
     }
 
+    private void failSilently() {
+        stopForeground(true);
+        stopSelf();
+    }
 
     private void connectTo(@NonNull final ReaderDevice readerDevice) {
         disposables.add(
@@ -235,22 +218,12 @@ public class BluetoothService extends BaseForegroundService {
                         .subscribe(() -> {
                                     Timber.d("connectTo: connected to %s", readerDevice.getMac());
                                     checkWorkflowSate();
-
-                                    // TODO notification for silent and explicit connection
-                                    final boolean silentFlow = true;
-                                    if (silentFlow) {
-                                        syncData();
-                                    } else {
-                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDeviceTestWorkflow());
-                                        notificationManager.notify(notification.getId(), notification.getNotification());
-                                    }
-
+                                    syncData();
                                 },
                                 error -> {
                                     Timber.d("error during connection to %s", readerDevice.getMac());
 
-                                    stopForeground(true);
-                                    stopSelf();
+                                    failSilently();
                                 })
         );
     }
@@ -273,8 +246,7 @@ public class BluetoothService extends BaseForegroundService {
                             showConnectedNotification();
                         }, error -> {
                             Timber.d("syncData error: %s", error);
-                            stopForeground(true);
-                            stopSelf();
+                            failSilently();
                         })
         );
     }

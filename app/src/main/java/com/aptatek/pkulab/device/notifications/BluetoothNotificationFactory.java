@@ -11,7 +11,7 @@ public interface BluetoothNotificationFactory {
     class ConnectingToDevice implements NotificationData {
     }
 
-    static class ConnectedToDeviceSilently implements NotificationData {
+    class ConnectedToDeviceSilently implements NotificationData {
 
         private final int batteryPercent;
 
@@ -24,19 +24,19 @@ public interface BluetoothNotificationFactory {
         }
     }
 
-    static class ConnectedToDeviceTestWorkflow implements NotificationData {
+    class ConnectedToDeviceTestWorkflow implements NotificationData {
 
     }
 
-    static class SyncingData implements NotificationData {
+    class SyncingData implements NotificationData {
 
     }
 
-    static class TestComplete implements NotificationData {
+    class TestComplete implements NotificationData {
 
     }
 
-    static class BluetoothError implements NotificationData {
+    class BluetoothError implements NotificationData {
 
         private final String reason;
 
@@ -50,7 +50,15 @@ public interface BluetoothNotificationFactory {
 
     }
 
-    static final class DisplayNotification {
+    class MissingPermissionError implements NotificationData {
+
+    }
+
+    class MultipleReadersDiscovered implements NotificationData {
+
+    }
+
+    final class DisplayNotification {
 
         private final int id;
         private final Notification notification;

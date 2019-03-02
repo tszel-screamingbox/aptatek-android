@@ -21,8 +21,11 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
     private static final String READER_EVENTS_CHANNEL = "pkulab.reader.events"; // "noisy" channel for reader events
 
     private static final int BT_READER_STATUS_NOTIFICATION_ID = 7827;
+    private static final int BT_READER_READY_TEST_FLOW_NOTIFICATION_ID = 837;
     private static final int BT_READER_READY_NOTIFICATION_ID = 733;
     private static final int BT_READER_TEST_COMPLETE_NOTIFICATION_ID = 367;
+    private static final int BT_PERMISSION_NOTIFICATION_ID = 737;
+    private static final int BT_MULTIPLE_READERS_NOTIFICATION_ID = 685;
     private static final int BT_ERROR_NOTIFICATION_ID = 377;
 
     public BluetoothNotificationFactoryImpl(@ApplicationContext final Context context,
@@ -61,10 +64,10 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
             id = BT_READER_STATUS_NOTIFICATION_ID;
         } else if (notificationData instanceof ConnectedToDeviceSilently) {
             notification = createConnectedNotification(((ConnectedToDeviceSilently) notificationData));
-            id = BT_READER_STATUS_NOTIFICATION_ID;
+            id = BT_READER_READY_NOTIFICATION_ID;
         } else if (notificationData instanceof ConnectedToDeviceTestWorkflow) {
             notification = createConnectedTestWorkflowNotification();
-            id = BT_READER_READY_NOTIFICATION_ID;
+            id = BT_READER_READY_TEST_FLOW_NOTIFICATION_ID;
         } else if (notificationData instanceof SyncingData) {
             notification = createSyncingDataNotification();
             id = BT_READER_STATUS_NOTIFICATION_ID;
@@ -74,11 +77,33 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         } else if (notificationData instanceof BluetoothError) {
             notification = createErrorNotification(((BluetoothError) notificationData));
             id = BT_ERROR_NOTIFICATION_ID;
+        } else if (notificationData instanceof MissingPermissionError) {
+            notification = createMissingPermissionNotification(((MissingPermissionError) notificationData));
+            id = BT_PERMISSION_NOTIFICATION_ID;
+        } else if (notificationData instanceof MultipleReadersDiscovered) {
+            notification = createMultipleReadersNotification(((MultipleReadersDiscovered) notificationData));
+            id = BT_MULTIPLE_READERS_NOTIFICATION_ID;
         } else {
             throw new IllegalArgumentException("unhandled notificationData received: " + notificationData);
         }
 
         return new DisplayNotification(id, notification);
+    }
+
+    private Notification createMultipleReadersNotification(final MultipleReadersDiscovered notificationData) {
+        return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
+                .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_multiplereaders_title))
+                .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_multiplereaders_message)))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarter(context), PendingIntent.FLAG_CANCEL_CURRENT))
+                .build();
+    }
+
+    private Notification createMissingPermissionNotification(final MissingPermissionError notificationData) {
+        return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
+                .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_permission_title))
+                .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_permission_message)))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarter(context), PendingIntent.FLAG_CANCEL_CURRENT))
+                .build();
     }
 
     private Notification createConnectedTestWorkflowNotification() {

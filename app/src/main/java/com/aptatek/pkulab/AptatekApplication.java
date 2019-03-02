@@ -11,11 +11,14 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.aptatek.pkulab.device.AlarmManager;
+import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.DaggerApplicationComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.service.ExplicitBluetoothService;
 import com.aptatek.pkulab.view.service.WettingForegroundService;
+import com.aptatek.pkulab.view.test.TestScreens;
 import com.crashlytics.android.Crashlytics;
 
 import net.danlew.android.joda.JodaTimeAndroid;
@@ -38,6 +41,8 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
     Crashlytics crashlytics;
     @Inject
     Timber.Tree timber;
+    @Inject
+    PreferenceManager preferenceManager;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -72,6 +77,9 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
             LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Constants.PIN_IDLE_ACTION));
         }
 
+        stopService(ExplicitBluetoothService.createForDeviceReady(this));
+        stopService(ExplicitBluetoothService.createForTestComplete(this));
+
         lastForegroundTime = 0L;
     }
 
@@ -81,6 +89,14 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         lastForegroundTime = System.currentTimeMillis();
         Timber.d("Process.Lifecycle: background");
         startService(new Intent(this, WettingForegroundService.class));
+
+        final TestScreens testStatus = preferenceManager.getTestStatus();
+        if (testStatus == TestScreens.TESTING) {
+            startService(ExplicitBluetoothService.createForTestComplete(this));
+        } else if (testStatus == TestScreens.TURN_READER_ON) {
+            startService(ExplicitBluetoothService.createForDeviceReady(this));
+        }
+
     }
 
     public ApplicationComponent getApplicationComponent() {

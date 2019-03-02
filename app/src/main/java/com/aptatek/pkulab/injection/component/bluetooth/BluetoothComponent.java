@@ -5,6 +5,7 @@ import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
 import com.aptatek.pkulab.injection.scope.ServiceScope;
 import com.aptatek.pkulab.view.service.BluetoothService;
+import com.aptatek.pkulab.view.service.ExplicitBluetoothService;
 
 import dagger.Component;
 
@@ -13,5 +14,7 @@ import dagger.Component;
 public interface BluetoothComponent {
 
     void inject(BluetoothService service);
+
+    void inject(ExplicitBluetoothService service);
 
 }

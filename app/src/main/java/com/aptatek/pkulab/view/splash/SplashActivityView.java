@@ -12,5 +12,7 @@ public interface SplashActivityView extends MvpView {
 
     void onSetPinActivityShouldLoad();
 
+    void onConnectReaderShouldLoad();
+
     void showAlertDialog(@StringRes int title, @StringRes int message);
 }
