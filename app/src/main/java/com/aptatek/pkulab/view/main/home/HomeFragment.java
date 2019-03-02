@@ -24,6 +24,7 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.main.MainHostActivity;
+import com.aptatek.pkulab.view.main.continuetest.ContinueTestActivity;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
@@ -50,6 +51,8 @@ import static com.aptatek.pkulab.view.base.BaseActivity.Animation.RIGHT_TO_LEFT;
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
 
     private static final String TAG_RANGE_DIALOG = "aptatek.main.home.range.dialog";
+    private static final String TAG_UNFINISHED_DIALOG = "aptatek.main.home.test.unfinished.dialog";
+    private static final String TAG_CONTINUE_TEST_DIALOG = "aptatek.main.home.test.continue.dialog";
     private static final int THRESHOLD = 500;
     private static final int TRANSITION_TIME = 200;
 
@@ -128,14 +131,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     public HomeFragmentPresenter createPresenter() {
         return presenter;
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        presenter.checkRunningTest();
     }
 
     @Override
@@ -275,6 +270,28 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     @Override
+    public void unfinishedTestDetected() {
+        final AlertDialogModel model = AlertDialogModel.builder()
+                .setTitle(getString(R.string.home_test_unfinished_title))
+                .setMessage(getString(R.string.home_test_unfinished_message))
+                .setPositiveButtonText(getString(R.string.alertdialog_button_yes))
+                .setNegativeButtonText(getString(R.string.alertdialog_button_no))
+                .setCancelable(false)
+                .build();
+
+        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
+                model,
+                decision -> {
+                    if (decision == AlertDialogDecisions.POSITIVE) {
+                        getBaseActivity().launchActivity(ContinueTestActivity.starter(getActivity()), true, BaseActivity.Animation.RIGHT_TO_LEFT);
+                    } else {
+                        showContinueTestDialog();
+                    }
+                });
+        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_UNFINISHED_DIALOG);
+    }
+
+    @Override
     public void showNoResultsInLast6Months() {
         // TODO temporary solution until an official decision is made
         Toast.makeText(getActivity(), "No results in last 6 months. Take a test first ... ", Toast.LENGTH_SHORT).show();
@@ -283,5 +300,24 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         bigSettingsButton.setVisibility(VISIBLE);
         buttonsGroup.setVisibility(GONE);
         bubbleScrollView.setVisibility(GONE);
+    }
+
+    private void showContinueTestDialog() {
+        final AlertDialogModel model = AlertDialogModel.builder()
+                .setTitle(getString(R.string.home_test_continue_dialog_title))
+                .setMessage(getString(R.string.home_test_continue_dialog_message))
+                .setPositiveButtonText(getString(R.string.home_test_continue_dialog_next))
+                .setCancelable(false)
+                .build();
+
+        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
+                model,
+                decision -> {
+                    if (decision == AlertDialogDecisions.POSITIVE) {
+                        getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
+                    }
+                });
+        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_CONTINUE_TEST_DIALOG);
+
     }
 }

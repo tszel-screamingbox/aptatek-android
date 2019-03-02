@@ -15,7 +15,7 @@ public class TestResultInteractor {
     private final TestResultRepository dataRepository;
 
     @Inject
-    TestResultInteractor(TestResultRepository dataRepository) {
+    TestResultInteractor(final TestResultRepository dataRepository) {
         this.dataRepository = dataRepository;
     }
 
@@ -36,5 +36,9 @@ public class TestResultInteractor {
 
     public Single<TestResult> getOldest() {
         return dataRepository.getOldest();
+    }
+
+    public Single<Integer> getNumberOfMeasures() {
+        return dataRepository.getNumberOfMeasures();
     }
 }

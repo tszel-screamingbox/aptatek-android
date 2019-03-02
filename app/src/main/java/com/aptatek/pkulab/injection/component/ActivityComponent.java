@@ -15,6 +15,7 @@ import com.aptatek.pkulab.injection.scope.ActivityScope;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.fingerprint.FingerprintActivity;
 import com.aptatek.pkulab.view.main.MainHostActivity;
+import com.aptatek.pkulab.view.main.continuetest.ContinueTestActivity;
 import com.aptatek.pkulab.view.parentalgate.ParentalGateActivity;
 import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.pkulab.view.pin.set.SetPinHostActivity;
@@ -49,6 +50,8 @@ public interface ActivityComponent {
     void inject(DisposeActivity disposeActivity);
 
     void inject(ConnectOnboardingReaderActivity connectReaderActivity);
+
+    void inject(ContinueTestActivity connectReaderActivity);
 
     @ActivityContext
     Context context();

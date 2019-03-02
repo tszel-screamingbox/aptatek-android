@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.test.canceltest;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
@@ -16,16 +17,19 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
 
     private final WettingInteractor wettingInteractor;
     private final TestInteractor testInteractor;
+    private final PreferenceManager preferenceManager;
 
     private Disposable disposable;
 
     @Inject
     CancelTestPresenter(final ResourceInteractor resourceInteractor,
                         final WettingInteractor wettingInteractor,
-                        final TestInteractor testInteractor) {
+                        final TestInteractor testInteractor,
+                        final PreferenceManager preferenceManager) {
         super(resourceInteractor);
         this.wettingInteractor = wettingInteractor;
         this.testInteractor = testInteractor;
+        this.preferenceManager = preferenceManager;
     }
 
     @Override
@@ -40,8 +44,9 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
     public void stopTest() {
         disposable = wettingInteractor.resetWetting()
                 .andThen(testInteractor.setLastScreen(TestScreens.TURN_READER_ON))
-            .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
-        .subscribe();
+                .doAfterTerminate(() -> preferenceManager.setTestFlowStatus(false))
+                .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
+                .subscribe();
     }
 
     @Override

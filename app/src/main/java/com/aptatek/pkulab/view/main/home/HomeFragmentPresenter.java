@@ -12,7 +12,6 @@ import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
-import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
@@ -70,6 +69,10 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         if (!preferenceManager.isRangeDialogShown()) {
             preferenceManager.setRangeDialogShown(true);
             ifViewAttached(HomeFragmentView::showRangeDialog);
+        }
+
+        if (preferenceManager.hasUnfinishedTest()) {
+            ifViewAttached(HomeFragmentView::unfinishedTestDetected);
         }
 
         final String unit = pkuValueFormatter.formatFromUnits(preferenceManager.getPkuRangeUnit());
@@ -159,19 +162,10 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         super.detachView();
     }
 
-    void checkRunningTest() {
-        disposables.add(
-                wettingInteractor.getWettingStatus()
-                        .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
-                        .subscribe(ignored ->
-                                ifViewAttached(HomeFragmentView::navigateToTestScreen)
-                        )
-        );
-    }
-
     void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
                 .andThen(testInteractor.setLastScreen(TestScreens.TURN_READER_ON))
+                .doAfterTerminate(() -> preferenceManager.setTestFlowStatus(true))
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
     }

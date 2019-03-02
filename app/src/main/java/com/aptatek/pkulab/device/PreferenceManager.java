@@ -29,6 +29,7 @@ public class PreferenceManager {
     public static final String PREF_PKU_RANGE_DIALOG = "aptatek.range.dialog";
     public static final String PREF_PAIRED = "aptatek.device.paired";
     public static final String PREF_TEST_STATUS = "aptatek.test.status";
+    public static final String PREF_TEST_UNFINISHED = "aptatek.test.unfinished";
     public static final String PREF_DB_ENCRYPTED_WITH_PIN = "aptatek.database.encrypted";
 
     private final SharedPreferences sharedPreferences;
@@ -36,6 +37,14 @@ public class PreferenceManager {
     @Inject
     public PreferenceManager(@ApplicationContext final Context applicationContext) {
         sharedPreferences = applicationContext.getSharedPreferences(PreferenceManager.Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
+
+    public void setTestFlowStatus(final boolean status) {
+        sharedPreferences.edit().putBoolean(PREF_TEST_UNFINISHED, status).apply();
+    }
+
+    public boolean hasUnfinishedTest() {
+        return sharedPreferences.getBoolean(PREF_TEST_UNFINISHED, false);
     }
 
     public void setIncubationStart(final long timestamp) {

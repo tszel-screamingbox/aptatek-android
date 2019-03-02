@@ -46,8 +46,8 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
 
             return Collections.<TestResultDataModel>emptyList();
         })
-        .map(mapper::mapListToDomain)
-        .subscribeOn(Schedulers.io());
+                .map(mapper::mapListToDomain)
+                .subscribeOn(Schedulers.io());
     }
 
     @NonNull
@@ -56,7 +56,7 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
                 .map(mapper::mapListToDomain)
                 .subscribeOn(Schedulers.io());
     }
-    
+
     @NonNull
     public Single<TestResult> getLatest() {
         return Single.fromCallable(testResultDataSource::getLatestData)
@@ -76,6 +76,11 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
         return Single.just(testResults)
                 .map(mapper::mapListToData)
                 .flatMapCompletable(dataModels -> Completable.fromAction(() -> testResultDataSource.insertAll(dataModels)))
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Single<Integer> getNumberOfMeasures() {
+        return Single.fromCallable(testResultDataSource::getNumberOfRecords)
                 .subscribeOn(Schedulers.io());
     }
 }

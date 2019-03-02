@@ -53,6 +53,11 @@
     <string name="home.range.dialog.message">Review Phe target ranges with your clinician to make sure they are right for you.\n\nIn case you just reinstalled the app, these settings reset.</string>
     <string name="home.range.dialog.set">Set Phe Levels</string>
     <string name="home.range.dialog.title">Review Phe Levels</string>
+    <string name="home.test.unfinished.title">Last Test Not Finished!</string>
+    <string name="home.test.unfinished.message">Your phone went off during your last test and it could not be finished.\nHave you connected the chamber to the cassette since then?</string>
+    <string name="home.test.continue.dialog.title">Continue testing!</string>
+    <string name="home.test.continue.dialog.message">Great news, you can finish your test now.</string>
+    <string name="home.test.continue.dialog.next">Next</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>
@@ -221,6 +226,7 @@
     <string name="test.wetting.countdown.format">mm:ss</string>
     <string name="test.turnreaderon.title">Turn Reader On</string>
     <string name="test.turnreaderon.message">Press the button on the top of the reader to turn it on</string>
+    <string name="test.continue.turnreaderon.message">Press the button on the top of the reader to turn it on and wait until the yellow light turns blue</string>
     <string name="test.connectitall.title">Connect It All</string>
     <string name="test.connectitall.message">Push the chamber into the hole in the cassette and insert it into the reader immediately</string>
     <string name="test.testing.title">Testing&#8230;</string>
@@ -333,7 +339,7 @@
     <string name="pdf.export.dialog.last.three.months">Last 3 Months</string>
     <string name="pdf.export.dialog.last.half.year">Last 6 Months</string>
     <string name="pdf.export.dialog.last.year">Last Year</string>
-    
+
     <string name="faq.report.issue.title">Report Issue</string>
     <string name="faq.report.issue.data.corruption">Data Corruption</string>
     <string name="faq.report.issue.connection.error">Connection Error</string>
