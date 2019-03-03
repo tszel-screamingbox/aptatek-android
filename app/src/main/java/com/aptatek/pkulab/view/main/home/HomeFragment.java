@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.main.home;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,10 +16,12 @@ import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
+import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
@@ -32,10 +35,12 @@ import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
+import com.aptatek.pkulab.view.test.result.TestResultActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,6 +58,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     private static final String TAG_RANGE_DIALOG = "aptatek.main.home.range.dialog";
     private static final String TAG_UNFINISHED_DIALOG = "aptatek.main.home.test.unfinished.dialog";
     private static final String TAG_CONTINUE_TEST_DIALOG = "aptatek.main.home.test.continue.dialog";
+    private static final String TAG_TEST_CANNOT_BE_FINISHED_DIALOG = "aptatek.main.home.test.continue.cannot.be.finished.dialog";
     private static final int THRESHOLD = 500;
     private static final int TRANSITION_TIME = 200;
 
@@ -283,7 +289,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                 model,
                 decision -> {
                     if (decision == AlertDialogDecisions.POSITIVE) {
-                        getBaseActivity().launchActivity(ContinueTestActivity.starter(getActivity()), true, BaseActivity.Animation.RIGHT_TO_LEFT);
+                        getBaseActivity().launchActivityForResult(ContinueTestActivity.starter(getActivity()), BaseActivity.Animation.RIGHT_TO_LEFT, ContinueTestActivity.CONTINUE_TEST_ACTIVITY_REQUEST_CODE);
                     } else {
                         showContinueTestDialog();
                     }
@@ -318,6 +324,33 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                     }
                 });
         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_CONTINUE_TEST_DIALOG);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ContinueTestActivity.CONTINUE_TEST_ACTIVITY_REQUEST_CODE
+                && resultCode == Activity.RESULT_OK && data != null && data.hasExtra(Constants.CONTINUE_TEST_RESULT_TYPE_KEY)) {
+
+            final ContinueTestResultType resultType = (ContinueTestResultType) data.getSerializableExtra(Constants.CONTINUE_TEST_RESULT_TYPE_KEY);
+
+            if (resultType == ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT) {
+                getBaseActivity().launchActivity(TestResultActivity.starter(requireContext()), false, BaseActivity.Animation.FADE);
+            } else if (resultType == ContinueTestResultType.FINISHED_WITH_WRONG_RESULT) {
+                final AlertDialogModel model = AlertDialogModel.builder()
+                        .setTitle(getString(R.string.home_test_continue_dialog_cannot_be_finished_title))
+                        .setMessage(getString(R.string.home_test_continue_dialog_cannot_be_finished_message))
+                        .setPositiveButtonText(getString(R.string.home_test_continue_dialog_next))
+                        .setCancelable(false)
+                        .build();
+
+                final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
+                        model,
+                        decision -> {
+                        });
+                dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

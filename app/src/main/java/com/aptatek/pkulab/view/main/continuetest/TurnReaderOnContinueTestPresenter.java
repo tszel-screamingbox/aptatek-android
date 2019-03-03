@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
+import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
@@ -84,6 +85,12 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
                 Integer::equals)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
-                .subscribe((isCountEquals, throwable) -> Timber.d("")));
+                .subscribe((isCountEquals, throwable) -> ifViewAttached(view -> {
+                    if (isCountEquals) {
+                        view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT);
+                    } else {
+                        view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT);
+                    }
+                })));
     }
 }

@@ -58,6 +58,8 @@
     <string name="home.test.continue.dialog.title">Continue testing!</string>
     <string name="home.test.continue.dialog.message">Great news, you can finish your test now.</string>
     <string name="home.test.continue.dialog.next">Next</string>
+    <string name="home.test.continue.dialog.cannot.be.finished.title">Test Cannot be Finished</string>
+    <string name="home.test.continue.dialog.cannot.be.finished.message">Unfortunately this test cannot be completed. Please discard items and you may start fresh with a new blood sample.</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>

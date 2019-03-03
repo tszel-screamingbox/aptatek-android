@@ -15,6 +15,8 @@ import javax.inject.Inject;
 public class ContinueTestActivity extends BaseActivity<ContinueTestView, ContinueTestPresenter>
         implements ContinueTestView {
 
+    public static final int CONTINUE_TEST_ACTIVITY_REQUEST_CODE = 9921;
+
     public static Intent starter(final Context context) {
         return new Intent(context, ContinueTestActivity.class);
     }

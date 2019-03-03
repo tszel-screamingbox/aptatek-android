@@ -1,11 +1,14 @@
 package com.aptatek.pkulab.view.main.continuetest;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.permission.PermissionRequiredOnTestActivity;
 
@@ -54,5 +57,13 @@ public class TurnReaderOnContinueTestFragment extends TurnReaderOnFragment<TurnR
     @Override
     public void onSelfCheckComplete() {
         presenter.checkLastMeasure();
+    }
+
+    @Override
+    public void finishTestContinue(final ContinueTestResultType continueTestResultType) {
+        final Intent intent = new Intent();
+        intent.putExtra(Constants.CONTINUE_TEST_RESULT_TYPE_KEY, continueTestResultType);
+        requireActivity().setResult(Activity.RESULT_OK, intent);
+        requireActivity().finish();
     }
 }
