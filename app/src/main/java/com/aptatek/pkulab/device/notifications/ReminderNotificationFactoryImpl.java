@@ -15,6 +15,10 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificationFactory;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.splash.SplashActivity;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 public class ReminderNotificationFactoryImpl extends BaseNotificationFactory implements ReminderNotificationFactory {
 
@@ -39,10 +43,15 @@ public class ReminderNotificationFactoryImpl extends BaseNotificationFactory imp
         quarterHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.QUARTER_HOUR);
         halfHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.HALF_HOUR);
 
+        final Intent notificationIntent = new Intent(context, SplashActivity.class);
+        notificationIntent.setFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
+        final PendingIntent splashIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
         return new NotificationCompat.Builder(context, createChannel())
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(resourceInteractor.getStringResource(R.string.reminder_notification_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.reminder_notification_message))
+                .setContentIntent(splashIntent)
                 .setColor(resourceInteractor.getColorResource(R.color.applicationPink))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setWhen(0)
