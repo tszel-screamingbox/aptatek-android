@@ -20,9 +20,11 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
     private static final String READER_STATUS_CHANNEL = "pkulab.reader.status"; // silent channel for foreground notifications
     private static final String READER_EVENTS_CHANNEL = "pkulab.reader.events"; // "noisy" channel for reader events
 
+    // status notification id for foreground service
     private static final int BT_READER_STATUS_NOTIFICATION_ID = 7827;
-    private static final int BT_READER_READY_TEST_FLOW_NOTIFICATION_ID = 837;
-    private static final int BT_READER_READY_NOTIFICATION_ID = 733;
+
+    // unique event notifications
+    private static final int BT_READER_READY_NOTIFICATION_ID = 837;
     private static final int BT_READER_TEST_COMPLETE_NOTIFICATION_ID = 367;
     private static final int BT_PERMISSION_NOTIFICATION_ID = 737;
     private static final int BT_MULTIPLE_READERS_NOTIFICATION_ID = 685;
@@ -64,10 +66,10 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
             id = BT_READER_STATUS_NOTIFICATION_ID;
         } else if (notificationData instanceof ConnectedToDeviceSilently) {
             notification = createConnectedNotification(((ConnectedToDeviceSilently) notificationData));
-            id = BT_READER_READY_NOTIFICATION_ID;
+            id = BT_READER_STATUS_NOTIFICATION_ID;
         } else if (notificationData instanceof ConnectedToDeviceTestWorkflow) {
             notification = createConnectedTestWorkflowNotification();
-            id = BT_READER_READY_TEST_FLOW_NOTIFICATION_ID;
+            id = BT_READER_READY_NOTIFICATION_ID;
         } else if (notificationData instanceof SyncingData) {
             notification = createSyncingDataNotification();
             id = BT_READER_STATUS_NOTIFICATION_ID;

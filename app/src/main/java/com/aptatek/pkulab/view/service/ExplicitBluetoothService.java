@@ -21,7 +21,6 @@ import com.aptatek.pkulab.injection.module.ServiceModule;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -88,7 +87,8 @@ public class ExplicitBluetoothService extends BaseForegroundService {
         return readerInteractor.getConnectedReader()
                 .toSingle()
                 .map(reader -> reader == null)
-                .onErrorReturnItem(true);
+                .onErrorReturnItem(true)
+                .map(shouldStart -> shouldStart && !BluetoothService.isServiceRunning());
     }
 
     @Override
@@ -102,16 +102,9 @@ public class ExplicitBluetoothService extends BaseForegroundService {
     private void startConnect(final int tryCount) {
         disposables.add(
                 bluetoothInteractor.enableBluetoothWhenNecessary()
-                        .andThen(bluetoothInteractor.isScanning()
-                                .take(1)
-                                .flatMapCompletable(isScanning -> {
-                                    if (isScanning) {
-                                        return Completable.complete();
-                                    }
-
-                                    return bluetoothInteractor.startScan(Long.MAX_VALUE);
-                                })
-                        ).andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
+                        .andThen(bluetoothInteractor.stopScan())
+                        .andThen(bluetoothInteractor.startScan())
+                        .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
                         .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
                                 .take(1)
                                 .firstOrError()
@@ -194,6 +187,8 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                                 ignored -> {
                                     final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDeviceTestWorkflow());
                                     notificationManager.notify(notification.getId(), notification.getNotification());
+
+                                    shutdown();
                                 },
                                 this::processError
                         )

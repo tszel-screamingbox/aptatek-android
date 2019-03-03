@@ -90,11 +90,15 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         Timber.d("Process.Lifecycle: background");
         startService(new Intent(this, WettingForegroundService.class));
 
-        final TestScreens testStatus = preferenceManager.getTestStatus();
-        if (testStatus == TestScreens.TESTING) {
-            startService(ExplicitBluetoothService.createForTestComplete(this));
-        } else if (testStatus == TestScreens.TURN_READER_ON) {
-            startService(ExplicitBluetoothService.createForDeviceReady(this));
+        try {
+            final TestScreens testStatus = preferenceManager.getTestStatus();
+            if (testStatus == TestScreens.TESTING) {
+                startService(ExplicitBluetoothService.createForTestComplete(this));
+            } else if (testStatus == TestScreens.TURN_READER_ON) {
+                startService(ExplicitBluetoothService.createForDeviceReady(this));
+            }
+        } catch (Exception e) {
+            // ignore
         }
 
     }

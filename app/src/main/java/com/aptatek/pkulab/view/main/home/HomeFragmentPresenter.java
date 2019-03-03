@@ -19,7 +19,6 @@ import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.rangeinfo.PkuValueFormatter;
-import com.aptatek.pkulab.view.test.TestScreens;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;
@@ -171,7 +170,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
 
     void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
-                .andThen(testInteractor.setLastScreen(TestScreens.TURN_READER_ON))
+                .andThen(testInteractor.resetTest())
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
     }

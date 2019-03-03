@@ -31,6 +31,10 @@ public class TestInteractor {
         return Completable.fromAction(() -> preferenceManager.setTestStatus(testScreens));
     }
 
+    public Completable resetTest() {
+        return Completable.fromAction(() -> preferenceManager.clearPreference(PreferenceManager.PREF_TEST_STATUS));
+    }
+
     public Completable cancelWettingFinishedNotifications() {
         return Completable.fromAction(() -> notificationManagerCompat.cancel(Constants.WETTING_FINISHED_NOTIFICATION_ID));
     }

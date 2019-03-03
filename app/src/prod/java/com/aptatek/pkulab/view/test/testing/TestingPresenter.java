@@ -32,10 +32,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         this.readerInteractor = readerInteractor;
     }
 
-    @Override
-    public void attachView(final TestingView view) {
-        super.attachView(view);
-
+    public void onStart() {
         disposables = new CompositeDisposable();
 
         disposables.add(
@@ -98,13 +95,10 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         );
     }
 
-    @Override
-    public void detachView() {
-        if (disposables != null && !disposables.isDisposed()) {
+    public void onStop() {
+        if (disposables != null) {
             disposables.dispose();
         }
-
-        super.detachView();
     }
 
     @Override

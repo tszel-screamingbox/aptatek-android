@@ -25,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -35,6 +34,12 @@ import timber.log.Timber;
 public class BluetoothService extends BaseForegroundService {
 
     private static final long INITIAL_SCAN_PERIOD = 5000L;
+
+    private static BluetoothService instance = null;
+
+    public static boolean isServiceRunning() {
+        return instance != null;
+    }
 
     @Inject
     PreferenceManager preferenceManager;
@@ -50,6 +55,20 @@ public class BluetoothService extends BaseForegroundService {
 
     @Inject
     BluetoothNotificationFactory bluetoothNotificationFactory;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        instance = this;
+    }
+
+    @Override
+    public void onDestroy() {
+        instance = null;
+
+        super.onDestroy();
+    }
 
     @Override
     protected void injectService(ApplicationComponent component) {
@@ -84,14 +103,13 @@ public class BluetoothService extends BaseForegroundService {
                                 ignored -> {
                                     Timber.d("Device already connected: %s", ignored);
                                     showConnectedNotification();
-                                    checkWorkflowSate();
+                                    checkTestComplete();
                                 },
                                 error -> {
                                     Timber.d("Error during checkConnection: %s", error);
 
                                     if (error instanceof NoSuchElementException) {
                                         // no connected reader, start connection flow
-                                        watchErrors();
                                         startScanAndAutoConnect();
                                     } else {
                                         // stop gracefully
@@ -128,7 +146,7 @@ public class BluetoothService extends BaseForegroundService {
         );
     }
 
-    private void checkWorkflowSate() {
+    private void checkTestComplete() {
         disposables.add(
                 readerInteractor.getWorkflowState()
                         .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE)
@@ -147,10 +165,10 @@ public class BluetoothService extends BaseForegroundService {
                                     Timber.d("checkWorkflowState: Test result successfully saved");
                                     final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete());
                                     notificationManager.notify(notification.getId(), notification.getNotification());
-                                    checkWorkflowSate();
+                                    checkTestComplete();
                                 },
                                 error -> {
-                                    Timber.d("Error during checkWorkflowSate: %s", error);
+                                    Timber.d("Error during checkTestComplete: %s", error);
                                     failSilently();
                                 })
         );
@@ -159,16 +177,8 @@ public class BluetoothService extends BaseForegroundService {
     private void startScanAndAutoConnect() {
         disposables.add(
                 bluetoothInteractor.enableBluetoothWhenNecessary()
-                        .andThen(bluetoothInteractor.isScanning()
-                                .take(1)
-                                .flatMapCompletable(isScanning -> {
-                                    if (isScanning) {
-                                        return Completable.complete();
-                                    }
-
-                                    return bluetoothInteractor.startScan(Long.MAX_VALUE);
-                                })
-                        )
+                        .andThen(bluetoothInteractor.stopScan())
+                        .andThen(bluetoothInteractor.startScan())
                         .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
                                 .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
                                         .take(1)
@@ -217,7 +227,7 @@ public class BluetoothService extends BaseForegroundService {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                                     Timber.d("connectTo: connected to %s", readerDevice.getMac());
-                                    checkWorkflowSate();
+                                    checkTestComplete();
                                     syncData();
                                 },
                                 error -> {
@@ -248,17 +258,6 @@ public class BluetoothService extends BaseForegroundService {
                             Timber.d("syncData error: %s", error);
                             failSilently();
                         })
-        );
-    }
-
-    private void watchErrors() {
-        disposables.add(bluetoothInteractor.getDiscoveryError()
-                .subscribe(error -> {
-                    Timber.d("Received error during discovery: %s", error);
-                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(error.getMessage()));
-                    notificationManager.notify(notification.getId(), notification.getNotification());
-                    stopForeground(false);
-                })
         );
     }
 }

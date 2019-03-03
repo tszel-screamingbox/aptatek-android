@@ -85,6 +85,8 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
 
@@ -103,7 +105,8 @@
             android:name=".view.test.TestActivity"
             android:parentActivityName=".view.main.MainHostActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen">
+            android:theme="@style/AppTheme.FullScreen"
+            android:launchMode="singleTop">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -134,8 +137,7 @@
         <activity
             android:name=".view.connect.onboarding.ConnectOnboardingReaderActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen">
-        </activity>
+            android:theme="@style/AppTheme.FullScreen" />
 
         <activity
             android:name=".view.settings.web.WebPageActivity"
@@ -147,7 +149,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.turnreaderon.permission.PermissionRequiredOnTestActivity"
+        <activity
+            android:name=".view.test.turnreaderon.permission.PermissionRequiredOnTestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 

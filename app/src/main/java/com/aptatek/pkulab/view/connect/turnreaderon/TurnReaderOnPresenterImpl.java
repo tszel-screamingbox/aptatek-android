@@ -16,7 +16,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,7 +32,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     private final BluetoothInteractor bluetoothInteractor;
     private final ReaderInteractor readerInteractor;
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private Function<WorkflowState, Boolean> workflowStateHandler;
+    private Function<WorkflowState, Boolean> workflowStateHandler = workflowState -> false;
 
     public TurnReaderOnPresenterImpl(final BluetoothInteractor bluetoothInteractor,
                                      final ReaderInteractor readerInteractor) {
@@ -57,8 +56,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
 
     @Override
     public void onPaused() {
-        // what to do?
-        // TODO start explicit flow!
+        disposables.add(bluetoothInteractor.stopScan().subscribe());
     }
 
     @Override
@@ -76,7 +74,11 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     }
 
     private void resetFlow() {
-        disposables.add(readerInteractor.disconnect().subscribe(this::checkPermissions));
+        disposables.add(
+                readerInteractor.disconnect()
+                        .subscribe(this::checkPermissions,
+                                Timber::e)
+        );
     }
 
     @Override
@@ -128,6 +130,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     }
 
     private void handleWorkflowState(final WorkflowState workflowState) {
+        ifViewAttached(TurnReaderOnView::displaySelfCheckAnimation);
+
         switch (workflowState) {
             case READY: {
                 ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
@@ -147,8 +151,6 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                     waitForWorkflowStateChange();
                 }
 
-                ifViewAttached(TurnReaderOnView::displaySelfCheckAnimation);
-
                 break;
             }
         }
@@ -156,15 +158,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
 
     private void startConnectionFlow() {
         disposables.add(
-                bluetoothInteractor.isScanning()
-                        .take(1)
-                        .flatMapCompletable(isScanning -> {
-                            if (isScanning) {
-                                return Completable.complete();
-                            }
-
-                            return bluetoothInteractor.startScan(Long.MAX_VALUE);
-                        })
+                bluetoothInteractor.stopScan()
+                        .andThen(bluetoothInteractor.startScan())
                         .andThen(processReaderDevicesFlowable())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
