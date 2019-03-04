@@ -157,6 +157,8 @@ public class RangeSettingsTest {
         onView(withText(R.string.settings_units_confirmation_title)).check(matches(isDisplayed()));
         onView(withText(R.string.settings_units_confirmation_message)).check(matches(isDisplayed()));
         onView(withText(R.string.settings_units_confirmation_button_cancel)).perform(click());
+
+        Assert.assertTrue(activityRule.getActivity().isFinishing());
     }
 
     /**
