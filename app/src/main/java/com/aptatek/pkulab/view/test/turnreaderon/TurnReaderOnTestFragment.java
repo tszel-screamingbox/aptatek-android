@@ -1,5 +1,8 @@
 package com.aptatek.pkulab.view.test.turnreaderon;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +26,7 @@ import com.aptatek.pkulab.view.test.turnreaderon.permission.PermissionRequiredOn
 
 import javax.inject.Inject;
 
-public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnTestView, TurnReaderOnTestPresenter> implements TurnReaderOnTestView {
+public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnTestView, TurnReaderOnTestPresenter> implements TurnReaderOnTestView, LifecycleObserver {
 
     private static final String KEY_NEXT_SCREEN = "pkulab.test.nextscreen";
     private static final String TAG_ALERT = "pkulab.test.alert";
@@ -45,6 +48,25 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
     protected void initObjects(final View view) {
         super.initObjects(view);
         presenter.initWithDefaults();
+
+        requireActivity().getLifecycle().addObserver(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        requireActivity().getLifecycle().removeObserver(this);
+
+        super.onDestroyView();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void onForeground() {
+        presenter.onResumed();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onBackground() {
+        presenter.onPaused();
     }
 
     @Override

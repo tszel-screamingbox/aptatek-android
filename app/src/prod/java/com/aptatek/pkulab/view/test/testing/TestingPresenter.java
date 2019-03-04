@@ -4,8 +4,10 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import java.util.NoSuchElementException;
@@ -23,13 +25,16 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     private static final long BATTERY_REFRESH_PERIOD = 10 * 1000L;
 
     private final ReaderInteractor readerInteractor;
+    private final TestResultInteractor testResultInteractor;
     private CompositeDisposable disposables;
 
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
-                            final ReaderInteractor readerInteractor) {
+                            final ReaderInteractor readerInteractor,
+                            final TestResultInteractor testResultInteractor) {
         super(resourceInteractor);
         this.readerInteractor = readerInteractor;
+        this.testResultInteractor = testResultInteractor;
     }
 
     public void onStart() {
@@ -39,8 +44,9 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                 readerInteractor.getConnectedReader()
                         .toSingle()
                         .toFlowable()
-                        .flatMap(ignored -> readerInteractor.getTestProgress()
-                                .takeUntil(testProgress -> testProgress.getPercent() == 100))
+                        .flatMapSingle(ignored -> testResultInteractor.getLatest().map(TestResult::getTimestamp).onErrorReturnItem(0L))
+                        .flatMap(latestResultTime -> readerInteractor.getTestProgress()
+                                .takeUntil(testProgress -> latestResultTime != testProgress.getStart() && testProgress.getPercent() == 100))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -75,8 +81,13 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         );
 
         disposables.add(
-                readerInteractor.getTestProgress()
-                        .filter(testProgress -> testProgress.getPercent() == 100)
+                testResultInteractor.getLatest()
+                        .map(TestResult::getTimestamp)
+                        .onErrorReturnItem(0L)
+                        .toFlowable()
+                        .take(1)
+                        .flatMap(latestResultTime -> readerInteractor.getTestProgress()
+                                .filter(testProgress -> latestResultTime != testProgress.getStart() && testProgress.getPercent() == 100))
                         .take(1)
                         .map(TestProgress::getStart)
                         .map(String::valueOf)

@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 
+import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
@@ -163,8 +164,12 @@ public class BluetoothService extends BaseForegroundService {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                                     Timber.d("checkWorkflowState: Test result successfully saved");
-                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete());
-                                    notificationManager.notify(notification.getId(), notification.getNotification());
+
+                                    if (!AptatekApplication.get(this).isInForeground()) {
+                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete());
+                                        notificationManager.notify(notification.getId(), notification.getNotification());
+                                    }
+
                                     checkTestComplete();
                                 },
                                 error -> {

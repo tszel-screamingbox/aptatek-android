@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
@@ -31,9 +32,10 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
     @Inject
     public TurnReaderOnTestPresenter(final ResourceInteractor resourceInteractor,
                                      final BluetoothInteractor bluetoothInteractor,
-                                     final ReaderInteractor readerInteractor) {
+                                     final ReaderInteractor readerInteractor,
+                                     final TestInteractor testInteractor) {
         super(resourceInteractor);
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor);
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor);
         this.readerInteractor = readerInteractor;
     }
 

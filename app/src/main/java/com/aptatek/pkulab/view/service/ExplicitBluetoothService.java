@@ -84,11 +84,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
 
     @Override
     protected Single<Boolean> shouldStart() {
-        return readerInteractor.getConnectedReader()
-                .toSingle()
-                .map(reader -> reader == null)
-                .onErrorReturnItem(true)
-                .map(shouldStart -> shouldStart && !BluetoothService.isServiceRunning());
+        return Single.just(!BluetoothService.isServiceRunning());
     }
 
     @Override

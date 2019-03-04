@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
 
@@ -22,13 +23,6 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
 
     // status notification id for foreground service
     private static final int BT_READER_STATUS_NOTIFICATION_ID = 7827;
-
-    // unique event notifications
-    private static final int BT_READER_READY_NOTIFICATION_ID = 837;
-    private static final int BT_READER_TEST_COMPLETE_NOTIFICATION_ID = 367;
-    private static final int BT_PERMISSION_NOTIFICATION_ID = 737;
-    private static final int BT_MULTIPLE_READERS_NOTIFICATION_ID = 685;
-    private static final int BT_ERROR_NOTIFICATION_ID = 377;
 
     public BluetoothNotificationFactoryImpl(@ApplicationContext final Context context,
                                             final ResourceInteractor resourceInteractor,
@@ -69,22 +63,22 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
             id = BT_READER_STATUS_NOTIFICATION_ID;
         } else if (notificationData instanceof ConnectedToDeviceTestWorkflow) {
             notification = createConnectedTestWorkflowNotification();
-            id = BT_READER_READY_NOTIFICATION_ID;
+            id = Constants.BT_READER_READY_NOTIFICATION_ID;
         } else if (notificationData instanceof SyncingData) {
             notification = createSyncingDataNotification();
             id = BT_READER_STATUS_NOTIFICATION_ID;
         } else if (notificationData instanceof TestComplete) {
             notification = createTestCompleteNotification();
-            id = BT_READER_TEST_COMPLETE_NOTIFICATION_ID;
+            id = Constants.BT_READER_TEST_COMPLETE_NOTIFICATION_ID;
         } else if (notificationData instanceof BluetoothError) {
             notification = createErrorNotification(((BluetoothError) notificationData));
-            id = BT_ERROR_NOTIFICATION_ID;
+            id = Constants.BT_ERROR_NOTIFICATION_ID;
         } else if (notificationData instanceof MissingPermissionError) {
             notification = createMissingPermissionNotification(((MissingPermissionError) notificationData));
-            id = BT_PERMISSION_NOTIFICATION_ID;
+            id = Constants.BT_PERMISSION_NOTIFICATION_ID;
         } else if (notificationData instanceof MultipleReadersDiscovered) {
             notification = createMultipleReadersNotification(((MultipleReadersDiscovered) notificationData));
-            id = BT_MULTIPLE_READERS_NOTIFICATION_ID;
+            id = Constants.BT_MULTIPLE_READERS_NOTIFICATION_ID;
         } else {
             throw new IllegalArgumentException("unhandled notificationData received: " + notificationData);
         }

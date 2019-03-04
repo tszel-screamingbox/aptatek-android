@@ -9,6 +9,7 @@ import com.aptatek.pkulab.view.test.TestScreens;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public class TestInteractor {
@@ -41,5 +42,10 @@ public class TestInteractor {
 
     public Completable cancelWettingCountdownNotification() {
         return Completable.fromAction(() -> notificationManagerCompat.cancel(Constants.WETTING_COUNTDOWN_NOTIFICATION_ID));
+    }
+
+    public Completable cancelTestNotifications() {
+        return Flowable.fromArray(Constants.BT_READER_READY_NOTIFICATION_ID, Constants.BT_READER_TEST_COMPLETE_NOTIFICATION_ID, Constants.BT_PERMISSION_NOTIFICATION_ID, Constants.BT_MULTIPLE_READERS_NOTIFICATION_ID)
+                .flatMapCompletable(notificationId -> Completable.fromAction(() -> notificationManagerCompat.cancel(notificationId)));
     }
 }

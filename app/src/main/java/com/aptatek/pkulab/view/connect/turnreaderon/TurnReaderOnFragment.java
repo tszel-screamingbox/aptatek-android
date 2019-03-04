@@ -102,13 +102,11 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         super.onResume();
 
         videoView.onResume();
-        presenter.onResumed();
     }
 
     @Override
     public void onPause() {
         videoView.onPause();
-        presenter.onPaused();
 
         super.onPause();
     }

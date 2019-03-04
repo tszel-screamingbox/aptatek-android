@@ -8,6 +8,7 @@ import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.MissingBleFeatureError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
@@ -31,24 +32,23 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
 
     private final BluetoothInteractor bluetoothInteractor;
     private final ReaderInteractor readerInteractor;
-    private final CompositeDisposable disposables = new CompositeDisposable();
+    private final TestInteractor testInteractor;
+    private CompositeDisposable disposables = null;
     private Function<WorkflowState, Boolean> workflowStateHandler = workflowState -> false;
 
     public TurnReaderOnPresenterImpl(final BluetoothInteractor bluetoothInteractor,
-                                     final ReaderInteractor readerInteractor) {
+                                     final ReaderInteractor readerInteractor,
+                                     final TestInteractor testInteractor) {
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
-    }
-
-    @Override
-    public void detachView() {
-        super.detachView();
-
-        disposables.dispose();
+        this.testInteractor = testInteractor;
     }
 
     @Override
     public void onResumed() {
+        disposeSubscription();
+        disposables = new CompositeDisposable();
+
         checkPermissions();
 
         // TODO add error handling
@@ -56,7 +56,20 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
 
     @Override
     public void onPaused() {
-        disposables.add(bluetoothInteractor.stopScan().subscribe());
+        disposables.add(bluetoothInteractor.stopScan()
+                .subscribe(
+                        () -> {
+                            Timber.d("Stopped bt scan");
+                            disposeSubscription();
+                        },
+                        Timber::e
+                ));
+    }
+
+    private void disposeSubscription() {
+        if (disposables != null) {
+            disposables.dispose();
+        }
     }
 
     @Override
@@ -134,7 +147,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
 
         switch (workflowState) {
             case READY: {
-                ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
+                dismissTestNotifications();
                 break;
             }
             case SELF_TEST:
@@ -154,6 +167,18 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 break;
             }
         }
+    }
+
+    private void dismissTestNotifications() {
+        disposables.add(
+                testInteractor.cancelTestNotifications().subscribe(
+                        () -> {
+                            Timber.d("Cancelled all test notifications");
+                            ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
+                        },
+                        Timber::e
+                )
+        );
     }
 
     private void startConnectionFlow() {
