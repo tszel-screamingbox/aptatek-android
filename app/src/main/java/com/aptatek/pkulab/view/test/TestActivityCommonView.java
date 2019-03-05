@@ -24,4 +24,5 @@ public interface TestActivityCommonView {
 
     void setNextButtonVisible(boolean visible);
 
+    void showHelpScreen();
 }

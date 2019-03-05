@@ -158,7 +158,8 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @OnClick(R.id.turnReaderOnNoDeviceAvailable)
     void onNoReaderAvailableClick() {
-        getBaseActivity().launchActivity(WebPageActivityStarter.getIntent(requireContext(), resourceInteractor.getStringResource(R.string.settings_help), Constants.URL_HELP, true));
+        ((TestActivity)getBaseActivity()).showHelpScreen();
+        //getBaseActivity().launchActivity(WebPageActivityStarter.getIntent(requireContext(), resourceInteractor.getStringResource(R.string.settings_help), Constants.URL_HELP, true));
     }
 
     @TargetApi(Build.VERSION_CODES.M)
