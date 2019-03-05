@@ -5,6 +5,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 
 import com.aptatek.pkulab.AptatekApplication;
+import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
@@ -83,7 +84,8 @@ public class BluetoothService extends BaseForegroundService {
 
     @Override
     protected Single<Boolean> shouldStart() {
-        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()));
+        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()))
+                .map(shouldStart -> shouldStart && !BuildConfig.FLAVOR.equals("mock"));
     }
 
     @Override
