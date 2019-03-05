@@ -89,7 +89,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .flatMap(latestResultTime -> readerInteractor.getTestProgress()
                                 .filter(testProgress -> latestResultTime != testProgress.getStart() && testProgress.getPercent() == 100))
                         .take(1)
-                        .map(TestProgress::getStart)
+                        .map(TestProgress::getTestId)
                         .map(String::valueOf)
                         .delay(1, TimeUnit.SECONDS)
                         .flatMapSingle(readerInteractor::getResult)
@@ -109,6 +109,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     public void onStop() {
         if (disposables != null) {
             disposables.dispose();
+            disposables = null;
         }
     }
 

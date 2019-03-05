@@ -200,7 +200,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                                 readerInteractor.getTestProgress()
                                         .filter(testProgress -> testProgress.getPercent() == 100)
                                         .take(1)
-                                        .map(TestProgress::getStart)
+                                        .map(TestProgress::getTestId)
                                         .map(String::valueOf)
                                         .flatMapSingle(readerInteractor::getResult)
                                         .flatMapCompletable(readerInteractor::saveResult)

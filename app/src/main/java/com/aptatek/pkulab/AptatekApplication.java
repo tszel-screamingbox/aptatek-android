@@ -12,10 +12,12 @@ import android.support.v7.app.AppCompatDelegate;
 
 import com.aptatek.pkulab.device.AlarmManager;
 import com.aptatek.pkulab.device.PreferenceManager;
+import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.DaggerApplicationComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
 import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.service.BluetoothService;
 import com.aptatek.pkulab.view.service.ExplicitBluetoothService;
 import com.aptatek.pkulab.view.service.WettingForegroundService;
 import com.aptatek.pkulab.view.test.TestScreens;
@@ -26,6 +28,8 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import javax.inject.Inject;
 
 import io.fabric.sdk.android.Fabric;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
 
@@ -43,6 +47,8 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
     Timber.Tree timber;
     @Inject
     PreferenceManager preferenceManager;
+
+    private Disposable killServiceTimer = null;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -81,6 +87,8 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         stopService(ExplicitBluetoothService.createForTestComplete(this));
 
         lastForegroundTime = 0L;
+
+        disposeKillServiceTimer();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -101,6 +109,25 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
             // ignore
         }
 
+        disposeKillServiceTimer();
+        killServiceTimer = Countdown.countdown(Constants.BT_SERVICE_IDLE_TIMEOUT, ignore -> true, ignore -> ignore)
+                .take(1)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        ignore -> {
+                            Timber.d("Shutting down BluetoothService due to inactivity");
+                            stopService(new Intent(this, BluetoothService.class));
+                        },
+                        Timber::e
+                );
+
+    }
+
+    private void disposeKillServiceTimer() {
+        if (killServiceTimer != null && !killServiceTimer.isDisposed()) {
+            killServiceTimer.dispose();
+            killServiceTimer = null;
+        }
     }
 
     public ApplicationComponent getApplicationComponent() {

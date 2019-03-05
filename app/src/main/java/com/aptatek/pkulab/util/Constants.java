@@ -44,6 +44,7 @@ public final class Constants {
     public static final int BT_PERMISSION_NOTIFICATION_ID = 737;
     public static final int BT_MULTIPLE_READERS_NOTIFICATION_ID = 685;
     public static final int BT_ERROR_NOTIFICATION_ID = 377;
+    public static final long BT_SERVICE_IDLE_TIMEOUT = 15 * 60 * 1000L;
 
     public static final String URL_HELP = "https://pkulab.webflow.io/help";
     public static final String URL_PRIVACY = "https://pkulab.webflow.io/privacy";

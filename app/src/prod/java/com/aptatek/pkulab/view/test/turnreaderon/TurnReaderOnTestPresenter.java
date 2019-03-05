@@ -102,7 +102,7 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                         readerInteractor.getTestProgress()
                                 .filter(testProgress -> testProgress.getPercent() == 100)
                                 .take(1)
-                                .map(TestProgress::getStart)
+                                .map(TestProgress::getTestId)
                                 .map(String::valueOf)
                                 .flatMapSingle(readerInteractor::getResult)
                                 .flatMapCompletable(readerInteractor::saveResult)

@@ -113,7 +113,10 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .done(device -> Timber.d("Successfully enabled Test Progress notifications: device [%s]", device.getAddress()))
                         .enqueue();
 
-                updateTime().subscribe();
+                updateTime().subscribe(
+                        () -> Timber.d("Time updated"),
+                        Timber::e
+                );
             }
 
         };
