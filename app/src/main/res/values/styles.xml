@@ -279,8 +279,8 @@
     <style name="Settings.Range.Label" parent="General.Text">
         <item name="android:gravity">start</item>
         <item name="android:textSize">@dimen/font.size.xbig</item>
-        <item name="android:textColor">@color/applicationGray</item>
-        <item name="android:fontFamily">@font/nunito_semibold</item>
+        <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
     </style>
 
     <style name="Settings.Range.Description" parent="Settings.Range.Label">
