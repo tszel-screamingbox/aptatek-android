@@ -16,6 +16,9 @@ import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificatio
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.Constants;
 
+import static android.app.PendingIntent.FLAG_CANCEL_CURRENT;
+import static android.app.PendingIntent.getBroadcast;
+
 public class ReminderNotificationFactoryImpl extends BaseNotificationFactory implements ReminderNotificationFactory {
 
     private static final int REMINDER_ACTION_NOW_REQUEST_CODE = 9950;
@@ -39,10 +42,13 @@ public class ReminderNotificationFactoryImpl extends BaseNotificationFactory imp
         quarterHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.QUARTER_HOUR);
         halfHourIntent.putExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY, ReminderActionType.HALF_HOUR);
 
+        final PendingIntent nowPendingIntent = getBroadcast(context, REMINDER_ACTION_NOW_REQUEST_CODE, nowIntent, FLAG_CANCEL_CURRENT);
+
         return new NotificationCompat.Builder(context, createChannel())
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(resourceInteractor.getStringResource(R.string.reminder_notification_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.reminder_notification_message))
+                .setContentIntent(nowPendingIntent)
                 .setColor(resourceInteractor.getColorResource(R.color.applicationPink))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setWhen(0)
@@ -50,13 +56,13 @@ public class ReminderNotificationFactoryImpl extends BaseNotificationFactory imp
                 .setAutoCancel(true)
                 .addAction(0,
                         resourceInteractor.getStringResource(R.string.reminder_notification_now),
-                        PendingIntent.getBroadcast(context, REMINDER_ACTION_NOW_REQUEST_CODE, nowIntent, PendingIntent.FLAG_CANCEL_CURRENT))
+                        nowPendingIntent)
                 .addAction(0,
                         resourceInteractor.getStringResource(R.string.reminder_notification_quarter_hour),
-                        PendingIntent.getBroadcast(context, REMINDER_ACTION_QUARTER_HOUR_CODE, quarterHourIntent, PendingIntent.FLAG_CANCEL_CURRENT))
+                        getBroadcast(context, REMINDER_ACTION_QUARTER_HOUR_CODE, quarterHourIntent, FLAG_CANCEL_CURRENT))
                 .addAction(0,
                         resourceInteractor.getStringResource(R.string.reminder_notification_half_hour),
-                        PendingIntent.getBroadcast(context, REMINDER_ACTION_HALF_HOUR_REQUEST_CODE, halfHourIntent, PendingIntent.FLAG_CANCEL_CURRENT))
+                        getBroadcast(context, REMINDER_ACTION_HALF_HOUR_REQUEST_CODE, halfHourIntent, FLAG_CANCEL_CURRENT))
                 .build();
     }
 
