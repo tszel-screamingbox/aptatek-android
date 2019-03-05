@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class PreferencesManagerTest {
@@ -95,7 +96,13 @@ public class PreferencesManagerTest {
         assertNull(preferenceManager.getPkuRangeUnit());
         assertFalse(preferenceManager.isRangeDialogShown());
         assertNull(preferenceManager.getPairedDevice());
-        assertEquals(preferenceManager.getTestStatus(), TestScreens.TURN_READER_ON);
+
+
+        try {
+            preferenceManager.getTestStatus();
+            fail(); // expecting exception here
+        } catch (Exception e) {
+        }
     }
 
     @Test
@@ -186,7 +193,12 @@ public class PreferencesManagerTest {
 
     @Test
     public void testTestStatusDefault() {
-        assertEquals(preferenceManager.getTestStatus(), TestScreens.TURN_READER_ON);
+        try {
+            preferenceManager.getTestStatus();
+            fail(); // expecting exception here
+        } catch (Exception e) {
+
+        }
     }
 
     @Test

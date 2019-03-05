@@ -1,13 +1,20 @@
 package com.aptatek.pkulab.view.service;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Pair;
+import android.text.TextUtils;
 
+import com.aptatek.pkulab.AptatekApplication;
+import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
+import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
+import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.bluetooth.BluetoothComponent;
@@ -15,17 +22,26 @@ import com.aptatek.pkulab.injection.component.bluetooth.DaggerBluetoothComponent
 import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 import timber.log.Timber;
 
 public class BluetoothService extends BaseForegroundService {
 
-    private static final int BT_NOTIFICATION_ID = 258;
+    private static final long INITIAL_SCAN_PERIOD = 5000L;
+
+    private static BluetoothService instance = null;
+
+    public static boolean isServiceRunning() {
+        return instance != null;
+    }
 
     @Inject
     PreferenceManager preferenceManager;
@@ -43,6 +59,20 @@ public class BluetoothService extends BaseForegroundService {
     BluetoothNotificationFactory bluetoothNotificationFactory;
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        instance = this;
+    }
+
+    @Override
+    public void onDestroy() {
+        instance = null;
+
+        super.onDestroy();
+    }
+
+    @Override
     protected void injectService(ApplicationComponent component) {
         final BluetoothComponent bluetoothComponent = DaggerBluetoothComponent.builder()
                 .applicationComponent(component)
@@ -54,111 +84,183 @@ public class BluetoothService extends BaseForegroundService {
 
     @Override
     protected Single<Boolean> shouldStart() {
-//        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()));
-        return Single.fromCallable(() -> false);
+        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()))
+                .map(shouldStart -> shouldStart && !BuildConfig.FLAVOR.equals("mock"));
     }
 
     @Override
     protected void startForeground() {
-        startForeground(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectingToDevice()));
+        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectingToDevice());
+        startForeground(notification.getId(), notification.getNotification());
 
-        startScanAndAutoConnect();
-        watchErrors();
-        watchReaderEvents();
+        checkConnection();
+    }
+
+    private void checkConnection() {
+        disposables.add(
+                readerInteractor.getConnectedReader()
+                        .toSingle()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                ignored -> {
+                                    Timber.d("Device already connected: %s", ignored);
+                                    showConnectedNotification();
+                                    checkTestComplete();
+                                },
+                                error -> {
+                                    Timber.d("Error during checkConnection: %s", error);
+
+                                    if (error instanceof NoSuchElementException) {
+                                        // no connected reader, start connection flow
+                                        startScanAndAutoConnect();
+                                    } else {
+                                        // stop gracefully
+                                        failSilently();
+                                    }
+                                })
+        );
+    }
+
+    private void showConnectedNotification() {
+        disposables.add(
+                readerInteractor.getBatteryLevel()
+                        .repeatWhen(objectFlowable -> objectFlowable.delay(1, TimeUnit.MINUTES))
+                        .takeUntil(readerInteractor.getReaderConnectionEvents()
+                                .map(ConnectionEvent::getConnectionState)
+                                .filter(state -> state == ConnectionState.DISCONNECTING || state == ConnectionState.DISCONNECTED)
+                        )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(percent -> {
+                                    Timber.d("Battery update: %d", percent);
+                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDeviceSilently(percent));
+                                    notificationManager.notify(notification.getId(), notification.getNotification());
+                                }, error -> {
+                                    Timber.d("Error while reading battery: %s", error);
+                                    // stop service
+                                    failSilently();
+                                },
+                                () -> {
+                                    Timber.d("Battery updates finished");
+                                    // stop service
+                                    failSilently();
+                                })
+        );
+    }
+
+    private void checkTestComplete() {
+        disposables.add(
+                readerInteractor.getWorkflowState()
+                        .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE)
+                        .take(1)
+                        .flatMapCompletable(ignored -> readerInteractor.getTestProgress()
+                                .filter(testProgress -> testProgress.getPercent() == 100)
+                                .take(1)
+                                .map(TestProgress::getTestId)
+                                .map(String::valueOf)
+                                .flatMapSingle(testId -> readerInteractor.getResult(testId))
+                                .flatMapCompletable(testResult -> readerInteractor.saveResult(testResult))
+                        )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                                    Timber.d("checkWorkflowState: Test result successfully saved");
+
+                                    if (!AptatekApplication.get(this).isInForeground()) {
+                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete());
+                                        notificationManager.notify(notification.getId(), notification.getNotification());
+                                    }
+
+                                    checkTestComplete();
+                                },
+                                error -> {
+                                    Timber.d("Error during checkTestComplete: %s", error);
+                                    failSilently();
+                                })
+        );
     }
 
     private void startScanAndAutoConnect() {
         disposables.add(
-                readerInteractor.getReaderConnectionEvents()
-                        .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.DISCONNECTED)
-                        .take(1)
-                        .flatMapCompletable(ignored -> bluetoothInteractor.startScan()
-                                    .andThen(bluetoothInteractor.getDiscoveredDevices()
-                                            .filter(readerDevices -> !readerDevices.isEmpty())
-                                            .map(readerDevices -> Ix.from(readerDevices).first())
-                                            .flatMapCompletable(device -> readerInteractor.connect(device))
-                                    )
+                bluetoothInteractor.enableBluetoothWhenNecessary()
+                        .andThen(bluetoothInteractor.startScan())
+                        .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
+                                .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
+                                        .take(1)
+                                        .firstOrError()
+                                        .map(devices -> Ix.from(devices).toList())
+                                )
                         )
-                        .subscribe(
-                                () -> Timber.d("Connected to device"),
-                                throwable -> {
-                                    Timber.d("Something went wrong during service connection: %s", throwable);
-                                    notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.CommunicationError(throwable.getMessage())));
-                                    stopForeground(false);
-                                }
-                        )
+                        .firstOrError()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(devices -> {
+                                    switch (devices.size()) {
+                                        case 1: {
+                                            final ReaderDevice readerDevice = devices.get(0);
+                                            Timber.d("startScanAndAutoConnect is connecting to device: %s", readerDevice.getMac());
+                                            connectTo(readerDevice);
+                                            break;
+                                        }
+                                        default: {
+                                            Timber.d("startScanAndAutoConnect didn't find any reader device, stopping service...");
+                                            // terminate service
+                                            failSilently();
+                                            break;
+                                        }
+                                    }
+                                },
+                                error -> {
+                                    Timber.d("Error during startScanAndAutoConnect: %s", error);
+                                    failSilently();
+                                })
         );
     }
 
-    private void watchReaderEvents() {
-        disposables.add(readerInteractor.getReaderConnectionEvents()
-                .distinctUntilChanged()
-                .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
-                .flatMap(readyEvent -> readerInteractor.syncResults()
-                        .doOnSubscribe(ignored -> notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.SyncingData(readyEvent.getDevice(), 100))))
-                        .toFlowable()
+    private void failSilently() {
+        stopForeground(true);
+        stopSelf();
+    }
+
+    private void connectTo(@NonNull final ReaderDevice readerDevice) {
+        disposables.add(
+                readerInteractor.connect(readerDevice)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                                    Timber.d("connectTo: connected to %s", readerDevice.getMac());
+                                    checkTestComplete();
+                                    syncData();
+                                },
+                                error -> {
+                                    Timber.d("error during connection to %s", readerDevice.getMac());
+
+                                    failSilently();
+                                })
+        );
+    }
+
+    private void syncData() {
+        disposables.add(
+                readerInteractor.getReaderConnectionEvents()
+                        .map(ConnectionEvent::getConnectionState)
+                        .filter(state -> state == ConnectionState.READY)
                         .take(1)
-                        .flatMap(ignored -> readerInteractor.getBatteryLevel()
-                                .map(level -> new Pair<>(readyEvent, level))
-                                .repeatWhen(emitter -> emitter.delay(1, TimeUnit.MINUTES))
-                                .takeUntil(readerInteractor.getReaderConnectionEvents()
-                                        .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.DISCONNECTED))
-                        )
-                )
-                .subscribe(pair -> {
-                            Timber.d("Device connected: %s, battery level: %d", pair.first.getDevice().getMac(), pair.second);
-                            notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDevice(pair.first.getDevice(), pair.second)));
-                        },
-                        error -> {
-                            Timber.d("Error while sync and idle: %s", error);
-                            // TODO handle error?
+                        .doOnNext(ignored -> {
+                            Timber.d("syncData: showing notification");
+                            final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.SyncingData());
+                            notificationManager.notify(notification.getId(), notification.getNotification());
                         })
-        );
-
-        disposables.add(readerInteractor.getReaderConnectionEvents()
-                .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.DISCONNECTED)
-                .skip(1)
-                .subscribe(ignore -> {
-                    Timber.d("Device disconnected, stopping service...");
-                    notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.DeviceDisconnected()));
-                    stopForeground(false);
-                })
-        );
-
-        disposables.add(
-                readerInteractor.getReaderConnectionEvents()
-                        .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
-                        .take(1)
-                        .flatMap(ignored ->
-                                readerInteractor.getWorkflowState()
-                                        .filter(workflowState -> workflowState == WorkflowState.TEST_RUNNING)
-                                        .flatMap(workflowState -> readerInteractor.getConnectedReader()
-                                                .toFlowable()
-                                                .map(BluetoothNotificationFactory.RunningTest::new)
-                                        )
-                        ).subscribe(runningTest -> notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(runningTest)))
-        );
-
-        disposables.add(
-                readerInteractor.getReaderConnectionEvents()
-                        .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
-                        .take(1)
-                        .flatMap(ignored -> readerInteractor.getWorkflowState()
-                                .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE)
-                                .flatMap(workflowState -> readerInteractor.getConnectedReader()
-                                        .toFlowable()
-                                        .map(BluetoothNotificationFactory.TestComplete::new))
-                        ).subscribe(testComplete -> notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(testComplete)))
-        );
-    }
-
-    private void watchErrors() {
-        disposables.add(bluetoothInteractor.getDiscoveryError()
-                .subscribe(error -> {
-                    Timber.d("Received error during discovery: %s", error);
-                    notificationManager.notify(BT_NOTIFICATION_ID, bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.CommunicationError(error.getMessage())));
-                    stopForeground(false);
-                })
+                        .flatMapSingle(ignored -> readerInteractor.syncResults())
+                        .singleOrError()
+                        .subscribe(ignored -> {
+                            Timber.d("syncData successfully saved %d results", ignored.size());
+                            showConnectedNotification();
+                        }, error -> {
+                            Timber.d("syncData error: %s", error);
+                            failSilently();
+                        })
         );
     }
 }

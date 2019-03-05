@@ -40,7 +40,7 @@ public class TestInteractorTest {
     @Test
     public void testDefaultStatus() {
         testInteractor.getLastScreen().test()
-                .assertValue(TestScreens.TURN_READER_ON);
+                .assertError(throwable -> throwable instanceof IllegalStateException);
     }
 
     @Test

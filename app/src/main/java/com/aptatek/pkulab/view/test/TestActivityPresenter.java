@@ -41,12 +41,12 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
     public void showProperScreen() {
         disposable = testInteractor.getLastScreen()
+                .onErrorReturnItem(TestScreens.TURN_READER_ON)
                 .flatMap(lastScreen -> {
                     if (lastScreen == TestScreens.WETTING) {
                         return wettingInteractor.getWettingStatus()
                                 .flatMap(wettingStatus -> {
                                     if (wettingStatus == WettingStatus.FINISHED) {
-                                        // TODO: should check whether the reader is connected
                                         return Single.just(TestScreens.CONNECT_IT_ALL);
                                     }
 
@@ -56,6 +56,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
                     return Single.just(lastScreen);
                 })
+                .flatMap(screen -> testInteractor.setLastScreen(screen).andThen(Single.just(screen)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(testScreens ->
                         ifViewAttached(attachedView -> attachedView.showScreen(testScreens))
