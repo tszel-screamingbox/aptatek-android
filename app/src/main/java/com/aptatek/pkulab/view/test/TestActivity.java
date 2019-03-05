@@ -302,7 +302,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         nextButton.setVisibility(visible ? VISIBLE : INVISIBLE);
     }
 
-    @Override
     public void showHelpScreen() {
         testSlidingUpPanelLayout.setEnabled(true);
         testSlidingUpPanelLayout.setPanelState(EXPANDED);

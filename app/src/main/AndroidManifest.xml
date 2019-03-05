@@ -134,11 +134,10 @@
         <activity
             android:name=".view.connect.onboarding.ConnectOnboardingReaderActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen">
-        </activity>
+            android:theme="@style/AppTheme.FullScreen" />
 
         <activity
-            android:name=".view.settings.web.WebPageActivity"
+            android:name=".view.settings.web.WebHostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
@@ -147,7 +146,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".view.test.turnreaderon.permission.PermissionRequiredOnTestActivity"
+        <activity
+            android:name=".view.test.turnreaderon.permission.PermissionRequiredOnTestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 

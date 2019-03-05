@@ -144,11 +144,6 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
     }
 
     @Override
-    public void showHelpScreen() {
-        runOnTestTestActivityView(TestActivityCommonView::showHelpScreen);
-    }
-
-    @Override
     public TestScreens getScreen() {
         return TestScreens.TURN_READER_ON;
     }

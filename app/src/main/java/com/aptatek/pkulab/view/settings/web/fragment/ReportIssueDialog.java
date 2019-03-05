@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.settings.web;
+package com.aptatek.pkulab.view.settings.web.fragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -54,7 +54,7 @@ public class ReportIssueDialog extends DialogFragment {
     public void onStart() {
         super.onStart();
 
-        Dialog dialog = getDialog();
+        final Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
