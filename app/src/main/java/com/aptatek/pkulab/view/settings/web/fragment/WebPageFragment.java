@@ -84,7 +84,7 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setTitle(title);
         getBaseActivity().setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> getBaseActivity().onBackPressed());
 
         webView.setWebViewClient(new WebViewClient());
         final WebSettings settings = webView.getSettings();
