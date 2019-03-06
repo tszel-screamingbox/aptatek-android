@@ -328,6 +328,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == ContinueTestActivity.CONTINUE_TEST_ACTIVITY_REQUEST_CODE
                 && resultCode == Activity.RESULT_OK && data != null && data.hasExtra(Constants.CONTINUE_TEST_RESULT_TYPE_KEY)) {
 
@@ -350,7 +352,5 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                 dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
             }
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }
