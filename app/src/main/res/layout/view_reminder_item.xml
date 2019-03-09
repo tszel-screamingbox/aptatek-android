@@ -3,14 +3,15 @@
     android:id="@+id/containerLayoutReminder"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    android:background="@drawable/reminder_item_inactive_background">
+    android:layout_marginRight="@dimen/general.distance.5dp"
+    android:animateLayoutChanges="true">
 
     <TextView
         android:id="@+id/textViewTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
+        android:background="@drawable/reminder_background_selector"
+        android:textColor="@drawable/reminder_text_color_selector"
         android:textSize="@dimen/font.size.medium"
         android:textStyle="bold" />
 
