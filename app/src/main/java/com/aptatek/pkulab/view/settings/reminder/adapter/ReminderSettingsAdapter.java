@@ -2,7 +2,6 @@ package com.aptatek.pkulab.view.settings.reminder.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseAdapter;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
