@@ -3,7 +3,6 @@
     android:id="@+id/containerLayoutReminder"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginRight="@dimen/general.distance.5dp"
     android:animateLayoutChanges="true">
 
     <TextView

@@ -349,4 +349,5 @@
     <string name="faq.report.issue.dialog.title">Send issue</string>
     <string name="faq.report.issue.email.title">Error Report - %1$s</string>
     <string name="faq.report.issue.email.target">help@pkulabkit.com</string>
+    <string name="mont.picker.confirm">Confirm</string>
 </resources>

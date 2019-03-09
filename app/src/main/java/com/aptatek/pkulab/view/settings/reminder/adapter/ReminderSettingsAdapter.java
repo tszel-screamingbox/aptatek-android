@@ -80,6 +80,12 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
             remindersAdapter.setCallback(this);
             remindersAdapter.setData(item.getReminders());
 
+            if (item.getReminders().isEmpty()) {
+                recyclerViewReminders.setVisibility(View.GONE);
+            } else {
+                recyclerViewReminders.setVisibility(View.VISIBLE);
+            }
+
             textViewDayName.setText(item.getNameOfDay());
             switchActivate.setChecked(item.isActive());
             textViewDayName.setSelected(item.isActive());
