@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
@@ -25,8 +26,9 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
 
     @Inject
     public TurnReaderOnConnectPresenter(final BluetoothInteractor bluetoothInteractor,
-                                        final ReaderInteractor readerInteractor) {
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor);
+                                        final ReaderInteractor readerInteractor,
+                                        final TestInteractor testInteractor) {
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor);
         this.readerInteractor = readerInteractor;
     }
 

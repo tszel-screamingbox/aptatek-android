@@ -39,6 +39,13 @@ public final class Constants {
     public static final int WETTING_COUNTDOWN_NOTIFICATION_ID = 2668;
     public static final int WETTING_FINISHED_NOTIFICATION_ID = 726;
 
+    public static final int BT_READER_READY_NOTIFICATION_ID = 837;
+    public static final int BT_READER_TEST_COMPLETE_NOTIFICATION_ID = 367;
+    public static final int BT_PERMISSION_NOTIFICATION_ID = 737;
+    public static final int BT_MULTIPLE_READERS_NOTIFICATION_ID = 685;
+    public static final int BT_ERROR_NOTIFICATION_ID = 377;
+    public static final long BT_SERVICE_IDLE_TIMEOUT = 15 * 60 * 1000L;
+
     public static final String URL_HELP = "https://pkulab.webflow.io/help";
     public static final String URL_PRIVACY = "https://pkulab.webflow.io/privacy";
     public static final String URL_TERMS = "https://pkulab.webflow.io/tc";

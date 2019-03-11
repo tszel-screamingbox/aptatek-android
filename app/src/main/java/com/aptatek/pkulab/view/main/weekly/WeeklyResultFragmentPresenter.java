@@ -275,14 +275,12 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 .flatMapSingle(pdfChartDataTransformer::transform)
                 .toList()
                 .flatMap(pdfChartDataTransformer::transformEntries)
-                .map(bubbleDataSet -> {
-
+                .map(bubbleDataSet ->
                     pdfEntryDataBuilder
                             .setBubbleDataSet(bubbleDataSet)
-                            .setDaysOfMonth(TimeHelper.getDaysBetween(start, end));
-
-                    return pdfEntryDataBuilder.build();
-                });
+                            .setDaysOfMonth(TimeHelper.getDaysBetween(start, end) + 1)
+                            .build()
+                );
     }
 
     private double getDeviation(final List<TestResult> table) {

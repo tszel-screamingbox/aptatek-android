@@ -85,6 +85,8 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
 
@@ -103,7 +105,8 @@
             android:name=".view.test.TestActivity"
             android:parentActivityName=".view.main.MainHostActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen">
+            android:theme="@style/AppTheme.FullScreen"
+            android:launchMode="singleTop">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -156,6 +159,7 @@
 
         <service android:name=".view.service.BluetoothService" />
         <service android:name=".view.service.WettingForegroundService" />
+        <service android:name=".view.service.ExplicitBluetoothService" />
 
         <receiver android:name=".device.BootCompletedReceiver">
             <intent-filter>

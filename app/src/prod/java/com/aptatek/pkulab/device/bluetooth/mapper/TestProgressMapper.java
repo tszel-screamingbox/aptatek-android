@@ -24,6 +24,7 @@ public class TestProgressMapper implements Mapper<TestProgress, TestProgressResp
     @Override
     public TestProgress mapToDomain(final TestProgressResponse dataModel) {
         return TestProgress.create(
+                dataModel.getStart(),
                 DateParser.tryParseDate(dataModel.getStart()),
                 DateParser.tryParseDate(dataModel.getEnd()),
                 dataModel.getProgress()

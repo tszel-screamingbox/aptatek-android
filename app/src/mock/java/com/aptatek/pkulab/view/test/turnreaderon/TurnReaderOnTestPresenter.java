@@ -82,8 +82,4 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
         );
     }
 
-    public void tmpSyncData() {
-        ifViewAttached(TurnReaderOnTestView::tmpProceed);
-    }
-
 }

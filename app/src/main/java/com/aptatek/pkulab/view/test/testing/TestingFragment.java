@@ -1,5 +1,9 @@
 package com.aptatek.pkulab.view.test.testing;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
@@ -11,7 +15,7 @@ import com.aptatek.pkulab.view.test.result.TestResultActivity;
 
 import javax.inject.Inject;
 
-public class TestingFragment extends TestBaseFragment<TestingView, TestingPresenter> implements TestingView {
+public class TestingFragment extends TestBaseFragment<TestingView, TestingPresenter> implements TestingView, LifecycleObserver {
 
     @Inject
     TestingPresenter presenter;
@@ -28,8 +32,32 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
 
     @Override
     public void onTestFinished() {
-        getActivity().finish();
-        getBaseActivity().launchActivity(TestResultActivity.starter(getActivity()));
+        requireActivity().finish();
+        getBaseActivity().launchActivity(TestResultActivity.starter(requireActivity()));
+    }
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        requireActivity().getLifecycle().addObserver(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        requireActivity().getLifecycle().removeObserver(this);
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void onActivityStart() {
+        presenter.onStart();
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onActivityStop() {
+        presenter.onStop();
     }
 
     @NonNull
