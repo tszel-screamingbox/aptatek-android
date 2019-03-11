@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -49,20 +50,27 @@ public class PkuRangeDataSourceTest {
         dataSource.getDisplayUnit();
         verify(preferenceManager).getPkuRangeUnit();
 
-        dataSource.getNormalCeilValueMMol();
-        verify(preferenceManager).getPkuRangeNormalCeil();
-
-        dataSource.getNormalFloorValueMMol();
-        verify(preferenceManager).getPkuRangeNormalFloor();
-
         dataSource.setDisplayUnit(PkuLevelUnits.MICRO_MOL);
         verify(preferenceManager).setPkuRangeUnit(PkuLevelUnits.MICRO_MOL);
+
+        dataSource.getNormalCeilValueMMol();
+        verify(preferenceManager).getPkuRangeNormalCeil();
 
         dataSource.setNormalCeilValueMMol(300f);
         verify(preferenceManager).setPkuRangeNormalCeil(300f);
 
+        dataSource.getNormalFloorValueMMol();
+        verify(preferenceManager).getPkuRangeNormalFloor();
+
         dataSource.setNormalFloorValueMMol(300f);
         verify(preferenceManager).setPkuRangeNormalFloor(300f);
+
+        dataSource.getHighCeilValueMMol();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalCeil();
+
+        dataSource.isDefaultValue();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalFloor();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalCeil();
     }
 
     /**
@@ -76,12 +84,13 @@ public class PkuRangeDataSourceTest {
         doReturn(-1f).when(preferenceManager).getPkuRangeNormalCeil();
         doReturn(null).when(preferenceManager).getPkuRangeUnit();
 
-        assertTrue(dataSource.getNormalFloorValueMMol() == Constants.DEFAULT_PKU_NORMAL_FLOOR);
-        assertTrue(dataSource.getNormalCeilValueMMol() == Constants.DEFAULT_PKU_NORMAL_CEIL);
-        assertTrue(dataSource.getDisplayUnit() == Constants.DEFAULT_PKU_LEVEL_UNIT);
-        assertTrue(dataSource.getHighCeilValueMMol() == Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE);
-        assertTrue(dataSource.getNormalFloorAbsoluteMinMMol() == Constants.DEFAULT_PKU_LOWEST_VALUE);
-        assertTrue(dataSource.getNormalCeilAbsoluteMaxMMol() == Constants.DEFAULT_PKU_HIGHEST_VALUE);
+        assert (dataSource.getNormalFloorValueMMol() == Constants.DEFAULT_PKU_NORMAL_FLOOR);
+        assert (dataSource.getNormalCeilValueMMol() == Constants.DEFAULT_PKU_NORMAL_CEIL);
+        assert (dataSource.getDisplayUnit() == Constants.DEFAULT_PKU_LEVEL_UNIT);
+        assert (dataSource.getHighCeilValueMMol() == Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE);
+        assert (dataSource.getNormalFloorAbsoluteMinMMol() == Constants.DEFAULT_PKU_LOWEST_VALUE);
+        assert (dataSource.getNormalCeilAbsoluteMaxMMol() == Constants.DEFAULT_PKU_HIGHEST_VALUE);
+        assertTrue(dataSource.isDefaultValue());
     }
 
 }
