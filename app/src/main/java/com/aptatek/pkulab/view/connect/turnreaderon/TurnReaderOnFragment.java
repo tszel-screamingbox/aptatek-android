@@ -16,6 +16,7 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
@@ -156,7 +157,15 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @OnClick(R.id.turnReaderOnNoDeviceAvailable)
     void onNoReaderAvailableClick() {
-        ((TestActivity) getBaseActivity()).showHelpScreen();
+        if (getBaseActivity() instanceof TestActivity) {
+            ((TestActivity) getBaseActivity()).showHelpScreen();
+            return;
+        }
+
+        if (getBaseActivity() instanceof ConnectOnboardingReaderActivity) {
+            ((ConnectOnboardingReaderActivity) getBaseActivity()).showHelpScreen();
+            return;
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)

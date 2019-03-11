@@ -23,6 +23,7 @@ import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.aptatek.pkulab.view.test.TestActivity;
 
@@ -89,6 +90,8 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
         toolbar.setNavigationOnClickListener(v -> {
             if (getBaseActivity() instanceof TestActivity) {
                 ((TestActivity) getBaseActivity()).closeHelpScreen();
+            } else if (getBaseActivity() instanceof ConnectOnboardingReaderActivity) {
+                ((ConnectOnboardingReaderActivity) getBaseActivity()).closeHelpScreen();
             } else {
                 getBaseActivity().onBackPressed();
             }

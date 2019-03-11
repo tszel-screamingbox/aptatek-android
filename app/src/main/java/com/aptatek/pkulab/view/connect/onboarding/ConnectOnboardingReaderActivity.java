@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.FragmentTransaction;
 
 import com.aptatek.pkulab.R;
@@ -16,7 +18,13 @@ import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectFrag
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
+
+import static android.support.design.widget.BottomSheetBehavior.STATE_COLLAPSED;
+import static android.support.design.widget.BottomSheetBehavior.STATE_EXPANDED;
+import static android.support.design.widget.BottomSheetBehavior.from;
 
 public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderView, ConnectReaderPresenter> implements ConnectReaderView {
 
@@ -27,11 +35,14 @@ public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderV
     @Inject
     ConnectReaderPresenter presenter;
 
+    @BindView(R.id.bottom_sheet)
+    ConstraintLayout bottomConstraintLayout;
+
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.layout_content_frame);
+        setContentView(R.layout.layout_connect_reader_activity);
+        ButterKnife.bind(this);
 
         showScreen(ConnectReaderScreen.TURN_ON);
     }
@@ -106,4 +117,13 @@ public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderV
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    public void showHelpScreen() {
+        final BottomSheetBehavior behavior = from(bottomConstraintLayout);
+        behavior.setState(STATE_EXPANDED);
+    }
+
+    public void closeHelpScreen() {
+        final BottomSheetBehavior behavior = from(bottomConstraintLayout);
+        behavior.setState(STATE_COLLAPSED);
+    }
 }
