@@ -21,8 +21,10 @@ import com.aptatek.pkulab.domain.model.ReportIssue;
 import com.aptatek.pkulab.domain.model.ReportIssueType;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
+import com.aptatek.pkulab.view.test.TestActivity;
 
 import java.util.ArrayList;
 
@@ -51,14 +53,14 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
     @BindView(R.id.btnReport)
     Button reportIssue;
 
-    @Arg
+    @Arg(optional = true)
     String title;
 
-    @Arg
+    @Arg(optional = true)
     String url;
 
-    @Arg
-    Boolean reportVisible;
+    @Arg(optional = true)
+    Boolean reportVisible = true;
 
     @Nullable
     @Override
@@ -82,16 +84,22 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
     @Override
     protected void initObjects(final View view) {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setTitle(title);
+        toolbar.setTitle(title == null ? getString(R.string.settings_help) : title);
         getBaseActivity().setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> getBaseActivity().onBackPressed());
+        toolbar.setNavigationOnClickListener(v -> {
+            if (getBaseActivity() instanceof TestActivity) {
+                ((TestActivity) getBaseActivity()).closeHelpScreen();
+            } else {
+                getBaseActivity().onBackPressed();
+            }
+        });
 
         webView.setWebViewClient(new WebViewClient());
         final WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
-        webView.loadUrl(url);
+        webView.loadUrl(url == null ? Constants.URL_HELP : url);
 
-        if (reportVisible) {
+        if (reportVisible == null ? true : reportVisible) {
             reportIssue.setVisibility(View.VISIBLE);
         }
     }

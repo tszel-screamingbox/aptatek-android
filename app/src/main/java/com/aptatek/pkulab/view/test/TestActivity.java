@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -37,7 +38,6 @@ import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
 import com.aptatek.pkulab.widget.BatteryView;
 import com.rd.PageIndicatorView;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import javax.inject.Inject;
 
@@ -45,10 +45,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.support.design.widget.BottomSheetBehavior.STATE_COLLAPSED;
+import static android.support.design.widget.BottomSheetBehavior.STATE_EXPANDED;
+import static android.support.design.widget.BottomSheetBehavior.from;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.EXPANDED;
 
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
         implements TestActivityView {
@@ -74,8 +76,9 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     ConstraintLayout bottomBar;
     @BindView(R.id.testPageIndicator)
     PageIndicatorView screenPagerIndicator;
-    @BindView(R.id.panelLayout)
-    SlidingUpPanelLayout testSlidingUpPanelLayout;
+    @BindView(R.id.bottom_sheet)
+    ConstraintLayout bottomConstraintLayout;
+
     @BindView(R.id.testDisclaimerText)
     @Nullable
     protected TextView tvDisclaimer;
@@ -89,7 +92,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
 
-        testSlidingUpPanelLayout.setEnabled(false);
         screenPagerIndicator.setDynamicCount(false);
         screenPagerIndicator.setCount(TestScreens.values().length - 1); // Cancel screen is ignored
     }
@@ -303,7 +305,12 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     }
 
     public void showHelpScreen() {
-        testSlidingUpPanelLayout.setEnabled(true);
-        testSlidingUpPanelLayout.setPanelState(EXPANDED);
+        final BottomSheetBehavior behavior = from(bottomConstraintLayout);
+        behavior.setState(STATE_EXPANDED);
+    }
+
+    public void closeHelpScreen() {
+        final BottomSheetBehavior behavior = from(bottomConstraintLayout);
+        behavior.setState(STATE_COLLAPSED);
     }
 }
