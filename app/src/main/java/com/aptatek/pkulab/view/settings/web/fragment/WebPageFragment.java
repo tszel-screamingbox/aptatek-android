@@ -102,7 +102,7 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
         settings.setJavaScriptEnabled(true);
         webView.loadUrl(url == null ? Constants.URL_HELP : url);
 
-        if (reportVisible == null ? true : reportVisible) {
+        if (reportVisible) {
             reportIssue.setVisibility(View.VISIBLE);
         }
     }
