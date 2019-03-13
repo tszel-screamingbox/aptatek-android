@@ -27,7 +27,9 @@ import butterknife.OnClick;
 public class TestResultActivity extends BaseActivity<TestResultView, TestResultPresenter> implements TestResultView {
 
     public static Intent starter(@NonNull final Context context) {
-        return new Intent(context, TestResultActivity.class);
+        final Intent intent = new Intent(context, TestResultActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        return intent;
     }
 
     @Inject

@@ -89,8 +89,8 @@ public class RangeSettingsTest {
         onView(withId(R.id.rangeSettingsVeryHighDescription)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeSettingsVeryHighIndicator)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeSettingsUnitLabel)).check(matches(isDisplayed()));
-        onView(withId(R.id.rangeSettingsUnitMicroMol)).check(matches(isDisplayed()));
-        onView(withId(R.id.rangeSettingsUnitMilliGram)).check(matches(isDisplayed()));
+        onView(withId(R.id.rangeSettingsUnitMicroMol)).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
+        onView(withId(R.id.rangeSettingsUnitMilliGram)).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
     }
 
     /**

@@ -66,4 +66,16 @@ public class TurnReaderOnContinueTestFragment extends TurnReaderOnFragment<TurnR
         requireActivity().setResult(Activity.RESULT_OK, intent);
         requireActivity().finish();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResumed();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onPaused();
+    }
 }

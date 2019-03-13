@@ -11,6 +11,7 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
+import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.parentalgate.ParentalGateActivity;
@@ -72,6 +73,11 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
     public void onSetPinActivityShouldLoad() {
         final Intent intent = new Intent(this, SetPinHostActivity.class);
         launchActivity(intent, true, FADE);
+    }
+
+    @Override
+    public void onConnectReaderShouldLoad() {
+        launchActivity(ConnectOnboardingReaderActivity.starter(this), true, FADE);
     }
 
     @Override

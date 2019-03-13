@@ -102,13 +102,11 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         super.onResume();
 
         videoView.onResume();
-        presenter.onResumed();
     }
 
     @Override
     public void onPause() {
         videoView.onPause();
-        presenter.onPaused();
 
         super.onPause();
     }
@@ -135,6 +133,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     public void displaySelfCheckAnimation() {
         playVideo(resourceInteractor.getUriForRawFile(R.raw.self_check), true);
+        noReaderAvailable.setVisibility(View.GONE);
     }
 
     @Override

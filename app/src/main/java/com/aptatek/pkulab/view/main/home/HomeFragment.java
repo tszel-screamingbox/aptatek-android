@@ -155,7 +155,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     public boolean handleDispatchTouchEvent(final MotionEvent ev) {
-        return panelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING
+        return panelLayout != null && panelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.DRAGGING
                 && ev.getAction() == MotionEvent.ACTION_DOWN;
     }
 

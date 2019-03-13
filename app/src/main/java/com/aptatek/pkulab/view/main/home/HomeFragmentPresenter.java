@@ -12,13 +12,13 @@ import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.rangeinfo.PkuValueFormatter;
-import com.aptatek.pkulab.view.test.TestScreens;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Calendar;
@@ -83,12 +83,13 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     void loadData() {
         disposables.add(
                 rangeInteractor.getInfo()
-                        .flatMap(rangeInfo -> {
-                            final long now = System.currentTimeMillis();
-                            final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, now);
-                            return testResultInteractor.listBetween(past, now)
-                                    .map(list -> new Pair<>(rangeInfo, list));
-                        })
+                        .flatMap(rangeInfo -> testResultInteractor.getLatest()
+                                .map(TestResult::getTimestamp)
+                                .onErrorReturn(error -> System.currentTimeMillis())
+                                .flatMap(timeStamp -> {
+                                    final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, timeStamp);
+                                    return testResultInteractor.listBetween(past, timeStamp);
+                                }).map(list -> new Pair<>(rangeInfo, list)))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
                             if (pair.second.isEmpty()) {
@@ -162,9 +163,19 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         super.detachView();
     }
 
+    void checkRunningTest() {
+        disposables.add(
+                wettingInteractor.getWettingStatus()
+                        .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
+                        .subscribe(ignored ->
+                                ifViewAttached(HomeFragmentView::navigateToTestScreen)
+                        )
+        );
+    }
+
     void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
-                .andThen(testInteractor.setLastScreen(TestScreens.TURN_READER_ON))
+                .andThen(testInteractor.resetTest())
                 .doAfterTerminate(() -> preferenceManager.setTestFlowStatus(true))
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );

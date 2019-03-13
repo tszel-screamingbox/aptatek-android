@@ -5,7 +5,7 @@ import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 
 public final class PkuLevelConverter {
 
-    private static final float MOL_TO_GRAM_CONVERSION_RATIO = 60f;
+    private static final float MOL_TO_GRAM_CONVERSION_RATIO = 60.54f;
 
     private PkuLevelConverter() {
 

@@ -76,4 +76,16 @@ public class TurnReaderOnConnectFragment extends TurnReaderOnFragment<TurnReader
     void onSkipClicked() {
         presenter.syncData();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResumed();
+    }
+
+    @Override
+    public void onPause() {
+        presenter.onPaused();
+        super.onPause();
+    }
 }

@@ -11,7 +11,7 @@
     <color name="applicationMediumGray">#B8C3CC</color>
     <color name="applicationSolidGray">#84929D</color>
     <color name="applicationGray">#4A4A4A</color>
-    <color name="applicationTransparentGray">#774A4A4A</color>
+    <color name="applicationTransparentGray">#7736424D</color>
     <color name="applicationGreen">#20E8CD</color>
     <color name="applicationRed">#EB5757</color>
     <color name="applicationPink">#FA4E7C</color>
@@ -58,4 +58,5 @@
 
     <color name="switchTrack">#D3DEE5</color>
     <color name="arrowGray">#D3DEE6</color>
+    <color name="rangeBarColor">@color/arrowGray</color>
 </resources>

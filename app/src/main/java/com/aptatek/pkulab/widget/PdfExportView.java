@@ -91,12 +91,12 @@ public class PdfExportView extends ConstraintLayout {
         invalidate();
     }
 
-    private int getNextEvenFor(final int input) {
-        if (input % 2 == 0) {
-            return input;
+    private int getAxisMaxForDays(final int input) {
+        if (input < 30) {
+            return 30;
         }
 
-        return input + 1;
+        return 32;
     }
 
     // TODO use the same initChart method as WeeklyChartFragment...
@@ -115,7 +115,7 @@ public class PdfExportView extends ConstraintLayout {
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0f);
-        final int maxValue = getNextEvenFor(pdfEntryData.getDaysOfMonth());
+        final int maxValue = getAxisMaxForDays(pdfEntryData.getDaysOfMonth());
         xAxis.setAxisMaximum(maxValue);
         xAxis.setLabelCount((maxValue / 2) + 1, true);
         xAxis.setTypeface(typeface);

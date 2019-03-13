@@ -137,7 +137,7 @@ public class PreferenceManager {
             return testScreens[screenIndex];
         }
 
-        return TestScreens.TURN_READER_ON;
+        throw new IllegalStateException("No running tess!");
     }
 
     public void setTestStatus(final TestScreens testStatus) {

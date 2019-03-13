@@ -24,6 +24,7 @@ import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
+import com.google.gson.JsonParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,11 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.data.Data;
@@ -110,7 +113,10 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .done(device -> Timber.d("Successfully enabled Test Progress notifications: device [%s]", device.getAddress()))
                         .enqueue();
 
-                updateTime().subscribe();
+                updateTime().subscribe(
+                        () -> Timber.d("Time updated"),
+                        Timber::e
+                );
             }
 
         };
@@ -176,7 +182,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     public Completable connectCompletable(@NonNull final BluetoothDevice bluetoothDevice) {
         return Completable.fromAction(() ->
                 connect(bluetoothDevice)
-                        .useAutoConnect(true)
+                        .useAutoConnect(false)
                         .await()
         );
     }
@@ -208,10 +214,26 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_UPDATE_TIME, null);
     }
 
-    public Single<ResultResponse>  getResult(@NonNull final String id) {
+    public Single<ResultResponse> getResult(@NonNull final String id) {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT, new RequestResultCharacteristicDataProvider.RequestResultData(id))
-                .delay(500, TimeUnit.MILLISECONDS) // this delay is required because the reader needs some time to actually write the Result characteristic...
-                .andThen(readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT));
+                .delay(200, TimeUnit.MILLISECONDS) // give some time for reader to settle Result characteristic...
+                .andThen(this.<ResultResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT)
+                        .onErrorResumeNext(error -> {
+                            if (error instanceof JsonParseException) {  // if the good old initial value is read from Result char, give it a chance to settle and try again...
+                                Timber.d("Caught a JsonParseException, but no worries, will retry soon...");
+                                return Flowable.timer(200, TimeUnit.MILLISECONDS)
+                                        .take(1)
+                                        .singleOrError()
+                                        .flatMap(ignored -> this.readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT));
+                            }
+
+                            return Single.error(error);
+                        })
+                        .repeat()
+                        .takeUntil((Predicate<ResultResponse>) resultResponse -> resultResponse.getDate().equals(id)) // make sure we have the result we requested...
+                )
+                .lastOrError()
+                .doOnSuccess(result -> Timber.d("Requested resultId: %s, result: %s", id, result));
     }
 
     public Single<List<ResultResponse>> syncResults() {

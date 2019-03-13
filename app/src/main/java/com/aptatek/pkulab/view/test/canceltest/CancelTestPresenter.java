@@ -5,7 +5,6 @@ import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
-import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
@@ -43,7 +42,7 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
 
     public void stopTest() {
         disposable = wettingInteractor.resetWetting()
-                .andThen(testInteractor.setLastScreen(TestScreens.TURN_READER_ON))
+                .andThen(testInteractor.resetTest())
                 .doAfterTerminate(() -> preferenceManager.setTestFlowStatus(false))
                 .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
                 .subscribe();
