@@ -8,6 +8,7 @@ import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectView;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
@@ -22,6 +23,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -89,18 +91,33 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
         disposables.add(Single.zip(readerInteractor.getNumberOfResults(), testResultInteractor.getNumberOfMeasures(), Integer::equals)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
-                .flatMap(new Function<Boolean, SingleSource<?>>() {
-                    @Override
-                    public SingleSource<?> apply(Boolean aBoolean) throws Exception {
-                        return readerInteractor.syncResults();
-                    }
-                })
                 .subscribe((isCountEquals, throwable) -> ifViewAttached(view -> {
                     if (isCountEquals) {
-                        view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT);
+                        getWorkflowState();
                     } else {
-                        view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT);
+                        syncData();
                     }
                 })));
+    }
+
+    private void syncData() {
+        disposables.add(readerInteractor.syncResults()
+                .subscribe(
+                        ignored -> ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT)),
+                        error -> ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT))
+                ));
+    }
+
+    private void getWorkflowState() {
+        disposables.add(readerInteractor.getWorkflowState()
+                .take(1)
+                .subscribe(workflowState -> {
+                    if (workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.TEST_RUNNING
+                            || workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST) {
+                        ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_TEST_RUNNING));
+                    } else {
+                        ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT));
+                    }
+                }));
     }
 }

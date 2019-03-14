@@ -350,6 +350,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                         decision -> {
                         });
                 dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
+            } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {
+                getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
             }
         }
     }
