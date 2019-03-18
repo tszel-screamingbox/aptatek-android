@@ -102,7 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/general.distance.xxxmini"
                 android:layout_marginEnd="@dimen/general.distance.xxxmini"
-                android:text="-"
+                android:text="@string/rangeinfo.to"
+                android:textColor="@color/applicationBlack"
+                android:textSize="@dimen/font.size.medium"
                 app:layout_constraintBaseline_toBaselineOf="@+id/rangeSettingsNormalFloor"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsNormalCeil"
                 app:layout_constraintStart_toEndOf="@+id/rangeSettingsNormalFloor" />
