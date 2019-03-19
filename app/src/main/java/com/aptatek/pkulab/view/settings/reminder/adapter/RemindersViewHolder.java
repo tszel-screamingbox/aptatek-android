@@ -37,10 +37,6 @@ class RemindersViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        if (item.isActive()) {
-            constraintLayoutReminder.setBackgroundResource(R.drawable.reminder_item_active_background);
-        } else {
-            constraintLayoutReminder.setBackgroundResource(R.drawable.reminder_item_inactive_background);
-        }
+        textViewTime.setEnabled(item.isActive());
     }
 }
