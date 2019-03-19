@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -43,6 +44,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -127,6 +129,15 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
                 showNextScreen();
             }
         }
+    }
+
+    @OnTouch(R.id.testDisclaimerText)
+    public boolean disclaimerTouched(final MotionEvent event) {
+        final BaseFragment activeBaseFragment = getActiveBaseFragment();
+        if (activeBaseFragment instanceof WettingFragment) {
+            return ((WettingFragment) activeBaseFragment).warningTextTouched(event);
+        }
+        return true;
     }
 
     @OnClick(R.id.testBattery)
