@@ -40,6 +40,7 @@
             android:layout_marginStart="@dimen/general.distance.small"
             android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
             android:checked="true"
+            android:fontFamily="@font/nunito_black"
             android:text="@string/settings.reminder.schedule.type.weekly"
             android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
             app:layout_constraintLeft_toLeftOf="parent" />
@@ -49,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
+            android:fontFamily="@font/nunito_black"
             android:text="@string/settings.reminder.schedule.type.biweekly"
             android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
             app:layout_constraintStart_toEndOf="@id/guideline3"
@@ -61,6 +63,7 @@
             android:layout_marginStart="@dimen/general.distance.small"
             android:layout_marginTop="@dimen/general.distance.mini"
             android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
+            android:fontFamily="@font/nunito_black"
             android:text="@string/settings.reminder.schedule.type.monthly"
             android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -84,9 +87,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/nunito_black"
             android:padding="@dimen/general.distance.xxsmall"
             android:text="@string/reminder.time.picker.add"
-            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font.size.medium" />
 
@@ -95,9 +98,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/nunito_black"
             android:padding="@dimen/general.distance.xxsmall"
-            android:text="Cancel"
-            android:textAllCaps="true"
+            android:text="@string/month.picker.cancel"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font.size.medium"
             android:visibility="gone" />
@@ -120,9 +123,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/nunito_black"
             android:padding="@dimen/general.distance.xxsmall"
             android:text="@string/reminder.time.picker.cancel"
-            android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font.size.medium" />
 
@@ -131,9 +134,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/nunito_black"
             android:padding="@dimen/general.distance.xxsmall"
-            android:text="Confirm"
-            android:textAllCaps="true"
+            android:text="@string/mont.picker.confirm"
             android:textColor="@android:color/white"
             android:textSize="@dimen/font.size.medium"
             android:visibility="gone" />
