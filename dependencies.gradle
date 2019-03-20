@@ -46,6 +46,9 @@ ext {
             // Crashlytics
             crashlytics       : '2.9.3',
 
+            // UX Cam
+            uxcam               : '3.0.7@aar',
+
             // AutoValue
             autoValue         : '1.6',
 
@@ -103,7 +106,6 @@ ext {
 
             // CSV export
             csv               : '4.5'
-
     ]
 
     androidSupportDependencies = [
@@ -168,8 +170,9 @@ ext {
             release: "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leakcanary}"
     ]
 
-    crashlyticsDependencies = [
-            crashlytics: "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
+    analyticDependencies = [
+            crashlytics: "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}",
+            uxcam: "com.uxcam:uxcam:${versions.uxcam}"
     ]
 
     appDependencies = [

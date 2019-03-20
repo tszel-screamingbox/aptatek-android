@@ -148,8 +148,9 @@ dependencies {
     // Logger framework
     implementation appDependencies.timber
 
-    // Crashlytics
-    implementation crashlyticsDependencies.crashlytics
+    // Analytics
+    implementation analyticDependencies.crashlytics
+    implementation analyticDependencies.uxcam
 
     // AutoValue
     implementation autoValueDependencies.api
