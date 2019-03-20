@@ -13,6 +13,7 @@ import android.view.View;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.view.base.BaseFragment;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.OnClick;
@@ -32,6 +33,11 @@ public abstract class PermissionRequiredFragment<V extends PermissionRequiredVie
     @Override
     protected void initObjects(final View view) {
 
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.emptyList();
     }
 
     @Override

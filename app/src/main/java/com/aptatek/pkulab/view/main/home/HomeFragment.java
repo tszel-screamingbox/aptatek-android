@@ -35,6 +35,7 @@ import com.aptatek.pkulab.widget.HeaderView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -88,6 +89,15 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @BindView(R.id.unitText)
     TextView unitTextView;
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        final List<View> list = new ArrayList<>();
+        list.add(unitTextView);
+        list.add(bubbleScrollView);
+        list.add(mainHeaderView.getSubtitleTextView());
+        return list;
+    }
 
     @Override
     public String getTitle() {

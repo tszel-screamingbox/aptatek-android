@@ -28,6 +28,7 @@ import com.aptatek.pkulab.widget.PdfExportView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,6 +69,15 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     TextView tvUnit;
 
     private SwipeAdapter swipeAdapter;
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        final List<View> list = new ArrayList<>();
+        list.add(tvUnit);
+        list.add(dateTextView);
+        list.add(chartViewPager);
+        return list;
+    }
 
     @Override
     public String getTitle() {

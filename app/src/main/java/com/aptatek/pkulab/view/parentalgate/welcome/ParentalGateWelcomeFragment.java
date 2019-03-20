@@ -14,14 +14,18 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.parentalgate.ParentalGateView;
 import com.aptatek.pkulab.view.parentalgate.verification.ParentalGateVerificationFragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static android.view.View.*;
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcomeView, ParentalGateWelcomePresenter>
         implements ParentalGateWelcomeView {
@@ -43,6 +47,15 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
     @BindView(R.id.buttonAction)
     TextView btnKeypadAction;
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        final List<View> list = new ArrayList<>();
+        list.add(keypad);
+        list.add(etAge);
+        list.add(etBirthDate);
+        return list;
+    }
 
     @Override
     public String getTitle() {
@@ -93,17 +106,17 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(requireActivity(),
                 R.style.Parental_Dialog_DatePicker,
-            (view, year, month, dayOfMonth) -> {
-                final Calendar calendar = Calendar.getInstance();
-                calendar.clear();
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                (view, year, month, dayOfMonth) -> {
+                    final Calendar calendar = Calendar.getInstance();
+                    calendar.clear();
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                if (presenter != null) {
-                    presenter.onBirthDateSet(calendar.getTimeInMillis());
-                }
-            },
+                    if (presenter != null) {
+                        presenter.onBirthDateSet(calendar.getTimeInMillis());
+                    }
+                },
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));

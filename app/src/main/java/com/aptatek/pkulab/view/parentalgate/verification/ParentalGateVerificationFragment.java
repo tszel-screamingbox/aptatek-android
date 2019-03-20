@@ -15,6 +15,8 @@ import com.aptatek.pkulab.view.parentalgate.ParentalGateView;
 import com.aptatek.pkulab.view.parentalgate.welcome.AgeVerificationResult;
 import com.aptatek.pkulab.view.splash.SplashActivity;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -54,6 +56,11 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
     View btnTryAgain;
 
     private Disposable disposable;
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.emptyList();
+    }
 
     @Override
     public String getTitle() {
