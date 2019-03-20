@@ -180,10 +180,12 @@
     <string name="test.cancel.navigation.yes">Yes</string>
     <string name="test.cancel.title">Cancel test</string>
     <string name="test.countdown.format">mm:ss</string>
-    <string name="notification.channel.name">General Notifications</string>
+    <string name="notification.channel.general">General Notifications</string>
+    <string name="notification.channel.reader.events">Reader Events</string>
+    <string name="notification.channel.reader.status">Reader Status</string>
     <string name="test.countdown.notification.channel.name">Wetting Countdown notifications</string>
-    <string name="test.wetting.notification.finished.text">Tap to proceed</string>
-    <string name="test.wetting.notification.finished.title">Sample wetting complete</string>
+    <string name="test.wetting.notification.finished.text">Tap to continue test</string>
+    <string name="test.wetting.notification.finished.title">Sample Ready</string>
     <string name="test.wetting.notification.inprogress.textformat">Remaining: %s</string>
     <string name="test.wetting.notification.inprogress.title">Sample wetting in progress</string>
     <string name="test.result.message">Please consult your medical team before making adjustments to your routine</string>
@@ -228,6 +230,8 @@
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
     <string name="test.selftest.title">Self Checking</string>
     <string name="test.selftest.message">Reader is doing a self-check to make sure that it can function properly during testing</string>
+    <string name="test.alert.used.cassette.title">Used Cassette Error</string>
+    <string name="test.alert.used.cassette.message">Everything from prior blood test needs to be removed from the reader - it needs to be empty before beginning a new test</string>
 
     <!-- WeeklyResult Activity -->
     <string name="weekly.chart.label">Phe levels are in %s</string>
@@ -299,6 +303,8 @@
     <string name="csv.export.body">Phe test results from %1$s - %2$s exported from PKU Lab app v%3$s</string>
     <string name="csv.export.body.format">dd.MM.yyyy</string>
     <string name="csv.export.file.name">PKU Results - %1$s.csv</string>
+    <string name="csv.export.reminders.file.name">Reminders - %1$s.csv</string>
+    <string name="csv.export.pku.range.info.file.name">PKU Range Info - %1$s.csv</string>
     <string name="csv.export.file.name.format">yyyy.MM.dd HH:mm:ss</string>
     <string name="csv.export.subject">Export from PKU Lab</string>
 
@@ -313,17 +319,19 @@
     <string name="month.picker.ok">Ok</string>
     <string name="bluetooth.notification.connecting.title">Connecting</string>
     <string name="bluetooth.notification.connecting.message">Please wait while we are trying to connect to the reader…</string>
-    <string name="bluetooth.notification.connected.title">Connected to %1$s</string>
+    <string name="bluetooth.notification.connected.title">Connected to Reader</string>
     <string name="bluetooth.notification.connected.message">Battery level: %1$d %%</string>
-    <string name="bluetooth.notification.sync.title">Syncing data from %1$s</string>
-    <string name="bluetooth.notification.sync.message">Please wait until the process completes</string>
-    <string name="bluetooth.notification.test.running.title">Test is running on %1$s</string>
-    <string name="bluetooth.notification.test.running.message">Please wait until the test completes</string>
-    <string name="bluetooth.notification.test.complete.title">Test ready on %1$s</string>
+    <string name="bluetooth.notification.connected.test.title">Reader Ready</string>
+    <string name="bluetooth.notification.connected.test.message">Tap to continue</string>
+    <string name="bluetooth.notification.sync.title">Syncing data from the Reader</string>
+    <string name="bluetooth.notification.sync.message">Please wait until the process is completed.</string>
+    <string name="bluetooth.notification.test.complete.title">Test Ready</string>
     <string name="bluetooth.notification.test.complete.message">Tap to check results</string>
-    <string name="bluetooth.notification.error.title">Failed to communication with reader</string>
-    <string name="bluetooth.notification.error.disconnected.title">Device is disconnected</string>
-    <string name="bluetooth.notification.error.disconnected.message">Tap to retry connection</string>
+    <string name="bluetooth.notification.error.title">Failed to communicate with reader</string>
+    <string name="bluetooth.notification.permission.title">Missing Permissions</string>
+    <string name="bluetooth.notification.permission.message">Tap to provide required permissions</string>
+    <string name="bluetooth.notification.multiplereaders.title">Multiple Reader devices found</string>
+    <string name="bluetooth.notification.multiplereaders.message">Tap to select one</string>
 
     <string name="low.device.storage.detected.title">Phone Storage Full</string>
     <string name="low.device.storage.detected.description">The memory on your phone is almost full - unable to store more Phe data in this application until you remove some other content from your phone to make more storage space available.</string>
@@ -332,4 +340,15 @@
     <string name="pdf.export.dialog.last.three.months">Last 3 Months</string>
     <string name="pdf.export.dialog.last.half.year">Last 6 Months</string>
     <string name="pdf.export.dialog.last.year">Last Year</string>
+    
+    <string name="faq.report.issue.title">Report Issue</string>
+    <string name="faq.report.issue.data.corruption">Data Corruption</string>
+    <string name="faq.report.issue.connection.error">Connection Error</string>
+    <string name="faq.report.issue.other">Other</string>
+
+    <string name="faq.report.issue.email.description">Report Data\nPhone Type: %1$s\nModel: %2$s\nBuild Number: %3$s\nAndroid Version: %4$s\nAvailable Space: %5$s\n\nWe will only collect the basic information necessary to solve the specific concern you are reporting.\n\nCan you please describe what happened?</string>
+    <string name="faq.report.issue.dialog.title">Send issue</string>
+    <string name="faq.report.issue.email.title">Error Report - %1$s</string>
+    <string name="faq.report.issue.email.target">help@pkulabkit.com</string>
+    <string name="mont.picker.confirm">Confirm</string>
 </resources>

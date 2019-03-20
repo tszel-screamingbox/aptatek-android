@@ -40,6 +40,7 @@ public abstract class BaseForegroundService extends Service {
                     if (running) {
                         startForeground();
                     } else {
+                        stopForeground(true);
                         stopSelf();
                     }
                 })

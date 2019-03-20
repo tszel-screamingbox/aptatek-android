@@ -5,6 +5,7 @@ import android.content.Context;
 import com.aptatek.pkulab.injection.component.chart.ChartActivityComponent;
 import com.aptatek.pkulab.injection.component.rangeinfo.RangeInfoActivityComponent;
 import com.aptatek.pkulab.injection.component.test.TestActivityComponent;
+import com.aptatek.pkulab.injection.component.webpage.WebPageComponent;
 import com.aptatek.pkulab.injection.module.ActivityModule;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
@@ -57,5 +58,7 @@ public interface ActivityComponent {
     RangeInfoActivityComponent plus(RangeInfoModule module);
 
     ChartActivityComponent plus(RangeInfoModule rangeInfoModule, ChartModule chartModule);
+
+    WebPageComponent plus(ChartModule chartModule);
 
 }

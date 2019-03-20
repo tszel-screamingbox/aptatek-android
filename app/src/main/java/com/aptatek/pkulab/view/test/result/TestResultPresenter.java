@@ -6,6 +6,7 @@ import android.support.annotation.StringRes;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.model.PkuLevel;
@@ -30,6 +31,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
     private final ResourceInteractor resourceInteractor;
     private final WettingInteractor wettingInteractor;
     private final RangeSettingsValueFormatter rangeSettingsValueFormatter;
+    private final TestInteractor testInteractor;
 
     private Disposable disposable;
 
@@ -38,18 +40,22 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                                final TestResultInteractor testResultInteractor,
                                final ResourceInteractor resourceInteractor,
                                final WettingInteractor wettingInteractor,
-                               final RangeSettingsValueFormatter rangeSettingsValueFormatter) {
+                               final RangeSettingsValueFormatter rangeSettingsValueFormatter,
+                               final TestInteractor testInteractor) {
         this.rangeInteractor = rangeInteractor;
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.wettingInteractor = wettingInteractor;
         this.rangeSettingsValueFormatter = rangeSettingsValueFormatter;
+        this.testInteractor = testInteractor;
     }
 
     public void initUi() {
         disposeSubscriptions();
         disposable =
-                clearTestState().andThen(
+                clearTestState()
+                        .andThen(testInteractor.cancelTestNotifications())
+                        .andThen(
                         Single.zip(
                                 rangeInteractor.getInfo(),
                                 testResultInteractor.getLatest().map(TestResult::getPkuLevel),
@@ -59,7 +65,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                                                 .setColor(getColorForLevel(pkuLevel, rangeInfo))
                                                 .setFormattedPkuValue(getFormattedPkuValue(pkuLevel, rangeInfo))
                                                 .setPkuLevelText(getPkuLevelText(pkuLevel, rangeInfo))
-                                                .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(pkuLevel.getUnit()))
+                                                .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(rangeInfo.getPkuLevelUnit()))
                                                 .build())
                 )
                         .observeOn(AndroidSchedulers.mainThread())

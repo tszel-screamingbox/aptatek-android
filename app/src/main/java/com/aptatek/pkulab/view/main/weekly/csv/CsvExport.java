@@ -3,6 +3,8 @@ package com.aptatek.pkulab.view.main.weekly.csv;
 import android.content.Context;
 
 import com.aptatek.pkulab.device.DeviceHelper;
+import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.ReminderDay;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.view.main.weekly.WeeklyChartResourceFormatter;
@@ -51,10 +53,55 @@ public class CsvExport {
 
             writer.writeAll(data);
             writer.close();
-            final long startDate = results.get(0).getTimestamp();
-            final long endDate = results.get(results.size() - 1).getTimestamp();
+
+            final long startDate = results.isEmpty() ? 0L : results.get(0).getTimestamp();
+            final long endDate = results.isEmpty() ? 0L : results.get(results.size() - 1).getTimestamp();
             final String body = formatter.getFormattedCsvBody(startDate, endDate, deviceHelper.getAppVersion());
             return Attachment.create(file, body);
+        });
+    }
+
+    public Single<Attachment> generateRemindersAttachment(final List<ReminderDay> reminderDays, final String fileName) {
+        return Single.fromCallable(() -> {
+            final File file = new File(context.getFilesDir(), fileName);
+            final CSVWriter writer = new CSVWriter(new FileWriter(file));
+
+            final List<String[]> data = new ArrayList<>();
+            data.add(new String[]{"WeekDay", "Active", "Reminder Hour", "Reminder Minute", "Schedule Type"});
+            Ix.from(reminderDays).foreach(reminderDay -> Ix.from(reminderDay.getReminders()).foreach(reminder -> data.add(new String[]{
+                    String.valueOf(reminder.getWeekDay()),
+                    String.valueOf(reminderDay.isActive()),
+                    String.valueOf(reminder.getHour()),
+                    String.valueOf(reminder.getMinute()),
+                    reminder.getReminderScheduleType().name()})));
+
+            writer.writeAll(data);
+            writer.close();
+            return Attachment.create(file, "");
+        });
+    }
+
+    public Single<Attachment> generatePkuRangeInfoAttachment(final PkuRangeInfo pkuRangeInfo, final String fileName) {
+        return Single.fromCallable(() -> {
+            final File file = new File(context.getFilesDir(), fileName);
+            final CSVWriter writer = new CSVWriter(new FileWriter(file));
+
+            final List<String[]> data = new ArrayList<>();
+            data.add(new String[]{"Normal Floor Value", "Normal Ceil Value", "High Ceil Value",
+                    "Normal Absolute Min Value", "Normal Absolute Min Value", "Pku Level Unit", "Is Default Value"});
+            data.add(new String[]{
+                    String.valueOf(pkuRangeInfo.getNormalFloorValue()),
+                    String.valueOf(pkuRangeInfo.getNormalCeilValue()),
+                    String.valueOf(pkuRangeInfo.getHighCeilValue()),
+                    String.valueOf(pkuRangeInfo.getNormalAbsoluteMinValue()),
+                    String.valueOf(pkuRangeInfo.getNormalAbsoluteMaxValue()),
+                    pkuRangeInfo.getPkuLevelUnit().name(),
+                    String.valueOf(pkuRangeInfo.isDefaultValue())
+            });
+
+            writer.writeAll(data);
+            writer.close();
+            return Attachment.create(file, "");
         });
     }
 }

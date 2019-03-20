@@ -42,8 +42,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 22
-        versionName "0.0.22-lumos-internal"
+        versionCode 23
+        versionName "0.0.23"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -168,6 +168,7 @@ dependencies {
     implementation uiDependencies.frameVideoView
     implementation uiDependencies.slidingPanel
     implementation scrollView.discreteScrollView
+    implementation uiDependencies.flexBox
 
     // LeakCanary
     debugImplementation leakDependencies.debug

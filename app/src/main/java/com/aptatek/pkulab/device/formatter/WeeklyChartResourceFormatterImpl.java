@@ -76,6 +76,23 @@ public class WeeklyChartResourceFormatterImpl implements WeeklyChartResourceForm
         return resourceInteractor.getStringResource(R.string.csv_export_body, df.format(startDate), df.format(endDate), version);
     }
 
+    @Override
+    public String getFormattedRemindersCsvFileName() {
+        final Date date = Calendar.getInstance().getTime();
+
+        final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.csv_export_file_name_format), getDefault());
+        df.format(date);
+        return resourceInteractor.getStringResource(R.string.csv_export_reminders_file_name, df.format(date));
+    }
+
+    @Override
+    public String getFormattedPkuRangeInfoCsvFileName() {
+        final Date date = Calendar.getInstance().getTime();
+
+        final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.csv_export_file_name_format), getDefault());
+        df.format(date);
+        return resourceInteractor.getStringResource(R.string.csv_export_pku_range_info_file_name, df.format(date));    }
+
     @StringRes
     private int getDayOfMothSuffix(final int dayOfMonth) {
         Preconditions.checkArgument(

@@ -1,7 +1,9 @@
 package com.aptatek.pkulab.view.splash;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
+import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
@@ -62,10 +64,12 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
         ifViewAttached(attachedView -> {
             if (!preferenceManager.isParentalPassed()) {
                 attachedView.onParentalGateShouldLoad();
-            } else if (keyStoreManager.aliasExists()) {
-                attachedView.onRequestPinActivityShouldLoad();
-            } else {
+            } else if (!keyStoreManager.aliasExists()) {
                 attachedView.onSetPinActivityShouldLoad();
+            } else if (BuildConfig.FLAVOR.equals("prod") && TextUtils.isEmpty(preferenceManager.getPairedDevice())) {
+                attachedView.onConnectReaderShouldLoad();
+            } else {
+                attachedView.onRequestPinActivityShouldLoad();
             }
         });
     }

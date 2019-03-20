@@ -102,13 +102,11 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         super.onResume();
 
         videoView.onResume();
-        presenter.onResumed();
     }
 
     @Override
     public void onPause() {
         videoView.onPause();
-        presenter.onPaused();
 
         super.onPause();
     }
@@ -135,6 +133,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     public void displaySelfCheckAnimation() {
         playVideo(resourceInteractor.getUriForRawFile(R.raw.self_check), true);
+        noReaderAvailable.setVisibility(View.GONE);
     }
 
     @Override
@@ -158,7 +157,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @OnClick(R.id.turnReaderOnNoDeviceAvailable)
     void onNoReaderAvailableClick() {
-        getBaseActivity().launchActivity(WebPageActivityStarter.getIntent(requireContext(), resourceInteractor.getStringResource(R.string.settings_help), Constants.URL_HELP));
+        getBaseActivity().launchActivity(WebPageActivityStarter.getIntent(requireContext(), resourceInteractor.getStringResource(R.string.settings_help), Constants.URL_HELP, true));
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -201,6 +200,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     /**
      * Turn Reader On is meant to be skippable only in one case: when the phone detects an unfinished test after wetting.
+     *
      * @return
      */
     protected boolean isSkipable() {
