@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
@@ -17,6 +18,8 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.widget.HeaderView;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import activitystarter.ActivityStarter;
@@ -42,6 +45,8 @@ public abstract class BasePinFragment extends BaseFragment {
     @BindView(R.id.messageTextView)
     protected TextView messageTextView;
 
+    @BindView(R.id.dialLayout)
+    protected TableLayout keypadTableLayout;
 
     protected abstract void finishedTyping(PinCode pinCode);
 
@@ -52,6 +57,11 @@ public abstract class BasePinFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         ActivityStarter.fill(this, savedInstanceState);
         return view;
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.singletonList(keypadTableLayout);
     }
 
     protected void fillCircle(final int resId, final AnimationCallback callback) {
