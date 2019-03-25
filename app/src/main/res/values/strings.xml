@@ -96,10 +96,10 @@
     <string name="rangeinfo.edit.level.preferences">Level Preferences</string>
     <string name="rangeinfo.high">High</string>
     <string name="rangeinfo.hight">High</string>
-    <string name="rangeinfo.low">Low</string>
+    <string name="rangeinfo.low">Standard</string>
     <string name="rangeinfo.low.value.prefix">under</string>
     <string name="rangeinfo.message">For better health, blood levels of phenylalanine should stay within the lower ranges</string>
-    <string name="rangeinfo.normal">Normal</string>
+    <string name="rangeinfo.normal">Increased</string>
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
     <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
     <string name="rangeinfo.title">Range info</string>
@@ -196,12 +196,12 @@
     <string name="test.result.done">Next</string>
     <string name="test.result.title.veryhigh">Very High</string>
     <string name="test.result.title.high">High</string> <!-- TODO get proper label... -->
-    <string name="test.result.title.normal">Normal</string> <!-- TODO get proper label... -->
-    <string name="test.result.title.low">Low</string> <!-- TODO get proper label... -->
+    <string name="test.result.title.increased">Increased</string> <!-- TODO get proper label... -->
+    <string name="test.result.title.standard">Standard</string> <!-- TODO get proper label... -->
     <string name="test.result.bubble.level.veryhigh">Very high</string>
     <string name="test.result.bubble.level.high">High</string>
-    <string name="test.result.bubble.level.normal">Normal</string>
-    <string name="test.result.bubble.level.low">Low</string>
+    <string name="test.result.bubble.level.increased">Increased</string>
+    <string name="test.result.bubble.level.standard">Standard</string>
 
     <string name="test.breakfoil.title">Break Foil</string>
     <string name="test.breakfoil.message">Unwrap the cap from the foil and screw it on to the chamber to pierce the top seal</string>

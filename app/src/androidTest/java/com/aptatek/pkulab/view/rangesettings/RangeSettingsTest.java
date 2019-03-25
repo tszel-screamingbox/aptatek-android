@@ -102,9 +102,9 @@ public class RangeSettingsTest {
     @Test
     public void testInitialUiValues() {
         final PkuRangeInfo pkuInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
-                .setNormalCeilValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_CEIL, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
-                .setNormalFloorValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_FLOOR, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
+                .setHighCeilValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_INCREASED_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
+                .setNormalCeilValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_INCREASED_CEIL, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
+                .setNormalFloorValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_INCREASED_FLOOR, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
                 .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
                 .setNormalAbsoluteMinValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_LOWEST_VALUE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())
                 .setNormalAbsoluteMaxValue(PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_HIGHEST_VALUE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue())

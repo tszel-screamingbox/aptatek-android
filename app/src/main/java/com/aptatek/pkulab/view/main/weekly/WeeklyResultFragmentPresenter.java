@@ -244,9 +244,9 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
                         final ChartUtils.State state = ChartUtils.getState(testResult.getPkuLevel(), pkuRangeInfo);
 
-                        if (state == ChartUtils.State.LOW) {
+                        if (state == ChartUtils.State.STANDARD) {
                             low++;
-                        } else if (state == ChartUtils.State.NORMAL) {
+                        } else if (state == ChartUtils.State.INCREASED) {
                             normal++;
                         } else if (state == ChartUtils.State.HIGH) {
                             high++;

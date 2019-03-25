@@ -67,8 +67,8 @@ public class PreferencesManagerTest {
         preferenceManager.enableFingerprintScan(true);
         preferenceManager.setWettingStart(INCUBATION_START);
         preferenceManager.setParentalPassed(true);
-        preferenceManager.setPkuRangeNormalFloor(Constants.DEFAULT_PKU_NORMAL_FLOOR);
-        preferenceManager.setPkuRangeNormalCeil(Constants.DEFAULT_PKU_NORMAL_CEIL);
+        preferenceManager.setPkuRangeNormalFloor(Constants.DEFAULT_PKU_INCREASED_FLOOR);
+        preferenceManager.setPkuRangeNormalCeil(Constants.DEFAULT_PKU_INCREASED_CEIL);
         preferenceManager.setPkuRangeUnit(Constants.DEFAULT_PKU_LEVEL_UNIT);
         preferenceManager.setRangeDialogShown(true);
         preferenceManager.setPairedDevice(TEST);

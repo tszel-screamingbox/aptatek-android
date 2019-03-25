@@ -25,7 +25,7 @@ import ix.Ix;
 
 public final class ChartUtils {
 
-    public enum State {LOW, NORMAL, HIGH, VERY_HIGH}
+    public enum State {STANDARD, INCREASED, HIGH, VERY_HIGH}
 
     private ChartUtils() {
         // hidden ctor
@@ -116,9 +116,9 @@ public final class ChartUtils {
         if (0f > levelInProperUnit.getValue()) {
             throw new IllegalArgumentException("Invalid pku value: " + pkuLevel);
         } else if (userRange.getNormalFloorValue() > levelInProperUnit.getValue()) {
-            chartState = State.LOW;
+            chartState = State.STANDARD;
         } else if (userRange.getNormalFloorValue() <= levelInProperUnit.getValue() && levelInProperUnit.getValue() <= userRange.getNormalCeilValue()) {
-            chartState = State.NORMAL;
+            chartState = State.INCREASED;
         } else if (userRange.getNormalCeilValue() < levelInProperUnit.getValue() && levelInProperUnit.getValue() <= userRange.getHighCeilValue()) {
             chartState = State.HIGH;
         } else {
@@ -131,25 +131,25 @@ public final class ChartUtils {
     @StringRes
     public static int stateString(final State state) {
         switch (state) {
-            case LOW:
-                return R.string.test_result_bubble_level_low;
-            case NORMAL:
-                return R.string.test_result_bubble_level_normal;
+            case STANDARD:
+                return R.string.test_result_bubble_level_standard;
+            case INCREASED:
+                return R.string.test_result_bubble_level_increased;
             case HIGH:
                 return R.string.test_result_bubble_level_high;
             case VERY_HIGH:
                 return R.string.test_result_bubble_level_veryhigh;
             default:
-                return R.string.test_result_bubble_level_normal;
+                return R.string.test_result_bubble_level_increased;
         }
     }
 
     @DrawableRes
     public static int smallBubbleBackground(final State state) {
         switch (state) {
-            case LOW:
+            case STANDARD:
                 return R.drawable.bubble_full_low;
-            case NORMAL:
+            case INCREASED:
                 return R.drawable.bubble_full_normal;
             case HIGH:
                 return R.drawable.bubble_full_high;
@@ -163,16 +163,16 @@ public final class ChartUtils {
     @ColorRes
     public static int stateColor(final State state) {
         switch (state) {
-            case LOW:
-                return R.color.pkuLevelLow;
-            case NORMAL:
-                return R.color.pkuLevelNormal;
+            case STANDARD:
+                return R.color.pkuLevelStandard;
+            case INCREASED:
+                return R.color.pkuLevelIncreased;
             case HIGH:
                 return R.color.pkuLevelHigh;
             case VERY_HIGH:
                 return R.color.pkuLevelVeryHigh;
             default:
-                return R.color.pkuLevelNormal;
+                return R.color.pkuLevelIncreased;
         }
     }
 

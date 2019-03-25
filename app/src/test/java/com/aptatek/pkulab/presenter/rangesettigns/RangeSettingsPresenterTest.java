@@ -100,9 +100,9 @@ public class RangeSettingsPresenterTest {
     @Test
     public void testRefresh() {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
-                .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
-                .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
+                .setHighCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
+                .setNormalCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL)
+                .setNormalFloorValue(Constants.DEFAULT_PKU_INCREASED_FLOOR)
                 .setPkuLevelUnit(PkuLevelUnits.MICRO_MOL)
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
@@ -124,8 +124,8 @@ public class RangeSettingsPresenterTest {
                 .setLowText(valueFormatter.getFormattedLow(rangeInfo))
                 .setHighText(valueFormatter.getFormattedHigh(rangeInfo))
                 .setVeryHighText(valueFormatter.getFormattedVeryHigh(rangeInfo))
-                .setNormalFloorMMolValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
-                .setNormalCeilMMolValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
+                .setNormalFloorMMolValue(Constants.DEFAULT_PKU_INCREASED_FLOOR)
+                .setNormalCeilMMolValue(Constants.DEFAULT_PKU_INCREASED_CEIL)
                 .setNormalAbsoluteFloorMMolValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteCeilMMolValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .setSelectedUnit(rangeInfo.getPkuLevelUnit())
@@ -163,9 +163,9 @@ public class RangeSettingsPresenterTest {
         doReturn(testValue).when(valueFormatter).formatRegularValue(ArgumentMatchers.any(PkuLevel.class));
 
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
-                .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
-                .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
+                .setHighCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
+                .setNormalCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL)
+                .setNormalFloorValue(Constants.DEFAULT_PKU_INCREASED_FLOOR)
                 .setPkuLevelUnit(PkuLevelUnits.MICRO_MOL)
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
@@ -220,16 +220,16 @@ public class RangeSettingsPresenterTest {
     @Test
     public void testOnBackDoesntPopDialog() {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
-                .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
-                .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
+                .setHighCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
+                .setNormalCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL)
+                .setNormalFloorValue(Constants.DEFAULT_PKU_INCREASED_FLOOR)
                 .setPkuLevelUnit(PkuLevelUnits.MICRO_MOL)
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
                 .build();
         doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
 
-        presenter.onBackPressed(Constants.DEFAULT_PKU_NORMAL_FLOOR, Constants.DEFAULT_PKU_NORMAL_CEIL, PkuLevelUnits.MICRO_MOL);
+        presenter.onBackPressed(Constants.DEFAULT_PKU_INCREASED_FLOOR, Constants.DEFAULT_PKU_INCREASED_CEIL, PkuLevelUnits.MICRO_MOL);
 
         verify(view).finish();
     }
@@ -243,9 +243,9 @@ public class RangeSettingsPresenterTest {
     @Test
     public void testOnBackPopsDialog() {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
-                .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
-                .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
+                .setHighCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
+                .setNormalCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL)
+                .setNormalFloorValue(Constants.DEFAULT_PKU_INCREASED_FLOOR)
                 .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)
