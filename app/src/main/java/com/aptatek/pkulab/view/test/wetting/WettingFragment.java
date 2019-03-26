@@ -1,8 +1,10 @@
 package com.aptatek.pkulab.view.test.wetting;
 
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 import android.widget.TextView;
 
+import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
@@ -13,6 +15,10 @@ import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnTouch;
+
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
 
 public class WettingFragment extends TestBaseFragment<WettingView, WettingPresenter> implements WettingView {
 
@@ -21,6 +27,9 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
 
     @BindView(R.id.testWettingCountdown)
     TextView tvCountdown;
+
+    private boolean isDisclaimerPressed = false;
+    private boolean isAnimationPressed = false;
 
     @Override
     protected void injectTestFragment(final @NonNull TestFragmentComponent fragmentComponent) {
@@ -59,7 +68,7 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
     @Override
     public void onResume() {
         super.onResume();
-
+        setNextButtonVisible(BuildConfig.FLAVOR.equals("mock"));
         presenter.cancelCountdownNotification();
     }
 
@@ -72,5 +81,50 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
     @Override
     public TestScreens getScreen() {
         return TestScreens.WETTING;
+    }
+
+    public boolean warningTextTouched(final MotionEvent event) {
+        switch (event.getAction()) {
+            case ACTION_DOWN:
+                isDisclaimerPressed = true;
+                return true;
+            case ACTION_UP:
+                isDisclaimerPressed = false;
+                return true;
+        }
+        return true;
+    }
+
+    @OnTouch(R.id.testWettingImage)
+    public boolean animationTouched(final MotionEvent event) {
+        if (!isDisclaimerPressed) {
+            return true;
+        }
+
+        switch (event.getAction()) {
+            case ACTION_DOWN:
+                isAnimationPressed = true;
+                return true;
+            case ACTION_UP:
+                isAnimationPressed = false;
+                return true;
+        }
+        return true;
+    }
+
+    @OnTouch(R.id.header)
+    public boolean headerTouched(final MotionEvent event) {
+        switch (event.getAction()) {
+            case ACTION_DOWN:
+                if (!isDisclaimerPressed || !isAnimationPressed) {
+                    return true;
+                }
+                presenter.startEasterEggTimer();
+                return true;
+            case ACTION_UP:
+                presenter.stopEasterEggTimer();
+                return true;
+        }
+        return true;
     }
 }
