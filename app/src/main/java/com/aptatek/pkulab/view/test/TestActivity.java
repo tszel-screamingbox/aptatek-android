@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -46,6 +47,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
+import static android.support.design.widget.BottomSheetBehavior.STATE_COLLAPSED;
+import static android.support.design.widget.BottomSheetBehavior.STATE_EXPANDED;
+import static android.support.design.widget.BottomSheetBehavior.from;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -74,6 +78,9 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     ConstraintLayout bottomBar;
     @BindView(R.id.testPageIndicator)
     PageIndicatorView screenPagerIndicator;
+    @BindView(R.id.bottom_sheet)
+    ConstraintLayout bottomConstraintLayout;
+
     @BindView(R.id.testDisclaimerText)
     @Nullable
     protected TextView tvDisclaimer;
@@ -306,5 +313,15 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setNextButtonVisible(final boolean visible) {
         nextButton.setVisibility(visible ? VISIBLE : INVISIBLE);
+    }
+
+    public void showHelpScreen() {
+        final BottomSheetBehavior behavior = from(bottomConstraintLayout);
+        behavior.setState(STATE_EXPANDED);
+    }
+
+    public void closeHelpScreen() {
+        final BottomSheetBehavior behavior = from(bottomConstraintLayout);
+        behavior.setState(STATE_COLLAPSED);
     }
 }
