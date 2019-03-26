@@ -33,7 +33,7 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
     private static final float BUBBLE_TEXT_PADDING_RATIO = 0.1f;
     private static final float BUBBLE_TEXT_SIZE_STEP = 1f;
     private static final String DEMO_TEXT_4_DIGITS = "9999";
-    private static final float CIRCLE_BORDER = 2f;
+    private static final float CIRCLE_BORDER = 1.25f;
     private static final float DASHED_LINE_LENGTH = 3f;
 
 
@@ -137,8 +137,8 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
             c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf, mRenderPaint);
 
             if (isSick) {
-                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf - CIRCLE_BORDER, white);
-                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf - CIRCLE_BORDER * 2, mRenderPaint);
+                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf - convertDpToPixel(CIRCLE_BORDER), white);
+                c.drawCircle(pointBuffer[0], pointBuffer[1], shapeHalf - convertDpToPixel(CIRCLE_BORDER) * 2, mRenderPaint);
             }
 
             if (isFasting) {

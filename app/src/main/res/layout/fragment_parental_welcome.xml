@@ -19,7 +19,6 @@
         app:subTitleText="@string/parental.welcome.description"
         app:titleText="@string/parental.welcome.title" />
 
-
     <EditText
         android:id="@+id/parentalBirthDate"
         style="@style/Parental.Input"

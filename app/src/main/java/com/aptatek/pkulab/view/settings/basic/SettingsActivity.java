@@ -16,7 +16,7 @@ import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
-import com.aptatek.pkulab.view.settings.web.WebPageActivityStarter;
+import com.aptatek.pkulab.view.settings.web.WebHostActivityStarter;
 import com.aptatek.pkulab.widget.HeaderView;
 
 import javax.inject.Inject;
@@ -91,13 +91,13 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
                         launchActivity(RangeSettingsActivity.starter(SettingsActivity.this));
                         break;
                     case HELP:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), Constants.URL_HELP, true));
+                        launchActivity(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), Constants.URL_HELP, true));
                         break;
                     case PRIVACY_POLICY:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), Constants.URL_PRIVACY, false));
+                        launchActivity(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), Constants.URL_PRIVACY, false));
                         break;
                     case TERMS_AND_CONDITIONS:
-                        launchActivity(WebPageActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_terms), Constants.URL_TERMS, false));
+                        launchActivity(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_terms), Constants.URL_TERMS, false));
                         break;
                     default:
                         Timber.d("Unhandled settings item clicked: %s", item);
