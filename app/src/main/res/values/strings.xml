@@ -98,6 +98,8 @@
     <string name="rangeinfo.hight">High</string>
     <string name="rangeinfo.low">Standard</string>
     <string name="rangeinfo.low.value.prefix">under</string>
+    <string name="rangeinfo.margin.mg">&lt;1.6</string>
+    <string name="rangeinfo.margin.umol">&lt;100</string>
     <string name="rangeinfo.message">For better health, blood levels of phenylalanine should stay within the lower ranges</string>
     <string name="rangeinfo.normal">Increased</string>
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
