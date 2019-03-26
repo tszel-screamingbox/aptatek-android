@@ -10,6 +10,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -44,6 +45,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
 import static android.support.design.widget.BottomSheetBehavior.STATE_COLLAPSED;
 import static android.support.design.widget.BottomSheetBehavior.STATE_EXPANDED;
@@ -134,6 +136,15 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
                 showNextScreen();
             }
         }
+    }
+
+    @OnTouch(R.id.testDisclaimerText)
+    public boolean disclaimerTouched(final MotionEvent event) {
+        final BaseFragment activeBaseFragment = getActiveBaseFragment();
+        if (activeBaseFragment instanceof WettingFragment) {
+            return ((WettingFragment) activeBaseFragment).warningTextTouched(event);
+        }
+        return true;
     }
 
     @OnClick(R.id.testBattery)

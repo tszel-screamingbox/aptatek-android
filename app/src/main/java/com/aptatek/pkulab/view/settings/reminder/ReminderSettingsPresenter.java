@@ -13,6 +13,8 @@ import com.aptatek.pkulab.view.settings.reminder.adapter.ReminderSettingsAdapter
 import com.aptatek.pkulab.view.settings.reminder.adapter.RemindersAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import org.apache.commons.text.WordUtils;
+
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
@@ -280,7 +282,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                             data.add(
                                     ReminderSettingsAdapterItem.builder()
                                             .setWeekDay(reminderDay.getWeekDay())
-                                            .setNameOfDay(new DateFormatSymbols().getWeekdays()[reminderDay.getWeekDay()])
+                                            .setNameOfDay(WordUtils.capitalize(new DateFormatSymbols().getWeekdays()[reminderDay.getWeekDay()]))
                                             .setReminders(remindersAdapterItems)
                                             .setActive(reminderDay.isActive())
                                             .build());

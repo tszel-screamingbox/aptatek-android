@@ -168,6 +168,7 @@ dependencies {
     implementation uiDependencies.frameVideoView
     implementation uiDependencies.slidingPanel
     implementation scrollView.discreteScrollView
+    implementation uiDependencies.flexBox
 
     // LeakCanary
     debugImplementation leakDependencies.debug

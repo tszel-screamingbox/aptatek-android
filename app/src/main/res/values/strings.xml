@@ -103,6 +103,7 @@
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
     <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
     <string name="rangeinfo.title">Range info</string>
+    <string name="rangeinfo.to">to</string>
     <string name="rangeinfo.units.format">Units are in %s</string>
     <string name="rangeinfo.very.high">Very High</string>
     <string name="rangeinfo.veryhigh.value.prefix">over</string>
@@ -288,7 +289,7 @@
 
     <string name="pdf.export.title">Monthly Results</string>
     <string name="pdf.export.unit.description">All units are in %1$s</string>
-    <string name="pdf.export.unit.description.warn">All units are in %1$s. In this data export, please note that these \"normal\" range\nprefrences have been changed from the default range.</string>
+    <string name="pdf.export.unit.description.warn">All units are in %1$s. In this data export, please note that these \"normal\" range\nprefrences have been changed from the default range.*</string>
     <string name="pdf.export.legend.x">%1$s</string>
     <string name="pdf.export.average">Average (+/- %1$s)</string>
     <string name="pdf.export.email.subject">Exported results from PKU LAB</string>
@@ -349,4 +350,5 @@
     <string name="faq.report.issue.dialog.title">Send issue</string>
     <string name="faq.report.issue.email.title">Error Report - %1$s</string>
     <string name="faq.report.issue.email.target">help@pkulabkit.com</string>
+    <string name="mont.picker.confirm">Confirm</string>
 </resources>
