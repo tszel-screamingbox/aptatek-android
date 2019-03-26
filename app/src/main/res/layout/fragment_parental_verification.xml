@@ -1,48 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.xxsmall"
+        android:layout_marginEnd="@dimen/general.distance.xxsmall"
+        android:layout_marginBottom="@dimen/general.distance.xsmall"
+        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
+        app:layout_constraintTop_toBottomOf="@+id/guideTop"
+        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:subTitleText="@string/parental.welcome.description"
+        app:titleText="@string/parental.welcome.title" />
+
     <ImageView
         android:id="@+id/parentalVerificationImage"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent="0.30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintBottom_toTopOf="@+id/parentalVerificationButton"
+        app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_age_verified" />
 
-    <TextView
-        android:id="@+id/parentalVerificationTitle"
-        style="@style/General.Title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/parentalVerificationMessage"
-        app:layout_constraintEnd_toStartOf="@+id/guideEnd"
-        app:layout_constraintStart_toEndOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/parentalVerificationImage"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="Thank you!" />
-
-    <TextView
-        android:id="@+id/parentalVerificationMessage"
-        style="@style/General.Text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideEnd"
-        app:layout_constraintStart_toEndOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/parentalVerificationImage"
-        tools:text="Your age was verified" />
-
     <Button
+        app:layout_constraintBottom_toTopOf="@id/guideBottom"
         android:id="@+id/parentalVerificationButton"
         style="@style/General.Rounded.Button"
         android:layout_width="0dp"
@@ -50,9 +36,22 @@
         android:text="@string/parental.verification.tryagain"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideEnd"
-        app:layout_constraintStart_toEndOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/parentalVerificationMessage"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintStart_toEndOf="@+id/guideStart" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.07" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.97" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideStart"
