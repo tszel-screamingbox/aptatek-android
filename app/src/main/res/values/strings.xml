@@ -311,8 +311,8 @@
     <string name="pdf.legend.sick">Sick</string>
     <string name="pdf.legend.very.high">Very High</string>
     <string name="pdf.legend.high">High</string>
-    <string name="pdf.legend.normal">Normal(%1$s - %2$s)</string>
-    <string name="pdf.legend.low">Low</string>
+    <string name="pdf.legend.normal">Increased(%1$s - %2$s)</string>
+    <string name="pdf.legend.low">Standard</string>
 
     <string name="month.picker.cancel">Cancel</string>
     <string name="month.picker.ok">Ok</string>
