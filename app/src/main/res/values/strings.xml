@@ -163,14 +163,13 @@
     <string name="settings.units.confirmation.button.save">Save</string>
     <string name="settings.units.confirmation.message">Do you want to save these changes?</string>
     <string name="settings.units.confirmation.title">Ranges Changed</string>
-    <string name="settings.units.description">You can edit your Phe level target ranges and select Phe units</string>
+    <string name="settings.units.description">You can edit your Phe levels and the units.</string>
     <string name="settings.units.label">Units</string>
     <string name="settings.units.normal.ceil.hint">Ceil</string>
-    <string name="settings.units.normal.description">Talk with your medical team about how you can customize your \"Target Phe level range\" so that the app can give you customized feedback about how closely you\'re meeting those goals</string>
     <string name="settings.units.normal.floor.hint">Floor</string>
     <string name="settings.units.range.format">From %s to %s %s</string>
     <string name="settings.units.range.over.format">Over %s %s</string>
-    <string name="settings.units.title">Your Phe Target Range</string>
+    <string name="settings.units.title">Phe Preferences &amp; Units</string>
     <!-- Splash Activity -->
     <string name="splash.root.alert">We have detected that this is an unsecure phone, are you sure that you would like to continue?</string>
     <string name="splash.root.alert.title">Unsecure Phone</string>

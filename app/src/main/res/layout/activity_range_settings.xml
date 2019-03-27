@@ -77,85 +77,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/general.distance.36dp"
                 android:text="@string/rangeinfo.normal"
-                app:layout_constraintEnd_toStartOf="@+id/rangeSettingsNormalFloor"
                 app:layout_constraintStart_toStartOf="@id/guideStart"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsLowDescription" />
 
-            <EditText
-                android:id="@+id/rangeSettingsNormalFloor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_semibold"
-                android:hint="@string/settings.units.normal.floor.hint"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:lines="1"
-                android:maxEms="4"
-                android:maxLength="4"
-                app:layout_constraintBaseline_toBaselineOf="@+id/rangeSettingsNormalLabel"
-                app:layout_constraintEnd_toStartOf="@+id/rangeSettingsNormalDash"
-                app:layout_constraintStart_toEndOf="@+id/rangeSettingsNormalLabel" />
+            <com.aptatek.pkulab.widget.LevelIndicatorView
+                android:id="@+id/rangeSettingIncreasedIndicator"
+                android:layout_width="@dimen/general.distance.32dp"
+                android:layout_height="@dimen/general.distance.32dp"
+                app:indicatorColor="@color/pkuLevelIncreased"
+                app:layout_constraintBottom_toBottomOf="@+id/rangeSettingsIncreasedDescription"
+                app:layout_constraintEnd_toEndOf="@id/guideEnd"
+                app:layout_constraintTop_toTopOf="@+id/rangeSettingsNormalLabel"
+                app:layout_constraintVertical_bias="0.5" />
 
             <TextView
-                android:id="@+id/rangeSettingsNormalDash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/general.distance.xxxmini"
-                android:layout_marginEnd="@dimen/general.distance.xxxmini"
-                android:text="@string/rangeinfo.to"
-                android:textColor="@color/applicationBlack"
-                android:textSize="@dimen/font.size.medium"
-                app:layout_constraintBaseline_toBaselineOf="@+id/rangeSettingsNormalFloor"
-                app:layout_constraintEnd_toStartOf="@+id/rangeSettingsNormalCeil"
-                app:layout_constraintStart_toEndOf="@+id/rangeSettingsNormalFloor" />
-
-            <EditText
-                android:id="@+id/rangeSettingsNormalCeil"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_semibold"
-                android:hint="@string/settings.units.normal.ceil.hint"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:lines="1"
-                android:maxEms="4"
-                android:maxLength="4"
-                app:layout_constraintBaseline_toBaselineOf="@+id/rangeSettingsNormalDash"
-                app:layout_constraintEnd_toEndOf="@id/guideEnd"
-                app:layout_constraintStart_toEndOf="@+id/rangeSettingsNormalDash" />
-
-            <com.appyvet.materialrangebar.RangeBar
-                android:id="@+id/rangeSettingsRangeBar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/general.distance.xxsmall"
-                app:layout_constraintEnd_toEndOf="@id/guideEnd"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/rangeSettingsNormalLabel"
-                app:mrb_barWeight="@dimen/general.distance.mini"
-                app:mrb_connectingLineColor="@color/pkuLevelIncreased"
-                app:mrb_connectingLineWeight="@dimen/general.distance.mini"
-                app:mrb_pinColor="@color/pkuLevelIncreased"
-                app:mrb_pinMaxFont="@dimen/font.size.regular"
-                app:mrb_pinMinFont="@dimen/font.size.regular"
-                app:mrb_pinPadding="@dimen/general.distance.xxmini"
-                app:mrb_pinRadius="@dimen/general.distance.small"
-                app:mrb_rangeBarColor="@color/rangeBarColor"
-                app:mrb_rangeBar_rounded="true"
-                app:mrb_selectorColor="@color/pkuLevelIncreased"
-                app:mrb_selectorSize="@dimen/general.distance.xxsmall"
-                app:mrb_temporaryPins="true" />
-
-            <TextView
-                android:id="@+id/rangeSettingsNormalDescription"
+                android:id="@+id/rangeSettingsIncreasedDescription"
                 style="@style/Settings.Range.Description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/general.distance.36dp"
-                android:text="@string/settings.units.normal.description"
-                app:layout_constraintEnd_toEndOf="@id/guideEnd"
+                android:layout_marginTop="@dimen/general.distance.14dp"
+                app:layout_constraintEnd_toStartOf="@+id/rangeSettingsLowIndicator"
                 app:layout_constraintStart_toStartOf="@id/guideStart"
-                app:layout_constraintTop_toBottomOf="@+id/rangeSettingsRangeBar" />
+                app:layout_constraintTop_toBottomOf="@+id/rangeSettingsNormalLabel"
+                tools:text="From 0 to 119 mmol/L" />
+
 
             <TextView
                 android:id="@+id/rangeSettingsHighLabel"
@@ -166,7 +111,7 @@
                 android:text="@string/rangeinfo.high"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsHighIndicator"
                 app:layout_constraintStart_toStartOf="@id/guideStart"
-                app:layout_constraintTop_toBottomOf="@id/rangeSettingsNormalDescription" />
+                app:layout_constraintTop_toBottomOf="@id/rangeSettingsIncreasedDescription" />
 
             <TextView
                 android:id="@+id/rangeSettingsHighDescription"

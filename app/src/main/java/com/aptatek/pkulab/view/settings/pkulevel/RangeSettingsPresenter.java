@@ -89,33 +89,17 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                         )));
     }
 
-    public void saveValues(final float mmolFloor, final float mmolCeil, final PkuLevelUnits pkuLevelUnits) {
-        compositeDisposable.add(pkuRangeInteractor.saveNormalRange(
-                PkuLevel.create(mmolFloor, PkuLevelUnits.MICRO_MOL),
-                PkuLevel.create(mmolCeil, PkuLevelUnits.MICRO_MOL))
-                .andThen(pkuRangeInteractor.saveDisplayUnit(pkuLevelUnits))
+    public void saveValues(final PkuLevelUnits pkuLevelUnits) {
+        compositeDisposable.add(pkuRangeInteractor.saveDisplayUnit(pkuLevelUnits)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> ifViewAttached(RangeSettingsView::showSettingsUpdateMessage)));
     }
 
-    public void onBackPressed(final float floorMMol, final float ceilMMol, final PkuLevelUnits pkuLevelUnits) {
+    public void onBackPressed(final PkuLevelUnits pkuLevelUnits) {
         compositeDisposable.add(pkuRangeInteractor.getInfo()
                 .flatMapCompletable(info -> {
-                    final float savedFloorMMol;
-                    final float savedCeilMMol;
-
-                    if (info.getPkuLevelUnit() != PkuLevelUnits.MICRO_MOL) {
-                        savedFloorMMol = convertValue(info.getNormalFloorValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL);
-                        savedCeilMMol = convertValue(info.getNormalCeilValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL);
-                    } else {
-                        savedFloorMMol = info.getNormalFloorValue();
-                        savedCeilMMol = info.getNormalCeilValue();
-                    }
-
-                    if (Math.abs(floorMMol - savedFloorMMol) > Constants.FLOAT_COMPARISION_ERROR_MARGIN
-                            || Math.abs(ceilMMol - savedCeilMMol) > Constants.FLOAT_COMPARISION_ERROR_MARGIN
-                            || pkuLevelUnits != info.getPkuLevelUnit()) {
+                    if (pkuLevelUnits != info.getPkuLevelUnit()) {
                         return Completable.fromAction(() -> ifViewAttached(RangeSettingsView::showSaveChangesDialog));
                     } else {
                         return Completable.fromAction(() -> ifViewAttached(RangeSettingsView::finish));
