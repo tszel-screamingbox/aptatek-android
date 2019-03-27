@@ -53,6 +53,14 @@ public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormat
     }
 
     @Override
+    public String getFormattedIncreased(final PkuRangeInfo info) {
+        return resourceInteractor.getStringResource(R.string.settings_units_range_format,
+                formatRegularValue(info.getNormalFloorValue(), info.getPkuLevelUnit()),
+                formatRegularValue(info.getNormalCeilValue(), info.getPkuLevelUnit()),
+                getProperUnits(info.getPkuLevelUnit()));
+    }
+
+    @Override
     public String getFormattedHigh(final PkuRangeInfo info) {
         return resourceInteractor.getStringResource(R.string.settings_units_range_format,
                 formatRegularValue(info.getNormalCeilValue() + getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),

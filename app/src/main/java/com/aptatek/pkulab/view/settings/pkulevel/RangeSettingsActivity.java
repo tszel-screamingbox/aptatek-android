@@ -15,25 +15,32 @@ import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivityStarter;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
 
+import static com.aptatek.pkulab.util.Constants.*;
 import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
 import static com.aptatek.pkulab.view.base.BaseActivity.Animation.LEFT_TO_RIGHT;
+import static java.util.concurrent.TimeUnit.*;
 
 public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, RangeSettingsPresenter> implements RangeSettingsView {
 
     private static final String TAG_CONFIRM_DIALOG = "aptatek.settings.range.confirmdialog";
     private static final int AUTH_REQUEST = 101;
+    private static final long DEBOUNCE = 500L;
 
     public static Intent starter(final Context context) {
         return new Intent(context, RangeSettingsActivity.class);
@@ -54,6 +61,8 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
     RadioGroup rgUnits;
 
     private final FlowableProcessor<Object> changeProcessor = BehaviorProcessor.create();
+    private Disposable disposable;
+
     private RangeSettingsModel lastModel;
 
     @Inject
@@ -84,6 +93,22 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         });
 
         presenter.refresh();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        disposable = changeProcessor.debounce(DEBOUNCE, MILLISECONDS)
+                .subscribe(tick -> presenter.changeValues(DEFAULT_PKU_INCREASED_FLOOR, DEFAULT_PKU_INCREASED_CEIL, getSelectedUnit()));
+    }
+
+    @Override
+    protected void onStop() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+
+        super.onStop();
     }
 
     @Override
@@ -149,7 +174,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
         lastModel = model;
 
         tvStandardDescription.setText(model.getLowText());
-        tvIncreasedDescription.setText(model.getLowText());
+        tvIncreasedDescription.setText(model.getIncreasedText());
         tvHighDescription.setText(model.getHighText());
         tvVeryHighDescription.setText(model.getVeryHighText());
 

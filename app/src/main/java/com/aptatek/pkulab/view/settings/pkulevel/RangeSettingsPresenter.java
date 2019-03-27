@@ -62,6 +62,7 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
                 .setLowText(rangeSettingsValueFormatter.getFormattedLow(info))
                 .setHighText(rangeSettingsValueFormatter.getFormattedHigh(info))
                 .setVeryHighText(rangeSettingsValueFormatter.getFormattedVeryHigh(info))
+                .setIncreasedText(rangeSettingsValueFormatter.getFormattedIncreased(info))
                 .setNormalFloorMMolValue(convertValue(info.getNormalFloorValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL))
                 .setNormalCeilMMolValue(convertValue(info.getNormalCeilValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL))
                 .setNormalAbsoluteFloorMMolValue(convertValue(info.getNormalAbsoluteMinValue(), info.getPkuLevelUnit(), PkuLevelUnits.MICRO_MOL))
