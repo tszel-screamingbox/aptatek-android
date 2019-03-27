@@ -39,9 +39,9 @@ public class PdfExportView extends ConstraintLayout {
     @BindView(R.id.textViewUnitDescription)
     TextView unitDescription;
     @BindView(R.id.textViewLowNumber)
-    TextView lowNumber;
+    TextView standardNumber;
     @BindView(R.id.textViewNormalNumber)
-    TextView normalNumber;
+    TextView increasedNumber;
     @BindView(R.id.textViewHighNumber)
     TextView highNumber;
     @BindView(R.id.textViewVeryHighNumber)
@@ -69,8 +69,8 @@ public class PdfExportView extends ConstraintLayout {
         this.pdfEntryData = pdfEntryData;
 
         subTitle.setText(pdfEntryData.getFormattedDate());
-        lowNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getLowCount()));
-        normalNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getNormalCount()));
+        standardNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getLowCount()));
+        increasedNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getNormalCount()));
         highNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getHighCount()));
         veryHighNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getVeryHighCount()));
         averageText.setText(getResources().getString(R.string.pdf_export_average, String.valueOf(pdfEntryData.getAverageCount()), pdfEntryData.getUnit()));

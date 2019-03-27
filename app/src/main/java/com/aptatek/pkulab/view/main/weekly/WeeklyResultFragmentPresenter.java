@@ -210,10 +210,10 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         : R.string.rangeinfo_pkulevel_mg))
                 .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
-                        : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalFloorValue()))
+                        : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalFloorValue()))
                 .setNormalCeilValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalCeilValue())
-                        : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalCeilValue()));
+                        : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalCeilValue()));
 
         return testResultInteractor.listBetween(start, end)
                 .toFlowable()
