@@ -246,10 +246,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="@dimen/general.distance.20dp"
         android:layout_marginEnd="43dp"
         android:layout_marginBottom="88dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewUnitDescription" />
+        app:layout_constraintTop_toBottomOf="@id/textViewSubTitle" />
 
 </com.aptatek.pkulab.widget.PdfExportView>
