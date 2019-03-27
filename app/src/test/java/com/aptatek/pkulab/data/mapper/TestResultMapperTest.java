@@ -41,8 +41,6 @@ public class TestResultMapperTest {
         assert dataModel.getPkuLevel().equals(domainModel.getPkuLevel());
         assert dataModel.getReaderId().equals(domainModel.getReaderId());
         assert dataModel.getTimestamp() == domainModel.getTimestamp();
-        assert dataModel.isFasting() == domainModel.isFasting();
-        assert dataModel.isSick() == domainModel.isSick();
     }
 
     @Test
@@ -75,8 +73,6 @@ public class TestResultMapperTest {
     @Test
     public void testToData() throws Exception {
         final TestResult domainModel = TestResult.builder()
-                .setFasting(false)
-                .setSick(true)
                 .setId("dummy")
                 .setReaderId("dummy")
                 .setPkuLevel(PkuLevel.create(20f, PkuLevelUnits.MICRO_MOL))
@@ -92,8 +88,6 @@ public class TestResultMapperTest {
     public void testToDataList() throws Exception {
         final List<TestResult> domainModels = new ArrayList<>();
         final TestResult domainModel = TestResult.builder()
-                .setFasting(false)
-                .setSick(true)
                 .setId("dummy")
                 .setReaderId("dummy")
                 .setPkuLevel(PkuLevel.create(20f, PkuLevelUnits.MICRO_MOL))
@@ -101,8 +95,6 @@ public class TestResultMapperTest {
                 .build();
         domainModels.add(domainModel);
         final TestResult domainModel2 = TestResult.builder()
-                .setFasting(true)
-                .setSick(false)
                 .setId("two")
                 .setReaderId("reader2")
                 .setPkuLevel(PkuLevel.create(0.5f, PkuLevelUnits.MILLI_GRAM))
