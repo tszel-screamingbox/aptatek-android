@@ -40,14 +40,15 @@
 
     <TextView
         android:id="@+id/textViewUnitDescription"
-        android:layout_width="449dp"
-        android:layout_height="35dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="47dp"
         android:fontFamily="@font/nunito_black"
         android:gravity="end"
         android:maxLines="2"
         android:textColor="@color/applicationSolidGray"
+        app:layout_constraintStart_toEndOf="@+id/textViewTitle"
         android:textSize="@dimen/font.size.small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewPkuLabIcon"
@@ -246,10 +247,10 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="@dimen/general.distance.20dp"
         android:layout_marginEnd="43dp"
         android:layout_marginBottom="88dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewUnitDescription" />
+        app:layout_constraintTop_toBottomOf="@id/textViewSubTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
 </com.aptatek.pkulab.widget.PdfExportView>
