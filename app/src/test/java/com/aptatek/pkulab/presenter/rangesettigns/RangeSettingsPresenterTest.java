@@ -112,6 +112,7 @@ public class RangeSettingsPresenterTest {
         doReturn(testValue).when(valueFormatter).getFormattedLow(ArgumentMatchers.any(PkuRangeInfo.class));
         doReturn(testValue).when(valueFormatter).getFormattedHigh(ArgumentMatchers.any(PkuRangeInfo.class));
         doReturn(testValue).when(valueFormatter).getFormattedVeryHigh(ArgumentMatchers.any(PkuRangeInfo.class));
+        doReturn(testValue).when(valueFormatter).getFormattedIncreased(ArgumentMatchers.any(PkuRangeInfo.class));
 
         presenter.refresh();
 
@@ -119,10 +120,12 @@ public class RangeSettingsPresenterTest {
         verify(valueFormatter).getFormattedLow(rangeInfo);
         verify(valueFormatter).getFormattedHigh(rangeInfo);
         verify(valueFormatter).getFormattedVeryHigh(rangeInfo);
+        verify(valueFormatter).getFormattedIncreased(rangeInfo);
 
         verify(view).displayRangeSettings(RangeSettingsModel.builder()
                 .setLowText(valueFormatter.getFormattedLow(rangeInfo))
                 .setHighText(valueFormatter.getFormattedHigh(rangeInfo))
+                .setIncreasedText(valueFormatter.getFormattedIncreased(rangeInfo))
                 .setVeryHighText(valueFormatter.getFormattedVeryHigh(rangeInfo))
                 .setNormalFloorMMolValue(Constants.DEFAULT_PKU_INCREASED_FLOOR)
                 .setNormalCeilMMolValue(Constants.DEFAULT_PKU_INCREASED_CEIL)
@@ -160,6 +163,7 @@ public class RangeSettingsPresenterTest {
         doReturn(testValue).when(valueFormatter).getFormattedLow(ArgumentMatchers.any(PkuRangeInfo.class));
         doReturn(testValue).when(valueFormatter).getFormattedHigh(ArgumentMatchers.any(PkuRangeInfo.class));
         doReturn(testValue).when(valueFormatter).getFormattedVeryHigh(ArgumentMatchers.any(PkuRangeInfo.class));
+        doReturn(testValue).when(valueFormatter).getFormattedIncreased(ArgumentMatchers.any(PkuRangeInfo.class));
         doReturn(testValue).when(valueFormatter).formatRegularValue(ArgumentMatchers.any(PkuLevel.class));
 
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
@@ -179,6 +183,7 @@ public class RangeSettingsPresenterTest {
                 .setLowText(valueFormatter.getFormattedLow(rangeInfo))
                 .setHighText(valueFormatter.getFormattedHigh(rangeInfo))
                 .setVeryHighText(valueFormatter.getFormattedVeryHigh(rangeInfo))
+                .setIncreasedText(valueFormatter.getFormattedIncreased(rangeInfo))
                 .setNormalFloorMMolValue(mmolFloor)
                 .setNormalCeilMMolValue(mmolCeil)
                 .setNormalAbsoluteFloorMMolValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
@@ -200,14 +205,8 @@ public class RangeSettingsPresenterTest {
         doReturn(Completable.complete()).when(rangeInteractor).saveNormalRange(ArgumentMatchers.any(PkuLevel.class), ArgumentMatchers.any(PkuLevel.class));
         doReturn(Completable.complete()).when(rangeInteractor).saveDisplayUnit(ArgumentMatchers.any(PkuLevelUnits.class));
 
-        final float floor = 100f;
-        final float ceil = 300f;
-        presenter.saveValues(floor, ceil, PkuLevelUnits.MICRO_MOL);
+        presenter.saveValues(PkuLevelUnits.MICRO_MOL);
 
-        verify(rangeInteractor).saveNormalRange(
-                PkuLevel.create(floor, PkuLevelUnits.MICRO_MOL),
-                PkuLevel.create(ceil, PkuLevelUnits.MICRO_MOL)
-        );
         verify(view).showSettingsUpdateMessage();
     }
 
@@ -229,7 +228,7 @@ public class RangeSettingsPresenterTest {
                 .build();
         doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
 
-        presenter.onBackPressed(Constants.DEFAULT_PKU_INCREASED_FLOOR, Constants.DEFAULT_PKU_INCREASED_CEIL, PkuLevelUnits.MICRO_MOL);
+        presenter.onBackPressed(PkuLevelUnits.MICRO_MOL);
 
         verify(view).finish();
     }
@@ -252,7 +251,7 @@ public class RangeSettingsPresenterTest {
                 .build();
         doReturn(Single.just(rangeInfo)).when(rangeInteractor).getInfo();
 
-        presenter.onBackPressed(234f, 555f, PkuLevelUnits.MICRO_MOL);
+        presenter.onBackPressed(PkuLevelUnits.MICRO_MOL);
 
         verify(view).showSaveChangesDialog();
     }
