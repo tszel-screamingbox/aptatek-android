@@ -41,13 +41,11 @@ public class CsvExport {
             final CSVWriter writer = new CSVWriter(new FileWriter(file));
 
             final List<String[]> data = new ArrayList<>();
-            data.add(new String[]{"ID", "Reader ID", "PKU Level (uMol)", "isFasting", "isSick", "Created At"});
+            data.add(new String[]{"ID", "Reader ID", "PKU Level (uMol)", "Created At"});
             Ix.from(results).foreach(result -> data.add(new String[]{
                     result.getId(),
                     result.getReaderId(),
                     String.valueOf(result.getPkuLevel().getValue()),
-                    String.valueOf(result.isFasting()),
-                    String.valueOf(result.isSick()),
                     formatter.getFormattedCsvColumn(result.getTimestamp())
             }));
 

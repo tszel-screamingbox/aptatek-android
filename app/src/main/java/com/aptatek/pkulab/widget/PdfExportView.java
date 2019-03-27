@@ -38,12 +38,6 @@ public class PdfExportView extends ConstraintLayout {
     BubbleChart bubbleChart;
     @BindView(R.id.textViewUnitDescription)
     TextView unitDescription;
-    @BindView(R.id.textViewFastingNumber)
-    TextView fastingNumber;
-    @BindView(R.id.textViewSickNumber)
-    TextView sickNumber;
-    @BindView(R.id.textViewAverageNumber)
-    TextView averageNumber;
     @BindView(R.id.textViewLowNumber)
     TextView lowNumber;
     @BindView(R.id.textViewNormalNumber)
@@ -52,7 +46,7 @@ public class PdfExportView extends ConstraintLayout {
     TextView highNumber;
     @BindView(R.id.textViewVeryHighNumber)
     TextView veryHighNumber;
-    @BindView(R.id.textViewAverageText)
+    @BindView(R.id.avarage)
     TextView averageText;
     @BindView(R.id.textViewNormalText)
     TextView normalText;
@@ -79,11 +73,8 @@ public class PdfExportView extends ConstraintLayout {
         normalNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getNormalCount()));
         highNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getHighCount()));
         veryHighNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getVeryHighCount()));
-        sickNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getSickCount()));
-        averageNumber.setText(String.valueOf(pdfEntryData.getAverageCount()));
-        fastingNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getFastingCount()));
-        averageText.setText(getResources().getString(R.string.pdf_export_average, String.format(Locale.getDefault(), "%.2f", pdfEntryData.getDeviation())));
-        unitDescription.setText(pdfEntryData.getUnit());
+        averageText.setText(getResources().getString(R.string.pdf_export_average, String.valueOf(pdfEntryData.getAverageCount()), pdfEntryData.getUnit()));
+        unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
         normalText.setText(getResources().getString(R.string.pdf_legend_normal, pdfEntryData.getNormalFloorValue(), pdfEntryData.getNormalCeilValue()));
 
         initChart();
