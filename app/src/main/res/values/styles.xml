@@ -259,7 +259,7 @@
     </style>
 
     <style name="RangeInfo.Row.Name" parent="General.Text">
-        <item name="android:textSize">@dimen/font.size.xbig</item>
+        <item name="android:textSize">@dimen/font.size.medium</item>
         <item name="android:textColor">@color/applicationWhite</item>
     </style>
 
