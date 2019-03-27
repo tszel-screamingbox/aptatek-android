@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -49,20 +50,27 @@ public class PkuRangeDataSourceTest {
         dataSource.getDisplayUnit();
         verify(preferenceManager).getPkuRangeUnit();
 
-        dataSource.getNormalCeilValueMMol();
-        verify(preferenceManager).getPkuRangeNormalCeil();
-
-        dataSource.getNormalFloorValueMMol();
-        verify(preferenceManager).getPkuRangeNormalFloor();
-
         dataSource.setDisplayUnit(PkuLevelUnits.MICRO_MOL);
         verify(preferenceManager).setPkuRangeUnit(PkuLevelUnits.MICRO_MOL);
+
+        dataSource.getNormalCeilValueMMol();
+        verify(preferenceManager).getPkuRangeNormalCeil();
 
         dataSource.setNormalCeilValueMMol(300f);
         verify(preferenceManager).setPkuRangeNormalCeil(300f);
 
+        dataSource.getNormalFloorValueMMol();
+        verify(preferenceManager).getPkuRangeNormalFloor();
+
         dataSource.setNormalFloorValueMMol(300f);
         verify(preferenceManager).setPkuRangeNormalFloor(300f);
+
+        dataSource.getHighCeilValueMMol();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalCeil();
+
+        dataSource.isDefaultValue();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalFloor();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalCeil();
     }
 
     /**

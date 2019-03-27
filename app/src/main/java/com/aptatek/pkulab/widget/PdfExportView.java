@@ -15,6 +15,7 @@ import com.aptatek.pkulab.view.main.weekly.chart.CustomYAxisRenderer;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataRenderer;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.github.mikephil.charting.charts.BubbleChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
@@ -108,7 +109,11 @@ public class PdfExportView extends ConstraintLayout {
         xAxis.setAxisMinimum(0f);
         final int maxValue = getAxisMaxForDays(pdfEntryData.getDaysOfMonth());
         xAxis.setAxisMaximum(maxValue);
-        xAxis.setLabelCount((maxValue / 2) + 1, true);
+        xAxis.setLabelCount(maxValue, true);
+
+        // need to use reflection since the Axis.setLabelCount sets 25 as max value...
+        setLabelCountOnAxisWithReflection(xAxis, maxValue + 1);
+
         xAxis.setTypeface(typeface);
 
         final YAxis yAxis = bubbleChart.getAxisLeft();
@@ -129,13 +134,7 @@ public class PdfExportView extends ConstraintLayout {
         yAxis.setTypeface(typeface);
 
         // need to use reflection since the Axis.setLabelCount sets 25 as max value...
-        try {
-            final Field mLabelCount = yAxis.getClass().getSuperclass().getDeclaredField("mLabelCount");
-            mLabelCount.setAccessible(true);
-            mLabelCount.set(yAxis, hours.length);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Timber.d("Failed to set mLabelCount");
-        }
+        setLabelCountOnAxisWithReflection(yAxis, hours.length);
 
         yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
         yAxis.setTypeface(typeface);
@@ -151,6 +150,16 @@ public class PdfExportView extends ConstraintLayout {
         bubbleChart.getLegend().setEnabled(false);
         bubbleChart.getDescription().setEnabled(false);
         bubbleChart.setRenderer(new PdfChartDataRenderer(bubbleChart));
+    }
+
+    private void setLabelCountOnAxisWithReflection(final AxisBase axis, final int count) {
+        try {
+            final Field mLabelCount = axis.getClass().getSuperclass().getDeclaredField("mLabelCount");
+            mLabelCount.setAccessible(true);
+            mLabelCount.set(axis, count);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Timber.d("Failed to set mLabelCount");
+        }
     }
 
     @Override
