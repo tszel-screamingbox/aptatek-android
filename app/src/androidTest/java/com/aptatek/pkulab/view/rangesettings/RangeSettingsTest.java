@@ -33,7 +33,6 @@ import javax.inject.Inject;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.pressImeActionButton;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -78,10 +77,6 @@ public class RangeSettingsTest {
         onView(withId(R.id.rangeSettingsLowDescription)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeSettingsLowIndicator)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeSettingsNormalLabel)).check(matches(isDisplayed()));
-        onView(withId(R.id.rangeSettingsNormalDescription)).check(matches(isDisplayed()));
-        onView(withId(R.id.rangeSettingsNormalFloor)).check(matches(isDisplayed()));
-        onView(withId(R.id.rangeSettingsNormalCeil)).check(matches(isDisplayed()));
-        onView(withId(R.id.rangeSettingsRangeBar)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeSettingsHighLabel)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeSettingsHighDescription)).check(matches(isDisplayed()));
         onView(withId(R.id.rangeSettingsHighIndicator)).check(matches(isDisplayed()));
@@ -113,7 +108,6 @@ public class RangeSettingsTest {
         onView(withId(R.id.rangeSettingsLowLabel)).check(matches(withText(R.string.rangeinfo_low)));
         onView(withId(R.id.rangeSettingsLowDescription)).check(matches(withText(formatter.getFormattedLow(pkuInfo))));
         onView(withId(R.id.rangeSettingsNormalLabel)).check(matches(withText(R.string.rangeinfo_normal)));
-        onView(withId(R.id.rangeSettingsNormalDescription)).check(matches(withText(R.string.settings_units_normal_description)));
         onView(withId(R.id.rangeSettingsHighLabel)).check(matches(withText(R.string.rangeinfo_high)));
         onView(withId(R.id.rangeSettingsHighDescription)).check(matches(withText(formatter.getFormattedHigh(pkuInfo))));
         onView(withId(R.id.rangeSettingsVeryHighLabel)).check(matches(withText(R.string.rangeinfo_very_high)));
@@ -132,31 +126,6 @@ public class RangeSettingsTest {
     @Test
     public void testBackDoesntPopDialogFinishesActivity() throws Exception {
         onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-
-        Assert.assertTrue(activityRule.getActivity().isFinishing());
-    }
-
-    /**
-     * Tests whether the save values dialog is displayed when there was range changes on the UI.
-     *
-     * @test.input
-     * @test.expected
-     */
-    @Test
-    public void testBackPopsDialogAndFinishesActivity() throws Exception {
-        onView(withId(R.id.rangeSettingsNormalCeil)).perform(click());
-
-        Thread.sleep(1000L);
-
-        onView(withId(R.id.rangeSettingsNormalCeil)).perform(ViewActions.replaceText("999"), pressImeActionButton());
-
-        Thread.sleep(1000L);
-
-        onView(withContentDescription(R.string.abc_action_bar_up_description)).perform(click());
-
-        onView(withText(R.string.settings_units_confirmation_title)).check(matches(isDisplayed()));
-        onView(withText(R.string.settings_units_confirmation_message)).check(matches(isDisplayed()));
-        onView(withText(R.string.settings_units_confirmation_button_cancel)).perform(click());
 
         Assert.assertTrue(activityRule.getActivity().isFinishing());
     }
