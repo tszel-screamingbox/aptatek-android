@@ -15,13 +15,10 @@ import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
-import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivityStarter;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -31,10 +28,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
 
-import static com.aptatek.pkulab.util.Constants.*;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_CEIL;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_FLOOR;
 import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
 import static com.aptatek.pkulab.view.base.BaseActivity.Animation.LEFT_TO_RIGHT;
-import static java.util.concurrent.TimeUnit.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, RangeSettingsPresenter> implements RangeSettingsView {
 
