@@ -24,21 +24,16 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.processors.BehaviorProcessor;
-import io.reactivex.processors.FlowableProcessor;
 
 import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_CEIL;
 import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_FLOOR;
 import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
 import static com.aptatek.pkulab.view.base.BaseActivity.Animation.LEFT_TO_RIGHT;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, RangeSettingsPresenter> implements RangeSettingsView {
 
     private static final String TAG_CONFIRM_DIALOG = "aptatek.settings.range.confirmdialog";
     private static final int AUTH_REQUEST = 101;
-    private static final long DEBOUNCE = 500L;
 
     public static Intent starter(final Context context) {
         return new Intent(context, RangeSettingsActivity.class);
@@ -57,9 +52,6 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
     TextView tvIncreasedDescription;
     @BindView(R.id.rangeSettingsUnitsGroup)
     RadioGroup rgUnits;
-
-    private final FlowableProcessor<Object> changeProcessor = BehaviorProcessor.create();
-    private Disposable disposable;
 
     private RangeSettingsModel lastModel;
 
@@ -86,27 +78,11 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
 
         rgUnits.setOnCheckedChangeListener((group, checkedId) -> {
             if (lastModel != null && lastModel.getSelectedUnit() != getSelectedUnit()) {
-                changeProcessor.onNext(new Object());
+                presenter.changeValues(DEFAULT_PKU_INCREASED_FLOOR, DEFAULT_PKU_INCREASED_CEIL, getSelectedUnit());
             }
         });
 
         presenter.refresh();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        disposable = changeProcessor.debounce(DEBOUNCE, MILLISECONDS)
-                .subscribe(tick -> presenter.changeValues(DEFAULT_PKU_INCREASED_FLOOR, DEFAULT_PKU_INCREASED_CEIL, getSelectedUnit()));
-    }
-
-    @Override
-    protected void onStop() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-
-        super.onStop();
     }
 
     @Override
