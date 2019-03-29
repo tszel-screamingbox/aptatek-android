@@ -62,9 +62,9 @@ public class PkuRangeInteractorTest {
         test.assertNoErrors();
         test.assertComplete();
         test.assertValueAt(0, value -> {
-            assertTrue(value.getHighCeilValue() == PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
-            assertTrue(value.getNormalCeilValue() == PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_CEIL, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
-            assertTrue(value.getNormalFloorValue() == PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_NORMAL_FLOOR, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
+            assertTrue(value.getHighCeilValue() == PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_INCREASED_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
+            assertTrue(value.getNormalCeilValue() == PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_INCREASED_CEIL, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
+            assertTrue(value.getNormalFloorValue() == PkuLevelConverter.convertTo(PkuLevel.create(Constants.DEFAULT_PKU_INCREASED_FLOOR, PkuLevelUnits.MICRO_MOL), PkuLevelUnits.MILLI_GRAM).getValue());
             assertTrue(value.getPkuLevelUnit() == PkuLevelUnits.MILLI_GRAM);
 
             return true;

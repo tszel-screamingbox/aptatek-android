@@ -64,7 +64,7 @@
             android:id="@+id/rangeinfo_normal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:backgroundColor="@color/pkuLevelNormal"
+            app:backgroundColor="@color/pkuLevelIncreased"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/rangeinfo_high_spacer" />
@@ -80,7 +80,7 @@
             android:id="@+id/rangeinfo_low"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:backgroundColor="@color/pkuLevelLow"
+            app:backgroundColor="@color/pkuLevelStandard"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

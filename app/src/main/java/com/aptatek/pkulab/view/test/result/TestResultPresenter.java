@@ -98,12 +98,12 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                 resource = R.string.test_result_title_high;
                 break;
             }
-            case NORMAL: {
-                resource = R.string.test_result_title_normal;
+            case INCREASED: {
+                resource = R.string.test_result_title_increased;
                 break;
             }
-            case LOW: {
-                resource = R.string.test_result_title_low;
+            case STANDARD: {
+                resource = R.string.test_result_title_standard;
                 break;
             }
             default: {
@@ -138,12 +138,12 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                 resource = R.string.test_result_bubble_level_high;
                 break;
             }
-            case NORMAL: {
-                resource = R.string.test_result_bubble_level_normal;
+            case INCREASED: {
+                resource = R.string.test_result_bubble_level_increased;
                 break;
             }
-            case LOW: {
-                resource = R.string.test_result_bubble_level_low;
+            case STANDARD: {
+                resource = R.string.test_result_bubble_level_standard;
                 break;
             }
             default: {

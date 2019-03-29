@@ -96,10 +96,12 @@
     <string name="rangeinfo.edit.level.preferences">Level Preferences</string>
     <string name="rangeinfo.high">High</string>
     <string name="rangeinfo.hight">High</string>
-    <string name="rangeinfo.low">Low</string>
+    <string name="rangeinfo.low">Standard</string>
     <string name="rangeinfo.low.value.prefix">under</string>
+    <string name="rangeinfo.margin.mg">&lt;1.6</string>
+    <string name="rangeinfo.margin.umol">&lt;100</string>
     <string name="rangeinfo.message">For better health, blood levels of phenylalanine should stay within the lower ranges</string>
-    <string name="rangeinfo.normal">Normal</string>
+    <string name="rangeinfo.normal">Increased</string>
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
     <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
     <string name="rangeinfo.title">Range info</string>
@@ -161,14 +163,13 @@
     <string name="settings.units.confirmation.button.save">Save</string>
     <string name="settings.units.confirmation.message">Do you want to save these changes?</string>
     <string name="settings.units.confirmation.title">Ranges Changed</string>
-    <string name="settings.units.description">You can edit your Phe level target ranges and select Phe units</string>
+    <string name="settings.units.description">You can edit your Phe levels and the units.</string>
     <string name="settings.units.label">Units</string>
     <string name="settings.units.normal.ceil.hint">Ceil</string>
-    <string name="settings.units.normal.description">Talk with your medical team about how you can customize your \"Target Phe level range\" so that the app can give you customized feedback about how closely you\'re meeting those goals</string>
     <string name="settings.units.normal.floor.hint">Floor</string>
     <string name="settings.units.range.format">From %s to %s %s</string>
     <string name="settings.units.range.over.format">Over %s %s</string>
-    <string name="settings.units.title">Your Phe Target Range</string>
+    <string name="settings.units.title">Phe Preferences &amp; Units</string>
     <!-- Splash Activity -->
     <string name="splash.root.alert">We have detected that this is an unsecure phone, are you sure that you would like to continue?</string>
     <string name="splash.root.alert.title">Unsecure Phone</string>
@@ -197,12 +198,12 @@
     <string name="test.result.done">Next</string>
     <string name="test.result.title.veryhigh">Very High</string>
     <string name="test.result.title.high">High</string> <!-- TODO get proper label... -->
-    <string name="test.result.title.normal">Normal</string> <!-- TODO get proper label... -->
-    <string name="test.result.title.low">Low</string> <!-- TODO get proper label... -->
+    <string name="test.result.title.increased">Increased</string> <!-- TODO get proper label... -->
+    <string name="test.result.title.standard">Standard</string> <!-- TODO get proper label... -->
     <string name="test.result.bubble.level.veryhigh">Very high</string>
     <string name="test.result.bubble.level.high">High</string>
-    <string name="test.result.bubble.level.normal">Normal</string>
-    <string name="test.result.bubble.level.low">Low</string>
+    <string name="test.result.bubble.level.increased">Increased</string>
+    <string name="test.result.bubble.level.standard">Standard</string>
 
     <string name="test.breakfoil.title">Break Foil</string>
     <string name="test.breakfoil.message">Unwrap the cap from the foil and screw it on to the chamber to pierce the top seal</string>
@@ -289,9 +290,8 @@
 
     <string name="pdf.export.title">Monthly Results</string>
     <string name="pdf.export.unit.description">All units are in %1$s</string>
-    <string name="pdf.export.unit.description.warn">All units are in %1$s. In this data export, please note that these \"normal\" range\nprefrences have been changed from the default range.*</string>
     <string name="pdf.export.legend.x">%1$s</string>
-    <string name="pdf.export.average">Average (+/- %1$s)</string>
+    <string name="pdf.export.average">Average: %1$s %2$s</string>
     <string name="pdf.export.email.subject">Exported results from PKU LAB</string>
     <string name="pdf.export.last.month.file.name">Last month Phe history - %1$s.pdf</string>
     <string name="pdf.export.last.three.month.file.name">Last 3 months Phe history - %1$s.pdf</string>
@@ -312,8 +312,8 @@
     <string name="pdf.legend.sick">Sick</string>
     <string name="pdf.legend.very.high">Very High</string>
     <string name="pdf.legend.high">High</string>
-    <string name="pdf.legend.normal">Normal(%1$s - %2$s)</string>
-    <string name="pdf.legend.low">Low</string>
+    <string name="pdf.legend.normal">Increased(%1$s - %2$s)</string>
+    <string name="pdf.legend.low">Standard</string>
 
     <string name="month.picker.cancel">Cancel</string>
     <string name="month.picker.ok">Ok</string>
@@ -340,7 +340,7 @@
     <string name="pdf.export.dialog.last.three.months">Last 3 Months</string>
     <string name="pdf.export.dialog.last.half.year">Last 6 Months</string>
     <string name="pdf.export.dialog.last.year">Last Year</string>
-    
+
     <string name="faq.report.issue.title">Report Issue</string>
     <string name="faq.report.issue.data.corruption">Data Corruption</string>
     <string name="faq.report.issue.connection.error">Connection Error</string>

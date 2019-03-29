@@ -8,6 +8,8 @@ public interface RangeSettingsValueFormatter {
 
     String getFormattedLow(PkuRangeInfo info);
 
+    String getFormattedIncreased(PkuRangeInfo info);
+
     String getFormattedHigh(PkuRangeInfo info);
 
     String getFormattedVeryHigh(PkuRangeInfo info);

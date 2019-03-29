@@ -31,10 +31,10 @@
     <color name="applicationGainsBoroGray">#F2F2F2</color>
     <color name="applicationTimePickerSelector">#33b5e5</color>
 
-    <color name="pkuLevelVeryHigh">#FA4E7C</color>
-    <color name="pkuLevelHigh">#FFD34F</color>
-    <color name="pkuLevelNormal">#20E8CD</color>
-    <color name="pkuLevelLow">#31CACF</color>
+    <color name="pkuLevelVeryHigh">#C73E63</color>
+    <color name="pkuLevelHigh">#FA4E7C</color>
+    <color name="pkuLevelIncreased">#FFD34F</color>
+    <color name="pkuLevelStandard">#20E8CD</color>
 
     <color name="batteryLevelLow">#FA4E7C</color>
     <color name="batteryLevelNormal">#FFD34F</color>

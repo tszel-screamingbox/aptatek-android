@@ -3,7 +3,7 @@
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/graph.bubble.radius.small" />
 
-            <solid android:color="@color/pkuLevelLow" />
+            <solid android:color="@color/pkuLevelStandard" />
             <size
                 android:width="@dimen/pdf.legend.bubble.size"
                 android:height="@dimen/pdf.legend.bubble.size" />

@@ -24,13 +24,9 @@ public abstract class PdfEntryData {
 
     public abstract int getAverageCount();
 
-    public abstract int getFastingCount();
-
     public abstract String getNormalCeilValue();
 
     public abstract String getNormalFloorValue();
-
-    public abstract int getSickCount();
 
     public abstract double getDeviation();
 
@@ -68,10 +64,6 @@ public abstract class PdfEntryData {
         public abstract Builder setVeryHighCount(int veryHighCount);
 
         public abstract Builder setAverageCount(int averageCount);
-
-        public abstract Builder setFastingCount(int fastingCount);
-
-        public abstract Builder setSickCount(int sickCount);
 
         public abstract Builder setDeviation(double deviation);
 
