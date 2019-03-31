@@ -146,7 +146,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                         .flatMap(ignored -> readerInteractor.getWorkflowState())
                         .take(1)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::handleWorkflowState);
+                        .subscribe(this::handleWorkflowState, Timber::e);
     }
 
     private void handleWorkflowState(final WorkflowState workflowState) {

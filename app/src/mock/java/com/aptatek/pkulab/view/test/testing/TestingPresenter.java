@@ -61,7 +61,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                             if (percent == 100) {
                                 attachedView.onTestFinished();
                             }
-                        }))
+                        }), Timber::e)
         );
 
         disposables.add(
