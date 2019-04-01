@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@color/applicationGainsBoroGray">
 
-    <NumberPicker
+    <com.aptatek.pkulab.widget.NumberPicker
         android:id="@+id/numberPickerMonth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <NumberPicker
+    <com.aptatek.pkulab.widget.NumberPicker
         android:id="@+id/numberPickerYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
