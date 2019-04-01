@@ -66,11 +66,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void initView() {
-        if (!preferenceManager.isRangeDialogShown()) {
-            preferenceManager.setRangeDialogShown(true);
-            ifViewAttached(HomeFragmentView::showRangeDialog);
-        }
-
         final String unit = pkuValueFormatter.formatFromUnits(preferenceManager.getPkuRangeUnit());
         ifViewAttached(view -> view.updateUnitText(unit));
     }

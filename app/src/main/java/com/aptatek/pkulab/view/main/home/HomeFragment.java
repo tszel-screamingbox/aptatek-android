@@ -1,6 +1,5 @@
 package com.aptatek.pkulab.view.main.home;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.Group;
@@ -14,22 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
-import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
-import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
-import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -44,7 +39,6 @@ import butterknife.OnClick;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.aptatek.pkulab.view.base.BaseActivity.Animation.RIGHT_TO_LEFT;
 
 
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
@@ -241,27 +235,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     public void setMeasureList(final List<DailyResultAdapterItem> data) {
         dailyResultsAdapter.setData(data);
-    }
-
-    @Override
-    public void showRangeDialog() {
-        final AlertDialogModel model = AlertDialogModel.builder()
-                .setTitle(getString(R.string.home_range_dialog_title))
-                .setMessage(getString(R.string.home_range_dialog_message))
-                .setPositiveButtonText(getString(R.string.home_range_dialog_set))
-                .setNegativeButtonText(getString(R.string.home_range_dialog_later))
-                .setCancelable(false)
-                .build();
-
-        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
-                model,
-                decision -> {
-                    if (decision == AlertDialogDecisions.POSITIVE) {
-                        final Intent intent = RangeSettingsActivity.starter(getContext());
-                        getBaseActivity().launchActivity(intent, false, RIGHT_TO_LEFT);
-                    }
-                });
-        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_RANGE_DIALOG);
     }
 
     @Override

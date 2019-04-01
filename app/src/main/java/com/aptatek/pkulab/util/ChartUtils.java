@@ -9,13 +9,12 @@ import android.util.Pair;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -65,7 +64,9 @@ public final class ChartUtils {
                     if (dayToMeasurementsMap.containsKey(pair.first)) {
                         dayToMeasurementsMap.get(pair.first).add(pair.second);
                     } else {
-                        dayToMeasurementsMap.put(pair.first, Collections.singletonList(pair.second));
+                        final List<TestResult> testResults = new ArrayList<>();
+                        testResults.add(pair.second);
+                        dayToMeasurementsMap.put(pair.first, testResults);
                     }
                 });
 
