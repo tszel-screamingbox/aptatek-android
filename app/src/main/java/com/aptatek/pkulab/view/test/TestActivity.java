@@ -268,9 +268,20 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         return ((TestFragmentBaseView) getActiveBaseFragment()).getScreen();
     }
 
+    private void onBackPressedHere() {
+        final FragmentManager fm = getSupportFragmentManager();
+        fm.executePendingTransactions();
+
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStackImmediate();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     public void showPreviousScreen() {
-        super.onBackPressed();
+        onBackPressedHere();
         screenPagerIndicator.setSelection(getCurrentScreen().ordinal());
     }
 
