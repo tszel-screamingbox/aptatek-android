@@ -21,6 +21,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
@@ -34,6 +35,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     private final ReaderInteractor readerInteractor;
     private final TestInteractor testInteractor;
     private CompositeDisposable disposables = null;
+    private Disposable workflowDisposable = null;
+    private Disposable scanResultsDisposable = null;
     private Function<WorkflowState, Boolean> workflowStateHandler = workflowState -> false;
 
     public TurnReaderOnPresenterImpl(final BluetoothInteractor bluetoothInteractor,
@@ -133,13 +136,17 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     }
 
     private void waitForWorkflowStateChange() {
-        disposables.add(
+        if (workflowDisposable != null && !workflowDisposable.isDisposed()) {
+            workflowDisposable.dispose();
+        }
+
+        workflowDisposable =
                 Countdown.countdown(5000L, tick -> tick >= 1, tick -> tick)
                         .take(1)
                         .flatMap(ignored -> readerInteractor.getWorkflowState())
                         .take(1)
-                        .subscribe(this::handleWorkflowState)
-        );
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::handleWorkflowState, Timber::e);
     }
 
     private void handleWorkflowState(final WorkflowState workflowState) {
@@ -171,7 +178,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
 
     private void dismissTestNotifications() {
         disposables.add(
-                testInteractor.cancelTestNotifications().subscribe(
+                testInteractor.cancelTestNotifications()
+                        .subscribe(
                         () -> {
                             Timber.d("Cancelled all test notifications");
                             ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
@@ -235,14 +243,16 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     }
 
     private void waitForScanResults() {
-        disposables.add(
+        if (scanResultsDisposable != null && !scanResultsDisposable.isDisposed()) {
+            scanResultsDisposable.dispose();
+        }
+
+        scanResultsDisposable =
                 processReaderDevicesFlowable()
                         .subscribe(
                                 this::handleDiscoveredDevices,
-                                error -> {
-                                    Timber.d("Error in waitForScanResults: %s", error);
-                                })
-        );
+                                error -> Timber.d("Error in waitForScanResults: %s", error)
+                        );
     }
 
     @Override

@@ -49,10 +49,6 @@
     <!-- Home Fragment -->
     <string name="home.battery.alert.content">You need to charge phone to >20% of battery to continue.</string>
     <string name="home.battery.alert.title">Battery Life Too Low</string>
-    <string name="home.range.dialog.later">Do It Later</string>
-    <string name="home.range.dialog.message">Review Phe target ranges with your clinician to make sure they are right for you.\n\nIn case you just reinstalled the app, these settings reset.</string>
-    <string name="home.range.dialog.set">Set Phe Levels</string>
-    <string name="home.range.dialog.title">Review Phe Levels</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>
@@ -110,7 +106,7 @@
     <string name="rangeinfo.very.high">Very High</string>
     <string name="rangeinfo.veryhigh.value.prefix">over</string>
     <!-- Waste dispose -->
-    <string name="dispose.title">Waste\nDisposables</string>
+    <string name="dispose.title">Discard\nSafely</string>
     <string name="dispose.message">Medical waste and needles should be disposed properly, do not place in regular garbage can.</string>
     <string name="dispose.done">Done</string>
     <!-- Reminder Notification-->
@@ -163,7 +159,7 @@
     <string name="settings.units.confirmation.button.save">Save</string>
     <string name="settings.units.confirmation.message">Do you want to save these changes?</string>
     <string name="settings.units.confirmation.title">Ranges Changed</string>
-    <string name="settings.units.description">You can edit your Phe levels and the units.</string>
+    <string name="settings.units.description">View Phe ranges and edit your unit choice.</string>
     <string name="settings.units.label">Units</string>
     <string name="settings.units.normal.ceil.hint">Ceil</string>
     <string name="settings.units.normal.floor.hint">Floor</string>
