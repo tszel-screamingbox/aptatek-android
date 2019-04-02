@@ -78,7 +78,7 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
         easterEggDisposable = Observable.timer(EASTER_EGG_SECONDS, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> ifViewAttached(TestActivityCommonView::showNextScreen));
+                .subscribe(aLong -> resetWetting());
 
     }
 
