@@ -248,9 +248,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     @Override
-    public void showNoResultsInLast6Months() {
-        // TODO temporary solution until an official decision is made
-        Toast.makeText(getActivity(), "No results in last 6 months. Take a test first ... ", Toast.LENGTH_SHORT).show();
+    public void showNoResults() {
+        updateTitles(getString(R.string.main_title_noresult), getString(R.string.main_title_noresult_hint));
 
         playIcon.setVisibility(VISIBLE);
         bigSettingsButton.setVisibility(VISIBLE);
