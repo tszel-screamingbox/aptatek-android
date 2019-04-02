@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
@@ -58,6 +59,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         implements TestActivityView {
 
     private static final String TAG_BATTER_DIALOG = "aptatek.main.home.battery.dialog";
+    private static final String TAG_CURRENT_FRAGMENT = "aptatek.test.current.fragment";
 
     public static Intent createStarter(@NonNull final Context context) {
         return new Intent(context, TestActivity.class);
@@ -88,6 +90,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Nullable
     protected ConstraintLayout disclaimerContainer;
 
+    private boolean inForeground = false;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +106,18 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     protected void onStart() {
         super.onStart();
 
-        presenter.showProperScreen();
+        inForeground = true;
+
+        if (!AptatekApplication.get(this).shouldRequestPin()) {
+            presenter.showProperScreen();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        inForeground = false;
+
+        super.onStop();
     }
 
     @Override
@@ -216,19 +231,27 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     }
 
     private void showFragment(final Fragment fragment, final boolean addToBackStack, final boolean withAnimation) {
-        final FragmentManager fm = getSupportFragmentManager();
+        if (!inForeground) return;
 
+        final FragmentManager fm = getSupportFragmentManager();
         final FragmentTransaction transaction = fm.beginTransaction();
         if (withAnimation) {
             transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
                     android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }
-        final String tag = fragment.getClass().getName();
-        transaction.replace(getFrameLayoutId(), fragment, tag);
-        if (addToBackStack) {
-            transaction.addToBackStack(tag);
+
+        final Fragment current = fm.findFragmentByTag(TAG_CURRENT_FRAGMENT);
+        if (current != null && current.getClass().equals(fragment.getClass())) {
+            return;
         }
-        transaction.commitAllowingStateLoss();
+
+        transaction.replace(getFrameLayoutId(), fragment, TAG_CURRENT_FRAGMENT);
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+
+        transaction.commit();
+        fm.executePendingTransactions();
     }
 
     @Override
