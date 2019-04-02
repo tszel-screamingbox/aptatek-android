@@ -150,11 +150,15 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .with(((device, data) -> {
                             Timber.d("readCharacteristic onData: device [%s], data [%s]", device.getAddress(), data.toString());
                             final T reading = (T) characteristicReaderMap.get(characteristicId).read(data);
-                            emitter.onSuccess(reading);
+                            if (!emitter.isDisposed()) {
+                                emitter.onSuccess(reading);
+                            }
                         }))
                         .fail((device, status) -> {
                             Timber.d("readCharacteristic error: device [%s], status: [%d]", device.getAddress(), status);
-                            emitter.onError(new CharacteristicReadError(device, status));
+                            if (!emitter.isDisposed()) {
+                                emitter.onError(new CharacteristicReadError(device, status, characteristicId));
+                            }
                         })
                         .done(device -> {
                             Timber.d("readCharacteristic completed successfully");
@@ -169,11 +173,15 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 writeCharacteristic(characteristicsHolder.getCharacteristic(characteristicId), characteristicDataProviderMap.get(characteristicId).provideData(data))
                         .fail(((device, status) -> {
                             Timber.d("writeCharacteristic error: device [%s], status [%d]", device.getAddress(), status);
-                            emitter.onError(new CharacteristicWriteError(device, status));
+                            if (!emitter.isDisposed()) {
+                                emitter.onError(new CharacteristicWriteError(device, status, characteristicId));
+                            }
                         }))
                         .done(device -> {
                             Timber.d("writeCharacteristic completed successfully");
-                            emitter.onComplete();
+                            if (!emitter.isDisposed()) {
+                                emitter.onComplete();
+                            }
                         })
                         .enqueue()
         );
@@ -199,12 +207,16 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
                         .done(device -> {
                                     Timber.d("Mtu change successful");
-                                    emitter.onComplete();
+                                    if (!emitter.isDisposed()) {
+                                        emitter.onComplete();
+                                    }
                                 }
                         ).fail((device, status) -> {
                     Timber.d("Mtu change failed: status [%d]", status);
                     mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
-                    emitter.onError(new MtuChangeFailedError());
+                    if (!emitter.isDisposed()) {
+                        emitter.onError(new MtuChangeFailedError());
+                    }
                 })
                         .enqueue()
         );
@@ -263,7 +275,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .fail((device, status) -> {
                             Timber.d("Failed to read sync response: device [%s], status [%d]", device.getAddress(), status);
 
-                            emitter.onError(new CharacteristicReadError(device, status));
+                            emitter.onError(new CharacteristicReadError(device, status, LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE));
                         })
                         .done(device -> {
                             Timber.d("Done reading sync response: device [%s]", device.getAddress());
