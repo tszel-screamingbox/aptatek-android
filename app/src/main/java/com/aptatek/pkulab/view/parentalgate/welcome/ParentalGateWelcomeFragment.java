@@ -107,6 +107,7 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
