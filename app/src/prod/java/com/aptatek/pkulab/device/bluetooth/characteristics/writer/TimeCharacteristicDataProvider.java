@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
 
 import java.util.Calendar;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
