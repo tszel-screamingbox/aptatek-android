@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.characteristics.CharacteristicsHolder;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.CharacteristicReader;
+import com.aptatek.pkulab.device.bluetooth.characteristics.reader.ResultReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.writer.CharacteristicDataProvider;
 import com.aptatek.pkulab.device.bluetooth.characteristics.writer.RequestResultCharacteristicDataProvider;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicReadError;
@@ -140,6 +141,10 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         super.onPairingRequestReceived(device, variant);
 
         Timber.d("onPairingRequestReceived: device [%s], variant [%s]", device.getAddress(), pairingVariantToString(variant));
+    }
+
+    private int getMTUPayloadLength() {
+        return getMtu() - 3;
     }
 
     @SuppressWarnings("unchecked")
@@ -285,14 +290,14 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     public Single<ResultResponse> getResult(@NonNull final String id) {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT, new RequestResultCharacteristicDataProvider.RequestResultData(id))
                 .delay(200L, TimeUnit.MILLISECONDS) // give some time for reader to settle Result characteristic...
-                .andThen(this.<ResultResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT, true)
+                .andThen(readResult()
                         .onErrorResumeNext(error -> {
                             if (error instanceof JsonParseException) {  // if the good old initial value is read from Result char, give it a chance to settle and try again...
                                 Timber.d("Caught a JsonParseException, but no worries, will retry soon...");
                                 return Flowable.timer(200L, TimeUnit.MILLISECONDS)
                                         .take(1)
                                         .singleOrError()
-                                        .flatMap(ignored -> this.readCharacteristic(LumosReaderConstants.READER_CHAR_RESULT, true));
+                                        .flatMap(ignored -> readResult());
                             }
 
                             return Single.error(error);
@@ -302,6 +307,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 )
                 .lastOrError()
                 .doOnSuccess(result -> Timber.d("Requested resultId: %s, result: %s", id, result));
+    }
+
+    private Single<ResultResponse> readResult() {
+        return readLongPayloadWithChecksum(LumosReaderConstants.READER_CHAR_RESULT)
+                .map(payload -> ((ResultReader) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_RESULT)).read(Data.from(payload)));
     }
 
     public Single<List<ResultResponse>> syncResults() {
@@ -320,25 +330,30 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     }
 
     private Single<ResultSyncResponse> concatSyncResponse() {
+        return readLongPayloadWithChecksum(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE)
+                .map(payload -> (ResultSyncResponse) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE).read(Data.from(payload)));
+    }
+
+    private Single<String> readLongPayloadWithChecksum(final String characteristicId) {
         return Single.<String>create(emitter ->
-                readCharacteristic(characteristicsHolder.getCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE))
+                readCharacteristic(characteristicsHolder.getCharacteristic(characteristicId))
                         .with((device, data) -> {
                             final String rawString = data.getStringValue(0);
 
                             if (!emitter.isDisposed()) {
-                                Timber.d("Successfully read sync response: [%s]", rawString);
+                                Timber.d("readLongPayloadWithChecksum -- %s -- partial: [%s]", characteristicId, rawString);
                                 emitter.onSuccess(rawString);
                             }
                         })
                         .fail((device, status) -> {
-                            Timber.d("Failed to read sync response: device [%s], status [%d]", device.getAddress(), status);
+                            Timber.d("Failed to read partial response -- %s --: device [%s], status [%d]", characteristicId, device.getAddress(), status);
 
                             if (!emitter.isDisposed()) {
                                 emitter.onError(new CharacteristicReadError(device, status, LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE));
                             }
                         })
                         .done(device -> {
-                            Timber.d("Done reading sync response: device [%s]", device.getAddress());
+                            Timber.d("Done reading partial response -- %s -- : device [%s]", characteristicId, device.getAddress());
 
                             if (!emitter.isDisposed()) {
                                 emitter.tryOnError(new NoValueReceivedError(device));
@@ -346,15 +361,13 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         })
                         .enqueue())
                 .repeatWhen(objectFlowable -> objectFlowable)
-                .takeUntil(s -> {
-                    return TextUtils.isEmpty(s.trim());
-                })
+                .takeUntil(s ->
+                           s.length() < getMTUPayloadLength() || TextUtils.isEmpty(s.trim())
+                )
                 .scan((current, next) -> current + next)
                 .lastOrError()
                 .map(this::validateChecksumAndReturnPayload)
-                .onErrorResumeNext(error -> Single.error(new ChecksumError(getBluetoothDevice(), -1, LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE)))
-                .map(payload -> (ResultSyncResponse) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE).read(Data.from(payload)));
-
+                .onErrorResumeNext(error -> Single.error(new ChecksumError(getBluetoothDevice(), -1, characteristicId)));
     }
 
     public Maybe<ReaderDevice> getConnectedDevice() {
