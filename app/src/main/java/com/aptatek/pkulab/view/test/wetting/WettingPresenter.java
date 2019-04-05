@@ -4,7 +4,6 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
-import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import java.util.concurrent.TimeUnit;
@@ -78,7 +77,7 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
         easterEggDisposable = Observable.timer(EASTER_EGG_SECONDS, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> ifViewAttached(TestActivityCommonView::showNextScreen));
+                .subscribe(aLong -> resetWetting());
 
     }
 
