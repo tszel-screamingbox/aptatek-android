@@ -4,6 +4,7 @@ import com.aptatek.pkulab.injection.component.chart.ChartFragmentComponent;
 import com.aptatek.pkulab.injection.component.home.HomeFragmentComponent;
 import com.aptatek.pkulab.injection.component.parentalgate.ParentalGateFragmentComponent;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkulab.injection.component.webpage.WebPageComponent;
 import com.aptatek.pkulab.injection.component.weekly.WeeklyFragmentComponent;
 import com.aptatek.pkulab.injection.module.FragmentModule;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
@@ -57,4 +58,5 @@ public interface FragmentComponent {
 
     ChartFragmentComponent plus(RangeInfoModule module, ChartModule chartModule);
 
+    WebPageComponent plus(ChartModule chartModule);
 }

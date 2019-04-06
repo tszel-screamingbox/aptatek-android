@@ -77,7 +77,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         Timber.d("Process.Lifecycle: foreground");
         stopService(new Intent(this, WettingForegroundService.class));
 
-        if (lastForegroundTime > 0L && Math.abs(System.currentTimeMillis() - lastForegroundTime) > Constants.PIN_IDLE_PERIOD_MS) {
+        if (shouldRequestPin()) {
             Timber.d("Requesting pin code due to exceeding max idle period");
 
             LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Constants.PIN_IDLE_ACTION));
@@ -89,6 +89,10 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         lastForegroundTime = 0L;
 
         disposeKillServiceTimer();
+    }
+
+    public boolean shouldRequestPin() {
+        return lastForegroundTime > 0L && Math.abs(System.currentTimeMillis() - lastForegroundTime) > Constants.PIN_IDLE_PERIOD_MS;
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)

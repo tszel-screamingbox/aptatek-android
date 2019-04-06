@@ -66,11 +66,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void initView() {
-        if (!preferenceManager.isRangeDialogShown()) {
-            preferenceManager.setRangeDialogShown(true);
-            ifViewAttached(HomeFragmentView::showRangeDialog);
-        }
-
         if (preferenceManager.hasUnfinishedTest()) {
             ifViewAttached(HomeFragmentView::unfinishedTestDetected);
         }
@@ -93,7 +88,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
                             if (pair.second.isEmpty()) {
-                                ifViewAttached(HomeFragmentView::showNoResultsInLast6Months);
+                                ifViewAttached(HomeFragmentView::showNoResults);
                             } else {
                                 final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
                                 final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();

@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
@@ -33,14 +32,12 @@ import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
-import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -50,7 +47,6 @@ import butterknife.OnClick;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.aptatek.pkulab.view.base.BaseActivity.Animation.RIGHT_TO_LEFT;
 
 
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
@@ -119,7 +115,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         bubbleScrollView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
-                panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
@@ -147,11 +143,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     public boolean isResultShown() {
-        return panelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED;
+        return panelLayout != null && panelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED;
     }
 
     public void closeResultsPanel() {
-        panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
     public boolean handleDispatchTouchEvent(final MotionEvent ev) {
@@ -208,7 +204,13 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @OnClick(R.id.imgCloseResults)
     public void onCloseResultsClicked() {
-        panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+    }
+
+    private void setPanelState(final SlidingUpPanelLayout.PanelState panelState) {
+        if (panelLayout != null) {
+            panelLayout.setPanelState(panelState);
+        }
     }
 
     private void initAdapter() {
@@ -220,9 +222,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);
-            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1
-                    && panelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED) {
-                panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && isResultShown()) {
+                setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 presenter.measureListToAdapterList(chartVM.getMeasures());
             }
         });
@@ -242,27 +243,6 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     public void setMeasureList(final List<DailyResultAdapterItem> data) {
         dailyResultsAdapter.setData(data);
-    }
-
-    @Override
-    public void showRangeDialog() {
-        final AlertDialogModel model = AlertDialogModel.builder()
-                .setTitle(getString(R.string.home_range_dialog_title))
-                .setMessage(getString(R.string.home_range_dialog_message))
-                .setPositiveButtonText(getString(R.string.home_range_dialog_set))
-                .setNegativeButtonText(getString(R.string.home_range_dialog_later))
-                .setCancelable(false)
-                .build();
-
-        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
-                model,
-                decision -> {
-                    if (decision == AlertDialogDecisions.POSITIVE) {
-                        final Intent intent = RangeSettingsActivity.starter(getContext());
-                        getBaseActivity().launchActivity(intent, false, RIGHT_TO_LEFT);
-                    }
-                });
-        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_RANGE_DIALOG);
     }
 
     @Override
@@ -297,10 +277,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_UNFINISHED_DIALOG);
     }
 
-    @Override
-    public void showNoResultsInLast6Months() {
-        // TODO temporary solution until an official decision is made
-        Toast.makeText(getActivity(), "No results in last 6 months. Take a test first ... ", Toast.LENGTH_SHORT).show();
+    public void showNoResults() {
+        updateTitles(getString(R.string.main_title_noresult), getString(R.string.main_title_noresult_hint));
 
         playIcon.setVisibility(VISIBLE);
         bigSettingsButton.setVisibility(VISIBLE);

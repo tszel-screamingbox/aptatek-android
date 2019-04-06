@@ -79,7 +79,8 @@ public class ParentalGateTest {
      * @test.expected The applications accepts the typed age number.
      */
     @Test
-    public void testHappyCase() throws Exception {
+    public void
+    testHappyCase() throws Exception {
         final Calendar past = eighteenYearsAgo();
 
         onView(withId(R.id.parentalButton)).perform(click());
@@ -102,15 +103,13 @@ public class ParentalGateTest {
         onView(withId(R.id.buttonAction)).perform(click());
 
         onView(withId(R.id.parentalVerificationImage)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalVerificationMessage)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(withText(R.string.parental_verification_success_title)));
-        onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_success_message)));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.parental_verification_success_title)));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.parental_verification_success_message)));
 
         Thread.sleep(3000L);
-
-        onView(withId(R.id.parentalVerificationTitle)).check(doesNotExist());
     }
 
     /**
@@ -138,12 +137,12 @@ public class ParentalGateTest {
         onView(withId(R.id.buttonAction)).perform(click());
 
         onView(withId(R.id.parentalVerificationImage)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalVerificationMessage)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.parentalVerificationButton)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(withText(R.string.parental_verification_failure_not_old_enough_title)));
-        onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_failure_not_old_enough_message)));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.parental_verification_failure_not_old_enough_title)));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.parental_verification_failure_not_old_enough_message)));
 
         Thread.sleep(1000L);
 
@@ -167,12 +166,12 @@ public class ParentalGateTest {
         onView(withId(R.id.buttonAction)).perform(click());
 
         onView(withId(R.id.parentalVerificationImage)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(isDisplayed()));
-        onView(withId(R.id.parentalVerificationMessage)).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(isDisplayed()));
         onView(withId(R.id.parentalVerificationButton)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.parentalVerificationTitle)).check(matches(withText(R.string.parental_verification_failure_age_not_match_title)));
-        onView(withId(R.id.parentalVerificationMessage)).check(matches(withText(R.string.parental_verification_failure_age_not_match_message)));
+        onView(allOf(withId(R.id.title), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.parental_verification_failure_age_not_match_title)));
+        onView(allOf(withId(R.id.subtitle), isDescendantOfA(withId(R.id.header)))).check(matches(withText(R.string.parental_verification_failure_age_not_match_message)));
     }
 
     private Calendar eighteenYearsAgo() {

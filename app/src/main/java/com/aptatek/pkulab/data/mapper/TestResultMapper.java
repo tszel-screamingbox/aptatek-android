@@ -30,8 +30,6 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
                 .setId(dataModel.getId())
                 .setTimestamp(dataModel.getTimestamp())
                 .setPkuLevel(dataModel.getPkuLevel())
-                .setSick(dataModel.isSick())
-                .setFasting(dataModel.isFasting())
                 .build();
     }
 
@@ -49,8 +47,6 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
         testResultDataModel.setId(domainModel.getId());
         testResultDataModel.setTimestamp(domainModel.getTimestamp());
         testResultDataModel.setPkuLevel(domainModel.getPkuLevel());
-        testResultDataModel.setFasting(domainModel.isFasting());
-        testResultDataModel.setSick(domainModel.isSick());
         return testResultDataModel;
     }
 

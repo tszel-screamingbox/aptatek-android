@@ -202,29 +202,22 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
         final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
 
-        final String pkuLevel = resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
-                ? R.string.rangeinfo_pkulevel_mmol
-                : R.string.rangeinfo_pkulevel_mg);
-        final String unitText = resourceInteractor.getStringResource(pkuRangeInfo.isDefaultValue()
-                ? R.string.pdf_export_unit_description
-                : R.string.pdf_export_unit_description_warn, pkuLevel);
-
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
-                .setUnit(unitText)
+                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                        ? R.string.rangeinfo_pkulevel_mmol
+                        : R.string.rangeinfo_pkulevel_mg))
                 .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
-                        : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalFloorValue()))
+                        : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalFloorValue()))
                 .setNormalCeilValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalCeilValue())
-                        : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalCeilValue()));
+                        : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalCeilValue()));
 
         return testResultInteractor.listBetween(start, end)
                 .toFlowable()
                 .map(list -> {
-                    int fastingCount = 0;
-                    int sickCount = 0;
                     int low = 0;
                     int normal = 0;
                     int high = 0;
@@ -232,10 +225,6 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                     float fullCount = 0;
 
                     for (TestResult testResult : list) {
-                        if (testResult.isFasting()) {
-                            fastingCount++;
-                        }
-
                         if (pkuRangeInfo.getPkuLevelUnit() != testResult.getPkuLevel().getUnit()) {
                             fullCount += PkuLevelConverter.convertTo(testResult.getPkuLevel(), pkuRangeInfo.getPkuLevelUnit()).getValue();
                         } else {
@@ -244,29 +233,23 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
                         final ChartUtils.State state = ChartUtils.getState(testResult.getPkuLevel(), pkuRangeInfo);
 
-                        if (state == ChartUtils.State.LOW) {
+                        if (state == ChartUtils.State.STANDARD) {
                             low++;
-                        } else if (state == ChartUtils.State.NORMAL) {
+                        } else if (state == ChartUtils.State.INCREASED) {
                             normal++;
                         } else if (state == ChartUtils.State.HIGH) {
                             high++;
                         } else if (state == ChartUtils.State.VERY_HIGH) {
                             veryHigh++;
                         }
-
-                        if (testResult.isSick()) {
-                            sickCount++;
-                        }
                     }
 
                     pdfEntryDataBuilder
                             .setAverageCount(list.size() != 0 ? (int) (fullCount / list.size()) : 0)
-                            .setFastingCount(fastingCount)
                             .setLowCount(low)
                             .setNormalCount(normal)
                             .setHighCount(high)
                             .setVeryHighCount(veryHigh)
-                            .setSickCount(sickCount)
                             .setDeviation(getDeviation(list));
 
                     return list;
@@ -276,10 +259,10 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 .toList()
                 .flatMap(pdfChartDataTransformer::transformEntries)
                 .map(bubbleDataSet ->
-                    pdfEntryDataBuilder
-                            .setBubbleDataSet(bubbleDataSet)
-                            .setDaysOfMonth(TimeHelper.getDaysBetween(start, end) + 1)
-                            .build()
+                        pdfEntryDataBuilder
+                                .setBubbleDataSet(bubbleDataSet)
+                                .setDaysOfMonth(TimeHelper.getDaysBetween(start, end) + 1)
+                                .build()
                 );
     }
 

@@ -13,6 +13,8 @@ import com.aptatek.pkulab.view.settings.reminder.adapter.ReminderSettingsAdapter
 import com.aptatek.pkulab.view.settings.reminder.adapter.RemindersAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import org.apache.commons.text.WordUtils;
+
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
@@ -155,8 +157,17 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                 .setReminders(remindersAdapterItems)
                 .setActive(!remindersAdapterItems.isEmpty());
 
-        reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(reminderSettingsItem),
-                builder.build());
+        int index = -1;
+        for (int i = 0; i < reminderSettingsAdapterItems.size(); i++) {
+            final ReminderSettingsAdapterItem item = reminderSettingsAdapterItems.get(i);
+            if (item.uniqueIdentifier().equals(reminderSettingsItem.uniqueIdentifier())) {
+                index = i;
+                break;
+            }
+        }
+        if (index > -1 && index <= remindersAdapterItems.size() - 1) {
+            reminderSettingsAdapterItems.set(index, builder.build());
+        }
 
         ifViewAttached(view -> view.deleteReminder(reminderSettingsAdapterItems));
 
@@ -280,7 +291,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                             data.add(
                                     ReminderSettingsAdapterItem.builder()
                                             .setWeekDay(reminderDay.getWeekDay())
-                                            .setNameOfDay(new DateFormatSymbols().getWeekdays()[reminderDay.getWeekDay()])
+                                            .setNameOfDay(WordUtils.capitalize(new DateFormatSymbols().getWeekdays()[reminderDay.getWeekDay()]))
                                             .setReminders(remindersAdapterItems)
                                             .setActive(reminderDay.isActive())
                                             .build());

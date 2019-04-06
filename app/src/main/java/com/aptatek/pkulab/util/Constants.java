@@ -11,11 +11,12 @@ public final class Constants {
     public static final int ONE_HOUR_IN_MINUTES = 60;
     public static final int ONE_DAY_IN_HOURS = 24;
     public static final long DEFAULT_WETTING_PERIOD = 1000 * 60 * 30L;
-    public static final float DEFAULT_PKU_NORMAL_FLOOR = 100f;
-    public static final float DEFAULT_PKU_NORMAL_CEIL = 350f;
-    public static final float DEFAULT_PKU_HIGH_RANGE = 150f;
+    public static final float DEFAULT_PKU_INCREASED_FLOOR = 127f;
+    public static final float DEFAULT_PKU_INCREASED_CEIL = 364f;
+    public static final float DEFAULT_PKU_HIGH_RANGE = 837f;
+    public static final float DEFAULT_PKU_MARGIN_MIN = 100f;
     public static final float DEFAULT_PKU_LOWEST_VALUE = 2f;
-    public static final float DEFAULT_PKU_HIGHEST_VALUE = 675f;
+    public static final float DEFAULT_PKU_HIGHEST_VALUE = 1201f;
     public static final float FLOAT_COMPARISION_ERROR_MARGIN = 0.0001f;
     public static final PkuLevelUnits DEFAULT_PKU_LEVEL_UNIT = PkuLevelUnits.MILLI_GRAM;
 

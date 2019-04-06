@@ -14,14 +14,8 @@ public abstract class TestResult {
 
     public abstract PkuLevel getPkuLevel();
 
-    public abstract boolean isSick();
-
-    public abstract boolean isFasting();
-
     public static TestResult.Builder builder() {
-        return new com.aptatek.pkulab.domain.model.reader.AutoValue_TestResult.Builder()
-                .setSick(false)
-                .setFasting(false);
+        return new com.aptatek.pkulab.domain.model.reader.AutoValue_TestResult.Builder();
     }
 
     public abstract Builder toBuilder();
@@ -36,10 +30,6 @@ public abstract class TestResult {
         public abstract Builder setTimestamp(long timestamp);
 
         public abstract Builder setPkuLevel(PkuLevel pkuLevel);
-
-        public abstract Builder setSick(boolean sick);
-
-        public abstract Builder setFasting(boolean fasting);
 
         public abstract TestResult build();
 

@@ -8,8 +8,8 @@ import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_HIGHEST_VALUE;
 import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_HIGH_RANGE;
 import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_LEVEL_UNIT;
 import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_LOWEST_VALUE;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_NORMAL_CEIL;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_NORMAL_FLOOR;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_CEIL;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_FLOOR;
 
 public class PkuRangeDataSourceImpl implements PkuRangeDataSource {
 
@@ -37,13 +37,13 @@ public class PkuRangeDataSourceImpl implements PkuRangeDataSource {
     @Override
     public float getNormalFloorValueMMol() {
         final float pkuRangeNormalFloor = preferenceManager.getPkuRangeNormalFloor();
-        return pkuRangeNormalFloor == -1 ? DEFAULT_PKU_NORMAL_FLOOR : pkuRangeNormalFloor;
+        return pkuRangeNormalFloor == -1 ? DEFAULT_PKU_INCREASED_FLOOR : pkuRangeNormalFloor;
     }
 
     @Override
     public float getNormalCeilValueMMol() {
         final float pkuRangeNormalCeil = preferenceManager.getPkuRangeNormalCeil();
-        return pkuRangeNormalCeil == -1 ? DEFAULT_PKU_NORMAL_CEIL : pkuRangeNormalCeil;
+        return pkuRangeNormalCeil == -1 ? DEFAULT_PKU_INCREASED_CEIL : pkuRangeNormalCeil;
     }
 
     @Override
@@ -63,8 +63,8 @@ public class PkuRangeDataSourceImpl implements PkuRangeDataSource {
 
     @Override
     public boolean isDefaultValue() {
-        return getNormalFloorValueMMol() == DEFAULT_PKU_NORMAL_FLOOR &&
-                getNormalCeilValueMMol() == DEFAULT_PKU_NORMAL_CEIL;
+        return getNormalFloorValueMMol() == DEFAULT_PKU_INCREASED_FLOOR &&
+                getNormalCeilValueMMol() == DEFAULT_PKU_INCREASED_CEIL;
     }
 
     @Override

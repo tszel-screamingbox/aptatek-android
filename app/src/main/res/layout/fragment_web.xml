@@ -26,7 +26,7 @@
         android:id="@+id/webView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnReport"
         app:layout_constraintEnd_toEndOf="@id/guideEnd"
         app:layout_constraintStart_toStartOf="@id/guideStart"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
@@ -36,13 +36,14 @@
         style="@style/General.Rounded.Gray.Button.Secondary"
         android:layout_width="0dp"
         android:layout_marginLeft="@dimen/general.distance.small"
-        android:layout_marginTop="@dimen/general.distance"
+        android:layout_marginTop="@dimen/general.distance.20dp"
         android:layout_marginRight="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/general.distance.20dp"
         android:text="@string/faq.report.issue.title"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/webView" />
 
 </android.support.constraint.ConstraintLayout>

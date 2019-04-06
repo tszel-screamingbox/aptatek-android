@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.service;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.aptatek.pkulab.BuildConfig;
@@ -67,8 +68,12 @@ public class ExplicitBluetoothService extends BaseForegroundService {
     private int mode = -1;
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        mode = intent.getIntExtra(KEY_MODE, -1);
+    public int onStartCommand(@Nullable final Intent intent, final int flags, final int startId) {
+        if (intent != null) {
+            mode = intent.getIntExtra(KEY_MODE, -1);
+
+            return START_STICKY_COMPATIBILITY;
+        }
 
         return super.onStartCommand(intent, flags, startId);
     }

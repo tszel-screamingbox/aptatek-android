@@ -22,6 +22,7 @@ import com.aptatek.pkulab.domain.error.DeviceNotSupportedError;
 import com.aptatek.pkulab.domain.error.GeneralReaderError;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.error.ReaderError;
+import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
@@ -31,6 +32,7 @@ import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+import com.google.gson.JsonParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,8 @@ import timber.log.Timber;
 public class ReaderManagerImpl implements ReaderManager {
 
     private final LumosReaderManager lumosReaderManager;
+
+    private static final int MAX_RETRY_COUNT = 3;
 
     private final FlowableProcessor<ReaderError> readerErrorProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<ConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ConnectionEvent.create(null, ConnectionState.DISCONNECTED));
@@ -188,31 +192,56 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Single<Integer> getBatteryLevel() {
-        return lumosReaderManager.readCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL);
+        return withRetry(1, lumosReaderManager.readCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL));
+    }
+
+    private <T> Single<T> withRetry(final int times, final Single<T> single) {
+        return single.onErrorResumeNext(error -> {
+            Timber.d("withRetry - count: %d", times);
+
+            if (times > MAX_RETRY_COUNT) {
+                return Single.error(error);
+            }
+
+            if (error instanceof JsonParseException) {
+                return Countdown.countdown(200L, it -> true, it -> it)
+                        .singleOrError()
+                        .flatMap(ignored -> withRetry(times + 1, single));
+            } else {
+                return Single.error(error);
+            }
+        });
     }
 
     @Override
     public Single<CartridgeInfo> getCartridgeInfo() {
-        return lumosReaderManager.<CartridgeIdResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID)
-                .map(cartridgeIdResponse -> ((CartridgeInfoMapper) mappers.get(CartridgeIdResponse.class)).mapToDomain(cartridgeIdResponse));
+        return withRetry(1,
+                lumosReaderManager.<CartridgeIdResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID)
+                    .map(cartridgeIdResponse -> ((CartridgeInfoMapper) mappers.get(CartridgeIdResponse.class)).mapToDomain(cartridgeIdResponse))
+        );
     }
 
     @Override
     public Single<Integer> getNumberOfResults() {
-        return lumosReaderManager.<NumPreviousResultsResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_NUM_RESULTS)
-                .map(NumPreviousResultsResponse::getNumberOfResults);
+        return withRetry(1, lumosReaderManager.<NumPreviousResultsResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_NUM_RESULTS)
+                .map(NumPreviousResultsResponse::getNumberOfResults)
+        );
     }
 
     @Override
     public Single<TestResult> getResult(@NonNull final String id) {
-        return lumosReaderManager.getResult(id)
-                .map(resultResponse -> ((TestResultMapper) mappers.get(ResultResponse.class)).mapToDomain(resultResponse));
+        return withRetry(1,
+                lumosReaderManager.getResult(id)
+                    .map(resultResponse -> ((TestResultMapper) mappers.get(ResultResponse.class)).mapToDomain(resultResponse))
+        );
     }
 
     @Override
     public Single<Error> getError() {
-        return lumosReaderManager.<ErrorResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_ERROR)
-                .map(errorResponse -> ((ErrorMapper) mappers.get(ErrorResponse.class)).mapToDomain(errorResponse));
+        return withRetry(1,
+                lumosReaderManager.<ErrorResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_ERROR)
+                    .map(errorResponse -> ((ErrorMapper) mappers.get(ErrorResponse.class)).mapToDomain(errorResponse))
+        );
     }
 
     @Override
@@ -260,11 +289,15 @@ public class ReaderManagerImpl implements ReaderManager {
         return Flowable.concat(
                 connectionStateProcessor.filter(event -> event.getConnectionState() == ConnectionState.READY)
                     .take(1)
-                    .flatMap(ignored -> lumosReaderManager.<WorkflowStateResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE)
-                        .map(workflowStateResponse -> ((WorkflowStateMapper) mappers.get(WorkflowStateResponse.class)).mapToDomain(workflowStateResponse))
-                        .toFlowable()
-                    ),
+                    .flatMap(ignored -> getWorkflowState().toFlowable()),
                 workflowStateProcessor
+        );
+    }
+
+    private Single<WorkflowState> getWorkflowState() {
+        return withRetry(1,
+                lumosReaderManager.<WorkflowStateResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE)
+                        .map(workflowStateResponse -> ((WorkflowStateMapper) mappers.get(WorkflowStateResponse.class)).mapToDomain(workflowStateResponse))
         );
     }
 

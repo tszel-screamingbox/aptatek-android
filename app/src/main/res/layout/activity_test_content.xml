@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:id="@+id/testContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/testDisclaimer"
+        layout="@layout/layout_test_alert"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/test.alert.height"
+        android:layout_marginStart="@dimen/general.distance.xsmall"
+        android:layout_marginEnd="@dimen/general.distance.xsmall"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/test.bottombar.height"
+        android:background="@color/applicationWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/testCancelButton"
+            style="@style/Test.Cancel.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/general.distance.mini"
+            android:text="@string/test.button.cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.rd.PageIndicatorView
+            android:id="@+id/testPageIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/general.distance.xxsmall"
+            android:layout_marginEnd="@dimen/general.distance.xxsmall"
+            app:layout_constraintBottom_toBottomOf="@id/testCancelButton"
+            app:layout_constraintEnd_toStartOf="@id/testNextButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@id/testCancelButton"
+            app:layout_constraintTop_toTopOf="@+id/testCancelButton"
+            app:layout_constraintVertical_bias="0.5"
+            app:piv_animationType="worm"
+            app:piv_interactiveAnimation="true"
+            app:piv_selectedColor="@color/testPageIndicatorBlue"
+            app:piv_unselectedColor="@color/testPageIndicatorGray" />
+
+        <ProgressBar
+            android:id="@+id/testProgress"
+            style="@style/Test.Progress"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/test.progressbar.height"
+            android:progressDrawable="@drawable/custom_progressbar"
+            app:layout_constraintBottom_toBottomOf="@id/testCancelButton"
+            app:layout_constraintEnd_toEndOf="@id/testPageIndicator"
+            app:layout_constraintStart_toStartOf="@id/testPageIndicator"
+            app:layout_constraintTop_toTopOf="@+id/testCancelButton"
+            tools:progress="10" />
+
+        <Button
+            android:id="@+id/testNextButton"
+            style="@style/Test.Next.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/general.distance.mini"
+            android:text="@string/test.button.next"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.aptatek.pkulab.widget.BatteryView
+            android:id="@+id/testBattery"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:foregroundGravity="center"
+            app:layout_constraintBottom_toBottomOf="@id/testNextButton"
+            app:layout_constraintEnd_toEndOf="@id/testNextButton"
+            app:layout_constraintStart_toStartOf="@id/testNextButton"
+            app:layout_constraintTop_toTopOf="@+id/testNextButton" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

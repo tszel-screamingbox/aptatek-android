@@ -15,6 +15,7 @@ import com.aptatek.pkulab.view.main.weekly.chart.CustomYAxisRenderer;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataRenderer;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.github.mikephil.charting.charts.BubbleChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
@@ -38,21 +39,15 @@ public class PdfExportView extends ConstraintLayout {
     BubbleChart bubbleChart;
     @BindView(R.id.textViewUnitDescription)
     TextView unitDescription;
-    @BindView(R.id.textViewFastingNumber)
-    TextView fastingNumber;
-    @BindView(R.id.textViewSickNumber)
-    TextView sickNumber;
-    @BindView(R.id.textViewAverageNumber)
-    TextView averageNumber;
     @BindView(R.id.textViewLowNumber)
-    TextView lowNumber;
+    TextView standardNumber;
     @BindView(R.id.textViewNormalNumber)
-    TextView normalNumber;
+    TextView increasedNumber;
     @BindView(R.id.textViewHighNumber)
     TextView highNumber;
     @BindView(R.id.textViewVeryHighNumber)
     TextView veryHighNumber;
-    @BindView(R.id.textViewAverageText)
+    @BindView(R.id.avarage)
     TextView averageText;
     @BindView(R.id.textViewNormalText)
     TextView normalText;
@@ -75,15 +70,12 @@ public class PdfExportView extends ConstraintLayout {
         this.pdfEntryData = pdfEntryData;
 
         subTitle.setText(pdfEntryData.getFormattedDate());
-        lowNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getLowCount()));
-        normalNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getNormalCount()));
+        standardNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getLowCount()));
+        increasedNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getNormalCount()));
         highNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getHighCount()));
         veryHighNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getVeryHighCount()));
-        sickNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getSickCount()));
-        averageNumber.setText(String.valueOf(pdfEntryData.getAverageCount()));
-        fastingNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getFastingCount()));
-        averageText.setText(getResources().getString(R.string.pdf_export_average, String.format(Locale.getDefault(), "%.2f", pdfEntryData.getDeviation())));
-        unitDescription.setText(pdfEntryData.getUnit());
+        averageText.setText(getResources().getString(R.string.pdf_export_average, String.valueOf(pdfEntryData.getAverageCount()), pdfEntryData.getUnit()));
+        unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
         normalText.setText(getResources().getString(R.string.pdf_legend_normal, pdfEntryData.getNormalFloorValue(), pdfEntryData.getNormalCeilValue()));
 
         initChart();
@@ -117,7 +109,11 @@ public class PdfExportView extends ConstraintLayout {
         xAxis.setAxisMinimum(0f);
         final int maxValue = getAxisMaxForDays(pdfEntryData.getDaysOfMonth());
         xAxis.setAxisMaximum(maxValue);
-        xAxis.setLabelCount((maxValue / 2) + 1, true);
+        xAxis.setLabelCount(maxValue, true);
+
+        // need to use reflection since the Axis.setLabelCount sets 25 as max value...
+        setLabelCountOnAxisWithReflection(xAxis, maxValue + 1);
+
         xAxis.setTypeface(typeface);
 
         final YAxis yAxis = bubbleChart.getAxisLeft();
@@ -138,13 +134,7 @@ public class PdfExportView extends ConstraintLayout {
         yAxis.setTypeface(typeface);
 
         // need to use reflection since the Axis.setLabelCount sets 25 as max value...
-        try {
-            final Field mLabelCount = yAxis.getClass().getSuperclass().getDeclaredField("mLabelCount");
-            mLabelCount.setAccessible(true);
-            mLabelCount.set(yAxis, hours.length);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Timber.d("Failed to set mLabelCount");
-        }
+        setLabelCountOnAxisWithReflection(yAxis, hours.length);
 
         yAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
         yAxis.setTypeface(typeface);
@@ -160,6 +150,16 @@ public class PdfExportView extends ConstraintLayout {
         bubbleChart.getLegend().setEnabled(false);
         bubbleChart.getDescription().setEnabled(false);
         bubbleChart.setRenderer(new PdfChartDataRenderer(bubbleChart));
+    }
+
+    private void setLabelCountOnAxisWithReflection(final AxisBase axis, final int count) {
+        try {
+            final Field mLabelCount = axis.getClass().getSuperclass().getDeclaredField("mLabelCount");
+            mLabelCount.setAccessible(true);
+            mLabelCount.set(axis, count);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Timber.d("Failed to set mLabelCount");
+        }
     }
 
     @Override

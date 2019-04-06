@@ -1,14 +1,14 @@
 package com.aptatek.pkulab.injection.component.webpage;
 
-import com.aptatek.pkulab.injection.module.ActivityModule;
+import com.aptatek.pkulab.injection.module.FragmentModule;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
-import com.aptatek.pkulab.view.settings.web.WebPageActivity;
+import com.aptatek.pkulab.view.settings.web.fragment.WebPageFragment;
 
 import dagger.Subcomponent;
 
-@Subcomponent(modules = {ActivityModule.class, ChartModule.class})
+@Subcomponent(modules = {FragmentModule.class, ChartModule.class})
 public interface WebPageComponent {
 
-    void inject(WebPageActivity webPageActivity);
+    void inject(WebPageFragment webPageFragment);
 
 }

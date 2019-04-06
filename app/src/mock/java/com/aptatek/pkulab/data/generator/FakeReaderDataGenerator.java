@@ -25,9 +25,6 @@ public class FakeReaderDataGenerator {
     private static final long DAY_IN_MILLIS = 1000L * 60 * 60 * 24;
     private static final long MIN_TIME_BETWEEN_MEASURES = 1000L * 60 * 40;
     private static final int MAX_MEASUREMENTS_PER_DAY = 5;
-    private static final int SICK_CHANCE = 5;
-    private static final int FASTING_CHANCE = 10;
-
     private final DataFactory dataFactory;
 
     private final List<TestResult> testResults = new ArrayList<>();
@@ -111,8 +108,6 @@ public class FakeReaderDataGenerator {
                 .setId(id == null ? dataFactory.getRandomChars(10) : id)
                 .setPkuLevel(PkuLevel.create(dataFactory.getNumberUpTo((int) Constants.DEFAULT_PKU_HIGHEST_VALUE), PkuLevelUnits.MICRO_MOL))
                 .setTimestamp(useExactTime ? timestamp : generateRandomTimeAtGivenDay(timestamp))
-                .setSick(dataFactory.chance(SICK_CHANCE))
-                .setFasting(dataFactory.chance(FASTING_CHANCE))
                 .build();
     }
 

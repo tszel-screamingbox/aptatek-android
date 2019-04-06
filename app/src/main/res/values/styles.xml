@@ -183,8 +183,9 @@
     </style>
 
     <style name="General.TimePicker" parent="android:Widget.Material.Light.TimePicker" tools:targetApi="lollipop">
+        <item name="android:fontFamily">@font/nunito_black</item>
         <item name="android:timePickerMode" tools:targetApi="lollipop">clock</item>
-        <item name="android:numbersSelectorColor">@color/applicationTimePickerSelector</item>
+        <item name="android:numbersSelectorColor">@color/applicationGreen</item>
         <item name="android:headerBackground">@android:color/white</item>
         <item name="android:headerTimeTextAppearance">@style/General.HeaderTextStyle</item>
         <item name="android:textAppearance">@style/General.ClockTextStyle</item>
@@ -209,7 +210,7 @@
     </style>
 
     <style name="Battery.Level.Text" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/pkuLevelNormal</item>
+        <item name="android:textColor">@color/pkuLevelIncreased</item>
         <item name="android:textSize">@dimen/font.size.xregular</item>
         <item name="android:fontFamily">@font/nunito_black</item>
         <item name="android:textStyle">normal</item>
@@ -258,7 +259,7 @@
     </style>
 
     <style name="RangeInfo.Row.Name" parent="General.Text">
-        <item name="android:textSize">@dimen/font.size.xbig</item>
+        <item name="android:textSize">@dimen/font.size.medium</item>
         <item name="android:textColor">@color/applicationWhite</item>
     </style>
 

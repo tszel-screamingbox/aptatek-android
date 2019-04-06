@@ -95,9 +95,9 @@ public class RangeInfoPresenterTest {
     @Test
     public void testRefreshCallsInteractorAndFormatter() throws Exception {
         final PkuRangeInfo rangeInfo = PkuRangeInfo.builder()
-                .setHighCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
-                .setNormalCeilValue(Constants.DEFAULT_PKU_NORMAL_CEIL)
-                .setNormalFloorValue(Constants.DEFAULT_PKU_NORMAL_FLOOR)
+                .setHighCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE)
+                .setNormalCeilValue(Constants.DEFAULT_PKU_INCREASED_CEIL)
+                .setNormalFloorValue(Constants.DEFAULT_PKU_INCREASED_FLOOR)
                 .setPkuLevelUnit(Constants.DEFAULT_PKU_LEVEL_UNIT)
                 .setNormalAbsoluteMinValue(Constants.DEFAULT_PKU_LOWEST_VALUE)
                 .setNormalAbsoluteMaxValue(Constants.DEFAULT_PKU_HIGHEST_VALUE)

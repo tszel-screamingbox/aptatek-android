@@ -145,7 +145,7 @@
             android:theme="@style/AppTheme.FullScreen" />
 
         <activity
-            android:name=".view.settings.web.WebPageActivity"
+            android:name=".view.settings.web.WebHostActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.FullScreen" />
 

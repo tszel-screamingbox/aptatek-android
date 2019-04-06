@@ -2,7 +2,6 @@ package com.aptatek.pkulab.view.settings.reminder.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -13,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseAdapter;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 
 import javax.inject.Inject;
 
@@ -62,7 +63,12 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
         ReminderSettingsViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            recyclerViewReminders.setLayoutManager(new GridLayoutManager(itemView.getContext(), Constants.REMINDER_SPAN_COUNT));
+
+            final FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(itemView.getContext());
+            layoutManager.setFlexDirection(FlexDirection.ROW);
+            layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+            recyclerViewReminders.setLayoutManager(layoutManager);
             recyclerViewReminders.addItemDecoration(new ReminderItemDecoration());
         }
 
@@ -71,6 +77,12 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
             recyclerViewReminders.setAdapter(remindersAdapter);
             remindersAdapter.setCallback(this);
             remindersAdapter.setData(item.getReminders());
+
+            if (item.getReminders().isEmpty()) {
+                recyclerViewReminders.setVisibility(View.GONE);
+            } else {
+                recyclerViewReminders.setVisibility(View.VISIBLE);
+            }
 
             textViewDayName.setText(item.getNameOfDay());
             switchActivate.setChecked(item.isActive());
