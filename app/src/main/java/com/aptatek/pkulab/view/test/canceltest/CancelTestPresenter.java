@@ -16,19 +16,16 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
 
     private final WettingInteractor wettingInteractor;
     private final TestInteractor testInteractor;
-    private final PreferenceManager preferenceManager;
 
     private Disposable disposable;
 
     @Inject
     CancelTestPresenter(final ResourceInteractor resourceInteractor,
                         final WettingInteractor wettingInteractor,
-                        final TestInteractor testInteractor,
-                        final PreferenceManager preferenceManager) {
+                        final TestInteractor testInteractor) {
         super(resourceInteractor);
         this.wettingInteractor = wettingInteractor;
         this.testInteractor = testInteractor;
-        this.preferenceManager = preferenceManager;
     }
 
     @Override
@@ -43,7 +40,7 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
     public void stopTest() {
         disposable = wettingInteractor.resetWetting()
                 .andThen(testInteractor.resetTest())
-                .doAfterTerminate(() -> preferenceManager.setTestFlowStatus(false))
+                .andThen(testInteractor.setTestContinueStatus(false))
                 .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
                 .subscribe();
     }

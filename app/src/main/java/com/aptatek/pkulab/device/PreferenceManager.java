@@ -38,11 +38,11 @@ public class PreferenceManager {
         sharedPreferences = applicationContext.getSharedPreferences(PreferenceManager.Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    public void setTestFlowStatus(final boolean status) {
+    public void setTestContinueStatus(final boolean status) {
         sharedPreferences.edit().putBoolean(PREF_TEST_UNFINISHED, status).apply();
     }
 
-    public boolean hasUnfinishedTest() {
+    public boolean isTestContinueNeed() {
         return sharedPreferences.getBoolean(PREF_TEST_UNFINISHED, false);
     }
 

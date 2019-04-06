@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
+import com.aptatek.pkulab.domain.model.TestContinueDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
@@ -51,7 +52,6 @@ import static android.view.View.VISIBLE;
 
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
 
-    private static final String TAG_RANGE_DIALOG = "aptatek.main.home.range.dialog";
     private static final String TAG_UNFINISHED_DIALOG = "aptatek.main.home.test.unfinished.dialog";
     private static final String TAG_CONTINUE_TEST_DIALOG = "aptatek.main.home.test.continue.dialog";
     private static final String TAG_TEST_CANNOT_BE_FINISHED_DIALOG = "aptatek.main.home.test.continue.cannot.be.finished.dialog";
@@ -257,16 +257,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @Override
     public void unfinishedTestDetected() {
-        final AlertDialogModel model = AlertDialogModel.builder()
-                .setTitle(getString(R.string.home_test_unfinished_title))
-                .setMessage(getString(R.string.home_test_unfinished_message))
-                .setPositiveButtonText(getString(R.string.alertdialog_button_yes))
-                .setNegativeButtonText(getString(R.string.alertdialog_button_no))
-                .setCancelable(false)
-                .build();
-
         final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
-                model,
+                TestContinueDialogModel.unfinishedTestDialogModelCreate(requireContext()),
                 decision -> {
                     if (decision == AlertDialogDecisions.POSITIVE) {
                         getBaseActivity().launchActivityForResult(ContinueTestActivity.starter(getActivity()), BaseActivity.Animation.RIGHT_TO_LEFT, ContinueTestActivity.CONTINUE_TEST_ACTIVITY_REQUEST_CODE);
@@ -287,15 +279,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     private void showContinueTestDialog() {
-        final AlertDialogModel model = AlertDialogModel.builder()
-                .setTitle(getString(R.string.home_test_continue_dialog_title))
-                .setMessage(getString(R.string.home_test_continue_dialog_message))
-                .setPositiveButtonText(getString(R.string.home_test_continue_dialog_next))
-                .setCancelable(false)
-                .build();
-
         final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
-                model,
+                TestContinueDialogModel.continueTestDialogModelCreate(requireContext()),
                 decision -> {
                     if (decision == AlertDialogDecisions.POSITIVE) {
                         getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
@@ -316,16 +301,10 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
             if (resultType == ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT) {
                 getBaseActivity().launchActivity(TestResultActivity.starter(requireContext()), false, BaseActivity.Animation.FADE);
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_WRONG_RESULT) {
-                final AlertDialogModel model = AlertDialogModel.builder()
-                        .setTitle(getString(R.string.home_test_continue_dialog_cannot_be_finished_title))
-                        .setMessage(getString(R.string.home_test_continue_dialog_cannot_be_finished_message))
-                        .setPositiveButtonText(getString(R.string.home_test_continue_dialog_next))
-                        .setCancelable(false)
-                        .build();
-
                 final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
-                        model,
+                        TestContinueDialogModel.incorrectResultDialogModelCreate(requireContext()),
                         decision -> {
+                            presenter.testContinueFailed();
                         });
                 dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {

@@ -66,9 +66,12 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void initView() {
-        if (preferenceManager.hasUnfinishedTest()) {
-            ifViewAttached(HomeFragmentView::unfinishedTestDetected);
-        }
+        disposables.add(testInteractor.isTestContinueNeed()
+                .subscribe(continueNeed -> {
+                    if (continueNeed) {
+                        ifViewAttached(HomeFragmentView::unfinishedTestDetected);
+                    }
+                }));
 
         final String unit = pkuValueFormatter.formatFromUnits(preferenceManager.getPkuRangeUnit());
         ifViewAttached(view -> view.updateUnitText(unit));
@@ -168,10 +171,15 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         );
     }
 
+    void testContinueFailed() {
+        disposables.add(testInteractor.setTestContinueStatus(false)
+                .subscribe());
+    }
+
     void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
                 .andThen(testInteractor.resetTest())
-                .doAfterTerminate(() -> preferenceManager.setTestFlowStatus(true))
+                .andThen(testInteractor.setTestContinueStatus(true))
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
     }

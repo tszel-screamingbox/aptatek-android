@@ -24,6 +24,14 @@ public class TestInteractor {
         this.preferenceManager = preferenceManager;
     }
 
+    public Completable setTestContinueStatus(final boolean status) {
+        return Completable.fromAction(() -> preferenceManager.setTestContinueStatus(status));
+    }
+
+    public Single<Boolean> isTestContinueNeed() {
+        return Single.fromCallable(preferenceManager::isTestContinueNeed);
+    }
+
     public Single<TestScreens> getLastScreen() {
         return Single.fromCallable(preferenceManager::getTestStatus);
     }
