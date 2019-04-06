@@ -22,4 +22,12 @@ public class CharacteristicReadError extends BluetoothError {
     public String getCharacteristicId() {
         return characteristicId;
     }
+
+    @Override
+    public String toString() {
+        return "CharacteristicReadError{" +
+                "status=" + status +
+                ", characteristicId='" + characteristicId + '\'' +
+                '}';
+    }
 }
