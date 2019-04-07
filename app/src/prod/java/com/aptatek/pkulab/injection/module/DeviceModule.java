@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.AdvertiseSettings;
 import android.content.Context;
+import android.os.ParcelUuid;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.deserializer.ResultSyncResponseDeserializer;
@@ -57,14 +58,10 @@ public class DeviceModule {
     @Provides
     public List<ScanFilter> provideScanFilters() {
         final List<ScanFilter> scanFilters = new ArrayList<>();
-        final ScanFilter nameFilter = new ScanFilter.Builder()
-                .setDeviceName(LumosReaderConstants.DEVICE_NAME)
+        final ScanFilter filter = new ScanFilter.Builder()
+                .setServiceUuid(ParcelUuid.fromString(LumosReaderConstants.READER_SERVICE))
                 .build();
-        scanFilters.add(nameFilter);
-
-        // why don't you work :( ?
-        // final ParcelUuid uuid = ParcelUuid.fromString(LumosReaderConstants.READER_SERVICE);
-        // scanFilters.add(new ScanFilter.Builder().setServiceUuid(uuid).build());
+        scanFilters.add(filter);
 
         return Collections.unmodifiableList(scanFilters);
     }

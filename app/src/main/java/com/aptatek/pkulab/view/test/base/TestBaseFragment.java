@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.test.base;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -34,6 +35,13 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     @BindView(R.id.testVideo)
     @Nullable
     protected FrameVideoView videoView;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setRetainInstance(false);
+    }
 
     @Override
     protected void injectFragment(@NonNull final FragmentComponent fragmentComponent) {
