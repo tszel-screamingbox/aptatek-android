@@ -20,7 +20,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -289,24 +288,15 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     }
 
     private float searchMax(final List<TestResult> table, final PkuRangeInfo rangeInfo) {
-        final List<Float> results = resultList(table, rangeInfo);
-        if (results.isEmpty()) {
-            return 0;
-        }
-
-        Collections.sort(results);
-        Collections.reverse(results);
-        return results.get(0);
+        return Ix.from(resultList(table, rangeInfo))
+                .orderBy(Float::compare)
+                .last(0f);
     }
 
     private float searchMin(final List<TestResult> table, final PkuRangeInfo rangeInfo) {
-        final List<Float> results = resultList(table, rangeInfo);
-        if (results.isEmpty()) {
-            return 0;
-        }
-
-        Collections.sort(results);
-        return results.get(0);
+        return Ix.from(resultList(table, rangeInfo))
+                .orderBy(Float::compare)
+                .first(0f);
     }
 
     private double getDeviation(final List<TestResult> table) {
