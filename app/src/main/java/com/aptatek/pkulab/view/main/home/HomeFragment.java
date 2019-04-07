@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
@@ -104,7 +103,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         bubbleScrollView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(final RecyclerView recyclerView, final int dx, final int dy) {
-                panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
@@ -140,11 +139,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     public boolean isResultShown() {
-        return panelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED;
+        return panelLayout != null && panelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED;
     }
 
     public void closeResultsPanel() {
-        panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
 
     public boolean handleDispatchTouchEvent(final MotionEvent ev) {
@@ -201,7 +200,13 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @OnClick(R.id.imgCloseResults)
     public void onCloseResultsClicked() {
-        panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+    }
+
+    private void setPanelState(final SlidingUpPanelLayout.PanelState panelState) {
+        if (panelLayout != null) {
+            panelLayout.setPanelState(panelState);
+        }
     }
 
     private void initAdapter() {
@@ -213,9 +218,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);
-            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1
-                    && panelLayout.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED) {
-                panelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && isResultShown()) {
+                setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 presenter.measureListToAdapterList(chartVM.getMeasures());
             }
         });
@@ -248,9 +252,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     }
 
     @Override
-    public void showNoResultsInLast6Months() {
-        // TODO temporary solution until an official decision is made
-        Toast.makeText(getActivity(), "No results in last 6 months. Take a test first ... ", Toast.LENGTH_SHORT).show();
+    public void showNoResults() {
+        updateTitles(getString(R.string.main_title_noresult), getString(R.string.main_title_noresult_hint));
 
         playIcon.setVisibility(VISIBLE);
         bigSettingsButton.setVisibility(VISIBLE);
