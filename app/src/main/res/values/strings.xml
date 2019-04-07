@@ -64,8 +64,8 @@
     <!-- Parental Gate Activity -->
     <string name="parental.verification.failure.age.not.match.message">Sorry this entry does not match, please re-enter information</string>
     <string name="parental.verification.failure.age.not.match.title">Your Age Doesn\'t Match</string>
-    <string name="parental.verification.failure.not.old.enough.message">This app is made for users who are at least 13 years or older. An adult should try signing into this app.</string>
-    <string name="parental.verification.failure.not.old.enough.title">Not old enough</string>
+    <string name="parental.verification.failure.not.old.enough.message">This app was made for people at least 13 years or older. An adult should try signing into this app.</string>
+    <string name="parental.verification.failure.not.old.enough.title">Not Old Enough</string>
     <string name="parental.verification.success.message">Your age was verified</string>
     <string name="parental.verification.success.title">Thank you!</string>
     <string name="parental.verification.tryagain">Try Again</string>
