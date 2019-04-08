@@ -228,6 +228,13 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                 .subscribe());
     }
 
+    void timePickerDialogCancel(@NonNull final List<ReminderSettingsAdapterItem> data,
+                                @NonNull final ReminderSettingsAdapterItem item) {
+        if (item.getReminders().isEmpty()) {
+            changeActiveState(data, item, false);
+        }
+    }
+
     private void insertReminder(@NonNull final ReminderSettingsAdapterItem item,
                                 final int hour,
                                 final int minute,

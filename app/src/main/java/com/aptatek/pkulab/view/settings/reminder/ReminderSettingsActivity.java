@@ -167,6 +167,11 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
                     presenter.deleteReminder(adapter.getData(), reminderSettingsAdapterItem, remindersAdapterItem);
                 }
             }
+
+            @Override
+            public void cancel() {
+                presenter.timePickerDialogCancel(adapter.getData(), reminderSettingsAdapterItem);
+            }
         };
     }
 }
