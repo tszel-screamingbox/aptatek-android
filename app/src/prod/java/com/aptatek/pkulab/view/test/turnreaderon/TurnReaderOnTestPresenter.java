@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
@@ -105,9 +106,11 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                                 .map(TestProgress::getTestId)
                                 .map(String::valueOf)
                                 .flatMapSingle(readerInteractor::getResult)
-                                .flatMapCompletable(readerInteractor::saveResult)
+                                .flatMapSingle(testResult -> readerInteractor.saveResult(testResult)
+                                        .andThen(Single.just(testResult.getId()))
+                                )
                                 .subscribe(
-                                        () -> ifViewAttached(TurnReaderOnTestView::showTestResultScreen),
+                                        resultId -> ifViewAttached(turnReaderOnTestView -> turnReaderOnTestView.showTestResultScreen(resultId)),
                                         error -> Timber.d("Error while getting last result: %s", error)
                                 )
                 );

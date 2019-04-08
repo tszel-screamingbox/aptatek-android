@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.test.testing;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -12,6 +13,7 @@ import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
+import com.aptatek.pkulab.view.test.result.TestResultActivityStarter;
 
 import javax.inject.Inject;
 
@@ -31,9 +33,9 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     }
 
     @Override
-    public void onTestFinished() {
+    public void onTestFinished(final String testId) {
         requireActivity().finish();
-        getBaseActivity().launchActivity(TestResultActivity.starter(requireActivity()));
+        getBaseActivity().launchActivity(TestResultActivity.starter(requireActivity(), testId));
     }
 
     @Override

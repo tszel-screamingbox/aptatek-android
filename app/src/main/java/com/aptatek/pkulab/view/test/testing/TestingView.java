@@ -4,7 +4,7 @@ import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 
 public interface TestingView extends TestFragmentBaseView {
 
-    void onTestFinished();
+    void onTestFinished(final String testId);
 
     void showTurnReaderOn();
 

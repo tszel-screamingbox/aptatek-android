@@ -34,6 +34,23 @@ public interface BluetoothNotificationFactory {
 
     class TestComplete implements NotificationData {
 
+        private final String testId;
+
+
+        public TestComplete(final String testId) {
+            this.testId = testId;
+        }
+
+        public String getTestId() {
+            return testId;
+        }
+
+        @Override
+        public String toString() {
+            return "TestComplete{" +
+                    "testId='" + testId + '\'' +
+                    '}';
+        }
     }
 
     class BluetoothError implements NotificationData {

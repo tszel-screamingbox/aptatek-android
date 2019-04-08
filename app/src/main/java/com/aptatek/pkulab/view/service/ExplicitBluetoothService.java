@@ -202,22 +202,24 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                 readerInteractor.getWorkflowState()
                         .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE)
                         .take(1)
-                        .flatMapCompletable(ignored ->
+                        .flatMapSingle(ignored ->
                                 readerInteractor.getTestProgress()
                                         .filter(testProgress -> testProgress.getPercent() == 100)
                                         .take(1)
+                                        .singleOrError()
                                         .map(TestProgress::getTestId)
                                         .map(String::valueOf)
-                                        .flatMapSingle(readerInteractor::getResult)
-                                        .flatMapCompletable(readerInteractor::saveResult)
+                                        .flatMap(readerInteractor::getResult)
                         )
+                        .singleOrError()
+                        .flatMap(testResult -> readerInteractor.saveResult(testResult).andThen(Single.just(testResult.getId())))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                () -> {
+                                testId -> {
                                     Timber.d("Test complete, result saved!");
 
-                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete());
+                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete(testId));
                                     notificationManager.notify(notification.getId(), notification.getNotification());
 
                                     shutdown();
