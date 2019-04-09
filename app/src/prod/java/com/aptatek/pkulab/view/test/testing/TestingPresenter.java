@@ -1,6 +1,5 @@
 package com.aptatek.pkulab.view.test.testing;
 
-import android.text.TextUtils;
 import android.util.Pair;
 
 import com.aptatek.pkulab.R;
@@ -10,7 +9,6 @@ import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import java.util.NoSuchElementException;
