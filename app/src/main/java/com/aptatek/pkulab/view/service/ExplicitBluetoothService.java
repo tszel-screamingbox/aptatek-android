@@ -74,7 +74,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
         if (intent != null) {
             mode = intent.getIntExtra(KEY_MODE, -1);
 
-            return START_STICKY_COMPATIBILITY;
+            return START_NOT_STICKY;
         }
 
         return super.onStartCommand(intent, flags, startId);

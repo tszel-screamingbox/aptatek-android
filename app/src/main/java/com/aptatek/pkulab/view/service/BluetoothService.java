@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.service;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
@@ -27,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -92,6 +92,11 @@ public class BluetoothService extends BaseForegroundService {
     protected Single<Boolean> shouldStart() {
         return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()))
                 .map(shouldStart -> shouldStart && !BuildConfig.FLAVOR.equals("mock"));
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_NOT_STICKY;
     }
 
     @Override
