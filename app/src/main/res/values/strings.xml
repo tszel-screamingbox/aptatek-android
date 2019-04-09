@@ -67,7 +67,7 @@
     <string name="parental.verification.failure.not.old.enough.message">This app was made for people at least 13 years or older. An adult should try signing into this app.</string>
     <string name="parental.verification.failure.not.old.enough.title">Not Old Enough</string>
     <string name="parental.verification.success.message">Your age was verified</string>
-    <string name="parental.verification.success.title">Thank you!</string>
+    <string name="parental.verification.success.title">Thank you</string>
     <string name="parental.verification.tryagain">Try Again</string>
     <string name="parental.welcome.age.disclaimer">Regulations in the U.S. and other territories require us to verify that users are at least 13 years old before using this application; we respect your privacy and this information is not stored.</string>
     <string name="parental.welcome.birthday.format">MM/dd/yyyy</string>

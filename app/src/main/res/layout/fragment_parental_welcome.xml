@@ -9,30 +9,37 @@
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.xxsmall"
-        android:layout_marginEnd="@dimen/general.distance.xxsmall"
-        android:layout_marginBottom="@dimen/general.distance.xsmall"
-        app:layout_constraintBottom_toTopOf="@+id/parentalBirthDate"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/guideTop"
+        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginEnd="@dimen/general.distance.mini"
+        android:layout_marginTop="38dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:subTitleText="@string/parental.welcome.description"
         app:titleText="@string/parental.welcome.title" />
+
+    <Space
+        android:id="@+id/header_space"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/general.distance.32dp"
+        app:layout_constraintTop_toBottomOf="@+id/header"/>
 
     <EditText
         android:id="@+id/parentalBirthDate"
         style="@style/Parental.Input"
         android:layout_width="0dp"
-        android:layout_marginStart="@dimen/general.distance.xxsmall"
-        android:layout_marginTop="@dimen/general.distance.xxsmall"
-        android:layout_marginEnd="@dimen/general.distance.xxsmall"
+        android:layout_marginStart="@dimen/general.distance.32dp"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/parentalButton"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
-        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_space"
         tools:ignore="Autofill,LabelFor,TextFields"
         tools:text="11/11/1984" />
 
@@ -40,15 +47,15 @@
         android:id="@+id/parentalAge"
         style="@style/Parental.Input"
         android:layout_width="0dp"
-        android:layout_marginStart="@dimen/general.distance.xxsmall"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
-        android:layout_marginEnd="@dimen/general.distance.xxsmall"
+        android:layout_marginStart="@dimen/general.distance.32dp"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
+        android:layout_marginTop="12dp"
         android:layout_marginBottom="@dimen/general.distance.mini"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parentalBirthDate"
         tools:ignore="Autofill,LabelFor,TextFields"
         tools:text="11" />
@@ -56,13 +63,13 @@
     <Button
         android:id="@+id/parentalButton"
         style="@style/General.Rounded.Blue.Button"
+        android:layout_marginTop="12dp"
         android:layout_width="0dp"
-        android:layout_marginStart="@dimen/general.distance.xxsmall"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
-        android:layout_marginEnd="@dimen/general.distance.xxsmall"
+        android:layout_marginStart="@dimen/general.distance.32dp"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
         android:elevation="0dp"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/parentalBirthDate"
         tools:text="@string/parental.welcome.enter.birthday" />
 
@@ -73,9 +80,10 @@
         android:layout_height="wrap_content"
         android:text="@string/parental.welcome.age.disclaimer"
         android:textSize="@dimen/font.size.normal"
-        app:layout_constraintBottom_toTopOf="@+id/guideBottom"
-        app:layout_constraintEnd_toEndOf="@+id/guideEnd"
-        app:layout_constraintStart_toStartOf="@+id/guideStart" />
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <include
         layout="@layout/dial_layout"
@@ -89,33 +97,5 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.6" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.07" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.96" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideStart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideEnd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.96" />
 
 </android.support.constraint.ConstraintLayout>
