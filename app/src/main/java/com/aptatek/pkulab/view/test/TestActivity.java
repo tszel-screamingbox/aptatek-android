@@ -121,6 +121,13 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     }
 
     @Override
+    protected void onDestroy() {
+        presenter.storeDestroyTimestamp();
+
+        super.onDestroy();
+    }
+
+    @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
         activityComponent.plus(new TestModule(), new RangeInfoModule())
                 .inject(this);

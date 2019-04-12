@@ -24,6 +24,14 @@ public class TestInteractor {
         this.preferenceManager = preferenceManager;
     }
 
+    public Completable storeAppKilledTimestamp(final long timestamp) {
+        return Completable.fromAction(() -> preferenceManager.setAppKilledTimestamp(timestamp));
+    }
+
+    public Single<Long> getAppKilledTimestamp(){
+        return Single.fromCallable(preferenceManager::getAppKilledTimestamp);
+    }
+
     public Completable setTestContinueStatus(final boolean status) {
         return Completable.fromAction(() -> preferenceManager.setTestContinueStatus(status));
     }

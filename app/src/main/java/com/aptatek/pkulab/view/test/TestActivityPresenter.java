@@ -40,6 +40,11 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
         }
     }
 
+    void storeDestroyTimestamp() {
+        disposable = testInteractor.storeAppKilledTimestamp(System.currentTimeMillis())
+                .subscribe();
+    }
+
     public void showProperScreen() {
         disposable = testInteractor.getLastScreen()
                 .onErrorReturnItem(TestScreens.TURN_READER_ON)

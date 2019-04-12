@@ -30,12 +30,21 @@ public class PreferenceManager {
     public static final String PREF_TEST_STATUS = "aptatek.test.status";
     public static final String PREF_TEST_UNFINISHED = "aptatek.test.unfinished";
     public static final String PREF_DB_ENCRYPTED_WITH_PIN = "aptatek.database.encrypted";
+    public static final String PREF_APP_KILLED_DURING_TEST = "aptatek.test.app.killed.during.test.timestamp";
 
     private final SharedPreferences sharedPreferences;
 
     @Inject
     public PreferenceManager(@ApplicationContext final Context applicationContext) {
         sharedPreferences = applicationContext.getSharedPreferences(PreferenceManager.Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
+
+    public void setAppKilledTimestamp(final long timestamp){
+        sharedPreferences.edit().putLong(PREF_APP_KILLED_DURING_TEST, timestamp).apply();
+    }
+
+    public long getAppKilledTimestamp(){
+        return sharedPreferences.getLong(PREF_APP_KILLED_DURING_TEST, 0L);
     }
 
     public void setTestContinueStatus(final boolean status) {
