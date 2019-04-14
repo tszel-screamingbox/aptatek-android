@@ -287,7 +287,7 @@
     <string name="pdf.export.title">Monthly Results</string>
     <string name="pdf.export.unit.description">All units are in %1$s</string>
     <string name="pdf.export.legend.x">%1$s</string>
-    <string name="pdf.export.average">Average: %1$s %2$s</string>
+    <string name="pdf.export.average">Average: %1$s %2$s (%3$s-%4$s)</string>
     <string name="pdf.export.email.subject">Exported results from PKU LAB</string>
     <string name="pdf.export.last.month.file.name">Last month Phe history - %1$s.pdf</string>
     <string name="pdf.export.last.three.month.file.name">Last 3 months Phe history - %1$s.pdf</string>
