@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.view.base.BaseAdapter;
 
-import java.util.Arrays;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -39,10 +37,6 @@ public class SettingsItemAdapter extends BaseAdapter<RecyclerView.ViewHolder, Se
 
     @Inject
     public SettingsItemAdapter() {
-        setData(Ix.from(Arrays.asList(SettingsItem.values()))
-                .map(settingsItem -> new SettingsAdapterItem(settingsItem, false, false))
-                .toList()
-        );
     }
 
     public void setSettingsItemClickListener(@Nullable final SettingsItemClickListener settingsItemClickListener) {

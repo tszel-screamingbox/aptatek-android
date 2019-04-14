@@ -19,6 +19,8 @@ import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
 import com.aptatek.pkulab.view.settings.web.WebHostActivityStarter;
 import com.aptatek.pkulab.widget.HeaderView;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -134,5 +136,10 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
     @Override
     public void showAppVersion(final String version) {
         tvAppVersion.setSubtitle(getString(R.string.settings_app_version, version));
+    }
+
+    @Override
+    public void populateAdapter(List<SettingsAdapterItem> data) {
+        settingsItemAdapter.setData(data);
     }
 }
