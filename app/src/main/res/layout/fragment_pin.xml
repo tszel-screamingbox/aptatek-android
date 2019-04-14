@@ -15,61 +15,69 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:subTitleText="@string/confirm.pin.hint"
         app:titleText="@string/set.pin.title" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/pinLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/general.distance"
-        android:layout_marginEnd="@dimen/general.distance"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.28dp"
+        android:layout_marginEnd="@dimen/general.distance.28dp"
         android:layout_marginBottom="@dimen/general.distance.small"
-        app:layout_constraintBottom_toTopOf="@id/messageTextView">
+        app:layout_constraintBottom_toTopOf="@+id/messageTextView"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintVertical_bias="1.0">
 
         <ImageView
             android:id="@+id/pin0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
+            app:layout_constraintEnd_toStartOf="@+id/pin1"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/pin1" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/pin1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
+            app:layout_constraintEnd_toStartOf="@id/pin2"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin0"
-            app:layout_constraintRight_toLeftOf="@id/pin2" />
+            app:layout_constraintStart_toEndOf="@id/pin0"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/pin2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
+            app:layout_constraintEnd_toStartOf="@+id/pin3"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin1"
-            app:layout_constraintRight_toLeftOf="@+id/pin3" />
+            app:layout_constraintStart_toEndOf="@id/pin1"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/pin3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
+            app:layout_constraintEnd_toEndOf="@+id/pin4"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin2"
-            app:layout_constraintRight_toRightOf="@+id/pin4" />
+            app:layout_constraintStart_toEndOf="@id/pin2"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/pin4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
+            app:layout_constraintEnd_toStartOf="@id/pin5"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin3"
-            app:layout_constraintRight_toLeftOf="@id/pin5" />
+            app:layout_constraintStart_toEndOf="@id/pin3"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/pin5"
@@ -77,17 +85,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/pin_circle"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin4"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/pin4"
+            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
     <TextView
         android:id="@+id/messageTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance"
-        android:layout_marginEnd="@dimen/general.distance"
+        android:layout_marginStart="@dimen/general.distance.32dp"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
         android:layout_marginBottom="@dimen/general.distance.28dp"
         android:fontFamily="@font/nunito_semibold"
         android:gravity="center"

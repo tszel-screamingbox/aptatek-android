@@ -10,8 +10,8 @@
         android:layout_width="@dimen/general.distance.big"
         android:layout_height="@dimen/general.distance.big"
         android:src="@drawable/fingerprint"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -41,8 +41,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/pin1" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/pin1" />
 
         <ImageView
             android:id="@+id/pin1"
@@ -50,8 +50,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin0"
-            app:layout_constraintRight_toLeftOf="@id/pin2" />
+            app:layout_constraintStart_toEndOf="@id/pin0"
+            app:layout_constraintEnd_toStartOf="@id/pin2" />
 
         <ImageView
             android:id="@+id/pin2"
@@ -59,8 +59,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin1"
-            app:layout_constraintRight_toLeftOf="@+id/pin3" />
+            app:layout_constraintStart_toEndOf="@id/pin1"
+            app:layout_constraintEnd_toStartOf="@+id/pin3" />
 
         <ImageView
             android:id="@+id/pin3"
@@ -68,8 +68,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin2"
-            app:layout_constraintRight_toRightOf="@+id/pin4" />
+            app:layout_constraintStart_toEndOf="@id/pin2"
+            app:layout_constraintEnd_toEndOf="@+id/pin4" />
 
         <ImageView
             android:id="@+id/pin4"
@@ -77,8 +77,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/pin_circle"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin3"
-            app:layout_constraintRight_toLeftOf="@id/pin5" />
+            app:layout_constraintStart_toEndOf="@id/pin3"
+            app:layout_constraintEnd_toStartOf="@id/pin5" />
 
         <ImageView
             android:id="@+id/pin5"
@@ -87,8 +87,8 @@
             android:layout_gravity="center"
             android:src="@drawable/pin_circle"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/pin4"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/pin4"
+            app:layout_constraintEnd_toEndOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
     <TextView
