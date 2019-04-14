@@ -8,8 +8,8 @@ import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
-import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectView;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenterImpl;
@@ -20,13 +20,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
-import timber.log.Timber;
 
 public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnReaderOnContinueTestView>
         implements TurnReaderOnPresenter<TurnReaderOnContinueTestView> {
@@ -34,6 +31,7 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
     private final TurnReaderOnPresenterImpl wrapped;
     private final ReaderInteractor readerInteractor;
     private final TestResultInteractor testResultInteractor;
+    private final TestInteractor testInteractor;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -41,8 +39,10 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
     public TurnReaderOnContinueTestPresenter(final BluetoothInteractor bluetoothInteractor,
                                              final ReaderInteractor readerInteractor,
                                              final TestResultInteractor testResultInteractor,
-                                             final TestInteractor testInteractor) {
+                                             final TestInteractor testInteractor,
+                                             final TestInteractor testInteractor1) {
         this.testResultInteractor = testResultInteractor;
+        this.testInteractor = testInteractor1;
         wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor);
         this.readerInteractor = readerInteractor;
     }
@@ -87,25 +87,27 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
         wrapped.checkPermissions();
     }
 
-    void checkLastMeasure() {
-        disposables.add(Single.zip(readerInteractor.getNumberOfResults(), testResultInteractor.getNumberOfMeasures(), Integer::equals)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.computation())
-                .subscribe((isCountEquals, throwable) -> ifViewAttached(view -> {
-                    if (isCountEquals) {
-                        getWorkflowState();
-                    } else {
-                        syncData();
-                    }
-                })));
-    }
-
-    private void syncData() {
+    void syncData() {
         disposables.add(readerInteractor.syncResults()
                 .subscribe(
-                        ignored -> ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT)),
+                        ignored -> checkLastMeasure(),
                         error -> ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT))
                 ));
+    }
+
+    private void checkLastMeasure() {
+        disposables.add(Single.zip(testResultInteractor.getLatest(), testInteractor.getAppKilledTimestamp(),
+                (testResult, appKilledTime) -> testResult.getTimestamp() > appKilledTime)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(correct -> {
+                    if (correct) {
+                        ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT));
+                    } else {
+                        getWorkflowState();
+                    }
+                }));
+
     }
 
     private void getWorkflowState() {
