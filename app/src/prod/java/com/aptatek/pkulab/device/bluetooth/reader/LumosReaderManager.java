@@ -205,7 +205,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         }
 
         final String checksum = rawMessage.substring(checkSumLineBreakIndex).trim();
-        final int checksumDelimiterIndex = checksum.lastIndexOf(":");
+        final int checksumDelimiterIndex = checksum.lastIndexOf(':');
 
         if (checksumDelimiterIndex < 0) {
             throw new Exception();

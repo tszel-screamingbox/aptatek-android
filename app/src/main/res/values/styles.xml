@@ -296,9 +296,10 @@
     </style>
 
     <style name="Settings.Range.Units.Radio" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:buttonTint">@color/applicationBlack</item>
-        <item name="android:textColor">@color/applicationBlack</item>
+        <item name="android:buttonTint">@drawable/time_picker_dialog_schedule_type_color_selector</item>
+        <item name="android:textColor">@drawable/time_picker_dialog_schedule_type_color_selector</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:fontFamily">@font/nunito_black</item>
     </style>
 
     <style name="SwitchStyle">
