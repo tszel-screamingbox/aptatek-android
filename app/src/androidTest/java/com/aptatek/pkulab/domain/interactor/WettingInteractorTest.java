@@ -93,7 +93,7 @@ public class WettingInteractorTest {
 
         test.assertNotComplete();
         test.assertNoErrors();
-        test.assertValueAt(0, value -> value.getRemainingFormattedText().startsWith("29:"));
+        test.assertValueAt(0, value -> value.getRemainingFormattedText().startsWith("04:"));
     }
 
 }

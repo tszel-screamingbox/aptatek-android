@@ -35,8 +35,6 @@ import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MICRO_MOL;
 
 public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResultFragmentView> {
 
-    private static final int EMPTY_LIST = -1;
-
     private final TestResultInteractor testResultInteractor;
     private final ResourceInteractor resourceInteractor;
     private final PkuRangeInteractor rangeInteractor;
@@ -121,10 +119,6 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         }
                     });
 
-                    if (weekList.isEmpty()) {
-                        weekList.add(EMPTY_LIST);
-                    }
-
                     return Ix.from(weekList)
                             .orderBy(Integer::compare)
                             .reverse()
@@ -132,6 +126,9 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(validWeeks -> {
+                            if (validWeeks.isEmpty()) {
+                                return;
+                            }
                             weekList.clear();
                             weekList.addAll(validWeeks);
                             ifViewAttached(attachedView ->
