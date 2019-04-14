@@ -22,31 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="true"
-            android:focusableInTouchMode="true">
-
-            <android.support.constraint.Guideline
-                android:id="@+id/guideStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.088" />
-
-            <android.support.constraint.Guideline
-                android:id="@+id/guideEnd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.96" />
+            android:focusableInTouchMode="true"
+            android:paddingStart="@dimen/general.distance.32dp"
+            android:paddingEnd="@dimen/general.distance.xsmall">
 
             <TextView
                 android:id="@+id/rangeSettingsLowLabel"
                 style="@style/Settings.Range.Label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/general.distance.36dp"
+                android:layout_marginTop="@dimen/general.distance.xsmall"
                 android:text="@string/rangeinfo.low"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsLowIndicator"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -54,9 +42,9 @@
                 style="@style/Settings.Range.Description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/general.distance.14dp"
+                android:layout_marginTop="@dimen/general.distance.mini"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsLowIndicator"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsLowLabel"
                 tools:text="From 0 to 119 mmol/L" />
 
@@ -66,7 +54,7 @@
                 android:layout_height="@dimen/general.distance.32dp"
                 app:indicatorColor="@color/pkuLevelStandard"
                 app:layout_constraintBottom_toBottomOf="@+id/rangeSettingsLowDescription"
-                app:layout_constraintEnd_toEndOf="@id/guideEnd"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rangeSettingsLowLabel"
                 app:layout_constraintVertical_bias="0.5" />
 
@@ -77,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/general.distance.36dp"
                 android:text="@string/rangeinfo.normal"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintEnd_toStartOf="@+id/rangeSettingIncreasedIndicator"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsLowDescription" />
 
             <com.aptatek.pkulab.widget.LevelIndicatorView
@@ -86,7 +75,7 @@
                 android:layout_height="@dimen/general.distance.32dp"
                 app:indicatorColor="@color/pkuLevelIncreased"
                 app:layout_constraintBottom_toBottomOf="@+id/rangeSettingsIncreasedDescription"
-                app:layout_constraintEnd_toEndOf="@id/guideEnd"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rangeSettingsNormalLabel"
                 app:layout_constraintVertical_bias="0.5" />
 
@@ -95,9 +84,9 @@
                 style="@style/Settings.Range.Description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/general.distance.14dp"
+                android:layout_marginTop="@dimen/general.distance.mini"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsLowIndicator"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsNormalLabel"
                 tools:text="From 0 to 119 mmol/L" />
 
@@ -110,7 +99,7 @@
                 android:layout_marginTop="@dimen/general.distance.36dp"
                 android:text="@string/rangeinfo.high"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsHighIndicator"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rangeSettingsIncreasedDescription" />
 
             <TextView
@@ -118,9 +107,9 @@
                 style="@style/Settings.Range.Description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/general.distance.14dp"
+                android:layout_marginTop="@dimen/general.distance.mini"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsHighIndicator"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsHighLabel"
                 tools:text="From 361 to 510 mmol/L" />
 
@@ -130,7 +119,7 @@
                 android:layout_height="@dimen/general.distance.32dp"
                 app:indicatorColor="@color/pkuLevelHigh"
                 app:layout_constraintBottom_toBottomOf="@+id/rangeSettingsHighDescription"
-                app:layout_constraintEnd_toEndOf="@id/guideEnd"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rangeSettingsHighLabel"
                 app:layout_constraintVertical_bias="0.5" />
 
@@ -143,7 +132,7 @@
                 android:layout_marginTop="@dimen/general.distance.36dp"
                 android:text="@string/rangeinfo.very.high"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsVeryHighIndicator"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsHighDescription" />
 
             <TextView
@@ -151,9 +140,9 @@
                 style="@style/Settings.Range.Description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/general.distance.14dp"
+                android:layout_marginTop="@dimen/general.distance.mini"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsVeryHighIndicator"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsVeryHighLabel"
                 tools:text="Over 511 mmol/L" />
 
@@ -163,7 +152,7 @@
                 android:layout_height="@dimen/general.distance.32dp"
                 app:indicatorColor="@color/pkuLevelVeryHigh"
                 app:layout_constraintBottom_toBottomOf="@+id/rangeSettingsVeryHighDescription"
-                app:layout_constraintEnd_toEndOf="@id/guideEnd"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rangeSettingsVeryHighLabel"
                 app:layout_constraintVertical_bias="0.5" />
 
@@ -176,19 +165,19 @@
                 android:layout_marginTop="@dimen/general.distance.36dp"
                 android:text="@string/settings.units.label"
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsVeryHighIndicator"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsVeryHighDescription" />
 
             <RadioGroup
                 android:id="@+id/rangeSettingsUnitsGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/general.distance.14dp"
-                android:layout_marginBottom="@dimen/general.distance.xsmall"
+                android:layout_marginTop="@dimen/general.distance.mini"
+                android:layout_marginBottom="@dimen/general.distance.small"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideStart"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsUnitLabel">
 
                 <RadioButton
