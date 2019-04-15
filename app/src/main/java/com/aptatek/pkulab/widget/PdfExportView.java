@@ -74,7 +74,11 @@ public class PdfExportView extends ConstraintLayout {
         increasedNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getNormalCount()));
         highNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getHighCount()));
         veryHighNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getVeryHighCount()));
-        averageText.setText(getResources().getString(R.string.pdf_export_average, String.valueOf(pdfEntryData.getAverageCount()), pdfEntryData.getUnit()));
+        averageText.setText(getResources().getString(R.string.pdf_export_average,
+                String.valueOf(pdfEntryData.getAverageCount()),
+                pdfEntryData.getUnit(),
+                pdfEntryData.getMin(),
+                pdfEntryData.getMax()));
         unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
         normalText.setText(getResources().getString(R.string.pdf_legend_normal, pdfEntryData.getNormalFloorValue(), pdfEntryData.getNormalCeilValue()));
 
@@ -157,7 +161,7 @@ public class PdfExportView extends ConstraintLayout {
             final Field mLabelCount = axis.getClass().getSuperclass().getDeclaredField("mLabelCount");
             mLabelCount.setAccessible(true);
             mLabelCount.set(axis, count);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (final NoSuchFieldException | IllegalAccessException e) {
             Timber.d("Failed to set mLabelCount");
         }
     }

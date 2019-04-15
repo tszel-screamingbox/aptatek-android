@@ -21,6 +21,8 @@ import com.aptatek.pkulab.injection.component.bluetooth.DaggerBluetoothComponent
 import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
 
+import java.util.NoSuchElementException;
+
 import javax.inject.Inject;
 
 import io.reactivex.Single;
@@ -72,7 +74,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
         if (intent != null) {
             mode = intent.getIntExtra(KEY_MODE, -1);
 
-            return START_STICKY_COMPATIBILITY;
+            return START_NOT_STICKY;
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -98,7 +100,26 @@ public class ExplicitBluetoothService extends BaseForegroundService {
         final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectingToDevice());
         startForeground(notification.getId(), notification.getNotification());
 
-        startConnect(0);
+        checkStateOrConnect();
+    }
+
+    private void checkStateOrConnect() {
+        disposables.add(
+                readerInteractor.getConnectedReader()
+                    .toSingle()
+                    .ignoreElement()
+                    .subscribe(
+                            this::onConnected,
+                            error -> {
+                                if (error instanceof NoSuchElementException) {
+                                    startConnect(0);
+                                    return;
+                                }
+
+                                processError(error);
+                            }
+                    )
+        );
     }
 
     private void startConnect(final int tryCount) {
@@ -162,20 +183,22 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                 readerInteractor.connect(readerDevice)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                                    Timber.d("connectTo: connected to %s", readerDevice.getMac());
-                                    if (mode == MODE_READY) {
-                                        waitUntilReady();
-                                    } else if (mode == MODE_TEST_COMPLETE) {
-                                        waitUntilTestComplete();
-                                    } else {
-                                        Timber.d("unknown startMode, shutting down...: %s", mode);
-                                        shutdown();
-                                    }
-                                },
+                        .subscribe(
+                                this::onConnected,
                                 this::processError
                         )
         );
+    }
+
+    private void onConnected() {
+        if (mode == MODE_READY) {
+            waitUntilReady();
+        } else if (mode == MODE_TEST_COMPLETE) {
+            waitUntilTestComplete();
+        } else {
+            Timber.d("unknown startMode, shutting down...: %s", mode);
+            shutdown();
+        }
     }
 
     private void waitUntilReady() {
@@ -202,22 +225,24 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                 readerInteractor.getWorkflowState()
                         .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE)
                         .take(1)
-                        .flatMapCompletable(ignored ->
+                        .flatMapSingle(ignored ->
                                 readerInteractor.getTestProgress()
                                         .filter(testProgress -> testProgress.getPercent() == 100)
                                         .take(1)
+                                        .singleOrError()
                                         .map(TestProgress::getTestId)
                                         .map(String::valueOf)
-                                        .flatMapSingle(readerInteractor::getResult)
-                                        .flatMapCompletable(readerInteractor::saveResult)
+                                        .flatMap(readerInteractor::getResult)
                         )
+                        .singleOrError()
+                        .flatMap(testResult -> readerInteractor.saveResult(testResult).andThen(Single.just(testResult.getId())))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                () -> {
+                                testId -> {
                                     Timber.d("Test complete, result saved!");
 
-                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete());
+                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete(testId));
                                     notificationManager.notify(notification.getId(), notification.getNotification());
 
                                     shutdown();

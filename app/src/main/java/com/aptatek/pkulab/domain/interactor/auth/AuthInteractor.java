@@ -24,6 +24,8 @@ public class AuthInteractor {
     private final PreferenceManager preferencesManager;
     private final File dbFile;
 
+    private static final int CODE_FINGERPRINT_CANCELLED = 5;
+
     private CancellationSignal cancelSignal;
     private Callback callback;
 
@@ -85,7 +87,7 @@ public class AuthInteractor {
         public void onAuthenticationError(final int errMsgId, final CharSequence errString) {
             super.onAuthenticationError(errMsgId, errString);
             Timber.d("Error occurred during fingerprint authentication: %s", errString.toString());
-            if (callback != null) {
+            if (callback != null && errMsgId != CODE_FINGERPRINT_CANCELLED) {
                 callback.onErrorOccurred(errString.toString());
             }
         }

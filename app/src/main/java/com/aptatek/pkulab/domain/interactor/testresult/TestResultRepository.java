@@ -75,6 +75,13 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     }
 
     @NonNull
+    public Single<TestResult> getById(final String id) {
+        return Single.fromCallable(() -> testResultDataSource.getById(id))
+                .map(mapper::mapToDomain)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
     public Completable insertAll(@NonNull final List<TestResult> testResults) {
         return Single.just(testResults)
                 .map(mapper::mapListToData)
