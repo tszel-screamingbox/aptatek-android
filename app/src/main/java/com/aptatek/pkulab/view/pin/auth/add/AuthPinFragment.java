@@ -56,17 +56,19 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
 
     @Override
     public void onValidPinTyped() {
-        messageTextView.setVisibility(View.VISIBLE);
-        messageTextView.setText(R.string.auth_pin_successful);
-        messageTextView.setBackgroundResource(R.drawable.pin_valid_message_background);
+        showSuccess(getString(R.string.auth_pin_successful));
         fillCircle(R.drawable.pin_circle_filled_green, ((AuthPinHostActivity) getBaseActivity())::successfullyAuthorized);
+    }
+
+    private void showSuccess(@NonNull final String message) {
+        messageTextView.setVisibility(View.VISIBLE);
+        messageTextView.setText(message);
+        messageTextView.setBackgroundResource(R.drawable.pin_valid_message_background);
     }
 
     @Override
     public void onInvalidPinTyped() {
-        messageTextView.setVisibility(View.VISIBLE);
-        messageTextView.setText(R.string.auth_pin_message_invalid);
-        messageTextView.setBackgroundResource(R.drawable.pin_invalid_message_background);
+        showErrorMessage(getString(R.string.auth_pin_message_invalid));
         fillCircle(R.drawable.pin_circle_filled_red, null);
     }
 
@@ -86,17 +88,19 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
 
     @Override
     public void onValidFingerprintDetected() {
-        messageTextView.setVisibility(View.VISIBLE);
-        messageTextView.setTextColor(this.getResources().getColor(R.color.applicationGreen));
-        messageTextView.setText(R.string.auth_pin_successful);
+        showSuccess(getString(R.string.auth_pin_successful));
         fillCircle(R.drawable.pin_circle_filled_green, ((AuthPinHostActivity) getBaseActivity())::successfullyAuthorized);
+    }
+
+    private void showErrorMessage(@NonNull final String message) {
+        messageTextView.setVisibility(View.VISIBLE);
+        messageTextView.setText(message);
+        messageTextView.setBackgroundResource(R.drawable.pin_invalid_message_background);
     }
 
     @Override
     public void onInvalidFingerprintDetected(@NonNull final String message) {
-        messageTextView.setVisibility(View.VISIBLE);
-        messageTextView.setTextColor(this.getResources().getColor(R.color.applicationRed));
-        messageTextView.setText(message);
+        showErrorMessage(message);
         fillCircle(R.drawable.pin_circle_filled_red, null);
     }
 

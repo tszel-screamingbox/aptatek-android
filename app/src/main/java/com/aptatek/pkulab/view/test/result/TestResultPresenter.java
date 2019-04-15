@@ -50,15 +50,14 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
         this.testInteractor = testInteractor;
     }
 
-    public void initUi() {
+    public void initUi(final String testId) {
         disposeSubscriptions();
         disposable =
                 clearTestState()
                         .andThen(testInteractor.cancelTestNotifications())
-                        .andThen(
-                        Single.zip(
+                        .andThen(Single.zip(
                                 rangeInteractor.getInfo(),
-                                testResultInteractor.getLatest().map(TestResult::getPkuLevel),
+                                testResultInteractor.getById(testId).map(TestResult::getPkuLevel),
                                 (rangeInfo, pkuLevel) ->
                                         TestResultState.builder()
                                                 .setTitle(getTitleForLevel(pkuLevel, rangeInfo))
@@ -67,7 +66,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                                                 .setPkuLevelText(getPkuLevelText(pkuLevel, rangeInfo))
                                                 .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(rangeInfo.getPkuLevelUnit()))
                                                 .build())
-                )
+                        )
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)));
     }

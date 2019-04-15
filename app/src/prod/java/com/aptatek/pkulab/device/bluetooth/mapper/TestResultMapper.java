@@ -55,9 +55,8 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
             return PkuLevel.create(value, unit);
         } catch (Exception ex) {
             Timber.d("Failed to parse pkuLevel from result response: %s", resultResponse);
+            return PkuLevel.create(0, PkuLevelUnits.MICRO_MOL);
         }
-
-        return null;
     }
 
     private PkuLevelUnits parseUnit(final String units) {

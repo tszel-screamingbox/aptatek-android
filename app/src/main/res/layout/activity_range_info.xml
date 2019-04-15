@@ -4,26 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:paddingStart="@dimen/general.distance"
-    android:paddingEnd="@dimen/general.distance">
+    android:clipToPadding="false">
 
     <com.aptatek.pkulab.widget.HeaderView
         android:id="@+id/header"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="@dimen/general.distance.mini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideTop"
+        app:layout_constraintTop_toTopOf="parent"
         app:subTitleText="@string/rangeinfo.message"
         app:titleText="@string/rangeinfo.title" />
-
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/rangeinfo_values"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.32dp"
         android:layout_marginTop="@dimen/general.distance.small"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
@@ -93,6 +95,7 @@
         style="@style/General.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/general.distance.xxsmall"
         android:layout_marginBottom="@dimen/general.distance.xxsmall"
         android:textSize="@dimen/font.size.medium"
         app:layout_constraintBottom_toTopOf="@+id/rangeinfo_edit"
@@ -107,28 +110,17 @@
         style="@style/General.Rounded.Gray.Button"
         android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginStart="@dimen/general.distance.32dp"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
+        android:layout_marginBottom="@dimen/general.distance.32dp"
         android:drawableStart="@drawable/ic_settings"
         android:elevation="0dp"
         android:paddingStart="@dimen/general.button.corner.normal"
         android:text="@string/rangeinfo.edit.level.preferences"
         android:textColor="@color/applicationSolidGray"
-        app:layout_constraintBottom_toBottomOf="@id/guideBottom"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="RtlSymmetry" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.05" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95" />
 
 </android.support.constraint.ConstraintLayout>
