@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
@@ -12,11 +14,13 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageButton;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -127,6 +131,8 @@ public class TimePickerDialog extends DialogFragment {
             textViewDelete.setText(R.string.reminder_time_picker_cancel);
         }
 
+        hideKeyboardInput();
+
         layoutDone.setOnClickListener(v -> {
             if (callback != null) {
                 if (getArguments() == null) {
@@ -175,6 +181,26 @@ public class TimePickerDialog extends DialogFragment {
                 dismiss();
             }
         });
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void hideKeyboardInput() {
+        final LinearLayout primary = (LinearLayout) timePicker.getChildAt(0);
+        if (primary == null) {
+            return;
+        }
+
+        final LinearLayout secondary = (LinearLayout) primary.getChildAt(4);
+        if (secondary == null) {
+            return;
+        }
+
+        final AppCompatImageButton keyboardImage = (AppCompatImageButton) secondary.getChildAt(0);
+        if (keyboardImage == null) {
+            return;
+        }
+
+        keyboardImage.setVisibility(View.INVISIBLE);
     }
 
     @Override
