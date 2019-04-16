@@ -74,7 +74,7 @@ public class TurnReaderOnContinueTestFragment extends TurnReaderOnFragment<TurnR
 
     @Override
     public void onSelfCheckComplete() {
-        presenter.checkLastMeasure();
+        presenter.syncData();
     }
 
     @Override
