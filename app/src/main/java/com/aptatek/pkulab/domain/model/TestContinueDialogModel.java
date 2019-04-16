@@ -33,4 +33,14 @@ public class TestContinueDialogModel {
                 .setCancelable(false)
                 .build();
     }
+
+    public static AlertDialogModel unableToSyncWithReaderDialogModelCreate(final Context context) {
+        return AlertDialogModel.builder()
+                .setTitle(context.getString(R.string.home_test_continue_dialog_unable_sync_with_reader_title))
+                .setMessage(context.getString(R.string.home_test_continue_dialog_unable_sync_with_reader_message))
+                .setPositiveButtonText(context.getString(R.string.home_test_continue_dialog_unable_sync_with_reader_try_again))
+                .setNegativeButtonText(context.getString(R.string.home_test_continue_dialog_unable_sync_with_reader_skip))
+                .setCancelable(false)
+                .build();
+    }
 }

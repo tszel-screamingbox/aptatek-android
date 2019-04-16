@@ -60,6 +60,10 @@
     <string name="home.test.continue.dialog.next">Next</string>
     <string name="home.test.continue.dialog.cannot.be.finished.title">Test Cannot be Finished</string>
     <string name="home.test.continue.dialog.cannot.be.finished.message">Unfortunately this test cannot be completed. Please discard items and you may start fresh with a new blood sample.</string>
+    <string name="home.test.continue.dialog.unable.sync.with.reader.title">Unable to Sync with Reader</string>
+    <string name="home.test.continue.dialog.unable.sync.with.reader.message">Please check to make sure reader is turned on so that it can re-connect to app.</string>
+    <string name="home.test.continue.dialog.unable.sync.with.reader.skip">Skip</string>
+    <string name="home.test.continue.dialog.unable.sync.with.reader.try.again">Try Again</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>

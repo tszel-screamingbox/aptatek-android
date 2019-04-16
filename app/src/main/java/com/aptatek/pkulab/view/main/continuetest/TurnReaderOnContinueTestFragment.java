@@ -7,9 +7,15 @@ import android.view.View;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
+import com.aptatek.pkulab.domain.model.TestContinueDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnFragment;
+import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
+import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
+import com.aptatek.pkulab.view.test.TestActivity;
+import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.view.test.turnreaderon.permission.PermissionRequiredOnTestActivity;
 
 import javax.inject.Inject;
@@ -19,6 +25,8 @@ import butterknife.OnClick;
 
 public class TurnReaderOnContinueTestFragment extends TurnReaderOnFragment<TurnReaderOnContinueTestView, TurnReaderOnContinueTestPresenter>
         implements TurnReaderOnContinueTestView {
+
+    private static final String TAG_CONTINUE_TEST_UNABLE_SYNC_TAG = "aptatek.test.continue.unable.sync.dialog";
 
     @BindView(R.id.turnReaderOnSkip)
     View btnSkip;
@@ -39,7 +47,17 @@ public class TurnReaderOnContinueTestFragment extends TurnReaderOnFragment<TurnR
 
     @OnClick(R.id.turnReaderOnSkip)
     void onSkipClicked() {
+        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
+                TestContinueDialogModel.unableToSyncWithReaderDialogModelCreate(requireContext()),
+                decision -> {
+                    if (decision == AlertDialogDecisions.POSITIVE) {
 
+                    } else if (decision == AlertDialogDecisions.NEGATIVE) {
+                        getBaseActivity().launchActivity(new Intent(requireActivity(), DisposeActivity.class));
+                        getBaseActivity().finish();
+                    }
+                });
+        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_CONTINUE_TEST_UNABLE_SYNC_TAG);
     }
 
     @Override

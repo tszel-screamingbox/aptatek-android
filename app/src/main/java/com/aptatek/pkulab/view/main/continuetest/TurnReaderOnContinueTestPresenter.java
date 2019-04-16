@@ -87,6 +87,10 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
         wrapped.checkPermissions();
     }
 
+    void unableFinishTestContinue(){
+
+    }
+
     void checkLastMeasure() {
         disposables.add(Single.zip(readerInteractor.getNumberOfResults(), testResultInteractor.getNumberOfMeasures(), Integer::equals)
                 .observeOn(AndroidSchedulers.mainThread())
