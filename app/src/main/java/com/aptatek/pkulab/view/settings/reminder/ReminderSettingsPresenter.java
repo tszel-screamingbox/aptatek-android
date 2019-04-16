@@ -8,7 +8,6 @@ import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
 import com.aptatek.pkulab.domain.model.Reminder;
 import com.aptatek.pkulab.domain.model.ReminderDay;
 import com.aptatek.pkulab.domain.model.ReminderScheduleType;
-import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.settings.reminder.adapter.ReminderSettingsAdapterItem;
 import com.aptatek.pkulab.view.settings.reminder.adapter.RemindersAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
@@ -18,6 +17,7 @@ import org.apache.commons.text.WordUtils;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -28,6 +28,10 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static com.aptatek.pkulab.util.Constants.REMINDER_AM_OR_PM;
+import static com.aptatek.pkulab.util.Constants.REMINDER_HALF_DAY;
+import static com.aptatek.pkulab.util.Constants.REMINDER_MIDNIGHT;
 
 public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettingsView> {
 
@@ -333,8 +337,8 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                                    final int minute,
                                    final ReminderScheduleType reminderScheduleType) {
         final String timePeriod;
-
-        if (hour > Constants.REMINDER_AM_OR_PM) {
+        Timber.d("Selected hour:  %s", hour);
+        if (hour > REMINDER_AM_OR_PM) {
             timePeriod = resourceInteractor.getStringResource(R.string.reminder_settings_pm);
         } else {
             timePeriod = resourceInteractor.getStringResource(R.string.reminder_settings_am);
@@ -342,15 +346,17 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         final int finalHourFormat;
 
-        if (hour > Constants.REMINDER_AM_OR_PM) {
-            finalHourFormat = hour - Constants.REMINDER_HALF_DAY;
+        if (hour == REMINDER_MIDNIGHT) {
+            finalHourFormat = REMINDER_HALF_DAY;
+        } else if (hour > REMINDER_HALF_DAY) {
+            finalHourFormat = hour - REMINDER_HALF_DAY;
         } else {
             finalHourFormat = hour;
         }
 
         return resourceInteractor.getStringResource(R.string.reminder_settings_reminder_item_time_format,
                 String.valueOf(finalHourFormat),
-                String.valueOf(minute),
+                String.format(Locale.getDefault(), "%02d", minute),
                 timePeriod,
                 getScheduleLabel(reminderScheduleType));
     }

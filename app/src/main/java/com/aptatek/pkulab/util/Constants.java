@@ -17,7 +17,6 @@ public final class Constants {
     public static final float DEFAULT_PKU_MARGIN_MIN = 100f;
     public static final float DEFAULT_PKU_LOWEST_VALUE = 2f;
     public static final float DEFAULT_PKU_HIGHEST_VALUE = 1201f;
-    public static final float FLOAT_COMPARISION_ERROR_MARGIN = 0.0001f;
     public static final PkuLevelUnits DEFAULT_PKU_LEVEL_UNIT = PkuLevelUnits.MILLI_GRAM;
 
     public static final int DAYS_OF_WEEK = 7;
@@ -27,7 +26,7 @@ public final class Constants {
     public static final int REMINDER_HALF_DAY = 12;
     public static final String REMINDER_RE_SCHEDULE_INTENT_KEY = "reminderReScheduleIntentKey";
     public static final int REMINDER_AM_OR_PM = 11;
-    public static final int REMINDER_SPAN_COUNT = 2;
+    public static final int REMINDER_MIDNIGHT = 0;
     public static final int HUNDRED_PERCENT = 100;
 
     public static final String REMINDER_NOTIFICATION_ACTION_TYPE_KEY = "reminderNotificationActionTypeKey";
