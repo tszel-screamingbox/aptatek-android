@@ -24,4 +24,6 @@ interface HomeFragmentView extends MvpView {
     void showNoResults();
 
     void updateUnitText(String text);
+
+    void showLastResult(String resultId);
 }

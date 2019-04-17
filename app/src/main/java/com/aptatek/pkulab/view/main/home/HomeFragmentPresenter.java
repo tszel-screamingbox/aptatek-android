@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -45,6 +46,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private final TestInteractor testInteractor;
     private final PkuValueFormatter pkuValueFormatter;
     private CompositeDisposable disposables;
+    private ChartVM lastResult;
 
     @Inject
     HomeFragmentPresenter(final TestResultInteractor testResultInteractor,
@@ -77,6 +79,13 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         ifViewAttached(view -> view.updateUnitText(unit));
     }
 
+    void showLastResult() {
+        disposables.add(testResultInteractor.getLatest()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(result -> ifViewAttached(view -> view.showLastResult(result.getId()))));
+    }
+
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts
     void loadData() {
         disposables.add(
@@ -94,7 +103,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 ifViewAttached(HomeFragmentView::showNoResults);
                             } else {
                                 final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
-                                final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
+                                lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
                                 chartVMS.set(chartVMS.size() - 1, lastResult);
 
                                 ifViewAttached(attachedView -> {
@@ -186,6 +195,11 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
 
     private String formatTitle(final ChartVM chartVM) {
         final String title;
+
+        if (lastResult != null &&
+                org.apache.commons.lang3.time.DateUtils.isSameDay(chartVM.getDate(), lastResult.getDate())) {
+            return resourceInteractor.getStringResource(R.string.main_title_today);
+        }
 
         if (DateUtils.isToday(chartVM.getDate().getTime())) {
             title = resourceInteractor.getStringResource(R.string.main_title_today);

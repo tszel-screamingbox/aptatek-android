@@ -20,16 +20,20 @@ import com.aptatek.pkulab.widget.HeaderView;
 
 import javax.inject.Inject;
 
+import activitystarter.ActivityStarter;
+import activitystarter.Arg;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TestResultActivity extends BaseActivity<TestResultView, TestResultPresenter> implements TestResultView {
 
-    public static Intent starter(@NonNull final Context context) {
-        final Intent intent = new Intent(context, TestResultActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
-        return intent;
+    @Arg
+    String resultId;
+
+    public static Intent starter(@NonNull final Context context, final String resultId) {
+        return TestResultActivityStarter.getIntent(context, resultId)
+                .addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
     }
 
     @Inject
@@ -62,6 +66,8 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_result);
 
+        ActivityStarter.fill(this, savedInstanceState);
+
         ButterKnife.bind(this);
     }
 
@@ -69,7 +75,7 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
     protected void onStart() {
         super.onStart();
 
-        presenter.initUi();
+        presenter.initUi(resultId);
     }
 
     @Override

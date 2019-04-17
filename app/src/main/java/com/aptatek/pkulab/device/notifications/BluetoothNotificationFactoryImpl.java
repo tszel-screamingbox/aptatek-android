@@ -68,7 +68,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
             notification = createSyncingDataNotification();
             id = BT_READER_STATUS_NOTIFICATION_ID;
         } else if (notificationData instanceof TestComplete) {
-            notification = createTestCompleteNotification();
+            notification = createTestCompleteNotification((TestComplete) notificationData);
             id = Constants.BT_READER_TEST_COMPLETE_NOTIFICATION_ID;
         } else if (notificationData instanceof BluetoothError) {
             notification = createErrorNotification(((BluetoothError) notificationData));
@@ -131,11 +131,11 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
                 .build();
     }
 
-    private Notification createTestCompleteNotification() {
+    private Notification createTestCompleteNotification(final TestComplete testComplete) {
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_test_complete_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_test_complete_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestResultActivity.starter(context), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestResultActivity.starter(context, testComplete.getTestId()), PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
     }
 

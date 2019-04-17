@@ -4,23 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/activity.margin.horizontal"
-    android:layout_marginTop="@dimen/activity.margin.horizontal"
-    android:layout_marginEnd="@dimen/activity.margin.horizontal"
-    android:layout_marginBottom="@dimen/activity.margin.vertical"
     tools:context=".view.main.MainHostActivity">
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.32" />
 
     <com.aptatek.pkulab.widget.HeaderView
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="@dimen/general.distance.mini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,35 +26,37 @@
         android:layout_marginTop="@dimen/general.distance.mini"
         android:src="@drawable/fingerprint"
         app:layout_constraintBottom_toTopOf="@id/enableButton"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header"
         tools:ignore="ContentDescription" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/bottomLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7" />
 
     <Button
         android:id="@+id/enableButton"
         style="@style/General.Rounded.Blue.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/general.button.height.big"
+        android:layout_marginStart="@dimen/general.distance.32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="@dimen/general.distance.xsmall"
         android:elevation="0dp"
         android:text="@string/fingerprint.option.enable"
-        app:layout_constraintTop_toBottomOf="@+id/bottomLine" />
+        app:layout_constraintBottom_toTopOf="@id/disableButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/disableButton"
         style="@style/General.Rounded.Gray.Button"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
+        android:layout_marginStart="@dimen/general.distance.32dp"
+        android:layout_marginEnd="@dimen/general.distance.32dp"
+        android:layout_marginBottom="@dimen/general.distance.32dp"
         android:elevation="0dp"
         android:text="@string/fingerprint.option.disable"
-        app:layout_constraintTop_toBottomOf="@+id/enableButton" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

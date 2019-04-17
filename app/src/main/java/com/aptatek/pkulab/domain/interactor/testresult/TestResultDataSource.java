@@ -14,6 +14,8 @@ public interface TestResultDataSource {
 
     TestResultDataModel getLatestData();
 
+    TestResultDataModel getById(final String id);
+
     void insertAll(@NonNull List<TestResultDataModel> dataModels);
 
     int getNumberOfRecords();

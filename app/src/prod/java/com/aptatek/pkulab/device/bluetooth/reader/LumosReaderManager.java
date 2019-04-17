@@ -143,6 +143,10 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         Timber.d("onPairingRequestReceived: device [%s], variant [%s]", device.getAddress(), pairingVariantToString(variant));
     }
 
+    private int getMTUPayloadLength() {
+        return getMtu() - 3;
+    }
+
     @SuppressWarnings("unchecked")
     <T> Single<T> readCharacteristic(@NonNull final String characteristicId, final boolean validateChecksum) {
         return Single.create(emitter ->
@@ -201,7 +205,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         }
 
         final String checksum = rawMessage.substring(checkSumLineBreakIndex).trim();
-        final int checksumDelimiterIndex = checksum.lastIndexOf(":");
+        final int checksumDelimiterIndex = checksum.lastIndexOf(':');
 
         if (checksumDelimiterIndex < 0) {
             throw new Exception();
@@ -357,9 +361,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         })
                         .enqueue())
                 .repeatWhen(objectFlowable -> objectFlowable)
-                .takeUntil(s -> {
-                    return TextUtils.isEmpty(s.trim());
-                })
+                .takeUntil(s ->
+                           s.length() < getMTUPayloadLength() || TextUtils.isEmpty(s.trim())
+                )
                 .scan((current, next) -> current + next)
                 .lastOrError()
                 .map(this::validateChecksumAndReturnPayload)

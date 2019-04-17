@@ -30,15 +30,15 @@ public class TestResultInteractor {
         return dataRepository.listBetween(start, end);
     }
 
+    public Single<TestResult> getById(@NonNull final String testId) {
+        return dataRepository.getById(testId);
+    }
+
     public Single<TestResult> getLatest() {
         return dataRepository.getLatest();
     }
 
     public Single<TestResult> getOldest() {
         return dataRepository.getOldest();
-    }
-
-    public Single<Integer> getNumberOfMeasures() {
-        return dataRepository.getNumberOfMeasures();
     }
 }

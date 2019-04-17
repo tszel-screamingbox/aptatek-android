@@ -222,7 +222,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
             bubbleScrollView.smoothScrollToPosition(selectedIndex);
-            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && isResultShown()) {
+            if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && !isResultShown()) {
                 setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 presenter.measureListToAdapterList(chartVM.getMeasures());
             }
@@ -248,6 +248,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     public void updateUnitText(final String text) {
         unitTextView.setText(text);
+    }
+
+    @Override
+    public void showLastResult(String resultId) {
+        getBaseActivity().launchActivity(TestResultActivity.starter(requireContext(), resultId), false, BaseActivity.Animation.FADE);
     }
 
     @Override
@@ -299,7 +304,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
             final ContinueTestResultType resultType = (ContinueTestResultType) data.getSerializableExtra(Constants.CONTINUE_TEST_RESULT_TYPE_KEY);
 
             if (resultType == ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT) {
-                getBaseActivity().launchActivity(TestResultActivity.starter(requireContext()), false, BaseActivity.Animation.FADE);
+                presenter.showLastResult();
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_WRONG_RESULT) {
                 final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
                         TestContinueDialogModel.incorrectResultDialogModelCreate(requireContext()),

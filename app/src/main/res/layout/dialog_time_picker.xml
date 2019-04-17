@@ -1,153 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/applicationGainsBoroGray">
 
-    <TimePicker
-        android:id="@+id/timePicker"
-        style="@style/General.TimePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:keyboardNavigationCluster="true"
-        android:numbersBackgroundColor="@android:color/white"
-        android:numbersTextColor="@color/applicationGray"
-        android:timePickerMode="clock"
-        tools:targetApi="o" />
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.aptatek.pkulab.widget.CustomRadioGroup
-        android:id="@+id/radioGroupSchedule"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timePicker">
+        <TimePicker
+            android:id="@+id/timePicker"
+            style="@style/General.TimePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:keyboardNavigationCluster="true"
+            android:numbersBackgroundColor="@android:color/white"
+            android:numbersTextColor="@color/applicationGray"
+            android:timePickerMode="clock"
+            tools:targetApi="o" />
+
+        <com.aptatek.pkulab.widget.CustomRadioGroup
+            android:id="@+id/radioGroupSchedule"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timePicker">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonWeekly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/general.distance.small"
+                android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
+                android:checked="true"
+                android:fontFamily="@font/nunito_black"
+                android:text="@string/settings.reminder.schedule.type.weekly"
+                android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
+                app:layout_constraintLeft_toLeftOf="parent" />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonBiWeekly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
+                android:fontFamily="@font/nunito_black"
+                android:text="@string/settings.reminder.schedule.type.biweekly"
+                android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
+                app:layout_constraintStart_toEndOf="@id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/timePicker" />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonMonthly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/general.distance.small"
+                android:layout_marginTop="@dimen/general.distance.mini"
+                android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
+                android:fontFamily="@font/nunito_black"
+                android:text="@string/settings.reminder.schedule.type.monthly"
+                android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioButtonWeekly" />
+
+        </com.aptatek.pkulab.widget.CustomRadioGroup>
+
+        <FrameLayout
+            android:id="@+id/layoutDone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.small"
+            android:background="@color/applicationGreen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupSchedule">
+
+            <TextView
+                android:id="@+id/textViewDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nunito_black"
+                android:padding="@dimen/general.distance.xxsmall"
+                android:text="@string/reminder.time.picker.add"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font.size.medium" />
+
+            <TextView
+                android:id="@+id/textViewCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nunito_black"
+                android:padding="@dimen/general.distance.xxsmall"
+                android:text="@string/month.picker.cancel"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font.size.medium"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/layoutDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/general.distance.small"
+            android:background="@color/applicationPink"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupSchedule">
+
+            <TextView
+                android:id="@+id/textViewDelete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nunito_black"
+                android:padding="@dimen/general.distance.xxsmall"
+                android:text="@string/reminder.time.picker.cancel"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font.size.medium" />
+
+            <TextView
+                android:id="@+id/textViewConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nunito_black"
+                android:padding="@dimen/general.distance.xxsmall"
+                android:text="@string/mont.picker.confirm"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/font.size.medium"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
         <android.support.constraint.Guideline
-            android:id="@+id/guideline3"
+            android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
+    </android.support.constraint.ConstraintLayout>
 
-        <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/radioButtonWeekly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/general.distance.small"
-            android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
-            android:checked="true"
-            android:fontFamily="@font/nunito_black"
-            android:text="@string/settings.reminder.schedule.type.weekly"
-            android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/radioButtonBiWeekly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
-            android:fontFamily="@font/nunito_black"
-            android:text="@string/settings.reminder.schedule.type.biweekly"
-            android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
-            app:layout_constraintStart_toEndOf="@id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/timePicker" />
-
-        <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/radioButtonMonthly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/general.distance.small"
-            android:layout_marginTop="@dimen/general.distance.mini"
-            android:buttonTint="@drawable/time_picker_dialog_schedule_type_color_selector"
-            android:fontFamily="@font/nunito_black"
-            android:text="@string/settings.reminder.schedule.type.monthly"
-            android:textColor="@drawable/time_picker_dialog_schedule_type_color_selector"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioButtonWeekly" />
-
-    </com.aptatek.pkulab.widget.CustomRadioGroup>
-
-    <FrameLayout
-        android:id="@+id/layoutDone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.small"
-        android:background="@color/applicationGreen"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupSchedule">
-
-        <TextView
-            android:id="@+id/textViewDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/nunito_black"
-            android:padding="@dimen/general.distance.xxsmall"
-            android:text="@string/reminder.time.picker.add"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/font.size.medium" />
-
-        <TextView
-            android:id="@+id/textViewCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/nunito_black"
-            android:padding="@dimen/general.distance.xxsmall"
-            android:text="@string/month.picker.cancel"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/font.size.medium"
-            android:visibility="gone" />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/layoutDelete"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.small"
-        android:background="@color/applicationPink"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/guideline2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupSchedule">
-
-        <TextView
-            android:id="@+id/textViewDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/nunito_black"
-            android:padding="@dimen/general.distance.xxsmall"
-            android:text="@string/reminder.time.picker.cancel"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/font.size.medium" />
-
-        <TextView
-            android:id="@+id/textViewConfirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/nunito_black"
-            android:padding="@dimen/general.distance.xxsmall"
-            android:text="@string/mont.picker.confirm"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/font.size.medium"
-            android:visibility="gone" />
-
-    </FrameLayout>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

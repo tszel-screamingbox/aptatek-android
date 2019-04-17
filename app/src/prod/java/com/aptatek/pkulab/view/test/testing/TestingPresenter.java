@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.view.test.testing;
 
+import android.util.Pair;
+
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
@@ -7,7 +9,6 @@ import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import java.util.NoSuchElementException;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -44,11 +46,16 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                 readerInteractor.getConnectedReader()
                         .toSingle()
                         .toFlowable()
-                        .flatMapSingle(ignored -> testResultInteractor.getLatest().map(TestResult::getTimestamp).onErrorReturnItem(0L))
-                        .flatMap(latestResultTime -> readerInteractor.getTestProgress()
-                                .takeUntil(testProgress -> latestResultTime != testProgress.getStart() && testProgress.getPercent() == 100))
+                        .flatMap(ignored -> readerInteractor.getTestProgress()
+                                .flatMapSingle(testProgress -> testResultInteractor.getById(testProgress.getTestId())
+                                        .map(storedResult -> new Pair<>(testProgress, false))
+                                        .onErrorReturn(t -> new Pair<>(testProgress, true))
+                                )
+                        )
+                        .takeUntil(pair -> pair.second && pair.first.getPercent() == 100)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .map(pair -> pair.first)
                         .subscribe(
                                 testProgress -> {
                                     Timber.d("Test Progress update: %s", testProgress);
@@ -81,25 +88,26 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         );
 
         disposables.add(
-                testResultInteractor.getLatest()
-                        .map(TestResult::getTimestamp)
-                        .onErrorReturnItem(0L)
-                        .toFlowable()
-                        .take(1)
-                        .flatMap(latestResultTime -> readerInteractor.getTestProgress()
-                                .filter(testProgress -> latestResultTime != testProgress.getStart() && testProgress.getPercent() == 100))
-                        .take(1)
+                readerInteractor.getTestProgress()
+                        .filter(testProgress -> testProgress.getPercent() == 100)
                         .map(TestProgress::getTestId)
-                        .map(String::valueOf)
-                        .delay(1, TimeUnit.SECONDS)
+                        .flatMapSingle(testId -> testResultInteractor.getById(testId)
+                            .map(ignored -> new Pair<>(testId, false))
+                            .onErrorReturnItem(new Pair<>(testId, true))
+                        )
+                        .filter(pair -> pair.second)
+                        .map(pair -> pair.first)
+                        .take(1)
+                        .delay(1L, TimeUnit.SECONDS)
                         .flatMapSingle(readerInteractor::getResult)
-                        .flatMapCompletable(readerInteractor::saveResult)
+                        .flatMapSingle(result -> readerInteractor.saveResult(result)
+                                .andThen(Single.just(result.getId())))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                () -> {
+                                resultId -> {
                                     Timber.d("Result successfully saved");
-                                    ifViewAttached(TestingView::onTestFinished);
+                                    ifViewAttached(attachedView -> attachedView.onTestFinished(resultId));
                                 },
                                 error -> Timber.d("Error while getting latest result: %s", error)
                         )

@@ -5,7 +5,10 @@ import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.manager.FingerprintManager;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
+import ix.Ix;
 
 public class SettingsPresenter extends MvpBasePresenter<SettingsView> {
 
@@ -22,9 +25,27 @@ public class SettingsPresenter extends MvpBasePresenter<SettingsView> {
         this.deviceHelper = deviceHelper;
     }
 
+    @Override
+    public void attachView(final SettingsView view) {
+        super.attachView(view);
+
+        final List<SettingsAdapterItem> data = Ix.from(Arrays.asList(SettingsItem.values()))
+                .filter(settingsItem -> {
+                    if(settingsItem != SettingsItem.FINGERPRINT_AUTH){
+                        return true;
+                    }
+
+                    return fingerprintManager.isFingerprintHadrwareDetected();
+                })
+                .map(settingsItem -> new SettingsAdapterItem(settingsItem, false, false))
+                .toList();
+
+        view.populateAdapter(data);
+    }
+
     public void checkFingerprintSettings() {
         ifViewAttached(attachedView ->
-            attachedView.updateFingerprintSetting(fingerprintManager.isFingerprintHadrwareDetected(), preferenceManager.isFingerprintScanEnabled())
+                attachedView.updateFingerprintSetting(fingerprintManager.isFingerprintHadrwareDetected(), preferenceManager.isFingerprintScanEnabled())
         );
     }
 

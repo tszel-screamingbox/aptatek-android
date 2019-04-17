@@ -30,6 +30,10 @@ public abstract class PdfEntryData {
 
     public abstract double getDeviation();
 
+    public abstract String getMin();
+
+    public abstract String getMax();
+
     public abstract String getFileName();
 
     public abstract Builder toBuilder();
@@ -66,6 +70,10 @@ public abstract class PdfEntryData {
         public abstract Builder setAverageCount(int averageCount);
 
         public abstract Builder setDeviation(double deviation);
+
+        public abstract Builder setMin(String min);
+
+        public abstract Builder setMax(String max);
 
         public abstract PdfEntryData build();
     }

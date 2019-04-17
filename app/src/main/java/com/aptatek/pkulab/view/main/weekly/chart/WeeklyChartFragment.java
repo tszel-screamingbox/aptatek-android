@@ -63,9 +63,7 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     @Override
     protected void initObjects(final View view) {
         initChart();
-        if (weekBefore >= 0) {
-            presenter.getChartData(weekBefore);
-        }
+        presenter.getChartData(weekBefore);
     }
 
     @Override
