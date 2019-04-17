@@ -1,7 +1,6 @@
 package com.aptatek.pkulab.view.test.canceltest;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
