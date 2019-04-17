@@ -59,7 +59,7 @@
     <string name="main.date.format.long">MMM dd - hh:mm a</string>
     <string name="main.title.noresult">Welcome</string>
     <string name="main.title.noresult.hint">Take your first test</string>
-    <string name="main.title.today">Last result</string>
+    <string name="main.title.today">Today</string>
     <string name="main.title.yesterday">Yesterday</string>
     <!-- Parental Gate Activity -->
     <string name="parental.verification.failure.age.not.match.message">Sorry this entry does not match, please re-enter information</string>
