@@ -42,6 +42,7 @@
     <dimen name="general.distance.enorme">250dp</dimen>
 
     <!-- Custom -->
+    <dimen name="pin.side.margin">28dp</dimen>
     <dimen name="range.info.side.margin">32dp</dimen>
     <dimen name="header.title.spacing.extra">0dp</dimen>
     <dimen name="header.margin.top">38dp</dimen>
