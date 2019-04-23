@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.mini"
-        android:layout_marginTop="@dimen/pin.header.margin.minimum"
+        android:layout_marginTop="@dimen/header.margin.top"
         android:layout_marginEnd="@dimen/general.distance.mini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
