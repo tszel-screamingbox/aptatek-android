@@ -20,10 +20,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xxxsmall"
         android:fontFamily="@font/nunito_black"
+        android:paddingBottom="@dimen/general.distance.20dp"
         android:textColor="@color/reminder_settings_day_color_selector"
         android:textSize="@dimen/font.size.xbig"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/switchActivate"
         app:layout_constraintStart_toEndOf="@+id/switchActivate"
         app:layout_constraintTop_toTopOf="@id/switchActivate"
         tools:text="Test text" />
@@ -32,10 +32,11 @@
         android:id="@+id/imageAddNewReminder"
         android:layout_width="@dimen/general.distance.64dp"
         android:layout_height="0dp"
+        android:paddingBottom="@dimen/general.distance.20dp"
         android:scaleType="center"
         android:src="@drawable/ic_add"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/switchActivate"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewDayName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -43,10 +44,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewReminders"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/general.distance.20dp"
         app:layout_constraintStart_toStartOf="@+id/textViewDayName"
         app:layout_constraintTop_toBottomOf="@+id/textViewDayName" />
 
