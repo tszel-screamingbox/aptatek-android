@@ -57,8 +57,6 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
         final View view = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, view);
 
-        Ix.from(sensitiveViewList()).foreach(UXCam::occludeSensitiveViewWithoutGesture);
-
         return view;
     }
 
@@ -66,6 +64,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initObjects(view);
+        Ix.from(sensitiveViewList()).foreach(UXCam::occludeSensitiveViewWithoutGesture);
     }
 
     protected BaseActivity getBaseActivity() {

@@ -28,6 +28,8 @@ import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.aptatek.pkulab.view.test.TestActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -62,6 +64,11 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
 
     @Arg(optional = true)
     Boolean reportVisible = true;
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.emptyList();
+    }
 
     @Nullable
     @Override

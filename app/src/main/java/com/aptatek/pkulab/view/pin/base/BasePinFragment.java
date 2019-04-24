@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
@@ -36,6 +35,9 @@ public abstract class BasePinFragment extends BaseFragment {
 
     private String pin = "";
 
+    @BindView(R.id.keypad)
+    View keypad;
+
     @BindView(R.id.pinLayout)
     protected ConstraintLayout pinCircleConstrainLayout;
 
@@ -44,9 +46,6 @@ public abstract class BasePinFragment extends BaseFragment {
 
     @BindView(R.id.messageTextView)
     protected TextView messageTextView;
-
-    @BindView(R.id.dialLayout)
-    protected TableLayout keypadTableLayout;
 
     protected abstract void finishedTyping(PinCode pinCode);
 
@@ -61,7 +60,7 @@ public abstract class BasePinFragment extends BaseFragment {
 
     @Override
     protected List<View> sensitiveViewList() {
-        return Collections.singletonList(keypadTableLayout);
+        return Collections.singletonList(keypad);
     }
 
     protected void fillCircle(final int resId, final AnimationCallback callback) {
