@@ -15,12 +15,11 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
-import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
-import com.aptatek.pkulab.view.settings.web.WebPageActivityStarter;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
@@ -163,7 +162,15 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @OnClick(R.id.turnReaderOnNoDeviceAvailable)
     void onNoReaderAvailableClick() {
-        getBaseActivity().launchActivity(WebPageActivityStarter.getIntent(requireContext(), resourceInteractor.getStringResource(R.string.settings_help), Constants.URL_HELP, true));
+        if (getBaseActivity() instanceof TestActivity) {
+            ((TestActivity) getBaseActivity()).showHelpScreen();
+            return;
+        }
+
+        if (getBaseActivity() instanceof ConnectOnboardingReaderActivity) {
+            ((ConnectOnboardingReaderActivity) getBaseActivity()).showHelpScreen();
+            return;
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.M)

@@ -6,7 +6,6 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
@@ -14,6 +13,7 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.parentalgate.ParentalGateView;
 import com.aptatek.pkulab.view.parentalgate.welcome.AgeVerificationResult;
 import com.aptatek.pkulab.view.splash.SplashActivity;
+import com.aptatek.pkulab.widget.HeaderView;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,11 +46,8 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
     @BindView(R.id.parentalVerificationImage)
     ImageView ivImage;
 
-    @BindView(R.id.parentalVerificationTitle)
-    TextView tvTitle;
-
-    @BindView(R.id.parentalVerificationMessage)
-    TextView tvMessage;
+    @BindView(R.id.header)
+    HeaderView header;
 
     @BindView(R.id.parentalVerificationButton)
     View btnTryAgain;
@@ -99,12 +96,12 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
 
     @Override
     public void showTitle(@NonNull final String title) {
-        tvTitle.setText(title);
+        header.setTitle(title);
     }
 
     @Override
     public void showMessage(@NonNull final String message) {
-        tvMessage.setText(message);
+        header.setSubtitle(message);
     }
 
     @Override

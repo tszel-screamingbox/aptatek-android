@@ -9,7 +9,6 @@ import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
-import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
@@ -32,9 +31,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 
-public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResultFragmentView> {
+import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MICRO_MOL;
 
-    private static final int EMPTY_LIST = -1;
+public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResultFragmentView> {
 
     private final TestResultInteractor testResultInteractor;
     private final ResourceInteractor resourceInteractor;
@@ -70,7 +69,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         disposables.add(rangeInteractor.getInfo()
                 .map(rangeInfo ->
                         resourceInteractor.getStringResource(R.string.weekly_chart_label,
-                                resourceInteractor.getStringResource(rangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                                resourceInteractor.getStringResource(rangeInfo.getPkuLevelUnit() == MICRO_MOL
                                         ? R.string.rangeinfo_pkulevel_mmol
                                         : R.string.rangeinfo_pkulevel_mg)
                         )
@@ -120,10 +119,6 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         }
                     });
 
-                    if (weekList.isEmpty()) {
-                        weekList.add(EMPTY_LIST);
-                    }
-
                     return Ix.from(weekList)
                             .orderBy(Integer::compare)
                             .reverse()
@@ -131,6 +126,9 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(validWeeks -> {
+                            if (validWeeks.isEmpty()) {
+                                return;
+                            }
                             weekList.clear();
                             weekList.addAll(validWeeks);
                             ifViewAttached(attachedView ->
@@ -202,40 +200,32 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
         final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
 
-        final String pkuLevel = resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
-                ? R.string.rangeinfo_pkulevel_mmol
-                : R.string.rangeinfo_pkulevel_mg);
-        final String unitText = resourceInteractor.getStringResource(pkuRangeInfo.isDefaultValue()
-                ? R.string.pdf_export_unit_description
-                : R.string.pdf_export_unit_description_warn, pkuLevel);
-
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
-                .setUnit(unitText)
-                .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
+                        ? R.string.rangeinfo_pkulevel_mmol
+                        : R.string.rangeinfo_pkulevel_mg))
+                .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
-                        : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalFloorValue()))
-                .setNormalCeilValue(pkuRangeInfo.getPkuLevelUnit() == PkuLevelUnits.MICRO_MOL
+                        : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalFloorValue()))
+                .setNormalCeilValue(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalCeilValue())
-                        : String.format(Locale.getDefault(), "%.2f", pkuRangeInfo.getNormalCeilValue()));
+                        : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalCeilValue()));
 
         return testResultInteractor.listBetween(start, end)
                 .toFlowable()
                 .map(list -> {
-                    int fastingCount = 0;
-                    int sickCount = 0;
                     int low = 0;
                     int normal = 0;
                     int high = 0;
                     int veryHigh = 0;
                     float fullCount = 0;
 
-                    for (TestResult testResult : list) {
-                        if (testResult.isFasting()) {
-                            fastingCount++;
-                        }
+                    final float min = searchMin(list, pkuRangeInfo);
+                    final float max = searchMax(list, pkuRangeInfo);
 
+                    for (TestResult testResult : list) {
                         if (pkuRangeInfo.getPkuLevelUnit() != testResult.getPkuLevel().getUnit()) {
                             fullCount += PkuLevelConverter.convertTo(testResult.getPkuLevel(), pkuRangeInfo.getPkuLevelUnit()).getValue();
                         } else {
@@ -244,29 +234,29 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
                         final ChartUtils.State state = ChartUtils.getState(testResult.getPkuLevel(), pkuRangeInfo);
 
-                        if (state == ChartUtils.State.LOW) {
+                        if (state == ChartUtils.State.STANDARD) {
                             low++;
-                        } else if (state == ChartUtils.State.NORMAL) {
+                        } else if (state == ChartUtils.State.INCREASED) {
                             normal++;
                         } else if (state == ChartUtils.State.HIGH) {
                             high++;
                         } else if (state == ChartUtils.State.VERY_HIGH) {
                             veryHigh++;
                         }
-
-                        if (testResult.isSick()) {
-                            sickCount++;
-                        }
                     }
 
                     pdfEntryDataBuilder
                             .setAverageCount(list.size() != 0 ? (int) (fullCount / list.size()) : 0)
-                            .setFastingCount(fastingCount)
                             .setLowCount(low)
+                            .setMin(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
+                                    ? String.valueOf((int) min)
+                                    : String.format(Locale.getDefault(), "%.1f", min))
+                            .setMax(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
+                                    ? String.valueOf((int) max)
+                                    : String.format(Locale.getDefault(), "%.1f", max))
                             .setNormalCount(normal)
                             .setHighCount(high)
                             .setVeryHighCount(veryHigh)
-                            .setSickCount(sickCount)
                             .setDeviation(getDeviation(list));
 
                     return list;
@@ -276,11 +266,34 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 .toList()
                 .flatMap(pdfChartDataTransformer::transformEntries)
                 .map(bubbleDataSet ->
-                    pdfEntryDataBuilder
-                            .setBubbleDataSet(bubbleDataSet)
-                            .setDaysOfMonth(TimeHelper.getDaysBetween(start, end) + 1)
-                            .build()
+                        pdfEntryDataBuilder
+                                .setBubbleDataSet(bubbleDataSet)
+                                .setDaysOfMonth(TimeHelper.getDaysBetween(start, end) + 1)
+                                .build()
                 );
+    }
+
+    private List<Float> resultList(final List<TestResult> table, final PkuRangeInfo rangeInfo) {
+        return Ix.from(table)
+                .map(result -> {
+                    if (rangeInfo.getPkuLevelUnit() != result.getPkuLevel().getUnit()) {
+                        return PkuLevelConverter.convertTo(result.getPkuLevel(), rangeInfo.getPkuLevelUnit()).getValue();
+                    } else {
+                        return result.getPkuLevel().getValue();
+                    }
+                }).toList();
+    }
+
+    private float searchMax(final List<TestResult> table, final PkuRangeInfo rangeInfo) {
+        return Ix.from(resultList(table, rangeInfo))
+                .orderBy(Float::compare)
+                .last(0f);
+    }
+
+    private float searchMin(final List<TestResult> table, final PkuRangeInfo rangeInfo) {
+        return Ix.from(resultList(table, rangeInfo))
+                .orderBy(Float::compare)
+                .first(0f);
     }
 
     private double getDeviation(final List<TestResult> table) {

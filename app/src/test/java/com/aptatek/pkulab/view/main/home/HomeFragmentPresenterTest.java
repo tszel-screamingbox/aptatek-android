@@ -30,7 +30,6 @@ import io.reactivex.Single;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @test.layer View / Main
@@ -40,8 +39,6 @@ import static org.mockito.Mockito.when;
 public class HomeFragmentPresenterTest {
 
     private static final String TEST_STRING = "hello";
-    private static final float BATTERY_NORMAL = 0.6f;
-    private static final float BATTERY_LOW = 0.1f;
 
     @Mock
     private ResourceInteractor resourceInteractor;
@@ -133,18 +130,5 @@ public class HomeFragmentPresenterTest {
         final Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         verify(view).updateTitles(TEST_STRING, TEST_STRING);
-    }
-
-    /**
-     * Showing range settings dialog.
-     *
-     * @test.expected {@link  HomeFragmentView#showRangeDialog()   showRangeDialog()  }
-     * method is called, without any error.
-     */
-    @Test
-    public void testRangeDialog() {
-        when(preferenceManager.isRangeDialogShown()).thenReturn(false);
-        presenter.initView();
-        verify(view).showRangeDialog();
     }
 }

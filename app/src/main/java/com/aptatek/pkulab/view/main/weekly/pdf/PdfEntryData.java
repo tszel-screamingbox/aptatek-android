@@ -24,15 +24,15 @@ public abstract class PdfEntryData {
 
     public abstract int getAverageCount();
 
-    public abstract int getFastingCount();
-
     public abstract String getNormalCeilValue();
 
     public abstract String getNormalFloorValue();
 
-    public abstract int getSickCount();
-
     public abstract double getDeviation();
+
+    public abstract String getMin();
+
+    public abstract String getMax();
 
     public abstract String getFileName();
 
@@ -69,11 +69,11 @@ public abstract class PdfEntryData {
 
         public abstract Builder setAverageCount(int averageCount);
 
-        public abstract Builder setFastingCount(int fastingCount);
-
-        public abstract Builder setSickCount(int sickCount);
-
         public abstract Builder setDeviation(double deviation);
+
+        public abstract Builder setMin(String min);
+
+        public abstract Builder setMax(String max);
 
         public abstract PdfEntryData build();
     }

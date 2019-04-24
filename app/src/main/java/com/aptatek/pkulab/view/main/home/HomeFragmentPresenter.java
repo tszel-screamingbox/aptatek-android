@@ -45,6 +45,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private final TestInteractor testInteractor;
     private final PkuValueFormatter pkuValueFormatter;
     private CompositeDisposable disposables;
+    private ChartVM lastResult;
 
     @Inject
     HomeFragmentPresenter(final TestResultInteractor testResultInteractor,
@@ -66,11 +67,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void initView() {
-        if (!preferenceManager.isRangeDialogShown()) {
-            preferenceManager.setRangeDialogShown(true);
-            ifViewAttached(HomeFragmentView::showRangeDialog);
-        }
-
         final String unit = pkuValueFormatter.formatFromUnits(preferenceManager.getPkuRangeUnit());
         ifViewAttached(view -> view.updateUnitText(unit));
     }
@@ -89,10 +85,10 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
                             if (pair.second.isEmpty()) {
-                                ifViewAttached(HomeFragmentView::showNoResultsInLast6Months);
+                                ifViewAttached(HomeFragmentView::showNoResults);
                             } else {
                                 final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
-                                final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
+                                lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
                                 chartVMS.set(chartVMS.size() - 1, lastResult);
 
                                 ifViewAttached(attachedView -> {
@@ -178,6 +174,11 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
 
     private String formatTitle(final ChartVM chartVM) {
         final String title;
+
+        if (lastResult != null &&
+                org.apache.commons.lang3.time.DateUtils.isSameDay(chartVM.getDate(), lastResult.getDate())) {
+            return resourceInteractor.getStringResource(R.string.main_title_today);
+        }
 
         if (DateUtils.isToday(chartVM.getDate().getTime())) {
             title = resourceInteractor.getStringResource(R.string.main_title_today);

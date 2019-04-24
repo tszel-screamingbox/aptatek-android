@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.settings.web;
+package com.aptatek.pkulab.view.settings.web.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -17,10 +19,13 @@ import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.ReportIssue;
 import com.aptatek.pkulab.domain.model.ReportIssueType;
-import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
-import com.aptatek.pkulab.view.base.BaseActivity;
+import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.base.BaseFragment;
+import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
+import com.aptatek.pkulab.view.test.TestActivity;
 
 import java.util.ArrayList;
 
@@ -32,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter> implements WebPageView, ReportIssueDialog.ReportIssueDialogCallback {
+public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter> implements WebPageView, ReportIssueDialog.ReportIssueDialogCallback {
 
     private static final int SEND_ATTACHMENT_REQUEST_CODE = 9921;
     private static final String ISSUE_PICKER_DIALOG_TAG = "aptatek.issue.pickor.dialog.tag";
@@ -49,18 +54,62 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
     @BindView(R.id.btnReport)
     Button reportIssue;
 
-    @Arg
+    @Arg(optional = true)
     String title;
 
-    @Arg
+    @Arg(optional = true)
     String url;
 
-    @Arg
-    Boolean reportVisible;
+    @Arg(optional = true)
+    Boolean reportVisible = true;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        final View view = inflater.inflate(getLayoutId(), container, false);
+        ButterKnife.bind(this, view);
+        ActivityStarter.fill(this, savedInstanceState);
+        return view;
+    }
 
     @Override
-    protected void injectActivity(ActivityComponent activityComponent) {
-        getActivityComponent().plus(new ChartModule()).inject(this);
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_web;
+    }
+
+    @Override
+    protected void initObjects(final View view) {
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        toolbar.setTitle(title == null ? getString(R.string.settings_help) : title);
+        getBaseActivity().setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> {
+            if (getBaseActivity() instanceof TestActivity) {
+                ((TestActivity) getBaseActivity()).closeHelpScreen();
+            } else if (getBaseActivity() instanceof ConnectOnboardingReaderActivity) {
+                ((ConnectOnboardingReaderActivity) getBaseActivity()).closeHelpScreen();
+            } else {
+                getBaseActivity().onBackPressed();
+            }
+        });
+
+        webView.setWebViewClient(new WebViewClient());
+        final WebSettings settings = webView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        webView.loadUrl(url == null ? Constants.URL_HELP : url);
+
+        if (reportVisible) {
+            reportIssue.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void injectFragment(final FragmentComponent fragmentComponent) {
+        fragmentComponent.plus(new ChartModule()).inject(this);
     }
 
     @NonNull
@@ -69,42 +118,9 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
         return presenter;
     }
 
-    @Override
-    public int getFrameLayoutId() {
-        return R.layout.activity_web;
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ActivityStarter.fill(this, savedInstanceState);
-        setContentView(R.layout.activity_web);
-        ButterKnife.bind(this);
-
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        toolbar.setTitle(title);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
-        webView.setWebViewClient(new WebViewClient());
-        final WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        webView.loadUrl(url);
-
-        if (reportVisible) {
-            reportIssue.setVisibility(View.VISIBLE);
-        }
-    }
-
     @OnClick(R.id.btnReport)
     public void onReportButtonClicked() {
-        ReportIssueDialog.create(this).show(getSupportFragmentManager(), ISSUE_PICKER_DIALOG_TAG);
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        ReportIssueDialog.create(this).show(getBaseActivity().getSupportFragmentManager(), ISSUE_PICKER_DIALOG_TAG);
     }
 
     @Override
@@ -113,10 +129,10 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (getSupportFragmentManager().findFragmentByTag(ISSUE_PICKER_DIALOG_TAG) != null) {
-            ((ReportIssueDialog) getSupportFragmentManager().findFragmentByTag(ISSUE_PICKER_DIALOG_TAG)).dismiss();
+        if (getBaseActivity().getSupportFragmentManager().findFragmentByTag(ISSUE_PICKER_DIALOG_TAG) != null) {
+            ((ReportIssueDialog) getBaseActivity().getSupportFragmentManager().findFragmentByTag(ISSUE_PICKER_DIALOG_TAG)).dismiss();
         }
     }
 
@@ -126,7 +142,7 @@ public class WebPageActivity extends BaseActivity<WebPageView, WebPagePresenter>
 
         for (final Attachment attachment : reportIssue.getAttachments()) {
             attachments.add(FileProvider.getUriForFile(
-                    this,
+                    getBaseActivity(),
                     BuildConfig.APPLICATION_ID + ".provider",
                     attachment.getCsvFile()));
         }

@@ -3,7 +3,6 @@ package com.aptatek.pkulab.domain.interactor.testresult;
 import android.support.annotation.NonNull;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
-import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.base.Repository;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
@@ -18,6 +17,9 @@ import javax.inject.Provider;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.aptatek.pkulab.device.time.TimeHelper.getEarliestTimeAtGivenDay;
+import static com.aptatek.pkulab.device.time.TimeHelper.getLatestTimeAtGivenDay;
 
 public class TestResultRepository extends Repository<TestResult, TestResultDataModel> {
 
@@ -41,13 +43,14 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     public Single<List<TestResult>> listAll() {
         return Single.fromCallable(() -> {
             if (testResultDataSource.getOldestData() != null) {
-                return testResultDataSource.getDataBetween(testResultDataSource.getOldestData().getTimestamp(), TimeHelper.getLatestTimeAtGivenDay(System.currentTimeMillis()));
+                final long start = getEarliestTimeAtGivenDay(testResultDataSource.getOldestData().getTimestamp());
+                final long end = getLatestTimeAtGivenDay(testResultDataSource.getLatestData().getTimestamp());
+                return testResultDataSource.getDataBetween(start, end);
             }
 
             return Collections.<TestResultDataModel>emptyList();
-        })
-        .map(mapper::mapListToDomain)
-        .subscribeOn(Schedulers.io());
+        }).map(mapper::mapListToDomain)
+                .subscribeOn(Schedulers.io());
     }
 
     @NonNull
@@ -56,7 +59,7 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
                 .map(mapper::mapListToDomain)
                 .subscribeOn(Schedulers.io());
     }
-    
+
     @NonNull
     public Single<TestResult> getLatest() {
         return Single.fromCallable(testResultDataSource::getLatestData)
@@ -67,6 +70,13 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     @NonNull
     public Single<TestResult> getOldest() {
         return Single.fromCallable(testResultDataSource::getOldestData)
+                .map(mapper::mapToDomain)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Single<TestResult> getById(final String id) {
+        return Single.fromCallable(() -> testResultDataSource.getById(id))
                 .map(mapper::mapToDomain)
                 .subscribeOn(Schedulers.io());
     }

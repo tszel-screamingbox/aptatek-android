@@ -15,6 +15,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
@@ -76,7 +77,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
                         .andThen(Flowable.just(nextScreen)))
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(nextScreen -> ifViewAttached(attachedView -> attachedView.showScreen(nextScreen)));
+                .subscribe(nextScreen -> ifViewAttached(attachedView -> attachedView.showScreen(nextScreen)), Timber::e);
     }
 
     @Override

@@ -16,6 +16,8 @@ public abstract class RangeSettingsModel {
 
     public abstract float getNormalAbsoluteCeilMMolValue();
 
+    public abstract String getIncreasedText();
+
     public abstract String getHighText();
 
     public abstract String getVeryHighText();
@@ -30,6 +32,8 @@ public abstract class RangeSettingsModel {
     public abstract static class Builder {
 
         public abstract Builder setLowText(String value);
+
+        public abstract Builder setIncreasedText(String value);
 
         public abstract Builder setHighText(String value);
 

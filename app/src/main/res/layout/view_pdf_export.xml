@@ -40,16 +40,16 @@
 
     <TextView
         android:id="@+id/textViewUnitDescription"
-        android:layout_width="449dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="18dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="47dp"
         android:fontFamily="@font/nunito_black"
         android:gravity="end"
-        android:maxLines="2"
         android:textColor="@color/applicationSolidGray"
         android:textSize="@dimen/font.size.small"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewTitle"
         app:layout_constraintTop_toBottomOf="@+id/imageViewPkuLabIcon"
         tools:text="All units are in mmol/L" />
 
@@ -70,10 +70,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xmini"
+        android:fontFamily="@font/nunito_black"
         android:text="@string/pdf.legend.low"
-        android:textColor="@color/pkuLevelLow"
+        android:textColor="@color/pkuLevelStandard"
         android:textSize="@dimen/font.size.regular"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewLowNumber"
         app:layout_constraintStart_toEndOf="@id/textViewLowNumber"
         app:layout_constraintTop_toTopOf="@+id/textViewLowNumber"
@@ -84,11 +84,11 @@
         style="@style/Pdf.View.Text"
         android:layout_width="@dimen/general.distance.32dp"
         android:layout_height="@dimen/general.distance.32dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="71dp"
         android:layout_marginBottom="33dp"
         android:background="@drawable/bubble_pdf_normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textViewLowText"
+        app:layout_constraintStart_toEndOf="@id/textViewLowNumber"
         tools:text="8x" />
 
     <TextView
@@ -96,10 +96,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xmini"
+        android:fontFamily="@font/nunito_black"
         android:text="@string/pdf.legend.normal"
-        android:textColor="@color/pkuLevelNormal"
+        android:textColor="@color/pkuLevelIncreased"
         android:textSize="@dimen/font.size.regular"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewNormalNumber"
         app:layout_constraintStart_toEndOf="@id/textViewNormalNumber"
         app:layout_constraintTop_toTopOf="@+id/textViewNormalNumber"
@@ -110,11 +110,11 @@
         style="@style/Pdf.View.Text"
         android:layout_width="@dimen/general.distance.32dp"
         android:layout_height="@dimen/general.distance.32dp"
-        android:layout_marginStart="7dp"
+        android:layout_marginStart="134dp"
         android:layout_marginBottom="33dp"
         android:background="@drawable/bubble_pdf_high"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textViewNormalText"
+        app:layout_constraintStart_toEndOf="@id/textViewNormalNumber"
         tools:text="8x" />
 
     <TextView
@@ -122,10 +122,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xmini"
+        android:fontFamily="@font/nunito_black"
         android:text="@string/pdf.legend.high"
         android:textColor="@color/pkuLevelHigh"
         android:textSize="@dimen/font.size.regular"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewHighNumber"
         app:layout_constraintStart_toEndOf="@id/textViewHighNumber"
         app:layout_constraintTop_toTopOf="@+id/textViewHighNumber"
@@ -136,11 +136,11 @@
         style="@style/Pdf.View.Text"
         android:layout_width="@dimen/general.distance.32dp"
         android:layout_height="@dimen/general.distance.32dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="47dp"
         android:layout_marginBottom="33dp"
         android:background="@drawable/bubble_pdf_very_high"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textViewHighText"
+        app:layout_constraintStart_toEndOf="@id/textViewHighNumber"
         tools:text="8x" />
 
     <TextView
@@ -148,108 +148,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xmini"
+        android:fontFamily="@font/nunito_black"
         android:text="@string/pdf.legend.very.high"
         android:textColor="@color/pkuLevelVeryHigh"
         android:textSize="@dimen/font.size.regular"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textViewVeryHighNumber"
         app:layout_constraintStart_toEndOf="@id/textViewVeryHighNumber"
         app:layout_constraintTop_toTopOf="@+id/textViewVeryHighNumber"
         tools:text="Very High" />
 
     <TextView
-        android:id="@+id/textViewSickNumber"
-        style="@style/Pdf.View.Text"
-        android:layout_width="@dimen/general.distance.32dp"
-        android:layout_height="@dimen/general.distance.32dp"
-        android:layout_marginEnd="@dimen/general.distance.xmini"
-        android:layout_marginBottom="33dp"
-        android:background="@drawable/bubble_pdf_sick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/textViewSickText"
-        tools:text="8x" />
-
-    <TextView
-        android:id="@+id/textViewSickText"
-        android:layout_width="wrap_content"
+        android:id="@+id/avarage"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.xmini"
-        android:layout_marginEnd="43dp"
-        android:text="@string/pdf.legend.sick"
-        android:textColor="@color/pkuPdfBlack"
+        android:gravity="end"
+        android:textColor="@color/applicationSolidGray"
         android:textSize="@dimen/font.size.regular"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber"
-        tools:text="Sick" />
+        app:layout_constraintBottom_toBottomOf="@+id/textViewVeryHighNumber"
+        app:layout_constraintEnd_toEndOf="@id/chart"
+        app:layout_constraintStart_toEndOf="@id/textViewVeryHighText"
+        app:layout_constraintTop_toTopOf="@+id/textViewVeryHighNumber"
+        tools:text="Avarage" />
 
-    <TextView
-        android:id="@+id/textViewFastingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.xmini"
-        android:layout_marginEnd="12dp"
-        android:text="@string/pdf.legend.fasting"
-        android:textColor="@color/pkuPdfBlack"
-        android:textSize="@dimen/font.size.regular"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
-        app:layout_constraintEnd_toStartOf="@+id/textViewSickNumber"
-        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber"
-        tools:text="Fasting" />
-
-    <TextView
-        android:id="@+id/textViewFastingNumber"
-        android:layout_width="@dimen/general.distance.32dp"
-        android:layout_height="@dimen/general.distance.32dp"
-        android:layout_marginEnd="@dimen/general.distance.xmini"
-        android:layout_marginBottom="33dp"
-        android:background="@drawable/bubble_pdf_fasting"
-        android:gravity="center"
-        android:textColor="@color/pkuPdfGray"
-        android:textSize="@dimen/font.size.regular"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/textViewFastingText"
-        tools:text="8x" />
-
-    <TextView
-        android:id="@+id/textViewAverageText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.xmini"
-        android:layout_marginEnd="12dp"
-        android:text="Average (+/- 333.10)"
-        android:textColor="@color/pkuLevelNormal"
-        android:textSize="@dimen/font.size.regular"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewSickNumber"
-        app:layout_constraintEnd_toStartOf="@+id/textViewFastingNumber"
-        app:layout_constraintTop_toTopOf="@+id/textViewSickNumber"
-        tools:text="Fasting" />
-
-    <TextView
-        android:id="@+id/textViewAverageNumber"
-        style="@style/Pdf.View.Text"
-        android:layout_width="@dimen/general.distance.32dp"
-        android:layout_height="@dimen/general.distance.32dp"
-        android:layout_marginEnd="@dimen/general.distance.xmini"
-        android:layout_marginBottom="33dp"
-        android:background="@drawable/bubble_pdf_normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/textViewAverageText"
-        tools:text="275" />
 
     <com.github.mikephil.charting.charts.BubbleChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="@dimen/general.distance.20dp"
         android:layout_marginEnd="43dp"
         android:layout_marginBottom="88dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewUnitDescription" />
+        app:layout_constraintTop_toBottomOf="@id/textViewSubTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
 </com.aptatek.pkulab.widget.PdfExportView>

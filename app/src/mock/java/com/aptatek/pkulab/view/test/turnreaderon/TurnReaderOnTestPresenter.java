@@ -77,7 +77,8 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                         .subscribe(batteryPercent -> ifViewAttached(attachedView -> {
                                     attachedView.setBatteryIndicatorVisible(true);
                                     attachedView.setBatteryPercentage(batteryPercent);
-                                })
+                                }),
+                                Timber::e
                         )
         );
     }

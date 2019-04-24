@@ -10,7 +10,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -37,6 +38,7 @@ public class PkuRangeDataSourceTest {
 
     /**
      * Tests the proper behavior: the data source should rely on the shared preferences so it needs to call the corresponding methods of our PreferenceManager.
+     *
      * @test.input
      * @test.expected
      */
@@ -49,24 +51,32 @@ public class PkuRangeDataSourceTest {
         dataSource.getDisplayUnit();
         verify(preferenceManager).getPkuRangeUnit();
 
-        dataSource.getNormalCeilValueMMol();
-        verify(preferenceManager).getPkuRangeNormalCeil();
-
-        dataSource.getNormalFloorValueMMol();
-        verify(preferenceManager).getPkuRangeNormalFloor();
-
         dataSource.setDisplayUnit(PkuLevelUnits.MICRO_MOL);
         verify(preferenceManager).setPkuRangeUnit(PkuLevelUnits.MICRO_MOL);
+
+        dataSource.getNormalCeilValueMMol();
+        verify(preferenceManager).getPkuRangeNormalCeil();
 
         dataSource.setNormalCeilValueMMol(300f);
         verify(preferenceManager).setPkuRangeNormalCeil(300f);
 
+        dataSource.getNormalFloorValueMMol();
+        verify(preferenceManager).getPkuRangeNormalFloor();
+
         dataSource.setNormalFloorValueMMol(300f);
         verify(preferenceManager).setPkuRangeNormalFloor(300f);
+
+        dataSource.getHighCeilValueMMol();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalCeil();
+
+        dataSource.isDefaultValue();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalFloor();
+        verify(preferenceManager, atLeast(1)).getPkuRangeNormalCeil();
     }
 
     /**
      * Test if the user has not set any custom range settings the dataSource should return default values
+     *
      * @test.input unit, normalFloor, normalCeil
      * @test.expected unit = uMol, normalFloor = 100, normalCeil = 350
      */
@@ -76,12 +86,12 @@ public class PkuRangeDataSourceTest {
         doReturn(-1f).when(preferenceManager).getPkuRangeNormalCeil();
         doReturn(null).when(preferenceManager).getPkuRangeUnit();
 
-        assertTrue(dataSource.getNormalFloorValueMMol() == Constants.DEFAULT_PKU_NORMAL_FLOOR);
-        assertTrue(dataSource.getNormalCeilValueMMol() == Constants.DEFAULT_PKU_NORMAL_CEIL);
-        assertTrue(dataSource.getDisplayUnit() == Constants.DEFAULT_PKU_LEVEL_UNIT);
-        assertTrue(dataSource.getHighCeilValueMMol() == Constants.DEFAULT_PKU_NORMAL_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE);
-        assertTrue(dataSource.getNormalFloorAbsoluteMinMMol() == Constants.DEFAULT_PKU_LOWEST_VALUE);
-        assertTrue(dataSource.getNormalCeilAbsoluteMaxMMol() == Constants.DEFAULT_PKU_HIGHEST_VALUE);
+        assertEquals(dataSource.getNormalFloorValueMMol(), Constants.DEFAULT_PKU_INCREASED_FLOOR, 0.0);
+        assertEquals(dataSource.getNormalCeilValueMMol(), Constants.DEFAULT_PKU_INCREASED_CEIL, 0.0);
+        assert (dataSource.getDisplayUnit() == Constants.DEFAULT_PKU_LEVEL_UNIT);
+        assert (dataSource.getHighCeilValueMMol() == Constants.DEFAULT_PKU_INCREASED_CEIL + Constants.DEFAULT_PKU_HIGH_RANGE);
+        assert (dataSource.getNormalFloorAbsoluteMinMMol() == Constants.DEFAULT_PKU_LOWEST_VALUE);
+        assert (dataSource.getNormalCeilAbsoluteMaxMMol() == Constants.DEFAULT_PKU_HIGHEST_VALUE);
     }
 
 }

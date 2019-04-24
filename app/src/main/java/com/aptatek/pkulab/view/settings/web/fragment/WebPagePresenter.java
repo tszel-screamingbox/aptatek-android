@@ -1,4 +1,4 @@
-package com.aptatek.pkulab.view.settings.web;
+package com.aptatek.pkulab.view.settings.web.fragment;
 
 import android.support.annotation.NonNull;
 

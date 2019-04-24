@@ -5,7 +5,6 @@ import android.content.Context;
 import com.aptatek.pkulab.injection.component.chart.ChartActivityComponent;
 import com.aptatek.pkulab.injection.component.rangeinfo.RangeInfoActivityComponent;
 import com.aptatek.pkulab.injection.component.test.TestActivityComponent;
-import com.aptatek.pkulab.injection.component.webpage.WebPageComponent;
 import com.aptatek.pkulab.injection.module.ActivityModule;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
@@ -20,6 +19,7 @@ import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.pkulab.view.pin.set.SetPinHostActivity;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
+import com.aptatek.pkulab.view.settings.web.WebHostActivity;
 import com.aptatek.pkulab.view.splash.SplashActivity;
 import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 
@@ -50,6 +50,8 @@ public interface ActivityComponent {
 
     void inject(ConnectOnboardingReaderActivity connectReaderActivity);
 
+    void inject(WebHostActivity activity);
+
     @ActivityContext
     Context context();
 
@@ -58,7 +60,4 @@ public interface ActivityComponent {
     RangeInfoActivityComponent plus(RangeInfoModule module);
 
     ChartActivityComponent plus(RangeInfoModule rangeInfoModule, ChartModule chartModule);
-
-    WebPageComponent plus(ChartModule chartModule);
-
 }

@@ -26,6 +26,9 @@ public interface TestResultDao extends TestResultDataSource {
     @Override
     TestResultDataModel getLatestData();
 
+    @Query("SELECT * FROM test_results WHERE id = :id")
+    TestResultDataModel getById(final String id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @Override
     void insertAll(@NonNull final List<TestResultDataModel> testResultDataModels);

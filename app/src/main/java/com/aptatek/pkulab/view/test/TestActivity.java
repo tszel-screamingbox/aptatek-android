@@ -6,14 +6,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
@@ -43,7 +46,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnTouch;
 
+import static android.support.design.widget.BottomSheetBehavior.STATE_COLLAPSED;
+import static android.support.design.widget.BottomSheetBehavior.STATE_EXPANDED;
+import static android.support.design.widget.BottomSheetBehavior.from;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -52,6 +59,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         implements TestActivityView {
 
     private static final String TAG_BATTER_DIALOG = "aptatek.main.home.battery.dialog";
+    private static final String TAG_CURRENT_FRAGMENT = "aptatek.test.current.fragment";
 
     public static Intent createStarter(@NonNull final Context context) {
         return new Intent(context, TestActivity.class);
@@ -72,12 +80,17 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     ConstraintLayout bottomBar;
     @BindView(R.id.testPageIndicator)
     PageIndicatorView screenPagerIndicator;
+    @BindView(R.id.bottom_sheet)
+    ConstraintLayout bottomConstraintLayout;
+
     @BindView(R.id.testDisclaimerText)
     @Nullable
     protected TextView tvDisclaimer;
     @BindView(R.id.testDisclaimer)
     @Nullable
     protected ConstraintLayout disclaimerContainer;
+
+    private boolean inForeground = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -93,7 +106,18 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     protected void onStart() {
         super.onStart();
 
-        presenter.showProperScreen();
+        inForeground = true;
+
+        if (!AptatekApplication.get(this).shouldRequestPin()) {
+            presenter.showProperScreen();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        inForeground = false;
+
+        super.onStop();
     }
 
     @Override
@@ -127,6 +151,15 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
                 showNextScreen();
             }
         }
+    }
+
+    @OnTouch(R.id.testDisclaimerText)
+    public boolean disclaimerTouched(final MotionEvent event) {
+        final BaseFragment activeBaseFragment = getActiveBaseFragment();
+        if (activeBaseFragment instanceof WettingFragment) {
+            return ((WettingFragment) activeBaseFragment).warningTextTouched(event);
+        }
+        return true;
     }
 
     @OnClick(R.id.testBattery)
@@ -198,19 +231,27 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     }
 
     private void showFragment(final Fragment fragment, final boolean addToBackStack, final boolean withAnimation) {
-        final FragmentManager fm = getSupportFragmentManager();
+        if (!inForeground) return;
 
+        final FragmentManager fm = getSupportFragmentManager();
         final FragmentTransaction transaction = fm.beginTransaction();
         if (withAnimation) {
             transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left,
                     android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         }
-        final String tag = fragment.getClass().getName();
-        transaction.replace(getFrameLayoutId(), fragment, tag);
-        if (addToBackStack) {
-            transaction.addToBackStack(tag);
+
+        final Fragment current = fm.findFragmentByTag(TAG_CURRENT_FRAGMENT);
+        if (current != null && current.getClass().equals(fragment.getClass())) {
+            return;
         }
-        transaction.commitAllowingStateLoss();
+
+        transaction.replace(getFrameLayoutId(), fragment, TAG_CURRENT_FRAGMENT);
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+
+        transaction.commit();
+        fm.executePendingTransactions();
     }
 
     @Override
@@ -227,9 +268,20 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         return ((TestFragmentBaseView) getActiveBaseFragment()).getScreen();
     }
 
+    private void onBackPressedHere() {
+        final FragmentManager fm = getSupportFragmentManager();
+        fm.executePendingTransactions();
+
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStackImmediate();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     @Override
     public void showPreviousScreen() {
-        super.onBackPressed();
+        onBackPressedHere();
         screenPagerIndicator.setSelection(getCurrentScreen().ordinal());
     }
 
@@ -295,5 +347,15 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setNextButtonVisible(final boolean visible) {
         nextButton.setVisibility(visible ? VISIBLE : INVISIBLE);
+    }
+
+    public void showHelpScreen() {
+        final BottomSheetBehavior behavior = from(bottomConstraintLayout);
+        behavior.setState(STATE_EXPANDED);
+    }
+
+    public void closeHelpScreen() {
+        final BottomSheetBehavior behavior = from(bottomConstraintLayout);
+        behavior.setState(STATE_COLLAPSED);
     }
 }

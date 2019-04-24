@@ -157,8 +157,17 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                 .setReminders(remindersAdapterItems)
                 .setActive(!remindersAdapterItems.isEmpty());
 
-        reminderSettingsAdapterItems.set(reminderSettingsAdapterItems.indexOf(reminderSettingsItem),
-                builder.build());
+        int index = -1;
+        for (int i = 0; i < reminderSettingsAdapterItems.size(); i++) {
+            final ReminderSettingsAdapterItem item = reminderSettingsAdapterItems.get(i);
+            if (item.uniqueIdentifier().equals(reminderSettingsItem.uniqueIdentifier())) {
+                index = i;
+                break;
+            }
+        }
+        if (index > -1 && index <= remindersAdapterItems.size() - 1) {
+            reminderSettingsAdapterItems.set(index, builder.build());
+        }
 
         ifViewAttached(view -> view.deleteReminder(reminderSettingsAdapterItems));
 
@@ -217,6 +226,13 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         compositeDisposable.add(reminderInteractor
                 .updateReminder(reminderSettingsItem.getWeekDay(), reminderItemCopy.getHour(), reminderItemCopy.getMinute(), reminderScheduleType)
                 .subscribe());
+    }
+
+    void timePickerDialogCancel(@NonNull final List<ReminderSettingsAdapterItem> data,
+                                @NonNull final ReminderSettingsAdapterItem item) {
+        if (item.getReminders().isEmpty()) {
+            changeActiveState(data, item, false);
+        }
     }
 
     private void insertReminder(@NonNull final ReminderSettingsAdapterItem item,

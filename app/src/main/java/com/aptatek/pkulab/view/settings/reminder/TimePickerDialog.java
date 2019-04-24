@@ -43,6 +43,8 @@ public class TimePickerDialog extends DialogFragment {
         void done(int hourOfDay, int minute, ReminderScheduleType reminderScheduleType);
 
         void delete();
+
+        void cancel();
     }
 
     public static TimePickerDialog create(@NonNull final TimePickerDialogCallback callback) {
@@ -172,6 +174,9 @@ public class TimePickerDialog extends DialogFragment {
                     hideAnimation(textViewDelete);
                 }
             } else {
+                if (callback != null) {
+                    callback.cancel();
+                }
                 dismiss();
             }
         });

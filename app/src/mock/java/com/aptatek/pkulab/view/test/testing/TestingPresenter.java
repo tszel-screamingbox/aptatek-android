@@ -59,9 +59,9 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .subscribe(percent -> ifViewAttached(attachedView -> {
                             attachedView.setProgressPercentage(percent);
                             if (percent == 100) {
-                                attachedView.onTestFinished();
+                                attachedView.onTestFinished("whatever");
                             }
-                        }))
+                        }), Timber::e)
         );
 
         disposables.add(

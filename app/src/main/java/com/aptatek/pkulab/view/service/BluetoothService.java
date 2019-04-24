@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.service;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
 import timber.log.Timber;
@@ -58,6 +60,8 @@ public class BluetoothService extends BaseForegroundService {
     @Inject
     BluetoothNotificationFactory bluetoothNotificationFactory;
 
+    private Disposable testCompleteDisposable;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -68,6 +72,8 @@ public class BluetoothService extends BaseForegroundService {
     @Override
     public void onDestroy() {
         instance = null;
+
+        disposeTestComplete();
 
         super.onDestroy();
     }
@@ -86,6 +92,11 @@ public class BluetoothService extends BaseForegroundService {
     protected Single<Boolean> shouldStart() {
         return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()))
                 .map(shouldStart -> shouldStart && !BuildConfig.FLAVOR.equals("mock"));
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -150,35 +161,58 @@ public class BluetoothService extends BaseForegroundService {
     }
 
     private void checkTestComplete() {
-        disposables.add(
+        disposeTestComplete();
+
+        testCompleteDisposable =
                 readerInteractor.getWorkflowState()
                         .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE)
                         .take(1)
-                        .flatMapCompletable(ignored -> readerInteractor.getTestProgress()
+                        .flatMapSingle(ignored -> readerInteractor.getTestProgress()
                                 .filter(testProgress -> testProgress.getPercent() == 100)
                                 .take(1)
+                                .singleOrError()
                                 .map(TestProgress::getTestId)
                                 .map(String::valueOf)
-                                .flatMapSingle(testId -> readerInteractor.getResult(testId))
-                                .flatMapCompletable(testResult -> readerInteractor.saveResult(testResult))
+                                .flatMap(testId -> {
+                                    if (AptatekApplication.get(getApplicationContext()).isInForeground()) {
+                                        throw new AppInForegroundException();
+                                    }
+                                    return readerInteractor.getResult(testId);
+                                }
+                                )
+                        )
+                        .singleOrError()
+                        .flatMap(testResult ->
+                                readerInteractor.saveResult(testResult)
+                                            .andThen(Single.just(testResult.getId()))
                         )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
+                        .subscribe(testId -> {
                                     Timber.d("checkWorkflowState: Test result successfully saved");
 
                                     if (!AptatekApplication.get(this).isInForeground()) {
-                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete());
+                                        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete(testId));
                                         notificationManager.notify(notification.getId(), notification.getNotification());
                                     }
 
                                     checkTestComplete();
                                 },
                                 error -> {
-                                    Timber.d("Error during checkTestComplete: %s", error);
-                                    failSilently();
-                                })
-        );
+                                    if (error instanceof AppInForegroundException) {
+                                        checkTestComplete();
+                                    } else {
+                                        Timber.d("Error during checkTestComplete: %s", error);
+                                        failSilently();
+                                    }
+                                }
+                        );
+    }
+
+    private void disposeTestComplete() {
+        if (testCompleteDisposable != null && !testCompleteDisposable.isDisposed()) {
+            testCompleteDisposable.dispose();
+        }
     }
 
     private void startScanAndAutoConnect() {
@@ -262,5 +296,9 @@ public class BluetoothService extends BaseForegroundService {
                             failSilently();
                         })
         );
+    }
+
+    private class AppInForegroundException extends Exception {
+
     }
 }

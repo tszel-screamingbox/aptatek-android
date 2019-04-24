@@ -47,11 +47,6 @@ public class MainActivityScreenTest {
     public void testInitialView() throws Exception {
         navigateToMainScreen();
 
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button2)).perform(click());
-
-        Thread.sleep(2000L);
-
         onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
         onView(withId(R.id.settingsButton)).check(matches(isDisplayed()));
         onView(withId(R.id.bigSettingsButton)).check(matches(not(isDisplayed())));
@@ -64,40 +59,6 @@ public class MainActivityScreenTest {
     }
 
     /**
-     * Clicking on Set Phe Levels button in the shown dialog.
-     *
-     * @test.expected After clicking on the button, the activity is changed to the new.
-     */
-    @Test
-    public void testGoToRangeSettings() throws InterruptedException {
-        navigateToMainScreen();
-
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button1)).perform(click());
-        assert (activityRule.getActivity().isFinishing());
-    }
-
-    /**
-     * Clicking on Settings button.
-     *
-     * @test.expected After clicking on the button, the activity is changed to the new.
-     */
-    @Test
-    public void testGoToSettings() throws Exception {
-        navigateToMainScreen();
-
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button2)).perform(click());
-
-        Thread.sleep(2000L);
-
-        onView(withId(R.id.bigSettingsButton)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.settingsButton)).perform(ViewActions.click());
-        assert (activityRule.getActivity().isFinishing());
-    }
-
-    /**
      * Clicking on New Test button.
      *
      * @test.expected After clicking on the button, the activity is changed to the new.
@@ -105,11 +66,6 @@ public class MainActivityScreenTest {
     @Test
     public void testGoToNewTest() throws Exception {
         navigateToMainScreen();
-
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button2)).perform(click());
-
-        Thread.sleep(2000L);
 
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
         onView(withId(R.id.newTestButton)).check(matches(isDisplayed()));
@@ -126,11 +82,6 @@ public class MainActivityScreenTest {
     public void testShowChart() throws Exception {
         navigateToMainScreen();
 
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button2)).perform(click());
-
-        Thread.sleep(2000L);
-
         onView(withId(R.id.playIcon)).check(matches(not(isDisplayed())));
         onView(withId(R.id.scrollView)).check(matches(isDisplayed()));
     }
@@ -144,9 +95,6 @@ public class MainActivityScreenTest {
     @Test
     public void testInitialWeeklyResult() throws Exception {
         navigateToMainScreen();
-
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button2)).perform(click());
 
         showWeeklyFragment();
 
@@ -168,9 +116,6 @@ public class MainActivityScreenTest {
     @Test
     public void testWeeklyPlayIconClicked() throws Exception {
         navigateToMainScreen();
-
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button2)).perform(click());
 
         showWeeklyFragment();
 
@@ -194,9 +139,6 @@ public class MainActivityScreenTest {
     @Test
     public void testSwipe() throws Exception {
         navigateToMainScreen();
-
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button2)).perform(click());
 
         showWeeklyFragment();
 
@@ -223,9 +165,6 @@ public class MainActivityScreenTest {
     @Test
     public void testPagination() throws Exception {
         navigateToMainScreen();
-
-        onView(withText(R.string.home_range_dialog_message)).check(matches(isDisplayed()));
-        onView(withId(android.R.id.button2)).perform(click());
 
         showWeeklyFragment();
 
