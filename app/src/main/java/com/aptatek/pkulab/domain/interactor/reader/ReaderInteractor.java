@@ -131,4 +131,8 @@ public class ReaderInteractor {
         return testResultRepository.insertAll(Collections.singletonList(testResult))
                 .subscribeOn(Schedulers.io());
     }
+
+    public Single<Integer> getNumberOfResults() {
+        return readerManager.getNumberOfResults();
+    }
 }

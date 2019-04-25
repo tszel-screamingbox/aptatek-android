@@ -15,7 +15,7 @@ public class TestResultInteractor {
     private final TestResultRepository dataRepository;
 
     @Inject
-    TestResultInteractor(TestResultRepository dataRepository) {
+    TestResultInteractor(final TestResultRepository dataRepository) {
         this.dataRepository = dataRepository;
     }
 

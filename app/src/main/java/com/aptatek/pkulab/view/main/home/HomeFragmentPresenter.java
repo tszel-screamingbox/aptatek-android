@@ -66,8 +66,22 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void initView() {
+        disposables.add(testInteractor.isTestContinueNeed()
+                .subscribe(continueNeed -> {
+                    if (continueNeed) {
+                        ifViewAttached(HomeFragmentView::unfinishedTestDetected);
+                    }
+                }));
+
         final String unit = pkuValueFormatter.formatFromUnits(preferenceManager.getPkuRangeUnit());
         ifViewAttached(view -> view.updateUnitText(unit));
+    }
+
+    void showLastResult() {
+        disposables.add(testResultInteractor.getLatest()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(result -> ifViewAttached(view -> view.showLastResult(result.getId()))));
     }
 
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts
@@ -164,9 +178,15 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         );
     }
 
+    void testContinueFailed() {
+        disposables.add(testInteractor.setTestContinueStatus(false)
+                .subscribe());
+    }
+
     void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
                 .andThen(testInteractor.resetTest())
+                .andThen(testInteractor.setTestContinueStatus(true))
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
     }

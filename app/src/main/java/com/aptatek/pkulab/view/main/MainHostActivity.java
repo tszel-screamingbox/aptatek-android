@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
@@ -87,5 +88,11 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
         } else {
             return super.dispatchTouchEvent(ev);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        homeFragment.onActivityResult(requestCode, resultCode, data);
     }
 }

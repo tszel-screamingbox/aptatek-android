@@ -38,6 +38,7 @@ public final class Constants {
 
     public static final int WETTING_COUNTDOWN_NOTIFICATION_ID = 2668;
     public static final int WETTING_FINISHED_NOTIFICATION_ID = 726;
+    public static final String CONTINUE_TEST_RESULT_TYPE_KEY = "continueTestResultTypeKey";
 
     public static final int BT_READER_READY_NOTIFICATION_ID = 837;
     public static final int BT_READER_TEST_COMPLETE_NOTIFICATION_ID = 367;

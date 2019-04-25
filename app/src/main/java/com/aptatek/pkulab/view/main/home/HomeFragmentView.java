@@ -13,6 +13,8 @@ interface HomeFragmentView extends MvpView {
 
     void navigateToTestScreen();
 
+    void unfinishedTestDetected();
+
     void changeItemZoomState(ChartVM oldItem, ChartVM newItem);
 
     void updateTitles(String title, String subTitle);
@@ -22,4 +24,6 @@ interface HomeFragmentView extends MvpView {
     void showNoResults();
 
     void updateUnitText(String text);
+
+    void showLastResult(String resultId);
 }

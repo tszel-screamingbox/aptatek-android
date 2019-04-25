@@ -18,4 +18,5 @@ public interface TestResultDataSource {
 
     void insertAll(@NonNull List<TestResultDataModel> dataModels);
 
+    int getNumberOfRecords();
 }

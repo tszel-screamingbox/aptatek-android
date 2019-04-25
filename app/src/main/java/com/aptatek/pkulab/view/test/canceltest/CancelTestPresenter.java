@@ -39,8 +39,9 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
     public void stopTest() {
         disposable = wettingInteractor.resetWetting()
                 .andThen(testInteractor.resetTest())
-            .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
-        .subscribe();
+                .andThen(testInteractor.setTestContinueStatus(false))
+                .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
+                .subscribe();
     }
 
     @Override
