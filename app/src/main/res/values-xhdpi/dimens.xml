@@ -41,8 +41,11 @@
     <dimen name="general.distance.xxxlarge">180dp</dimen>
     <dimen name="general.distance.enorme">250dp</dimen>
 
-
+    <!-- Custom -->
+    <dimen name="pin.side.margin">28dp</dimen>
+    <dimen name="range.info.side.margin">32dp</dimen>
     <dimen name="header.title.spacing.extra">0dp</dimen>
+    <dimen name="header.margin.top">38dp</dimen>
 
     <!-- Chart-->
     <dimen name="graph.bubble.size">56dp</dimen>
@@ -90,6 +93,8 @@
     <dimen name="font.size.enormous">48sp</dimen>
     <dimen name="font.size.wetting">80sp</dimen>
 
+    <dimen name="font.rangeinfo">42sp</dimen>
+    <dimen name="font.test">24sp</dimen>
 
     <dimen name="font.size.badge">36sp</dimen>
     <dimen name="font.size.weekly.subtitle">21sp</dimen>

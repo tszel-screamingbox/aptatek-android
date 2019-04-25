@@ -100,7 +100,7 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
                 }
             });
 
-            itemView.setOnClickListener(v -> switchActivate.setChecked(!switchActivate.isChecked()));
+            itemView.setOnClickListener(v -> changeState());
 
             recyclerViewReminders.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
                 @Override
@@ -110,7 +110,7 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
                     }
                     final View child = recyclerViewReminders.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
                     if (child == null) {
-                        switchActivate.setChecked(!switchActivate.isChecked());
+                        changeState();
                     }
 
                     return false;
@@ -134,7 +134,13 @@ public class ReminderSettingsAdapter extends BaseAdapter<ReminderSettingsAdapter
                 }
             });
 
-            textViewDayName.setOnClickListener(v -> switchActivate.setChecked(!switchActivate.isChecked()));
+            textViewDayName.setOnClickListener(v -> changeState());
+        }
+
+        private void changeState() {
+            if (!switchActivate.isChecked()) {
+                switchActivate.setChecked(true);
+            }
         }
 
         @Override
