@@ -2,6 +2,8 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.mapper.CartridgeInfoMapper;
@@ -97,7 +99,7 @@ public class ReaderManagerImpl implements ReaderManager {
             public void onDeviceReady(final @NonNull BluetoothDevice device) {
                 Timber.d("onDeviceReady device [%s]", device.getAddress());
 //                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-                    connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
+                connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
 //                }
             }
 
@@ -217,7 +219,7 @@ public class ReaderManagerImpl implements ReaderManager {
     public Single<CartridgeInfo> getCartridgeInfo() {
         return withRetry(1,
                 lumosReaderManager.<CartridgeIdResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID)
-                    .map(cartridgeIdResponse -> ((CartridgeInfoMapper) mappers.get(CartridgeIdResponse.class)).mapToDomain(cartridgeIdResponse))
+                        .map(cartridgeIdResponse -> ((CartridgeInfoMapper) mappers.get(CartridgeIdResponse.class)).mapToDomain(cartridgeIdResponse))
         );
     }
 
@@ -232,7 +234,7 @@ public class ReaderManagerImpl implements ReaderManager {
     public Single<TestResult> getResult(@NonNull final String id) {
         return withRetry(1,
                 lumosReaderManager.getResult(id)
-                    .map(resultResponse -> ((TestResultMapper) mappers.get(ResultResponse.class)).mapToDomain(resultResponse))
+                        .map(resultResponse -> ((TestResultMapper) mappers.get(ResultResponse.class)).mapToDomain(resultResponse))
         );
     }
 
@@ -240,7 +242,7 @@ public class ReaderManagerImpl implements ReaderManager {
     public Single<Error> getError() {
         return withRetry(1,
                 lumosReaderManager.<ErrorResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_ERROR)
-                    .map(errorResponse -> ((ErrorMapper) mappers.get(ErrorResponse.class)).mapToDomain(errorResponse))
+                        .map(errorResponse -> ((ErrorMapper) mappers.get(ErrorResponse.class)).mapToDomain(errorResponse))
         );
     }
 
@@ -250,27 +252,36 @@ public class ReaderManagerImpl implements ReaderManager {
     }
 
     @Override
-    public Single<List<TestResult>> syncResults() {
+    public Single<List<TestResult>> syncAllResults() {
+        return syncResults(null);
+    }
+
+    @Override
+    public Single<List<TestResult>> syncResultsAfter(final @NonNull String lastResultId) {
+        return syncResults(lastResultId);
+    }
+
+    private Single<List<TestResult>> syncResults(final @Nullable String lastResultId) {
         return lumosReaderManager.getConnectedDevice()
                 .toSingle()
                 .map(ReaderDevice::getMac)
-                .flatMap(deviceId ->
-                        lumosReaderManager.syncResults()
-                                .map(list -> {
+                .flatMap(deviceId -> {
+                            final Single<List<ResultResponse>> single = TextUtils.isEmpty(lastResultId) ? lumosReaderManager.syncAllResults() : lumosReaderManager.syncResultsAfter(lastResultId);
+                            return single.map(list -> {
+                                        final List<TestResult> mapped = new ArrayList<>();
+                                        final Mapper<TestResult, ResultResponse> mapper = (TestResultMapper) mappers.get(ResultResponse.class);
 
-                                            final List<TestResult> mapped = new ArrayList<>();
-                                            final Mapper<TestResult, ResultResponse> mapper = (TestResultMapper) mappers.get(ResultResponse.class);
-
-                                            for (ResultResponse resultResponse : list) {
-                                                mapped.add(mapper.mapToDomain(resultResponse)
-                                                        .toBuilder()
-                                                        .setReaderId(deviceId)
-                                                        .build());
-                                            }
-
-                                            return mapped;
+                                        for (ResultResponse resultResponse : list) {
+                                            mapped.add(mapper.mapToDomain(resultResponse)
+                                                    .toBuilder()
+                                                    .setReaderId(deviceId)
+                                                    .build());
                                         }
-                                )
+
+                                        return mapped;
+                                    }
+                            );
+                        }
                 );
     }
 
@@ -288,8 +299,8 @@ public class ReaderManagerImpl implements ReaderManager {
     public Flowable<WorkflowState> workflowState() {
         return Flowable.concat(
                 connectionStateProcessor.filter(event -> event.getConnectionState() == ConnectionState.READY)
-                    .take(1)
-                    .flatMap(ignored -> getWorkflowState().toFlowable()),
+                        .take(1)
+                        .flatMap(ignored -> getWorkflowState().toFlowable()),
                 workflowStateProcessor
         );
     }

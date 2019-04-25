@@ -14,6 +14,7 @@ import com.aptatek.pkulab.device.bluetooth.characteristics.reader.Characteristic
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.ResultReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.writer.CharacteristicDataProvider;
 import com.aptatek.pkulab.device.bluetooth.characteristics.writer.RequestResultCharacteristicDataProvider;
+import com.aptatek.pkulab.device.bluetooth.characteristics.writer.SyncRequestCharacteristicDataProvider;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicReadError;
 import com.aptatek.pkulab.device.bluetooth.error.CharacteristicWriteError;
 import com.aptatek.pkulab.device.bluetooth.error.ChecksumError;
@@ -314,8 +315,8 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 .map(payload -> ((ResultReader) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_RESULT)).read(Data.from(payload)));
     }
 
-    public Single<List<ResultResponse>> syncResults() {
-        return writeCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST, null)
+    private Single<List<ResultResponse>> syncResults(@Nullable final SyncRequestCharacteristicDataProvider.SyncAfterRequestData data) {
+        return writeCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST, data)
                 .andThen(concatSyncResponse()
                         .map(ResultSyncResponse::getIdentifiers)
                         .toFlowable()
@@ -327,6 +328,14 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                     return prevResults;
                 })
                 .lastOrError();
+    }
+
+    public Single<List<ResultResponse>> syncAllResults() {
+        return syncResults(null);
+    }
+
+    public Single<List<ResultResponse>> syncResultsAfter(final @NonNull String lastResultId) {
+        return syncResults(new SyncRequestCharacteristicDataProvider.SyncAfterRequestData(lastResultId));
     }
 
     private Single<ResultSyncResponse> concatSyncResponse() {

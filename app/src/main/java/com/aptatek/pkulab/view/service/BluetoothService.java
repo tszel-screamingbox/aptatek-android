@@ -286,7 +286,7 @@ public class BluetoothService extends BaseForegroundService {
                             final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.SyncingData());
                             notificationManager.notify(notification.getId(), notification.getNotification());
                         })
-                        .flatMapSingle(ignored -> readerInteractor.syncResults())
+                        .flatMapSingle(ignored -> readerInteractor.syncResultsAfterLatest())
                         .singleOrError()
                         .subscribe(ignored -> {
                             Timber.d("syncData successfully saved %d results", ignored.size());
