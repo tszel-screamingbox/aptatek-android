@@ -117,6 +117,12 @@ public class ReaderInteractor {
     }
 
     @NonNull
+    public Flowable<Integer> batteryLevelUpdates() {
+        return readerManager.batteryLevel()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
     public Maybe<ReaderDevice> getConnectedReader() {
         return readerManager.getConnectedDevice()
                 .subscribeOn(Schedulers.io());

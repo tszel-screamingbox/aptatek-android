@@ -51,4 +51,6 @@ public interface ReaderManager {
 
     Flowable<TestProgress> testProgress();
 
+    Flowable<Integer> batteryLevel();
+
 }

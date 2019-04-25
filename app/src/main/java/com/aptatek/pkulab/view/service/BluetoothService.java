@@ -24,7 +24,6 @@ import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
 
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -135,8 +134,7 @@ public class BluetoothService extends BaseForegroundService {
 
     private void showConnectedNotification() {
         disposables.add(
-                readerInteractor.getBatteryLevel()
-                        .repeatWhen(objectFlowable -> objectFlowable.delay(1, TimeUnit.MINUTES))
+                readerInteractor.batteryLevelUpdates()
                         .takeUntil(readerInteractor.getReaderConnectionEvents()
                                 .map(ConnectionEvent::getConnectionState)
                                 .filter(state -> state == ConnectionState.DISCONNECTING || state == ConnectionState.DISCONNECTED)

@@ -117,6 +117,17 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .done(device -> Timber.d("Successfully enabled Test Progress notifications: device [%s]", device.getAddress()))
                         .enqueue();
 
+                // BATTERY
+                setNotificationCallback(characteristicsHolder.getCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL))
+                        .with(((device, data) -> {
+                            Timber.d("Battery level update: device [%s], data [%s]", device.getAddress(), data.toString());
+                            mCallbacks.onBatteryLevelChanged(device, (int) characteristicReaderMap.get(LumosReaderConstants.BATTERY_CHAR_LEVEL).read(data));
+                        }));
+                enableNotifications(characteristicsHolder.getCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL))
+                        .fail((device, status) -> Timber.d("Failed to enable Battery Level notifications: device [%s], status: [%d]", device.getAddress(), status))
+                        .done(device -> Timber.d("Successfully enabled Battery Level notifications: device [%s]", device.getAddress()))
+                        .enqueue();
+
                 updateTime().subscribe(
                         () -> Timber.d("Time updated"),
                         Timber::e

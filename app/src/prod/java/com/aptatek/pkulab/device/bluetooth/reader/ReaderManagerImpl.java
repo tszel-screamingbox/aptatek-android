@@ -59,6 +59,7 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<TestProgress> testProgressProcessor = BehaviorProcessor.create();
+    private final FlowableProcessor<Integer> batteryLevelProcessor = BehaviorProcessor.create();
     private final Map<Class<?>, Mapper<?, ?>> mappers;
 
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager, Map<Class<?>, Mapper<?, ?>> mappers) {
@@ -164,6 +165,12 @@ public class ReaderManagerImpl implements ReaderManager {
                 Timber.d("onTestProgressChanged: %s", testProgressResponse);
                 testProgressProcessor.onNext(((TestProgressMapper) mappers.get(TestProgressResponse.class)).mapToDomain(testProgressResponse));
             }
+
+            @Override
+            public void onBatteryLevelChanged(@NonNull final BluetoothDevice device, final int batteryLevel) {
+                Timber.d("onBatteryLevelChanged: device [%s], level: [%d]", device.getAddress(), batteryLevel);
+                batteryLevelProcessor.onNext(batteryLevel);
+            }
         });
     }
 
@@ -195,6 +202,14 @@ public class ReaderManagerImpl implements ReaderManager {
     @Override
     public Single<Integer> getBatteryLevel() {
         return withRetry(1, lumosReaderManager.readCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL));
+    }
+
+    @Override
+    public Flowable<Integer> batteryLevel() {
+        return Flowable.concat(
+                getBatteryLevel().toFlowable(),
+                batteryLevelProcessor
+        );
     }
 
     private <T> Single<T> withRetry(final int times, final Single<T> single) {
