@@ -34,7 +34,9 @@ public interface ReaderManager {
 
     Single<TestResult> getResult(@NonNull String id);
 
-    Single<List<TestResult>> syncResults();
+    Single<List<TestResult>> syncAllResults();
+
+    Single<List<TestResult>> syncResultsAfter(@NonNull String lastResultId);
 
     Single<Error> getError();
 
@@ -48,5 +50,7 @@ public interface ReaderManager {
     Flowable<WorkflowState> workflowState();
 
     Flowable<TestProgress> testProgress();
+
+    Flowable<Integer> batteryLevel();
 
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class RequestResultRequest {
 
-    @SerializedName("reqResultID") // TODO check with Lumos because it has 2 names in the ICD...
+    @SerializedName("reqResultID")
     private String resultId;
 
     public String getResultId() {

@@ -86,7 +86,7 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
     }
 
     void syncData() {
-        disposables.add(readerInteractor.syncResults()
+        disposables.add(readerInteractor.syncAllResults()
                 .subscribe(
                         ignored -> checkLastMeasure(),
                         error -> ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT))
