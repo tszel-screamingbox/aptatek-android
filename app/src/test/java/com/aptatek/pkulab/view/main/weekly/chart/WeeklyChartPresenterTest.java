@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Flowable;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -119,7 +120,7 @@ public class WeeklyChartPresenterTest {
         bubbleEntries.add(createBubbleEntryFor(chartEntryData));
         bubbleDataSet = new BubbleDataSet(bubbleEntries, null);
 
-        when(testResultInteractor.listBetween(anyLong(), anyLong())).thenReturn(Single.just(testResultList));
+        when(testResultInteractor.listBetween(anyLong(), anyLong())).thenReturn(Flowable.just(testResultList));
         when(weeklyChartDataTransformer.transform(ArgumentMatchers.any(TestResult.class))).thenReturn(Single.just(chartEntryData));
         when(weeklyChartDataTransformer.transformEntries(ArgumentMatchers.anyList())).thenReturn(Single.just(bubbleDataSet));
 

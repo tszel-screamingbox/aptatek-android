@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import static org.mockito.Mockito.doReturn;
@@ -81,7 +82,7 @@ public class WeeklyResultFragmentPresenterTest {
         doReturn(TEST_STRING).when(weeklyChartResourceFormatter).getWeeklyChartTitle(ArgumentMatchers.anyInt());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
         when(pkuRangeInteractor.getInfo()).thenReturn(Single.just(rangeInfo));
-        when(testResultInteractor.listAll()).thenReturn(Single.just(testResultList));
+        when(testResultInteractor.listAll()).thenReturn(Flowable.just(testResultList));
 
         presenter = new WeeklyResultFragmentPresenter(
                 testResultInteractor,

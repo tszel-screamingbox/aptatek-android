@@ -111,6 +111,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     // TODO should not get ALL data at once...
     public void loadValidWeeks() {
         disposables.add(testResultInteractor.listAll()
+                .take(1)
                 .map(testResults -> {
                     Ix.from(testResults).foreach(testResult -> {
                         final int week = TimeHelper.getWeeksBetween(TimeHelper.getEarliestTimeAtGivenWeek(testResult.getTimestamp()), TimeHelper.getEarliestTimeAtGivenWeek(System.currentTimeMillis()));
@@ -141,6 +142,8 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
     void getCsvData() {
         disposables.add(testResultInteractor.listAll()
+                .take(1)
+                .singleOrError()
                 .flatMap(results -> csvExport.generateAttachment(results, weeklyChartResourceFormatter.getFormattedCsvFileName()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(attachment -> ifViewAttached(view -> view.onCsvDataReady(attachment)))
@@ -214,7 +217,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalCeilValue()));
 
         return testResultInteractor.listBetween(start, end)
-                .toFlowable()
+                .take(1)
                 .map(list -> {
                     int low = 0;
                     int normal = 0;

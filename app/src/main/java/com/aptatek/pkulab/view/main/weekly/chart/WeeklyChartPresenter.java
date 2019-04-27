@@ -31,7 +31,7 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
         final long end = TimeHelper.getLatestTimeAtGivenWeek(weekBeforeTimestamp);
 
         disposables.add(testResultInteractor.listBetween(start, end)
-                .toFlowable()
+                .take(1)
                 .flatMapIterable(it -> it)
                 .flatMapSingle(weeklyChartDataTransformer::transform)
                 .toList()
