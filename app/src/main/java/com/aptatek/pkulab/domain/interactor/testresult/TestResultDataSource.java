@@ -6,9 +6,11 @@ import com.aptatek.pkulab.data.model.TestResultDataModel;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 public interface TestResultDataSource {
 
-    List<TestResultDataModel> getDataBetween(long startTime, long endTime);
+    Flowable<List<TestResultDataModel>> getDataBetween(long startTime, long endTime);
 
     TestResultDataModel getOldestData();
 

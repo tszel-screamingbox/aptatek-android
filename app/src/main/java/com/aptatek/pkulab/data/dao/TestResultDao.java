@@ -11,12 +11,14 @@ import com.aptatek.pkulab.domain.interactor.testresult.TestResultDataSource;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface TestResultDao extends TestResultDataSource {
 
     @Query("SELECT * FROM test_results WHERE timestamp BETWEEN :from AND :to")
     @Override
-    List<TestResultDataModel> getDataBetween(final long from, final long to);
+    Flowable<List<TestResultDataModel>> getDataBetween(final long from, final long to);
 
     @Query("SELECT * FROM test_results ORDER BY timestamp ASC LIMIT 1")
     @Override

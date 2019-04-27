@@ -25,15 +25,17 @@ import io.reactivex.internal.schedulers.ExecutorScheduler;
 import io.reactivex.plugins.RxJavaPlugins;
 
 import static com.aptatek.pkulab.domain.interactor.wetting.WettingStatus.FINISHED;
-import static com.aptatek.pkulab.domain.interactor.wetting.WettingStatus.NOT_STARTED;
 import static com.aptatek.pkulab.domain.interactor.wetting.WettingStatus.RUNNING;
 import static com.aptatek.pkulab.view.test.TestScreens.BREAK_FOIL;
 import static com.aptatek.pkulab.view.test.TestScreens.CANCEL;
 import static com.aptatek.pkulab.view.test.TestScreens.COLLECT_BLOOD;
+import static com.aptatek.pkulab.view.test.TestScreens.CONNECT_IT_ALL;
+import static com.aptatek.pkulab.view.test.TestScreens.TESTING;
 import static com.aptatek.pkulab.view.test.TestScreens.TURN_READER_ON;
 import static com.aptatek.pkulab.view.test.TestScreens.WETTING;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -153,8 +155,21 @@ public class TestActivityPresenterTest {
     @Test
     public void testLowBattery() {
         when(deviceHelper.isBatteryLow()).thenReturn(true);
-        presenter.checkBattery();
+        presenter.checkBattery(BREAK_FOIL);
         verify(view).showBatteryAlert();
+    }
+
+    @Test
+    public void dontShowLowBattery() {
+        when(deviceHelper.isBatteryLow()).thenReturn(true);
+        presenter.checkBattery(CONNECT_IT_ALL);
+        verify(view, never()).showBatteryAlert();
+
+        presenter.checkBattery(TESTING);
+        verify(view, never()).showBatteryAlert();
+
+        presenter.checkBattery(CANCEL);
+        verify(view, never()).showBatteryAlert();
     }
 
     /**
