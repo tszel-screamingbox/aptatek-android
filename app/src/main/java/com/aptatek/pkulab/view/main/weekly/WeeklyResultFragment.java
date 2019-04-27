@@ -251,10 +251,20 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     @Override
     public void scrollToItem(final int position) {
         chartViewPager.setCurrentItem(position);
+        if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) != null) {
+            ((MonthPickerDialog) requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG)).dismiss();
+        }
     }
 
     @Override
     public void onPick(final int year, final int month) {
         presenter.getPageForSelectedMonth(year, month);
+    }
+
+    @Override
+    public void testNotFound() {
+        if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) != null) {
+            ((MonthPickerDialog) requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG)).testNotFound();
+        }
     }
 }

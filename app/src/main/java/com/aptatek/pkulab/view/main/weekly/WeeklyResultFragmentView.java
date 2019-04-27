@@ -28,4 +28,6 @@ interface WeeklyResultFragmentView extends MvpView {
     void showMonthPickerDialog(MonthPickerDialogModel monthPickerDialogModel);
 
     void scrollToItem(int position);
+
+    void testNotFound();
 }

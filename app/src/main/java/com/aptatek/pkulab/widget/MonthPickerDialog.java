@@ -8,9 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -45,6 +48,9 @@ public class MonthPickerDialog extends DialogFragment {
     @BindView(R.id.numberPickerYear)
     NumberPicker yearPicker;
 
+    @BindView(R.id.textViewError)
+    TextView error;
+
     @OnClick(R.id.textViewCancel)
     public void onCancelClicked() {
         dismiss();
@@ -54,7 +60,6 @@ public class MonthPickerDialog extends DialogFragment {
     public void onOkClicked() {
         if (callback != null) {
             callback.onPick(yearPicker.getValue(), monthPicker.getValue());
-            dismiss();
         }
     }
 
@@ -90,5 +95,9 @@ public class MonthPickerDialog extends DialogFragment {
 
         yearPicker.setValue(yearPicker.getMaxValue());
         monthPicker.setValue(calendar.get(Calendar.MONTH) + 1);
+    }
+
+    public void testNotFound() {
+        error.setVisibility(View.VISIBLE);
     }
 }
