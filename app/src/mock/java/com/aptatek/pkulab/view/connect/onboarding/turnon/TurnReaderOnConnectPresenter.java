@@ -58,7 +58,7 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
 
     public void syncData() {
         disposeDisposable();
-        disposable = readerInteractor.syncResults()
+        disposable = readerInteractor.syncAllResults()
                 .subscribe(
                         ignored -> ifViewAttached(TurnReaderOnConnectView::navigateToHome),
                         error -> Timber.d("Error while running syncAllResults: %s", error)
