@@ -234,7 +234,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
         showFragment(fragment, addToBackStack, withAnimation);
         screenPagerIndicator.setSelection(Math.min(screen.ordinal(), TestScreens.showDotFor().size()));
-        presenter.checkBattery();
+        presenter.checkBattery(screen);
     }
 
     private void showFragment(final Fragment fragment, final boolean addToBackStack, final boolean withAnimation) {
