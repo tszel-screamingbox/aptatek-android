@@ -99,7 +99,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         ButterKnife.bind(this);
 
         screenPagerIndicator.setDynamicCount(false);
-        screenPagerIndicator.setCount(TestScreens.values().length - 1); // Cancel screen is ignored
+        screenPagerIndicator.setCount(TestScreens.showDotFor().size());
     }
 
     @Override
@@ -233,7 +233,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         }
 
         showFragment(fragment, addToBackStack, withAnimation);
-        screenPagerIndicator.setSelection(screen.ordinal());
+        screenPagerIndicator.setSelection(Math.min(screen.ordinal(), TestScreens.showDotFor().size()));
         presenter.checkBattery();
     }
 
@@ -289,7 +289,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void showPreviousScreen() {
         onBackPressedHere();
-        screenPagerIndicator.setSelection(getCurrentScreen().ordinal());
+        screenPagerIndicator.setSelection(Math.min(getCurrentScreen().ordinal(), TestScreens.showDotFor().size()));
     }
 
     @Override
