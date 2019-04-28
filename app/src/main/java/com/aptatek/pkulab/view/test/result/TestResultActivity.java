@@ -76,6 +76,7 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         super.onStart();
 
         presenter.initUi(resultId);
+        presenter.resetTestScreen();
     }
 
     @Override
