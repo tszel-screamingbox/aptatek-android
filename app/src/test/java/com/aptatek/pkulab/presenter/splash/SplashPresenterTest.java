@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
@@ -50,6 +51,9 @@ public class SplashPresenterTest {
 
     @Mock
     SplashActivityView view;
+
+    @Mock
+    File dbFile;
 
     private SplashActivityPresenter presenter;
 
@@ -92,8 +96,10 @@ public class SplashPresenterTest {
         MockitoAnnotations.initMocks(this);
         when(reminderInteractor.initializeDays()).thenReturn(Completable.complete());
         when(deviceHelper.isRooted()).thenReturn(false);
+        when(dbFile.exists()).thenReturn(true);
+        when(preferenceManager.isDbEncrpytedWithPin()).thenReturn(true);
 
-        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper);
+        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper, dbFile);
         presenter.attachView(view);
     }
 

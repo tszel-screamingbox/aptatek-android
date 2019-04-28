@@ -9,10 +9,7 @@ import com.aptatek.pkulab.domain.manager.FingerprintManager;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreError;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
 
-import java.io.File;
-
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import io.reactivex.Completable;
 import timber.log.Timber;
@@ -22,7 +19,6 @@ public class AuthInteractor {
     private final FingerprintManager fingerprintManager;
     private final KeyStoreManager keyStoreManager;
     private final PreferenceManager preferencesManager;
-    private final File dbFile;
 
     private static final int CODE_FINGERPRINT_CANCELLED = 5;
 
@@ -32,12 +28,10 @@ public class AuthInteractor {
     @Inject
     AuthInteractor(final FingerprintManager fingerprintManager,
                    final PreferenceManager preferencesManager,
-                   final KeyStoreManager keyStoreManager,
-                   final @Named("databaseFile") File dbFile) {
+                   final KeyStoreManager keyStoreManager) {
         this.fingerprintManager = fingerprintManager;
         this.preferencesManager = preferencesManager;
         this.keyStoreManager = keyStoreManager;
-        this.dbFile = dbFile;
     }
 
     public Completable setPinCode(final PinCode pinCode) {
@@ -59,12 +53,6 @@ public class AuthInteractor {
                 final PinCode storedPin = keyStoreManager.decrypt(preferencesManager.getEncryptedPin());
                 if (storedPin == null || !storedPin.equals(pinCode)) {
                     throw new AuthException("Invalid pincode");
-                }
-
-                if (!preferencesManager.isDbEncrpytedWithPin()) {
-                    // delete database first
-                    dbFile.delete();
-                    preferencesManager.setPrefDbEncryptedWithPin();
                 }
             } catch (final KeyStoreError keyStoreError) {
                 throw new AuthException("Error during decrytpion", keyStoreError);
