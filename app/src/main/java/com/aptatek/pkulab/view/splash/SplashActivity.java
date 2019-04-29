@@ -43,7 +43,7 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
-        if (!BuildConfig.FLAVOR.equals("prod")) {
+        if (BuildConfig.FLAVOR.equals("prod")) {
             UXCam.startWithKey(BuildConfig.UXCAM_KEY);
         }
     }
