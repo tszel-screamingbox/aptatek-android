@@ -17,6 +17,7 @@ import com.aptatek.pkulab.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.widget.BubbleTextView;
 import com.aptatek.pkulab.widget.HeaderView;
+import com.uxcam.UXCam;
 
 import javax.inject.Inject;
 
@@ -67,7 +68,7 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         setContentView(R.layout.activity_test_result);
 
         ActivityStarter.fill(this, savedInstanceState);
-
+        UXCam.occludeSensitiveView(bubbleTextView);
         ButterKnife.bind(this);
     }
 
