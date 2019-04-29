@@ -111,6 +111,8 @@ public class WebPagePresenter extends MvpBasePresenter<WebPageView> {
 
     private Single<Attachment> generateTestResultsAttachment() {
         return testResultInteractor.listAll()
+                .take(1)
+                .singleOrError()
                 .subscribeOn(Schedulers.computation())
                 .flatMap(results ->
                         csvExport.generateAttachment(results, weeklyChartResourceFormatter.getFormattedCsvFileName())

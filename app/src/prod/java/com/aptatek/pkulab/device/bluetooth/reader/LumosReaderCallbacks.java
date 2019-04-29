@@ -18,4 +18,6 @@ interface LumosReaderCallbacks extends BleManagerCallbacks {
 
     void onTestProgressChanged(@NonNull TestProgressResponse testProgressResponse);
 
+    void onBatteryLevelChanged(@NonNull BluetoothDevice device, int batteryLevel);
+
 }

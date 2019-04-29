@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DisposeActivity extends BaseActivity<DisposeView, DisposePresenter> {
+public class DisposeActivity extends BaseActivity<DisposeView, DisposePresenter> implements DisposeView {
 
     @Inject
     DisposePresenter presenter;
@@ -47,6 +47,11 @@ public class DisposeActivity extends BaseActivity<DisposeView, DisposePresenter>
 
     @OnClick(R.id.dispose_done)
     public void onClickDone() {
+        presenter.done();
+    }
+
+    @Override
+    public void doneFinished() {
         final Intent intent = new Intent(this, MainHostActivity.class);
         launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
     }

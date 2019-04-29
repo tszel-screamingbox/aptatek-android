@@ -148,6 +148,7 @@ dependencies {
     implementation databaseDependencies.room
     annotationProcessor databaseDependencies.compiler
     implementation databaseDependencies.sqlcipher
+    implementation databaseDependencies.rxjava
 
     // Logger framework
     implementation appDependencies.timber

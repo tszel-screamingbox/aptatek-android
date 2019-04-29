@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.view.main.weekly;
 
+import android.support.annotation.NonNull;
+
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
@@ -11,7 +13,9 @@ import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
 import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
 
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
@@ -20,8 +24,15 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Flowable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.internal.schedulers.ExecutorScheduler;
+import io.reactivex.plugins.RxJavaPlugins;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -54,6 +65,34 @@ public class WeeklyResultFragmentPresenterTest {
     private WeeklyResultFragmentPresenter presenter;
     private List<TestResult> testResultList = new ArrayList<>();
 
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        final Scheduler immediate = new Scheduler() {
+
+            @Override
+            public Disposable scheduleDirect(@NonNull final Runnable run, final long delay, @NonNull final TimeUnit unit) {
+                // this prevents StackOverflowErrors when scheduling with a delay
+                return super.scheduleDirect(run, 0, unit);
+            }
+
+            @Override
+            public Worker createWorker() {
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+            }
+        };
+
+        RxJavaPlugins.setIoSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setComputationSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setNewThreadSchedulerHandler(scheduler -> immediate);
+        RxJavaPlugins.setSingleSchedulerHandler(scheduler -> immediate);
+        RxAndroidPlugins.setMainThreadSchedulerHandler(scheduler -> immediate);
+    }
+
+    @AfterClass
+    public static void afterClass() throws Exception {
+        RxJavaPlugins.reset();
+    }
+
     /**
      * Setting up the required presenter and defining mocked component's behaviour
      */
@@ -81,7 +120,7 @@ public class WeeklyResultFragmentPresenterTest {
         doReturn(TEST_STRING).when(weeklyChartResourceFormatter).getWeeklyChartTitle(ArgumentMatchers.anyInt());
         doReturn(TEST_STRING).when(resourceInteractor).getStringResource(ArgumentMatchers.anyInt());
         when(pkuRangeInteractor.getInfo()).thenReturn(Single.just(rangeInfo));
-        when(testResultInteractor.listAll()).thenReturn(Single.just(testResultList));
+        when(testResultInteractor.listAll()).thenReturn(Flowable.just(testResultList));
 
         presenter = new WeeklyResultFragmentPresenter(
                 testResultInteractor,

@@ -69,8 +69,18 @@ public class MockReaderManager implements ReaderManager {
     }
 
     @Override
-    public Single<List<TestResult>> syncResults() {
+    public Single<List<TestResult>> syncAllResults() {
         return Single.fromCallable(dataGenerator::getTestResults);
+    }
+
+    @Override
+    public Single<List<TestResult>> syncResultsAfter(@NonNull final String lastResultId) {
+        return Single.fromCallable(dataGenerator::getTestResults);
+    }
+
+    @Override
+    public Flowable<Integer> batteryLevel() {
+        return getBatteryLevel().toFlowable();
     }
 
     @Override

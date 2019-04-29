@@ -4,7 +4,6 @@ import android.util.Pair;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
@@ -76,8 +75,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                 readerInteractor.getReaderConnectionEvents()
                         .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
                         .take(1)
-                        .flatMap(device -> readerInteractor.getBatteryLevel()
-                                .repeatWhen(objects -> objects.flatMap(ignored -> Countdown.countdown(BATTERY_REFRESH_PERIOD, (tick) -> tick >= BATTERY_REFRESH_PERIOD, (tick) -> BATTERY_REFRESH_PERIOD - tick))))
+                        .flatMap(ignored -> readerInteractor.batteryLevelUpdates())
                         .takeUntil(readerInteractor.getTestProgress().filter(testProgress -> testProgress.getPercent() == 100))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())

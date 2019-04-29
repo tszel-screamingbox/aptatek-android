@@ -64,9 +64,22 @@ public class ReaderInteractor {
                 .subscribeOn(Schedulers.io());
     }
 
+    // leaving this here for force update scenario, maybe useful in the future...
     @NonNull
-    public Single<List<TestResult>> syncResults() {
-        return readerManager.syncResults()
+    public Single<List<TestResult>> syncAllResults() {
+        return readerManager.syncAllResults()
+                .flatMap(results -> testResultRepository.insertAll(results)
+                        .andThen(Single.just(results))
+                )
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Single<List<TestResult>> syncResultsAfterLatest() {
+        return testResultRepository.getLatest()
+                .map(TestResult::getId)
+                .onErrorReturnItem("invalid")
+                .flatMap(id -> (id.equals("invalid")) ? readerManager.syncAllResults() : readerManager.syncResultsAfter(id))
                 .flatMap(results -> testResultRepository.insertAll(results)
                         .andThen(Single.just(results))
                 )
@@ -104,6 +117,12 @@ public class ReaderInteractor {
     }
 
     @NonNull
+    public Flowable<Integer> batteryLevelUpdates() {
+        return readerManager.batteryLevel()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
     public Maybe<ReaderDevice> getConnectedReader() {
         return readerManager.getConnectedDevice()
                 .subscribeOn(Schedulers.io());
@@ -130,5 +149,9 @@ public class ReaderInteractor {
     public Completable saveResult(@NonNull final TestResult testResult) {
         return testResultRepository.insertAll(Collections.singletonList(testResult))
                 .subscribeOn(Schedulers.io());
+    }
+
+    public Single<Integer> getNumberOfResults() {
+        return readerManager.getNumberOfResults();
     }
 }

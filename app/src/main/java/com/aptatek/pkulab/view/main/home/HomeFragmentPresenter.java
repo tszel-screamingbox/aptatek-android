@@ -30,6 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
+import timber.log.Timber;
 
 
 class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
@@ -45,7 +46,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private final TestInteractor testInteractor;
     private final PkuValueFormatter pkuValueFormatter;
     private CompositeDisposable disposables;
-    private ChartVM lastResult;
 
     @Inject
     HomeFragmentPresenter(final TestResultInteractor testResultInteractor,
@@ -67,8 +67,24 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void initView() {
+        disposables.add(testInteractor.isTestContinueNeed()
+                .subscribe(continueNeed -> {
+                    if (continueNeed) {
+                        ifViewAttached(HomeFragmentView::unfinishedTestDetected);
+                    }
+                }));
+
         final String unit = pkuValueFormatter.formatFromUnits(preferenceManager.getPkuRangeUnit());
         ifViewAttached(view -> view.updateUnitText(unit));
+
+        watchDbChanges();
+    }
+
+    void showLastResult() {
+        disposables.add(testResultInteractor.getLatest()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(result -> ifViewAttached(view -> view.showLastResult(result.getId()))));
     }
 
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts
@@ -80,7 +96,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 .onErrorReturn(error -> System.currentTimeMillis())
                                 .flatMap(timeStamp -> {
                                     final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, timeStamp);
-                                    return testResultInteractor.listBetween(past, timeStamp);
+                                    return testResultInteractor.listBetween(past, timeStamp).take(1).singleOrError();
                                 }).map(list -> new Pair<>(rangeInfo, list)))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
@@ -88,7 +104,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 ifViewAttached(HomeFragmentView::showNoResults);
                             } else {
                                 final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
-                                lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
+                                final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
                                 chartVMS.set(chartVMS.size() - 1, lastResult);
 
                                 ifViewAttached(attachedView -> {
@@ -99,6 +115,16 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 });
                             }
                         })
+        );
+    }
+
+    private void watchDbChanges() {
+        disposables.add(
+                testResultInteractor.listAll()
+                        .subscribe(
+                                list -> loadData(),
+                                Timber::e
+                        )
         );
     }
 
@@ -165,20 +191,21 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         );
     }
 
+    void testContinueFailed() {
+        disposables.add(testInteractor.setTestContinueStatus(false)
+                .subscribe());
+    }
+
     void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
                 .andThen(testInteractor.resetTest())
+                .andThen(testInteractor.setTestContinueStatus(true))
                 .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
     }
 
     private String formatTitle(final ChartVM chartVM) {
         final String title;
-
-        if (lastResult != null &&
-                org.apache.commons.lang3.time.DateUtils.isSameDay(chartVM.getDate(), lastResult.getDate())) {
-            return resourceInteractor.getStringResource(R.string.main_title_today);
-        }
 
         if (DateUtils.isToday(chartVM.getDate().getTime())) {
             title = resourceInteractor.getStringResource(R.string.main_title_today);

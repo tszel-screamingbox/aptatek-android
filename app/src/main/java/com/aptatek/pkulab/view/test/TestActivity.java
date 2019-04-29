@@ -99,7 +99,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         ButterKnife.bind(this);
 
         screenPagerIndicator.setDynamicCount(false);
-        screenPagerIndicator.setCount(TestScreens.values().length - 1); // Cancel screen is ignored
+        screenPagerIndicator.setCount(TestScreens.showDotFor().size());
     }
 
     @Override
@@ -118,6 +118,13 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         inForeground = false;
 
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.storeDestroyTimestamp();
+
+        super.onDestroy();
     }
 
     @Override
@@ -226,8 +233,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         }
 
         showFragment(fragment, addToBackStack, withAnimation);
-        screenPagerIndicator.setSelection(screen.ordinal());
-        presenter.checkBattery();
+        screenPagerIndicator.setSelection(Math.min(screen.ordinal(), TestScreens.showDotFor().size()));
+        presenter.checkBattery(screen);
     }
 
     private void showFragment(final Fragment fragment, final boolean addToBackStack, final boolean withAnimation) {
@@ -282,7 +289,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void showPreviousScreen() {
         onBackPressedHere();
-        screenPagerIndicator.setSelection(getCurrentScreen().ordinal());
+        screenPagerIndicator.setSelection(Math.min(getCurrentScreen().ordinal(), TestScreens.showDotFor().size()));
     }
 
     @Override

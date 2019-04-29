@@ -1,126 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false">
-
-    <com.aptatek.pkulab.widget.HeaderView
-        android:id="@+id/header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.mini"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="@dimen/general.distance.mini"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:subTitleText="@string/rangeinfo.message"
-        app:titleText="@string/rangeinfo.title" />
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/rangeinfo_values"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.32dp"
-        android:layout_marginTop="@dimen/general.distance.small"
-        android:layout_marginEnd="@dimen/general.distance.32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header">
+        android:clipToPadding="false">
 
-        <com.aptatek.pkulab.widget.RangeInfoRowView
-            android:id="@+id/rangeinfo_very_high"
+        <com.aptatek.pkulab.widget.HeaderView
+            android:id="@+id/header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:backgroundColor="@color/pkuLevelVeryHigh"
+            android:layout_marginStart="@dimen/general.distance.mini"
+            android:layout_marginTop="@dimen/header.margin.top"
+            android:layout_marginEnd="@dimen/general.distance.mini"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:subTitleText="@string/rangeinfo.message"
+            app:titleText="@string/rangeinfo.title" />
 
-        <Space
-            android:id="@+id/rangeinfo_very_high_spacer"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/rangeinfo_values"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/range.info.side.margin"
+            android:layout_marginTop="@dimen/general.distance.small"
+            android:layout_marginEnd="@dimen/range.info.side.margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header">
+
+            <com.aptatek.pkulab.widget.RangeInfoRowView
+                android:id="@+id/rangeinfo_very_high"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:backgroundColor="@color/pkuLevelVeryHigh"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Space
+                android:id="@+id/rangeinfo_very_high_spacer"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rangeinfo.range.row.offset"
+                app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_very_high"
+                app:layout_constraintStart_toStartOf="@id/rangeinfo_very_high" />
+
+            <com.aptatek.pkulab.widget.RangeInfoRowView
+                android:id="@+id/rangeinfo_high"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:backgroundColor="@color/pkuLevelHigh"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rangeinfo_very_high_spacer" />
+
+            <Space
+                android:id="@+id/rangeinfo_high_spacer"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rangeinfo.range.row.offset"
+                app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_high"
+                app:layout_constraintStart_toStartOf="@id/rangeinfo_high" />
+
+            <com.aptatek.pkulab.widget.RangeInfoRowView
+                android:id="@+id/rangeinfo_normal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:backgroundColor="@color/pkuLevelIncreased"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rangeinfo_high_spacer" />
+
+            <Space
+                android:id="@+id/rangeinfo_normal_spacer"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/rangeinfo.range.row.offset"
+                app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_normal"
+                app:layout_constraintStart_toStartOf="@id/rangeinfo_normal" />
+
+            <com.aptatek.pkulab.widget.RangeInfoRowView
+                android:id="@+id/rangeinfo_low"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:backgroundColor="@color/pkuLevelStandard"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/rangeinfo_normal_spacer" />
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/rangeinfo_units"
+            style="@style/General.Text"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/rangeinfo.range.row.offset"
-            app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_very_high"
-            app:layout_constraintStart_toStartOf="@id/rangeinfo_very_high" />
-
-        <com.aptatek.pkulab.widget.RangeInfoRowView
-            android:id="@+id/rangeinfo_high"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:backgroundColor="@color/pkuLevelHigh"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:textSize="@dimen/font.size.medium"
+            app:layout_constraintBottom_toTopOf="@+id/rangeinfo_edit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/rangeinfo_very_high_spacer" />
+            app:layout_constraintTop_toBottomOf="@+id/rangeinfo_values"
+            tools:text="Units are in mmol/L" />
 
-        <Space
-            android:id="@+id/rangeinfo_high_spacer"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/rangeinfo.range.row.offset"
-            app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_high"
-            app:layout_constraintStart_toStartOf="@id/rangeinfo_high" />
-
-        <com.aptatek.pkulab.widget.RangeInfoRowView
-            android:id="@+id/rangeinfo_normal"
+        <Button
+            android:id="@+id/rangeinfo_edit"
+            style="@style/General.Rounded.Gray.Button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:backgroundColor="@color/pkuLevelIncreased"
+            android:layout_height="@dimen/general.button.height.big"
+            android:layout_marginStart="@dimen/range.info.side.margin"
+            android:layout_marginTop="@dimen/general.distance.xxsmall"
+            android:layout_marginEnd="@dimen/range.info.side.margin"
+            android:drawableStart="@drawable/ic_settings"
+            android:elevation="0dp"
+            android:paddingStart="@dimen/general.button.corner.normal"
+            android:text="@string/rangeinfo.edit.level.preferences"
+            android:textColor="@color/applicationSolidGray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/rangeinfo_high_spacer" />
-
-        <Space
-            android:id="@+id/rangeinfo_normal_spacer"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/rangeinfo.range.row.offset"
-            app:layout_constraintBottom_toBottomOf="@+id/rangeinfo_normal"
-            app:layout_constraintStart_toStartOf="@id/rangeinfo_normal" />
-
-        <com.aptatek.pkulab.widget.RangeInfoRowView
-            android:id="@+id/rangeinfo_low"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:backgroundColor="@color/pkuLevelStandard"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/rangeinfo_normal_spacer" />
-
+            app:layout_constraintTop_toBottomOf="@+id/rangeinfo_units"
+            tools:ignore="RtlSymmetry" />
     </android.support.constraint.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/rangeinfo_units"
-        style="@style/General.Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/general.distance.xxsmall"
-        android:layout_marginBottom="@dimen/general.distance.xxsmall"
-        android:textSize="@dimen/font.size.medium"
-        app:layout_constraintBottom_toTopOf="@+id/rangeinfo_edit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rangeinfo_values"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="Units are in mmol/L" />
-
-    <Button
-        android:id="@+id/rangeinfo_edit"
-        style="@style/General.Rounded.Gray.Button"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/general.button.height.big"
-        android:layout_marginStart="@dimen/general.distance.32dp"
-        android:layout_marginEnd="@dimen/general.distance.32dp"
-        android:layout_marginBottom="@dimen/general.distance.32dp"
-        android:drawableStart="@drawable/ic_settings"
-        android:elevation="0dp"
-        android:paddingStart="@dimen/general.button.corner.normal"
-        android:text="@string/rangeinfo.edit.level.preferences"
-        android:textColor="@color/applicationSolidGray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="RtlSymmetry" />
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -71,6 +71,10 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                         .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)));
     }
 
+    public void resetTestScreen() {
+        testInteractor.resetTest().subscribe();
+    }
+
     @Override
     public void detachView() {
         disposeSubscriptions();

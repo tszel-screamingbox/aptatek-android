@@ -49,6 +49,21 @@
     <!-- Home Fragment -->
     <string name="home.battery.alert.content">You need to charge phone to >20% of battery to continue.</string>
     <string name="home.battery.alert.title">Battery Life Too Low</string>
+    <string name="home.range.dialog.later">Do It Later</string>
+    <string name="home.range.dialog.message">Review Phe target ranges with your clinician to make sure they are right for you.\n\nIn case you just reinstalled the app, these settings reset.</string>
+    <string name="home.range.dialog.set">Set Phe Levels</string>
+    <string name="home.range.dialog.title">Review Phe Levels</string>
+    <string name="home.test.unfinished.title">Last Test Not Finished!</string>
+    <string name="home.test.unfinished.message">Your phone went off during your last test and it could not be finished.\nHave you connected the chamber to the cassette since then?</string>
+    <string name="home.test.continue.dialog.title">Continue testing!</string>
+    <string name="home.test.continue.dialog.message">Great news, you can finish your test now.</string>
+    <string name="home.test.continue.dialog.next">Next</string>
+    <string name="home.test.continue.dialog.cannot.be.finished.title">Test Cannot be Finished</string>
+    <string name="home.test.continue.dialog.cannot.be.finished.message">Unfortunately this test cannot be completed. Please discard items and you may start fresh with a new blood sample.</string>
+    <string name="home.test.continue.dialog.unable.sync.with.reader.title">Unable to Sync with Reader</string>
+    <string name="home.test.continue.dialog.unable.sync.with.reader.message">Please check to make sure reader is turned on so that it can re-connect to app.</string>
+    <string name="home.test.continue.dialog.unable.sync.with.reader.skip">Skip</string>
+    <string name="home.test.continue.dialog.unable.sync.with.reader.try.again">Try Again</string>
     <!-- Main Activity -->
     <string name="main.button.new.test">New Test</string>
     <string name="main.button.settings">Settings</string>
@@ -59,7 +74,7 @@
     <string name="main.date.format.long">MMM dd - hh:mm a</string>
     <string name="main.title.noresult">Welcome</string>
     <string name="main.title.noresult.hint">Take your first test</string>
-    <string name="main.title.today">Last result</string>
+    <string name="main.title.today">Today</string>
     <string name="main.title.yesterday">Yesterday</string>
     <!-- Parental Gate Activity -->
     <string name="parental.verification.failure.age.not.match.message">Sorry this entry does not match, please re-enter information</string>
@@ -216,11 +231,12 @@
     <string name="test.wetting.title">Wetting&#8230;</string>
     <string name="test.wetting.message">Wait until the sample wetting period ends</string>
     <string name="test.wetting.disclaimer">Keep chamber sitting upright, do not connect it to anything yet</string>
-    <string name="test.wetting.alert.message">Are your sure the blood has finished soaking for the whole 30 minutes?</string>
+    <string name="test.wetting.alert.message">Are your sure the blood has finished soaking for the whole 5 minutes?</string>
     <string name="test.wetting.alert.title">Please confirm</string>
     <string name="test.wetting.countdown.format">mm:ss</string>
     <string name="test.turnreaderon.title">Turn Reader On</string>
     <string name="test.turnreaderon.message">Press the button on the top of the reader to turn it on</string>
+    <string name="test.continue.turnreaderon.message">Press the button on the top of the reader to turn it on and wait until the yellow light turns blue</string>
     <string name="test.connectitall.title">Connect It All</string>
     <string name="test.connectitall.message">Push the chamber into the hole in the cassette and insert it into the reader immediately</string>
     <string name="test.testing.title">Testing&#8230;</string>
@@ -328,6 +344,8 @@
     <string name="bluetooth.notification.permission.message">Tap to provide required permissions</string>
     <string name="bluetooth.notification.multiplereaders.title">Multiple Reader devices found</string>
     <string name="bluetooth.notification.multiplereaders.message">Tap to select one</string>
+    <string name="bluetooth.notification.explicit.error.title">Cannot connect to Reader</string>
+    <string name="bluetooth.notification.explicit.error.message">Please tap to retry</string>
 
     <string name="low.device.storage.detected.title">Phone Storage Full</string>
     <string name="low.device.storage.detected.description">The memory on your phone is almost full - unable to store more Phe data in this application until you remove some other content from your phone to make more storage space available.</string>

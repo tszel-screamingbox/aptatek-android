@@ -270,7 +270,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
             final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.MissingPermissionError());
             notificationManager.notify(notification.getId(), notification.getNotification());
         } else {
-            final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(throwable.getMessage()));
+            final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ExplicitBtConnectionError());
             notificationManager.notify(notification.getId(), notification.getNotification());
         }
 

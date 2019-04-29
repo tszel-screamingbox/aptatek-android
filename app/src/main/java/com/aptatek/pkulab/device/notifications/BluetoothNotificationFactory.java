@@ -53,6 +53,10 @@ public interface BluetoothNotificationFactory {
         }
     }
 
+    class ExplicitBtConnectionError implements NotificationData {
+
+    }
+
     class BluetoothError implements NotificationData {
 
         private final String reason;

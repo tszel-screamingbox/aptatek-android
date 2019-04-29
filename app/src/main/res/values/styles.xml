@@ -88,7 +88,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/nunito_black</item>
         <item name="android:textColor">@color/applicationMediumGray</item>
-        <item name="android:textSize">@dimen/font.size.large</item>
+        <item name="android:textSize">@dimen/font.test</item>
     </style>
 
     <style name="Test.Next.Button" parent="Test.Cancel.Button">
@@ -254,7 +254,7 @@
     </style>
 
     <style name="RangeInfo.Row.Value" parent="General.Title">
-        <item name="android:textSize">@dimen/font.size.xxlarge</item>
+        <item name="android:textSize">@dimen/font.rangeinfo</item>
         <item name="android:textColor">@color/applicationWhite</item>
     </style>
 
@@ -296,8 +296,10 @@
     </style>
 
     <style name="Settings.Range.Units.Radio" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:buttonTint">@drawable/time_picker_dialog_schedule_type_color_selector</item>
-        <item name="android:textColor">@drawable/time_picker_dialog_schedule_type_color_selector</item>
+        <item name="android:buttonTint">@drawable/time_picker_dialog_schedule_type_color_selector
+        </item>
+        <item name="android:textColor">@drawable/time_picker_dialog_schedule_type_color_selector
+        </item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:fontFamily">@font/nunito_black</item>
     </style>
