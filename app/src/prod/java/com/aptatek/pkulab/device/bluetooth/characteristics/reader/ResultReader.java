@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.device.bluetooth.characteristics.reader;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.google.gson.Gson;

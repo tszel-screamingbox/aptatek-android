@@ -1,8 +1,9 @@
 package com.aptatek.pkulab.view.base;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

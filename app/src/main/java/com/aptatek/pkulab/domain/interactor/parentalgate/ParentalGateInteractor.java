@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.parentalgate;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.model.AgeCheckModel;

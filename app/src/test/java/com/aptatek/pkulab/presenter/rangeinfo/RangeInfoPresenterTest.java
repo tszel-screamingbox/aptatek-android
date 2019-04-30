@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.presenter.rangeinfo;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;

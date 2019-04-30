@@ -1,9 +1,10 @@
 package com.aptatek.pkulab.view.main.home.adapter.chart;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.reader.TestResult;

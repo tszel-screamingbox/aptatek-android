@@ -1,7 +1,8 @@
 package com.aptatek.pkulab.domain.interactor.remindersettings;
 
 import android.app.Notification;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 public interface ReminderNotificationFactory {
 

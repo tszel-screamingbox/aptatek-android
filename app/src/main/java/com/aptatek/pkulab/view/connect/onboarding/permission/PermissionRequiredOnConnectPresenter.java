@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.connect.onboarding.permission;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredPresenter;

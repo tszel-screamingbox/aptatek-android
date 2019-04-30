@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.PkuLevel;

@@ -2,7 +2,7 @@ package com.aptatek.pkulab.injection.component;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.aptatek.pkulab.data.AptatekDatabase;
 import com.aptatek.pkulab.device.DeviceHelper;

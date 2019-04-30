@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.connect.onboarding.turnon;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;

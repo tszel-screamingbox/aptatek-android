@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.connect.permission;
 
-import android.support.v4.content.PermissionChecker;
+import androidx.core.content.PermissionChecker;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;

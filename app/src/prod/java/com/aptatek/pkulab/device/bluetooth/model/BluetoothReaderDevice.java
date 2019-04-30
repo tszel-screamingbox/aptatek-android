@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.device.bluetooth.model;
 
 import android.bluetooth.BluetoothDevice;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;

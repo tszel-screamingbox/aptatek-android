@@ -1,7 +1,8 @@
 package com.aptatek.pkulab.domain.interactor.reader;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;

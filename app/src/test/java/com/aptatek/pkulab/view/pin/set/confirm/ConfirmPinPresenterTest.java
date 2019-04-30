@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.pin.set.confirm;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.PinCode;
 import com.aptatek.pkulab.device.DeviceHelper;

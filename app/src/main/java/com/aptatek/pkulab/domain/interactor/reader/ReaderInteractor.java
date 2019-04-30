@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.reader;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultRepository;

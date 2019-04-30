@@ -3,8 +3,8 @@ package com.aptatek.pkulab.device;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificationFactory;

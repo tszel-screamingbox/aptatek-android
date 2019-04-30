@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.parentalgate.verification;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.view.parentalgate.welcome.AgeVerificationResult;

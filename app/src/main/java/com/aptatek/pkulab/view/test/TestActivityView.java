@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.test;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 

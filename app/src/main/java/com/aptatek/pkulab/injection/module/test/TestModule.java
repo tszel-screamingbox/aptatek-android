@@ -2,7 +2,7 @@ package com.aptatek.pkulab.injection.module.test;
 
 import android.app.NotificationManager;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.formatter.CountdownTimeFormatterImpl;
 import com.aptatek.pkulab.device.notifications.WettingNotificationFactory;

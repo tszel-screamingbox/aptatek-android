@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.injection.module;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
 import com.aptatek.pkulab.injection.qualifier.ActivityContext;
 import com.aptatek.pkulab.injection.qualifier.ChildFragmentManager;

@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.testresult;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
 

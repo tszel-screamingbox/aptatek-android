@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.injection.module.rangeinfo;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.formatter.PkuValueFormatterImpl;
 import com.aptatek.pkulab.device.formatter.RangeSettingsValueFormatterImpl;

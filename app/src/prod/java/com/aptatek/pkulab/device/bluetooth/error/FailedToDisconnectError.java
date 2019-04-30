@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.device.bluetooth.error;
 
 import android.bluetooth.BluetoothDevice;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class FailedToDisconnectError extends BluetoothError {
 
