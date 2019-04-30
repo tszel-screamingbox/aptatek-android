@@ -72,6 +72,13 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     }
 
     @NonNull
+    public Single<TestResult> getLatestFromReader(@NonNull final String readerId) {
+        return Single.fromCallable(() -> testResultDataSource.getLatestFromReader(readerId))
+                .map(mapper::mapToDomain)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
     public Single<TestResult> getOldest() {
         return Single.fromCallable(testResultDataSource::getOldestData)
                 .map(mapper::mapToDomain)

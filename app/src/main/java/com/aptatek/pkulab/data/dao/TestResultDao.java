@@ -28,6 +28,10 @@ public interface TestResultDao extends TestResultDataSource {
     @Override
     TestResultDataModel getLatestData();
 
+    @Query("SELECT * FROM test_results WHERE readerId = :readerId ORDER BY timestamp DESC LIMIT 1")
+    @Override
+    TestResultDataModel getLatestFromReader(@NonNull final String readerId);
+
     @Query("SELECT * FROM test_results WHERE id = :id")
     TestResultDataModel getById(final String id);
 

@@ -76,7 +76,10 @@ public class ReaderInteractor {
 
     @NonNull
     public Single<List<TestResult>> syncResultsAfterLatest() {
-        return testResultRepository.getLatest()
+        return readerManager.getConnectedDevice()
+                .toSingle()
+                .map(ReaderDevice::getMac)
+                .flatMap(testResultRepository::getLatestFromReader)
                 .map(TestResult::getId)
                 .onErrorReturnItem("invalid")
                 .flatMap(id -> (id.equals("invalid")) ? readerManager.syncAllResults() : readerManager.syncResultsAfter(id))
