@@ -265,7 +265,7 @@ task customFindBugs(type: FindBugs, dependsOn: 'assembleProdDebug') {
     effort = 'max'
     reportLevel = 'medium'
     source 'src/main/java', 'src/prod/java'
-    classes = fileTree('build/intermediates/classes/prod/debug')
+    classes = fileTree('build/intermediates/javac/prodDebug/compileProdDebugJavaWithJavac/classes')
     classpath = files()
     ignoreFailures = true
 
