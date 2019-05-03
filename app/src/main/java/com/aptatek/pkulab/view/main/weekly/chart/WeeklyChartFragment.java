@@ -20,6 +20,8 @@ import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -58,6 +60,11 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityStarter.fill(this, savedInstanceState);
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.singletonList(weeklyBubbleChart);
     }
 
     @Override

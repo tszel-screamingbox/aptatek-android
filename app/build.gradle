@@ -62,6 +62,8 @@ android {
             shrinkResources false // configure proguard and enable
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+
+            buildConfigField "String", "UXCAM_KEY", '"sunsy8h9lv8kwuj"'
         }
 
         debug {
@@ -69,6 +71,8 @@ android {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
             multiDexEnabled true
+
+            buildConfigField "String", "UXCAM_KEY", '"sunsy8h9lv8kwuj"'
         }
     }
 
@@ -149,8 +153,9 @@ dependencies {
     // Logger framework
     implementation appDependencies.timber
 
-    // Crashlytics
-    implementation crashlyticsDependencies.crashlytics
+    // Analytics
+    implementation analyticDependencies.crashlytics
+    implementation analyticDependencies.uxcam
 
     // AutoValue
     implementation autoValueDependencies.api

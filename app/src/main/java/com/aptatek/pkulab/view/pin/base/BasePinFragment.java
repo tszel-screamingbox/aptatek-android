@@ -17,6 +17,8 @@ import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.widget.HeaderView;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import activitystarter.ActivityStarter;
@@ -33,6 +35,9 @@ public abstract class BasePinFragment extends BaseFragment {
 
     private String pin = "";
 
+    @BindView(R.id.keypad)
+    View keypad;
+
     @BindView(R.id.pinLayout)
     protected ConstraintLayout pinCircleConstrainLayout;
 
@@ -41,7 +46,6 @@ public abstract class BasePinFragment extends BaseFragment {
 
     @BindView(R.id.messageTextView)
     protected TextView messageTextView;
-
 
     protected abstract void finishedTyping(PinCode pinCode);
 
@@ -52,6 +56,11 @@ public abstract class BasePinFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         ActivityStarter.fill(this, savedInstanceState);
         return view;
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.singletonList(keypad);
     }
 
     protected void fillCircle(final int resId, final AnimationCallback callback) {

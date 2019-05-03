@@ -21,6 +21,9 @@ import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
 import com.mklimek.frameviedoview.FrameVideoViewListener;
 
+import java.util.Collections;
+import java.util.List;
+
 import butterknife.BindView;
 
 public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends TestBasePresenter<V>> extends BaseFragment<V, P>
@@ -41,6 +44,11 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
         super.onCreate(savedInstanceState);
 
         setRetainInstance(false);
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.emptyList();
     }
 
     @Override

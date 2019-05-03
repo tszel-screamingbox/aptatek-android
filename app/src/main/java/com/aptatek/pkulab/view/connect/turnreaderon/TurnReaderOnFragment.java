@@ -27,6 +27,7 @@ import com.mklimek.frameviedoview.FrameVideoViewListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,6 +55,11 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     public String getTitle() {
         return null;
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.emptyList();
     }
 
     @Override

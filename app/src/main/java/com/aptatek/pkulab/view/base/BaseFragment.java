@@ -14,10 +14,13 @@ import com.aptatek.pkulab.injection.module.FragmentModule;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import com.uxcam.UXCam;
 
+import java.util.List;
 import java.util.UUID;
 
 import butterknife.ButterKnife;
+import ix.Ix;
 
 
 public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>> extends MvpFragment<V, P> implements IFragmentFactory {
@@ -46,11 +49,14 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
         return fragmentComponent;
     }
 
+    protected abstract List<View> sensitiveViewList();
+
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, view);
+
         return view;
     }
 
@@ -58,6 +64,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initObjects(view);
+        Ix.from(sensitiveViewList()).foreach(UXCam::occludeSensitiveViewWithoutGesture);
     }
 
     protected BaseActivity getBaseActivity() {

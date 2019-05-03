@@ -104,10 +104,9 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/font.size.medium"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/dialLayout" />
+        app:layout_constraintBottom_toTopOf="@id/keypad" />
 
     <include
-        android:id="@+id/dialLayout"
         layout="@layout/dial_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/pin.dial.height"
