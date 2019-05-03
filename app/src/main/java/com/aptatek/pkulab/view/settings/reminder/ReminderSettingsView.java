@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.settings.reminder;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.view.settings.reminder.adapter.ReminderSettingsAdapterItem;
 import com.hannesdorfmann.mosby3.mvp.MvpView;

@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.countdown;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.TimeUnit;
 

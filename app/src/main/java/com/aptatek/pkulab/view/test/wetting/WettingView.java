@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.test.wetting;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 

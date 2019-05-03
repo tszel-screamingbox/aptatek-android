@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.injection.module;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.AptatekDatabase;
 import com.aptatek.pkulab.data.datasource.PkuRangeDataSourceImpl;

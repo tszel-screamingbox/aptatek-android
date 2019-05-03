@@ -1,7 +1,8 @@
 package com.aptatek.pkulab.view.base;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.R;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;

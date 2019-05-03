@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.presenter.rangeinfo;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
@@ -61,7 +61,7 @@ public class RangeInfoPresenterTest {
 
             @Override
             public Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run, true);
             }
         };
 

@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.dialog;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 public interface AlertDialogDecisionListener {
 

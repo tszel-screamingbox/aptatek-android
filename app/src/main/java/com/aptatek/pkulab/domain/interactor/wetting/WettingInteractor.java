@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.wetting;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.countdown.CountdownTimeFormatter;
 import com.aptatek.pkulab.domain.model.Countdown;

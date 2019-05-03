@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.view.parentalgate.verification;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 

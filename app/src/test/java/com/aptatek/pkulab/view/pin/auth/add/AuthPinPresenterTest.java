@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.pin.auth.add;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.PinCode;
 import com.aptatek.pkulab.device.DeviceHelper;
@@ -84,7 +84,7 @@ public class AuthPinPresenterTest {
 
             @Override
             public Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run, true);
             }
         };
 

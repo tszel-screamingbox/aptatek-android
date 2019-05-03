@@ -1,8 +1,8 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.formatter.WeeklyChartValueFormatter;

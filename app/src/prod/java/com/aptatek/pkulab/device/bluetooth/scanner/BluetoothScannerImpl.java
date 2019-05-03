@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.device.bluetooth.scanner;
 
 import android.bluetooth.BluetoothDevice;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;

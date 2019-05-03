@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.device.bluetooth.reader;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.generator.FakeReaderDataGenerator;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;

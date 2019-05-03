@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.main.weekly;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
@@ -77,7 +77,7 @@ public class WeeklyResultFragmentPresenterTest {
 
             @Override
             public Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run, true);
             }
         };
 

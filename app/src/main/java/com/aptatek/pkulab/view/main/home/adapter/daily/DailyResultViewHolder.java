@@ -1,7 +1,8 @@
 package com.aptatek.pkulab.view.main.home.adapter.daily;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.widget.RangeInfoRowView;

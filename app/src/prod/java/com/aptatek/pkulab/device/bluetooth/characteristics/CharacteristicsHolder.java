@@ -3,8 +3,8 @@ package com.aptatek.pkulab.device.bluetooth.characteristics;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 

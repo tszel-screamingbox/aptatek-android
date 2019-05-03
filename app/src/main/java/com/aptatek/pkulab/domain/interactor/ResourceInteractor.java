@@ -6,9 +6,10 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.RawRes;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.TypedValue;
+
+import androidx.annotation.RawRes;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 

@@ -1,8 +1,9 @@
 package com.aptatek.pkulab.widget;
 
 import android.content.Context;
-import android.support.annotation.IdRes;
-import android.support.constraint.ConstraintLayout;
+import androidx.annotation.IdRes;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;

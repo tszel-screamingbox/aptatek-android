@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.testresult;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
 import com.aptatek.pkulab.domain.base.Mapper;
@@ -67,6 +68,13 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     @NonNull
     public Single<TestResult> getLatest() {
         return Single.fromCallable(testResultDataSource::getLatestData)
+                .map(mapper::mapToDomain)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Single<TestResult> getLatestFromReader(@NonNull final String readerId) {
+        return Single.fromCallable(() -> testResultDataSource.getLatestFromReader(readerId))
                 .map(mapper::mapToDomain)
                 .subscribeOn(Schedulers.io());
     }

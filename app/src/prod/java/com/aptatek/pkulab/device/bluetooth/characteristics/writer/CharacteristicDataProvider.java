@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.device.bluetooth.characteristics.writer;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public interface CharacteristicDataProvider<T extends CharacteristicDataProvider.CharacteristicsData> {
 

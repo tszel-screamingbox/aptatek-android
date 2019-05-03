@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.device.bluetooth.mapper;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.aptatek.pkulab.domain.base.Mapper;

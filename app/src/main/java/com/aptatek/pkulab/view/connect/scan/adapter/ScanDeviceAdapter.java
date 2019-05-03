@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.connect.scan.adapter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 

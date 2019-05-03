@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.view.parentalgate.welcome;
 
 import android.app.DatePickerDialog;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;

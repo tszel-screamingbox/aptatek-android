@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.data.generator;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.model.MockReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;

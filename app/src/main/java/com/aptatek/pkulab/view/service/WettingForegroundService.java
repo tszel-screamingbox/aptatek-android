@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.service;
 
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.aptatek.pkulab.device.notifications.WettingNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;

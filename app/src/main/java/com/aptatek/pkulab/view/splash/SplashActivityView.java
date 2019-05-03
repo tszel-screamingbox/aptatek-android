@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.splash;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 

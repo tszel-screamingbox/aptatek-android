@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.device.bluetooth.characteristics.writer;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public abstract class CharacteristicDataConverter {
 

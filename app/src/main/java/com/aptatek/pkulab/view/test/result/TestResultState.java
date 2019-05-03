@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.test.result;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 import com.google.auto.value.AutoValue;
 

@@ -1,8 +1,8 @@
 package com.aptatek.pkulab.view.service;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
 import android.text.TextUtils;
 
 import com.aptatek.pkulab.AptatekApplication;

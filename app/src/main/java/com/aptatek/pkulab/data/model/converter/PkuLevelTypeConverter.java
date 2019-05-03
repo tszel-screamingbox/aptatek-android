@@ -1,7 +1,8 @@
 package com.aptatek.pkulab.data.model.converter;
 
-import android.arch.persistence.room.TypeConverter;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.room.TypeConverter;
 
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.model.PkuLevel;

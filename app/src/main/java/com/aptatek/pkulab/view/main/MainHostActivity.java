@@ -2,7 +2,7 @@ package com.aptatek.pkulab.view.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.aptatek.pkulab.R;

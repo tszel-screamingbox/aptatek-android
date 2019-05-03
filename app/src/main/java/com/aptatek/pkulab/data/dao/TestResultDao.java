@@ -1,10 +1,11 @@
 package com.aptatek.pkulab.data.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultDataSource;
@@ -27,6 +28,10 @@ public interface TestResultDao extends TestResultDataSource {
     @Query("SELECT * FROM test_results ORDER BY timestamp DESC LIMIT 1")
     @Override
     TestResultDataModel getLatestData();
+
+    @Query("SELECT * FROM test_results WHERE readerId = :readerId ORDER BY timestamp DESC LIMIT 1")
+    @Override
+    TestResultDataModel getLatestFromReader(@NonNull final String readerId);
 
     @Query("SELECT * FROM test_results WHERE id = :id")
     TestResultDataModel getById(final String id);

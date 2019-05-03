@@ -1,69 +1,64 @@
 ext {
     versions = [
             minsdk            : 21,
-            targetsdk         : 27,
-            buildToolsVersion : '27.0.3',
-            gradle            : '3.1.2',
+            targetsdk         : 28,
+            buildToolsVersion : '28.0.3',
 
-            // Support
-            androidSupport    : '27.1.1',
-            constraintLayout  : '1.1.3',
-            multidex          : '1.0.3',
+            // AndroidX
+            androidx          : '1.0.0',
+            multidex          : '2.0.0',
+            constraintlayout  : '1.1.3',
 
             // ArchitectureComponents
-            lifecycle         : '1.1.1',
-            work              : '1.0.0-alpha01',
+            lifecycle         : '2.0.0',
 
             // Mosby
-            mosby             : '3.1.0',
+            mosby             : '3.1.1',
 
             // Butterknife
-            butterknife       : '8.8.1',
+            butterknife       : '10.1.0',
 
             // Dagger
-            dagger            : '2.15',
+            dagger            : '2.22.1',
 
             // RX
-            rxjava            : '2.1.13',
-            rxandroid         : '2.0.2',
+            rxjava            : '2.2.8',
+            rxandroid         : '2.1.1',
 
             // Database
-            room              : '1.1.0',
+            room              : '2.0.0',
+            //sqlcipher         : '1.0.2',
             sqlcipher         : '0.4.1',
 
             // IX
             ixjava            : '1.0.0',
 
             // Log
-            timber            : '4.7.0',
+            timber            : '4.7.1',
 
             // Leak
-            leakcanary        : '1.6.1',
-
-            // Firebase
-            firebase          : '12.0.1',
+            leakcanary        : '1.6.3',
 
             // Crashlytics
-            crashlytics       : '2.9.3',
+            crashlytics       : '2.9.9',
 
             // UX Cam
             uxcam               : '3.0.7@aar',
 
             // AutoValue
-            autoValue         : '1.6',
+            autoValue         : '1.6.5',
 
             // Parceler
             parceler          : '0.2.6',
 
             // Glide
-            glide             : '4.7.1',
-            glideOkhttp       : '4.7.1',
+            glide             : '4.9.0',
 
             // Other
             dataFactory       : '0.8',
 
             // ActivityStarter
-            activityStarter   : '1.11-beta',
+            activityStarter   : '1.12-beta-2',
 
             // DiscreteScrollView
             discreteScrollView: '1.4.9',
@@ -75,12 +70,12 @@ ext {
             rootDetection     : '0.0.7',
 
             // Testing
+            test              : '1.1.0',
             junit             : '4.12',
             mockito           : '2.8.9',
-            runner            : '1.0.2',
-            espresso          : '3.0.2',
+            espresso          : '3.1.0',
             hamcrest          : '1.3',
-            orchestrator      : '1.0.2',
+            orchestrator      : '1.1.0',
 
             // CodeQuality
             jacoco            : '0.8.1',
@@ -88,38 +83,39 @@ ext {
             checkstyle        : '8.10',
 
             // UI
-            rangebar          : '1.4.3',
-            pagerIndicator    : '1.0.2',
+            rangebar          : '1.4.5',
+            pagerIndicator    : '1.0.3',
             frameVideoView    : '1.3.3',
             slidingPanel      : '3.4.0',
-            flexBox           : '1.0.0',
+            flexBox           : '1.1.0',
 
             // Time
-            yodatime          : '2.9.9.4',
+            yodatime          : '2.10.1',
 
             // Bluetooth
-            nordicBle         : '2.1.0',
+            nordicBle         : '2.1.1',
             nordicScanner     : '1.4.0',
 
             // gson
             gson              : '2.8.5',
 
             // CSV export
-            csv               : '4.5'
+            csv               : '4.6'
+
     ]
 
     androidSupportDependencies = [
-            appcompat       : "com.android.support:appcompat-v7:${versions.androidSupport}",
-            annotations     : "com.android.support:support-annotations:${versions.androidSupport}",
-            recyclerview    : "com.android.support:recyclerview-v7:${versions.androidSupport}",
-            design          : "com.android.support:design:${versions.androidSupport}",
-            multidex        : "com.android.support:multidex:${versions.multidex}",
-            constraintLayout: "com.android.support.constraint:constraint-layout:${versions.constraintLayout}"
+            appcompat       : "androidx.appcompat:appcompat:${versions.androidx}",
+            annotations     : "androidx.annotation:annotation:${versions.androidx}",
+            recyclerview    : "androidx.recyclerview:recyclerview:${versions.androidx}",
+            design          : "com.google.android.material:material:${versions.androidx}",
+            multidex        : "androidx.multidex:multidex:${versions.multidex}",
+            constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
     ]
 
     architectureComponentsDependencies = [
-            extensions: "android.arch.lifecycle:extensions:${versions.lifecycle}",
-            compiler  : "android.arch.lifecycle:compiler:${versions.lifecycle}",
+            extensions: "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}",
+            compiler  : "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}",
     ]
 
     mvpDependencies = [
@@ -145,20 +141,20 @@ ext {
     ]
 
     databaseDependencies = [
-            room      : "android.arch.persistence.room:runtime:${versions.room}",
-            compiler  : "android.arch.persistence.room:compiler:${versions.room}",
-            testhelper: "android.arch.persistence.room:testing:${versions.room}",
+            room      : "androidx.room:room-runtime:${versions.room}",
+            compiler  : "androidx.room:room-compiler:${versions.room}",
+            testhelper: "androidx.room:room-testing:${versions.room}",
 
             // https://github.com/commonsguy/cwac-saferoom
             sqlcipher : "com.commonsware.cwac:saferoom:${versions.sqlcipher}",
 
             // optional - RxJava support for Room
-            rxjava    : "android.arch.persistence.room:rxjava2:${versions.room}"
+            rxjava    : "androidx.room:room-rxjava2:${versions.room}"
     ]
 
     glideDependencies = [
             glide      : "com.github.bumptech.glide:glide:${versions.glide}",
-            integration: "com.github.bumptech.glide:okhttp3-integration:${versions.glideOkhttp}@aar",
+            integration: "com.github.bumptech.glide:okhttp3-integration:${versions.glide}@aar",
             compiler   : "com.github.bumptech.glide:compiler:${versions.glide}"
     ]
 
@@ -203,12 +199,12 @@ ext {
     testDependencies = [
             junit          : "junit:junit:${versions.junit}",
             mockito        : "org.mockito:mockito-core:${versions.mockito}",
-            testrunner     : "com.android.support.test:runner:${versions.runner}",
-            testrules      : "com.android.support.test:rules:${versions.runner}",
-            espresso       : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
-            espressocontrib: "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
+            testrunner     : "androidx.test:runner:${versions.test}",
+            testrules      : "androidx.test:rules:${versions.test}",
+            espresso       : "androidx.test.espresso:espresso-core:${versions.espresso}",
+            espressocontrib: "androidx.test.espresso:espresso-contrib:${versions.espresso}",
             hamcrest       : "org.hamcrest:hamcrest-library:${versions.hamcrest}",
-            orchestrator   : "com.android.support.test:orchestrator:${versions.orchestrator}"
+            orchestrator   : "androidx.test:orchestrator:${versions.orchestrator}"
     ]
 
     uiDependencies = [
