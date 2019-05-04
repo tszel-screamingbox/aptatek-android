@@ -34,6 +34,7 @@ import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
+import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -319,7 +320,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                 final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
                         TestContinueDialogModel.incorrectResultDialogModelCreate(requireContext()),
                         decision -> {
-                            presenter.testContinueFailed();
+                            getBaseActivity().launchActivity(new Intent(requireContext(), DisposeActivity.class));
                         });
                 dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {
