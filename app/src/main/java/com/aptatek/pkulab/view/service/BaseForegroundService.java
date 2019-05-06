@@ -3,15 +3,13 @@ package com.aptatek.pkulab.view.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.injection.component.ApplicationComponent;
 
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseForegroundService extends Service {
 
@@ -31,21 +29,7 @@ public abstract class BaseForegroundService extends Service {
 
         injectService(((AptatekApplication) getApplication()).getApplicationComponent());
 
-        disposables.add(
-            shouldStart()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(running -> {
-
-                    if (running) {
-                        startForeground();
-                    } else {
-                        stopForeground(true);
-                        stopSelf();
-                    }
-                })
-        );
-
+        startForeground();
     }
 
     @Override
@@ -58,8 +42,6 @@ public abstract class BaseForegroundService extends Service {
     }
 
     protected abstract void injectService(final ApplicationComponent component);
-
-    protected abstract Single<Boolean> shouldStart();
 
     protected abstract void startForeground();
 }

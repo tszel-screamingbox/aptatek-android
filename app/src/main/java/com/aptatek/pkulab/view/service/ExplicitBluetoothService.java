@@ -91,11 +91,6 @@ public class ExplicitBluetoothService extends BaseForegroundService {
     }
 
     @Override
-    protected Single<Boolean> shouldStart() {
-        return Single.just(!BluetoothService.isServiceRunning() && !BuildConfig.FLAVOR.equals("mock"));
-    }
-
-    @Override
     protected void startForeground() {
         final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectingToDevice());
         startForeground(notification.getId(), notification.getNotification());

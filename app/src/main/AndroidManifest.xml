@@ -9,6 +9,7 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -108,10 +109,10 @@
 
         <activity
             android:name=".view.test.TestActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".view.main.MainHostActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.FullScreen"
-            android:launchMode="singleTop">
+            android:theme="@style/AppTheme.FullScreen">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
