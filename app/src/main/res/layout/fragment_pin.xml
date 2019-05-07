@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/pin.side.margin"
         android:layout_marginEnd="@dimen/pin.side.margin"
-        android:layout_marginBottom="@dimen/general.distance.small"
+        android:layout_marginBottom="@dimen/pin.spacing"
         app:layout_constraintBottom_toTopOf="@+id/messageTextView"
         app:layout_constraintTop_toBottomOf="@+id/header"
         app:layout_constraintVertical_bias="1.0">
@@ -97,7 +97,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.32dp"
         android:layout_marginEnd="@dimen/general.distance.32dp"
-        android:layout_marginBottom="@dimen/general.distance.28dp"
+        android:layout_marginBottom="@dimen/pin.bottom.margin"
         android:fontFamily="@font/nunito_semibold"
         android:gravity="center"
         android:padding="@dimen/general.distance.xxxsmall"
