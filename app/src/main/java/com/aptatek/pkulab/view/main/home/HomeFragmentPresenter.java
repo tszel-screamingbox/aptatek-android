@@ -191,11 +191,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         );
     }
 
-    void testContinueFailed() {
-        disposables.add(testInteractor.setTestContinueStatus(false)
-                .subscribe());
-    }
-
     void startNewTest() {
         disposables.add(wettingInteractor.resetWetting()
                 .andThen(testInteractor.resetTest())
