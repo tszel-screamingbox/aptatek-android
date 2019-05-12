@@ -27,8 +27,7 @@ ext {
 
             // Database
             room              : '2.0.0',
-            //sqlcipher         : '1.0.2',
-            sqlcipher         : '0.4.1',
+            sqlcipher         : '1.0.2',
 
             // IX
             ixjava            : '1.0.0',

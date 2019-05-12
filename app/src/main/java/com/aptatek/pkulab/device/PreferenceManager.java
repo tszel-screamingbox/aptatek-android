@@ -31,6 +31,7 @@ public class PreferenceManager {
     public static final String PREF_TEST_STATUS = "aptatek.test.status";
     public static final String PREF_TEST_UNFINISHED = "aptatek.test.unfinished";
     public static final String PREF_DB_ENCRYPTED_WITH_PIN = "aptatek.database.encrypted";
+    public static final String PREF_DB_CYPHER_UPDATED = "aptatek.database.cypher.upadted";
     public static final String PREF_APP_KILLED_DURING_TEST = "aptatek.test.app.killed.during.test.timestamp";
 
     private final SharedPreferences sharedPreferences;
@@ -145,12 +146,20 @@ public class PreferenceManager {
         sharedPreferences.edit().putInt(PREF_TEST_STATUS, testStatus.ordinal()).apply();
     }
 
-    public boolean isDbEncrpytedWithPin() {
+    public boolean isDbEncryptedWithPin() {
         return sharedPreferences.getBoolean(PREF_DB_ENCRYPTED_WITH_PIN, false);
     }
 
     public void setPrefDbEncryptedWithPin() {
         sharedPreferences.edit().putBoolean(PREF_DB_ENCRYPTED_WITH_PIN, true).apply();
+    }
+
+    public boolean isDbCypherUpdated() {
+        return sharedPreferences.getBoolean(PREF_DB_CYPHER_UPDATED, false);
+    }
+
+    public void setPrefDbCypherUpdated() {
+        sharedPreferences.edit().putBoolean(PREF_DB_CYPHER_UPDATED, true).apply();
     }
 
     public void clearPreference(final String key) {
