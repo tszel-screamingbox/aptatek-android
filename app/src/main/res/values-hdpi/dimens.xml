@@ -1,6 +1,9 @@
 <resources>
 
+    <dimen name="home.margin.top">0dp</dimen>
     <dimen name="header.margin.top">0dp</dimen>
+    <dimen name="pin.bottom.margin">10dp</dimen>
+    <dimen name="pin.spacing">8dp</dimen>
     <dimen name="range.info.side.margin">16dp</dimen>
     <dimen name="pin.side.margin">20dp</dimen>
 
