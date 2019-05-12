@@ -19,6 +19,7 @@ import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.lang.reflect.Field;
 import java.util.Locale;
@@ -100,12 +101,15 @@ public class PdfExportView extends ConstraintLayout {
         final Typeface typeface = ResourcesCompat.getFont(getContext().getApplicationContext(), R.font.nunito_black);
         final XAxis xAxis = bubbleChart.getXAxis();
         xAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
-        xAxis.setValueFormatter((value, axis) -> {
-            if (Float.compare(value, 0f) <= 0 || Float.compare(value, pdfEntryData.getDaysOfMonth()) > 0) {
-                return "";
-            }
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(final float value, final AxisBase axis) {
+                if (Float.compare(value, 0f) <= 0 || Float.compare(value, pdfEntryData.getDaysOfMonth()) > 0) {
+                    return "";
+                }
 
-            return String.valueOf(String.format(Locale.getDefault(), "%.0f", value));
+                return String.format(Locale.getDefault(), "%.0f", value);
+            }
         });
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
@@ -122,11 +126,15 @@ public class PdfExportView extends ConstraintLayout {
 
         final YAxis yAxis = bubbleChart.getAxisLeft();
         final String[] hours = getResources().getStringArray(R.array.weekly_hours);
-        yAxis.setValueFormatter((value, axis) -> {
-            final int round = Math.round(value);
-            final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setValueFormatter(new ValueFormatter() {
 
-            return hours[index + Y_PADDING];
+            @Override
+            public String getAxisLabel(final float value, final AxisBase axis) {
+                final int round = Math.round(value);
+                final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
+
+                return hours[index + Y_PADDING];
+            }
         });
         yAxis.setDrawAxisLine(false);
         yAxis.setDrawGridLines(false);

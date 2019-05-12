@@ -63,7 +63,7 @@ ext {
             discreteScrollView: '1.4.9',
 
             // MpAndroidChart
-            chart             : 'v3.0.3',
+            chart             : 'v3.1.0',
 
             // RootDetection
             rootDetection     : '0.0.7',

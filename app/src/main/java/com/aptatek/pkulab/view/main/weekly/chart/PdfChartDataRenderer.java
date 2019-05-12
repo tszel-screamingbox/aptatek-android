@@ -10,6 +10,7 @@ import android.text.TextPaint;
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
@@ -181,6 +182,7 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
                 final float[] positions = mChart.getTransformer(dataSet.getAxisDependency())
                         .generateTransformedValuesBubble(dataSet, phaseY, mXBounds.min, mXBounds.max);
 
+                final ValueFormatter formatter = dataSet.getValueFormatter();
 
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
                 iconsOffset.x = convertDpToPixel(iconsOffset.x);
@@ -206,8 +208,7 @@ public class PdfChartDataRenderer extends BubbleChartRenderer {
 
                     if (dataSet.isDrawValuesEnabled()) {
                         final float lineHeight = calcTextHeight(mValuePaint, DEMO_TEXT_4_DIGITS);
-                        drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
-                                y + (0.5f * lineHeight), valueTextColor);
+                        drawValue(c, formatter.getBubbleLabel(entry), x, y + (0.5f * lineHeight), valueTextColor);
                     }
 
                     if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
