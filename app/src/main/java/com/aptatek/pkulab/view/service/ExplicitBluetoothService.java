@@ -2,11 +2,11 @@ package com.aptatek.pkulab.view.service;
 
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
@@ -88,11 +88,6 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                 .bluetoothServiceModule(new BluetoothServiceModule())
                 .build();
         bluetoothComponent.inject(this);
-    }
-
-    @Override
-    protected Single<Boolean> shouldStart() {
-        return Single.just(!BluetoothService.isServiceRunning() && !BuildConfig.FLAVOR.equals("mock"));
     }
 
     @Override
