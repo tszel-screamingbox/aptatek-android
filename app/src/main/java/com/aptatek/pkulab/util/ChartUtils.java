@@ -1,9 +1,9 @@
 package com.aptatek.pkulab.util;
 
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import android.util.Pair;
 
 import com.aptatek.pkulab.R;

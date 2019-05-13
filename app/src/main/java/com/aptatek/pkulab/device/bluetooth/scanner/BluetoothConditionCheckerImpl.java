@@ -5,8 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.PermissionChecker;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.PermissionChecker;
 
 import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothConditionChecker;

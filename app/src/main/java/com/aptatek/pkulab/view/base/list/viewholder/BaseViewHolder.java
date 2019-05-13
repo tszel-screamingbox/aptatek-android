@@ -1,8 +1,9 @@
 package com.aptatek.pkulab.view.base.list.viewholder;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Base ViewHolder for list's viewholders

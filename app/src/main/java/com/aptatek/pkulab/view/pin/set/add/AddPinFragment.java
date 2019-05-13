@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.pin.set.add;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.aptatek.pkulab.R;

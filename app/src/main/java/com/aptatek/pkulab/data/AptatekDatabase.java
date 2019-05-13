@@ -1,14 +1,14 @@
 package com.aptatek.pkulab.data;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
-import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.text.SpannableStringBuilder;
+
+import androidx.annotation.NonNull;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
+import androidx.room.migration.Migration;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.aptatek.pkulab.data.dao.ReminderDao;
 import com.aptatek.pkulab.data.dao.ReminderDayDao;
@@ -60,18 +60,11 @@ public abstract class AptatekDatabase extends RoomDatabase {
         }
     };
 
-    private static final Migration MIGRATION_2_3 = new Migration(2,3) {
+    private static final Migration MIGRATION_2_3 = new Migration(2, 3) {
 
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("CREATE TABLE IF NOT EXISTS test_results(`id` TEXT NOT NULL, `readerId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `pkuLevel` REAL NOT NULL, `sick` INTEGER NOT NULL DEFAULT 0, `fasting` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`))");
         }
     };
-
-    public void reKey(final String newKey) {
-        final SupportSQLiteDatabase writableDatabase = getOpenHelper().getWritableDatabase();
-        if (newKey != null && writableDatabase != null) {
-            SafeHelperFactory.rekey(writableDatabase, new SpannableStringBuilder(newKey));
-        }
-    }
 }

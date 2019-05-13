@@ -2,11 +2,11 @@ package com.aptatek.pkulab.view.service;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationManagerCompat;
 
-import com.aptatek.pkulab.BuildConfig;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
+
 import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
@@ -88,11 +88,6 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                 .bluetoothServiceModule(new BluetoothServiceModule())
                 .build();
         bluetoothComponent.inject(this);
-    }
-
-    @Override
-    protected Single<Boolean> shouldStart() {
-        return Single.just(!BluetoothService.isServiceRunning() && !BuildConfig.FLAVOR.equals("mock"));
     }
 
     @Override
@@ -270,7 +265,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
             final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.MissingPermissionError());
             notificationManager.notify(notification.getId(), notification.getNotification());
         } else {
-            final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.BluetoothError(throwable.getMessage()));
+            final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ExplicitBtConnectionError());
             notificationManager.notify(notification.getId(), notification.getNotification());
         }
 

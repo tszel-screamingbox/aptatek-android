@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.view.pin.set.confirm;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.View;
 
 import com.aptatek.pkulab.R;

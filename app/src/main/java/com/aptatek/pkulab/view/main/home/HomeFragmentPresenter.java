@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.main.home;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.format.DateUtils;
 import android.util.Pair;
 
@@ -30,6 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
+import timber.log.Timber;
 
 
 class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
@@ -75,6 +76,8 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
 
         final String unit = pkuValueFormatter.formatFromUnits(preferenceManager.getPkuRangeUnit());
         ifViewAttached(view -> view.updateUnitText(unit));
+
+        watchDbChanges();
     }
 
     void showLastResult() {
@@ -93,7 +96,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 .onErrorReturn(error -> System.currentTimeMillis())
                                 .flatMap(timeStamp -> {
                                     final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, timeStamp);
-                                    return testResultInteractor.listBetween(past, timeStamp);
+                                    return testResultInteractor.listBetween(past, timeStamp).take(1).singleOrError();
                                 }).map(list -> new Pair<>(rangeInfo, list)))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
@@ -112,6 +115,16 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 });
                             }
                         })
+        );
+    }
+
+    private void watchDbChanges() {
+        disposables.add(
+                testResultInteractor.listAll()
+                        .subscribe(
+                                list -> loadData(),
+                                Timber::e
+                        )
         );
     }
 
@@ -176,11 +189,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 ifViewAttached(HomeFragmentView::navigateToTestScreen)
                         )
         );
-    }
-
-    void testContinueFailed() {
-        disposables.add(testInteractor.setTestContinueStatus(false)
-                .subscribe());
     }
 
     void startNewTest() {

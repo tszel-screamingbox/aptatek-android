@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.settings.reminder.adapter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface ReminderSettingsAdapterCallback {
     void onAddReminderClicked(@NonNull ReminderSettingsAdapterItem item);

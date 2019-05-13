@@ -2,8 +2,8 @@ package com.aptatek.pkulab.view.parentalgate.verification;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,6 +15,8 @@ import com.aptatek.pkulab.view.parentalgate.welcome.AgeVerificationResult;
 import com.aptatek.pkulab.view.splash.SplashActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -51,6 +53,11 @@ public class ParentalGateVerificationFragment extends BaseFragment<ParentalGateV
     View btnTryAgain;
 
     private Disposable disposable;
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.emptyList();
+    }
 
     @Override
     public String getTitle() {

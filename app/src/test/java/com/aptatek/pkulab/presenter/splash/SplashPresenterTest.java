@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.presenter.splash;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
@@ -51,6 +52,9 @@ public class SplashPresenterTest {
     @Mock
     SplashActivityView view;
 
+    @Mock
+    File dbFile;
+
     private SplashActivityPresenter presenter;
 
     /**
@@ -68,7 +72,7 @@ public class SplashPresenterTest {
 
             @Override
             public Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run, true);
             }
         };
 
@@ -92,8 +96,10 @@ public class SplashPresenterTest {
         MockitoAnnotations.initMocks(this);
         when(reminderInteractor.initializeDays()).thenReturn(Completable.complete());
         when(deviceHelper.isRooted()).thenReturn(false);
+        when(dbFile.exists()).thenReturn(true);
+        when(preferenceManager.isDbEncrpytedWithPin()).thenReturn(true);
 
-        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper);
+        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper, dbFile);
         presenter.attachView(view);
     }
 

@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.testresult;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 public class TestResultInteractor {
@@ -21,12 +23,12 @@ public class TestResultInteractor {
 
     // TODO remove this as soon as the chart on the Main screen uses pagination to get the data...
     @NonNull
-    public Single<List<TestResult>> listAll() {
+    public Flowable<List<TestResult>> listAll() {
         return dataRepository.listAll();
     }
 
     @NonNull
-    public Single<List<TestResult>> listBetween(final long start, final long end) {
+    public Flowable<List<TestResult>> listBetween(final long start, final long end) {
         return dataRepository.listBetween(start, end);
     }
 

@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.settings.basic;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 import com.aptatek.pkulab.R;
 

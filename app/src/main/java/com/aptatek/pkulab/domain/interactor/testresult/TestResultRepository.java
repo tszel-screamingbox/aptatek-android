@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.testresult;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
 import com.aptatek.pkulab.domain.base.Mapper;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
@@ -40,22 +42,25 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
 
     // TODO remove as soon as pagination is implemented
     @NonNull
-    public Single<List<TestResult>> listAll() {
-        return Single.fromCallable(() -> {
-            if (testResultDataSource.getOldestData() != null) {
-                final long start = getEarliestTimeAtGivenDay(testResultDataSource.getOldestData().getTimestamp());
-                final long end = getLatestTimeAtGivenDay(testResultDataSource.getLatestData().getTimestamp());
-                return testResultDataSource.getDataBetween(start, end);
-            }
+    public Flowable<List<TestResult>> listAll() {
+        return Flowable.fromCallable(() -> testResultDataSource.getOldestData() != null)
+                .flatMap(hasOldestData -> {
+                    if (hasOldestData) {
+                        final long start = getEarliestTimeAtGivenDay(testResultDataSource.getOldestData().getTimestamp());
+                        final long end = getLatestTimeAtGivenDay(testResultDataSource.getLatestData().getTimestamp());
 
-            return Collections.<TestResultDataModel>emptyList();
-        }).map(mapper::mapListToDomain)
+                        return testResultDataSource.getDataBetween(start, end);
+                    } else {
+                        return Flowable.just(Collections.<TestResultDataModel>emptyList());
+                    }
+                })
+                .map(mapper::mapListToDomain)
                 .subscribeOn(Schedulers.io());
     }
 
     @NonNull
-    public Single<List<TestResult>> listBetween(final long start, final long end) {
-        return Single.fromCallable(() -> testResultDataSource.getDataBetween(start, end))
+    public Flowable<List<TestResult>> listBetween(final long start, final long end) {
+        return testResultDataSource.getDataBetween(start, end)
                 .map(mapper::mapListToDomain)
                 .subscribeOn(Schedulers.io());
     }
@@ -63,6 +68,13 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
     @NonNull
     public Single<TestResult> getLatest() {
         return Single.fromCallable(testResultDataSource::getLatestData)
+                .map(mapper::mapToDomain)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Single<TestResult> getLatestFromReader(@NonNull final String readerId) {
+        return Single.fromCallable(() -> testResultDataSource.getLatestFromReader(readerId))
                 .map(mapper::mapToDomain)
                 .subscribeOn(Schedulers.io());
     }

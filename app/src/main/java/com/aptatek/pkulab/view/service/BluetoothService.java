@@ -1,8 +1,8 @@
 package com.aptatek.pkulab.view.service;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
 import android.text.TextUtils;
 
 import com.aptatek.pkulab.AptatekApplication;
@@ -24,7 +24,6 @@ import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
 
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -89,18 +88,17 @@ public class BluetoothService extends BaseForegroundService {
     }
 
     @Override
-    protected Single<Boolean> shouldStart() {
-        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()))
-                .map(shouldStart -> shouldStart && !BuildConfig.FLAVOR.equals("mock"));
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_NOT_STICKY;
     }
 
     @Override
     protected void startForeground() {
+        if(TextUtils.isEmpty(preferenceManager.getPairedDevice()) || BuildConfig.FLAVOR.equals("mock")) {
+            stopSelf();
+            return;
+        }
+
         final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectingToDevice());
         startForeground(notification.getId(), notification.getNotification());
 
@@ -135,8 +133,7 @@ public class BluetoothService extends BaseForegroundService {
 
     private void showConnectedNotification() {
         disposables.add(
-                readerInteractor.getBatteryLevel()
-                        .repeatWhen(objectFlowable -> objectFlowable.delay(1, TimeUnit.MINUTES))
+                readerInteractor.batteryLevelUpdates()
                         .takeUntil(readerInteractor.getReaderConnectionEvents()
                                 .map(ConnectionEvent::getConnectionState)
                                 .filter(state -> state == ConnectionState.DISCONNECTING || state == ConnectionState.DISCONNECTED)
@@ -286,7 +283,7 @@ public class BluetoothService extends BaseForegroundService {
                             final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.SyncingData());
                             notificationManager.notify(notification.getId(), notification.getNotification());
                         })
-                        .flatMapSingle(ignored -> readerInteractor.syncResults())
+                        .flatMapSingle(ignored -> readerInteractor.syncResultsAfterLatest())
                         .singleOrError()
                         .subscribe(ignored -> {
                             Timber.d("syncData successfully saved %d results", ignored.size());

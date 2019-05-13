@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.test;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
@@ -34,8 +34,8 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
         this.deviceHelper = deviceHelper;
     }
 
-    void checkBattery() {
-        if (deviceHelper.isBatteryLow()) {
+    void checkBattery(final TestScreens screen) {
+        if (deviceHelper.isBatteryLow() && !(screen == TestScreens.CONNECT_IT_ALL || screen == TestScreens.TESTING || screen == TestScreens.CANCEL)) {
             ifViewAttached(TestActivityView::showBatteryAlert);
         }
     }

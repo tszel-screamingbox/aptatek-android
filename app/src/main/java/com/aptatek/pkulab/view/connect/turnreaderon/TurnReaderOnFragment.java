@@ -4,10 +4,10 @@ import android.annotation.TargetApi;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 
@@ -27,6 +27,7 @@ import com.mklimek.frameviedoview.FrameVideoViewListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -54,6 +55,11 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     public String getTitle() {
         return null;
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.emptyList();
     }
 
     @Override

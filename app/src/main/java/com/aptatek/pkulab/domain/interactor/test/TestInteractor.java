@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.domain.interactor.test;
 
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.util.Constants;

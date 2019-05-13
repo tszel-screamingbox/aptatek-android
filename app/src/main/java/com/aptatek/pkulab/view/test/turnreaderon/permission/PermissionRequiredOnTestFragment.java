@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.test.turnreaderon.permission;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredFragment;

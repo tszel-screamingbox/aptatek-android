@@ -1,7 +1,8 @@
 package com.aptatek.pkulab.device.notifications;
 
 import android.app.Notification;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 public interface BluetoothNotificationFactory {
 
@@ -51,6 +52,10 @@ public interface BluetoothNotificationFactory {
                     "testId='" + testId + '\'' +
                     '}';
         }
+    }
+
+    class ExplicitBtConnectionError implements NotificationData {
+
     }
 
     class BluetoothError implements NotificationData {

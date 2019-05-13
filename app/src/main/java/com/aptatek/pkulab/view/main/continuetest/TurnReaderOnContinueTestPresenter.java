@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.main.continuetest;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
@@ -86,7 +86,7 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
     }
 
     void syncData() {
-        disposables.add(readerInteractor.syncResults()
+        disposables.add(readerInteractor.syncAllResults()
                 .subscribe(
                         ignored -> checkLastMeasure(),
                         error -> ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT))

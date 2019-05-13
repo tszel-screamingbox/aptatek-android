@@ -1,10 +1,12 @@
 package com.aptatek.pkulab.view.main.home.adapter.daily;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.widget.RangeInfoRowView;
+import com.uxcam.UXCam;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +24,7 @@ public class DailyResultViewHolder extends RecyclerView.ViewHolder {
     DailyResultViewHolder(final View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+        UXCam.occludeSensitiveView(rangeInfoRowView);
     }
 
     public void bind(final DailyResultAdapterItem item) {

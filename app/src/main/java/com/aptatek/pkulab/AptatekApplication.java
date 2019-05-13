@@ -1,18 +1,22 @@
 package com.aptatek.pkulab;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.OnLifecycleEvent;
-import android.arch.lifecycle.ProcessLifecycleOwner;
 import android.content.Context;
 import android.content.Intent;
-import android.support.multidex.MultiDexApplication;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatDelegate;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.multidex.MultiDexApplication;
 
 import com.aptatek.pkulab.device.AlarmManager;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
+import com.aptatek.pkulab.domain.interactor.wetting.WettingDataSource;
+import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.DaggerApplicationComponent;
 import com.aptatek.pkulab.injection.module.ApplicationModule;
@@ -47,6 +51,8 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
     Timber.Tree timber;
     @Inject
     PreferenceManager preferenceManager;
+    @Inject
+    WettingDataSource wettingDataSource;
 
     private Disposable killServiceTimer = null;
 
@@ -100,18 +106,9 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         inForeground = false;
         lastForegroundTime = System.currentTimeMillis();
         Timber.d("Process.Lifecycle: background");
-        startService(new Intent(this, WettingForegroundService.class));
 
-        try {
-            final TestScreens testStatus = preferenceManager.getTestStatus();
-            if (testStatus == TestScreens.TESTING) {
-                startService(ExplicitBluetoothService.createForTestComplete(this));
-            } else if (testStatus == TestScreens.TURN_READER_ON) {
-                startService(ExplicitBluetoothService.createForDeviceReady(this));
-            }
-        } catch (Exception e) {
-            // ignore
-        }
+        startWettingServiceWhenPossible();
+        startExplicitBTServiceWhenPossible();
 
         disposeKillServiceTimer();
         killServiceTimer = Countdown.countdown(Constants.BT_SERVICE_IDLE_TIMEOUT, ignore -> true, ignore -> ignore)
@@ -125,6 +122,30 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
                         Timber::e
                 );
 
+    }
+
+    private void startExplicitBTServiceWhenPossible() {
+        if (BluetoothService.isServiceRunning() || BuildConfig.FLAVOR.equals("mock")) {
+            return;
+        }
+
+        try {
+            final TestScreens testStatus = preferenceManager.getTestStatus();
+            if (testStatus == TestScreens.TESTING) {
+                ContextCompat.startForegroundService(this, ExplicitBluetoothService.createForTestComplete(this));
+            } else if (testStatus == TestScreens.TURN_READER_ON) {
+                ContextCompat.startForegroundService(this, ExplicitBluetoothService.createForDeviceReady(this));
+            }
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
+    private void startWettingServiceWhenPossible() {
+        final WettingStatus wettingStatus = wettingDataSource.getWettingStatus();
+        if (wettingStatus == WettingStatus.RUNNING) {
+            ContextCompat.startForegroundService(this, new Intent(this, WettingForegroundService.class));
+        }
     }
 
     private void disposeKillServiceTimer() {

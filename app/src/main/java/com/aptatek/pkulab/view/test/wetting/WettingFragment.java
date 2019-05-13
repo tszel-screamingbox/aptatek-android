@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.test.wetting;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
@@ -48,6 +48,10 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
 
     @Override
     public boolean onNextPressed() {
+        if (BuildConfig.FLAVOR.equals("prod")) {
+            return true;
+        }
+
         final AlertDialogModel model = AlertDialogModel.builder()
                 .setTitle(getString(R.string.test_wetting_alert_title))
                 .setMessage(getString(R.string.test_wetting_alert_message))

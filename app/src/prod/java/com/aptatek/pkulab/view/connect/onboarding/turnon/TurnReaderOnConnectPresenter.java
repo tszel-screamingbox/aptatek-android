@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.connect.onboarding.turnon;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
@@ -73,10 +73,10 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
 
     public void syncData() {
         disposeDisposable();
-        disposable = readerInteractor.syncResults()
+        disposable = readerInteractor.syncResultsAfterLatest()
                 .subscribe(
                         ignored -> ifViewAttached(TurnReaderOnConnectView::navigateToHome),
-                        error -> Timber.d("Error while running syncResults: %s", error)
+                        error -> Timber.d("Error while running syncAllResults: %s", error)
                 );
     }
 

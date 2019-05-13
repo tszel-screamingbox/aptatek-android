@@ -6,8 +6,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
@@ -79,11 +80,22 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         } else if (notificationData instanceof MultipleReadersDiscovered) {
             notification = createMultipleReadersNotification(((MultipleReadersDiscovered) notificationData));
             id = Constants.BT_MULTIPLE_READERS_NOTIFICATION_ID;
+        }else if (notificationData instanceof ExplicitBtConnectionError) {
+            notification = createExplicitBtConnectionErrorNotification();
+            id = Constants.BT_ERROR_NOTIFICATION_ID;
         } else {
             throw new IllegalArgumentException("unhandled notificationData received: " + notificationData);
         }
 
         return new DisplayNotification(id, notification);
+    }
+
+    private Notification createExplicitBtConnectionErrorNotification() {
+        return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
+                .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_explicit_error_title))
+                .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_explicit_error_message)))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarter(context), PendingIntent.FLAG_CANCEL_CURRENT))
+                .build();
     }
 
     private Notification createMultipleReadersNotification(final MultipleReadersDiscovered notificationData) {

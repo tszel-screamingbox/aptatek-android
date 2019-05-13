@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.data.generator;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.model.PkuLevel;

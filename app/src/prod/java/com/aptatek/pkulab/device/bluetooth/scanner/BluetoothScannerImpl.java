@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.device.bluetooth.scanner;
 
 import android.bluetooth.BluetoothDevice;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
@@ -101,9 +101,14 @@ public class BluetoothScannerImpl implements BluetoothScanner {
         return Completable.fromAction(() -> {
             if (scanning) {
                 synchronized (BluetoothScannerImpl.class) {
-                    bluetoothLeScanner.stopScan(scanCallback);
-                    scanning = false;
-                    scanningProcessor.onNext(false);
+                    try {
+                        bluetoothLeScanner.stopScan(scanCallback);
+                    } catch (Exception ex) {
+                        Timber.e(ex);
+                    } finally {
+                        scanning = false;
+                        scanningProcessor.onNext(false);
+                    }
                 }
             }
         });

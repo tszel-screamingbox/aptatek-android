@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.view.connect.onboarding.permission;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectReaderScreen;

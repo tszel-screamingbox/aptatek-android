@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.manager.reader;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
@@ -34,7 +35,9 @@ public interface ReaderManager {
 
     Single<TestResult> getResult(@NonNull String id);
 
-    Single<List<TestResult>> syncResults();
+    Single<List<TestResult>> syncAllResults();
+
+    Single<List<TestResult>> syncResultsAfter(@NonNull String lastResultId);
 
     Single<Error> getError();
 
@@ -48,5 +51,7 @@ public interface ReaderManager {
     Flowable<WorkflowState> workflowState();
 
     Flowable<TestProgress> testProgress();
+
+    Flowable<Integer> batteryLevel();
 
 }

@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.splash;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.aptatek.pkulab.BuildConfig;
@@ -10,9 +10,11 @@ import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,16 +28,19 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
     private final KeyStoreManager keyStoreManager;
     private final PreferenceManager preferenceManager;
     private final DeviceHelper deviceHelper;
+    private final File dbFile;
 
     private CompositeDisposable compositeDisposable;
 
     @Inject
     public SplashActivityPresenter(final KeyStoreManager keyStoreManager,
                                    final PreferenceManager preferenceManager,
-                                   final DeviceHelper deviceHelper) {
+                                   final DeviceHelper deviceHelper,
+                                   final @Named("databaseFile") File dbFile) {
         this.keyStoreManager = keyStoreManager;
         this.preferenceManager = preferenceManager;
         this.deviceHelper = deviceHelper;
+        this.dbFile = dbFile;
     }
 
     @Override
@@ -56,6 +61,12 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
                         return;
                     }
 
+                    if (!preferenceManager.isDbEncrpytedWithPin()) {
+                        // delete database first
+                        dbFile.delete();
+                        preferenceManager.setPrefDbEncryptedWithPin();
+                    }
+
                     switchToNextActivity();
                 })));
     }
@@ -66,7 +77,7 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
                 attachedView.onParentalGateShouldLoad();
             } else if (!keyStoreManager.aliasExists()) {
                 attachedView.onSetPinActivityShouldLoad();
-            } else if (BuildConfig.FLAVOR.equals("prod") && TextUtils.isEmpty(preferenceManager.getPairedDevice())) {
+            } else if (BuildConfig.FLAVOR.equals("prod") && (TextUtils.isEmpty(preferenceManager.getPairedDevice()) || !dbFile.exists())) {
                 attachedView.onConnectReaderShouldLoad();
             } else {
                 attachedView.onRequestPinActivityShouldLoad();

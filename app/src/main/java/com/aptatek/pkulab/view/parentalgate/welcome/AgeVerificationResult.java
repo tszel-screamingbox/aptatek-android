@@ -1,8 +1,8 @@
 package com.aptatek.pkulab.view.parentalgate.welcome;
 
 import android.os.Parcelable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
 

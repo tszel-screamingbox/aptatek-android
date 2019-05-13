@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.presenter.test.wetting;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
@@ -69,7 +69,7 @@ public class WettingPresenterTest {
 
             @Override
             public Worker createWorker() {
-                return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+                return new ExecutorScheduler.ExecutorWorker(Runnable::run, true);
             }
         };
 

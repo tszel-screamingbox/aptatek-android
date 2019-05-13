@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 import com.google.auto.value.AutoValue;
 

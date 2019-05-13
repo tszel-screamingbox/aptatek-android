@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;

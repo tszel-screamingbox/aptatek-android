@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.view.test.result;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.StringRes;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
@@ -55,6 +55,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
         disposable =
                 clearTestState()
                         .andThen(testInteractor.cancelTestNotifications())
+                        .andThen(testInteractor.setTestContinueStatus(false))
                         .andThen(Single.zip(
                                 rangeInteractor.getInfo(),
                                 testResultInteractor.getById(testId).map(TestResult::getPkuLevel),
@@ -69,6 +70,10 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                         )
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)));
+    }
+
+    public void resetTestScreen() {
+        testInteractor.resetTest().subscribe();
     }
 
     @Override

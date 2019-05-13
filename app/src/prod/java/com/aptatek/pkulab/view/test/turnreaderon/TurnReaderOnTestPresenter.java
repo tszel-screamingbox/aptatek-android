@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.test.turnreaderon;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;

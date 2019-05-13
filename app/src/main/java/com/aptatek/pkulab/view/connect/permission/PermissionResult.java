@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.connect.permission;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
 

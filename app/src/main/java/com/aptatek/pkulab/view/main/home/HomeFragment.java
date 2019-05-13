@@ -2,16 +2,17 @@ package com.aptatek.pkulab.view.main.home;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.Group;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
@@ -33,11 +34,13 @@ import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
+import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -92,6 +95,15 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @BindView(R.id.unitText)
     TextView unitTextView;
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        final List<View> list = new ArrayList<>();
+        list.add(unitTextView);
+        list.add(bubbleScrollView);
+        list.add(mainHeaderView.getSubtitleTextView());
+        return list;
+    }
 
     @Override
     public String getTitle() {
@@ -308,7 +320,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                 final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
                         TestContinueDialogModel.incorrectResultDialogModelCreate(requireContext()),
                         decision -> {
-                            presenter.testContinueFailed();
+                            getBaseActivity().launchActivity(new Intent(requireContext(), DisposeActivity.class));
                         });
                 dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {

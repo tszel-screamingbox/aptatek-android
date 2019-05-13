@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.interactor.wetting;
 
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 public class WettingError extends Throwable {
 

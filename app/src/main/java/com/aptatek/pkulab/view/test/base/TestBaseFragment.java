@@ -3,9 +3,9 @@ package com.aptatek.pkulab.view.test.base;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import android.view.View;
 
 import com.aptatek.pkulab.R;
@@ -20,6 +20,9 @@ import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
 import com.mklimek.frameviedoview.FrameVideoViewListener;
+
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -41,6 +44,11 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
         super.onCreate(savedInstanceState);
 
         setRetainInstance(false);
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.emptyList();
     }
 
     @Override

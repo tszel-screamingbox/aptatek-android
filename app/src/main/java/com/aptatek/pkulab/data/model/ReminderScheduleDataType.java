@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.data.model;
 
-import android.arch.persistence.room.TypeConverters;
+
+import androidx.room.TypeConverters;
 
 import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
 

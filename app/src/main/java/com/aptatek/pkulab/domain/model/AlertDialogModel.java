@@ -1,10 +1,11 @@
 package com.aptatek.pkulab.domain.model;
 
 import android.os.Parcelable;
-import android.support.annotation.ColorRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
+
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 
 import com.aptatek.pkulab.R;
 import com.google.auto.value.AutoValue;

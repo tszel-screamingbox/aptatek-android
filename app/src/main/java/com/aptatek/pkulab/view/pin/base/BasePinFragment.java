@@ -1,9 +1,6 @@
 package com.aptatek.pkulab.view.pin.base;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +8,18 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.data.PinCode;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.widget.HeaderView;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import activitystarter.ActivityStarter;
@@ -33,6 +36,9 @@ public abstract class BasePinFragment extends BaseFragment {
 
     private String pin = "";
 
+    @BindView(R.id.keypad)
+    View keypad;
+
     @BindView(R.id.pinLayout)
     protected ConstraintLayout pinCircleConstrainLayout;
 
@@ -41,7 +47,6 @@ public abstract class BasePinFragment extends BaseFragment {
 
     @BindView(R.id.messageTextView)
     protected TextView messageTextView;
-
 
     protected abstract void finishedTyping(PinCode pinCode);
 
@@ -52,6 +57,11 @@ public abstract class BasePinFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         ActivityStarter.fill(this, savedInstanceState);
         return view;
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.singletonList(keypad);
     }
 
     protected void fillCircle(final int resId, final AnimationCallback callback) {

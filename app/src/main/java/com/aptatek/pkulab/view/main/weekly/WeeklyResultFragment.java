@@ -3,8 +3,8 @@ package com.aptatek.pkulab.view.main.weekly;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.pdf.PdfDocument;
-import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +28,7 @@ import com.aptatek.pkulab.widget.PdfExportView;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,6 +69,15 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     TextView tvUnit;
 
     private SwipeAdapter swipeAdapter;
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        final List<View> list = new ArrayList<>();
+        list.add(tvUnit);
+        list.add(dateTextView);
+        list.add(chartViewPager);
+        return list;
+    }
 
     @Override
     public String getTitle() {

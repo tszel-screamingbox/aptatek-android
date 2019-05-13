@@ -3,18 +3,18 @@ package com.aptatek.pkulab.view.test;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.BuildConfig;
@@ -39,6 +39,7 @@ import com.aptatek.pkulab.view.test.testing.TestingFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
 import com.aptatek.pkulab.widget.BatteryView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.rd.PageIndicatorView;
 
 import javax.inject.Inject;
@@ -48,12 +49,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
-import static android.support.design.widget.BottomSheetBehavior.STATE_COLLAPSED;
-import static android.support.design.widget.BottomSheetBehavior.STATE_EXPANDED;
-import static android.support.design.widget.BottomSheetBehavior.from;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.from;
 
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
         implements TestActivityView {
@@ -99,7 +100,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         ButterKnife.bind(this);
 
         screenPagerIndicator.setDynamicCount(false);
-        screenPagerIndicator.setCount(TestScreens.values().length - 1); // Cancel screen is ignored
+        screenPagerIndicator.setCount(TestScreens.showDotFor().size());
     }
 
     @Override
@@ -233,8 +234,8 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         }
 
         showFragment(fragment, addToBackStack, withAnimation);
-        screenPagerIndicator.setSelection(screen.ordinal());
-        presenter.checkBattery();
+        screenPagerIndicator.setSelection(Math.min(screen.ordinal(), TestScreens.showDotFor().size()));
+        presenter.checkBattery(screen);
     }
 
     private void showFragment(final Fragment fragment, final boolean addToBackStack, final boolean withAnimation) {
@@ -289,7 +290,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void showPreviousScreen() {
         onBackPressedHere();
-        screenPagerIndicator.setSelection(getCurrentScreen().ordinal());
+        screenPagerIndicator.setSelection(Math.min(getCurrentScreen().ordinal(), TestScreens.showDotFor().size()));
     }
 
     @Override

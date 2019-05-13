@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.common.BaseConnectView;

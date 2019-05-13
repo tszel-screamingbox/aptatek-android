@@ -3,9 +3,9 @@ package com.aptatek.pkulab.view.test.result;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
@@ -17,6 +17,7 @@ import com.aptatek.pkulab.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.widget.BubbleTextView;
 import com.aptatek.pkulab.widget.HeaderView;
+import com.uxcam.UXCam;
 
 import javax.inject.Inject;
 
@@ -67,7 +68,7 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         setContentView(R.layout.activity_test_result);
 
         ActivityStarter.fill(this, savedInstanceState);
-
+        UXCam.occludeSensitiveView(bubbleTextView);
         ButterKnife.bind(this);
     }
 
@@ -76,6 +77,7 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         super.onStart();
 
         presenter.initUi(resultId);
+        presenter.resetTestScreen();
     }
 
     @Override

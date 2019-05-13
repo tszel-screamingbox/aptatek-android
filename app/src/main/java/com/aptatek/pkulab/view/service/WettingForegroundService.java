@@ -1,11 +1,10 @@
 package com.aptatek.pkulab.view.service;
 
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.aptatek.pkulab.device.notifications.WettingNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingNotRunningError;
-import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.model.Countdown;
 import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.test.DaggerTestServiceComponent;
@@ -16,7 +15,6 @@ import com.aptatek.pkulab.util.Constants;
 
 import javax.inject.Inject;
 
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -40,12 +38,6 @@ public class WettingForegroundService extends BaseForegroundService {
                 .serviceModule(new ServiceModule(this))
                 .build();
         serviceComponent.inject(this);
-    }
-
-    @Override
-    protected Single<Boolean> shouldStart() {
-        return wettingInteractor.getWettingStatus()
-                .map(wettingStatus -> WettingStatus.RUNNING == wettingStatus);
     }
 
     @Override

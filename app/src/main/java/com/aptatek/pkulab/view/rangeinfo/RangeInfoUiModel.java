@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.rangeinfo;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
 

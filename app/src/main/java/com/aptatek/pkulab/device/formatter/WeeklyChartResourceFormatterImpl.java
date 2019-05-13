@@ -1,7 +1,7 @@
 package com.aptatek.pkulab.device.formatter;
 
-import android.support.annotation.StringRes;
-import android.support.v4.util.Preconditions;
+import androidx.annotation.StringRes;
+import androidx.core.util.Preconditions;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;

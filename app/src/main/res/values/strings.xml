@@ -344,6 +344,8 @@
     <string name="bluetooth.notification.permission.message">Tap to provide required permissions</string>
     <string name="bluetooth.notification.multiplereaders.title">Multiple Reader devices found</string>
     <string name="bluetooth.notification.multiplereaders.message">Tap to select one</string>
+    <string name="bluetooth.notification.explicit.error.title">Cannot connect to Reader</string>
+    <string name="bluetooth.notification.explicit.error.message">Please tap to retry</string>
 
     <string name="low.device.storage.detected.title">Phone Storage Full</string>
     <string name="low.device.storage.detected.description">The memory on your phone is almost full - unable to store more Phe data in this application until you remove some other content from your phone to make more storage space available.</string>

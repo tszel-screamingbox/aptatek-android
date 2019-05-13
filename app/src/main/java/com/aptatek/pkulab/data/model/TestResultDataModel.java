@@ -1,9 +1,10 @@
 package com.aptatek.pkulab.data.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
 import com.aptatek.pkulab.domain.model.PkuLevel;

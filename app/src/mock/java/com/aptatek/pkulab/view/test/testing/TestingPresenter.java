@@ -28,6 +28,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private final ReaderInteractor readerInteractor;
     private CompositeDisposable disposables;
+    private String generatedResultId;
 
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
@@ -47,7 +48,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .map(elapsed -> (int) (elapsed / (float) TEST_PERIOD * 100))
                         .flatMap(percent -> {
                             if (percent == 100) {
-                                return readerInteractor.getResult(UUID.randomUUID().toString())
+                                generatedResultId = UUID.randomUUID().toString();
+                                return readerInteractor.getResult(generatedResultId)
                                         .toFlowable()
                                         .flatMap(result -> readerInteractor.saveResult(result)
                                                 .andThen(Flowable.just(percent)));
@@ -59,7 +61,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .subscribe(percent -> ifViewAttached(attachedView -> {
                             attachedView.setProgressPercentage(percent);
                             if (percent == 100) {
-                                attachedView.onTestFinished("whatever");
+                                attachedView.onTestFinished(generatedResultId);
                             }
                         }), Timber::e)
         );

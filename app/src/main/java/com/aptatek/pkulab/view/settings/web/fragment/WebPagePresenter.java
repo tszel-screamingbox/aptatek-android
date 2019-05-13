@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.view.settings.web.fragment;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
@@ -111,6 +111,8 @@ public class WebPagePresenter extends MvpBasePresenter<WebPageView> {
 
     private Single<Attachment> generateTestResultsAttachment() {
         return testResultInteractor.listAll()
+                .take(1)
+                .singleOrError()
                 .subscribeOn(Schedulers.computation())
                 .flatMap(results ->
                         csvExport.generateAttachment(results, weeklyChartResourceFormatter.getFormattedCsvFileName())

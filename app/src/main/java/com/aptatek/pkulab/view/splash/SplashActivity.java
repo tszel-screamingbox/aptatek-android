@@ -2,11 +2,13 @@ package com.aptatek.pkulab.view.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+
+import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
@@ -17,6 +19,7 @@ import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.parentalgate.ParentalGateActivity;
 import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.pkulab.view.pin.set.SetPinHostActivity;
+import com.uxcam.UXCam;
 
 import javax.inject.Inject;
 
@@ -40,6 +43,10 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
+
+        if (BuildConfig.FLAVOR.equals("prod")) {
+            UXCam.startWithKey(BuildConfig.UXCAM_KEY);
+        }
     }
 
     @Override

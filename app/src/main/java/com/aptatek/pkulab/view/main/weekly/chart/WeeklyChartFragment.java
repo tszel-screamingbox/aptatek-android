@@ -2,8 +2,8 @@ package com.aptatek.pkulab.view.main.weekly.chart;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.res.ResourcesCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import android.view.View;
 
 import com.aptatek.pkulab.R;
@@ -20,6 +20,8 @@ import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -58,6 +60,11 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityStarter.fill(this, savedInstanceState);
+    }
+
+    @Override
+    protected List<View> sensitiveViewList() {
+        return Collections.singletonList(weeklyBubbleChart);
     }
 
     @Override

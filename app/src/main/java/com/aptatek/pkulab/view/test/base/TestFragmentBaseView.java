@@ -1,8 +1,8 @@
 package com.aptatek.pkulab.view.test.base;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
