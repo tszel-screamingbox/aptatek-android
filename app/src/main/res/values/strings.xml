@@ -308,7 +308,7 @@
     <string name="pdf.export.last.month.file.name">Last month Phe history - %1$s.pdf</string>
     <string name="pdf.export.last.three.month.file.name">Last 3 months Phe history - %1$s.pdf</string>
     <string name="pdf.export.last.six.month.file.name">Last 6 months Phe history - %1$s.pdf</string>
-    <string name="pdf.export.last.year.file.name">Last Year Phe history - %1$s.pdf</string>
+    <string name="pdf.export.last.year.file.name">All Phe history - %1$s.pdf</string>
     <string name="pdf.export.subtitle.dateformat">MMMM yyyy</string>
     <string name="pdf.export.file.name.dateformat">MM.dd.yyyy</string>
 
@@ -349,11 +349,11 @@
 
     <string name="low.device.storage.detected.title">Phone Storage Full</string>
     <string name="low.device.storage.detected.description">The memory on your phone is almost full - unable to store more Phe data in this application until you remove some other content from your phone to make more storage space available.</string>
+    <string name="pdf.export.dialog.all">Export All</string>
     <string name="pdf.export.dialog.title">Export Results</string>
     <string name="pdf.export.dialog.last.month">Last Month</string>
     <string name="pdf.export.dialog.last.three.months">Last 3 Months</string>
     <string name="pdf.export.dialog.last.half.year">Last 6 Months</string>
-    <string name="pdf.export.dialog.last.year">Last Year</string>
 
     <string name="faq.report.issue.title">Report Issue</string>
     <string name="faq.report.issue.data.corruption">Data Corruption</string>
