@@ -43,7 +43,7 @@ ext {
             crashlytics       : '2.9.9',
 
             // UX Cam
-            uxcam               : '3.0.7@aar',
+            uxcam               : '3.0.9@aar',
 
             // AutoValue
             autoValue         : '1.6.5',
