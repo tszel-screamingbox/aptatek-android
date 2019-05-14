@@ -251,7 +251,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void onIntervalSelected(@NonNull final PdfExportInterval pdfExportInterval, @NonNull final PkuLevelUnits units) {
-        presenter.getPdfChartData(pdfExportInterval);
+        presenter.getPdfChartData(pdfExportInterval,  units);
     }
 
     @Override

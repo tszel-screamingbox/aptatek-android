@@ -121,7 +121,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     }
 
     // TODO should not get ALL data at once...
-    public void loadValidWeeks() {
+    void loadValidWeeks() {
         disposables.add(testResultInteractor.listAll()
                 .take(1)
                 .map(testResults -> {
@@ -193,7 +193,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                 }));
     }
 
-    void getPdfChartData(final PdfExportInterval pdfExportInterval) {
+    void getPdfChartData(final PdfExportInterval pdfExportInterval, final PkuLevelUnits units) {
         final List<Single<PdfEntryData>> singles = new ArrayList<>();
 
         for (int i = 0; i < getPdfExportIntervalInMonth(pdfExportInterval); i++) {
@@ -201,7 +201,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
             final long start = TimeHelper.getEarliestTimeAtGivenMonth(monthsBeforeTimeStamp);
             final long end = TimeHelper.getLatestTimeAtGivenMonth(monthsBeforeTimeStamp);
 
-            singles.add(generatePdfEntryDataForMonth(pdfExportInterval, i, start, end));
+            singles.add(generatePdfEntryDataForMonth(pdfExportInterval, i, start, end, units));
         }
 
         disposables.add(Single.concat(singles).toList()
@@ -211,20 +211,24 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         -> ifViewAttached(view -> view.onPdfDataReady(pdfEntryDataArrayList))));
     }
 
-    private Single<PdfEntryData> generatePdfEntryDataForMonth(final PdfExportInterval pdfExportInterval, final int monthsBefore, final long start, final long end) {
+    private Single<PdfEntryData> generatePdfEntryDataForMonth(final PdfExportInterval pdfExportInterval,
+                                                              final int monthsBefore,
+                                                              final long start,
+                                                              final long end,
+                                                              final PkuLevelUnits selectedUnit) {
 
         final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
 
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
-                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
+                .setUnit(resourceInteractor.getStringResource(selectedUnit == MICRO_MOL
                         ? R.string.rangeinfo_pkulevel_mmol
                         : R.string.rangeinfo_pkulevel_mg))
-                .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
+                .setNormalFloorValue(selectedUnit == MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
                         : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalFloorValue()))
-                .setNormalCeilValue(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
+                .setNormalCeilValue(selectedUnit == MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalCeilValue())
                         : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalCeilValue()));
 
@@ -352,7 +356,8 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         } else if (pdfExportInterval == LAST_HALF_YEAR) {
             return 6;
         } else {
-            return 12;
+            final TestResult oldest = testResultInteractor.getOldest().blockingGet();
+            return TimeHelper.getMonthsBetween(oldest.getTimestamp(), System.currentTimeMillis());
         }
     }
 
