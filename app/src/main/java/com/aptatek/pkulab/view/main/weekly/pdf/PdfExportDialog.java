@@ -18,8 +18,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.aptatek.pkulab.domain.model.PkuLevelUnits.*;
-import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.*;
+import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MICRO_MOL;
+import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MILLI_GRAM;
+import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.ALL;
+import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_HALF_YEAR;
+import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_MONTH;
+import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_THREE_MONTHS;
 
 public class PdfExportDialog extends DialogFragment {
 
