@@ -114,7 +114,7 @@
     <string name="rangeinfo.message">These ranges show you which Phe levels are lower and healthier, please consult with your clinical team</string>
     <string name="rangeinfo.normal">Increased</string>
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
-    <string name="rangeinfo.pkulevel.mmol">mmol/L</string>
+    <string name="rangeinfo.pkulevel.mmol">umol/L</string>
     <string name="rangeinfo.title">Range Info</string>
     <string name="rangeinfo.to">to</string>
     <string name="rangeinfo.units.format">Units are in %s</string>

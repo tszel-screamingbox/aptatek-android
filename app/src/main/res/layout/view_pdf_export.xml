@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewTitle"
         app:layout_constraintTop_toBottomOf="@+id/imageViewPkuLabIcon"
-        tools:text="All units are in mmol/L" />
+        tools:text="All units are in umol/L" />
 
     <TextView
         android:id="@+id/textViewLowNumber"

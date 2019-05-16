@@ -46,7 +46,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsLowIndicator"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsLowLabel"
-                tools:text="From 0 to 119 mmol/L" />
+                tools:text="From 0 to 119 umol/L" />
 
             <com.aptatek.pkulab.widget.LevelIndicatorView
                 android:id="@+id/rangeSettingsLowIndicator"
@@ -88,7 +88,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsLowIndicator"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsNormalLabel"
-                tools:text="From 0 to 119 mmol/L" />
+                tools:text="From 0 to 119 umol/L" />
 
 
             <TextView
@@ -111,7 +111,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsHighIndicator"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsHighLabel"
-                tools:text="From 361 to 510 mmol/L" />
+                tools:text="From 361 to 510 umol/L" />
 
             <com.aptatek.pkulab.widget.LevelIndicatorView
                 android:id="@+id/rangeSettingsHighIndicator"
@@ -144,7 +144,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/rangeSettingsVeryHighIndicator"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rangeSettingsVeryHighLabel"
-                tools:text="Over 511 mmol/L" />
+                tools:text="Over 511 umol/L" />
 
             <com.aptatek.pkulab.widget.LevelIndicatorView
                 android:id="@+id/rangeSettingsVeryHighIndicator"
