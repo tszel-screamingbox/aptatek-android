@@ -160,9 +160,32 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
-        ifViewAttached(attachedView ->
-                attachedView.scrollToItem(weekList.size()
-                        - (TimeHelper.getWeeksBetween(calendar.getTimeInMillis(), System.currentTimeMillis()) + 1)));
+        disposables.add(testResultInteractor.listAll()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(testResults -> {
+                    int week = -1;
+
+                    for (int i = 0; i < testResults.size(); i++) {
+
+                        final Calendar calendar1 = Calendar.getInstance();
+                        calendar1.setTimeInMillis(testResults.get(i).getTimestamp());
+
+                        if (calendar1.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) && calendar1.get(Calendar.MONTH) == calendar.get(Calendar.MONTH)) {
+                            week = TimeHelper.getWeeksBetween(TimeHelper.getEarliestTimeAtGivenWeek(testResults.get(i).getTimestamp()), TimeHelper.getEarliestTimeAtGivenWeek(System.currentTimeMillis()));
+                            break;
+                        }
+                    }
+
+                    int finalWeek = week;
+                    ifViewAttached(attachedView -> {
+                        if (finalWeek > 0) {
+                            attachedView.scrollToItem(weekList.indexOf(finalWeek - 1));
+                        } else {
+                            attachedView.testNotFound();
+                        }
+                    });
+                }));
     }
 
     public void showMonthPickerDialog() {

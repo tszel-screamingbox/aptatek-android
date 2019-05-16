@@ -28,10 +28,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textViewError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/general.distance.mini"
+        android:layout_marginTop="@dimen/general.distance.mini"
+        android:layout_marginRight="@dimen/general.distance.mini"
+        android:fontFamily="@font/nunito_black"
+        android:text="@string/month.picker.error"
+        android:textColor="@color/applicationPink"
+        android:textSize="@dimen/font.size.medium"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberPickerYear" />
+
+    <TextView
         android:id="@+id/textViewCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/general.distance.20dp"
         android:fontFamily="@font/nunito_black"
         android:text="@string/month.picker.cancel"
         android:textAllCaps="true"
@@ -39,13 +55,13 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/textViewOk"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerYear" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewError" />
 
     <TextView
         android:id="@+id/textViewOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="@dimen/general.distance.20dp"
         android:fontFamily="@font/nunito_black"
         android:text="@string/month.picker.ok"
         android:textAllCaps="true"
@@ -53,5 +69,5 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberPickerYear" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewError" />
 </androidx.constraintlayout.widget.ConstraintLayout>
