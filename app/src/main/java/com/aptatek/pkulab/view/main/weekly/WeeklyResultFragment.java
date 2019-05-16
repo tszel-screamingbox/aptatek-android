@@ -3,15 +3,17 @@ package com.aptatek.pkulab.view.main.weekly;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.pdf.PdfDocument;
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
+import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.chart.ChartModule;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
@@ -119,7 +121,8 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @OnClick(R.id.buttonPdfExport)
     public void onPdfExportClicked() {
-        PdfExportDialog.create(this).show(requireFragmentManager(), PDF_EXPORT_DIALOG_TAG);
+        PdfExportDialog.create(this, presenter.getDefaultUnit())
+                .show(requireFragmentManager(), PDF_EXPORT_DIALOG_TAG);
     }
 
     @OnLongClick(R.id.buttonPdfExport)
@@ -247,8 +250,8 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     }
 
     @Override
-    public void onIntervalSelected(@NonNull PdfExportInterval pdfExportInterval) {
-        presenter.getPdfChartData(pdfExportInterval);
+    public void onIntervalSelected(@NonNull final PdfExportInterval pdfExportInterval, @NonNull final PkuLevelUnits units) {
+        presenter.getPdfChartData(pdfExportInterval,  units);
     }
 
     @Override
