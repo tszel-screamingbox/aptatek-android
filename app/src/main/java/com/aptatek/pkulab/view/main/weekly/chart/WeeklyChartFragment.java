@@ -13,11 +13,13 @@ import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.github.mikephil.charting.charts.BubbleChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -105,11 +107,14 @@ public class WeeklyChartFragment extends BaseFragment implements WeeklyChartView
 
         final YAxis yAxis = weeklyBubbleChart.getAxisLeft();
         final String[] hours = getResources().getStringArray(R.array.weekly_hours);
-        yAxis.setValueFormatter((value, axis) -> {
-            final int round = Math.round(value);
-            final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+                final int round = Math.round(value);
+                final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
 
-            return hours[index + Y_PADDING];
+                return hours[index + Y_PADDING];
+            }
         });
         yAxis.setDrawAxisLine(false);
         yAxis.setDrawGridLines(false);

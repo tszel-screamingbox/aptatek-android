@@ -9,6 +9,7 @@ import android.text.TextPaint;
 import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.dataprovider.BubbleDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.IBubbleDataSet;
@@ -139,7 +140,7 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
 
                 IBubbleDataSet dataSet = dataSets.get(i);
 
-                if (!shouldDrawValues(dataSet))
+                if (!shouldDrawValues(dataSet) || dataSet.getEntryCount() < 1)
                     continue;
 
                 // apply the text-styling defined by the DataSet
@@ -154,6 +155,8 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                         .generateTransformedValuesBubble(dataSet, phaseY, mXBounds.min, mXBounds.max);
 
                 final float alpha = phaseX == 1 ? phaseY : phaseX;
+
+                final ValueFormatter formatter = dataSet.getValueFormatter();
 
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
                 iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
@@ -175,13 +178,13 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                         continue;
 
                     BubbleEntry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
+
                     final float shapeSize = getShapeSize(entry.getSize(), referenceSize);
                     mValuePaint.setTextSize(findOptimalTextSize(shapeSize, DEMO_TEXT_4_DIGITS, mValuePaint.getTextSize()));
 
                     if (dataSet.isDrawValuesEnabled()) {
                         final float lineHeight = Utils.calcTextHeight(mValuePaint, "9999");
-                        drawValue(c, dataSet.getValueFormatter(), entry.getSize(), entry, i, x,
-                                y + (0.5f * lineHeight), valueTextColor);
+                        drawValue(c, formatter.getBubbleLabel(entry), x,y + (0.5f * lineHeight), valueTextColor);
                     }
 
                     if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
