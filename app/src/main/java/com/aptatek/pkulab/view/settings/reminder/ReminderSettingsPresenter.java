@@ -161,16 +161,12 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                 .setReminders(remindersAdapterItems)
                 .setActive(!remindersAdapterItems.isEmpty());
 
-        int index = -1;
         for (int i = 0; i < reminderSettingsAdapterItems.size(); i++) {
             final ReminderSettingsAdapterItem item = reminderSettingsAdapterItems.get(i);
             if (item.uniqueIdentifier().equals(reminderSettingsItem.uniqueIdentifier())) {
-                index = i;
+                reminderSettingsAdapterItems.set(i, builder.build());
                 break;
             }
-        }
-        if (index > -1 && index <= remindersAdapterItems.size() - 1) {
-            reminderSettingsAdapterItems.set(index, builder.build());
         }
 
         ifViewAttached(view -> view.deleteReminder(reminderSettingsAdapterItems));
