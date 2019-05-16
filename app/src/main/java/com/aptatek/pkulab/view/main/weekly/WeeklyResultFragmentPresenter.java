@@ -25,14 +25,11 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
-import ix.IxConsumer;
-import timber.log.Timber;
 
 import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MICRO_MOL;
 
