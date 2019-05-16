@@ -68,7 +68,9 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         final List<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
         final List<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(item.getReminders());
 
-        if (checkReminderExistence(item, hour, minute, reminderScheduleType)) return;
+        if (checkReminderExistence(item, hour, minute)) {
+            return;
+        }
 
         final String id = UUID.randomUUID().toString();
         final String reminderTime = getReminderTime(hour, minute, reminderScheduleType);
@@ -199,8 +201,9 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         final ArrayList<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
         final ArrayList<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(reminderSettingsItem.getReminders());
 
-        if (checkReminderExistence(reminderSettingsItem, hour, minute, reminderScheduleType))
+        if (checkReminderExistence(reminderSettingsItem, hour, minute)) {
             return;
+        }
 
         final RemindersAdapterItem reminderItemCopy = reminderItem.toBuilder()
                 .setHour(hour)
@@ -316,12 +319,10 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
     private boolean checkReminderExistence(@NonNull final ReminderSettingsAdapterItem item,
                                            final int hour,
-                                           final int minute,
-                                           final ReminderScheduleType reminderScheduleType) {
-        for (RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
+                                           final int minute) {
+        for (final RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
             if (remindersAdapterItem.getHour() == hour
-                    && remindersAdapterItem.getMinute() == minute
-                    && remindersAdapterItem.getReminderScheduleType() == reminderScheduleType) {
+                    && remindersAdapterItem.getMinute() == minute) {
                 ifViewAttached(ReminderSettingsView::showAlreadyHasReminderError);
                 return true;
             }
