@@ -29,5 +29,7 @@ interface WeeklyResultFragmentView extends MvpView {
 
     void scrollToItem(int position);
 
-    void testNotFound();
+    void testNotFoundMonthPicker();
+
+    void testNotFoundPdfExport();
 }

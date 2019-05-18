@@ -190,6 +190,10 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void onPdfDataReady(final List<PdfEntryData> data) {
+        if (requireFragmentManager().findFragmentByTag(PDF_EXPORT_DIALOG_TAG) != null) {
+            ((PdfExportDialog) requireFragmentManager().findFragmentByTag(PDF_EXPORT_DIALOG_TAG)).dismiss();
+        }
+
         final PdfDocument document = new PdfDocument();
 
         for (PdfEntryData pdfEntryData : data) {
@@ -251,7 +255,7 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
 
     @Override
     public void onIntervalSelected(@NonNull final PdfExportInterval pdfExportInterval, @NonNull final PkuLevelUnits units) {
-        presenter.getPdfChartData(pdfExportInterval,  units);
+        presenter.getPdfChartData(pdfExportInterval, units);
     }
 
     @Override
@@ -275,9 +279,16 @@ public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFr
     }
 
     @Override
-    public void testNotFound() {
+    public void testNotFoundMonthPicker() {
         if (requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG) != null) {
             ((MonthPickerDialog) requireFragmentManager().findFragmentByTag(MONTH_PICKER_DIALOG_TAG)).testNotFound();
+        }
+    }
+
+    @Override
+    public void testNotFoundPdfExport() {
+        if (requireFragmentManager().findFragmentByTag(PDF_EXPORT_DIALOG_TAG) != null) {
+            ((PdfExportDialog) requireFragmentManager().findFragmentByTag(PDF_EXPORT_DIALOG_TAG)).testNotFound();
         }
     }
 }
