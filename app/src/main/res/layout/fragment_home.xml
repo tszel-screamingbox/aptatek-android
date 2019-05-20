@@ -85,6 +85,7 @@
             android:id="@+id/bigSettingsButton"
             style="@style/Grey.Settings.Button.Big"
             android:layout_width="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
@@ -135,7 +136,7 @@
             android:id="@+id/buttonGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:constraint_referenced_ids="newTestButton, settingsButton, weeklyButton" />
 
         <androidx.constraintlayout.widget.Guideline
