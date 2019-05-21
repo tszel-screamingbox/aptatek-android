@@ -1,17 +1,12 @@
 package com.aptatek.pkulab.view.test.testing;
 
-import android.util.Pair;
-
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
-import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
-import com.aptatek.pkulab.domain.model.reader.ConnectionState;
-import com.aptatek.pkulab.domain.model.reader.TestProgress;
+import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -23,19 +18,14 @@ import timber.log.Timber;
 
 public class TestingPresenter extends TestBasePresenter<TestingView> {
 
-    private static final long BATTERY_REFRESH_PERIOD = 10 * 1000L;
-
     private final ReaderInteractor readerInteractor;
-    private final TestResultInteractor testResultInteractor;
     private CompositeDisposable disposables;
 
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
-                            final ReaderInteractor readerInteractor,
-                            final TestResultInteractor testResultInteractor) {
+                            final ReaderInteractor readerInteractor) {
         super(resourceInteractor);
         this.readerInteractor = readerInteractor;
-        this.testResultInteractor = testResultInteractor;
     }
 
     public void onStart() {
@@ -45,69 +35,79 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                 readerInteractor.getConnectedReader()
                         .toSingle()
                         .toFlowable()
-                        .flatMap(ignored -> readerInteractor.getTestProgress()
-                                .flatMapSingle(testProgress -> testResultInteractor.getById(testProgress.getTestId())
-                                        .map(storedResult -> new Pair<>(testProgress, false))
-                                        .onErrorReturn(t -> new Pair<>(testProgress, true))
-                                )
+                        .flatMap(ignored ->
+                            readerInteractor.getTestProgress()
+                                    .takeUntil(readerInteractor.getWorkflowState()
+                                            .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
+                                            .take(1)
+                                    )
                         )
-                        .takeUntil(pair -> pair.second && pair.first.getPercent() == 100)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .map(pair -> pair.first)
-                        .subscribe(
-                                testProgress -> {
-                                    Timber.d("Test Progress update: %s", testProgress);
-                                    ifViewAttached(attachedView -> attachedView.setProgressPercentage(testProgress.getPercent()));
-                                },
-                                error -> {
-                                    if (error instanceof NoSuchElementException) {
-                                        ifViewAttached(TestingView::showTurnReaderOn);
-                                    } else {
-                                        Timber.d("Unhandled exception during Test: %s", error);
-                                    }
-                                },
-                                () -> Timber.d("Test complete")
-                        )
+                .subscribe(
+                        testProgress -> {
+                            Timber.d("--- Test Progress update: %s", testProgress);
+                            ifViewAttached(attachedView -> attachedView.setProgressPercentage(testProgress.getPercent()));
+                        },
+                        error -> {
+                            if (error instanceof NoSuchElementException) {
+                                ifViewAttached(TestingView::showTurnReaderOn);
+                            } else {
+                                Timber.d("Unhandled exception during Test Progress update: %s", error);
+                            }
+                        },
+                        () -> Timber.d("Test Progress updates complete")
+                )
         );
 
         disposables.add(
-                readerInteractor.getReaderConnectionEvents()
-                        .filter(connectionEvent -> connectionEvent.getConnectionState() == ConnectionState.READY)
-                        .take(1)
-                        .flatMap(ignored -> readerInteractor.batteryLevelUpdates())
-                        .takeUntil(readerInteractor.getTestProgress().filter(testProgress -> testProgress.getPercent() == 100))
+                readerInteractor.getConnectedReader()
+                        .toSingle()
+                        .toFlowable()
+                        .flatMap(ignored ->
+                                readerInteractor.batteryLevelUpdates()
+                                        .takeUntil(readerInteractor.getWorkflowState()
+                                                .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
+                                                .take(1)
+                                        )
+                        )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 batteryPercent -> ifViewAttached(attachedView -> attachedView.setBatteryPercentage(batteryPercent)),
-                                error -> Timber.d("Error during battery level fetch: %s", error)
+                                error -> Timber.d("Error during battery level update: %s", error),
+                                () -> Timber.d("Battery level updates complete")
                         )
         );
 
         disposables.add(
-                readerInteractor.getTestProgress()
-                        .filter(testProgress -> testProgress.getPercent() == 100)
-                        .map(TestProgress::getTestId)
-                        .flatMapSingle(testId -> testResultInteractor.getById(testId)
-                            .map(ignored -> new Pair<>(testId, false))
-                            .onErrorReturnItem(new Pair<>(testId, true))
+                readerInteractor.getConnectedReader()
+                        .toSingle()
+                        .toFlowable()
+                        .flatMap(ignored ->
+                                readerInteractor.getTestProgress()
+                                        .takeUntil(readerInteractor.getWorkflowState()
+                                                .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
+                                                .take(1)
+                                        )
                         )
-                        .filter(pair -> pair.second)
-                        .map(pair -> pair.first)
-                        .take(1)
-                        .delay(1L, TimeUnit.SECONDS)
-                        .flatMapSingle(readerInteractor::getResult)
-                        .flatMapSingle(result -> readerInteractor.saveResult(result)
-                                .andThen(Single.just(result.getId())))
+                        .lastOrError()
+                        .flatMap(testProgress ->
+                                readerInteractor.syncResultsAfterLatest()
+                                .ignoreElement()
+                                .andThen(readerInteractor.getResult(testProgress.getTestId())
+                                        .flatMapCompletable(readerInteractor::saveResult)
+                                )
+                                .andThen(Single.just(testProgress.getTestId()))
+                        )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 resultId -> {
-                                    Timber.d("Result successfully saved");
+                                    Timber.d("Test complete: %s", resultId);
                                     ifViewAttached(attachedView -> attachedView.onTestFinished(resultId));
                                 },
-                                error -> Timber.d("Error while getting latest result: %s", error)
+                                error -> Timber.d("Error while getting test result: %s", error)
                         )
         );
     }
