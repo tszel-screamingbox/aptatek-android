@@ -240,18 +240,18 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                                                               final long end,
                                                               final PkuLevelUnits selectedUnit) {
 
-        final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
+        final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfoInUnit(selectedUnit);
 
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
-                .setUnit(resourceInteractor.getStringResource(selectedUnit == MICRO_MOL
+                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                         ? R.string.rangeinfo_pkulevel_mmol
                         : R.string.rangeinfo_pkulevel_mg))
-                .setNormalFloorValue(selectedUnit == MICRO_MOL
+                .setNormalFloorValue(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
                         : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalFloorValue()))
-                .setNormalCeilValue(selectedUnit == MICRO_MOL
+                .setNormalCeilValue(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                         ? String.valueOf((int) pkuRangeInfo.getNormalCeilValue())
                         : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalCeilValue()));
 
@@ -304,7 +304,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                     return list;
                 })
                 .flatMapIterable(it -> it)
-                .flatMapSingle(pdfChartDataTransformer::transform)
+                .flatMapSingle(testResult -> pdfChartDataTransformer.transform(testResult, pkuRangeInfo))
                 .toList()
                 .flatMap(pdfChartDataTransformer::transformEntries)
                 .map(bubbleDataSet ->
