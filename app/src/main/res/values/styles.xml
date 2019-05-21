@@ -20,6 +20,10 @@
         <item name="fontFamily">@font/nunito_black</item>
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/font.toolbar</item>
+    </style>
+
     <style name="General.Transparent.Button" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:layout_height">@dimen/general.button.height.big</item>
         <item name="android:background">@color/transparent</item>

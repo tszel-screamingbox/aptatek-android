@@ -29,8 +29,8 @@
     <string name="connect.turnon.notsupported.title">Device Not Supported</string>
     <string name="connect.turnon.notsupported.message">Unfortunately the device you are using is not capable to connect to the reader.</string>
     <string name="connect.turnon.no.reader.available">No reader available?</string>
-    <string name="connect.permission.title">Bluetooth &amp; Location are Required</string>
-    <string name="connect.permission.message">For the functioning of this app, you need to allow access to Bluetooth and location in order to be able to find your bluetooth reader for pairing.</string>
+    <string name="connect.permission.title">Location Permission Required</string>
+    <string name="connect.permission.message">In order for the device to connect with your Reader, you’ll need to enable location services. The app does not store or track location.</string>
     <string name="connect.permission.button">Grant Missing Permissions</string>
     <string name="connect.scan.title">Available Readers</string>
     <string name="connect.scan.message">Hold on while we are looking for readers around you</string>
@@ -366,4 +366,5 @@
     <string name="faq.report.issue.email.target">help@pkulabkit.com</string>
     <string name="mont.picker.confirm">Confirm</string>
     <string name="month.picker.error">No Test Results</string>
+    <string name="pdf.export.dialog.noresults">No Results</string>
 </resources>

@@ -194,7 +194,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         if (finalWeek > 0) {
                             attachedView.scrollToItem(weekList.indexOf(finalWeek - 1));
                         } else {
-                            attachedView.testNotFound();
+                            attachedView.testNotFoundMonthPicker();
                         }
                     });
                 }));
@@ -230,8 +230,22 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         disposables.add(Single.concat(singles).toList()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((pdfEntryDataArrayList, throwable)
-                        -> ifViewAttached(view -> view.onPdfDataReady(pdfEntryDataArrayList))));
+                .subscribe((pdfEntryDataArrayList, throwable) -> ifViewAttached(view -> {
+                    boolean isEmpty = true;
+
+                    for (PdfEntryData pdfEntryData : pdfEntryDataArrayList) {
+                        if (pdfEntryData.getBubbleDataSet().getEntryCount() > 0) {
+                            isEmpty = false;
+                            break;
+                        }
+                    }
+
+                    if (isEmpty) {
+                        view.testNotFoundPdfExport();
+                    } else {
+                        view.onPdfDataReady(pdfEntryDataArrayList);
+                    }
+                })));
     }
 
     private Single<PdfEntryData> generatePdfEntryDataForMonth(final PdfExportInterval pdfExportInterval,

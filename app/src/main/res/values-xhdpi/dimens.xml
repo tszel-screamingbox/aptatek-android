@@ -98,6 +98,7 @@
 
     <dimen name="font.rangeinfo">42sp</dimen>
     <dimen name="font.test">24sp</dimen>
+    <dimen name="font.toolbar">20sp</dimen>
 
     <dimen name="font.size.badge">36sp</dimen>
     <dimen name="font.size.weekly.subtitle">21sp</dimen>

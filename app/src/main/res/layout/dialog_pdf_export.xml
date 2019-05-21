@@ -70,24 +70,39 @@
             android:layout_marginRight="@dimen/general.distance.small"
             android:layout_marginBottom="@dimen/general.distance.small"
             android:text="@string/pdf.export.dialog.all"
-
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnLastHalfYear" />
+
+        <TextView
+            android:id="@+id/textViewError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/general.distance.mini"
+            android:layout_marginTop="@dimen/general.distance.small"
+            android:layout_marginRight="@dimen/general.distance.mini"
+            android:fontFamily="@font/nunito_black"
+            android:text="@string/pdf.export.dialog.noresults"
+            android:textColor="@color/applicationPink"
+            android:textSize="@dimen/font.size.medium"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnLastYear" />
 
         <RadioGroup
             android:id="@+id/unitsGroup"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/general.distance.small"
-            android:layout_marginTop="@dimen/general.distance.large"
+            android:layout_marginTop="@dimen/general.distance.32dp"
             android:layout_marginEnd="@dimen/general.distance.small"
             android:layout_marginBottom="@dimen/general.distance.small"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLastYear">
+            app:layout_constraintTop_toBottomOf="@+id/textViewError">
 
             <RadioButton
                 android:id="@+id/rangeSettingsUnitMicroMol"
@@ -106,7 +121,6 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:text="@string/rangeinfo.pkulevel.mg" />
-
         </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
