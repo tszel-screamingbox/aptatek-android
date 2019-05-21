@@ -46,6 +46,36 @@ public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormat
     }
 
     @Override
+    public String formatStandardPdfEntry(final PkuRangeInfo info) {
+        return resourceInteractor.getStringResource(R.string.pdf_legend_low,
+                formatRegularValue(info.getNormalFloorValue() - getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
+                getProperUnits(info.getPkuLevelUnit()));
+    }
+
+    @Override
+    public String formatIncreasedPdfEntry(final PkuRangeInfo info) {
+        return resourceInteractor.getStringResource(R.string.pdf_legend_normal,
+                formatRegularValue(info.getNormalFloorValue(), info.getPkuLevelUnit()),
+                formatRegularValue(info.getNormalCeilValue(), info.getPkuLevelUnit()),
+                getProperUnits(info.getPkuLevelUnit()));
+    }
+
+    @Override
+    public String formatHighPdfEntry(final PkuRangeInfo info) {
+        return resourceInteractor.getStringResource(R.string.pdf_legend_high,
+                formatRegularValue(info.getNormalCeilValue() + getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
+                formatRegularValue(info.getHighCeilValue(), info.getPkuLevelUnit()),
+                getProperUnits(info.getPkuLevelUnit()));
+    }
+
+    @Override
+    public String formatVeryHighPdfEntry(final PkuRangeInfo info) {
+        return resourceInteractor.getStringResource(R.string.pdf_legend_very_high,
+                formatRegularValue(info.getHighCeilValue() + getProperOffset(info.getPkuLevelUnit()), info.getPkuLevelUnit()),
+                getProperUnits(info.getPkuLevelUnit()));
+    }
+
+    @Override
     public String getFormattedLow(final PkuRangeInfo info) {
         return resourceInteractor.getStringResource(R.string.settings_units_range_format,
                 "0",

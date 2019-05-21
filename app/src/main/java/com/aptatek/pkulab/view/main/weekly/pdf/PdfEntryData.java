@@ -24,9 +24,13 @@ public abstract class PdfEntryData {
 
     public abstract int getAverageCount();
 
-    public abstract String getNormalCeilValue();
+    public abstract String getStandardText();
 
-    public abstract String getNormalFloorValue();
+    public abstract String getIncreasedText();
+
+    public abstract String getHighText();
+
+    public abstract String getVeryHighText();
 
     public abstract double getDeviation();
 
@@ -45,9 +49,14 @@ public abstract class PdfEntryData {
     @AutoValue.Builder
     public static abstract class Builder {
 
-        public abstract Builder setNormalCeilValue(String normalCeilValue);
+        public abstract Builder setStandardText(String standardText);
 
-        public abstract Builder setNormalFloorValue(String normalFloorValue);
+        public abstract Builder setIncreasedText(String normalText);
+
+        public abstract Builder setHighText(String highText);
+
+        public abstract Builder setVeryHighText(String veryHighText);
+
 
         public abstract Builder setFileName(String fileName);
 

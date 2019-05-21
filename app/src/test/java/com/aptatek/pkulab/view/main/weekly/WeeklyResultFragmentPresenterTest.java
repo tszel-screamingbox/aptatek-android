@@ -13,6 +13,7 @@ import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
 import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
+import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -64,6 +65,8 @@ public class WeeklyResultFragmentPresenterTest {
     private CsvExport csvExport;
     @Mock
     private PreferenceManager preferenceManager;
+    @Mock
+    private RangeSettingsValueFormatter valueFormatter;
 
     private WeeklyResultFragmentPresenter presenter;
     private List<TestResult> testResultList = new ArrayList<>();
@@ -132,7 +135,8 @@ public class WeeklyResultFragmentPresenterTest {
                 weeklyChartResourceFormatter,
                 pdfChartDataTransformer,
                 csvExport,
-                preferenceManager);
+                preferenceManager,
+                valueFormatter);
         presenter.attachView(view);
     }
 

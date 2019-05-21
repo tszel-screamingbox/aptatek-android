@@ -2,12 +2,13 @@ package com.aptatek.pkulab.widget;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.util.Constants;
@@ -51,7 +52,13 @@ public class PdfExportView extends ConstraintLayout {
     @BindView(R.id.avarage)
     TextView averageText;
     @BindView(R.id.textViewNormalText)
-    TextView normalText;
+    TextView increasedText;
+    @BindView(R.id.textViewLowText)
+    TextView standardTextView;
+    @BindView(R.id.textViewHighText)
+    TextView highTextView;
+    @BindView(R.id.textViewVeryHighText)
+    TextView veryHighTextView;
 
     private PdfEntryData pdfEntryData;
 
@@ -81,7 +88,11 @@ public class PdfExportView extends ConstraintLayout {
                 pdfEntryData.getMin(),
                 pdfEntryData.getMax()));
         unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
-        normalText.setText(getResources().getString(R.string.pdf_legend_normal, pdfEntryData.getNormalFloorValue(), pdfEntryData.getNormalCeilValue()));
+
+        standardTextView.setText(pdfEntryData.getStandardText());
+        increasedText.setText(pdfEntryData.getIncreasedText());
+        highTextView.setText(pdfEntryData.getHighText());
+        veryHighTextView.setText(pdfEntryData.getVeryHighText());
 
         initChart();
 
