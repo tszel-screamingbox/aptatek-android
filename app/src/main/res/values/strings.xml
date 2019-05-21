@@ -366,4 +366,5 @@
     <string name="faq.report.issue.email.target">help@pkulabkit.com</string>
     <string name="mont.picker.confirm">Confirm</string>
     <string name="month.picker.error">No Test Results</string>
+    <string name="pdf.export.dialog.noresults">No Results</string>
 </resources>

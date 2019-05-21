@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,9 @@ public class PdfExportDialog extends DialogFragment {
     @BindView(R.id.unitsGroup)
     RadioGroup unitRadioGroup;
 
+    @BindView(R.id.textViewError)
+    TextView error;
+
     @Nullable
     private PdfExportDialogCallback callback;
     private PkuLevelUnits defaultUnit;
@@ -56,7 +60,6 @@ public class PdfExportDialog extends DialogFragment {
         if (callback != null) {
             callback.onIntervalSelected(LAST_MONTH, getSelectedUnit());
         }
-        dismiss();
     }
 
     @OnClick(R.id.btnLastThreeMonth)
@@ -64,7 +67,6 @@ public class PdfExportDialog extends DialogFragment {
         if (callback != null) {
             callback.onIntervalSelected(LAST_THREE_MONTHS, getSelectedUnit());
         }
-        dismiss();
     }
 
     @OnClick(R.id.btnLastHalfYear)
@@ -72,7 +74,6 @@ public class PdfExportDialog extends DialogFragment {
         if (callback != null) {
             callback.onIntervalSelected(LAST_HALF_YEAR, getSelectedUnit());
         }
-        dismiss();
     }
 
     @OnClick(R.id.btnLastYear)
@@ -80,7 +81,6 @@ public class PdfExportDialog extends DialogFragment {
         if (callback != null) {
             callback.onIntervalSelected(ALL, getSelectedUnit());
         }
-        dismiss();
     }
 
     @Override
@@ -104,5 +104,9 @@ public class PdfExportDialog extends DialogFragment {
                 R.id.rangeSettingsUnitMilliGram;
         unitRadioGroup.check(radioButtonId);
         return view;
+    }
+
+    public void testNotFound() {
+        error.setVisibility(View.VISIBLE);
     }
 }
