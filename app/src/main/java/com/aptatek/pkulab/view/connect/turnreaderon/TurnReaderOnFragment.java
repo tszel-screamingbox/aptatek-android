@@ -36,6 +36,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import ix.Ix;
 
+import static android.view.View.*;
+
 public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends TurnReaderOnPresenter<V>> extends BaseFragment<V, P> implements TurnReaderOnView, ScanDialogFragment.ScanListener {
 
     private static final String TAG_SCAN = "pkulab.scan.devices";
@@ -138,12 +140,13 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     public void displaySelfCheckAnimation() {
         playVideo(resourceInteractor.getUriForRawFile(R.raw.self_check), true);
-        noReaderAvailable.setVisibility(View.GONE);
+        noReaderAvailable.setVisibility(GONE);
     }
 
     @Override
     public void displayNoReaderAvailable() {
-        noReaderAvailable.setVisibility(View.VISIBLE);
+        noReaderAvailable.setVisibility(VISIBLE);
+        headerView.setSubtitle(getString(R.string.connect_turnon_no_reader_available_hint));
     }
 
     @Override

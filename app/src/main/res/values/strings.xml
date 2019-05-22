@@ -29,6 +29,7 @@
     <string name="connect.turnon.notsupported.title">Device Not Supported</string>
     <string name="connect.turnon.notsupported.message">Unfortunately the device you are using is not capable to connect to the reader.</string>
     <string name="connect.turnon.no.reader.available">No reader available?</string>
+    <string name="connect.turnon.no.reader.available.hint">Please make sure the reader you are searching for is turned on</string>
     <string name="connect.permission.title">Location Permission Required</string>
     <string name="connect.permission.message">In order for the device to connect with your Reader, you’ll need to enable location services. The app does not store or track location.</string>
     <string name="connect.permission.button">Grant Missing Permissions</string>
