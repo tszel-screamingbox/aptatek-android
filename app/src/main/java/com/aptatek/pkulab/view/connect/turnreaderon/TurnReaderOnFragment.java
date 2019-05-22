@@ -4,12 +4,13 @@ import android.annotation.TargetApi;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import android.view.View;
-import android.widget.Button;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
@@ -35,8 +36,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import ix.Ix;
-
-import static android.view.View.*;
 
 public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends TurnReaderOnPresenter<V>> extends BaseFragment<V, P> implements TurnReaderOnView, ScanDialogFragment.ScanListener {
 
@@ -140,12 +139,12 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     public void displaySelfCheckAnimation() {
         playVideo(resourceInteractor.getUriForRawFile(R.raw.self_check), true);
-        noReaderAvailable.setVisibility(GONE);
+        noReaderAvailable.setVisibility(View.GONE);
     }
 
     @Override
     public void displayNoReaderAvailable() {
-        noReaderAvailable.setVisibility(VISIBLE);
+        noReaderAvailable.setVisibility(View.VISIBLE);
         headerView.setSubtitle(getString(R.string.connect_turnon_no_reader_available_hint));
     }
 
