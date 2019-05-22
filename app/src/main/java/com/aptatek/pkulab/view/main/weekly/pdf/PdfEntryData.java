@@ -22,7 +22,7 @@ public abstract class PdfEntryData {
 
     public abstract int getVeryHighCount();
 
-    public abstract int getAverageCount();
+    public abstract String getAverageCount();
 
     public abstract String getStandardText();
 
@@ -76,7 +76,7 @@ public abstract class PdfEntryData {
 
         public abstract Builder setVeryHighCount(int veryHighCount);
 
-        public abstract Builder setAverageCount(int averageCount);
+        public abstract Builder setAverageCount(String averageCount);
 
         public abstract Builder setDeviation(double deviation);
 

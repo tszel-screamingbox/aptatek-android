@@ -83,7 +83,7 @@ public class PdfExportView extends ConstraintLayout {
         highNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getHighCount()));
         veryHighNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getVeryHighCount()));
         averageText.setText(getResources().getString(R.string.pdf_export_average,
-                String.valueOf(pdfEntryData.getAverageCount()),
+                pdfEntryData.getAverageCount(),
                 pdfEntryData.getUnit(),
                 pdfEntryData.getMin(),
                 pdfEntryData.getMax()));

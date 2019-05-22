@@ -193,7 +193,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         }
                     }
 
-                    int finalWeek = week;
+                    final int finalWeek = week;
                     ifViewAttached(attachedView -> {
                         if (finalWeek > 0) {
                             attachedView.scrollToItem(weekList.indexOf(finalWeek - 1));
@@ -303,15 +303,19 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         }
                     }
 
+                    final float average = list.size() != 0 ? (fullCount / list.size()) : 0;
+
                     pdfEntryDataBuilder
-                            .setAverageCount(list.size() != 0 ? (int) (fullCount / list.size()) : 0)
-                            .setLowCount(low)
+                            .setAverageCount(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
+                                    ? String.valueOf((int) average)
+                                    : String.format(Locale.getDefault(), "%.1f", average))
                             .setMin(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                                     ? String.valueOf((int) min)
                                     : String.format(Locale.getDefault(), "%.1f", min))
                             .setMax(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                                     ? String.valueOf((int) max)
                                     : String.format(Locale.getDefault(), "%.1f", max))
+                            .setLowCount(low)
                             .setNormalCount(normal)
                             .setHighCount(high)
                             .setVeryHighCount(veryHigh)
