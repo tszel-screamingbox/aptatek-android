@@ -18,6 +18,7 @@ import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
 import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfEntryData;
 import com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval;
+import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     private final PdfChartDataTransformer pdfChartDataTransformer;
     private final CsvExport csvExport;
     private final PreferenceManager preferenceManager;
+    private final RangeSettingsValueFormatter valueFormatter;
 
     private CompositeDisposable disposables;
 
@@ -58,7 +60,8 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                                          final WeeklyChartResourceFormatter weeklyChartResourceFormatter,
                                          final PdfChartDataTransformer pdfChartDataTransformer,
                                          final CsvExport csvExport,
-                                         final PreferenceManager preferenceManager) {
+                                         final PreferenceManager preferenceManager,
+                                         final RangeSettingsValueFormatter valueFormatter) {
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
@@ -66,6 +69,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         this.pdfChartDataTransformer = pdfChartDataTransformer;
         this.csvExport = csvExport;
         this.preferenceManager = preferenceManager;
+        this.valueFormatter = valueFormatter;
     }
 
     @Override
@@ -189,7 +193,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         }
                     }
 
-                    int finalWeek = week;
+                    final int finalWeek = week;
                     ifViewAttached(attachedView -> {
                         if (finalWeek > 0) {
                             attachedView.scrollToItem(weekList.indexOf(finalWeek - 1));
@@ -254,20 +258,18 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                                                               final long end,
                                                               final PkuLevelUnits selectedUnit) {
 
-        final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfo().blockingGet();
+        final PkuRangeInfo pkuRangeInfo = rangeInteractor.getInfoInUnit(selectedUnit);
 
         final PdfEntryData.Builder pdfEntryDataBuilder = PdfEntryData.builder()
                 .setFormattedDate(weeklyChartResourceFormatter.getPdfMonthFormat(monthsBefore))
                 .setFileName(getPdfExportFileName(pdfExportInterval))
-                .setUnit(resourceInteractor.getStringResource(selectedUnit == MICRO_MOL
+                .setUnit(resourceInteractor.getStringResource(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                         ? R.string.rangeinfo_pkulevel_mmol
                         : R.string.rangeinfo_pkulevel_mg))
-                .setNormalFloorValue(selectedUnit == MICRO_MOL
-                        ? String.valueOf((int) pkuRangeInfo.getNormalFloorValue())
-                        : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalFloorValue()))
-                .setNormalCeilValue(selectedUnit == MICRO_MOL
-                        ? String.valueOf((int) pkuRangeInfo.getNormalCeilValue())
-                        : String.format(Locale.getDefault(), "%.1f", pkuRangeInfo.getNormalCeilValue()));
+                .setStandardText(valueFormatter.formatStandardPdfEntry(pkuRangeInfo))
+                .setIncreasedText(valueFormatter.formatIncreasedPdfEntry(pkuRangeInfo))
+                .setHighText(valueFormatter.formatHighPdfEntry(pkuRangeInfo))
+                .setVeryHighText(valueFormatter.formatVeryHighPdfEntry(pkuRangeInfo));
 
         return testResultInteractor.listBetween(start, end)
                 .take(1)
@@ -301,15 +303,19 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                         }
                     }
 
+                    final float average = list.size() != 0 ? (fullCount / list.size()) : 0;
+
                     pdfEntryDataBuilder
-                            .setAverageCount(list.size() != 0 ? (int) (fullCount / list.size()) : 0)
-                            .setLowCount(low)
+                            .setAverageCount(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
+                                    ? String.valueOf((int) average)
+                                    : String.format(Locale.getDefault(), "%.1f", average))
                             .setMin(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                                     ? String.valueOf((int) min)
                                     : String.format(Locale.getDefault(), "%.1f", min))
                             .setMax(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                                     ? String.valueOf((int) max)
                                     : String.format(Locale.getDefault(), "%.1f", max))
+                            .setLowCount(low)
                             .setNormalCount(normal)
                             .setHighCount(high)
                             .setVeryHighCount(veryHigh)
@@ -318,7 +324,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                     return list;
                 })
                 .flatMapIterable(it -> it)
-                .flatMapSingle(pdfChartDataTransformer::transform)
+                .flatMapSingle(testResult -> pdfChartDataTransformer.transform(testResult, pkuRangeInfo))
                 .toList()
                 .flatMap(pdfChartDataTransformer::transformEntries)
                 .map(bubbleDataSet ->

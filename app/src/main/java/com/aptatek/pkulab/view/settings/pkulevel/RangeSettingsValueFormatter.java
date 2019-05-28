@@ -17,4 +17,12 @@ public interface RangeSettingsValueFormatter {
     String formatRegularValue(PkuLevel pkuLevel);
 
     String getProperUnits(final PkuLevelUnits units);
+
+    String formatStandardPdfEntry(PkuRangeInfo info);
+
+    String formatIncreasedPdfEntry(PkuRangeInfo info);
+
+    String formatHighPdfEntry(PkuRangeInfo info);
+
+    String formatVeryHighPdfEntry(PkuRangeInfo info);
 }
