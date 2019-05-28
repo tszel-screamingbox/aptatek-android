@@ -68,7 +68,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         final List<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
         final List<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(item.getReminders());
 
-        if (checkReminderExistence(item, hour, minute)) {
+        if (checkReminderExistence(item, hour, minute, reminderScheduleType)) {
             return;
         }
 
@@ -201,7 +201,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         final ArrayList<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
         final ArrayList<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(reminderSettingsItem.getReminders());
 
-        if (checkReminderExistence(reminderSettingsItem, hour, minute)) {
+        if (checkReminderExistence(reminderSettingsItem, hour, minute, reminderScheduleType)) {
             return;
         }
 
@@ -319,10 +319,12 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
     private boolean checkReminderExistence(@NonNull final ReminderSettingsAdapterItem item,
                                            final int hour,
-                                           final int minute) {
+                                           final int minute,
+                                           final ReminderScheduleType reminderScheduleType) {
         for (final RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
             if (remindersAdapterItem.getHour() == hour
-                    && remindersAdapterItem.getMinute() == minute) {
+                    && remindersAdapterItem.getMinute() == minute
+                    && reminderScheduleType == remindersAdapterItem.getReminderScheduleType()) {
                 ifViewAttached(ReminderSettingsView::showAlreadyHasReminderError);
                 return true;
             }
