@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
+import androidx.core.widget.ContentLoadingProgressBar;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +59,9 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
     @BindView(R.id.btnReport)
     Button reportIssue;
 
+    @BindView(R.id.progressBar)
+    ContentLoadingProgressBar progressBar;
+
     @Arg(optional = true)
     String title;
 
@@ -105,7 +110,13 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
             }
         });
 
-        webView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient(){
+            @Override
+            public void onPageFinished(final WebView view, final String url) {
+                super.onPageFinished(view, url);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
         final WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         webView.loadUrl(url == null ? Constants.URL_HELP : url);
