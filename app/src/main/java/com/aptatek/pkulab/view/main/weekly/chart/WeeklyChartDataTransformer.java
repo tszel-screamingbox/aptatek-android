@@ -50,6 +50,11 @@ public class WeeklyChartDataTransformer {
                 .map(rangeInfo -> buildChartEntryData(rangeInfo, testResult));
     }
 
+    @NonNull
+    public Single<ChartEntryData> transform(final TestResult testResult, final PkuRangeInfo rangeInfo) {
+        return Single.fromCallable(() -> buildChartEntryData(rangeInfo, testResult));
+    }
+
     protected ChartEntryData buildChartEntryData(final PkuRangeInfo rangeInfo, final TestResult testResult) {
         final PkuLevel pkuLevel = testResult.getPkuLevel();
         final PkuLevel levelInProperUnit;

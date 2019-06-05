@@ -97,7 +97,7 @@ public class SplashPresenterTest {
         when(reminderInteractor.initializeDays()).thenReturn(Completable.complete());
         when(deviceHelper.isRooted()).thenReturn(false);
         when(dbFile.exists()).thenReturn(true);
-        when(preferenceManager.isDbEncrpytedWithPin()).thenReturn(true);
+        when(preferenceManager.isDbEncryptedWithPin()).thenReturn(true);
 
         presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper, dbFile);
         presenter.attachView(view);

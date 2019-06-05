@@ -29,8 +29,9 @@
     <string name="connect.turnon.notsupported.title">Device Not Supported</string>
     <string name="connect.turnon.notsupported.message">Unfortunately the device you are using is not capable to connect to the reader.</string>
     <string name="connect.turnon.no.reader.available">No reader available?</string>
-    <string name="connect.permission.title">Bluetooth &amp; Location are Required</string>
-    <string name="connect.permission.message">For the functioning of this app, you need to allow access to Bluetooth and location in order to be able to find your bluetooth reader for pairing.</string>
+    <string name="connect.turnon.no.reader.available.hint">Please make sure the reader you are searching for is turned on</string>
+    <string name="connect.permission.title">Location Permission Required</string>
+    <string name="connect.permission.message">In order for the device to connect with your Reader, you’ll need to enable location services. The app does not store or track location.</string>
     <string name="connect.permission.button">Grant Missing Permissions</string>
     <string name="connect.scan.title">Available Readers</string>
     <string name="connect.scan.message">Hold on while we are looking for readers around you</string>
@@ -114,7 +115,7 @@
     <string name="rangeinfo.message">These ranges show you which Phe levels are lower and healthier, please consult with your clinical team</string>
     <string name="rangeinfo.normal">Increased</string>
     <string name="rangeinfo.pkulevel.mg">mg/dl</string>
-    <string name="rangeinfo.pkulevel.mmol">mmol/L</string>
+    <string name="rangeinfo.pkulevel.mmol">μmol/L</string>
     <string name="rangeinfo.title">Range Info</string>
     <string name="rangeinfo.to">to</string>
     <string name="rangeinfo.units.format">Units are in %s</string>
@@ -308,7 +309,7 @@
     <string name="pdf.export.last.month.file.name">Last month Phe history - %1$s.pdf</string>
     <string name="pdf.export.last.three.month.file.name">Last 3 months Phe history - %1$s.pdf</string>
     <string name="pdf.export.last.six.month.file.name">Last 6 months Phe history - %1$s.pdf</string>
-    <string name="pdf.export.last.year.file.name">Last Year Phe history - %1$s.pdf</string>
+    <string name="pdf.export.last.year.file.name">All Phe history - %1$s.pdf</string>
     <string name="pdf.export.subtitle.dateformat">MMMM yyyy</string>
     <string name="pdf.export.file.name.dateformat">MM.dd.yyyy</string>
 
@@ -322,10 +323,10 @@
 
     <string name="pdf.legend.fasting">Fasting</string>
     <string name="pdf.legend.sick">Sick</string>
-    <string name="pdf.legend.very.high">Very High</string>
-    <string name="pdf.legend.high">High</string>
-    <string name="pdf.legend.normal">Increased (%1$s - %2$s)</string>
-    <string name="pdf.legend.low">Standard</string>
+    <string name="pdf.legend.very.high">Very High\n(%1$s+)</string>
+    <string name="pdf.legend.high">High\n(%1$s - %2$s)</string>
+    <string name="pdf.legend.normal">Increased\n(%1$s - %2$s)</string>
+    <string name="pdf.legend.low">Standard\n(&lt;=%1$s)</string>
 
     <string name="month.picker.cancel">Cancel</string>
     <string name="month.picker.ok">Ok</string>
@@ -349,11 +350,11 @@
 
     <string name="low.device.storage.detected.title">Phone Storage Full</string>
     <string name="low.device.storage.detected.description">The memory on your phone is almost full - unable to store more Phe data in this application until you remove some other content from your phone to make more storage space available.</string>
+    <string name="pdf.export.dialog.all">Export All</string>
     <string name="pdf.export.dialog.title">Export Results</string>
     <string name="pdf.export.dialog.last.month">Last Month</string>
     <string name="pdf.export.dialog.last.three.months">Last 3 Months</string>
     <string name="pdf.export.dialog.last.half.year">Last 6 Months</string>
-    <string name="pdf.export.dialog.last.year">Last Year</string>
 
     <string name="faq.report.issue.title">Report Issue</string>
     <string name="faq.report.issue.data.corruption">Data Corruption</string>
@@ -365,4 +366,6 @@
     <string name="faq.report.issue.email.title">Error Report - %1$s</string>
     <string name="faq.report.issue.email.target">help@pkulabkit.com</string>
     <string name="mont.picker.confirm">Confirm</string>
+    <string name="month.picker.error">No Test Results</string>
+    <string name="pdf.export.dialog.noresults">No Results</string>
 </resources>

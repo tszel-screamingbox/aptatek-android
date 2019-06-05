@@ -1,9 +1,13 @@
 <resources>
 
+    <dimen name="home.margin.top">0dp</dimen>
     <dimen name="header.margin.top">0dp</dimen>
+    <dimen name="pin.bottom.margin">10dp</dimen>
+    <dimen name="pin.spacing">8dp</dimen>
     <dimen name="range.info.side.margin">16dp</dimen>
     <dimen name="pin.side.margin">20dp</dimen>
 
-    <dimen name="font.test">20sp</dimen>
     <dimen name="font.rangeinfo">34sp</dimen>
+    <dimen name="font.test">20sp</dimen>
+    <dimen name="font.toolbar">16sp</dimen>
 </resources>

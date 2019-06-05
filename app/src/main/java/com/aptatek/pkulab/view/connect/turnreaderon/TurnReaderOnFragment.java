@@ -4,12 +4,13 @@ import android.annotation.TargetApi;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import android.view.View;
-import android.widget.Button;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
@@ -144,6 +145,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     public void displayNoReaderAvailable() {
         noReaderAvailable.setVisibility(View.VISIBLE);
+        headerView.setSubtitle(getString(R.string.connect_turnon_no_reader_available_hint));
     }
 
     @Override

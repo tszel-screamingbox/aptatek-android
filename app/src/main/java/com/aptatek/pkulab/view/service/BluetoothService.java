@@ -88,18 +88,17 @@ public class BluetoothService extends BaseForegroundService {
     }
 
     @Override
-    protected Single<Boolean> shouldStart() {
-        return Single.fromCallable(() -> !TextUtils.isEmpty(preferenceManager.getPairedDevice()))
-                .map(shouldStart -> shouldStart && !BuildConfig.FLAVOR.equals("mock"));
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return START_NOT_STICKY;
     }
 
     @Override
     protected void startForeground() {
+        if(TextUtils.isEmpty(preferenceManager.getPairedDevice()) || BuildConfig.FLAVOR.equals("mock")) {
+            stopSelf();
+            return;
+        }
+
         final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectingToDevice());
         startForeground(notification.getId(), notification.getNotification());
 

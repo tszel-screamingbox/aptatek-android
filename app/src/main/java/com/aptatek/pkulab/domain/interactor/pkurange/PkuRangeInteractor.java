@@ -52,7 +52,7 @@ public class PkuRangeInteractor {
         return Completable.fromAction(() -> dataSource.setDisplayUnit(unit));
     }
 
-    private PkuRangeInfo getInfoInUnit(final PkuLevelUnits displayUnit) {
+    public PkuRangeInfo getInfoInUnit(final PkuLevelUnits displayUnit) {
         return PkuRangeInfo.builder()
                 .setPkuLevelUnit(displayUnit)
                 .setHighCeilValue(getValueInUnit(dataSource.getHighCeilValueMMol(), PkuLevelUnits.MICRO_MOL, displayUnit))

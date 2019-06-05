@@ -4,6 +4,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.joda.time.Months;
 import org.joda.time.Weeks;
 import org.joda.time.Years;
 
@@ -79,6 +80,12 @@ public final class TimeHelper {
         final LocalDateTime startLocalDate = timeFromTimestamp(start);
         final LocalDateTime endLocalDate = timeFromTimestamp(end);
         return Weeks.weeksBetween(startLocalDate, endLocalDate).getWeeks();
+    }
+
+    public static int getMonthsBetween(final long start, final long end) {
+        final LocalDateTime startLocalDate = timeFromTimestamp(getEarliestTimeAtGivenMonth(start));
+        final LocalDateTime endLocalDate = timeFromTimestamp(addMonths(1, getEarliestTimeAtGivenMonth(end)));
+        return Months.monthsBetween(startLocalDate, endLocalDate).getMonths();
     }
 
     public static String getNameOfDay(final long timestamp) {

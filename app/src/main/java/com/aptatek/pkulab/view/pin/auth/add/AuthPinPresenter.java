@@ -50,8 +50,13 @@ class AuthPinPresenter extends MvpBasePresenter<AuthPinView> {
 
             @Override
             public void onInvalidFingerprintDetected() {
+                attemptCount++;
                 final String invalidMessage = resourceInteractor.getStringResource(R.string.auth_pin_message_fingerprint_invalid);
                 ifViewAttached(view -> view.onInvalidFingerprintDetected(invalidMessage));
+                if (attemptCount == PIN_CODE_ATTEMPT_ERROR_LIMIT) {
+                    attemptCount = 0;
+                    ifViewAttached(AuthPinView::showAlertDialog);
+                }
             }
 
             @Override

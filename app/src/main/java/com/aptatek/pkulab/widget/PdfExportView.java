@@ -2,12 +2,13 @@ package com.aptatek.pkulab.widget;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.util.Constants;
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BubbleData;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.lang.reflect.Field;
 import java.util.Locale;
@@ -50,7 +52,13 @@ public class PdfExportView extends ConstraintLayout {
     @BindView(R.id.avarage)
     TextView averageText;
     @BindView(R.id.textViewNormalText)
-    TextView normalText;
+    TextView increasedText;
+    @BindView(R.id.textViewLowText)
+    TextView standardTextView;
+    @BindView(R.id.textViewHighText)
+    TextView highTextView;
+    @BindView(R.id.textViewVeryHighText)
+    TextView veryHighTextView;
 
     private PdfEntryData pdfEntryData;
 
@@ -75,12 +83,16 @@ public class PdfExportView extends ConstraintLayout {
         highNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getHighCount()));
         veryHighNumber.setText(getResources().getString(R.string.pdf_export_legend_x, pdfEntryData.getVeryHighCount()));
         averageText.setText(getResources().getString(R.string.pdf_export_average,
-                String.valueOf(pdfEntryData.getAverageCount()),
+                pdfEntryData.getAverageCount(),
                 pdfEntryData.getUnit(),
                 pdfEntryData.getMin(),
                 pdfEntryData.getMax()));
         unitDescription.setText(getResources().getString(R.string.pdf_export_unit_description, pdfEntryData.getUnit()));
-        normalText.setText(getResources().getString(R.string.pdf_legend_normal, pdfEntryData.getNormalFloorValue(), pdfEntryData.getNormalCeilValue()));
+
+        standardTextView.setText(pdfEntryData.getStandardText());
+        increasedText.setText(pdfEntryData.getIncreasedText());
+        highTextView.setText(pdfEntryData.getHighText());
+        veryHighTextView.setText(pdfEntryData.getVeryHighText());
 
         initChart();
 
@@ -100,12 +112,15 @@ public class PdfExportView extends ConstraintLayout {
         final Typeface typeface = ResourcesCompat.getFont(getContext().getApplicationContext(), R.font.nunito_black);
         final XAxis xAxis = bubbleChart.getXAxis();
         xAxis.setTextColor(getResources().getColor(R.color.applicationSolidGray));
-        xAxis.setValueFormatter((value, axis) -> {
-            if (Float.compare(value, 0f) <= 0 || Float.compare(value, pdfEntryData.getDaysOfMonth()) > 0) {
-                return "";
-            }
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(final float value, final AxisBase axis) {
+                if (Float.compare(value, 0f) <= 0 || Float.compare(value, pdfEntryData.getDaysOfMonth()) > 0) {
+                    return "";
+                }
 
-            return String.valueOf(String.format(Locale.getDefault(), "%.0f", value));
+                return String.format(Locale.getDefault(), "%.0f", value);
+            }
         });
         xAxis.setDrawAxisLine(false);
         xAxis.setDrawGridLines(false);
@@ -122,11 +137,15 @@ public class PdfExportView extends ConstraintLayout {
 
         final YAxis yAxis = bubbleChart.getAxisLeft();
         final String[] hours = getResources().getStringArray(R.array.weekly_hours);
-        yAxis.setValueFormatter((value, axis) -> {
-            final int round = Math.round(value);
-            final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
+        yAxis.setValueFormatter(new ValueFormatter() {
 
-            return hours[index + Y_PADDING];
+            @Override
+            public String getAxisLabel(final float value, final AxisBase axis) {
+                final int round = Math.round(value);
+                final int index = Math.round(round / (float) Constants.ONE_HOUR_IN_MINUTES);
+
+                return hours[index + Y_PADDING];
+            }
         });
         yAxis.setDrawAxisLine(false);
         yAxis.setDrawGridLines(false);

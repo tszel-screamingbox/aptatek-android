@@ -61,10 +61,11 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
                         return;
                     }
 
-                    if (!preferenceManager.isDbEncrpytedWithPin()) {
+                    if (!preferenceManager.isDbEncryptedWithPin() || !preferenceManager.isDbCypherUpdated()) {
                         // delete database first
                         dbFile.delete();
                         preferenceManager.setPrefDbEncryptedWithPin();
+                        preferenceManager.setPrefDbCypherUpdated();
                     }
 
                     switchToNextActivity();

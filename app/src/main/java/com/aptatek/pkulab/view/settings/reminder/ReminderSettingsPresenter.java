@@ -68,7 +68,9 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         final List<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
         final List<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(item.getReminders());
 
-        if (checkReminderExistence(item, hour, minute, reminderScheduleType)) return;
+        if (checkReminderExistence(item, hour, minute, reminderScheduleType)) {
+            return;
+        }
 
         final String id = UUID.randomUUID().toString();
         final String reminderTime = getReminderTime(hour, minute, reminderScheduleType);
@@ -161,16 +163,12 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                 .setReminders(remindersAdapterItems)
                 .setActive(!remindersAdapterItems.isEmpty());
 
-        int index = -1;
         for (int i = 0; i < reminderSettingsAdapterItems.size(); i++) {
             final ReminderSettingsAdapterItem item = reminderSettingsAdapterItems.get(i);
             if (item.uniqueIdentifier().equals(reminderSettingsItem.uniqueIdentifier())) {
-                index = i;
+                reminderSettingsAdapterItems.set(i, builder.build());
                 break;
             }
-        }
-        if (index > -1 && index <= remindersAdapterItems.size() - 1) {
-            reminderSettingsAdapterItems.set(index, builder.build());
         }
 
         ifViewAttached(view -> view.deleteReminder(reminderSettingsAdapterItems));
@@ -203,8 +201,9 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
         final ArrayList<ReminderSettingsAdapterItem> reminderSettingsAdapterItems = new ArrayList<>(data);
         final ArrayList<RemindersAdapterItem> remindersAdapterItems = new ArrayList<>(reminderSettingsItem.getReminders());
 
-        if (checkReminderExistence(reminderSettingsItem, hour, minute, reminderScheduleType))
+        if (checkReminderExistence(reminderSettingsItem, hour, minute, reminderScheduleType)) {
             return;
+        }
 
         final RemindersAdapterItem reminderItemCopy = reminderItem.toBuilder()
                 .setHour(hour)
@@ -322,10 +321,10 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                                            final int hour,
                                            final int minute,
                                            final ReminderScheduleType reminderScheduleType) {
-        for (RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
+        for (final RemindersAdapterItem remindersAdapterItem : item.getReminders()) {
             if (remindersAdapterItem.getHour() == hour
                     && remindersAdapterItem.getMinute() == minute
-                    && remindersAdapterItem.getReminderScheduleType() == reminderScheduleType) {
+                    && reminderScheduleType == remindersAdapterItem.getReminderScheduleType()) {
                 ifViewAttached(ReminderSettingsView::showAlreadyHasReminderError);
                 return true;
             }

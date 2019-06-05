@@ -27,8 +27,7 @@ ext {
 
             // Database
             room              : '2.0.0',
-            //sqlcipher         : '1.0.2',
-            sqlcipher         : '0.4.1',
+            sqlcipher         : '1.0.2',
 
             // IX
             ixjava            : '1.0.0',
@@ -64,7 +63,7 @@ ext {
             discreteScrollView: '1.4.9',
 
             // MpAndroidChart
-            chart             : 'v3.0.3',
+            chart             : 'v3.1.0',
 
             // RootDetection
             rootDetection     : '0.0.7',

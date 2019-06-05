@@ -42,8 +42,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 26
-        versionName "0.0.26"
+        versionCode 29
+        versionName "0.0.29"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -58,8 +58,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false // configure proguard and enable
-            shrinkResources false // configure proguard and enable
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
 

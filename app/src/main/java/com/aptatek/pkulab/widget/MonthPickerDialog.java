@@ -1,14 +1,15 @@
 package com.aptatek.pkulab.widget;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.NumberPicker;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
@@ -46,6 +47,9 @@ public class MonthPickerDialog extends DialogFragment {
     @BindView(R.id.numberPickerYear)
     NumberPicker yearPicker;
 
+    @BindView(R.id.textViewError)
+    TextView error;
+
     @OnClick(R.id.textViewCancel)
     public void onCancelClicked() {
         dismiss();
@@ -55,7 +59,6 @@ public class MonthPickerDialog extends DialogFragment {
     public void onOkClicked() {
         if (callback != null) {
             callback.onPick(yearPicker.getValue(), monthPicker.getValue());
-            dismiss();
         }
     }
 
@@ -81,7 +84,7 @@ public class MonthPickerDialog extends DialogFragment {
 
         if (monthPickerDialogModel != null) {
             monthPicker.setMinValue(1);
-            yearPicker.setMinValue(1);
+            yearPicker.setMinValue(monthPickerDialogModel.getMinYear());
         }
 
         final Calendar calendar = Calendar.getInstance();
@@ -91,5 +94,9 @@ public class MonthPickerDialog extends DialogFragment {
 
         yearPicker.setValue(yearPicker.getMaxValue());
         monthPicker.setValue(calendar.get(Calendar.MONTH) + 1);
+    }
+
+    public void testNotFound() {
+        error.setVisibility(View.VISIBLE);
     }
 }

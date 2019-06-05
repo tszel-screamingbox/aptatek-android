@@ -23,3 +23,61 @@
 # UXCam
 -keep class com.uxcam.** { *; }
 -dontwarn com.uxcam.**
+
+# ActivityStarter
+-keep class **Starter { *; }
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+# Crashyltics
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
+# MPAndroidChart
+-keep class com.github.mikephil.charting.** { *; }
+-keep public class * extends com.github.mikephil.charting.renderer.BubbleChartRenderer
+
+# JodaTime
+-dontwarn org.joda.convert.**
+-dontwarn org.joda.time.**
+-keep class org.joda.time.** { *; }
+-keep interface org.joda.time.** { *; }
+
+# Gson
+-keepattributes Signature
+-keepattributes *Annotation*
+-dontwarn sun.misc.**
+-keep class com.aptatek.pkulab.device.bluetooth.model.** { <fields>; }
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# OpenCSV
+-keep class org.apache.commons.** { *; }
+
+# App-specific
+-keep class com.aptatek.pkulab.view.** { *; }
+-keep class com.aptatek.pkulab.domain.model.** { *; }
+-keep class com.aptatek.pkulab.data.PinCode { *; }
+-keep class com.aptatek.pkulab.data.model.** { *; }
+-keepclassmembers class * {
+    @activitystarter.Arg *;
+}
+
+-keepclasseswithmembers class * {
+    native <methods>;
+}
+
+-keep class net.sqlcipher.** { *; }
+-keep class com.commonsware.cwac.saferoom.** { *; }
+

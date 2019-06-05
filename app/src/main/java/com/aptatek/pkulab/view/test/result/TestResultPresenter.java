@@ -55,6 +55,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
         disposable =
                 clearTestState()
                         .andThen(testInteractor.cancelTestNotifications())
+                        .andThen(testInteractor.setTestContinueStatus(false))
                         .andThen(Single.zip(
                                 rangeInteractor.getInfo(),
                                 testResultInteractor.getById(testId).map(TestResult::getPkuLevel),

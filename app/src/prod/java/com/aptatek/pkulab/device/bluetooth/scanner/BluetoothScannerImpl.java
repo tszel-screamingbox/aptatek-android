@@ -101,9 +101,14 @@ public class BluetoothScannerImpl implements BluetoothScanner {
         return Completable.fromAction(() -> {
             if (scanning) {
                 synchronized (BluetoothScannerImpl.class) {
-                    bluetoothLeScanner.stopScan(scanCallback);
-                    scanning = false;
-                    scanningProcessor.onNext(false);
+                    try {
+                        bluetoothLeScanner.stopScan(scanCallback);
+                    } catch (Exception ex) {
+                        Timber.e(ex);
+                    } finally {
+                        scanning = false;
+                        scanningProcessor.onNext(false);
+                    }
                 }
             }
         });

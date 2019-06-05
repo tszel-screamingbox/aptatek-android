@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.main.weekly;
 
 import androidx.annotation.NonNull;
 
+import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
@@ -12,6 +13,7 @@ import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.main.weekly.chart.PdfChartDataTransformer;
 import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
+import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -61,6 +63,10 @@ public class WeeklyResultFragmentPresenterTest {
     private PdfChartDataTransformer pdfChartDataTransformer;
     @Mock
     private CsvExport csvExport;
+    @Mock
+    private PreferenceManager preferenceManager;
+    @Mock
+    private RangeSettingsValueFormatter valueFormatter;
 
     private WeeklyResultFragmentPresenter presenter;
     private List<TestResult> testResultList = new ArrayList<>();
@@ -128,7 +134,9 @@ public class WeeklyResultFragmentPresenterTest {
                 pkuRangeInteractor,
                 weeklyChartResourceFormatter,
                 pdfChartDataTransformer,
-                csvExport);
+                csvExport,
+                preferenceManager,
+                valueFormatter);
         presenter.attachView(view);
     }
 

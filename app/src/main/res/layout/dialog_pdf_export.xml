@@ -1,70 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/general.distance.small"
-        android:layout_marginTop="@dimen/general.distance.20dp"
-        android:fontFamily="@font/nunito_black"
-        android:text="@string/pdf.export.dialog.title"
-        android:textColor="@color/applicationBlack"
-        android:textSize="@dimen/font.size.medium"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnLastMonth"
-        style="@style/General.Rounded.Gray.Button.Secondary"
-        android:layout_width="0dp"
-        android:layout_marginLeft="@dimen/general.distance.small"
-        android:layout_marginTop="@dimen/general.distance"
-        android:layout_marginRight="@dimen/general.distance.small"
-        android:text="@string/pdf.export.dialog.last.month"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
-
-    <Button
-        android:id="@+id/btnLastThreeMonth"
-        style="@style/General.Rounded.Gray.Button.Secondary"
-        android:layout_width="0dp"
-        android:layout_marginLeft="@dimen/general.distance.small"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
-        android:layout_marginRight="@dimen/general.distance.small"
-        android:text="@string/pdf.export.dialog.last.three.months"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLastMonth" />
-
-    <Button
-        android:id="@+id/btnLastHalfYear"
-        style="@style/General.Rounded.Gray.Button.Secondary"
-        android:layout_width="0dp"
-        android:layout_marginLeft="@dimen/general.distance.small"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
-        android:layout_marginRight="@dimen/general.distance.small"
-        android:text="@string/pdf.export.dialog.last.half.year"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLastThreeMonth" />
-
-    <Button
-        android:id="@+id/btnLastYear"
-        style="@style/General.Rounded.Gray.Button.Secondary"
-        android:layout_width="0dp"
-        android:layout_marginLeft="@dimen/general.distance.small"
-        android:layout_marginTop="@dimen/general.distance.xsmall"
-        android:layout_marginRight="@dimen/general.distance.small"
-        android:layout_marginBottom="@dimen/general.distance.small"
-        android:text="@string/pdf.export.dialog.last.year"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLastHalfYear" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/general.distance.small"
+            android:layout_marginTop="@dimen/general.distance.20dp"
+            android:fontFamily="@font/nunito_black"
+            android:text="@string/pdf.export.dialog.title"
+            android:textColor="@color/applicationBlack"
+            android:textSize="@dimen/font.size.medium"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnLastMonth"
+            style="@style/General.Rounded.Gray.Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/general.distance.small"
+            android:layout_marginTop="@dimen/general.distance"
+            android:layout_marginRight="@dimen/general.distance.small"
+            android:text="@string/pdf.export.dialog.last.month"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
+
+        <Button
+            android:id="@+id/btnLastThreeMonth"
+            style="@style/General.Rounded.Gray.Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/general.distance.small"
+            android:layout_marginTop="@dimen/general.distance.xsmall"
+            android:layout_marginRight="@dimen/general.distance.small"
+            android:text="@string/pdf.export.dialog.last.three.months"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLastMonth" />
+
+        <Button
+            android:id="@+id/btnLastHalfYear"
+            style="@style/General.Rounded.Gray.Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/general.distance.small"
+            android:layout_marginTop="@dimen/general.distance.xsmall"
+            android:layout_marginRight="@dimen/general.distance.small"
+            android:text="@string/pdf.export.dialog.last.half.year"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLastThreeMonth" />
+
+        <Button
+            android:id="@+id/btnLastYear"
+            style="@style/General.Rounded.Gray.Button.Secondary"
+            android:layout_width="0dp"
+            android:layout_marginLeft="@dimen/general.distance.small"
+            android:layout_marginTop="@dimen/general.distance.xsmall"
+            android:layout_marginRight="@dimen/general.distance.small"
+            android:layout_marginBottom="@dimen/general.distance.small"
+            android:text="@string/pdf.export.dialog.all"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLastHalfYear" />
+
+        <TextView
+            android:id="@+id/textViewError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/general.distance.mini"
+            android:layout_marginTop="@dimen/general.distance.small"
+            android:layout_marginRight="@dimen/general.distance.mini"
+            android:fontFamily="@font/nunito_black"
+            android:text="@string/pdf.export.dialog.noresults"
+            android:textColor="@color/applicationPink"
+            android:textSize="@dimen/font.size.medium"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnLastYear" />
+
+        <RadioGroup
+            android:id="@+id/unitsGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/general.distance.small"
+            android:layout_marginTop="@dimen/general.distance.32dp"
+            android:layout_marginEnd="@dimen/general.distance.small"
+            android:layout_marginBottom="@dimen/general.distance.small"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewError">
+
+            <RadioButton
+                android:id="@+id/rangeSettingsUnitMicroMol"
+                style="@style/Settings.Range.Units.Radio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/rangeinfo.pkulevel.mmol" />
+
+            <RadioButton
+                android:id="@+id/rangeSettingsUnitMilliGram"
+                style="@style/Settings.Range.Units.Radio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/rangeinfo.pkulevel.mg" />
+        </RadioGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
