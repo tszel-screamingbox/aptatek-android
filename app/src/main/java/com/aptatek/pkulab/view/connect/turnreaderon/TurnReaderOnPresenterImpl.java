@@ -92,6 +92,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     private void resetFlow() {
         disposables.add(
                 readerInteractor.disconnect()
+                        .onErrorComplete()
                         .subscribe(this::checkPermissions,
                                 Timber::e)
         );
