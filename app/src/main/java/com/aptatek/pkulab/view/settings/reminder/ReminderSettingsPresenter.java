@@ -115,7 +115,7 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
 
         for (RemindersAdapterItem reminderItem : remindersAdapterItems) {
 
-            if (item.isActive()) {
+            if (isActive) {
                 compositeDisposable.add(
                         reminderInteractor
                                 .insertReminder(item.getWeekDay(), reminderItem.getHour(), reminderItem.getMinute(), reminderItem.getReminderScheduleType())
