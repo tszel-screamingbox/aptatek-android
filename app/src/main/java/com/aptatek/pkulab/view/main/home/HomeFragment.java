@@ -195,7 +195,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         playIcon.setVisibility(GONE);
         bigSettingsButton.setVisibility(GONE);
         chartAdapter.setItems(data);
-        bubbleScrollView.scrollToPosition(chartAdapter.getItemCount());
+        bubbleScrollView.scrollToPosition(chartAdapter.getItemCount() - 1);
     }
 
     @OnClick(R.id.newTestButton)
