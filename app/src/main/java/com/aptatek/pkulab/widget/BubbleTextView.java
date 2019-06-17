@@ -7,14 +7,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
@@ -151,7 +152,7 @@ public class BubbleTextView extends View {
                 getTextBounds(primaryText, textPaint);
             }
 
-            canvas.drawText(primaryText, (size - boundingRect.width()) / 2f, primaryTextBounds.bottom - ((primaryTextBounds.height() - boundingRect.height())  / 2), textPaint);
+            canvas.drawText(primaryText, (size - boundingRect.width()) / 2f, primaryTextBounds.bottom - ((primaryTextBounds.height() - boundingRect.height()) / 2), textPaint);
 
             final Rect secondaryTextBounds = calculateSecondaryTextBounds(rect);
             paint.setTypeface(secondaryTypeFace);
