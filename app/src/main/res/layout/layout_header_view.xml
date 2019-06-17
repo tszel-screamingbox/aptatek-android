@@ -15,11 +15,11 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="@dimen/header.title.spacing.extra"
         android:lineSpacingMultiplier="0.8"
-        android:maxLines="2"
+        android:maxLines="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Header\nMultiline" />
+        tools:text="Header\nMultiline Long" />
 
     <Space
         android:id="@+id/header_space"
@@ -34,7 +34,7 @@
         style="@style/General.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="3"
+        android:maxLines="5"
         android:includeFontPadding="false"
         android:lineSpacingExtra="@dimen/header.title.spacing.extra"
         app:layout_constraintBottom_toBottomOf="parent"
