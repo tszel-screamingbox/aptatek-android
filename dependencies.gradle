@@ -44,6 +44,9 @@ ext {
             // UX Cam
             uxcam               : '3.1.0@aar',
 
+            // Ampltiude analytics
+            amplitude               : '2.16.0',
+
             // AutoValue
             autoValue         : '1.6.5',
 
@@ -170,7 +173,8 @@ ext {
 
     analyticDependencies = [
             crashlytics: "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}",
-            uxcam: "com.uxcam:uxcam:${versions.uxcam}"
+            uxcam: "com.uxcam:uxcam:${versions.uxcam}",
+            amplitude: "com.amplitude:android-sdk:${versions.amplitude}"
     ]
 
     appDependencies = [

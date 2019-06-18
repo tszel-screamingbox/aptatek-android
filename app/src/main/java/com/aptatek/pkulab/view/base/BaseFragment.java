@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.amplitude.api.Amplitude;
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.injection.component.DaggerFragmentComponent;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
@@ -70,6 +71,10 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
 
     protected BaseActivity getBaseActivity() {
         return (BaseActivity) getActivity();
+    }
+
+    public void logEvent(final String message) {
+        Amplitude.getInstance().logEvent(message);
     }
 
     /**
