@@ -9,8 +9,7 @@ import javax.inject.Singleton;
 public class AnalyticsManager implements IAnalyticsManager {
 
     @Inject
-    public AnalyticsManager() {
-
+    AnalyticsManager() {
     }
 
     @Override
