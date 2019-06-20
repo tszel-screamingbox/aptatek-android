@@ -77,9 +77,11 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
         JodaTimeAndroid.init(this);
 
-        Amplitude.getInstance()
-                .initialize(this, BuildConfig.AMPLITUDE_KEY)
-                .enableForegroundTracking(this);
+        if (!BuildConfig.DEBUG) {
+            Amplitude.getInstance()
+                    .initialize(this, BuildConfig.AMPLITUDE_KEY)
+                    .enableForegroundTracking(this);
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)

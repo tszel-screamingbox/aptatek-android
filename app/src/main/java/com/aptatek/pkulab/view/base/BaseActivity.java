@@ -15,6 +15,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
@@ -129,8 +130,12 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         return activityComponent;
     }
 
-    public void logEvent(final String message) {
-        analyticManager.logEvent(message);
+    public void logEvent(final String eventName, final String eventInfo, final EventCategory category) {
+        analyticManager.logEvent(eventName, eventInfo, category);
+    }
+
+    public void logEllapsedTime(final String eventName, final int seconds, final EventCategory category){
+        analyticManager.logEllapsedTime(eventName, seconds, category);
     }
 
     public void launchActivity(final Intent intent) {
