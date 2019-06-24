@@ -68,8 +68,8 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         setContentView(R.layout.activity_test_result);
 
         ActivityStarter.fill(this, savedInstanceState);
-        UXCam.occludeSensitiveView(bubbleTextView);
         ButterKnife.bind(this);
+        UXCam.occludeSensitiveView(bubbleTextView);
     }
 
     @Override

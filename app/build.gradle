@@ -63,7 +63,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
 
-            buildConfigField "String", "UXCAM_KEY", '"sunsy8h9lv8kwuj"'
+            buildConfigField "String", "UXCAM_KEY", '"ff036o841eohxck"'
         }
 
         debug {
