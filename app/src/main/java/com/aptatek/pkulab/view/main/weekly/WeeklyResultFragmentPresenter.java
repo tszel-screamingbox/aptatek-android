@@ -308,13 +308,13 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                     pdfEntryDataBuilder
                             .setAverageCount(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                                     ? String.valueOf((int) average)
-                                    : String.format(Locale.getDefault(), "%.1f", average))
+                                    : String.format(Locale.US, "%.1f", average))
                             .setMin(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                                     ? String.valueOf((int) min)
-                                    : String.format(Locale.getDefault(), "%.1f", min))
+                                    : String.format(Locale.US, "%.1f", min))
                             .setMax(pkuRangeInfo.getPkuLevelUnit() == MICRO_MOL
                                     ? String.valueOf((int) max)
-                                    : String.format(Locale.getDefault(), "%.1f", max))
+                                    : String.format(Locale.US, "%.1f", max))
                             .setLowCount(low)
                             .setNormalCount(normal)
                             .setHighCount(high)

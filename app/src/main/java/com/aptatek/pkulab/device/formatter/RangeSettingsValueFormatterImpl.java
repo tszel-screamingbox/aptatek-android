@@ -114,7 +114,7 @@ public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormat
                     : R.string.rangeinfo_margin_mg);
         }
 
-        return String.format(Locale.getDefault(), getProperFormat(level.getUnit()), level.getValue());
+        return String.format(Locale.US, getProperFormat(level.getUnit()), level.getValue());
     }
 
     private String formatRegularValue(final float value, final PkuLevelUnits unit) {
