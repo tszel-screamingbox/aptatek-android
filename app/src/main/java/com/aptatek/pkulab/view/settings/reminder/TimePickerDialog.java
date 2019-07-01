@@ -56,6 +56,7 @@ public class TimePickerDialog extends DialogFragment {
     public static TimePickerDialog create(@NonNull final TimePickerDialogCallback callback) {
         final TimePickerDialog dialog = new TimePickerDialog();
         dialog.callback = callback;
+        dialog.setCancelable(false);
         return dialog;
     }
 
