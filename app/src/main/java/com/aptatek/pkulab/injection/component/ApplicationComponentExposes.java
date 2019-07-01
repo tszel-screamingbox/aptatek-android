@@ -2,6 +2,7 @@ package com.aptatek.pkulab.injection.component;
 
 import android.app.NotificationManager;
 import android.content.Context;
+
 import androidx.core.app.NotificationManagerCompat;
 
 import com.aptatek.pkulab.data.AptatekDatabase;
@@ -9,9 +10,10 @@ import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
-import com.aptatek.pkulab.domain.interactor.testresult.TestResultDataSource;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeDataSource;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultDataSource;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingDataSource;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothConditionChecker;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
@@ -58,6 +60,8 @@ public interface ApplicationComponentExposes {
     BluetoothConditionChecker provideBluetoothConditionChecker();
 
     ReaderManager provideReaderManager();
+
+    IAnalyticsManager analyticManager();
 
     @Named("databaseFile")
     File provideDbFile();

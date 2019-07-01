@@ -1,14 +1,16 @@
 package com.aptatek.pkulab.view.base;
 
 import android.os.Bundle;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+
 import com.aptatek.pkulab.AptatekApplication;
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.injection.component.DaggerFragmentComponent;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.injection.module.FragmentModule;
@@ -20,6 +22,8 @@ import com.uxcam.UXCam;
 import java.util.List;
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import ix.Ix;
 
@@ -27,6 +31,9 @@ import ix.Ix;
 public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>> extends MvpFragment<V, P> implements IFragmentFactory {
 
     private FragmentComponent fragmentComponent;
+
+    @Inject
+    IAnalyticsManager analyticManager;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -70,6 +77,14 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
 
     protected BaseActivity getBaseActivity() {
         return (BaseActivity) getActivity();
+    }
+
+    public void logEvent(final String eventName, final String eventInfo, final EventCategory category) {
+        analyticManager.logEvent(eventName, eventInfo, category);
+    }
+
+    public void logEllapsedTime(final String eventName, final int seconds, final EventCategory category) {
+        analyticManager.logEllapsedTime(eventName, seconds, category);
     }
 
     /**

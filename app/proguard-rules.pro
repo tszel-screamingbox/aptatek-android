@@ -24,6 +24,10 @@
 -keep class com.uxcam.** { *; }
 -dontwarn com.uxcam.**
 
+# Amplitude analytics
+-keep class com.google.android.gms.ads.** { *; }
+-dontwarn okio.**
+
 # ActivityStarter
 -keep class **Starter { *; }
 

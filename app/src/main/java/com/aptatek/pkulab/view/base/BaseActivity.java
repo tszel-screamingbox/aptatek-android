@@ -15,6 +15,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.injection.component.DaggerActivityComponent;
@@ -29,10 +31,15 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
+import javax.inject.Inject;
+
 public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>> extends MvpActivity<V, P> implements IActivityComponentProvider, AlertDialogDecisionListener {
 
     private static final String ALERT_DIALOG_FRAGMENT_TAG = "alertDialogFragmentTag";
     private ActivityComponent activityComponent;
+
+    @Inject
+    IAnalyticsManager analyticManager;
 
     private BroadcastReceiver reminderDialogBroadcast = new BroadcastReceiver() {
         @Override
@@ -121,6 +128,14 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
                     .build();
         }
         return activityComponent;
+    }
+
+    public void logEvent(final String eventName, final String eventInfo, final EventCategory category) {
+        analyticManager.logEvent(eventName, eventInfo, category);
+    }
+
+    public void logEllapsedTime(final String eventName, final int seconds, final EventCategory category){
+        analyticManager.logEllapsedTime(eventName, seconds, category);
     }
 
     public void launchActivity(final Intent intent) {

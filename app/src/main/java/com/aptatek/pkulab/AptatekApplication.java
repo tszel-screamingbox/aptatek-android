@@ -12,6 +12,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.MultiDexApplication;
 
+import com.amplitude.api.Amplitude;
 import com.aptatek.pkulab.device.AlarmManager;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
@@ -75,6 +76,12 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
         JodaTimeAndroid.init(this);
+
+        if (!BuildConfig.DEBUG) {
+            Amplitude.getInstance()
+                    .initialize(this, BuildConfig.AMPLITUDE_KEY)
+                    .enableForegroundTracking(this);
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
