@@ -37,7 +37,7 @@ public class ParentalGateVerificationPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        presenter = new ParentalGateVerificationPresenter(preferenceManager);
+        presenter = new ParentalGateVerificationPresenter(preferenceManager, analyticsManager);
         presenter.attachView(view);
     }
 
