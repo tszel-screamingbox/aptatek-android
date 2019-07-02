@@ -1,11 +1,12 @@
 package com.aptatek.pkulab.domain.manager.analytic.events.onboarding;
 
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
 public class OnboardingReaderConnected extends AnalyticsEvent {
 
     public OnboardingReaderConnected() {
-        super("onboarding_reader_connected", null);
+        super("onboarding_reader_connected", null, EventCategory.READER_COMMUNICATION);
     }
 
 }

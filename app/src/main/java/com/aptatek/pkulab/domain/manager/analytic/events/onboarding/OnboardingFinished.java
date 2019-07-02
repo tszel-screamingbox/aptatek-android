@@ -4,13 +4,14 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
 import java.util.Objects;
 
 public class OnboardingFinished extends AnalyticsEvent {
     public OnboardingFinished(final long elapsedTimeSec) {
-        super("onboarding_done", null);
+        super("onboarding_done", null, EventCategory.USER_BEHAVIOUR);
         this.elapsedTimeSec = elapsedTimeSec;
     }
 
@@ -42,6 +43,7 @@ public class OnboardingFinished extends AnalyticsEvent {
                 "elapsedTimeSec=" + elapsedTimeSec +
                 ", eventName='" + eventName + '\'' +
                 ", timestamp=" + timestamp +
+                ", eventCategory=" + eventCategory +
                 '}';
     }
 }

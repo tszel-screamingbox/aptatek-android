@@ -4,15 +4,16 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
 import java.util.Objects;
 
 public class OnboardingPinSetDone extends AnalyticsEvent {
 
-    public OnboardingPinSetDone(final long elapsedScreenTimeSec, final long elapsedScreenTimeSec1) {
-        super("onboarding_pin_set_done", null);
-        this.elapsedScreenTimeSec = elapsedScreenTimeSec1;
+    public OnboardingPinSetDone(final long elapsedScreenTimeSec) {
+        super("onboarding_pin_set_done", null, EventCategory.USER_BEHAVIOUR);
+        this.elapsedScreenTimeSec = elapsedScreenTimeSec;
     }
 
     private final long elapsedScreenTimeSec;
@@ -43,6 +44,7 @@ public class OnboardingPinSetDone extends AnalyticsEvent {
                 "elapsedScreenTimeSec=" + elapsedScreenTimeSec +
                 ", eventName='" + eventName + '\'' +
                 ", timestamp=" + timestamp +
+                ", eventCategory=" + eventCategory +
                 '}';
     }
 }

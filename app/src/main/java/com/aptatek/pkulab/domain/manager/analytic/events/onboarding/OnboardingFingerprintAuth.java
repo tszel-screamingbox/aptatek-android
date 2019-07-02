@@ -4,14 +4,15 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
 import java.util.Objects;
 
-public class OnbardingFingerprintAuth extends AnalyticsEvent {
+public class OnboardingFingerprintAuth extends AnalyticsEvent {
 
-    public OnbardingFingerprintAuth(final boolean enabled) {
-        super("onboarding_fingerprint_auth", null);
+    public OnboardingFingerprintAuth(final boolean enabled) {
+        super("onboarding_fingerprint_auth", null, EventCategory.USER_BEHAVIOUR);
         this.enabled = enabled;
     }
 
@@ -28,7 +29,7 @@ public class OnbardingFingerprintAuth extends AnalyticsEvent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        OnbardingFingerprintAuth that = (OnbardingFingerprintAuth) o;
+        OnboardingFingerprintAuth that = (OnboardingFingerprintAuth) o;
         return enabled == that.enabled;
     }
 
@@ -39,10 +40,11 @@ public class OnbardingFingerprintAuth extends AnalyticsEvent {
 
     @Override
     public String toString() {
-        return "OnbardingFingerprintAuth{" +
+        return "OnboardingFingerprintAuth{" +
                 "enabled=" + enabled +
                 ", eventName='" + eventName + '\'' +
                 ", timestamp=" + timestamp +
+                ", eventCategory=" + eventCategory +
                 '}';
     }
 }

@@ -1,8 +1,14 @@
 package com.aptatek.pkulab.view.parentalgate.welcome;
 
+import androidx.annotation.NonNull;
+
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.parentalgate.ParentalGateInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
+import com.aptatek.pkulab.domain.manager.analytic.events.onboarding.OnboardingParentalDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.onboarding.OnboardingParentalFailed;
 import com.aptatek.pkulab.domain.model.AgeCheckModel;
 import com.aptatek.pkulab.domain.model.AgeCheckResult;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
@@ -16,14 +22,29 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
 
     private final ResourceInteractor resourceInteractor;
     private final ParentalGateInteractor parentalGateInteractor;
+    private final IAnalyticsManager analyticsManager;
 
     private AgeCheckModel ageCheckModel;
     private CompositeDisposable disposables = new CompositeDisposable();
 
+    private long attachTimeMs = 0L;
+
+    @Override
+    public void attachView(final @NonNull ParentalGateWelcomeView view) {
+        super.attachView(view);
+
+        if (attachTimeMs == 0L) {
+            attachTimeMs = System.currentTimeMillis();
+        }
+    }
+
     @Inject
-    public ParentalGateWelcomePresenter(final ResourceInteractor resourceInteractor, final ParentalGateInteractor parentalGateInteractor) {
+    public ParentalGateWelcomePresenter(final ResourceInteractor resourceInteractor,
+                                        final ParentalGateInteractor parentalGateInteractor,
+                                        final IAnalyticsManager analyticsManager) {
         this.resourceInteractor = resourceInteractor;
         this.parentalGateInteractor = parentalGateInteractor;
+        this.analyticsManager = analyticsManager;
     }
 
     public void initUi() {
@@ -81,24 +102,33 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
 
             disposables.add(parentalGateInteractor.verify(ageCheckModel)
                     .onErrorReturn(throwable -> AgeCheckResult.NOT_OLD_ENOUGH)
-                    .subscribe(result ->
-                            ifViewAttached(attached -> attached.showResult(AgeVerificationResult.builder()
-                                    .setIconRes(result == AgeCheckResult.VALID_AGE
-                                            ? R.drawable.ic_age_verified
-                                            : R.drawable.ic_age_not_verified)
-                                    .setTitle(resourceInteractor.getStringResource(result == AgeCheckResult.VALID_AGE
-                                            ? R.string.parental_verification_success_title
-                                            : result == AgeCheckResult.NOT_OLD_ENOUGH
-                                            ? R.string.parental_verification_failure_not_old_enough_title
-                                            : R.string.parental_verification_failure_age_not_match_title))
-                                    .setMessage(resourceInteractor.getStringResource(result == AgeCheckResult.VALID_AGE
-                                            ? R.string.parental_verification_success_message
-                                            : result == AgeCheckResult.NOT_OLD_ENOUGH
-                                            ? R.string.parental_verification_failure_not_old_enough_message
-                                            : R.string.parental_verification_failure_age_not_match_message))
-                                    .setShowButton(result != AgeCheckResult.VALID_AGE)
-                                    .build())
-                            )
+                    .subscribe(result -> {
+
+                                final AnalyticsEvent event = result == AgeCheckResult.VALID_AGE
+                                        ? new OnboardingParentalDone(System.currentTimeMillis() - attachTimeMs)
+                                        : new OnboardingParentalFailed();
+
+                                analyticsManager.logEvent(event);
+
+                                ifViewAttached(attached -> attached.showResult(AgeVerificationResult.builder()
+                                        .setIconRes(result == AgeCheckResult.VALID_AGE
+                                                ? R.drawable.ic_age_verified
+                                                : R.drawable.ic_age_not_verified)
+                                        .setTitle(resourceInteractor.getStringResource(result == AgeCheckResult.VALID_AGE
+                                                ? R.string.parental_verification_success_title
+                                                : result == AgeCheckResult.NOT_OLD_ENOUGH
+                                                ? R.string.parental_verification_failure_not_old_enough_title
+                                                : R.string.parental_verification_failure_age_not_match_title))
+                                        .setMessage(resourceInteractor.getStringResource(result == AgeCheckResult.VALID_AGE
+                                                ? R.string.parental_verification_success_message
+                                                : result == AgeCheckResult.NOT_OLD_ENOUGH
+                                                ? R.string.parental_verification_failure_not_old_enough_message
+                                                : R.string.parental_verification_failure_age_not_match_message))
+                                        .setShowButton(result != AgeCheckResult.VALID_AGE)
+                                        .build())
+                                );
+
+                            }
                     )
             );
         } catch (final NumberFormatException e) {

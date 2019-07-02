@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,10 +15,14 @@ import androidx.core.content.ContextCompat;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.onboarding.OnboardingMultipleReaderFound;
+import com.aptatek.pkulab.domain.manager.analytic.events.onboarding.OnboardingNoReaderAvailable;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
+import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectFragment;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
@@ -53,6 +58,11 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Inject
     ResourceInteractor resourceInteractor;
 
+    @Inject
+    IAnalyticsManager analyticsManager;
+
+    private long screentime = 0L;
+
     @Override
     public String getTitle() {
         return null;
@@ -66,6 +76,15 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_turnreaderon;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null || screentime == 0L) {
+            screentime = System.currentTimeMillis();
+        }
     }
 
     @Override
@@ -119,6 +138,10 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @Override
     public void displayReaderSelector(@NonNull final List<ReaderDevice> readerDevices) {
+        if (this instanceof TurnReaderOnConnectFragment) {
+            analyticsManager.logEvent(new OnboardingMultipleReaderFound());
+        }
+
         ScanDialogFragment scanDialogFragment = findScanDialogFragment();
         if (scanDialogFragment == null) {
             scanDialogFragment = ScanDialogFragment.create(
@@ -172,6 +195,10 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         if (getBaseActivity() instanceof ConnectOnboardingReaderActivity) {
             ((ConnectOnboardingReaderActivity) getBaseActivity()).showHelpScreen();
             return;
+        }
+
+        if (this instanceof TurnReaderOnConnectFragment) {
+            analyticsManager.logEvent(new OnboardingNoReaderAvailable(System.currentTimeMillis() - screentime));
         }
     }
 

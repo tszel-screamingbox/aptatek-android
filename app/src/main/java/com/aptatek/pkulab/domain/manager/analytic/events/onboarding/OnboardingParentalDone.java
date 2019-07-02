@@ -4,12 +4,13 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
 public class OnboardingParentalDone extends AnalyticsEvent {
 
-    protected OnboardingParentalDone(final long elapsedScreenTimeSec) {
-        super("onboarding_age_gate_done", null);
+    public OnboardingParentalDone(final long elapsedScreenTimeSec) {
+        super("onboarding_age_gate_done", null, EventCategory.USER_BEHAVIOUR);
         this.elapsedScreenTime = elapsedScreenTimeSec;
     }
 
@@ -27,6 +28,7 @@ public class OnboardingParentalDone extends AnalyticsEvent {
                 "elapsedScreenTime=" + elapsedScreenTime +
                 ", eventName='" + eventName + '\'' +
                 ", timestamp=" + timestamp +
+                ", eventCategory=" + eventCategory +
                 '}';
     }
 }

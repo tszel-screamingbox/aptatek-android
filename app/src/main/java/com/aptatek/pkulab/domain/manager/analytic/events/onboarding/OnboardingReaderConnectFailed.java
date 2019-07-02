@@ -4,13 +4,14 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
 import java.util.Objects;
 
 public class OnboardingReaderConnectFailed extends AnalyticsEvent {
     public OnboardingReaderConnectFailed(final String errorReason) {
-        super("onboarding_reader_connection_error", null);
+        super("onboarding_reader_connection_error", null, EventCategory.ERROR);
         this.errorReason = errorReason;
     }
 
@@ -43,6 +44,7 @@ public class OnboardingReaderConnectFailed extends AnalyticsEvent {
                 "errorReason='" + errorReason + '\'' +
                 ", eventName='" + eventName + '\'' +
                 ", timestamp=" + timestamp +
+                ", eventCategory=" + eventCategory +
                 '}';
     }
 }

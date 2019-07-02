@@ -4,13 +4,14 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
 import java.util.Objects;
 
 public class OnboardingNoReaderAvailable extends AnalyticsEvent {
     public OnboardingNoReaderAvailable(final long elapsedScreenTimeSec) {
-        super("onboarding_no_reader_available", null);
+        super("onboarding_no_reader_available", null, EventCategory.ERROR);
         this.elapsedScreenTimeSec = elapsedScreenTimeSec;
     }
 
@@ -42,6 +43,7 @@ public class OnboardingNoReaderAvailable extends AnalyticsEvent {
                 "elapsedScreenTimeSec=" + elapsedScreenTimeSec +
                 ", eventName='" + eventName + '\'' +
                 ", timestamp=" + timestamp +
+                ", eventCategory=" + eventCategory +
                 '}';
     }
 }

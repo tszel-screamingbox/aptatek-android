@@ -4,6 +4,8 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
+
 import java.util.Objects;
 
 public abstract class AnalyticsEvent {
@@ -12,9 +14,12 @@ public abstract class AnalyticsEvent {
 
     public final Long timestamp;
 
-    protected AnalyticsEvent(final String eventName, final Long timestamp) {
+    public final EventCategory eventCategory;
+
+    protected AnalyticsEvent(final String eventName, final Long timestamp, final EventCategory eventCategory) {
         this.eventName = eventName;
         this.timestamp = timestamp;
+        this.eventCategory = eventCategory;
     }
 
     public String getEventName() {
@@ -23,6 +28,10 @@ public abstract class AnalyticsEvent {
 
     public Long getTimestamp() {
         return timestamp;
+    }
+
+    public EventCategory getEventCategory() {
+        return eventCategory;
     }
 
     @Nullable
@@ -36,11 +45,21 @@ public abstract class AnalyticsEvent {
         if (o == null || getClass() != o.getClass()) return false;
         AnalyticsEvent that = (AnalyticsEvent) o;
         return Objects.equals(eventName, that.eventName) &&
-                Objects.equals(timestamp, that.timestamp);
+                Objects.equals(timestamp, that.timestamp) &&
+                eventCategory == that.eventCategory;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventName, timestamp);
+        return Objects.hash(eventName, timestamp, eventCategory);
+    }
+
+    @Override
+    public String toString() {
+        return "AnalyticsEvent{" +
+                "eventName='" + eventName + '\'' +
+                ", timestamp=" + timestamp +
+                ", eventCategory=" + eventCategory +
+                '}';
     }
 }

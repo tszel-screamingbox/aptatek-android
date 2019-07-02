@@ -1,7 +1,12 @@
 package com.aptatek.pkulab.domain.manager.analytic;
 
+import android.util.Pair;
+
+import androidx.annotation.Nullable;
+
 import com.amplitude.api.Amplitude;
 import com.amplitude.api.AmplitudeClient;
+import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,11 +38,27 @@ public class AnalyticsManager implements IAnalyticsManager {
     private final AmplitudeClient amplitude;
 
     @Override
+    public void logEvent(final AnalyticsEvent event) {
+        logEvent(event.eventName, infoToString(event.getAdditionalInfo()), event.eventCategory, event.timestamp == null ? 0L : event.timestamp);
+    }
+
+    @Nullable
+    private String infoToString(@Nullable final Pair<String, String> info) {
+        if (info == null) return null;
+
+        return String.format("%s: %s", info.first, info.second);
+    }
+
+    @Override
     public void logEvent(final String eventName, final String info, final EventCategory category) {
+        logEvent(eventName, info, category, System.currentTimeMillis());
+    }
+
+    private void logEvent(final String eventName, @Nullable final String info, final EventCategory category, final long timestamp) {
         try {
 
             final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.US);
-            final String date = dt.format(new Date(System.currentTimeMillis()));
+            final String date = dt.format(new Date(timestamp == 0 ? System.currentTimeMillis() : timestamp));
 
             final JSONObject eventProperties = new JSONObject();
             eventProperties.put(Constants.EVENT_CATEGORY, category.getKey());
