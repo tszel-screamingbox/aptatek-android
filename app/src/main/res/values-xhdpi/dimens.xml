@@ -96,6 +96,7 @@
     <dimen name="font.size.enormous">48sp</dimen>
     <dimen name="font.size.wetting">80sp</dimen>
 
+    <dimen name="font.alert">20sp</dimen>
     <dimen name="font.rangeinfo">42sp</dimen>
     <dimen name="font.test">24sp</dimen>
     <dimen name="font.toolbar">20sp</dimen>
