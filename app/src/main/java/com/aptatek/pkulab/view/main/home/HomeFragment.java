@@ -282,6 +282,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                         showContinueTestDialog();
                     }
                 });
+        dialogFragment.setCancelable(false);
         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_UNFINISHED_DIALOG);
     }
 
@@ -302,6 +303,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                         getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
                     }
                 });
+        dialogFragment.setCancelable(false);
         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_CONTINUE_TEST_DIALOG);
     }
 
@@ -319,9 +321,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_WRONG_RESULT) {
                 final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
                         TestContinueDialogModel.incorrectResultDialogModelCreate(requireContext()),
-                        decision -> {
-                            getBaseActivity().launchActivity(new Intent(requireContext(), DisposeActivity.class));
-                        });
+                        decision -> getBaseActivity().launchActivity(new Intent(requireContext(), DisposeActivity.class)));
+                dialogFragment.setCancelable(false);
                 dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {
                 getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
