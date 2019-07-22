@@ -34,7 +34,7 @@ public class AnalyticsManager implements IAnalyticsManager {
     AnalyticsManager() {
         this.amplitude = Amplitude.getInstance();
     }
-    
+
     private final AmplitudeClient amplitude;
 
     @Override
@@ -56,7 +56,7 @@ public class AnalyticsManager implements IAnalyticsManager {
 
     private void logEvent(final String eventName, @Nullable final String info, final EventCategory category, final long timestamp) {
         try {
-
+            Timber.d("Logging event...");
             final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.US);
             final String date = dt.format(new Date(timestamp == 0 ? System.currentTimeMillis() : timestamp));
 

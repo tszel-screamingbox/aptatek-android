@@ -1,11 +1,13 @@
 package com.aptatek.pkulab.view.settings.web;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.settings.web.fragment.WebPageFragmentStarter;
 
@@ -14,6 +16,7 @@ import javax.inject.Inject;
 import activitystarter.ActivityStarter;
 import activitystarter.Arg;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class WebHostActivity extends BaseActivity<WebHostView, WebHostPresenter> implements WebHostView {
 
@@ -41,6 +44,8 @@ public class WebHostActivity extends BaseActivity<WebHostView, WebHostPresenter>
         setContentView(R.layout.layout_content_frame);
         ButterKnife.bind(this);
 
+        Timber.d("URL: %s", url);
+        presenter.initAnalytics(url.equals(Constants.URL_HELP));
         switchToFragment(WebPageFragmentStarter.newInstance(title, url, reportVisible));
     }
 
