@@ -1,7 +1,5 @@
 package com.aptatek.pkulab.domain.manager.analytic;
 
-import android.util.Pair;
-
 import androidx.annotation.Nullable;
 
 import com.amplitude.api.Amplitude;
@@ -14,6 +12,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,10 +42,15 @@ public class AnalyticsManager implements IAnalyticsManager {
     }
 
     @Nullable
-    private String infoToString(@Nullable final Pair<String, String> info) {
+    private String infoToString(@Nullable final Map<String, String> info) {
         if (info == null) return null;
 
-        return String.format("%s: %s", info.first, info.second);
+        final StringBuilder builder = new StringBuilder();
+        for (final Map.Entry<String, String> entry : info.entrySet()) {
+            builder.append(String.format("%s: %s", entry.getKey(), entry.getValue()));
+        }
+
+        return builder.toString();
     }
 
     @Override

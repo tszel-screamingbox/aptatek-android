@@ -1,11 +1,10 @@
 package com.aptatek.pkulab.domain.manager.analytic.events;
 
-import android.util.Pair;
-
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class AnalyticsEvent {
@@ -35,7 +34,7 @@ public abstract class AnalyticsEvent {
     }
 
     @Nullable
-    public Pair<String, String> getAdditionalInfo() {
+    public Map<String, String> getAdditionalInfo() {
         return null;
     }
 

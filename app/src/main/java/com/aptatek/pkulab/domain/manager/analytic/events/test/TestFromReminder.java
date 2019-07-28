@@ -1,6 +1,4 @@
-package com.aptatek.pkulab.domain.manager.analytic.events.onboarding;
-
-import android.util.Pair;
+package com.aptatek.pkulab.domain.manager.analytic.events.test;
 
 import androidx.annotation.Nullable;
 
@@ -10,27 +8,31 @@ import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OnboardingParentalDone extends AnalyticsEvent {
+public class TestFromReminder extends AnalyticsEvent {
 
-    public OnboardingParentalDone(final long elapsedScreenTimeSec) {
-        super("onboarding_age_gate_done", null, EventCategory.USER_BEHAVIOUR);
-        this.elapsedScreenTime = elapsedScreenTimeSec;
+    private final int phoneBatteryPercent;
+
+    public TestFromReminder(final int phoneBatteryPercent) {
+        super("testing_started_from_reminder", null, EventCategory.USER_BEHAVIOUR);
+        this.phoneBatteryPercent = phoneBatteryPercent;
     }
 
-    private final long elapsedScreenTime;
+    public int getPhoneBatteryPercent() {
+        return phoneBatteryPercent;
+    }
 
     @Nullable
     @Override
     public Map<String, String> getAdditionalInfo() {
         final Map<String, String> map = new HashMap<>();
-        map.put("ellapsed_screentime_sec", String.valueOf(elapsedScreenTime));
+        map.put("phone_battery", String.valueOf(phoneBatteryPercent));
         return map;
     }
 
     @Override
     public String toString() {
-        return "OnboardingParentalDone{" +
-                "elapsedScreenTime=" + elapsedScreenTime +
+        return "TestFromReminder{" +
+                "phoneBatteryPercent=" + phoneBatteryPercent +
                 ", eventName='" + eventName + '\'' +
                 ", timestamp=" + timestamp +
                 ", eventCategory=" + eventCategory +

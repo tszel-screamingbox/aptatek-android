@@ -267,6 +267,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         if (hasAllPermissions) {
             checkPermissions();
         } else {
+
             ifViewAttached(TurnReaderOnView::displayMissingPermissions);
         }
     }
