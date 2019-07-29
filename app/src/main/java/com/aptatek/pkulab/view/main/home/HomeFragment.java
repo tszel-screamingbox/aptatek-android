@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.domain.model.TestContinueDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
@@ -71,6 +73,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @Inject
     DailyResultsAdapter dailyResultsAdapter;
+
+    @Inject
+    IAnalyticsManager analyticsManager;
 
     @BindView(R.id.scrollView)
     DiscreteScrollView bubbleScrollView;
@@ -299,7 +304,10 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                 TestContinueDialogModel.continueTestDialogModelCreate(requireContext()),
                 decision -> {
                     if (decision == AlertDialogDecisions.POSITIVE) {
+                        analyticsManager.logEvent(new UnfinishedTest("risk_unfinished_test_continue"));
                         getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
+                    } else {
+                        analyticsManager.logEvent(new UnfinishedTest("risk_unfinished_test_failed"));
                     }
                 });
         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_CONTINUE_TEST_DIALOG);
@@ -319,9 +327,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_WRONG_RESULT) {
                 final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
                         TestContinueDialogModel.incorrectResultDialogModelCreate(requireContext()),
-                        decision -> {
-                            getBaseActivity().launchActivity(new Intent(requireContext(), DisposeActivity.class));
-                        });
+                        decision -> getBaseActivity().launchActivity(new Intent(requireContext(), DisposeActivity.class)));
                 dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {
                 getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);

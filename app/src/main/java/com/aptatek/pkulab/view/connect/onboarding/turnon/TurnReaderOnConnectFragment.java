@@ -1,11 +1,14 @@
 package com.aptatek.pkulab.view.connect.onboarding.turnon;
 
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectReaderScreen;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectReaderView;
@@ -24,6 +27,8 @@ public class TurnReaderOnConnectFragment extends TurnReaderOnFragment<TurnReader
 
     @Inject
     TurnReaderOnConnectPresenter presenter;
+    @Inject
+    IAnalyticsManager analyticsManager;
 
     @NonNull
     @Override
@@ -74,6 +79,7 @@ public class TurnReaderOnConnectFragment extends TurnReaderOnFragment<TurnReader
 
     @OnClick(R.id.turnReaderOnSkip)
     void onSkipClicked() {
+        analyticsManager.logEvent(new UnfinishedTest("risk_unfinished_test_skip_reader"));
         presenter.syncData();
     }
 

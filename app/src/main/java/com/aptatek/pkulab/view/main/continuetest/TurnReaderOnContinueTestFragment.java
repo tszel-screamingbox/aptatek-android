@@ -2,10 +2,13 @@ package com.aptatek.pkulab.view.main.continuetest;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.annotation.NonNull;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.domain.model.TestContinueDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
@@ -31,6 +34,8 @@ public class TurnReaderOnContinueTestFragment extends TurnReaderOnFragment<TurnR
 
     @Inject
     TurnReaderOnContinueTestPresenter presenter;
+    @Inject
+    IAnalyticsManager analyticsManager;
 
     @NonNull
     @Override
@@ -51,6 +56,7 @@ public class TurnReaderOnContinueTestFragment extends TurnReaderOnFragment<TurnR
                     if (decision == AlertDialogDecisions.POSITIVE) {
 
                     } else if (decision == AlertDialogDecisions.NEGATIVE) {
+                        analyticsManager.logEvent(new UnfinishedTest("risk_unfinished_test_skip_reader_forced"));
                         getBaseActivity().launchActivity(new Intent(requireActivity(), DisposeActivity.class));
                         getBaseActivity().finish();
                     }
