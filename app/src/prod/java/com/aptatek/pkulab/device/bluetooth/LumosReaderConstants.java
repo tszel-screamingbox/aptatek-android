@@ -23,5 +23,9 @@ public final class LumosReaderConstants {
     public static final String BATTERY_SERVICE = "0000180F-0000-1000-8000-00805f9b34fb";
     public static final String BATTERY_CHAR_LEVEL = "00002A19-0000-1000-8000-00805f9b34fb";
 
+    public static final String DEVICE_INFO_SERVICE = "0000180a-0000-1000-8000-00805f9b34fb";
+    public static final String DEVICE_INFO_FIRMWARE = "00002a26-0000-1000-8000-00805f9b34fb";
+    public static final String DEVICE_INFO_SERIAL = "00002a25-0000-1000-8000-00805f9b34fb";
+
     public static final int ERROR_MTU_CHANGE_FAILED = 688;
 }
