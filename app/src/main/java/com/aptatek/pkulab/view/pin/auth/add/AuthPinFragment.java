@@ -1,10 +1,13 @@
 package com.aptatek.pkulab.view.pin.auth.add;
 
-import androidx.annotation.NonNull;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.data.PinCode;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.appstart.AppStart;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
@@ -13,6 +16,9 @@ import com.aptatek.pkulab.view.pin.base.BasePinFragment;
 
 import javax.inject.Inject;
 
+import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.RISK_MITIGATION;
+import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.USER_BEHAVIOUR;
+
 
 public class AuthPinFragment extends BasePinFragment implements AuthPinView {
 
@@ -20,6 +26,8 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
 
     @Inject
     AuthPinPresenter presenter;
+    @Inject
+    IAnalyticsManager analyticsManager;
 
     @Override
     public String getTitle() {
@@ -61,6 +69,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     }
 
     private void showSuccess(@NonNull final String message) {
+        analyticsManager.logEvent(new AppStart("open_app_pin_auth_success", USER_BEHAVIOUR));
         messageTextView.setVisibility(View.VISIBLE);
         messageTextView.setText(message);
         messageTextView.setBackgroundResource(R.drawable.pin_valid_message_background);
@@ -75,6 +84,7 @@ public class AuthPinFragment extends BasePinFragment implements AuthPinView {
     @Override
     public void showAlertDialog() {
         onInvalidPinTyped();
+        analyticsManager.logEvent(new AppStart("open_app_pin_auth_failed_five_times", RISK_MITIGATION));
         final AlertDialogModel model = AlertDialogModel.builder()
                 .setTitle(getString(R.string.auth_pin_attempt_limit_reached_title))
                 .setMessage(getString(R.string.auth_pin_attempt_limit_reached_hint))
