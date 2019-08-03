@@ -49,7 +49,10 @@ public class TestInteractor {
     }
 
     public Completable resetTest() {
-        return Completable.fromAction(() -> preferenceManager.clearPreference(PreferenceManager.PREF_TEST_STATUS));
+        return Completable.fromAction(() -> {
+            preferenceManager.clearPreference(PreferenceManager.PREF_TEST_STATUS);
+            preferenceManager.clearPreference(PreferenceManager.PREF_TEST_START);
+        });
     }
 
     public Completable cancelWettingFinishedNotifications() {

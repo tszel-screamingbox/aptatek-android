@@ -99,7 +99,7 @@ public class SplashPresenterTest {
         when(dbFile.exists()).thenReturn(true);
         when(preferenceManager.isDbEncryptedWithPin()).thenReturn(true);
 
-        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper, dbFile);
+        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper, dbFile, analyticsManager);
         presenter.attachView(view);
     }
 

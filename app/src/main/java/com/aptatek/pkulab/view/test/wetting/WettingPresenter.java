@@ -4,6 +4,9 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.SampleWettingDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.SampleWettingSkipped;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import java.util.concurrent.TimeUnit;
@@ -23,21 +26,29 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
 
     private final WettingInteractor wettingInteractor;
     private final TestInteractor testingInteractor;
+    private final IAnalyticsManager analyticsManager;
     private CompositeDisposable disposables;
     private Disposable easterEggDisposable;
+    private long screenDisplayedMs = 0L;
 
     @Inject
     public WettingPresenter(final ResourceInteractor resourceInteractor,
                             final WettingInteractor wettingInteractor,
-                            final TestInteractor testingInteractor) {
+                            final TestInteractor testingInteractor,
+                            final IAnalyticsManager analyticsManager) {
         super(resourceInteractor);
         this.wettingInteractor = wettingInteractor;
         this.testingInteractor = testingInteractor;
+        this.analyticsManager = analyticsManager;
     }
 
     @Override
     public void attachView(final WettingView view) {
         super.attachView(view);
+
+        if (screenDisplayedMs == 0L) {
+            screenDisplayedMs = System.currentTimeMillis();
+        }
 
         disposables = new CompositeDisposable();
 
@@ -47,7 +58,10 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
                 .subscribe(
                         countdown -> ifViewAttached(attachedView -> attachedView.showCountdown(countdown.getRemainingFormattedText())),
                         Timber::e,
-                        () -> ifViewAttached(WettingView::showNextScreen)
+                        () -> {
+                            analyticsManager.logEvent(new SampleWettingDone(Math.abs(System.currentTimeMillis() - screenDisplayedMs)));
+                            ifViewAttached(WettingView::showNextScreen);
+                        }
                 )
         );
     }
@@ -96,7 +110,10 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
         disposables.add(
                 wettingInteractor.resetWetting()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> ifViewAttached(WettingView::showNextScreen))
+                        .subscribe(() -> {
+                            analyticsManager.logEvent(new SampleWettingSkipped(Math.abs(System.currentTimeMillis() - screenDisplayedMs)));
+                            ifViewAttached(WettingView::showNextScreen);
+                        })
         );
     }
 }

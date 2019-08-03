@@ -4,6 +4,8 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.TestCancelled;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import javax.inject.Inject;
@@ -15,16 +17,19 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
 
     private final WettingInteractor wettingInteractor;
     private final TestInteractor testInteractor;
+    private final IAnalyticsManager analyticsManager;
 
     private Disposable disposable;
 
     @Inject
     CancelTestPresenter(final ResourceInteractor resourceInteractor,
                         final WettingInteractor wettingInteractor,
-                        final TestInteractor testInteractor) {
+                        final TestInteractor testInteractor,
+                        final IAnalyticsManager analyticsManager) {
         super(resourceInteractor);
         this.wettingInteractor = wettingInteractor;
         this.testInteractor = testInteractor;
+        this.analyticsManager = analyticsManager;
     }
 
     @Override
@@ -40,6 +45,7 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
         disposable = wettingInteractor.resetWetting()
                 .andThen(testInteractor.resetTest())
                 .andThen(testInteractor.setTestContinueStatus(false))
+                .andThen(Completable.fromAction(() -> ifViewAttached(view -> analyticsManager.logEvent(new TestCancelled(view.getPreviousScreen() == null ? "null" : view.getPreviousScreen().name())))))
                 .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
                 .subscribe();
     }

@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.connect.onboarding.permission;
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredPresenter;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredPresenterImpl;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
@@ -17,8 +18,8 @@ public class PermissionRequiredOnConnectPresenter extends MvpBasePresenter<Permi
     private final PermissionRequiredPresenterImpl wrapped;
 
     @Inject
-    PermissionRequiredOnConnectPresenter(final BluetoothInteractor bluetoothInteractor) {
-        wrapped = new PermissionRequiredPresenterImpl(bluetoothInteractor);
+    PermissionRequiredOnConnectPresenter(final BluetoothInteractor bluetoothInteractor, final IAnalyticsManager analyticsManager) {
+        wrapped = new PermissionRequiredPresenterImpl(bluetoothInteractor, analyticsManager);
     }
 
     @Override
@@ -41,5 +42,10 @@ public class PermissionRequiredOnConnectPresenter extends MvpBasePresenter<Permi
     @Override
     public void evaluatePermissionResults(final List<PermissionResult> results) {
         wrapped.evaluatePermissionResults(results);
+    }
+
+    @Override
+    public void logPermissionSettingsOpened() {
+        wrapped.logPermissionSettingsOpened();
     }
 }

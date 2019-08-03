@@ -9,6 +9,10 @@ import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.appstart.OpenFromBTNotification;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.TestResultDisplayed;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.TestResultDone;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
@@ -32,6 +36,8 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
     private final WettingInteractor wettingInteractor;
     private final RangeSettingsValueFormatter rangeSettingsValueFormatter;
     private final TestInteractor testInteractor;
+    private final IAnalyticsManager analyticsManager;
+    private long screenDisplayedAtMs = 0L;
 
     private Disposable disposable;
 
@@ -41,16 +47,22 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                                final ResourceInteractor resourceInteractor,
                                final WettingInteractor wettingInteractor,
                                final RangeSettingsValueFormatter rangeSettingsValueFormatter,
-                               final TestInteractor testInteractor) {
+                               final TestInteractor testInteractor,
+                               final IAnalyticsManager analyticsManager) {
         this.rangeInteractor = rangeInteractor;
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.wettingInteractor = wettingInteractor;
         this.rangeSettingsValueFormatter = rangeSettingsValueFormatter;
         this.testInteractor = testInteractor;
+        this.analyticsManager = analyticsManager;
     }
 
     public void initUi(final String testId) {
+        if (screenDisplayedAtMs == 0L) {
+            screenDisplayedAtMs = System.currentTimeMillis();
+        }
+
         disposeSubscriptions();
         disposable =
                 clearTestState()
@@ -58,15 +70,18 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                         .andThen(testInteractor.setTestContinueStatus(false))
                         .andThen(Single.zip(
                                 rangeInteractor.getInfo(),
-                                testResultInteractor.getById(testId).map(TestResult::getPkuLevel),
-                                (rangeInfo, pkuLevel) ->
-                                        TestResultState.builder()
-                                                .setTitle(getTitleForLevel(pkuLevel, rangeInfo))
-                                                .setColor(getColorForLevel(pkuLevel, rangeInfo))
-                                                .setFormattedPkuValue(getFormattedPkuValue(pkuLevel, rangeInfo))
-                                                .setPkuLevelText(getPkuLevelText(pkuLevel, rangeInfo))
-                                                .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(rangeInfo.getPkuLevelUnit()))
-                                                .build())
+                                testResultInteractor.getById(testId),
+                                (rangeInfo, result) -> {
+                                    analyticsManager.logEvent(new TestResultDisplayed(result.getPkuLevel(), ChartUtils.getState(result.getPkuLevel(), rangeInfo), result.getTimestamp()));
+
+                                    return TestResultState.builder()
+                                            .setTitle(getTitleForLevel(result.getPkuLevel(), rangeInfo))
+                                            .setColor(getColorForLevel(result.getPkuLevel(), rangeInfo))
+                                            .setFormattedPkuValue(getFormattedPkuValue(result.getPkuLevel(), rangeInfo))
+                                            .setPkuLevelText(getPkuLevelText(result.getPkuLevel(), rangeInfo))
+                                            .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(rangeInfo.getPkuLevelUnit()))
+                                            .build();
+                                })
                         )
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)));
@@ -158,6 +173,15 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
         }
 
         return resourceInteractor.getStringResource(resource);
+    }
+
+    public void logTestDoneAnd(final Runnable runnable) {
+        analyticsManager.logEvent(new TestResultDone(Math.abs(System.currentTimeMillis() - screenDisplayedAtMs)));
+        runnable.run();
+    }
+
+    public void logOpenFromNotification() {
+        analyticsManager.logEvent(new OpenFromBTNotification("end_of_test"));
     }
 
     private Completable clearTestState() {

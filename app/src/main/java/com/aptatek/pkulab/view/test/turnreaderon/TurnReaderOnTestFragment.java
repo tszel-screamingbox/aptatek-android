@@ -201,7 +201,7 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
     @Override
     public void showTestResultScreen(final String testId) {
         final FragmentActivity activity = requireActivity();
-        startActivity(TestResultActivity.starter(activity, testId));
+        startActivity(TestResultActivity.starter(activity, testId, false));
         activity.finish();
     }
 

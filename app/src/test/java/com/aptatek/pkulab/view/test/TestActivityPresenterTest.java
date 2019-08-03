@@ -14,7 +14,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
@@ -67,7 +66,7 @@ public class TestActivityPresenterTest {
         doReturn(Single.just(TestScreens.TURN_READER_ON)).when(testInteractor).getLastScreen();
         doReturn(Completable.complete()).when(testInteractor).setLastScreen(ArgumentMatchers.any());
 
-        presenter = new TestActivityPresenter(wettingInteractor, testInteractor, deviceHelper);
+        presenter = new TestActivityPresenter(wettingInteractor, testInteractor, deviceHelper, analyticsManager);
         presenter.attachView(view);
     }
 

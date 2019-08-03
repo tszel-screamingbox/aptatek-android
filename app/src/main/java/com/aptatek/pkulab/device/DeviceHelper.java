@@ -92,6 +92,14 @@ public class DeviceHelper {
         return level / (float) scale <= BATTERY_LEVEL_LOW;
     }
 
+    public int getPhoneBattery() {
+        final IntentFilter ifilter = new IntentFilter(ACTION_BATTERY_CHANGED);
+        final Intent batteryStatus = context.registerReceiver(null, ifilter);
+        final int level = batteryStatus.getIntExtra(EXTRA_LEVEL, -1);
+        final int scale = batteryStatus.getIntExtra(EXTRA_SCALE, -1);
+        return (int) ((level / (float) scale) * 100);
+    }
+
     public String getAppVersion() {
         try {
             final PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);

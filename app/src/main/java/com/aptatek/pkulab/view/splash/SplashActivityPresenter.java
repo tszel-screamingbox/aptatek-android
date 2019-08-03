@@ -7,6 +7,8 @@ import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.appstart.OpenFromBTNotification;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -29,6 +31,7 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
     private final PreferenceManager preferenceManager;
     private final DeviceHelper deviceHelper;
     private final File dbFile;
+    private final IAnalyticsManager analyticsManager;
 
     private CompositeDisposable compositeDisposable;
 
@@ -36,11 +39,13 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
     public SplashActivityPresenter(final KeyStoreManager keyStoreManager,
                                    final PreferenceManager preferenceManager,
                                    final DeviceHelper deviceHelper,
-                                   final @Named("databaseFile") File dbFile) {
+                                   final @Named("databaseFile") File dbFile,
+                                   final IAnalyticsManager analyticsManager) {
         this.keyStoreManager = keyStoreManager;
         this.preferenceManager = preferenceManager;
         this.deviceHelper = deviceHelper;
         this.dbFile = dbFile;
+        this.analyticsManager = analyticsManager;
     }
 
     @Override
@@ -92,5 +97,9 @@ public class SplashActivityPresenter extends MvpBasePresenter<SplashActivityView
             compositeDisposable.dispose();
         }
         super.detachView();
+    }
+
+    public void logBtError() {
+        analyticsManager.logEvent(new OpenFromBTNotification("error"));
     }
 }

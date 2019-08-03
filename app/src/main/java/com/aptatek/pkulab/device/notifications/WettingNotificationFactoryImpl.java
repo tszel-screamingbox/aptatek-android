@@ -29,8 +29,8 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
         super(context, resourceInteractor, notificationManager);
     }
 
-    private PendingIntent createContentIntent() {
-        final Intent starter = TestActivity.createStarter(context);
+    private PendingIntent createContentIntent(boolean forWettingDone) {
+        final Intent starter = forWettingDone ? TestActivity.createStarterForNotificationWithReason(context, "end_of_sample_wetting") : TestActivity.createStarter(context);
 
         final TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(starter);
@@ -63,7 +63,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
                 .setVibrate(new long[]{0L})
                 .setSound(null)
                 .setDefaults(0)
-                .setContentIntent(createContentIntent())
+                .setContentIntent(createContentIntent(false))
                 .build();
     }
 
@@ -78,7 +78,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
                 .setSmallIcon(R.drawable.ic_notification)
-                .setContentIntent(createContentIntent())
+                .setContentIntent(createContentIntent(false))
                 .setAutoCancel(true)
                 .build();
     }
@@ -90,7 +90,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
                 .setContentTitle(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.test_wetting_notification_finished_text))
                 .setSmallIcon(R.drawable.ic_notification)
-                .setContentIntent(createContentIntent())
+                .setContentIntent(createContentIntent(true))
                 .setSound(resourceInteractor.getUriForRawFile(R.raw.noti_sound))
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)

@@ -136,7 +136,7 @@ public class WeeklyResultFragmentPresenterTest {
                 pdfChartDataTransformer,
                 csvExport,
                 preferenceManager,
-                valueFormatter);
+                valueFormatter, analyticsManager);
         presenter.attachView(view);
     }
 

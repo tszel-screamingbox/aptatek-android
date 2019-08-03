@@ -48,6 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import timber.log.Timber;
 
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
@@ -61,9 +62,16 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     private static final String TAG_BATTER_DIALOG = "aptatek.main.home.battery.dialog";
     private static final String TAG_CURRENT_FRAGMENT = "aptatek.test.current.fragment";
+    private static final String EXTRA_NOTIF_REASON = "aptatek.notif.reason";
 
     public static Intent createStarter(@NonNull final Context context) {
         return new Intent(context, TestActivity.class);
+    }
+
+    public static Intent createStarterForNotificationWithReason(@NonNull final Context context, final String reason) {
+        final Intent intent = new Intent(context, TestActivity.class);
+        intent.putExtra(EXTRA_NOTIF_REASON, reason);
+        return intent;
     }
 
     @Inject
@@ -101,6 +109,10 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
         screenPagerIndicator.setDynamicCount(false);
         screenPagerIndicator.setCount(TestScreens.showDotFor().size());
+
+        if (getIntent().hasExtra(EXTRA_NOTIF_REASON)) {
+            presenter.logOpenFromNotification(getIntent().getStringExtra(EXTRA_NOTIF_REASON));
+        }
     }
 
     @Override
@@ -255,7 +267,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
         transaction.replace(getFrameLayoutId(), fragment, TAG_CURRENT_FRAGMENT);
         if (addToBackStack) {
-            transaction.addToBackStack(null);
+            transaction.addToBackStack(fragment instanceof TestFragmentBaseView ? String.valueOf(((TestFragmentBaseView) fragment).getScreen().ordinal()) : null);
         }
 
         transaction.commit();
@@ -285,6 +297,22 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public TestScreens getPreviousScreen() {
+        final FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            final FragmentManager.BackStackEntry backStackEntryAt = fm.getBackStackEntryAt(Math.max(0, fm.getBackStackEntryCount() - 1));
+            try {
+                final int ordinal = Integer.parseInt(backStackEntryAt.getName());
+                return TestScreens.values()[ordinal];
+            } catch (NumberFormatException e) {
+                Timber.d("Failed to get previous screen");
+            }
+        }
+
+        return TestScreens.TURN_READER_ON;
     }
 
     @Override

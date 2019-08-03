@@ -76,7 +76,7 @@ public class RangeInfoPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        presenter = new RangeInfoPresenter(rangeInteractor, valueFormatter);
+        presenter = new RangeInfoPresenter(rangeInteractor, valueFormatter, analyticsManager);
         presenter.attachView(view);
     }
 

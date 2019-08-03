@@ -3,6 +3,8 @@ package com.aptatek.pkulab.view.connect.permission;
 import androidx.core.content.PermissionChecker;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.OpenPermissionSettings;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.List;
@@ -13,11 +15,14 @@ import ix.Ix;
 public class PermissionRequiredPresenterImpl extends MvpBasePresenter<PermissionRequiredView> implements PermissionRequiredPresenter<PermissionRequiredView> {
 
     private final BluetoothInteractor bluetoothInteractor;
+    private final IAnalyticsManager analyticsManager;
 
     private Disposable disposable = null;
 
-    public PermissionRequiredPresenterImpl(final BluetoothInteractor bluetoothInteractor) {
+    public PermissionRequiredPresenterImpl(final BluetoothInteractor bluetoothInteractor,
+                                           final IAnalyticsManager analyticsManager) {
         this.bluetoothInteractor = bluetoothInteractor;
+        this.analyticsManager = analyticsManager;
     }
 
     @Override
@@ -57,5 +62,10 @@ public class PermissionRequiredPresenterImpl extends MvpBasePresenter<Permission
         disposeSubscription();
 
         super.detachView();
+    }
+
+    @Override
+    public void logPermissionSettingsOpened() {
+        analyticsManager.logEvent(new OpenPermissionSettings());
     }
 }

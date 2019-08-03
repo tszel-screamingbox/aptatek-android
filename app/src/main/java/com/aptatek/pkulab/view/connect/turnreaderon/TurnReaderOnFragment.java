@@ -79,12 +79,14 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null || screentime == 0L) {
             screentime = System.currentTimeMillis();
         }
+
+        presenter.logScreenDisplayed();
     }
 
     @Override

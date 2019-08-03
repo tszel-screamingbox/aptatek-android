@@ -44,7 +44,7 @@ public class WettingInteractorTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         
-        interactor = new WettingInteractor(wettingDataSource, timeFormatter);
+        interactor = new WettingInteractor(wettingDataSource, timeFormatter, analyticsManager);
     }
 
     /**

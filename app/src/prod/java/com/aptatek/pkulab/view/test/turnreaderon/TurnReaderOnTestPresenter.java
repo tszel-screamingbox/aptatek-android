@@ -6,6 +6,7 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
@@ -34,9 +35,10 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
     public TurnReaderOnTestPresenter(final ResourceInteractor resourceInteractor,
                                      final BluetoothInteractor bluetoothInteractor,
                                      final ReaderInteractor readerInteractor,
-                                     final TestInteractor testInteractor) {
+                                     final TestInteractor testInteractor,
+                                     final IAnalyticsManager analyticsManager) {
         super(resourceInteractor);
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor);
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
         this.readerInteractor = readerInteractor;
     }
 
@@ -147,4 +149,8 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
         );
     }
 
+    @Override
+    public void logScreenDisplayed() {
+        wrapped.logScreenDisplayed();
+    }
 }

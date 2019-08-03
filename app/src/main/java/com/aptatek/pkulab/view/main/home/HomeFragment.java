@@ -263,7 +263,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @Override
     public void showLastResult(String resultId) {
-        getBaseActivity().launchActivity(TestResultActivity.starter(requireContext(), resultId), false, BaseActivity.Animation.FADE);
+        getBaseActivity().launchActivity(TestResultActivity.starter(requireContext(), resultId, false), false, BaseActivity.Animation.FADE);
     }
 
     @Override

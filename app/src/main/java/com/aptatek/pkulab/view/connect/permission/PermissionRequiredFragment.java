@@ -77,6 +77,8 @@ public abstract class PermissionRequiredFragment<V extends PermissionRequiredVie
 
 
     private void navigateToAppSettings() {
+        presenter.logPermissionSettingsOpened();
+
         final Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         final Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
         intent.setData(uri);

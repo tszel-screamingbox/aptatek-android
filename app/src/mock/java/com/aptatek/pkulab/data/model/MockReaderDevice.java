@@ -21,4 +21,14 @@ public class MockReaderDevice implements ReaderDevice {
     public String getMac() {
         return mac;
     }
+
+    @Override
+    public String getSerial() {
+        return "";
+    }
+
+    @Override
+    public String getFirmwareVersion() {
+        return "";
+    }
 }

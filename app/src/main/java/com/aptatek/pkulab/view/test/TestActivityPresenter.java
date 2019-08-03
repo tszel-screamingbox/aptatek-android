@@ -6,10 +6,23 @@ import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
+import com.aptatek.pkulab.domain.manager.analytic.AnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
+import com.aptatek.pkulab.domain.manager.analytic.events.appstart.OpenFromBTNotification;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.BreakFoilDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.CollectBloodDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.ConnectItAllDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.MixSampleDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.PokeFingertipDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.SampleWettingDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.TestCancelledDueToCriticalBattery;
+import com.aptatek.pkulab.util.Constants;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,21 +35,30 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
     private final WettingInteractor wettingInteractor;
     private final TestInteractor testInteractor;
     private final DeviceHelper deviceHelper;
+    private final IAnalyticsManager analyticsManager;
+
+    private long screenDisplayedAtMs = 0L;
 
     private Disposable disposable;
+    private Disposable cancelTest;
 
     @Inject
     TestActivityPresenter(final WettingInteractor wettingInteractor,
                           final TestInteractor testInteractor,
-                          final DeviceHelper deviceHelper) {
+                          final DeviceHelper deviceHelper,
+                          final IAnalyticsManager analyticsManager) {
         this.wettingInteractor = wettingInteractor;
         this.testInteractor = testInteractor;
         this.deviceHelper = deviceHelper;
+        this.analyticsManager = analyticsManager;
     }
 
     void checkBattery(final TestScreens screen) {
         if (deviceHelper.isBatteryLow() && !(screen == TestScreens.CONNECT_IT_ALL || screen == TestScreens.TESTING || screen == TestScreens.CANCEL)) {
-            ifViewAttached(TestActivityView::showBatteryAlert);
+            cancelTest = testInteractor.resetTest()
+                    .andThen(Completable.fromAction(() -> analyticsManager.logEvent(new TestCancelledDueToCriticalBattery(deviceHelper.getPhoneBattery()))))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> ifViewAttached(TestActivityView::showBatteryAlert));
         }
     }
 
@@ -53,6 +75,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
                         return wettingInteractor.getWettingStatus()
                                 .flatMap(wettingStatus -> {
                                     if (wettingStatus == WettingStatus.FINISHED) {
+                                        analyticsManager.logEvent(new SampleWettingDone(Constants.DEFAULT_WETTING_PERIOD));
                                         return Single.just(TestScreens.CONNECT_IT_ALL);
                                     }
 
@@ -65,30 +88,77 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
                 .flatMap(screen -> testInteractor.setLastScreen(screen).andThen(Single.just(screen)))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(testScreens ->
-                        ifViewAttached(attachedView -> attachedView.showScreen(testScreens))
+                        ifViewAttached(attachedView -> {
+                            attachedView.showScreen(testScreens);
+                            screenDisplayedAtMs = System.currentTimeMillis();
+                        })
                 );
     }
 
     public void onShowNextScreen(@NonNull final TestScreens current) {
-        disposable = Flowable.fromCallable(() -> TestScreens.values()[current.ordinal() + 1])
-                .flatMap(nextScreen -> {
-                    if (nextScreen == TestScreens.WETTING) {
-                        return wettingInteractor.startWetting()
-                                .andThen(Flowable.just(nextScreen));
+        disposable =
+                Completable.fromAction(() -> {
+                    final long elapsedScreenTimeMs = Math.abs(System.currentTimeMillis() - screenDisplayedAtMs);
+                    final AnalyticsEvent event;
+                    switch (current) {
+                        case BREAK_FOIL: {
+                            event = new BreakFoilDone(elapsedScreenTimeMs);
+                            break;
+                        }
+                        case POKE_FINGERTIP: {
+                            event = new PokeFingertipDone(elapsedScreenTimeMs);
+                            break;
+                        }
+                        case COLLECT_BLOOD: {
+                            event = new CollectBloodDone(elapsedScreenTimeMs);
+                            break;
+                        }
+                        case MIX_SAMPLE: {
+                            event = new MixSampleDone(elapsedScreenTimeMs);
+                            break;
+                        }
+                        case CONNECT_IT_ALL: {
+                            event = new ConnectItAllDone(elapsedScreenTimeMs);
+                            break;
+                        }
+                        default: {
+                            event = null;
+                            break;
+                        }
                     }
-                    return Flowable.just(nextScreen);
+
+                    if (event != null) {
+                        analyticsManager.logEvent(event);
+                    }
+
                 })
-                .flatMap(nextScreen -> testInteractor.setLastScreen(nextScreen)
-                        .andThen(Flowable.just(nextScreen)))
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(nextScreen -> ifViewAttached(attachedView -> attachedView.showScreen(nextScreen)), Timber::e);
+                        .andThen(Flowable.fromCallable(() -> TestScreens.values()[current.ordinal() + 1]))
+                        .flatMap(nextScreen -> {
+                            if (nextScreen == TestScreens.WETTING) {
+                                return wettingInteractor.startWetting()
+                                        .andThen(Flowable.just(nextScreen));
+                            }
+                            return Flowable.just(nextScreen);
+                        })
+                        .flatMap(nextScreen -> testInteractor.setLastScreen(nextScreen)
+                                .andThen(Flowable.just(nextScreen)))
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(nextScreen -> ifViewAttached(attachedView -> {
+                                    attachedView.showScreen(nextScreen);
+                                    screenDisplayedAtMs = System.currentTimeMillis();
+                                })
+                                , Timber::e);
     }
 
     @Override
     public void detachView() {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
+        }
+
+        if (cancelTest != null && !cancelTest.isDisposed()) {
+            cancelTest.dispose();
         }
 
         super.detachView();
@@ -101,6 +171,11 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
             } else {
                 attachedView.showPreviousScreen();
             }
+            screenDisplayedAtMs = System.currentTimeMillis();
         });
+    }
+
+    public void logOpenFromNotification(final String reason) {
+        analyticsManager.logEvent(new OpenFromBTNotification(reason));
     }
 }

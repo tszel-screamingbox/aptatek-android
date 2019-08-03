@@ -77,7 +77,7 @@ public class HomeFragmentPresenterTest {
         doReturn(Single.just(TestScreens.TURN_READER_ON)).when(testInteractor).getLastScreen();
         doReturn(Single.just(WettingStatus.NOT_STARTED)).when(wettingInteractor).getWettingStatus();
 
-        presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, preferenceManager, testInteractor, pkuValueFormatter);
+        presenter = new HomeFragmentPresenter(testResultInteractor, resourceInteractor, rangeInteractor, dailyChartFormatter, wettingInteractor, preferenceManager, testInteractor, pkuValueFormatter, analyticsManager, deviceHelper);
         presenter.attachView(view);
         emptyItem = ChartVM.builder()
                 .setDate(date)

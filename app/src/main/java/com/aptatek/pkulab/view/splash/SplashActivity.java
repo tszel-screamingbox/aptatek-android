@@ -12,6 +12,7 @@ import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
@@ -46,6 +47,10 @@ public class SplashActivity extends BaseActivity<SplashActivityView, SplashActiv
 
         if (BuildConfig.FLAVOR.equals("prod")) {
             UXCam.startWithKey(BuildConfig.UXCAM_KEY);
+        }
+
+        if (getIntent().hasExtra(Constants.EXTRA_RESTART_NOTIFICATION_ERROR)) {
+            presenter.logBtError();
         }
     }
 

@@ -15,6 +15,7 @@ import com.aptatek.pkulab.device.bluetooth.scanner.BluetoothAdapterImpl;
 import com.aptatek.pkulab.device.bluetooth.scanner.BluetoothConditionCheckerImpl;
 import com.aptatek.pkulab.device.bluetooth.scanner.BluetoothScannerImpl;
 import com.aptatek.pkulab.domain.base.Mapper;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothConditionChecker;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
