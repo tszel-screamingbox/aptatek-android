@@ -7,11 +7,11 @@ import androidx.annotation.Nullable;
 import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
-public class ReportIssue extends AnalyticsEvent {
+public class ReportProblem extends AnalyticsEvent {
 
     public enum ReportType {DATA, CONNECTION, OTHER}
 
-    public ReportIssue(final ReportType type) {
+    public ReportProblem(final ReportType type) {
         super("risk_report_issue", System.currentTimeMillis(), EventCategory.RISK_MITIGATION);
         this.type = type;
     }
@@ -26,7 +26,7 @@ public class ReportIssue extends AnalyticsEvent {
 
     @Override
     public String toString() {
-        return "ReportIssue{" +
+        return "ReportProblem{" +
                 "reportType=" + type +
                 ", eventName='" + eventName + '\'' +
                 ", timestamp=" + timestamp +

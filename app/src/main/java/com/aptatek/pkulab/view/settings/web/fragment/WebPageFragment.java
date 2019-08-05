@@ -3,13 +3,6 @@ package com.aptatek.pkulab.view.settings.web.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
-import androidx.core.widget.ContentLoadingProgressBar;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +11,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
+import androidx.core.widget.ContentLoadingProgressBar;
+
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem;
 import com.aptatek.pkulab.domain.model.ReportIssue;
 import com.aptatek.pkulab.domain.model.ReportIssueType;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
@@ -42,6 +43,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.CONNECTION;
+import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.DATA;
+import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.OTHER;
+
 public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter> implements WebPageView, ReportIssueDialog.ReportIssueDialogCallback {
 
     private static final int SEND_ATTACHMENT_REQUEST_CODE = 9921;
@@ -49,6 +54,8 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
 
     @Inject
     WebPagePresenter presenter;
+    @Inject
+    IAnalyticsManager analyticsManager;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -110,7 +117,7 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
             }
         });
 
-        webView.setWebViewClient(new WebViewClient(){
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(final WebView view, final String url) {
                 super.onPageFinished(view, url);
@@ -144,6 +151,14 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
 
     @Override
     public void onIssueTypeSelected(final ReportIssueType reportIssueType) {
+        switch (reportIssueType) {
+            case OTHER:
+                analyticsManager.logEvent(new ReportProblem(OTHER));
+            case DATA_CORRUPTION:
+                analyticsManager.logEvent(new ReportProblem(DATA));
+            case CONNECTION_ERROR:
+                analyticsManager.logEvent(new ReportProblem(CONNECTION));
+        }
         presenter.generateAttachment(reportIssueType);
     }
 

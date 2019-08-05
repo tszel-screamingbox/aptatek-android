@@ -11,23 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
-import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportIssue;
 import com.aptatek.pkulab.domain.model.ReportIssueType;
-
-import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportIssue.ReportType.CONNECTION;
-import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportIssue.ReportType.DATA;
-import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportIssue.ReportType.OTHER;
-
 public class ReportIssueDialog extends DialogFragment {
-
-    @Inject
-    IAnalyticsManager analyticsManager;
 
     public interface ReportIssueDialogCallback {
         void onIssueTypeSelected(ReportIssueType reportIssueType);
@@ -43,7 +32,6 @@ public class ReportIssueDialog extends DialogFragment {
 
     @OnClick(R.id.btnDataCorruption)
     public void onDataCorruptionClicked() {
-        analyticsManager.logEvent(new ReportIssue(DATA));
         if (reportIssueDialogCallback != null) {
             reportIssueDialogCallback.onIssueTypeSelected(ReportIssueType.DATA_CORRUPTION);
         }
@@ -51,7 +39,6 @@ public class ReportIssueDialog extends DialogFragment {
 
     @OnClick(R.id.btnConnectionError)
     public void onConnectionIssueClicked() {
-        analyticsManager.logEvent(new ReportIssue(CONNECTION));
         if (reportIssueDialogCallback != null) {
             reportIssueDialogCallback.onIssueTypeSelected(ReportIssueType.CONNECTION_ERROR);
         }
@@ -59,7 +46,6 @@ public class ReportIssueDialog extends DialogFragment {
 
     @OnClick(R.id.btnOther)
     public void onOtherClicked() {
-        analyticsManager.logEvent(new ReportIssue(OTHER));
         if (reportIssueDialogCallback != null) {
             reportIssueDialogCallback.onIssueTypeSelected(ReportIssueType.OTHER);
         }
