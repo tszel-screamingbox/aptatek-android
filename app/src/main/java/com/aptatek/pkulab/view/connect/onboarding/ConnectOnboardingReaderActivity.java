@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.aptatek.pkulab.R;
@@ -15,6 +16,7 @@ import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.connect.onboarding.permission.PermissionRequiredOnboardingFragment;
 import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectFragment;
+import com.aptatek.pkulab.view.settings.web.fragment.WebPageFragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import javax.inject.Inject;
@@ -44,6 +46,8 @@ public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_connect_reader_activity);
         ButterKnife.bind(this);
+
+        closeHelpScreen();
 
         showScreen(ConnectReaderScreen.TURN_ON);
     }
@@ -121,10 +125,20 @@ public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderV
     public void showHelpScreen() {
         final BottomSheetBehavior behavior = from(bottomConstraintLayout);
         behavior.setState(STATE_EXPANDED);
+
+        final Fragment fragmentById = getSupportFragmentManager().findFragmentById(R.id.helpFragment);
+        if (fragmentById instanceof WebPageFragment) {
+            ((WebPageFragment) fragmentById).setReportIssueEnabled(true);
+        }
     }
 
     public void closeHelpScreen() {
         final BottomSheetBehavior behavior = from(bottomConstraintLayout);
         behavior.setState(STATE_COLLAPSED);
+
+        final Fragment fragmentById = getSupportFragmentManager().findFragmentById(R.id.helpFragment);
+        if (fragmentById instanceof WebPageFragment) {
+            ((WebPageFragment) fragmentById).setReportIssueEnabled(false);
+        }
     }
 }
