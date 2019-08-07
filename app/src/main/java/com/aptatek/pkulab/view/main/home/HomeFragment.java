@@ -96,6 +96,8 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @BindView(R.id.unitText)
     TextView unitTextView;
 
+    private Runnable runOnAttach = null;
+
     @Override
     protected List<View> sensitiveViewList() {
         final List<View> list = new ArrayList<>();
@@ -138,6 +140,16 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     protected void injectFragment(final FragmentComponent fragmentComponent) {
         fragmentComponent.plus(new TestModule(), new RangeInfoModule(), new ChartModule())
                 .inject(this);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (runOnAttach != null) {
+            runOnAttach.run();
+            runOnAttach = null;
+        }
     }
 
     @NonNull
@@ -319,13 +331,17 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
             if (resultType == ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT) {
                 presenter.showLastResult();
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_WRONG_RESULT) {
-                final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
-                        TestContinueDialogModel.incorrectResultDialogModelCreate(requireContext()),
-                        decision -> getBaseActivity().launchActivity(new Intent(requireContext(), DisposeActivity.class)));
-                dialogFragment.setCancelable(false);
-                dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
-            } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {
-                getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
+                if (getActivity() == null) {
+                    runOnAttach = () -> {
+                        final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
+                                TestContinueDialogModel.incorrectResultDialogModelCreate(getActivity()),
+                                decision -> getBaseActivity().launchActivity(new Intent(getActivity(), DisposeActivity.class)));
+                        dialogFragment.setCancelable(false);
+                        dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
+                    };
+                }
+            } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING && getBaseActivity() == null) {
+                    runOnAttach = () -> getBaseActivity().launchActivity(TestActivity.createStarter(getBaseActivity()), false, BaseActivity.Animation.FADE);
             }
         }
     }
