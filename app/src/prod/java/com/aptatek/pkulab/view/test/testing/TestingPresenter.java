@@ -56,7 +56,6 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         testProgress -> {
-                            Timber.d("--- Test Progress update: %s", testProgress);
                             ifViewAttached(attachedView -> attachedView.setProgressPercentage(testProgress.getPercent()));
                         },
                         error -> {

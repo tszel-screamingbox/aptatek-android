@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
@@ -89,7 +90,9 @@ public class ReaderInteractor {
                 .doOnSubscribe(ignored -> syncStartedAtMs = System.currentTimeMillis())
                 .flatMap(results -> testResultRepository.insertAll(results)
                         .andThen(Single.just(results))
-                ).doOnSuccess(list -> {
+                )
+                .observeOn(Schedulers.io())
+                .doOnSuccess(list -> {
                     try {
                         final ReaderDevice device = getConnectedReader().blockingGet();
                         analyticsManager.logEvent(new ReaderDataSynced(list.size(), Math.abs(System.currentTimeMillis() - syncStartedAtMs), device.getSerial(), device.getFirmwareVersion()));
@@ -114,6 +117,7 @@ public class ReaderInteractor {
                 .flatMap(results -> testResultRepository.insertAll(results)
                         .andThen(Single.just(results))
                 )
+                .observeOn(Schedulers.io())
                 .doOnSuccess(list -> {
                     try {
                         final ReaderDevice device = getConnectedReader().blockingGet();
@@ -159,8 +163,8 @@ public class ReaderInteractor {
     public Flowable<WorkflowState> getWorkflowState() {
         return readerManager.workflowState()
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
                 .doOnNext(state -> {
-                    Timber.d("--- workflow state change, thread: %s", Thread.currentThread().getName());
                     try {
                         final ReaderDevice device = getConnectedReader().blockingGet();
                         if (state == WorkflowState.USED_CASSETTE_ERROR) {

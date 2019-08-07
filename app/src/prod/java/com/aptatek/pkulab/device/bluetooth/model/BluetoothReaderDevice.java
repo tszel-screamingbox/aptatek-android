@@ -56,14 +56,12 @@ public class BluetoothReaderDevice implements ReaderDevice {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BluetoothReaderDevice that = (BluetoothReaderDevice) o;
-        return Objects.equals(bluetoothDevice, that.bluetoothDevice) &&
-                firmwareVersion.equals(that.firmwareVersion) &&
-                serialNumber.equals(that.serialNumber);
+        return Objects.equals(bluetoothDevice, that.bluetoothDevice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bluetoothDevice, firmwareVersion, serialNumber);
+        return Objects.hash(bluetoothDevice);
     }
 
     @Override

@@ -80,6 +80,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         Amplitude.getInstance()
                 .initialize(this, BuildConfig.AMPLITUDE_KEY)
                 .setOptOut(BuildConfig.DEBUG)
+                .enableLogging(BuildConfig.DEBUG)
                 .enableForegroundTracking(this);
     }
 

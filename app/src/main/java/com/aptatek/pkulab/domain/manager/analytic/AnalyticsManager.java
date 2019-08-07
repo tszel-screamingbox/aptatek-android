@@ -38,7 +38,29 @@ public class AnalyticsManager implements IAnalyticsManager {
 
     @Override
     public void logEvent(final AnalyticsEvent event) {
-        logEvent(event.eventName, infoToString(event.getAdditionalInfo()), event.eventCategory, event.timestamp == null ? 0L : event.timestamp);
+        try {
+
+            final long timestamp = event.timestamp == null ? 0L : event.timestamp;
+            final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.US);
+            final String date = dt.format(new Date(timestamp == 0 ? System.currentTimeMillis() : timestamp));
+
+            final JSONObject eventProperties = new JSONObject();
+            eventProperties.put(Constants.EVENT_CATEGORY, event.eventCategory.getKey());
+
+            if (event.getAdditionalInfo() != null) {
+                for (final String key : event.getAdditionalInfo().keySet()) {
+                    eventProperties.put(key, event.getAdditionalInfo().get(key));
+                }
+            }
+
+            eventProperties.put(Constants.TIMESTAMP, date);
+
+            amplitude.logEvent(event.eventName, eventProperties);
+        } catch (JSONException e) {
+            Timber.e(e);
+        }
+
+        //logEvent(event.eventName, infoToString(event.getAdditionalInfo()), event.eventCategory, event.timestamp == null ? 0L : event.timestamp);
     }
 
     @Nullable
