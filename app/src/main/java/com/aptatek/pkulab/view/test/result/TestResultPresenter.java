@@ -15,7 +15,6 @@ import com.aptatek.pkulab.domain.manager.analytic.events.test.TestResultDisplaye
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestResultDone;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;

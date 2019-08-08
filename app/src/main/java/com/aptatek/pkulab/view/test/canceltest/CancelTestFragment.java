@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
-import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;

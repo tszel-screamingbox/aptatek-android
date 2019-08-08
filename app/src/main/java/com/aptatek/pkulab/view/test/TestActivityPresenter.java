@@ -6,7 +6,6 @@ import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
-import com.aptatek.pkulab.domain.manager.analytic.AnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 import com.aptatek.pkulab.domain.manager.analytic.events.appstart.OpenFromBTNotification;

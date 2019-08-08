@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.main.home;
 
+import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
@@ -7,6 +8,7 @@ import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
@@ -58,6 +60,10 @@ public class HomeFragmentPresenterTest {
     private TestInteractor testInteractor;
     @Mock
     private PkuValueFormatter pkuValueFormatter;
+    @Mock
+    IAnalyticsManager analyticsManager;
+    @Mock
+    DeviceHelper deviceHelper;
 
     private final Date date = new Date();
     private HomeFragmentPresenter presenter;

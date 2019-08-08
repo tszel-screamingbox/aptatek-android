@@ -1,7 +1,5 @@
 package com.aptatek.pkulab.domain.manager.analytic.events.onboarding;
 
-import android.util.Pair;
-
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
