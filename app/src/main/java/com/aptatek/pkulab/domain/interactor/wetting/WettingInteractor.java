@@ -4,6 +4,8 @@ package com.aptatek.pkulab.domain.interactor.wetting;
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.countdown.CountdownTimeFormatter;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.SampleWettingStarted;
 import com.aptatek.pkulab.domain.model.Countdown;
 import com.aptatek.pkulab.util.Constants;
 
@@ -20,12 +22,15 @@ public class WettingInteractor {
 
     private final WettingDataSource wettingDataSource;
     private final CountdownTimeFormatter timeFormatter;
+    private final IAnalyticsManager analyticsManager;
 
     @Inject
     public WettingInteractor(@NonNull final WettingDataSource wettingDataSource,
-                             @NonNull final CountdownTimeFormatter timeFormatter) {
+                             @NonNull final CountdownTimeFormatter timeFormatter,
+                             final IAnalyticsManager analyticsManager) {
         this.wettingDataSource = wettingDataSource;
         this.timeFormatter = timeFormatter;
+        this.analyticsManager = analyticsManager;
     }
 
     public Single<WettingStatus> getWettingStatus() {
@@ -62,7 +67,8 @@ public class WettingInteractor {
     }
 
     public Completable startWetting() {
-        return Completable.fromAction(wettingDataSource::startWetting);
+        return Completable.fromAction(wettingDataSource::startWetting)
+                .andThen(Completable.fromAction(() -> analyticsManager.logEvent(new SampleWettingStarted())));
     }
 
     public Completable resetWetting() {

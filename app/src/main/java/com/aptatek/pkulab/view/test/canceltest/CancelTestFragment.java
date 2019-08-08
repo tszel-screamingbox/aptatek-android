@@ -1,9 +1,11 @@
 package com.aptatek.pkulab.view.test.canceltest;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 
@@ -50,5 +52,11 @@ public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelT
     @Override
     public TestScreens getScreen() {
         return TestScreens.CANCEL;
+    }
+
+    @Override
+    public TestScreens getPreviousScreen() {
+        FragmentActivity fragmentActivity = requireActivity();
+        return (fragmentActivity instanceof TestActivityView) ? ((TestActivityView) fragmentActivity).getPreviousScreen() : null;
     }
 }

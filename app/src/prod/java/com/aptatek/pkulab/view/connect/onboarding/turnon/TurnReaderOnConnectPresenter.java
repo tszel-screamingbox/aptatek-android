@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.onboarding.OnboardingReaderConnected;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
@@ -22,13 +24,16 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
 
     private final TurnReaderOnPresenterImpl wrapped;
     private final ReaderInteractor readerInteractor;
+    private final IAnalyticsManager analyticsManager;
     private Disposable disposable;
 
     @Inject
     public TurnReaderOnConnectPresenter(final BluetoothInteractor bluetoothInteractor,
                                         final ReaderInteractor readerInteractor,
-                                        final TestInteractor testInteractor) {
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor);
+                                        final TestInteractor testInteractor,
+                                        final IAnalyticsManager analyticsManager) {
+        this.analyticsManager = analyticsManager;
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
         this.readerInteractor = readerInteractor;
     }
 
@@ -72,6 +77,8 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     }
 
     public void syncData() {
+        analyticsManager.logEvent(new OnboardingReaderConnected());
+
         disposeDisposable();
         disposable = readerInteractor.syncResultsAfterLatest()
                 .subscribe(
@@ -85,5 +92,10 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
             disposable.dispose();
             disposable = null;
         }
+    }
+
+    @Override
+    public void logScreenDisplayed() {
+        wrapped.logScreenDisplayed();
     }
 }

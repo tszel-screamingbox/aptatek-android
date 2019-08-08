@@ -51,4 +51,6 @@ public final class Constants {
     public static final String URL_PRIVACY = "http://pkulabkit.com/privacy-app";
     public static final String URL_TERMS = "http://pkulabkit.com/terms-app";
 
+    public static final String EXTRA_RESTART_NOTIFICATION_ERROR = "restart.after.bt.error";
+
 }

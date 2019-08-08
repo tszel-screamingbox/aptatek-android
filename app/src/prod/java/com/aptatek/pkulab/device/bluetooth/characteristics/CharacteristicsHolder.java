@@ -36,6 +36,11 @@ public class CharacteristicsHolder {
     private static final UUID BATTERY_SERVICE_UUID = UUID.fromString(LumosReaderConstants.BATTERY_SERVICE);
     private static final UUID BATTERY_CHAR_LEVEL_UUID = UUID.fromString(LumosReaderConstants.BATTERY_CHAR_LEVEL);
 
+    // Device Info UUDs
+    private static final UUID DEVICE_INFO_SERVICE_UUID = UUID.fromString(LumosReaderConstants.DEVICE_INFO_SERVICE);
+    private static final UUID DEVICE_INFO_FIRMWARE_VERSION_UUID = UUID.fromString(LumosReaderConstants.DEVICE_INFO_FIRMWARE);
+    private static final UUID DEVICE_INFO_SERIAL_NUMBER_UUID = UUID.fromString(LumosReaderConstants.DEVICE_INFO_SERIAL);
+
     private final Set<BluetoothGattCharacteristic> characteristics = Collections.synchronizedSet(new HashSet<>());
     private final Set<String> mandatoryCharacteristicIds;
 
@@ -53,6 +58,8 @@ public class CharacteristicsHolder {
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE);
         mandatoryChars.add(LumosReaderConstants.BATTERY_CHAR_LEVEL);
         mandatoryChars.add(LumosReaderConstants.READER_CHAR_TEST_PROGRESS);
+        mandatoryChars.add(LumosReaderConstants.DEVICE_INFO_FIRMWARE);
+        mandatoryChars.add(LumosReaderConstants.DEVICE_INFO_SERIAL);
 
         mandatoryCharacteristicIds = Collections.unmodifiableSet(mandatoryChars);
     }
@@ -77,6 +84,12 @@ public class CharacteristicsHolder {
         final BluetoothGattService batteryService = gatt.getService(BATTERY_SERVICE_UUID);
         if (batteryService != null) {
             characteristics.add(batteryService.getCharacteristic(BATTERY_CHAR_LEVEL_UUID));
+        }
+
+        final BluetoothGattService deviceInfoService = gatt.getService(DEVICE_INFO_SERVICE_UUID);
+        if (deviceInfoService != null) {
+            characteristics.add(deviceInfoService.getCharacteristic(DEVICE_INFO_FIRMWARE_VERSION_UUID));
+            characteristics.add(deviceInfoService.getCharacteristic(DEVICE_INFO_SERIAL_NUMBER_UUID));
         }
     }
 

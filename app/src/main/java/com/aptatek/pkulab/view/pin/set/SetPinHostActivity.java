@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.pin.set;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
@@ -42,6 +43,16 @@ public class SetPinHostActivity extends BaseRootFrameActivity<SetPinHostActivity
     @Override
     protected boolean shouldShowPinAuthWhenInactive() {
         return false;
+    }
+
+    @Override
+    public void onValidPinTyped() {
+        presenter.onPinSet();
+    }
+
+    @Override
+    public void onInvalidPinTyped() {
+        presenter.onPinSetFailed();
     }
 }
 

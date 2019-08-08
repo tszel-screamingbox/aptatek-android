@@ -6,4 +6,8 @@ public interface ReaderDevice {
 
     String getMac();
 
+    String getSerial();
+
+    String getFirmwareVersion();
+
 }

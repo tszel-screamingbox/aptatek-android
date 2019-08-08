@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.test.turnreaderon.permission;
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredPresenter;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredPresenterImpl;
 import com.aptatek.pkulab.view.connect.permission.PermissionRequiredView;
@@ -18,8 +19,8 @@ public class PermissionRequiredOnTestPresenter extends MvpBasePresenter<Permissi
     private final PermissionRequiredPresenterImpl wrapped;
 
     @Inject
-    PermissionRequiredOnTestPresenter(final BluetoothInteractor bluetoothInteractor) {
-        wrapped = new PermissionRequiredPresenterImpl(bluetoothInteractor);
+    PermissionRequiredOnTestPresenter(final BluetoothInteractor bluetoothInteractor, final IAnalyticsManager analyticsManager) {
+        wrapped = new PermissionRequiredPresenterImpl(bluetoothInteractor, analyticsManager);
     }
 
 
@@ -43,5 +44,10 @@ public class PermissionRequiredOnTestPresenter extends MvpBasePresenter<Permissi
     public void detachView() {
         wrapped.detachView();
         super.detachView();
+    }
+
+    @Override
+    public void logPermissionSettingsOpened() {
+        wrapped.logPermissionSettingsOpened();
     }
 }

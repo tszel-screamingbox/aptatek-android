@@ -84,7 +84,7 @@ public abstract class BaseFragment<V extends MvpView, P extends MvpPresenter<V>>
     }
 
     public void logEllapsedTime(final String eventName, final int seconds, final EventCategory category) {
-        analyticManager.logEllapsedTime(eventName, seconds, category);
+        analyticManager.logElapsedTime(eventName, seconds, category);
     }
 
     /**

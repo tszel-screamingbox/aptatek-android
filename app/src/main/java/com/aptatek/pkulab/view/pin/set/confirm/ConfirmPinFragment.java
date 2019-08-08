@@ -11,6 +11,7 @@ import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivity;
 import com.aptatek.pkulab.view.fingerprint.FingerprintActivity;
 import com.aptatek.pkulab.view.pin.base.BasePinFragment;
+import com.aptatek.pkulab.view.pin.set.SetPinHostActivity;
 
 import javax.inject.Inject;
 
@@ -69,6 +70,10 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
         messageTextView.setText(R.string.confirm_pin_successful);
         messageTextView.setBackgroundResource(R.drawable.pin_valid_message_background);
         innerFillCircle(PIN_LENGTH, R.drawable.pin_circle_filled_green);
+
+        if (getActivity() instanceof SetPinHostActivity) {
+            ((SetPinHostActivity) getActivity()).onValidPinTyped();
+        }
     }
 
     @Override
@@ -77,6 +82,10 @@ public class ConfirmPinFragment extends BasePinFragment implements ConfirmPinVie
         messageTextView.setText(R.string.confirm_pin_error);
         messageTextView.setBackgroundResource(R.drawable.pin_invalid_message_background);
         fillCircle(R.drawable.pin_circle_filled_red, getBaseActivity()::onBackPressed);
+
+        if (getActivity() instanceof SetPinHostActivity) {
+            ((SetPinHostActivity) getActivity()).onInvalidPinTyped();
+        }
     }
 
     @Override

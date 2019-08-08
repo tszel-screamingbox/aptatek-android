@@ -83,4 +83,8 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
         );
     }
 
+    @Override
+    public void logScreenDisplayed() {
+        // do nothing
+    }
 }

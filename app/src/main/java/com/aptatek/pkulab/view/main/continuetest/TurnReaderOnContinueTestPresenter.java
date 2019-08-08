@@ -6,6 +6,7 @@ import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
@@ -38,10 +39,10 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
                                              final ReaderInteractor readerInteractor,
                                              final TestResultInteractor testResultInteractor,
                                              final TestInteractor testInteractor,
-                                             final TestInteractor testInteractor1) {
+                                             final IAnalyticsManager analyticsManager) {
         this.testResultInteractor = testResultInteractor;
-        this.testInteractor = testInteractor1;
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor);
+        this.testInteractor = testInteractor;
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
         this.readerInteractor = readerInteractor;
     }
 
@@ -119,5 +120,10 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
                         ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT));
                     }
                 }));
+    }
+
+    @Override
+    public void logScreenDisplayed() {
+        wrapped.logScreenDisplayed();
     }
 }

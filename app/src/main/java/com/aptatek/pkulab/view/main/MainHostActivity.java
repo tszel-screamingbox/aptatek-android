@@ -31,6 +31,8 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
 
     private HomeFragment homeFragment;
 
+    private long weeklyPanelShownMs = 0L;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,7 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
 
     public void showWeeklyChartPanel() {
         mainSlidingPanelLayout.setPanelState(EXPANDED);
+        weeklyPanelShownMs = System.currentTimeMillis();
     }
 
     @Override
@@ -70,6 +73,10 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
     public void onBackPressed() {
         if (mainSlidingPanelLayout.getPanelState() == EXPANDED) {
             mainSlidingPanelLayout.setPanelState(COLLAPSED);
+
+            presenter.logWeeklyChartClosed(Math.abs(System.currentTimeMillis() - weeklyPanelShownMs));
+            weeklyPanelShownMs = 0L;
+
             return;
         }
 

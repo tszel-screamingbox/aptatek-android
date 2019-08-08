@@ -80,7 +80,7 @@ public class RangeInfoActivity extends BaseActivity<RangeInfoView, RangeInfoPres
 
     @OnClick(R.id.rangeinfo_edit)
     public void onClickBack() {
-        onBackPressed();
+        presenter.logEventAndDo(() -> onBackPressed());
     }
 
     @OnClick(R.id.rangeinfo_edit)

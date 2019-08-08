@@ -6,6 +6,7 @@ import com.aptatek.pkulab.domain.interactor.wetting.WettingDataSource;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingError;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingNotRunningError;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.Countdown;
 import com.aptatek.pkulab.util.Constants;
 
@@ -37,6 +38,9 @@ public class WettingInteractorTest {
     
     @Mock
     CountdownTimeFormatter timeFormatter;
+
+    @Mock
+    IAnalyticsManager analyticsManager;
     
     private WettingInteractor interactor;
     
@@ -44,7 +48,7 @@ public class WettingInteractorTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         
-        interactor = new WettingInteractor(wettingDataSource, timeFormatter);
+        interactor = new WettingInteractor(wettingDataSource, timeFormatter, analyticsManager);
     }
 
     /**

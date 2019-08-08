@@ -1,9 +1,10 @@
 package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.mapper.CartridgeInfoMapper;
@@ -62,7 +63,7 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<Integer> batteryLevelProcessor = BehaviorProcessor.create();
     private final Map<Class<?>, Mapper<?, ?>> mappers;
 
-    public ReaderManagerImpl(final LumosReaderManager lumosReaderManager, Map<Class<?>, Mapper<?, ?>> mappers) {
+    public ReaderManagerImpl(final LumosReaderManager lumosReaderManager, final Map<Class<?>, Mapper<?, ?>> mappers) {
         this.lumosReaderManager = lumosReaderManager;
         this.mappers = mappers;
 
