@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 
@@ -85,5 +87,11 @@ public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelT
     @Override
     public TestScreens getScreen() {
         return CANCEL;
+    }
+
+    @Override
+    public TestScreens getPreviousScreen() {
+        FragmentActivity fragmentActivity = requireActivity();
+        return (fragmentActivity instanceof TestActivityView) ? ((TestActivityView) fragmentActivity).getPreviousScreen() : null;
     }
 }

@@ -5,8 +5,10 @@ import com.aptatek.pkulab.device.bluetooth.characteristics.reader.BatteryLevelRe
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.CartridgeIdReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.CharacteristicReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.ErrorReader;
+import com.aptatek.pkulab.device.bluetooth.characteristics.reader.FirmwareVersionReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.NumResultsReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.ResultReader;
+import com.aptatek.pkulab.device.bluetooth.characteristics.reader.SerialNumberReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.SyncResponseReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.TestProgressReader;
 import com.aptatek.pkulab.device.bluetooth.characteristics.reader.WorkflowStateReader;
@@ -58,5 +60,15 @@ public interface DeviceCharacteristicReaderModule {
     @IntoMap
     @StringKey(LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE)
     CharacteristicReader bindSyncResponseReader(final SyncResponseReader reader);
+
+    @Binds
+    @IntoMap
+    @StringKey(LumosReaderConstants.DEVICE_INFO_FIRMWARE)
+    CharacteristicReader bindFirmwareVersionReader(final FirmwareVersionReader reader);
+
+    @Binds
+    @IntoMap
+    @StringKey(LumosReaderConstants.DEVICE_INFO_SERIAL)
+    CharacteristicReader bindSerialNumberReader(final SerialNumberReader reader);
 
 }

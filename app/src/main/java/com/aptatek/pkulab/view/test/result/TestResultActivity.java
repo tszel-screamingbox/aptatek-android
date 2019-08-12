@@ -31,9 +31,11 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
 
     @Arg
     String resultId;
+    @Arg
+    boolean fromNotification;
 
-    public static Intent starter(@NonNull final Context context, final String resultId) {
-        return TestResultActivityStarter.getIntent(context, resultId)
+    public static Intent starter(@NonNull final Context context, final String resultId, final boolean fromNotification) {
+        return TestResultActivityStarter.getIntent(context, resultId, fromNotification)
                 .addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
     }
 
@@ -70,6 +72,10 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         ActivityStarter.fill(this, savedInstanceState);
         ButterKnife.bind(this);
         UXCam.occludeSensitiveView(bubbleTextView);
+
+        if (fromNotification) {
+            presenter.logOpenFromNotification();
+        }
     }
 
     @Override
@@ -101,8 +107,10 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
 
     @OnClick(R.id.test_result_done)
     public void onClickDone() {
-        launchActivity(new Intent(this, DisposeActivity.class));
-        finish();
+        presenter.logTestDoneAnd(() -> {
+            launchActivity(new Intent(TestResultActivity.this, DisposeActivity.class));
+            finish();
+        });
     }
 
     @OnClick(R.id.test_result_range_info)

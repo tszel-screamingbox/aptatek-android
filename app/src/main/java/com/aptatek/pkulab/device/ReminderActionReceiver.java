@@ -7,6 +7,8 @@ import androidx.core.app.TaskStackBuilder;
 
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificationFactory;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.TestFromReminder;
 import com.aptatek.pkulab.injection.component.DaggerBroadcastReceiverComponent;
 import com.aptatek.pkulab.injection.module.ReminderModule;
 import com.aptatek.pkulab.util.Constants;
@@ -30,6 +32,12 @@ public class ReminderActionReceiver extends BroadcastReceiver {
     @Inject
     ReminderNotificationFactory reminderNotificationFactory;
 
+    @Inject
+    IAnalyticsManager analyticsManager;
+
+    @Inject
+    DeviceHelper deviceHelper;
+
     @Override
     public void onReceive(final Context context, final Intent intent) {
         DaggerBroadcastReceiverComponent.builder()
@@ -44,6 +52,8 @@ public class ReminderActionReceiver extends BroadcastReceiver {
 
             if (AptatekApplication.get(context).isInForeground()) {
                 context.startActivity(TestActivity.createStarter(context));
+                analyticsManager.logEvent(new TestFromReminder(deviceHelper.getPhoneBattery()));
+                preferenceManager.setTestFlowStart();
             } else {
                 TaskStackBuilder.create(context)
                         .addNextIntentWithParentStack(TestActivity.createStarter(context))

@@ -3,6 +3,7 @@ package com.aptatek.pkulab.presenter.rangeinfo;
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.rangeinfo.PkuValueFormatter;
@@ -45,6 +46,8 @@ public class RangeInfoPresenterTest {
     private PkuRangeInteractor rangeInteractor;
     @Mock
     private PkuValueFormatter valueFormatter;
+    @Mock
+    IAnalyticsManager analyticsManager;
 
     @Mock
     RangeInfoView view;
@@ -76,7 +79,7 @@ public class RangeInfoPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        presenter = new RangeInfoPresenter(rangeInteractor, valueFormatter);
+        presenter = new RangeInfoPresenter(rangeInteractor, valueFormatter, analyticsManager);
         presenter.attachView(view);
     }
 

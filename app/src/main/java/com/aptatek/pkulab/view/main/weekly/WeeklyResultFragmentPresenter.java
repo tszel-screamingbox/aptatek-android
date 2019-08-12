@@ -9,6 +9,8 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.weekly.ExportPdfCreated;
 import com.aptatek.pkulab.domain.model.MonthPickerDialogModel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
@@ -50,6 +52,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
     private final CsvExport csvExport;
     private final PreferenceManager preferenceManager;
     private final RangeSettingsValueFormatter valueFormatter;
+    private final IAnalyticsManager analyticsManager;
 
     private CompositeDisposable disposables;
 
@@ -61,7 +64,8 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                                          final PdfChartDataTransformer pdfChartDataTransformer,
                                          final CsvExport csvExport,
                                          final PreferenceManager preferenceManager,
-                                         final RangeSettingsValueFormatter valueFormatter) {
+                                         final RangeSettingsValueFormatter valueFormatter,
+                                         final IAnalyticsManager analyticsManager) {
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
@@ -70,6 +74,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
         this.csvExport = csvExport;
         this.preferenceManager = preferenceManager;
         this.valueFormatter = valueFormatter;
+        this.analyticsManager = analyticsManager;
     }
 
     @Override
@@ -247,6 +252,7 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
                     if (isEmpty) {
                         view.testNotFoundPdfExport();
                     } else {
+                        analyticsManager.logEvent(new ExportPdfCreated(getPdfExportIntervalInMonth(pdfExportInterval)));
                         view.onPdfDataReady(pdfEntryDataArrayList);
                     }
                 })));

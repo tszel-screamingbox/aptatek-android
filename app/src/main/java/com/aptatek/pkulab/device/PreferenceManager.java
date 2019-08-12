@@ -33,6 +33,7 @@ public class PreferenceManager {
     public static final String PREF_DB_ENCRYPTED_WITH_PIN = "aptatek.database.encrypted";
     public static final String PREF_DB_CYPHER_UPDATED = "aptatek.database.cypher.upadted";
     public static final String PREF_APP_KILLED_DURING_TEST = "aptatek.test.app.killed.during.test.timestamp";
+    public static final String PREF_TEST_START = "aptatek.test.flow.start";
 
     private final SharedPreferences sharedPreferences;
 
@@ -160,6 +161,14 @@ public class PreferenceManager {
 
     public void setPrefDbCypherUpdated() {
         sharedPreferences.edit().putBoolean(PREF_DB_CYPHER_UPDATED, true).apply();
+    }
+
+    public void setTestFlowStart() {
+        sharedPreferences.edit().putLong(PREF_TEST_START, System.currentTimeMillis()).apply();
+    }
+
+    public long getTestFlowStart() {
+        return sharedPreferences.getLong(PREF_TEST_START, 0L);
     }
 
     public void clearPreference(final String key) {

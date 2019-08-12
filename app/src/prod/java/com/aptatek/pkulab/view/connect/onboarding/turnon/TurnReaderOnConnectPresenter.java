@@ -33,7 +33,7 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
                                         final TestInteractor testInteractor,
                                         final IAnalyticsManager analyticsManager) {
         this.analyticsManager = analyticsManager;
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor);
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
         this.readerInteractor = readerInteractor;
     }
 
@@ -92,5 +92,10 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
             disposable.dispose();
             disposable = null;
         }
+    }
+
+    @Override
+    public void logScreenDisplayed() {
+        wrapped.logScreenDisplayed();
     }
 }

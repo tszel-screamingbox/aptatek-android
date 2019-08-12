@@ -14,5 +14,6 @@ public interface TurnReaderOnPresenter<V extends TurnReaderOnView> extends BaseC
     void onPaused();
     void connectTo(@NonNull ReaderDevice readerDevice);
     void evaluatePermissionResults(List<PermissionResult> results);
+    void logScreenDisplayed();
 
 }

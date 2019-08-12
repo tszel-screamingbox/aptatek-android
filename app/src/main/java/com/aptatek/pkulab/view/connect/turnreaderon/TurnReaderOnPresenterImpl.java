@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
+import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.PermissionChecker;
 
@@ -9,14 +11,25 @@ import com.aptatek.pkulab.domain.interactor.reader.MissingBleFeatureError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.DeniedPermission;
+import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.ReaderConnectedFromTurnReaderOn;
+import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.TurnReaderOnDisplayed;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectView;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
+import com.aptatek.pkulab.view.main.continuetest.TurnReaderOnContinueTestView;
+import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestView;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,17 +47,36 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     private final BluetoothInteractor bluetoothInteractor;
     private final ReaderInteractor readerInteractor;
     private final TestInteractor testInteractor;
+    private final IAnalyticsManager analyticsManager;
     private CompositeDisposable disposables = null;
     private Disposable workflowDisposable = null;
     private Disposable scanResultsDisposable = null;
     private Function<WorkflowState, Boolean> workflowStateHandler = workflowState -> false;
+    private long connectStartedAtMs = 0L;
+    private WeakReference<TurnReaderOnView> view;
 
     public TurnReaderOnPresenterImpl(final BluetoothInteractor bluetoothInteractor,
                                      final ReaderInteractor readerInteractor,
-                                     final TestInteractor testInteractor) {
+                                     final TestInteractor testInteractor,
+                                     final IAnalyticsManager analyticsManager) {
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
         this.testInteractor = testInteractor;
+        this.analyticsManager = analyticsManager;
+    }
+
+    @Override
+    public void attachView(@NotNull final TurnReaderOnView view) {
+        super.attachView(view);
+
+        this.view = new WeakReference<>(view);
+    }
+
+    @Override
+    public void detachView() {
+        this.view = null;
+
+        super.detachView();
     }
 
     @Override
@@ -180,19 +212,41 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     private void dismissTestNotifications() {
         disposables.add(
                 testInteractor.cancelTestNotifications()
+                        .andThen(
+                                Single.zip(
+                                        readerInteractor.getConnectedReader().toSingle(),
+                                        readerInteractor.getBatteryLevel(),
+                                        Pair::new
+                                ))
                         .subscribe(
-                        () -> {
-                            Timber.d("Cancelled all test notifications");
-                            ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
-                        },
-                        Timber::e
-                )
+                                pair -> {
+                                    analyticsManager.logEvent(new ReaderConnectedFromTurnReaderOn(pair.first.getSerial(), pair.first.getFirmwareVersion(), getStepId(), Math.abs(System.currentTimeMillis() - connectStartedAtMs), pair.second));
+
+                                    Timber.d("Cancelled all test notifications");
+                                    ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
+                                },
+                                Timber::e
+                        )
         );
+    }
+
+    private String getStepId() {
+        final TurnReaderOnView attached = view.get();
+        if (view instanceof TurnReaderOnConnectView) {
+            return "onboarding";
+        } else if (view instanceof TurnReaderOnContinueTestView) {
+            return "unfinished_Test";
+        } else if (view instanceof TurnReaderOnTestView) {
+            return "final_phe_testing";
+        } else {
+            return "null";
+        }
     }
 
     private void startConnectionFlow() {
         disposables.add(
                 bluetoothInteractor.stopScan()
+                        .andThen(Completable.fromAction(() -> connectStartedAtMs = System.currentTimeMillis()))
                         .andThen(bluetoothInteractor.startScan())
                         .andThen(processReaderDevicesFlowable())
                         .subscribeOn(Schedulers.io())
@@ -267,6 +321,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         if (hasAllPermissions) {
             checkPermissions();
         } else {
+            analyticsManager.logEvent(new DeniedPermission());
             ifViewAttached(TurnReaderOnView::displayMissingPermissions);
         }
     }
@@ -275,4 +330,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         this.workflowStateHandler = workflowStateHandler;
     }
 
+    @Override
+    public void logScreenDisplayed() {
+        analyticsManager.logEvent(new TurnReaderOnDisplayed());
+    }
 }

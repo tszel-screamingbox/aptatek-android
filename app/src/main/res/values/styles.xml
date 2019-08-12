@@ -114,7 +114,7 @@
         <item name="android:textColor">@color/applicationWhite</item>
         <item name="android:maxLines">3</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/font.size.xbig</item>
+        <item name="android:textSize">@dimen/font.alert</item>
     </style>
 
     <style name="Test.Progress" parent="Widget.AppCompat.ProgressBar.Horizontal">

@@ -71,4 +71,9 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
             disposable = null;
         }
     }
+
+    @Override
+    public void logScreenDisplayed() {
+        // do nothing
+    }
 }

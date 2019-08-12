@@ -1,6 +1,8 @@
 package com.aptatek.pkulab.view.rangeinfo;
 
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.RangeInfoDisplayed;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
@@ -13,14 +15,20 @@ public class RangeInfoPresenter extends MvpBasePresenter<RangeInfoView> {
 
     private final PkuRangeInteractor pkuRangeInteractor;
     private final PkuValueFormatter pkuValueFormatter;
+    private final IAnalyticsManager analyticsManager;
+
+    private long screenDisplayedAtMs = 0L;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject
     public RangeInfoPresenter(final PkuRangeInteractor pkuRangeInteractor,
-                              final PkuValueFormatter pkuValueFormatter) {
+                              final PkuValueFormatter pkuValueFormatter,
+                              final IAnalyticsManager analyticsManager) {
         this.pkuRangeInteractor = pkuRangeInteractor;
         this.pkuValueFormatter = pkuValueFormatter;
+        this.analyticsManager = analyticsManager;
+        screenDisplayedAtMs = System.currentTimeMillis();
     }
 
     public void refresh() {
@@ -48,5 +56,10 @@ public class RangeInfoPresenter extends MvpBasePresenter<RangeInfoView> {
         }
 
         super.detachView();
+    }
+
+    public void logEventAndDo(Runnable runnable) {
+        analyticsManager.logEvent(new RangeInfoDisplayed(Math.abs(System.currentTimeMillis() - screenDisplayedAtMs)));
+        runnable.run();
     }
 }

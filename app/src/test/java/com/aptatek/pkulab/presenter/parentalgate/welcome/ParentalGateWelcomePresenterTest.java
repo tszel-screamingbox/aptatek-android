@@ -2,6 +2,7 @@ package com.aptatek.pkulab.presenter.parentalgate.welcome;
 
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.parentalgate.ParentalGateInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.AgeCheckModel;
 import com.aptatek.pkulab.domain.model.AgeCheckResult;
 import com.aptatek.pkulab.view.parentalgate.welcome.AgeVerificationResult;
@@ -37,6 +38,9 @@ public class ParentalGateWelcomePresenterTest {
     @Mock
     ParentalGateWelcomeView view;
 
+    @Mock
+    IAnalyticsManager analyticsManager;
+
     private ParentalGateWelcomePresenter presenter;
 
     /**
@@ -48,7 +52,7 @@ public class ParentalGateWelcomePresenterTest {
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt())).thenReturn(TEST_STRING);
         when(parentalGateInteractor.formatBirthDate(ArgumentMatchers.anyLong())).thenReturn(Single.just(TEST_STRING));
 
-        presenter = new ParentalGateWelcomePresenter(resourceInteractor, parentalGateInteractor);
+        presenter = new ParentalGateWelcomePresenter(resourceInteractor, parentalGateInteractor, analyticsManager);
         presenter.attachView(view);
     }
 

@@ -391,13 +391,22 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     }
 
     public Maybe<ReaderDevice> getConnectedDevice() {
-        return Maybe.create(emitter -> {
+        return Maybe.<BluetoothDevice>create(emitter -> {
             final BluetoothDevice bluetoothDevice = getBluetoothDevice();
             if (bluetoothDevice != null && getConnectionState() == BluetoothProfile.STATE_CONNECTED) {
-                emitter.onSuccess(new BluetoothReaderDevice(bluetoothDevice));
+                emitter.onSuccess(bluetoothDevice);
             } else {
                 emitter.onComplete();
             }
-        });
+        }).flatMap(readerDevice -> Single.zip(
+                readCharacteristic(LumosReaderConstants.DEVICE_INFO_FIRMWARE),
+                readCharacteristic(LumosReaderConstants.DEVICE_INFO_SERIAL),
+                (BiFunction<String, String, ReaderDevice>) (firmwareVersion, serialNumber) -> {
+                    BluetoothReaderDevice bluetoothReaderDevice = new BluetoothReaderDevice(readerDevice);
+                    bluetoothReaderDevice.setFirmwareVersion(firmwareVersion);
+                    bluetoothReaderDevice.setSerialNumber(serialNumber);
+                    return bluetoothReaderDevice;
+                }
+        ).toMaybe());
     }
 }

@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.splash.SplashActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
 
@@ -94,7 +96,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_explicit_error_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_explicit_error_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarter(context), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
     }
 
@@ -102,7 +104,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_multiplereaders_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_multiplereaders_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarter(context), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
     }
 
@@ -110,7 +112,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_permission_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_permission_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarter(context), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
     }
 
@@ -118,7 +120,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_connected_test_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_connected_test_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarter(context), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "end_of_self_checking"), PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
     }
 
@@ -147,15 +149,17 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_test_complete_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_test_complete_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestResultActivity.starter(context, testComplete.getTestId()), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestResultActivity.starter(context, testComplete.getTestId(), true), PendingIntent.FLAG_CANCEL_CURRENT))
                 .build();
     }
 
     private Notification createErrorNotification(final BluetoothError message) {
+        final Intent intent = new Intent(context, SplashActivity.class);
+        intent.putExtra(Constants.EXTRA_RESTART_NOTIFICATION_ERROR, true);
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_error_title))
                 .setContentText(message.getReason()))
-                // TODO set content intent - how to handle errors?
+                .setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT))
                 .build();
     }
 

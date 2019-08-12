@@ -6,6 +6,7 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.keystore.KeyStoreManager;
 import com.aptatek.pkulab.view.splash.SplashActivityPresenter;
 import com.aptatek.pkulab.view.splash.SplashActivityView;
@@ -55,6 +56,9 @@ public class SplashPresenterTest {
     @Mock
     File dbFile;
 
+    @Mock
+    IAnalyticsManager analyticsManager;
+
     private SplashActivityPresenter presenter;
 
     /**
@@ -99,7 +103,7 @@ public class SplashPresenterTest {
         when(dbFile.exists()).thenReturn(true);
         when(preferenceManager.isDbEncryptedWithPin()).thenReturn(true);
 
-        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper, dbFile);
+        presenter = new SplashActivityPresenter(keyStoreManager, preferenceManager, deviceHelper, dbFile, analyticsManager);
         presenter.attachView(view);
     }
 

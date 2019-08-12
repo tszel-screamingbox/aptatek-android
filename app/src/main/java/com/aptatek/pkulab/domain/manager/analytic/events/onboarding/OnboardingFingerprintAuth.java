@@ -1,12 +1,12 @@
 package com.aptatek.pkulab.domain.manager.analytic.events.onboarding;
 
-import android.util.Pair;
-
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class OnboardingFingerprintAuth extends AnalyticsEvent {
@@ -20,8 +20,10 @@ public class OnboardingFingerprintAuth extends AnalyticsEvent {
 
     @Nullable
     @Override
-    public Pair<String, String> getAdditionalInfo() {
-        return new Pair<>("enabled", Boolean.toString(enabled));
+    public Map<String, String> getAdditionalInfo() {
+        final Map<String, String> map = new HashMap<>();
+        map.put("enabled", Boolean.toString(enabled));
+        return map;
     }
 
     @Override

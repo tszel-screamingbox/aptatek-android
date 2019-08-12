@@ -6,6 +6,7 @@ import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
@@ -67,6 +68,8 @@ public class WeeklyResultFragmentPresenterTest {
     private PreferenceManager preferenceManager;
     @Mock
     private RangeSettingsValueFormatter valueFormatter;
+    @Mock
+    IAnalyticsManager analyticsManager;
 
     private WeeklyResultFragmentPresenter presenter;
     private List<TestResult> testResultList = new ArrayList<>();
@@ -136,7 +139,7 @@ public class WeeklyResultFragmentPresenterTest {
                 pdfChartDataTransformer,
                 csvExport,
                 preferenceManager,
-                valueFormatter);
+                valueFormatter, analyticsManager);
         presenter.attachView(view);
     }
 

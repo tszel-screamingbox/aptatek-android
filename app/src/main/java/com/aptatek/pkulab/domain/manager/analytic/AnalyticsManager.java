@@ -1,7 +1,5 @@
 package com.aptatek.pkulab.domain.manager.analytic;
 
-import android.util.Pair;
-
 import androidx.annotation.Nullable;
 
 import com.amplitude.api.Amplitude;
@@ -14,6 +12,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -39,14 +38,41 @@ public class AnalyticsManager implements IAnalyticsManager {
 
     @Override
     public void logEvent(final AnalyticsEvent event) {
-        logEvent(event.eventName, infoToString(event.getAdditionalInfo()), event.eventCategory, event.timestamp == null ? 0L : event.timestamp);
+        try {
+
+            final long timestamp = event.timestamp == null ? 0L : event.timestamp;
+            final SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.US);
+            final String date = dt.format(new Date(timestamp == 0 ? System.currentTimeMillis() : timestamp));
+
+            final JSONObject eventProperties = new JSONObject();
+            eventProperties.put(Constants.EVENT_CATEGORY, event.eventCategory.getKey());
+
+            if (event.getAdditionalInfo() != null) {
+                for (final String key : event.getAdditionalInfo().keySet()) {
+                    eventProperties.put(key, event.getAdditionalInfo().get(key));
+                }
+            }
+
+            eventProperties.put(Constants.TIMESTAMP, date);
+
+            amplitude.logEvent(event.eventName, eventProperties);
+        } catch (JSONException e) {
+            Timber.e(e);
+        }
+
+        //logEvent(event.eventName, infoToString(event.getAdditionalInfo()), event.eventCategory, event.timestamp == null ? 0L : event.timestamp);
     }
 
     @Nullable
-    private String infoToString(@Nullable final Pair<String, String> info) {
+    private String infoToString(@Nullable final Map<String, String> info) {
         if (info == null) return null;
 
-        return String.format("%s: %s", info.first, info.second);
+        final StringBuilder builder = new StringBuilder();
+        for (final Map.Entry<String, String> entry : info.entrySet()) {
+            builder.append(String.format("%s: %s", entry.getKey(), entry.getValue()));
+        }
+
+        return builder.toString();
     }
 
     @Override

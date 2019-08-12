@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.Countdown;
 import com.aptatek.pkulab.view.test.wetting.WettingPresenter;
 import com.aptatek.pkulab.view.test.wetting.WettingView;
@@ -53,6 +54,9 @@ public class WettingPresenterTest {
     @Mock
     WettingView view;
 
+    @Mock
+    IAnalyticsManager analyticsManager;
+
     private WettingPresenter presenter;
 
     private final FlowableProcessor<Countdown> countdownProcessor = BehaviorProcessor.create();
@@ -93,7 +97,7 @@ public class WettingPresenterTest {
         when(resourceInteractor.getStringResource(ArgumentMatchers.anyInt(), ArgumentMatchers.anyVararg())).thenReturn(TEST_STRING);
         when(wettingInteractor.getWettingCountdown()).thenReturn(countdownProcessor);
 
-        presenter = new WettingPresenter(resourceInteractor, wettingInteractor, testInteractor);
+        presenter = new WettingPresenter(resourceInteractor, wettingInteractor, testInteractor, analyticsManager);
         presenter.attachView(view);
     }
 

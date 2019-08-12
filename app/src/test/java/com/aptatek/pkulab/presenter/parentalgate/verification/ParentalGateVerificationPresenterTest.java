@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.presenter.parentalgate.verification;
 
 import com.aptatek.pkulab.device.PreferenceManager;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.view.parentalgate.verification.ParentalGateVerificationPresenter;
 import com.aptatek.pkulab.view.parentalgate.verification.ParentalGateVerificationView;
 import com.aptatek.pkulab.view.parentalgate.welcome.AgeVerificationResult;
@@ -37,7 +38,7 @@ public class ParentalGateVerificationPresenterTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        presenter = new ParentalGateVerificationPresenter(preferenceManager, analyticsManager);
+        presenter = new ParentalGateVerificationPresenter(preferenceManager);
         presenter.attachView(view);
     }
 

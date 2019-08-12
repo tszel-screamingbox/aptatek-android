@@ -3,6 +3,9 @@ package com.aptatek.pkulab.view.test.testing;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingDone;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingScreenDisplayed;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
@@ -19,13 +22,20 @@ import timber.log.Timber;
 public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private final ReaderInteractor readerInteractor;
+    private final IAnalyticsManager analyticsManager;
     private CompositeDisposable disposables;
+    private long screenDisplayedAtMs = 0L;
 
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
-                            final ReaderInteractor readerInteractor) {
+                            final ReaderInteractor readerInteractor,
+                            final IAnalyticsManager analyticsManager) {
         super(resourceInteractor);
         this.readerInteractor = readerInteractor;
+        this.analyticsManager = analyticsManager;
+
+        analyticsManager.logEvent(new TestingScreenDisplayed());
+        screenDisplayedAtMs = System.currentTimeMillis();
     }
 
     public void onStart() {
@@ -46,7 +56,6 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         testProgress -> {
-                            Timber.d("--- Test Progress update: %s", testProgress);
                             ifViewAttached(attachedView -> attachedView.setProgressPercentage(testProgress.getPercent()));
                         },
                         error -> {
@@ -105,6 +114,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .subscribe(
                                 resultId -> {
                                     Timber.d("Test complete: %s", resultId);
+                                    analyticsManager.logEvent(new TestingDone(Math.abs(System.currentTimeMillis() - screenDisplayedAtMs)));
+
                                     ifViewAttached(attachedView -> attachedView.onTestFinished(resultId));
                                 },
                                 error -> Timber.d("Error while getting test result: %s", error)

@@ -1,10 +1,12 @@
 package com.aptatek.pkulab.view.main.home;
 
 import androidx.annotation.NonNull;
+
 import android.text.format.DateUtils;
 import android.util.Pair;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
@@ -13,6 +15,8 @@ import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.test.TestFromHome;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
@@ -26,6 +30,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -46,6 +51,8 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private final TestInteractor testInteractor;
     private final PkuValueFormatter pkuValueFormatter;
     private CompositeDisposable disposables;
+    private final IAnalyticsManager analyticsManager;
+    private final DeviceHelper deviceHelper;
 
     @Inject
     HomeFragmentPresenter(final TestResultInteractor testResultInteractor,
@@ -55,7 +62,9 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                           final WettingInteractor wettingInteractor,
                           final PreferenceManager preferenceManager,
                           final TestInteractor testInteractor,
-                          final PkuValueFormatter pkuValueFormatter) {
+                          final PkuValueFormatter pkuValueFormatter,
+                          final IAnalyticsManager analyticsManager,
+                          final DeviceHelper deviceHelper) {
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
@@ -64,6 +73,8 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         this.preferenceManager = preferenceManager;
         this.testInteractor = testInteractor;
         this.pkuValueFormatter = pkuValueFormatter;
+        this.analyticsManager = analyticsManager;
+        this.deviceHelper = deviceHelper;
     }
 
     void initView() {
@@ -192,10 +203,13 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     }
 
     void startNewTest() {
-        disposables.add(wettingInteractor.resetWetting()
-                .andThen(testInteractor.resetTest())
-                .andThen(testInteractor.setTestContinueStatus(true))
-                .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
+        disposables.add(
+                Completable.fromAction(() -> analyticsManager.logEvent(new TestFromHome(deviceHelper.getPhoneBattery())))
+                        .andThen(wettingInteractor.resetWetting())
+                        .andThen(testInteractor.resetTest())
+                        .andThen(testInteractor.setTestContinueStatus(true))
+                        .andThen(Completable.fromAction(preferenceManager::setTestFlowStart))
+                        .subscribe(() -> ifViewAttached(HomeFragmentView::navigateToTestScreen))
         );
     }
 

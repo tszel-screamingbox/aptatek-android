@@ -189,4 +189,8 @@ public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter>
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
         startActivityForResult(Intent.createChooser(emailIntent, getString(R.string.faq_report_issue_dialog_title)), SEND_ATTACHMENT_REQUEST_CODE);
     }
+
+    public void setReportIssueEnabled(final boolean enabled) {
+        reportIssue.setEnabled(enabled);
+    }
 }

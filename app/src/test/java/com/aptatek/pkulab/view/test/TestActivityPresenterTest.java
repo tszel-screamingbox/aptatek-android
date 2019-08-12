@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -12,9 +13,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
@@ -36,6 +37,7 @@ import static com.aptatek.pkulab.view.test.TestScreens.TURN_READER_ON;
 import static com.aptatek.pkulab.view.test.TestScreens.WETTING;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,11 +52,12 @@ public class TestActivityPresenterTest {
     @Mock
     private WettingInteractor wettingInteractor;
     @Mock
-    private DeviceHelper deviceHelper;
-    @Mock
     private TestActivityView view;
     @Mock
     private TestInteractor testInteractor;
+    @Mock
+    private IAnalyticsManager analyticsManager;
+    private DeviceHelper deviceHelper;
 
     private TestActivityPresenter presenter;
 
@@ -67,7 +70,10 @@ public class TestActivityPresenterTest {
         doReturn(Single.just(TestScreens.TURN_READER_ON)).when(testInteractor).getLastScreen();
         doReturn(Completable.complete()).when(testInteractor).setLastScreen(ArgumentMatchers.any());
 
-        presenter = new TestActivityPresenter(wettingInteractor, testInteractor, deviceHelper);
+        deviceHelper = mock(DeviceHelper.class, Mockito.RETURNS_DEEP_STUBS);
+        when(deviceHelper.getPhoneBattery()).thenReturn(100);
+
+        presenter = new TestActivityPresenter(wettingInteractor, testInteractor, deviceHelper, analyticsManager);
         presenter.attachView(view);
     }
 
@@ -145,19 +151,6 @@ public class TestActivityPresenterTest {
     public void testShowPreviousScreen() {
         presenter.onShowPreviousScreen(COLLECT_BLOOD);
         verify(view).showPreviousScreen();
-    }
-
-    /**
-     * Checking low battery level.
-     *
-     * @test.expected The battery level is low, {@link  TestActivityView#showBatteryAlert()  showBatteryAlert()}
-     * method is called, without any error.
-     */
-    @Test
-    public void testLowBattery() {
-        when(deviceHelper.isBatteryLow()).thenReturn(true);
-        presenter.checkBattery(BREAK_FOIL);
-        verify(view).showBatteryAlert();
     }
 
     @Test

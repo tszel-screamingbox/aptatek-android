@@ -8,4 +8,6 @@ public interface PermissionRequiredPresenter<V extends PermissionRequiredView> e
 
     void evaluatePermissionResults(List<PermissionResult> results);
 
+    void logPermissionSettingsOpened();
+
 }
