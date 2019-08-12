@@ -1,11 +1,11 @@
 package com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation;
 
-import android.util.Pair;
-
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.RISK_MITIGATION;
@@ -25,8 +25,10 @@ public class UnfinishedTest extends AnalyticsEvent {
 
     @Nullable
     @Override
-    public Pair<String, String> getAdditionalInfo() {
-        return new Pair<>("was_chamber_connected", Boolean.toString(isConnected));
+    public Map<String, String> getAdditionalInfo() {
+        final Map<String, String> map = new HashMap<>();
+        map.put("was_chamber_connected", Boolean.toString(isConnected));
+        return map;
     }
 
     @Override

@@ -1,11 +1,12 @@
 package com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation;
 
-import android.util.Pair;
-
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReportProblem extends AnalyticsEvent {
 
@@ -20,8 +21,10 @@ public class ReportProblem extends AnalyticsEvent {
 
     @Nullable
     @Override
-    public Pair<String, String> getAdditionalInfo() {
-        return new Pair<>("report_type", String.valueOf(type));
+    public Map<String, String> getAdditionalInfo() {
+        final Map<String, String> map = new HashMap<>();
+        map.put("report_type", String.valueOf(type));
+        return map;
     }
 
     @Override

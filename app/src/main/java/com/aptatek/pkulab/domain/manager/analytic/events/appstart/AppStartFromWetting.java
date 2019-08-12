@@ -1,13 +1,14 @@
 package com.aptatek.pkulab.domain.manager.analytic.events.appstart;
 
-import android.util.Pair;
-
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+
 
 public class AppStartFromWetting extends AnalyticsEvent {
 
@@ -20,8 +21,10 @@ public class AppStartFromWetting extends AnalyticsEvent {
 
     @Nullable
     @Override
-    public Pair<String, String> getAdditionalInfo() {
-        return new Pair<>("elapsed_time_sec", String.valueOf(elapsedTimeSec));
+    public Map<String, String> getAdditionalInfo() {
+        final Map<String, String> map = new HashMap<>();
+        map.put("elapsed_time_sec", String.valueOf(elapsedTimeSec));
+        return map;
     }
 
     @Override
