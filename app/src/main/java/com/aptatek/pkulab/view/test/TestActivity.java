@@ -53,6 +53,9 @@ import timber.log.Timber;
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static com.aptatek.pkulab.view.test.TestScreens.CANCEL;
+import static com.aptatek.pkulab.view.test.TestScreens.TESTING;
+import static com.aptatek.pkulab.view.test.TestScreens.showDotFor;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
 import static com.google.android.material.bottomsheet.BottomSheetBehavior.from;
@@ -108,7 +111,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         ButterKnife.bind(this);
 
         screenPagerIndicator.setDynamicCount(false);
-        screenPagerIndicator.setCount(TestScreens.showDotFor().size());
+        screenPagerIndicator.setCount(showDotFor().size());
 
         if (getIntent().hasExtra(EXTRA_NOTIF_REASON)) {
             presenter.logOpenFromNotification(getIntent().getStringExtra(EXTRA_NOTIF_REASON));
@@ -159,7 +162,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @OnClick(R.id.testCancelButton)
     void onCancelClicked() {
-        showScreen(TestScreens.CANCEL);
+        showScreen(CANCEL);
     }
 
     @OnClick(R.id.testNextButton)
@@ -202,7 +205,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
         switch (screen) {
             case CANCEL: {
-                fragment = new CancelTestFragment();
+                fragment = CancelTestFragment.createCancelFragment(getCurrentScreen() == TESTING);
                 break;
             }
             case POKE_FINGERTIP: {
@@ -246,7 +249,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         }
 
         showFragment(fragment, addToBackStack, withAnimation);
-        screenPagerIndicator.setSelection(Math.min(screen.ordinal(), TestScreens.showDotFor().size()));
+        screenPagerIndicator.setSelection(Math.min(screen.ordinal(), showDotFor().size()));
         presenter.checkBattery(screen);
     }
 
@@ -318,7 +321,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void showPreviousScreen() {
         onBackPressedHere();
-        screenPagerIndicator.setSelection(Math.min(getCurrentScreen().ordinal(), TestScreens.showDotFor().size()));
+        screenPagerIndicator.setSelection(Math.min(getCurrentScreen().ordinal(), showDotFor().size()));
     }
 
     @Override

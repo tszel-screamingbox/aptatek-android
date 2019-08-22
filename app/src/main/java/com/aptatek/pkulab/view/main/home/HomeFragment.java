@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.domain.model.TestContinueDialogModel;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
@@ -71,6 +73,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
 
     @Inject
     DailyResultsAdapter dailyResultsAdapter;
+
+    @Inject
+    IAnalyticsManager analyticsManager;
 
     @BindView(R.id.scrollView)
     DiscreteScrollView bubbleScrollView;
@@ -312,7 +317,10 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                 TestContinueDialogModel.continueTestDialogModelCreate(requireContext()),
                 decision -> {
                     if (decision == AlertDialogDecisions.POSITIVE) {
+                        analyticsManager.logEvent(new UnfinishedTest("risk_unfinished_test_continue"));
                         getBaseActivity().launchActivity(TestActivity.createStarter(requireContext()), false, BaseActivity.Animation.FADE);
+                    } else {
+                        analyticsManager.logEvent(new UnfinishedTest("risk_unfinished_test_failed"));
                     }
                 });
         dialogFragment.setCancelable(false);
