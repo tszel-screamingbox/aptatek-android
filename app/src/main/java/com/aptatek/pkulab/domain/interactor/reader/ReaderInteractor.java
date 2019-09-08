@@ -11,6 +11,7 @@ import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.Device
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.ReaderDataSynced;
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.ReaderWorkflowStateError;
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.WorkflowStateChanged;
+import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.ReaderSelfTestFinished;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
@@ -112,7 +113,14 @@ public class ReaderInteractor {
                 .flatMap(testResultRepository::getLatestFromReader)
                 .map(TestResult::getId)
                 .onErrorReturnItem("invalid")
-                .flatMap(id -> (id.equals("invalid")) ? readerManager.syncAllResults() : readerManager.syncResultsAfter(id))
+                .flatMap(id -> {
+                    if (id.equals("invalid")) {
+                        return readerManager.syncAllResults();
+                    } else {
+                        analyticsManager.logEvent(new UnfinishedTest("risk_unfinished_test_show_result"));
+                        return readerManager.syncResultsAfter(id);
+                    }
+                })
                 .flatMap(results -> testResultRepository.insertAll(results)
                         .andThen(Single.just(results))
                 )
