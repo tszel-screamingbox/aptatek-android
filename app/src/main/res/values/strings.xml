@@ -232,7 +232,7 @@
     <string name="test.wetting.title">Incubation Phase</string>
     <string name="test.wetting.message">Wait until the sample\nincubation phase ends</string>
     <string name="test.wetting.disclaimer">Keep chamber sitting upright by\nitself in a safe place, do not\nconnect it to anything yet</string>
-    <string name="test.wetting.alert.message">Are your sure the blood has finished soaking for the whole 30 minutes?</string>
+    <string name="test.wetting.alert.message">Are your sure the blood has finished soaking for the whole 5 minutes?</string>
     <string name="test.wetting.alert.title">Please confirm</string>
     <string name="test.wetting.countdown.format">mm:ss</string>
     <string name="test.turnreaderon.title">Turn Reader On</string>
