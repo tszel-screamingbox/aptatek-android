@@ -12,6 +12,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.settings.SettingsFingerprintAuth;
 import com.aptatek.pkulab.view.base.BaseAdapter;
 
 import javax.inject.Inject;
@@ -35,9 +37,11 @@ public class SettingsItemAdapter extends BaseAdapter<RecyclerView.ViewHolder, Se
     }
 
     private SettingsItemClickListener settingsItemClickListener;
+    private IAnalyticsManager analyticsManager;
 
     @Inject
-    public SettingsItemAdapter() {
+    public SettingsItemAdapter(final IAnalyticsManager analyticsManager) {
+        this.analyticsManager = analyticsManager;
     }
 
     public void setSettingsItemClickListener(@Nullable final SettingsItemClickListener settingsItemClickListener) {
@@ -85,6 +89,7 @@ public class SettingsItemAdapter extends BaseAdapter<RecyclerView.ViewHolder, Se
             ((FingerprintItemViewHolder) holder).switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (settingsItemClickListener != null) {
                     settingsItemClickListener.onFingerprintAuthToggled(isChecked);
+                    analyticsManager.logEvent(new SettingsFingerprintAuth(isChecked));
                 }
             });
         }
