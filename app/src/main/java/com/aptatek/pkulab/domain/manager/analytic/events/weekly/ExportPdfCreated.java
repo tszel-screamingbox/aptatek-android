@@ -32,7 +32,7 @@ public class ExportPdfCreated extends AnalyticsEvent {
                 return "last_y";
             }
             default: {
-                return "Unknown range: " + months;
+                return "Unknown range [months]: " + months;
             }
         }
     }
