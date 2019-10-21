@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -17,6 +18,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
+import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.COLLAPSED;
 import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.EXPANDED;
 
@@ -42,6 +45,18 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
         switchToFragment(homeFragment);
 
         mainSlidingPanelLayout.setEnabled(false);
+        mainSlidingPanelLayout.addPanelSlideListener(new PanelSlideListener() {
+            @Override
+            public void onPanelSlide(final View panel, final float slideOffset) {
+            }
+
+            @Override
+            public void onPanelStateChanged(final View panel, final PanelState previousState, final PanelState newState) {
+                if (newState == COLLAPSED) {
+                    presenter.logWeeklyChartClosed(Math.abs(System.currentTimeMillis() - weeklyPanelShownMs));
+                }
+            }
+        });
     }
 
     public void enableSlidingPanel() {
@@ -91,7 +106,7 @@ public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHos
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (homeFragment.handleDispatchTouchEvent(ev) || mainSlidingPanelLayout.getPanelState()
-                == SlidingUpPanelLayout.PanelState.DRAGGING && ev.getAction() == MotionEvent.ACTION_DOWN) {
+                == PanelState.DRAGGING && ev.getAction() == MotionEvent.ACTION_DOWN) {
             return true;
         } else {
             return super.dispatchTouchEvent(ev);
