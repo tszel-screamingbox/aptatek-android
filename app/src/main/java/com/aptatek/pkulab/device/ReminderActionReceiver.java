@@ -51,10 +51,10 @@ public class ReminderActionReceiver extends BroadcastReceiver {
         final Serializable actionType = intent.getSerializableExtra(Constants.REMINDER_NOTIFICATION_ACTION_TYPE_KEY);
         if (actionType == ReminderActionType.NOW) {
             preferenceManager.clearPreference(PreferenceManager.PREF_TEST_STATUS);
+            analyticsManager.logEvent(new TestFromReminder(deviceHelper.getPhoneBattery()));
 
             if (AptatekApplication.get(context).isInForeground()) {
                 context.startActivity(TestActivity.createStarter(context));
-                analyticsManager.logEvent(new TestFromReminder(deviceHelper.getPhoneBattery()));
                 preferenceManager.setTestFlowStart();
             } else {
                 TaskStackBuilder.create(context)
