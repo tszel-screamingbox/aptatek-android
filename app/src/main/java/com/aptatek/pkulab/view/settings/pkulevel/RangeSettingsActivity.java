@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.settings.CancelledUnit;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
@@ -65,6 +67,9 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
     @Inject
     RangeSettingsPresenter presenter;
 
+    @Inject
+    IAnalyticsManager analyticsManager;
+
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +121,7 @@ public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, Range
                     if (decision == AlertDialogDecisions.POSITIVE) {
                         requestPin();
                     } else {
+                        analyticsManager.logEvent(new CancelledUnit(getSelectedUnit()));
                         finish();
                     }
                 });

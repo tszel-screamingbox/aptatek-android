@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.settings.Reminder;
 import com.aptatek.pkulab.domain.model.ReminderScheduleType;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
@@ -44,6 +46,9 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
 
     @Inject
     ReminderSettingsAdapter adapter;
+
+    @Inject
+    IAnalyticsManager analyticsManager;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -151,27 +156,30 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
     }
 
     @NonNull
-    private TimePickerDialog.TimePickerDialogCallback getTimePickerDialogCallback(@NonNull final ReminderSettingsAdapterItem reminderSettingsAdapterItem, @Nullable final RemindersAdapterItem remindersAdapterItem) {
+    private TimePickerDialog.TimePickerDialogCallback getTimePickerDialogCallback(@NonNull final ReminderSettingsAdapterItem settingsAdapterItem, @Nullable final RemindersAdapterItem remindersAdapterItem) {
         return new TimePickerDialog.TimePickerDialogCallback() {
             @Override
             public void done(final int hourOfDay, final int minute, final ReminderScheduleType reminderScheduleType) {
                 if (remindersAdapterItem != null) {
-                    presenter.modifyReminder(adapter.getData(), reminderSettingsAdapterItem, remindersAdapterItem, hourOfDay, minute, reminderScheduleType);
+                    analyticsManager.logEvent(new Reminder("reminder_updated", settingsAdapterItem.getNameOfDay(), reminderScheduleType));
+                    presenter.modifyReminder(adapter.getData(), settingsAdapterItem, remindersAdapterItem, hourOfDay, minute, reminderScheduleType);
                 } else {
-                    presenter.addNewReminder(adapter.getData(), reminderSettingsAdapterItem, hourOfDay, minute, reminderScheduleType);
+                    analyticsManager.logEvent(new Reminder("reminder_added", settingsAdapterItem.getNameOfDay(), reminderScheduleType));
+                    presenter.addNewReminder(adapter.getData(), settingsAdapterItem, hourOfDay, minute, reminderScheduleType);
                 }
             }
 
             @Override
             public void delete() {
                 if (remindersAdapterItem != null) {
-                    presenter.deleteReminder(adapter.getData(), reminderSettingsAdapterItem, remindersAdapterItem);
+                    analyticsManager.logEvent(new Reminder("reminder_deleted", settingsAdapterItem.getNameOfDay(), remindersAdapterItem.getReminderScheduleType()));
+                    presenter.deleteReminder(adapter.getData(), settingsAdapterItem, remindersAdapterItem);
                 }
             }
 
             @Override
             public void cancel() {
-                presenter.timePickerDialogCancel(adapter.getData(), reminderSettingsAdapterItem);
+                presenter.timePickerDialogCancel(adapter.getData(), settingsAdapterItem);
             }
         };
     }

@@ -3,11 +3,13 @@ package com.aptatek.pkulab.device;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.core.app.TaskStackBuilder;
 
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificationFactory;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
+import com.aptatek.pkulab.domain.manager.analytic.events.settings.Reminder;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestFromReminder;
 import com.aptatek.pkulab.injection.component.DaggerBroadcastReceiverComponent;
 import com.aptatek.pkulab.injection.module.ReminderModule;
@@ -60,8 +62,10 @@ public class ReminderActionReceiver extends BroadcastReceiver {
                         .startActivities();
             }
         } else if (actionType == ReminderActionType.QUARTER_HOUR) {
+            analyticsManager.logEvent(new Reminder(QUARTER_HOUR));
             alarmManager.scheduleSnooze(QUARTER_HOUR);
         } else if (actionType == ReminderActionType.HALF_HOUR) {
+            analyticsManager.logEvent(new Reminder(HALF_HOUR));
             alarmManager.scheduleSnooze(HALF_HOUR);
         }
 
