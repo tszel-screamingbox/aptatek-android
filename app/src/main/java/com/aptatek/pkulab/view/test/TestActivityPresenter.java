@@ -6,10 +6,9 @@ import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
-import com.aptatek.pkulab.domain.manager.analytic.EventCategory;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
-import com.aptatek.pkulab.domain.manager.analytic.events.appstart.AppStart;
+import com.aptatek.pkulab.domain.manager.analytic.events.appstart.AppStartFromWetting;
 import com.aptatek.pkulab.domain.manager.analytic.events.appstart.OpenFromBTNotification;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.BreakFoilDone;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.CollectBloodDone;
@@ -178,6 +177,6 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
     public void logOpenFromNotification(final String reason) {
         analyticsManager.logEvent(new OpenFromBTNotification(reason));
-        analyticsManager.logEvent(new AppStart("open_app_from_wetting_timer", EventCategory.USER_BEHAVIOUR));
+        analyticsManager.logEvent(new AppStartFromWetting());
     }
 }

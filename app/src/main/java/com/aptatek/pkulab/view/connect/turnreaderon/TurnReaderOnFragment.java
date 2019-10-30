@@ -194,13 +194,13 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
             return;
         }
 
+        if (this instanceof TurnReaderOnConnectFragment) {
+            analyticsManager.logEvent(new OnboardingNoReaderAvailable(System.currentTimeMillis() - screentime));
+        }
+
         if (getBaseActivity() instanceof ConnectOnboardingReaderActivity) {
             ((ConnectOnboardingReaderActivity) getBaseActivity()).showHelpScreen();
             return;
-        }
-
-        if (this instanceof TurnReaderOnConnectFragment) {
-            analyticsManager.logEvent(new OnboardingNoReaderAvailable(System.currentTimeMillis() - screentime));
         }
     }
 

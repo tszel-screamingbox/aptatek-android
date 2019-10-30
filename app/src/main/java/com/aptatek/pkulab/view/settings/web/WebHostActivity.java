@@ -45,7 +45,8 @@ public class WebHostActivity extends BaseActivity<WebHostView, WebHostPresenter>
         ButterKnife.bind(this);
 
         Timber.d("URL: %s", url);
-        presenter.initAnalytics(url.equals(Constants.URL_HELP));
+        presenter.initFaqAnalytics(url.equals(Constants.URL_HELP));
+        presenter.initPrivacyAnalytics(url.equals(Constants.URL_PRIVACY));
         switchToFragment(WebPageFragmentStarter.newInstance(title, url, reportVisible));
     }
 
