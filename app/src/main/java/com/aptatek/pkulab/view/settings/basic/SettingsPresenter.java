@@ -7,7 +7,9 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Arrays;
 import java.util.List;
+
 import javax.inject.Inject;
+
 import ix.Ix;
 
 public class SettingsPresenter extends MvpBasePresenter<SettingsView> {
@@ -31,7 +33,7 @@ public class SettingsPresenter extends MvpBasePresenter<SettingsView> {
 
         final List<SettingsAdapterItem> data = Ix.from(Arrays.asList(SettingsItem.values()))
                 .filter(settingsItem -> {
-                    if(settingsItem != SettingsItem.FINGERPRINT_AUTH){
+                    if (settingsItem != SettingsItem.FINGERPRINT_AUTH) {
                         return true;
                     }
 
@@ -54,6 +56,10 @@ public class SettingsPresenter extends MvpBasePresenter<SettingsView> {
             preferenceManager.enableFingerprintScan(enabled);
             ifViewAttached(attachedView -> attachedView.updateFingerprintSetting(true, enabled));
         }
+    }
+
+    public boolean isNetworkAvailable() {
+        return deviceHelper.isNetworkConnectionAvailable();
     }
 
     public void getAppVersion() {

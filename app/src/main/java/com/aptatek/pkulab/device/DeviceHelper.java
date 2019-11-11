@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -18,7 +20,11 @@ import javax.inject.Singleton;
 
 import timber.log.Timber;
 
+import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Intent.ACTION_BATTERY_CHANGED;
+import static android.net.NetworkInfo.State;
+import static android.net.NetworkInfo.State.CONNECTED;
+import static android.net.NetworkInfo.State.CONNECTING;
 import static android.os.BatteryManager.EXTRA_LEVEL;
 import static android.os.BatteryManager.EXTRA_SCALE;
 
@@ -110,5 +116,13 @@ public class DeviceHelper {
 
         // should not happen
         return null;
+    }
+
+    public boolean isNetworkConnectionAvailable() {
+        final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+        final NetworkInfo info = cm.getActiveNetworkInfo();
+        if (info == null) return false;
+        final State network = info.getState();
+        return (network == CONNECTED || network == CONNECTING);
     }
 }
