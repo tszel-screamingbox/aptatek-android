@@ -13,6 +13,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.multidex.MultiDexApplication;
 
 import com.amplitude.api.Amplitude;
+import com.amplitude.api.TrackingOptions;
 import com.aptatek.pkulab.device.AlarmManager;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
@@ -77,9 +78,17 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
         JodaTimeAndroid.init(this);
 
+        final TrackingOptions options = new TrackingOptions()
+                .disableIpAddress()
+                .disableCity()
+                .disableLatLng()
+                .disableCarrier()
+                .disableDma()
+                .disableRegion();
         Amplitude.getInstance()
                 .initialize(this, BuildConfig.AMPLITUDE_KEY)
                 .setOptOut(BuildConfig.DEBUG)
+                .setTrackingOptions(options)
                 .enableLogging(BuildConfig.DEBUG)
                 .enableForegroundTracking(this);
     }
