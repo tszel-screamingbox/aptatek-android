@@ -11,7 +11,6 @@ import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.appstart.OpenFromBTNotification;
-import com.aptatek.pkulab.domain.manager.analytic.events.test.TestResultDisplayed;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestResultDone;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
@@ -70,17 +69,13 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                         .andThen(Single.zip(
                                 rangeInteractor.getInfo(),
                                 testResultInteractor.getById(testId),
-                                (rangeInfo, result) -> {
-                                    analyticsManager.logEvent(new TestResultDisplayed(result.getPkuLevel(), ChartUtils.getState(result.getPkuLevel(), rangeInfo), result.getTimestamp()));
-
-                                    return TestResultState.builder()
-                                            .setTitle(getTitleForLevel(result.getPkuLevel(), rangeInfo))
-                                            .setColor(getColorForLevel(result.getPkuLevel(), rangeInfo))
-                                            .setFormattedPkuValue(getFormattedPkuValue(result.getPkuLevel(), rangeInfo))
-                                            .setPkuLevelText(getPkuLevelText(result.getPkuLevel(), rangeInfo))
-                                            .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(rangeInfo.getPkuLevelUnit()))
-                                            .build();
-                                })
+                                (rangeInfo, result) -> TestResultState.builder()
+                                        .setTitle(getTitleForLevel(result.getPkuLevel(), rangeInfo))
+                                        .setColor(getColorForLevel(result.getPkuLevel(), rangeInfo))
+                                        .setFormattedPkuValue(getFormattedPkuValue(result.getPkuLevel(), rangeInfo))
+                                        .setPkuLevelText(getPkuLevelText(result.getPkuLevel(), rangeInfo))
+                                        .setPkuUnit(rangeSettingsValueFormatter.getProperUnits(rangeInfo.getPkuLevelUnit()))
+                                        .build())
                         )
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)));
