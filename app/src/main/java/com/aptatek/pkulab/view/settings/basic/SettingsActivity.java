@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.AlertDialogModel;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseActivity;
+import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.main.MainHostActivity;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsActivity;
 import com.aptatek.pkulab.view.settings.reminder.ReminderSettingsActivity;
@@ -29,6 +31,8 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresenter> implements SettingsView {
+
+    private static final String TAG_NETWORK_DIALOG = "aptatek.settings.network.dialog";
 
     public static Intent starter(@NonNull final Context context) {
         return new Intent(context, SettingsActivity.class);
@@ -48,6 +52,7 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
 
     @Inject
     SettingsItemAdapter settingsItemAdapter;
+
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -94,13 +99,13 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
                         launchActivity(RangeSettingsActivity.starter(SettingsActivity.this));
                         break;
                     case HELP:
-                        launchActivity(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), Constants.URL_HELP, true));
+                        showScreen(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_help), Constants.URL_HELP, true));
                         break;
                     case PRIVACY_POLICY:
-                        launchActivity(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), Constants.URL_PRIVACY, false));
+                        showScreen(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_privacy), Constants.URL_PRIVACY, false));
                         break;
                     case TERMS_AND_CONDITIONS:
-                        launchActivity(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_terms), Constants.URL_TERMS, false));
+                        showScreen(WebHostActivityStarter.getIntent(SettingsActivity.this, getString(R.string.settings_terms), Constants.URL_TERMS, false));
                         break;
                     default:
                         Timber.d("Unhandled settings item clicked: %s", item);
@@ -113,6 +118,21 @@ public class SettingsActivity extends BaseActivity<SettingsView, SettingsPresent
         recyclerView.setAdapter(settingsItemAdapter);
 
         presenter.getAppVersion();
+    }
+
+    private void showScreen(final Intent intent) {
+        if (presenter.isNetworkAvailable()) {
+            launchActivity(intent);
+        } else {
+            final AlertDialogModel model = AlertDialogModel.builder()
+                    .setCancelable(true)
+                    .setTitle(getString(R.string.settings_network_title))
+                    .setMessage(getString(R.string.settings_network_message))
+                    .setPositiveButtonText(getString(R.string.alertdialog_button_ok))
+                    .build();
+            final AlertDialogFragment alertDialogFragment = AlertDialogFragment.create(model, null);
+            alertDialogFragment.show(getSupportFragmentManager(), TAG_NETWORK_DIALOG);
+        }
     }
 
     @Override

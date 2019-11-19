@@ -169,6 +169,8 @@
     <string name="settings.fingerprint.authentication">Fingerprint Unlock</string>
     <string name="settings.fingerprint.description">Turning it ON will enable the fingerprint scanner to start the application instead of requesting your PIN code on every application start.</string>
     <string name="settings.message.saved">Your settings are saved.</string>
+    <string name="settings.network.message">To visit this page, please, connect your phone to the internet.</string>
+    <string name="settings.network.title">Application is offline</string>
     <string name="settings.title">Settings</string>
     <string name="settings.units">Phe Preferences &amp; Units</string>
     <string name="settings.units.confirmation.button.cancel">Cancel</string>
