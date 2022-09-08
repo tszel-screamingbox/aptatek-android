@@ -7,9 +7,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
-
 import dagger.Module;
 import dagger.Provides;
 import timber.log.Timber;
@@ -56,15 +53,5 @@ public class ApplicationModule {
                 // do nothing
             }
         };
-    }
-
-    @Provides
-    Crashlytics provideCrashlytics() {
-        return new Crashlytics.Builder()
-                .core(
-                    new CrashlyticsCore.Builder()
-                    .disabled(BuildConfig.DEBUG)
-                    .build())
-                .build();
     }
 }

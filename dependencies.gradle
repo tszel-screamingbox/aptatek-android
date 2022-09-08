@@ -1,8 +1,8 @@
 ext {
     versions = [
             minsdk            : 21,
-            targetsdk         : 28,
-            buildToolsVersion : '28.0.3',
+            targetsdk         : 29,
+            buildToolsVersion : '30.0.3',
 
             // AndroidX
             androidx          : '1.0.0',
@@ -37,9 +37,6 @@ ext {
 
             // Leak
             leakcanary        : '1.6.3',
-
-            // Crashlytics
-            crashlytics       : '2.9.9',
 
             // UX Cam
             uxcam               : '3.1.0@aar',
@@ -81,7 +78,6 @@ ext {
 
             // CodeQuality
             jacoco            : '0.8.1',
-            findbugs          : '3.0.1',
             checkstyle        : '8.10',
 
             // UI
@@ -102,7 +98,10 @@ ext {
             gson              : '2.8.5',
 
             // CSV export
-            csv               : '4.6'
+            csv               : '4.6',
+
+            // firebase analytics
+            bom: '30.4.1'
 
     ]
 
@@ -172,7 +171,9 @@ ext {
     ]
 
     analyticDependencies = [
-            crashlytics: "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}",
+            bom: "com.google.firebase:firebase-bom:${versions.bom}",
+            crashlytics: "com.google.firebase:firebase-crashlytics",
+            analytics: "com.google.firebase:firebase-analytics",
             uxcam: "com.uxcam:uxcam:${versions.uxcam}",
             amplitude: "com.amplitude:android-sdk:${versions.amplitude}"
     ]

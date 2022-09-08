@@ -27,13 +27,11 @@ import com.aptatek.pkulab.view.service.BluetoothService;
 import com.aptatek.pkulab.view.service.ExplicitBluetoothService;
 import com.aptatek.pkulab.view.service.WettingForegroundService;
 import com.aptatek.pkulab.view.test.TestScreens;
-import com.crashlytics.android.Crashlytics;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import javax.inject.Inject;
 
-import io.fabric.sdk.android.Fabric;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
@@ -47,8 +45,6 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
 
     @Inject
     AlarmManager alarmManager;
-    @Inject
-    Crashlytics crashlytics;
     @Inject
     Timber.Tree timber;
     @Inject
@@ -71,7 +67,6 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
                 .build();
         applicationComponent.inject(this);
 
-        Fabric.with(this, crashlytics);
         Timber.plant(timber);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
