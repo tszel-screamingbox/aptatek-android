@@ -29,13 +29,13 @@ public class BluetoothConditionCheckerImpl implements BluetoothConditionChecker 
     @Override
     public List<String> getMissingPermissions() {
         final boolean bluetoothGranted = PermissionChecker.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) == PermissionChecker.PERMISSION_GRANTED;
-        final boolean locationGranted = PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PermissionChecker.PERMISSION_GRANTED;
+        final boolean locationGranted = PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED;
         final List<String> missingPermissions = new ArrayList<>();
 
         if (!bluetoothGranted) {
             missingPermissions.add(Manifest.permission.BLUETOOTH_ADMIN);
         } else if (!locationGranted) {
-            missingPermissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            missingPermissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
         return missingPermissions;
@@ -55,7 +55,7 @@ public class BluetoothConditionCheckerImpl implements BluetoothConditionChecker 
     @Override
     public boolean shouldShowRationale(final Activity activity) {
         final boolean showBluetoothRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.BLUETOOTH);
-        final boolean showLocationRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
+        final boolean showLocationRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.ACCESS_FINE_LOCATION);
 
         return showBluetoothRationale || showLocationRationale;
     }

@@ -92,7 +92,7 @@ ext {
 
             // Bluetooth
             nordicBle         : '2.1.1',
-            nordicScanner     : '1.4.0',
+            nordicScanner     : '1.6.0',
 
             // gson
             gson              : '2.8.5',

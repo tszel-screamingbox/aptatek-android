@@ -111,7 +111,7 @@ public class DeviceHelper {
             final PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            Timber.d("Faield to get package version: %s", e);
+            Timber.d("Failed to get package version: %s", e);
         }
 
         // should not happen
