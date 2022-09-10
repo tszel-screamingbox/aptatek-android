@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import android.view.View;
 import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
@@ -91,9 +93,13 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         final TextView titleTextView = headerView.getTitleTextView();
         final TextView subTitleTextView = headerView.getSubtitleTextView();
 
-        titleTextView.setText(state.getTitle());
-        titleTextView.setTextColor(state.getColor());
-        subTitleTextView.setText(R.string.test_result_message);
+//        titleTextView.setText(state.getTitle());
+//        titleTextView.setTextColor(state.getColor());
+//        subTitleTextView.setText(R.string.test_result_message);
+
+        titleTextView.setText("Test Complete");
+        titleTextView.setTextColor(ContextCompat.getColor(this, R.color.applicationGreen));
+        subTitleTextView.setVisibility(View.INVISIBLE);
 
         bubbleTextView.setConfiguration(BubbleTextView.BubbleTextConfiguration.builder()
                 .setCircleColor(state.getColor())
