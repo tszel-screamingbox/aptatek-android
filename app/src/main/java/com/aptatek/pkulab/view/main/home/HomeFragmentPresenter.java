@@ -95,7 +95,8 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         disposables.add(testResultInteractor.getLatest()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
-                .subscribe(result -> ifViewAttached(view -> view.showLastResult(result.getId()))));
+//                .subscribe(result -> ifViewAttached(view -> view.showLastResult(result.getId()))));
+                .subscribe(result -> ifViewAttached(HomeFragmentView::showNoResults)));
     }
 
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts
@@ -111,20 +112,21 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 }).map(list -> new Pair<>(rangeInfo, list)))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
-                            if (pair.second.isEmpty()) {
-                                ifViewAttached(HomeFragmentView::showNoResults);
-                            } else {
-                                final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
-                                final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
-                                chartVMS.set(chartVMS.size() - 1, lastResult);
-
-                                ifViewAttached(attachedView -> {
-                                    attachedView.updateTitles(
-                                            formatTitle(lastResult),
-                                            dailyChartFormatter.formatDate(lastResult.getDate().getTime(), lastResult.getNumberOfMeasures() > 0));
-                                    attachedView.displayData(chartVMS);
-                                });
-                            }
+                            ifViewAttached(HomeFragmentView::showNoResults);
+//                            if (pair.second.isEmpty()) {
+//                                ifViewAttached(HomeFragmentView::showNoResults);
+//                            } else {
+//                                final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
+//                                final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
+//                                chartVMS.set(chartVMS.size() - 1, lastResult);
+//
+//                                ifViewAttached(attachedView -> {
+//                                    attachedView.updateTitles(
+//                                            formatTitle(lastResult),
+//                                            dailyChartFormatter.formatDate(lastResult.getDate().getTime(), lastResult.getNumberOfMeasures() > 0));
+//                                    attachedView.displayData(chartVMS);
+//                                });
+//                            }
                         })
         );
     }
