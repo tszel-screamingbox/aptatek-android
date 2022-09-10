@@ -4,9 +4,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import com.aptatek.pkulab.device.bluetooth.LumosReaderConstants;
 import com.aptatek.pkulab.device.bluetooth.characteristics.CharacteristicsHolder;
@@ -93,6 +94,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                             Timber.d("Mtu change failed: status [%d]", status);
                             mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
                         })
+                        .enqueue();
+
+                sleep(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS)
+                        .done((device) -> Timber.d("Slept %d ms after service discovery", LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS))
+                        .fail((device, error) -> Timber.d("Failed to sleep device : %d", error))
                         .enqueue();
 
                 // WORKFLOW STATE
