@@ -231,12 +231,14 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     }
 
     private String getStepId() {
+        if (view == null) return "null";
+
         final TurnReaderOnView attached = view.get();
-        if (view instanceof TurnReaderOnConnectView) {
+        if (attached instanceof TurnReaderOnConnectView) {
             return "onboarding";
-        } else if (view instanceof TurnReaderOnContinueTestView) {
+        } else if (attached instanceof TurnReaderOnContinueTestView) {
             return "unfinished_Test";
-        } else if (view instanceof TurnReaderOnTestView) {
+        } else if (attached instanceof TurnReaderOnTestView) {
             return "final_phe_testing";
         } else {
             return "null";
