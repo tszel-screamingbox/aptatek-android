@@ -307,12 +307,12 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     public Single<ResultResponse> getResult(@NonNull final String id) {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT, new RequestResultCharacteristicDataProvider.RequestResultData(id))
-                .delay(200L, TimeUnit.MILLISECONDS) // give some time for reader to settle Result characteristic...
+                .delay(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS, TimeUnit.MILLISECONDS) // give some time for reader to settle Result characteristic...
                 .andThen(readResult()
                         .onErrorResumeNext(error -> {
                             if (error instanceof JsonParseException) {  // if the good old initial value is read from Result char, give it a chance to settle and try again...
                                 Timber.d("Caught a JsonParseException, but no worries, will retry soon...");
-                                return Flowable.timer(200L, TimeUnit.MILLISECONDS)
+                                return Flowable.timer(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS, TimeUnit.MILLISECONDS)
                                         .take(1)
                                         .singleOrError()
                                         .flatMap(ignored -> readResult());
