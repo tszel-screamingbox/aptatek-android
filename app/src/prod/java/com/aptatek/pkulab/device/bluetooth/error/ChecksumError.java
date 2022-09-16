@@ -5,8 +5,17 @@ import androidx.annotation.NonNull;
 
 public class ChecksumError extends CharacteristicReadError {
 
-    public ChecksumError(@NonNull final BluetoothDevice device, final int status, final String characteristicId) {
+    private final String message;
+
+    public ChecksumError(@NonNull final BluetoothDevice device, final int status, final String characteristicId, final String message) {
         super(device, status, characteristicId);
+        this.message = message;
     }
 
+    @Override
+    public String toString() {
+        return "ChecksumError{" +
+                "message='" + message + '\'' +
+                '}';
+    }
 }

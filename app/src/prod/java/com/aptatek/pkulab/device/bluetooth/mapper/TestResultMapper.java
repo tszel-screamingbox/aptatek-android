@@ -9,6 +9,7 @@ import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -32,7 +33,7 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
                 .setId(dataModel.getDate())
                 .setPkuLevel(parsePkuLevel(dataModel))
                 .setTimestamp(DateParser.tryParseDate(dataModel.getDate()))
-                .setReaderId("dummy")
+                .setReaderId(dataModel.getProductSerial())
                 .build();
     }
 
@@ -60,11 +61,11 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
     }
 
     private PkuLevelUnits parseUnit(final String units) {
-        if ("umol/L".equals(units)) {
-            return PkuLevelUnits.MICRO_MOL;
+        switch (units.toLowerCase(Locale.getDefault())) {
+            case "umol/l": return PkuLevelUnits.MICRO_MOL;
+            case "mabs": return PkuLevelUnits.MABS;
+            default: throw new IllegalArgumentException("Unhandled unit received: " + units);
         }
-
-        throw new IllegalArgumentException("Unhandled unit received: " + units);
     }
 
 }

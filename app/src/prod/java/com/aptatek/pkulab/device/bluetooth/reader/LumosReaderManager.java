@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 import javax.inject.Inject;
 
@@ -87,14 +88,14 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .fail((device, status) -> Timber.d("Failed to bond: device [%s], status [%d]", device.getAddress(), status))
                         .enqueue();
 
-                requestMtu(LumosReaderConstants.MTU_SIZE)
-                        .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
-                        .done(device -> Timber.d("Mtu change successful"))
-                        .fail((device, status) -> {
-                            Timber.d("Mtu change failed: status [%d]", status);
-                            mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
-                        })
-                        .enqueue();
+//                requestMtu(LumosReaderConstants.MTU_SIZE)
+//                        .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
+//                        .done(device -> Timber.d("Mtu change successful"))
+//                        .fail((device, status) -> {
+//                            Timber.d("Mtu change failed: status [%d]", status);
+//                            mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+//                        })
+//                        .enqueue();
 
                 sleep(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS)
                         .done((device) -> Timber.d("Slept %d ms after service discovery", LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS))
@@ -179,9 +180,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
                                 try {
                                     payload = validateChecksumAndReturnPayload(rawString);
-                                } catch (final Exception ex) {
+                                } catch (final ChecksumError | Exception error) {
                                     if (!emitter.isDisposed()) {
-                                        emitter.onError(new ChecksumError(device, -1, characteristicId));
+                                        emitter.onError(new ChecksumError(device, -1, characteristicId, error.getMessage()));
                                     }
                                 }
 
@@ -215,7 +216,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         );
     }
 
-    private String validateChecksumAndReturnPayload(@NonNull final String rawMessage) throws Exception {
+    private String validateChecksumAndReturnPayload(@NonNull final String rawMessage) throws Exception, ChecksumError {
+        Timber.d("validateChecksum: rawMessage=%s", rawMessage);
+
         final int checkSumLineBreakIndex = rawMessage.lastIndexOf('\n');
 
         if (checkSumLineBreakIndex < 0) {
@@ -232,12 +235,14 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         final long checksumValue = Long.decode(checksum.substring(checksumDelimiterIndex + 1));
 
         final String payload = rawMessage.substring(0, checkSumLineBreakIndex);
+        Timber.d("validateChecksum checksumValue=%d, payload=%s", checksumValue, payload);
         final CRC32 crc32 = new CRC32();
         crc32.update(payload.getBytes());
         final long calculatedChecksum = crc32.getValue();
 
         if (calculatedChecksum != checksumValue) {
-            throw new Exception();
+            Timber.d("validateChecksum checksum error! actual=%d vs expected=%d", calculatedChecksum, checksumValue);
+            throw new ChecksumError(null, -1, null, String.format("Expected = %d, actual = %d, calculated on string = %s", checksumValue, calculatedChecksum, payload));
         }
 
         return payload;
@@ -257,7 +262,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                             }
                         }))
                         .done(device -> {
-                            Timber.d("writeCharacteristic completed successfully");
+                            Timber.d("writeCharacteristic [%s] completed successfully, data written = [%s]", characteristicId, new String(characteristicDataProviderMap.get(characteristicId).provideData(data)));
                             if (!emitter.isDisposed()) {
                                 emitter.onComplete();
                             }
@@ -310,6 +315,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 .delay(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS, TimeUnit.MILLISECONDS) // give some time for reader to settle Result characteristic...
                 .andThen(readResult()
                         .onErrorResumeNext(error -> {
+                            Timber.d("onErrorResumeNext: %s", error);
                             if (error instanceof JsonParseException) {  // if the good old initial value is read from Result char, give it a chance to settle and try again...
                                 Timber.d("Caught a JsonParseException, but no worries, will retry soon...");
                                 return Flowable.timer(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS, TimeUnit.MILLISECONDS)
@@ -387,13 +393,20 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         })
                         .enqueue())
                 .repeatWhen(objectFlowable -> objectFlowable)
+                .delay(300L, TimeUnit.MILLISECONDS)
                 .takeUntil(s ->
                            s.length() < getMTUPayloadLength() || TextUtils.isEmpty(s.trim())
                 )
                 .scan((current, next) -> current + next)
                 .lastOrError()
-                .map(this::validateChecksumAndReturnPayload)
-                .onErrorResumeNext(error -> Single.error(new ChecksumError(getBluetoothDevice(), -1, characteristicId)));
+                .map(input -> {
+                    try {
+                        return this.validateChecksumAndReturnPayload(input);
+                    } catch (ChecksumError e) {
+                        throw new Exception(e.getMessage(), e);
+                    }
+                })
+                .onErrorResumeNext(error -> Single.error(new ChecksumError(getBluetoothDevice(), -1, characteristicId, error.getCause() != null ? error.getCause().getMessage() : error.getMessage())));
     }
 
     public Maybe<ReaderDevice> getConnectedDevice() {
