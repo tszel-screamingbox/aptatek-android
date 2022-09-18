@@ -1,14 +1,21 @@
 package com.aptatek.pkulab.view.test.testing;
 
+import android.util.Pair;
+
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
+import com.aptatek.pkulab.domain.interactor.test.TestErrorInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingDone;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingScreenDisplayed;
+import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
@@ -23,16 +30,19 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private final ReaderInteractor readerInteractor;
     private final IAnalyticsManager analyticsManager;
+    private final TestErrorInteractor testErrorInteractor;
     private CompositeDisposable disposables;
     private long screenDisplayedAtMs = 0L;
 
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
                             final ReaderInteractor readerInteractor,
-                            final IAnalyticsManager analyticsManager) {
+                            final IAnalyticsManager analyticsManager,
+                            final TestErrorInteractor testErrorInteractor) {
         super(resourceInteractor);
         this.readerInteractor = readerInteractor;
         this.analyticsManager = analyticsManager;
+        this.testErrorInteractor = testErrorInteractor;
 
         analyticsManager.logEvent(new TestingScreenDisplayed());
         screenDisplayedAtMs = System.currentTimeMillis();
@@ -119,6 +129,39 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                     ifViewAttached(attachedView -> attachedView.onTestFinished(resultId));
                                 },
                                 error -> Timber.d("Error while getting test result: %s", error)
+                        )
+        );
+
+        disposables.add(
+                readerInteractor.getConnectedReader()
+                        .toSingle()
+                        .toFlowable()
+                        .flatMap(ignored ->
+                            readerInteractor.getWorkflowState()
+                                    .filter(state -> state.name().toLowerCase(Locale.getDefault()).endsWith("error"))
+                                    .take(1L)
+                        )
+                        .lastOrError()
+                        .flatMap(errorState ->
+                                readerInteractor.getError()
+                                        .onErrorReturnItem(Error.create(""))
+                                        .map(error -> new Pair<>(errorState, error.getMessage()))
+                        )
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                errorPair -> {
+                                    try {
+                                        final ErrorModel errorModel = testErrorInteractor.createErrorModel(errorPair.first, errorPair.second);
+                                        Timber.d("Test error: %s -> %s", errorPair, errorModel);
+                                        ifViewAttached(attachedView -> {
+                                            attachedView.onTestError(errorModel);
+                                        });
+                                    } catch (ErrorModelConversionError error) {
+                                        Timber.d("Test error, failed to convert error model: %s", error);
+                                    }
+                                },
+                                error -> Timber.d("Error while listening for test error: %s", error)
                         )
         );
     }

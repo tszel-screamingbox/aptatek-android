@@ -7,7 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkulab.view.error.ErrorActivity;
+import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
@@ -34,6 +37,12 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     public void onTestFinished(final String testId) {
         requireActivity().finish();
         getBaseActivity().launchActivity(TestResultActivity.starter(requireActivity(), testId, false));
+    }
+
+    @Override
+    public void onTestError(ErrorModel errorModel) {
+        requireActivity().finish();
+        getBaseActivity().launchActivity(ErrorActivity.starter(requireActivity(), errorModel));
     }
 
     @Override

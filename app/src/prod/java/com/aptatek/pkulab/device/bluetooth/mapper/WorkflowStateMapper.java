@@ -45,6 +45,45 @@ public class WorkflowStateMapper implements Mapper<WorkflowState, WorkflowStateR
             case "USED CASSETTE ERROR": {
                 return WorkflowState.USED_CASSETTE_ERROR;
             }
+            case "CASSETTE_REMOVED_ERROR": {
+                return WorkflowState.CASSETTE_REMOVED_ERROR;
+            }
+            case "POWER_ERROR": {
+                return WorkflowState.POWER_ERROR;
+            }
+            case "FLUID_DETECTION ERROR": {
+                return WorkflowState.FLUID_DETECTION_ERROR;
+            }
+            case "FLUID ALREADY PRESENT ERROR": {
+                return WorkflowState.FLUID_ALREADY_PRESENT_ERROR;
+            }
+            case "INVALID CASSETTE ERROR": {
+                return WorkflowState.INVALID_CASSETTE_ERROR;
+            }
+            case "CONTAMINATED CASSETTE ERROR": {
+                return WorkflowState.CONTAMINATED_CASSETTE_ERROR;
+            }
+            case "EXPIRED CASSETTE ERROR": {
+                return WorkflowState.EXPIRED_CASSETTE_ERROR;
+            }
+            case "ENVIRONMENT ERROR": {
+                return WorkflowState.ENVIRONMENT_ERROR;
+            }
+            case "HARDWARE ERROR": {
+                return WorkflowState.HARDWARE_ERROR;
+            }
+            case "SYSTEM MEMORY ERROR": {
+                return WorkflowState.SYSTEM_MEMORY_ERROR;
+            }
+            case "TIME ERROR": {
+                return WorkflowState.TIME_ERROR;
+            }
+            case "SYSTEM ERROR": {
+                return WorkflowState.SYSTEM_ERROR;
+            }
+            case "TEST ERROR": {
+                return WorkflowState.TEST_ERROR;
+            }
             case "default":
             default: {
                 return WorkflowState.DEFAULT;

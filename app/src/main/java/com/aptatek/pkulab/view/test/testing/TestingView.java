@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.test.testing;
 
+import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 
 public interface TestingView extends TestFragmentBaseView {
@@ -7,5 +8,7 @@ public interface TestingView extends TestFragmentBaseView {
     void onTestFinished(final String testId);
 
     void showTurnReaderOn();
+
+    void onTestError(final ErrorModel errorModel);
 
 }

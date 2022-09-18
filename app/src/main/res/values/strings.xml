@@ -370,4 +370,9 @@
     <string name="mont.picker.confirm">Confirm</string>
     <string name="month.picker.error">No Test Results</string>
     <string name="pdf.export.dialog.noresults">No Results</string>
+
+    <string name="error.title.generic.1">Test error</string>
+    <string name="error.message.generic.1">Something went wrong. Please remove the cassette and start again with new consumables.</string>
+    <string name="error.title.generic.2">Test error</string>
+    <string name="error.message.generic.2">Something went wrong. Please remove the cassette, restart the reader and try again.</string>
 </resources>
