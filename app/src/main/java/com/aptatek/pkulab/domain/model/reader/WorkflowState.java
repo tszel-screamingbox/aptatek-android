@@ -5,6 +5,7 @@ public enum  WorkflowState {
     DEFAULT,
     SELF_TEST,
     READING_CASSETTE,
+    DETECTING_FLUID,
     USED_CASSETTE_ERROR,
     TEST_RUNNING,
     TEST_COMPLETE,

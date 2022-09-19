@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
+import com.aptatek.pkulab.domain.interactor.test.TestErrorInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
@@ -14,9 +16,11 @@ import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenterImpl;
+import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -28,6 +32,7 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
 
     private final TurnReaderOnPresenterImpl wrapped;
     private final ReaderInteractor readerInteractor;
+    private final TestErrorInteractor testErrorInteractor;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -36,10 +41,12 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                                      final BluetoothInteractor bluetoothInteractor,
                                      final ReaderInteractor readerInteractor,
                                      final TestInteractor testInteractor,
-                                     final IAnalyticsManager analyticsManager) {
+                                     final IAnalyticsManager analyticsManager,
+                                     final TestErrorInteractor testErrorInteractor) {
         super(resourceInteractor);
         wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
         this.readerInteractor = readerInteractor;
+        this.testErrorInteractor = testErrorInteractor;
     }
 
     @Override
@@ -123,12 +130,21 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                 ifViewAttached(TurnReaderOnTestView::showConnectItAllScreen);
                 break;
             }
-            case USED_CASSETTE_ERROR: {
-                // leave handled false, need to continuously check wf state to proceed!
-                ifViewAttached(TurnReaderOnTestView::showUsedCassetteError);
-                break;
-            }
+//            case USED_CASSETTE_ERROR: {
+//                // leave handled false, need to continuously check wf state to proceed!
+//                ifViewAttached(TurnReaderOnTestView::showUsedCassetteError);
+//                break;
+//            }
             default: {
+                if (workflowState.name().toLowerCase(Locale.getDefault()).contains("error")) {
+                    try {
+                        final ErrorModel errorModel = testErrorInteractor.createErrorModel(workflowState, null);
+                        ifViewAttached(view -> view.showErrorScreen(errorModel));
+                        handled = true;
+                    } catch (Exception | ErrorModelConversionError ex) {
+                        Timber.d("Failed to go to error screen: %s", ex);
+                    }
+                }
                 break;
             }
         }

@@ -43,7 +43,7 @@ public class ConnectItAllPresenter extends TestBasePresenter<ConnectItAllView> {
                 readerInteractor.getConnectedReader()
                         .toSingle()
                         .flatMap(device -> readerInteractor.getWorkflowState()
-                                .filter(workflowState -> workflowState == WorkflowState.READING_CASSETTE)
+                                .filter(workflowState -> workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.DETECTING_FLUID || workflowState == WorkflowState.TEST_RUNNING)
                                 .take(1)
                                 .singleOrError()
                         )

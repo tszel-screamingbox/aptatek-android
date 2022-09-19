@@ -19,6 +19,8 @@ import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
+import com.aptatek.pkulab.view.error.ErrorActivity;
+import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
@@ -230,4 +232,9 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
         void run(TestActivityView view);
     }
 
+    @Override
+    public void showErrorScreen(ErrorModel errorModel) {
+        requireActivity().finish();
+        getBaseActivity().launchActivity(ErrorActivity.starter(requireActivity(), errorModel));
+    }
 }

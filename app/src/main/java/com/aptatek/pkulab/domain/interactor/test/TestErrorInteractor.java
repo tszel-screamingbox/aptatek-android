@@ -10,6 +10,8 @@ import com.aptatek.pkulab.view.error.ErrorModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 public class TestErrorInteractor {
@@ -42,7 +44,15 @@ public class TestErrorInteractor {
                 break;
             }
             default: {
-                throw new ErrorModelConversionError(workflowState, errorCharReading);
+//                throw new ErrorModelConversionError(workflowState, errorCharReading);
+                if (workflowState.name().toLowerCase(Locale.getDefault()).contains("error")) {
+                    // default to generic 1
+                    errorModelBuilder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
+                            .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_1));
+                    break;
+                } else {
+                    throw new ErrorModelConversionError(workflowState, errorCharReading);
+                }
             }
         }
 

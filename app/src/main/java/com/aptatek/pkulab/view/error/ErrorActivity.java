@@ -1,6 +1,5 @@
 package com.aptatek.pkulab.view.error;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,14 +8,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.view.main.MainHostActivity;
+import com.aptatek.pkulab.injection.component.ActivityComponent;
+import com.aptatek.pkulab.view.base.BaseActivity;
+import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.widget.HeaderView;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ErrorActivity extends Activity {
+public class ErrorActivity extends BaseActivity<ErrorView, ErrorPresenter> implements ErrorView {
+
+    @Inject
+    ErrorPresenter presenter;
+
+    @NonNull
+    @Override
+    public ErrorPresenter createPresenter() {
+        return presenter;
+    }
+
+    @Override
+    protected void injectActivity(final ActivityComponent activityComponent) {
+        activityComponent.inject(this);
+    }
 
     @BindView(R.id.error_header)
     HeaderView headerView;
@@ -52,17 +69,19 @@ public class ErrorActivity extends Activity {
 
     @OnClick(R.id.error_done)
     public void onClickDone() {
-        finish();
-        final Intent intent = new Intent(this, MainHostActivity.class);
-        launchActivity(intent, true);
+        presenter.done();
     }
 
-    private void launchActivity(final Intent intent, final boolean clearHistory) {
-        if (clearHistory) {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        }
-        startActivity(intent);
-        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
+    @Override
+    public int getFrameLayoutId() {
+        return 0;
+    }
+
+    @Override
+    public void doneFinished() {
+        finish();
+        final Intent intent = new Intent(this, DisposeActivity.class);
+        launchActivity(intent, true, Animation.RIGHT_TO_LEFT);
     }
 
 }

@@ -39,19 +39,22 @@ public class WorkflowStateMapper implements Mapper<WorkflowState, WorkflowStateR
             case "READING CASSETTE": {
                 return WorkflowState.READING_CASSETTE;
             }
+            case "DETECTING FLUID": {
+                return WorkflowState.DETECTING_FLUID;
+            }
             case "SELF-TEST": {
                 return WorkflowState.SELF_TEST;
             }
             case "USED CASSETTE ERROR": {
                 return WorkflowState.USED_CASSETTE_ERROR;
             }
-            case "CASSETTE_REMOVED_ERROR": {
+            case "CASSETTE REMOVED ERROR": {
                 return WorkflowState.CASSETTE_REMOVED_ERROR;
             }
-            case "POWER_ERROR": {
+            case "POWER ERROR": {
                 return WorkflowState.POWER_ERROR;
             }
-            case "FLUID_DETECTION ERROR": {
+            case "FLUID DETECTION ERROR": {
                 return WorkflowState.FLUID_DETECTION_ERROR;
             }
             case "FLUID ALREADY PRESENT ERROR": {
