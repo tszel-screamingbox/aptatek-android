@@ -87,6 +87,52 @@ public class WorkflowStateMapper implements Mapper<WorkflowState, WorkflowStateR
             case "TEST ERROR": {
                 return WorkflowState.TEST_ERROR;
             }
+            case "POWER-ON": {
+                return WorkflowState.POWER_ON;
+            }
+            case "TEST VALIDATION": {
+                return WorkflowState.TEST_VALIDATION;
+            }
+            case "BLE OTA": {
+                return WorkflowState.BLE_OTA;
+            }
+            case "USB COMMS MODE": {
+                return WorkflowState.USB_COMMS_MODE;
+            }
+            case "REBOOT": {
+                return WorkflowState.REBOOT;
+            }
+            case "SELF CHECK PASS": {
+                return WorkflowState.SELF_CHECK_PASS;
+            }
+            case "SELF CHECK FAIL": {
+                return WorkflowState.SELF_CHECK_FAIL;
+            }
+            case "TEST AUTH": {
+                return WorkflowState.TEST_AUTH;
+            }
+            case "HEATING CASSETTE": {
+                return WorkflowState.HEATING_CASSETTE;
+            }
+            case "HEATER OVER TEMPERATURE ERROR": {
+                return WorkflowState.HEATER_OVER_TEMP_ERROR;
+            }
+            case "OTA SUCCESS": {
+                return WorkflowState.OTA_SUCCESS;
+            }
+            case "OTA ERROR": {
+                return WorkflowState.OTA_ERROR;
+            }
+            case "CASSETTE REMOVED DURING HEATING ERROR": {
+                return WorkflowState.CASSETTE_REMOVED_DURING_HEATING_ERROR;
+            }
+            case "CASSETTE REMOVED AUTH PENDING": {
+                return WorkflowState.CASSETTE_REMOVED_AUTH_PENDING;
+            }
+            case "TEST NOT AUTHORISED": {
+                return WorkflowState.TEST_NOT_AUTHORISED;
+            }
+
             case "default":
             default: {
                 return WorkflowState.DEFAULT;
