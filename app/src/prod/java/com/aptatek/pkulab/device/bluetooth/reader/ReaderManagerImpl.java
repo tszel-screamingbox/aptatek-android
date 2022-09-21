@@ -318,7 +318,8 @@ public class ReaderManagerImpl implements ReaderManager {
                         .take(1)
                         .flatMap(ignored -> getWorkflowState().toFlowable()),
                 workflowStateProcessor
-        );
+        )
+                .doOnNext((it)->Timber.d("+++ workflowState: %s", it));
     }
 
     private Single<WorkflowState> getWorkflowState() {

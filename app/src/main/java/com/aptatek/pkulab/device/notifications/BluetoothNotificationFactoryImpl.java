@@ -82,14 +82,24 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         } else if (notificationData instanceof MultipleReadersDiscovered) {
             notification = createMultipleReadersNotification(((MultipleReadersDiscovered) notificationData));
             id = Constants.BT_MULTIPLE_READERS_NOTIFICATION_ID;
-        }else if (notificationData instanceof ExplicitBtConnectionError) {
+        } else if (notificationData instanceof ExplicitBtConnectionError) {
             notification = createExplicitBtConnectionErrorNotification();
             id = Constants.BT_ERROR_NOTIFICATION_ID;
+        } else if (notificationData instanceof WorkflowStateError) {
+            notification = createWorkflowStateErrorNotification(((WorkflowStateError) notificationData));
+            id = Constants.WORKFLOW_SATE_ERROR_NOTIFICATION_ID;
         } else {
             throw new IllegalArgumentException("unhandled notificationData received: " + notificationData);
         }
 
         return new DisplayNotification(id, notification);
+    }
+
+    private Notification createWorkflowStateErrorNotification(WorkflowStateError notificationData) {
+        return applyCommonProperties(new NotificationCompat.Builder(context, createChannel()))
+                .setContentTitle(notificationData.getModel().getTitle())
+                .setContentText(notificationData.getModel().getMessage())
+                .build();
     }
 
     private Notification createExplicitBtConnectionErrorNotification() {

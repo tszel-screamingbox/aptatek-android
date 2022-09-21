@@ -1,9 +1,10 @@
 package com.aptatek.pkulab.view.service;
 
 import android.content.Intent;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
-import android.text.TextUtils;
 
 import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.BuildConfig;
@@ -12,6 +13,8 @@ import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
@@ -22,11 +25,13 @@ import com.aptatek.pkulab.injection.component.bluetooth.BluetoothComponent;
 import com.aptatek.pkulab.injection.component.bluetooth.DaggerBluetoothComponent;
 import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
+import com.aptatek.pkulab.util.Constants;
 
 import java.util.NoSuchElementException;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -59,7 +64,11 @@ public class BluetoothService extends BaseForegroundService {
     @Inject
     BluetoothNotificationFactory bluetoothNotificationFactory;
 
+    @Inject
+    ErrorInteractor errorInteractor;
+
     private Disposable testCompleteDisposable;
+    private Disposable errorStateDisposable;
 
     @Override
     public void onCreate() {
@@ -73,6 +82,7 @@ public class BluetoothService extends BaseForegroundService {
         instance = null;
 
         disposeTestComplete();
+        disposeErrorState();
 
         super.onDestroy();
     }
@@ -94,7 +104,7 @@ public class BluetoothService extends BaseForegroundService {
 
     @Override
     protected void startForeground() {
-        if(TextUtils.isEmpty(preferenceManager.getPairedDevice()) || BuildConfig.FLAVOR.equals("mock")) {
+        if (TextUtils.isEmpty(preferenceManager.getPairedDevice()) || BuildConfig.FLAVOR.equals("mock")) {
             stopSelf();
             return;
         }
@@ -115,6 +125,7 @@ public class BluetoothService extends BaseForegroundService {
                                 ignored -> {
                                     Timber.d("Device already connected: %s", ignored);
                                     showConnectedNotification();
+                                    checkWorkflowErrorState();
                                     checkTestComplete();
                                 },
                                 error -> {
@@ -157,6 +168,32 @@ public class BluetoothService extends BaseForegroundService {
         );
     }
 
+    private void checkWorkflowErrorState() {
+        disposeErrorState();
+
+        errorStateDisposable = readerInteractor.getWorkflowState()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap((wfs -> Flowable.fromCallable(() -> {
+                    try {
+                        return errorInteractor.createErrorModel(wfs, null);
+                    } catch (ErrorModelConversionError e) {
+                        throw new Exception(e);
+                    }
+                })))
+                .subscribe(errorModel -> {
+                            if (!AptatekApplication.get(this).isInForeground()) {
+                                final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.WorkflowStateError(errorModel));
+                                notificationManager.notify(notification.getId(), notification.getNotification());
+                            } else {
+                                notificationManager.cancel(Constants.WORKFLOW_SATE_ERROR_NOTIFICATION_ID);
+                            }
+                        },
+                        error -> {
+                            notificationManager.cancel(Constants.WORKFLOW_SATE_ERROR_NOTIFICATION_ID);
+                        });
+    }
+
     private void checkTestComplete() {
         disposeTestComplete();
 
@@ -171,17 +208,19 @@ public class BluetoothService extends BaseForegroundService {
                                 .map(TestProgress::getTestId)
                                 .map(String::valueOf)
                                 .flatMap(testId -> {
-                                    if (AptatekApplication.get(getApplicationContext()).isInForeground()) {
-                                        throw new AppInForegroundException();
-                                    }
-                                    return readerInteractor.getResult(testId);
-                                }
+                                            if (AptatekApplication.get(getApplicationContext()).isInForeground()) {
+                                                throw new AppInForegroundException();
+                                            }
+                                            return readerInteractor.getResult(testId);
+                                        }
                                 )
                         )
+                        // should only trigger checkTestComplete if a new READING_CASSETE has been seen
+                        // .takeUntil((a) -> a.getId() != null)
                         .singleOrError()
                         .flatMap(testResult ->
                                 readerInteractor.saveResult(testResult)
-                                            .andThen(Single.just(testResult.getId()))
+                                        .andThen(Single.just(testResult.getId()))
                         )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -209,6 +248,12 @@ public class BluetoothService extends BaseForegroundService {
     private void disposeTestComplete() {
         if (testCompleteDisposable != null && !testCompleteDisposable.isDisposed()) {
             testCompleteDisposable.dispose();
+        }
+    }
+
+    private void disposeErrorState() {
+        if (errorStateDisposable != null && !errorStateDisposable.isDisposed()) {
+            errorStateDisposable.dispose();
         }
     }
 

@@ -4,6 +4,8 @@ import android.app.Notification;
 
 import androidx.annotation.NonNull;
 
+import com.aptatek.pkulab.view.error.ErrorModel;
+
 public interface BluetoothNotificationFactory {
 
     interface NotificationData {
@@ -78,6 +80,25 @@ public interface BluetoothNotificationFactory {
 
     class MultipleReadersDiscovered implements NotificationData {
 
+    }
+
+    final class WorkflowStateError implements NotificationData {
+        private final ErrorModel model;
+
+        public WorkflowStateError(ErrorModel model) {
+            this.model = model;
+        }
+
+        public ErrorModel getModel() {
+            return model;
+        }
+
+        @Override
+        public String toString() {
+            return "WorkflowStateError{" +
+                    "model=" + model +
+                    '}';
+        }
     }
 
     final class DisplayNotification {

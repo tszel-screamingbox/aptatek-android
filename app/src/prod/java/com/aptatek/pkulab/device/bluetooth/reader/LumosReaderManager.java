@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.CRC32;
-import java.util.zip.Checksum;
 
 import javax.inject.Inject;
 
@@ -88,6 +87,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .fail((device, status) -> Timber.d("Failed to bond: device [%s], status [%d]", device.getAddress(), status))
                         .enqueue();
 
+//                had to remove it because the latest firmware doesn't support MTU change requests in this direction
 //                requestMtu(LumosReaderConstants.MTU_SIZE)
 //                        .with(((device, data) -> mCallbacks.onMtuSizeChanged(device, data)))
 //                        .done(device -> Timber.d("Mtu change successful"))
@@ -97,6 +97,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 //                        })
 //                        .enqueue();
 
+                // add 500ms after service discovery before doing anything.
                 sleep(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS)
                         .done((device) -> Timber.d("Slept %d ms after service discovery", LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS))
                         .fail((device, error) -> Timber.d("Failed to sleep device : %d", error))
@@ -152,7 +153,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     @Override
     public void log(final int level, @NonNull final String message) {
-        Timber.d(message);
+        Timber.d("onLog: %d -> %s", level, message);
     }
 
     @Override

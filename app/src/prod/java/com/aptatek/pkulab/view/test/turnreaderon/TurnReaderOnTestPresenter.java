@@ -6,7 +6,7 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
-import com.aptatek.pkulab.domain.interactor.test.TestErrorInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
@@ -32,7 +32,7 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
 
     private final TurnReaderOnPresenterImpl wrapped;
     private final ReaderInteractor readerInteractor;
-    private final TestErrorInteractor testErrorInteractor;
+    private final ErrorInteractor errorInteractor;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -42,11 +42,11 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                                      final ReaderInteractor readerInteractor,
                                      final TestInteractor testInteractor,
                                      final IAnalyticsManager analyticsManager,
-                                     final TestErrorInteractor testErrorInteractor) {
+                                     final ErrorInteractor errorInteractor) {
         super(resourceInteractor);
         wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
         this.readerInteractor = readerInteractor;
-        this.testErrorInteractor = testErrorInteractor;
+        this.errorInteractor = errorInteractor;
     }
 
     @Override
@@ -138,7 +138,7 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
             default: {
                 if (workflowState.name().toLowerCase(Locale.getDefault()).contains("error")) {
                     try {
-                        final ErrorModel errorModel = testErrorInteractor.createErrorModel(workflowState, null);
+                        final ErrorModel errorModel = errorInteractor.createErrorModel(workflowState, null);
                         ifViewAttached(view -> view.showErrorScreen(errorModel));
                         handled = true;
                     } catch (Exception | ErrorModelConversionError ex) {

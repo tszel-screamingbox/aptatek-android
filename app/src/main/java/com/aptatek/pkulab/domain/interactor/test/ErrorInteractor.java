@@ -14,12 +14,12 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class TestErrorInteractor {
+public class ErrorInteractor {
 
     private final ResourceInteractor resourceInteractor;
 
     @Inject
-    public TestErrorInteractor(final ResourceInteractor resourceInteractor) {
+    public ErrorInteractor(final ResourceInteractor resourceInteractor) {
         this.resourceInteractor = resourceInteractor;
     }
 
