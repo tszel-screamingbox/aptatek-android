@@ -5,8 +5,8 @@ import android.util.Pair;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
 import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
-import com.aptatek.pkulab.domain.interactor.test.TestErrorInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingDone;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingScreenDisplayed;
@@ -30,7 +30,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private final ReaderInteractor readerInteractor;
     private final IAnalyticsManager analyticsManager;
-    private final TestErrorInteractor testErrorInteractor;
+    private final ErrorInteractor errorInteractor;
     private CompositeDisposable disposables;
     private long screenDisplayedAtMs = 0L;
 
@@ -38,11 +38,11 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     public TestingPresenter(final ResourceInteractor resourceInteractor,
                             final ReaderInteractor readerInteractor,
                             final IAnalyticsManager analyticsManager,
-                            final TestErrorInteractor testErrorInteractor) {
+                            final ErrorInteractor errorInteractor) {
         super(resourceInteractor);
         this.readerInteractor = readerInteractor;
         this.analyticsManager = analyticsManager;
-        this.testErrorInteractor = testErrorInteractor;
+        this.errorInteractor = errorInteractor;
 
         analyticsManager.logEvent(new TestingScreenDisplayed());
         screenDisplayedAtMs = System.currentTimeMillis();
@@ -152,7 +152,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .subscribe(
                                 errorPair -> {
                                     try {
-                                        final ErrorModel errorModel = testErrorInteractor.createErrorModel(errorPair.first, errorPair.second);
+                                        final ErrorModel errorModel = errorInteractor.createErrorModel(errorPair.first, errorPair.second);
                                         Timber.d("Test error: %s -> %s", errorPair, errorModel);
                                         ifViewAttached(attachedView -> {
                                             attachedView.onTestError(errorModel);

@@ -12,14 +12,19 @@ import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+import com.aptatek.pkulab.domain.model.reader.WorkflowStateUtils;
 import com.aptatek.pkulab.injection.component.ApplicationComponent;
 import com.aptatek.pkulab.injection.component.bluetooth.BluetoothComponent;
 import com.aptatek.pkulab.injection.component.bluetooth.DaggerBluetoothComponent;
 import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
+import com.aptatek.pkulab.util.Constants;
+import com.aptatek.pkulab.view.error.ErrorModel;
 
 import java.util.NoSuchElementException;
 
@@ -67,6 +72,9 @@ public class ExplicitBluetoothService extends BaseForegroundService {
     @Inject
     BluetoothNotificationFactory bluetoothNotificationFactory;
 
+    @Inject
+    ErrorInteractor errorInteractor;
+
     private int mode = -1;
 
     @Override
@@ -101,19 +109,19 @@ public class ExplicitBluetoothService extends BaseForegroundService {
     private void checkStateOrConnect() {
         disposables.add(
                 readerInteractor.getConnectedReader()
-                    .toSingle()
-                    .ignoreElement()
-                    .subscribe(
-                            this::onConnected,
-                            error -> {
-                                if (error instanceof NoSuchElementException) {
-                                    startConnect(0);
-                                    return;
-                                }
+                        .toSingle()
+                        .ignoreElement()
+                        .subscribe(
+                                this::onConnected,
+                                error -> {
+                                    if (error instanceof NoSuchElementException) {
+                                        startConnect(0);
+                                        return;
+                                    }
 
-                                processError(error);
-                            }
-                    )
+                                    processError(error);
+                                }
+                        )
         );
     }
 
@@ -123,12 +131,12 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                         .andThen(bluetoothInteractor.stopScan())
                         .andThen(bluetoothInteractor.startScan())
                         .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
-                        .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
-                                .take(1)
-                                .firstOrError()
-                                .map(devices -> Ix.from(devices).toList())
+                                .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
+                                        .take(1)
+                                        .firstOrError()
+                                        .map(devices -> Ix.from(devices).toList())
+                                )
                         )
-                )
                         .firstOrError()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -186,6 +194,8 @@ public class ExplicitBluetoothService extends BaseForegroundService {
     }
 
     private void onConnected() {
+        watchErrorState();
+
         if (mode == MODE_READY) {
             waitUntilReady();
         } else if (mode == MODE_TEST_COMPLETE) {
@@ -194,6 +204,27 @@ public class ExplicitBluetoothService extends BaseForegroundService {
             Timber.d("unknown startMode, shutting down...: %s", mode);
             shutdown();
         }
+    }
+
+    private void watchErrorState() {
+        disposables.add(
+                readerInteractor.getWorkflowState()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(wfs -> {
+                            if (WorkflowStateUtils.isErrorState(wfs)) {
+                                try {
+                                    final ErrorModel errorModel = errorInteractor.createErrorModel(wfs, null);
+                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.WorkflowStateError(errorModel));
+                                    notificationManager.notify(notification.getId(), notification.getNotification());
+                                } catch (ErrorModelConversionError e) {
+                                    // don't care
+                                }
+                            } else {
+                                notificationManager.cancel(Constants.WORKFLOW_SATE_ERROR_NOTIFICATION_ID);
+                            }
+                        })
+        );
     }
 
     private void waitUntilReady() {
