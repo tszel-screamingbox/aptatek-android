@@ -378,4 +378,8 @@
     <string name="error.message.generic.1">Please restart the reader by holding down the power button for 8 seconds.\n\nContact support if problem persists.</string>
     <string name="error.title.generic.2">Reader Error</string>
     <string name="error.message.generic.2">The test has been cancelled.\n\nPlease discard the cassette and restart the reader by holding down the power button for 8 seconds.\n\nStart again with new components.</string>
+
+    <string name="test.running.please.wait">Please wait</string>
+    <string name="test.running.time.remaining.format">%s min remaining</string>
+    <string name="test.running.warning">WARNING\nDo not remove cassette.\nThis will interrupt the test.</string>
 </resources>

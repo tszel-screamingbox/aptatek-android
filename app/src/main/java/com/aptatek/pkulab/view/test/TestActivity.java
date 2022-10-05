@@ -360,7 +360,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
 
     @Override
     public void setProgressVisible(final boolean visible) {
-        testProgress.setVisibility(visible ? VISIBLE : GONE);
+        // testProgress.setVisibility(visible ? VISIBLE : GONE);
         screenPagerIndicator.setVisibility(visible ? INVISIBLE : VISIBLE);
     }
 

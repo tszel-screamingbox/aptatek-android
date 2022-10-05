@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,12 +24,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/time_remaining"
+        style="@style/General.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/applicationGreen"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        tools:text="13:45 min remaining"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/testProgress"
+        style="@style/Test.Progress"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/test.progressbar.height"
+        android:layout_marginTop="8dp"
+        android:progressDrawable="@drawable/custom_progressbar"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/time_remaining"
+        app:layout_constraintWidth_percent="0.7"
+        tools:progress="10"
+        tools:visibility="visible" />
+
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/topBarrier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="header,topSpace" />
+        app:constraint_referenced_ids="header,topSpace,testProgress" />
 
     <com.mklimek.frameviedoview.FrameVideoView
         android:id="@+id/testVideo"

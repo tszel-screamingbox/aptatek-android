@@ -104,7 +104,6 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         subTitleTextView.setVisibility(state.isValid() ? View.INVISIBLE : View.VISIBLE);
         subTitleTextView.setText(R.string.test_result_invalid_message);
 
-        bubbleTextView.setVisibility(state.isValid() ? View.VISIBLE : View.GONE);
         bubbleFake.setVisibility(state.isValid() ? View.VISIBLE : View.GONE);
 
         bubbleTextView.setConfiguration(BubbleTextView.BubbleTextConfiguration.builder()
