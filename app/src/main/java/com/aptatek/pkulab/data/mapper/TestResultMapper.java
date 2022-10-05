@@ -2,6 +2,8 @@ package com.aptatek.pkulab.data.mapper;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
 import com.aptatek.pkulab.domain.base.Mapper;
+import com.aptatek.pkulab.domain.model.PkuLevel;
+import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 
 import java.util.List;
@@ -30,6 +32,7 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
                 .setId(dataModel.getId())
                 .setTimestamp(dataModel.getTimestamp())
                 .setPkuLevel(dataModel.getPkuLevel())
+                .setValid(dataModel.isValid())
                 .build();
     }
 
@@ -46,7 +49,8 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
         testResultDataModel.setReaderId(domainModel.getReaderId());
         testResultDataModel.setId(domainModel.getId());
         testResultDataModel.setTimestamp(domainModel.getTimestamp());
-        testResultDataModel.setPkuLevel(domainModel.getPkuLevel());
+        testResultDataModel.setPkuLevel(domainModel.getPkuLevel() == null ? PkuLevel.create(0f, PkuLevelUnits.MICRO_MOL) : domainModel.getPkuLevel());
+        testResultDataModel.setValid(domainModel.isValid());
         return testResultDataModel;
     }
 

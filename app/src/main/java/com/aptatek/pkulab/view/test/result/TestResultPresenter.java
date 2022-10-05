@@ -70,6 +70,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                                 rangeInteractor.getInfo(),
                                 testResultInteractor.getById(testId),
                                 (rangeInfo, result) -> TestResultState.builder()
+                                        .setValid(result.isValid())
                                         .setTitle(getTitleForLevel(result.getPkuLevel(), rangeInfo))
                                         .setColor(getColorForLevel(result.getPkuLevel(), rangeInfo))
                                         .setFormattedPkuValue(getFormattedPkuValue(result.getPkuLevel(), rangeInfo))

@@ -218,6 +218,9 @@
     <string name="test.result.bubble.level.high">High</string>
     <string name="test.result.bubble.level.increased">Increased</string>
     <string name="test.result.bubble.level.standard">Standard</string>
+    <string name="test.result.invalid.title">Invalid Test Result</string>
+    <string name="test.result.invalid.message">Disregard the test result. Please restart the reader by holding down the power button for 8 seconds.\n\nContact support if problem persists.</string>
+    <string name="test.result.complete.title">Test Complete</string>
 
     <string name="test.breakfoil.title">Break Foil</string>
     <string name="test.breakfoil.message">Unwrap the cap from the foil and screw it on to the chamber to pierce the top seal</string>

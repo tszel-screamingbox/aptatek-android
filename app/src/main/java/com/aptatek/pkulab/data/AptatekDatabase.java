@@ -21,7 +21,7 @@ import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
 import com.commonsware.cwac.saferoom.SafeHelperFactory;
 
 
-@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 3)
+@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 4)
 @TypeConverters({ReminderScheduleTypeConverter.class, PkuLevelTypeConverter.class})
 public abstract class AptatekDatabase extends RoomDatabase {
 
@@ -50,13 +50,14 @@ public abstract class AptatekDatabase extends RoomDatabase {
                 .openHelperFactory(safeHelperFactory)
                 .addMigrations(MIGRATION_1_2)
                 .addMigrations(MIGRATION_2_3)
+                .addMigrations(MIGRATION_3_4)
                 .build();
     }
 
     private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull final SupportSQLiteDatabase database) {
-            database.execSQL("ALTER TABLE reminders ADD COLUMN reminderScheduleType INTEGER NOT NULL DEFAULT 0");
+            database.execSQL("ALTER TABLE `reminders` ADD COLUMN `reminderScheduleType` INTEGER NOT NULL DEFAULT 0");
         }
     };
 
@@ -64,7 +65,14 @@ public abstract class AptatekDatabase extends RoomDatabase {
 
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE IF NOT EXISTS test_results(`id` TEXT NOT NULL, `readerId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `pkuLevel` REAL NOT NULL, `sick` INTEGER NOT NULL DEFAULT 0, `fasting` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`))");
+            database.execSQL("CREATE TABLE IF NOT EXISTS `test_results`(`id` TEXT NOT NULL, `readerId` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `pkuLevel` REAL NOT NULL, `sick` INTEGER NOT NULL DEFAULT 0, `fasting` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`id`))");
+        }
+    };
+
+    private static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `valid` INTEGER NOT NULL DEFAULT 0");
         }
     };
 }

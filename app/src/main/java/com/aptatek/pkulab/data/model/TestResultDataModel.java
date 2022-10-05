@@ -6,6 +6,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.aptatek.pkulab.data.model.converter.PkuLevelTypeConverter;
 import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 
@@ -19,10 +20,11 @@ public class TestResultDataModel {
     private String readerId;
     private long timestamp;
     @NonNull
-    @TypeConverters(ReminderScheduleTypeConverter.class)
+    @TypeConverters(PkuLevelTypeConverter.class)
     private PkuLevel pkuLevel;
     private boolean sick;
     private boolean fasting;
+    private boolean valid;
 
     @NonNull
     public String getId() {
@@ -73,5 +75,13 @@ public class TestResultDataModel {
 
     public void setFasting(boolean fasting) {
         this.fasting = fasting;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 }

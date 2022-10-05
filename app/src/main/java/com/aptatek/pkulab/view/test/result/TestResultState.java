@@ -7,6 +7,8 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class TestResultState {
 
+    public abstract boolean isValid();
+
     public abstract String getTitle();
 
     public abstract @ColorInt
@@ -24,6 +26,8 @@ public abstract class TestResultState {
 
     @AutoValue.Builder
     public abstract static class Builder {
+
+        public abstract Builder setValid(boolean isValid);
 
         public abstract Builder setTitle(String title);
 

@@ -34,6 +34,7 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
                 .setPkuLevel(parsePkuLevel(dataModel))
                 .setTimestamp(DateParser.tryParseDate(dataModel.getDate()))
                 .setReaderId(dataModel.getProductSerial())
+                .setValid(dataModel.isValid())
                 .build();
     }
 

@@ -48,6 +48,8 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
     HeaderView headerView;
     @BindView(R.id.test_result_bubble)
     BubbleTextView bubbleTextView;
+    @BindView(R.id.test_result_bubble_fake)
+    View bubbleFake;
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -97,9 +99,13 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
 //        titleTextView.setTextColor(state.getColor());
 //        subTitleTextView.setText(R.string.test_result_message);
 
-        titleTextView.setText("Test Complete");
-        titleTextView.setTextColor(ContextCompat.getColor(this, R.color.applicationGreen));
-        subTitleTextView.setVisibility(View.INVISIBLE);
+        titleTextView.setText(state.isValid() ? R.string.test_result_complete_title : R.string.test_result_invalid_title);
+        titleTextView.setTextColor(ContextCompat.getColor(this, state.isValid() ? R.color.applicationGreen : R.color.applicationRed));
+        subTitleTextView.setVisibility(state.isValid() ? View.INVISIBLE : View.VISIBLE);
+        subTitleTextView.setText(R.string.test_result_invalid_message);
+
+        bubbleTextView.setVisibility(state.isValid() ? View.VISIBLE : View.GONE);
+        bubbleFake.setVisibility(state.isValid() ? View.VISIBLE : View.GONE);
 
         bubbleTextView.setConfiguration(BubbleTextView.BubbleTextConfiguration.builder()
                 .setCircleColor(state.getColor())
