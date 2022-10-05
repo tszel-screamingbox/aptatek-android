@@ -64,7 +64,7 @@ public class TestInteractor {
     }
 
     public Completable cancelTestNotifications() {
-        return Flowable.fromArray(Constants.BT_READER_READY_NOTIFICATION_ID, Constants.BT_READER_TEST_COMPLETE_NOTIFICATION_ID, Constants.BT_PERMISSION_NOTIFICATION_ID, Constants.BT_MULTIPLE_READERS_NOTIFICATION_ID)
+        return Flowable.fromArray(Constants.BT_READER_READY_NOTIFICATION_ID, Constants.BT_READER_TEST_COMPLETE_NOTIFICATION_ID, Constants.BT_PERMISSION_NOTIFICATION_ID, Constants.BT_MULTIPLE_READERS_NOTIFICATION_ID, Constants.WORKFLOW_SATE_ERROR_NOTIFICATION_ID)
                 .flatMapCompletable(notificationId -> Completable.fromAction(() -> notificationManagerCompat.cancel(notificationId)));
     }
 }

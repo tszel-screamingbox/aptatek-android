@@ -31,15 +31,27 @@ public class ErrorInteractor {
             case ENVIRONMENT_ERROR:
             case HARDWARE_ERROR:
             case SYSTEM_ERROR:
+            case POWER_ERROR:
             case TEST_ERROR: {
-                errorModelBuilder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2))
+                errorModelBuilder
+                        .setAfterChamberScrewedOn(false)
+                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2))
                         .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2));
+                break;
+            }
+            case USED_CASSETTE_ERROR: {
+                errorModelBuilder
+                        .setAfterChamberScrewedOn(true)
+                        .setTitle(resourceInteractor.getStringResource(R.string.test_alert_used_cassette_title))
+                        .setMessage(resourceInteractor.getStringResource(R.string.test_alert_used_cassette_message));
                 break;
             }
             case INVALID_CASSETTE_ERROR:
             case CONTAMINATED_CASSETTE_ERROR:
             case EXPIRED_CASSETTE_ERROR: {
-                errorModelBuilder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
+                errorModelBuilder
+                        .setAfterChamberScrewedOn(true)
+                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
                         .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_1));
                 break;
             }
@@ -47,7 +59,9 @@ public class ErrorInteractor {
 //                throw new ErrorModelConversionError(workflowState, errorCharReading);
                 if (workflowState.name().toLowerCase(Locale.getDefault()).contains("error")) {
                     // default to generic 1
-                    errorModelBuilder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
+                    errorModelBuilder
+                            .setAfterChamberScrewedOn(false)
+                            .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
                             .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_1));
                     break;
                 } else {

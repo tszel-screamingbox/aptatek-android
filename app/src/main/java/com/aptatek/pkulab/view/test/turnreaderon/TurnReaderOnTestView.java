@@ -12,7 +12,5 @@ public interface TurnReaderOnTestView extends TestFragmentBaseView, TurnReaderOn
 
     void showTestResultScreen(String testId);
 
-    void showUsedCassetteError();
-
     void showErrorScreen(ErrorModel errorModel);
 }

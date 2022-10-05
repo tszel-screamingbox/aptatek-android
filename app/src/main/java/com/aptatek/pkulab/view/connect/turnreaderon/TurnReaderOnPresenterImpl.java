@@ -336,4 +336,10 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     public void logScreenDisplayed() {
         analyticsManager.logEvent(new TurnReaderOnDisplayed());
     }
+
+    public void cleanupTest() {
+        disposables.add(
+                testInteractor.resetTest().subscribe()
+        );
+    }
 }

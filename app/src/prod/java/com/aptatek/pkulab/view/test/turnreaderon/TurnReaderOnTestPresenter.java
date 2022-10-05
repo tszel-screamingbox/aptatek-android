@@ -13,6 +13,7 @@ import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+import com.aptatek.pkulab.domain.model.reader.WorkflowStateUtils;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenterImpl;
@@ -130,13 +131,8 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                 ifViewAttached(TurnReaderOnTestView::showConnectItAllScreen);
                 break;
             }
-//            case USED_CASSETTE_ERROR: {
-//                // leave handled false, need to continuously check wf state to proceed!
-//                ifViewAttached(TurnReaderOnTestView::showUsedCassetteError);
-//                break;
-//            }
             default: {
-                if (workflowState.name().toLowerCase(Locale.getDefault()).contains("error")) {
+                if (WorkflowStateUtils.isErrorState(workflowState)) {
                     try {
                         final ErrorModel errorModel = errorInteractor.createErrorModel(workflowState, null);
                         ifViewAttached(view -> view.showErrorScreen(errorModel));
@@ -168,5 +164,9 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
     @Override
     public void logScreenDisplayed() {
         wrapped.logScreenDisplayed();
+    }
+
+    public void disposeTest() {
+        wrapped.cleanupTest();
     }
 }

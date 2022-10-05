@@ -19,11 +19,11 @@ import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
-import com.aptatek.pkulab.view.error.ErrorActivity;
 import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.TestActivityCommonView;
 import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
+import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
 import com.aptatek.pkulab.view.test.turnreaderon.permission.PermissionRequiredOnTestActivity;
 
@@ -207,21 +207,6 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
         activity.finish();
     }
 
-    @Override
-    public void showUsedCassetteError() {
-        showAlertDialog(AlertDialogModel.builder()
-                        .setTitle(getString(R.string.test_alert_used_cassette_title))
-                        .setMessage(getString(R.string.test_alert_used_cassette_message))
-                        .setNegativeButtonText(getString(R.string.test_button_cancel))
-                        .setCancelable(false)
-                        .build(),
-                decision -> {
-                    if (decision == AlertDialogDecisions.NEGATIVE) {
-                        runOnTestTestActivityView(TestActivityView::onBackPressed);
-                    }
-                });
-    }
-
     private void runOnTestTestActivityView(final TestActivityViewAction action) {
         if (getActivity() instanceof TestActivityView) {
             action.run((TestActivityView) getActivity());
@@ -234,7 +219,22 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
 
     @Override
     public void showErrorScreen(ErrorModel errorModel) {
-        requireActivity().finish();
-        getBaseActivity().launchActivity(ErrorActivity.starter(requireActivity(), errorModel));
+        showAlertDialog(AlertDialogModel.builder()
+                        .setTitle(errorModel.getTitle())
+                        .setMessage(errorModel.getMessage())
+                        .setNegativeButtonText(getString(R.string.alertdialog_button_ok))
+                        .setCancelable(false)
+                        .build(),
+                decision -> {
+                    if (decision == AlertDialogDecisions.NEGATIVE) {
+                        if (errorModel.isAfterChamberScrewedOn()) {
+                            requireActivity().finish();
+                            getBaseActivity().launchActivity(new Intent(getActivity(), DisposeActivity.class));
+                        } else {
+                            presenter.disposeTest();
+                            runOnTestTestActivityView(TestActivityView::onBackPressed);
+                        }
+                    }
+                });
     }
 }

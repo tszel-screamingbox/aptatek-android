@@ -7,6 +7,8 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class ErrorModel implements Parcelable {
 
+   public abstract boolean isAfterChamberScrewedOn();
+
    public abstract String getTitle();
 
    public abstract String getMessage();
@@ -17,6 +19,8 @@ public abstract class ErrorModel implements Parcelable {
 
    @AutoValue.Builder
    public abstract static class Builder {
+
+      public abstract Builder setAfterChamberScrewedOn(final boolean isAfterChamberScrewedOn);
 
       public abstract Builder setTitle(final String title);
 
