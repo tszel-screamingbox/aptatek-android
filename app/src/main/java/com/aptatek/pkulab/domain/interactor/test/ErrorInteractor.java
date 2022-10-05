@@ -35,8 +35,8 @@ public class ErrorInteractor {
             case TEST_ERROR: {
                 errorModelBuilder
                         .setAfterChamberScrewedOn(false)
-                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2))
-                        .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2));
+                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
+                        .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_1));
                 break;
             }
             case USED_CASSETTE_ERROR: {
@@ -51,8 +51,8 @@ public class ErrorInteractor {
             case EXPIRED_CASSETTE_ERROR: {
                 errorModelBuilder
                         .setAfterChamberScrewedOn(true)
-                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
-                        .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_1));
+                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2))
+                        .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2));
                 break;
             }
             default: {
