@@ -22,6 +22,7 @@ import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
+import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
 import com.aptatek.pkulab.view.rangeinfo.PkuValueFormatter;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -53,6 +54,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private CompositeDisposable disposables;
     private final IAnalyticsManager analyticsManager;
     private final DeviceHelper deviceHelper;
+    private final CsvExport csvExport;
 
     @Inject
     HomeFragmentPresenter(final TestResultInteractor testResultInteractor,
@@ -64,7 +66,8 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                           final TestInteractor testInteractor,
                           final PkuValueFormatter pkuValueFormatter,
                           final IAnalyticsManager analyticsManager,
-                          final DeviceHelper deviceHelper) {
+                          final DeviceHelper deviceHelper,
+                          final CsvExport csvExport) {
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
@@ -75,6 +78,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         this.pkuValueFormatter = pkuValueFormatter;
         this.analyticsManager = analyticsManager;
         this.deviceHelper = deviceHelper;
+        this.csvExport = csvExport;
     }
 
     void initView() {
@@ -228,5 +232,15 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
             title = dailyChartFormatter.getNameOfDay(chartVM.getDate().getTime());
         }
         return title;
+    }
+
+    void getCsvData() {
+        disposables.add(testResultInteractor.listAll()
+                .take(1)
+                .singleOrError()
+                .flatMap(results -> csvExport.generateAttachment(results, "Export_"+System.currentTimeMillis()+".csv"))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(attachment -> ifViewAttached(view -> view.onCsvReady(attachment)))
+        );
     }
 }

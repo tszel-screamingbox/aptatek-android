@@ -104,6 +104,16 @@
             app:layout_constraintRight_toLeftOf="@+id/newTestButton" />
 
         <Button
+            android:id="@+id/exportButton"
+            style="@style/Grey.Settings.Button.Big"
+            android:layout_width="0dp"
+            android:text="@string/main.button.export"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@id/bigSettingsButton"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
             android:id="@+id/newTestButton"
             style="@style/General.Rounded.Button"
             android:layout_width="0dp"

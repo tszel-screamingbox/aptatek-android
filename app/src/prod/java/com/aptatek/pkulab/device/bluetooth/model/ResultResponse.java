@@ -1,11 +1,8 @@
 package com.aptatek.pkulab.device.bluetooth.model;
 
-import android.util.Pair;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-import java.util.Map;
 
 public class ResultResponse {
 

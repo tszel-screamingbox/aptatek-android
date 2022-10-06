@@ -29,13 +29,26 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
 
     @Override
     public TestResult mapToDomain(final ResultResponse dataModel) {
-        return TestResult.builder()
+        final TestResult result = TestResult.builder()
                 .setId(dataModel.getDate())
                 .setPkuLevel(parsePkuLevel(dataModel))
                 .setTimestamp(DateParser.tryParseDate(dataModel.getDate()))
+                .setEndTimestamp(DateParser.tryParseDate(dataModel.getEndDate()))
                 .setReaderId(dataModel.getProductSerial())
                 .setValid(dataModel.isValid())
+                .setAssay(dataModel.getAssay())
+                .setAssayVersion(dataModel.getAssayVersion() == null ? -1L : dataModel.getAssayVersion())
+                .setAssayHash(dataModel.getAssayHash())
+                .setTemperature(dataModel.getTemperature())
+                .setHumidity(dataModel.getHumidity())
+                .setOverallResult(dataModel.getOverallResult())
+                .setCassetteLot(dataModel.getCassette() == null ? -1L : dataModel.getCassette().getLot() == null ? -1L : dataModel.getCassette().getLot())
+                .setHardwareVersion(dataModel.getHardwareVersion())
+                .setSoftwareVersion(dataModel.getSoftwareVersion())
+                .setFirmwareVersion(dataModel.getFirmwareVersion())
+                .setConfigHash(dataModel.getConfigHash())
                 .build();
+        return  result;
     }
 
     @Override
@@ -54,10 +67,19 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
             final ResultResponse.ResultData resultData = resultResponse.getResult().get(0);
             final float value = resultData.getNumericalResult();
             final PkuLevelUnits unit = parseUnit(resultData.getUnits());
-            return PkuLevel.create(value, unit);
+            return PkuLevel.builder()
+                    .setValue(value)
+                    .setUnit(unit)
+                    .setAssayName(resultData.getAssayName())
+                    .setName(resultData.getName())
+                    .setTextResult(resultData.getTextResult())
+                    .build();
         } catch (Exception ex) {
             Timber.d("Failed to parse pkuLevel from result response: %s", resultResponse);
-            return PkuLevel.create(0, PkuLevelUnits.MICRO_MOL);
+            return PkuLevel.builder()
+                    .setValue(0f)
+                    .setUnit(PkuLevelUnits.MABS)
+                    .build();
         }
     }
 

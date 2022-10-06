@@ -11,9 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.Group;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
@@ -34,6 +36,7 @@ import com.aptatek.pkulab.view.main.home.adapter.chart.ChartAdapter;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultsAdapter;
+import com.aptatek.pkulab.view.main.weekly.csv.Attachment;
 import com.aptatek.pkulab.view.settings.basic.SettingsActivity;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
@@ -188,6 +191,11 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         ((MainHostActivity) getBaseActivity()).showWeeklyChartPanel();
     }
 
+    @OnClick(R.id.exportButton)
+    public void onExportClicked() {
+        presenter.getCsvData();
+    }
+
     @Override
     public void onScrollStart(@NonNull final RecyclerView.ViewHolder currentItemHolder, final int adapterPosition) {
         presenter.itemZoomOut(chartAdapter.getItem(adapterPosition));
@@ -281,6 +289,19 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
     @Override
     public void showLastResult(String resultId) {
         getBaseActivity().launchActivity(TestResultActivity.starter(requireContext(), resultId, false), false, BaseActivity.Animation.FADE);
+    }
+
+    @Override
+    public void onCsvReady(Attachment attachment) {
+        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("vnd.android.cursor.dir/email");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(
+                requireContext(),
+                BuildConfig.APPLICATION_ID + ".provider",
+                attachment.getCsvFile()));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.csv_export_subject));
+        emailIntent.putExtra(Intent.EXTRA_TEXT, attachment.getBody());
+        startActivity(Intent.createChooser(emailIntent, ""));
     }
 
     @Override

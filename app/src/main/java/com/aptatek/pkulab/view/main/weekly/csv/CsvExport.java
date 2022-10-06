@@ -1,8 +1,11 @@
 package com.aptatek.pkulab.view.main.weekly.csv;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.aptatek.pkulab.device.DeviceHelper;
+import com.aptatek.pkulab.domain.model.PkuLevel;
+import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.domain.model.ReminderDay;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
@@ -41,13 +44,31 @@ public class CsvExport {
             final CSVWriter writer = new CSVWriter(new FileWriter(file));
 
             final List<String[]> data = new ArrayList<>();
-            data.add(new String[]{"ID", "Reader ID", "PKU Level (uMol)", "Created At"});
-            Ix.from(results).foreach(result -> data.add(new String[]{
-                    result.getId(),
-                    result.getReaderId(),
-                    String.valueOf(result.getPkuLevel().getValue()),
-                    formatter.getFormattedCsvColumn(result.getTimestamp())
-            }));
+            data.add(new String[]{"ID", "Reader ID", "Numeric value", "Units", "Text result", "Created At", "Valid", "Overall result", "Assay", "Temperature", "Humidity", "HW version", "SW version", "FW version", "CassetteLot", "Config#", "Assay#"});
+            Ix.from(results).foreach(result -> {
+                    final PkuLevel level = result.getPkuLevel() == null ? PkuLevel.create(-1f, PkuLevelUnits.MABS) : result.getPkuLevel();
+                    data.add(new String[]{
+                            result.getId(),
+                            result.getReaderId(),
+                            String.valueOf(level.getValue()),
+                            level.getUnit().name(),
+                            TextUtils.isEmpty(level.getTextResult()) ? "N/A" : level.getTextResult(),
+                            formatter.getFormattedCsvColumn(result.getTimestamp()),
+                            result.isValid() ? "Y" : "N",
+                            TextUtils.isEmpty(result.getOverallResult()) ? "N/A" : result.getOverallResult(),
+                            TextUtils.isEmpty(result.getAssay()) ? "N/A" : result.getAssay(),
+                            TextUtils.isEmpty(result.getTemperature()) ? "N/A" : result.getTemperature(),
+                            TextUtils.isEmpty(result.getHumidity()) ? "N/A" : result.getHumidity(),
+                            TextUtils.isEmpty(result.getHardwareVersion()) ? "N/A" : result.getHardwareVersion(),
+                            TextUtils.isEmpty(result.getSoftwareVersion()) ? "N/A" : result.getSoftwareVersion(),
+                            TextUtils.isEmpty(result.getFirmwareVersion()) ? "N/A" : result.getFirmwareVersion(),
+                            String.valueOf(result.getCassetteLot()),
+                            TextUtils.isEmpty(result.getConfigHash()) ? "N/A" : result.getConfigHash(),
+                            TextUtils.isEmpty(result.getAssayHash()) ? "N/A" : result.getAssayHash(),
+
+
+                    });
+            });
 
             writer.writeAll(data);
             writer.close();

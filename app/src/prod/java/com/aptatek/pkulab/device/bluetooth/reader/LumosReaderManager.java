@@ -153,7 +153,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     @Override
     public void log(final int level, @NonNull final String message) {
-        Timber.d("onLog: %d -> %s", level, message);
+        // Timber.d("onLog: %d -> %s", level, message);
     }
 
     @Override

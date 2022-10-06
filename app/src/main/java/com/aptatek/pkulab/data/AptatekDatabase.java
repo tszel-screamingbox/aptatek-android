@@ -21,7 +21,7 @@ import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
 import com.commonsware.cwac.saferoom.SafeHelperFactory;
 
 
-@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 4)
+@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 5)
 @TypeConverters({ReminderScheduleTypeConverter.class, PkuLevelTypeConverter.class})
 public abstract class AptatekDatabase extends RoomDatabase {
 
@@ -51,6 +51,7 @@ public abstract class AptatekDatabase extends RoomDatabase {
                 .addMigrations(MIGRATION_1_2)
                 .addMigrations(MIGRATION_2_3)
                 .addMigrations(MIGRATION_3_4)
+                .addMigrations(MIGRATION_4_5)
                 .build();
     }
 
@@ -73,6 +74,28 @@ public abstract class AptatekDatabase extends RoomDatabase {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE `test_results` ADD COLUMN `valid` INTEGER NOT NULL DEFAULT 0");
+        }
+    };
+
+    private static final Migration MIGRATION_4_5 = new Migration(4, 5) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `endTimestamp` INTEGER NOT NULL DEFAULT -1");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `overallResult` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `temperature` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `humidity` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `hardwareVersion` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `softwareVersion` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `firmwareVersion` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `configHash` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `cassetteLot` INTEGER NOT NULL DEFAULT -1");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `assayHash` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `assayVersion` INTEGER NOT NULL DEFAULT -1");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `assay` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `numericValue` NUMBER NOT NULL DEFAULT -1.0");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `unit` TEXT NOT NULL DEFAULT 'MABS'");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `textResult` TEXT");
+
         }
     };
 }

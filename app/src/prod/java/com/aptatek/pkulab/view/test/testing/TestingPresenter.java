@@ -182,19 +182,28 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             countdownDisposable = null;
         }
 
-        countdownDisposable = Observable.interval(1L, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        tick -> {
-                            final Calendar calendar = Calendar.getInstance();
-                            final long now = System.currentTimeMillis();
-                            calendar.setTimeInMillis(Math.max(0, testProgress.getEnd() - now));
-                            final String formattedRemaining = simpleDateFormat.format(calendar.getTime());
-                            final int percent = (int) ((Math.abs(now - testProgress.getStart()) / (float) Math.abs(testProgress.getEnd() - testProgress.getStart())) * 100);
-                            final TimeRemaining timeRemaining = new TimeRemaining(resourceInteractor.getFormattedString(R.string.test_running_time_remaining_format, formattedRemaining), percent);
-                            ifViewAttached(attachedView -> attachedView.showTimeRemaining(timeRemaining));
-                        }
-                );
+        updateRemaining(testProgress, true);
+
+        countdownDisposable =
+                // delay 5 seconds, then update every second
+                Observable.timer(5L, TimeUnit.SECONDS)
+                        .flatMap(ignored -> Observable.interval(1L, TimeUnit.SECONDS))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                tick -> {
+                                    updateRemaining(testProgress, false);
+                                }
+                        );
+    }
+
+    private void updateRemaining(final TestProgress testProgress, final boolean dontCalculateProgress) {
+        final Calendar calendar = Calendar.getInstance();
+        final long now = System.currentTimeMillis();
+        calendar.setTimeInMillis(Math.max(0, testProgress.getEnd() - now));
+        final String formattedRemaining = simpleDateFormat.format(calendar.getTime());
+        final int percent = dontCalculateProgress ? testProgress.getPercent () : (int) ((Math.abs(now - testProgress.getStart()) / (float) Math.abs(testProgress.getEnd() - testProgress.getStart())) * 100);
+        final TimeRemaining timeRemaining = new TimeRemaining(resourceInteractor.getFormattedString(R.string.test_running_time_remaining_format, formattedRemaining), percent);
+        ifViewAttached(attachedView -> attachedView.showTimeRemaining(timeRemaining));
     }
 
     public void onStop() {
