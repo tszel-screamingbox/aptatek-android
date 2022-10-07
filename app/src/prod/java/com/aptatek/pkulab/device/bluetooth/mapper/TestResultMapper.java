@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.device.bluetooth.mapper;
 
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
@@ -47,8 +49,23 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
                 .setSoftwareVersion(dataModel.getSoftwareVersion())
                 .setFirmwareVersion(dataModel.getFirmwareVersion())
                 .setConfigHash(dataModel.getConfigHash())
+                .setReaderMode(dataModel.getMode())
+                .setCassetteExpiry(tryParseCassetteExp(dataModel))
+                .setRawResponse(dataModel.getRawResponse())
                 .build();
         return  result;
+    }
+
+    private long tryParseCassetteExp(final ResultResponse model) {
+        long exp = -1L;
+        if (model.getCassette() != null) {
+            try {
+                exp = Long.parseLong(model.getCassette().getExpiry());
+            } catch (Exception ex) {
+                Timber.d("Failed to parse cassette exp from: %s", model);
+            }
+        }
+        return exp;
     }
 
     @Override

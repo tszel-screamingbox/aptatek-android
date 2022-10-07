@@ -21,7 +21,7 @@ import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
 import com.commonsware.cwac.saferoom.SafeHelperFactory;
 
 
-@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 5)
+@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 6)
 @TypeConverters({ReminderScheduleTypeConverter.class, PkuLevelTypeConverter.class})
 public abstract class AptatekDatabase extends RoomDatabase {
 
@@ -52,6 +52,7 @@ public abstract class AptatekDatabase extends RoomDatabase {
                 .addMigrations(MIGRATION_2_3)
                 .addMigrations(MIGRATION_3_4)
                 .addMigrations(MIGRATION_4_5)
+                .addMigrations(MIGRATION_5_6)
                 .build();
     }
 
@@ -95,7 +96,16 @@ public abstract class AptatekDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE `test_results` ADD COLUMN `numericValue` NUMBER NOT NULL DEFAULT -1.0");
             database.execSQL("ALTER TABLE `test_results` ADD COLUMN `unit` TEXT NOT NULL DEFAULT 'MABS'");
             database.execSQL("ALTER TABLE `test_results` ADD COLUMN `textResult` TEXT");
+        }
+    };
 
+    private static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `readerMode` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `rawResponse` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `readerMac` TEXT");
+            database.execSQL("ALTER TABLE `test_results` ADD COLUMN `cassetteExpiry` INTEGER NOT NULL DEFAULT -1");
         }
     };
 }

@@ -258,7 +258,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                                         .singleOrError()
                                         .map(TestProgress::getTestId)
                                         .map(String::valueOf)
-                                        .flatMap(readerInteractor::getResult)
+                                        .flatMap(testId -> readerInteractor.getResult(testId, true))
                         )
                         .singleOrError()
                         .flatMap(testResult -> readerInteractor.saveResult(testResult).andThen(Single.just(testResult.getId())))

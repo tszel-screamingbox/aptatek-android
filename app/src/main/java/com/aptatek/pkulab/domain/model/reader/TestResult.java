@@ -44,6 +44,8 @@ public abstract class TestResult {
 
     public abstract long getCassetteLot();
 
+    public abstract long getCassetteExpiry();
+
     @Nullable
     public abstract String getAssayHash();
 
@@ -51,6 +53,14 @@ public abstract class TestResult {
 
     @Nullable
     public abstract String getAssay();
+
+    @Nullable
+    public abstract String getReaderMode();
+
+    public abstract String getRawResponse();
+
+    @Nullable
+    public abstract String getReaderMac();
 
     public static TestResult.Builder builder() {
         return new com.aptatek.pkulab.domain.model.reader.AutoValue_TestResult.Builder();
@@ -64,6 +74,8 @@ public abstract class TestResult {
         public abstract Builder setId(String id);
 
         public abstract Builder setReaderId(String readerId);
+
+        public abstract Builder setReaderMac(@Nullable String mac);
 
         public abstract Builder setTimestamp(long timestamp);
 
@@ -94,6 +106,12 @@ public abstract class TestResult {
         public abstract Builder setPkuLevel(@Nullable PkuLevel pkuLevel);
 
         public abstract Builder setValid(final boolean isValid);
+
+        public abstract Builder setReaderMode(@Nullable String readerMode);
+
+        public abstract Builder setCassetteExpiry(final long expiry);
+
+        public abstract Builder setRawResponse(final String rawResponse);
 
         public abstract TestResult build();
 

@@ -33,6 +33,8 @@ public class ResultResponse {
     private String assay;
     private boolean valid;
 
+    private String rawResponse;
+
     public String getDate() {
         return date;
     }
@@ -167,6 +169,14 @@ public class ResultResponse {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public String getRawResponse() {
+        return rawResponse;
+    }
+
+    public void setRawResponse(String rawResponse) {
+        this.rawResponse = rawResponse;
     }
 
     @Override

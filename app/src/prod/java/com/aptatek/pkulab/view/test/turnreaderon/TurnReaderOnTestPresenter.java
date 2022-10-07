@@ -115,7 +115,7 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                                 .take(1)
                                 .map(TestProgress::getTestId)
                                 .map(String::valueOf)
-                                .flatMapSingle(readerInteractor::getResult)
+                                .flatMapSingle(testId -> readerInteractor.getResult(testId, true))
                                 .flatMapSingle(testResult -> readerInteractor.saveResult(testResult)
                                         .andThen(Single.just(testResult.getId()))
                                 )

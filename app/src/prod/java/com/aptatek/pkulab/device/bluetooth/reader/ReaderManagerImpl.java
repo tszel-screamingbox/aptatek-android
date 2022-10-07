@@ -290,7 +290,7 @@ public class ReaderManagerImpl implements ReaderManager {
                                         for (ResultResponse resultResponse : list) {
                                             mapped.add(mapper.mapToDomain(resultResponse)
                                                     .toBuilder()
-                                                    .setReaderId(deviceId)
+                                                    .setReaderMac(deviceId)
                                                     .build());
                                         }
 

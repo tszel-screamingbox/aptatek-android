@@ -211,7 +211,7 @@ public class BluetoothService extends BaseForegroundService {
                                             if (AptatekApplication.get(getApplicationContext()).isInForeground()) {
                                                 throw new AppInForegroundException();
                                             }
-                                            return readerInteractor.getResult(testId);
+                                            return readerInteractor.getResult(testId, true);
                                         }
                                 )
                         )

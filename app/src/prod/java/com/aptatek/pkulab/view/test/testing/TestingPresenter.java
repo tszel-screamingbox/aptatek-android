@@ -124,7 +124,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .flatMap(testProgress ->
                                 readerInteractor.syncResultsAfterLatest()
                                         .ignoreElement()
-                                        .andThen(readerInteractor.getResult(testProgress.getTestId())
+                                        .andThen(readerInteractor.getResult(testProgress.getTestId(), true)
                                                 .flatMapCompletable(readerInteractor::saveResult)
                                         )
                                         .andThen(Single.just(testProgress.getTestId()))

@@ -20,6 +20,8 @@ public class TestResultDataModel {
     private String id;
     @NonNull
     private String readerId;
+    @Nullable
+    private String readerMac;
     private long timestamp;
     private long endTimestamp;
     private float numericValue;
@@ -48,6 +50,10 @@ public class TestResultDataModel {
     private long assayVersion;
     @Nullable
     private String assay;
+    @Nullable
+    private String readerMode;
+    private long cassetteExpiry;
+    private String rawResponse;
 
     @NonNull
     public String getId() {
@@ -226,5 +232,39 @@ public class TestResultDataModel {
 
     public void setAssay(@Nullable String assay) {
         this.assay = assay;
+    }
+
+    @Nullable
+    public String getReaderMode() {
+        return readerMode;
+    }
+
+    public void setReaderMode(@Nullable String readerMode) {
+        this.readerMode = readerMode;
+    }
+
+    public long getCassetteExpiry() {
+        return cassetteExpiry;
+    }
+
+    public void setCassetteExpiry(long cassetteExpiry) {
+        this.cassetteExpiry = cassetteExpiry;
+    }
+
+    public String getRawResponse() {
+        return rawResponse;
+    }
+
+    public void setRawResponse(String rawResponse) {
+        this.rawResponse = rawResponse;
+    }
+
+    @Nullable
+    public String getReaderMac() {
+        return readerMac;
+    }
+
+    public void setReaderMac(@Nullable String readerMac) {
+        this.readerMac = readerMac;
     }
 }

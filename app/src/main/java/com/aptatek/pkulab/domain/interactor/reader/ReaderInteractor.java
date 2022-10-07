@@ -139,7 +139,13 @@ public class ReaderInteractor {
 
     @NonNull
     public Single<TestResult> getResult(@NonNull final String id) {
+        return getResult(id, false);
+    }
+
+    @NonNull
+    public Single<TestResult> getResult(@NonNull final String id, final boolean readMac) {
         return readerManager.getResult(id)
+                .flatMap(result -> readMac ? readerManager.getConnectedDevice().toSingle().map(ReaderDevice::getMac).map(mac -> result.toBuilder().setReaderMac(mac).build()) : Single.just(result))
                 .subscribeOn(Schedulers.io());
     }
 

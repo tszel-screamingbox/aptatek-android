@@ -35,6 +35,7 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
         final TestResult result =  TestResult.builder()
                 .setReaderId(dataModel.getReaderId())
                 .setId(dataModel.getId())
+                .setReaderMac(dataModel.getReaderMac())
                 .setTimestamp(dataModel.getTimestamp())
                 .setPkuLevel(parsePkuLevel(dataModel))
                 .setValid(dataModel.isValid())
@@ -50,6 +51,9 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
                 .setAssayHash(dataModel.getAssayHash())
                 .setAssayVersion(dataModel.getAssayVersion())
                 .setAssay(dataModel.getAssay())
+                .setRawResponse(dataModel.getRawResponse())
+                .setCassetteExpiry(dataModel.getCassetteExpiry())
+                .setReaderMode(dataModel.getReaderMode())
                 .build();
 
         return result;
@@ -67,6 +71,7 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
         final PkuLevel pkuLevel = domainModel.getPkuLevel() == null ? PkuLevel.create(0f, PkuLevelUnits.MICRO_MOL) : domainModel.getPkuLevel();
         final TestResultDataModel testResultDataModel = new TestResultDataModel();
         testResultDataModel.setReaderId(domainModel.getReaderId());
+        testResultDataModel.setReaderMac(domainModel.getReaderMac());
         testResultDataModel.setId(domainModel.getId());
         testResultDataModel.setTimestamp(domainModel.getTimestamp());
         testResultDataModel.setNumericValue(pkuLevel.getValue());
@@ -85,6 +90,9 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
         testResultDataModel.setFirmwareVersion(domainModel.getFirmwareVersion());
         testResultDataModel.setHardwareVersion(domainModel.getHardwareVersion());
         testResultDataModel.setSoftwareVersion(domainModel.getSoftwareVersion());
+        testResultDataModel.setRawResponse(domainModel.getRawResponse());
+        testResultDataModel.setReaderMode(domainModel.getReaderMode());
+        testResultDataModel.setCassetteExpiry(domainModel.getCassetteExpiry());
         return testResultDataModel;
     }
 
