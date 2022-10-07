@@ -35,6 +35,7 @@ import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
 import com.aptatek.pkulab.view.test.connectitall.ConnectItAllFragment;
 import com.aptatek.pkulab.view.test.mixsample.MixSampleFragment;
 import com.aptatek.pkulab.view.test.pokefingertip.PokeFingertipFragment;
+import com.aptatek.pkulab.view.test.testcomplete.TestCompleteFragment;
 import com.aptatek.pkulab.view.test.testing.TestingFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
@@ -111,7 +112,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         ButterKnife.bind(this);
 
         screenPagerIndicator.setDynamicCount(false);
-        screenPagerIndicator.setCount(showDotFor().size());
+        //screenPagerIndicator.setCount(showDotFor().size());
 
         if (getIntent().hasExtra(EXTRA_NOTIF_REASON)) {
             presenter.logOpenFromNotification(getIntent().getStringExtra(EXTRA_NOTIF_REASON));
@@ -241,7 +242,11 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
                 addToBackStack = false;
                 break;
             }
-            case BREAK_FOIL:
+            case TEST_COMPLETE: {
+                fragment = new TestCompleteFragment();
+                addToBackStack = false;
+                break;
+            }
             default: {
                 fragment = new BreakFoilFragment();
                 break;
@@ -249,7 +254,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         }
 
         showFragment(fragment, addToBackStack, withAnimation);
-        screenPagerIndicator.setSelection(Math.min(screen.ordinal(), showDotFor().size()));
+        //screenPagerIndicator.setSelection(Math.min(screen.ordinal(), showDotFor().size()));
         presenter.checkBattery(screen);
     }
 
@@ -321,7 +326,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void showPreviousScreen() {
         onBackPressedHere();
-        screenPagerIndicator.setSelection(Math.min(getCurrentScreen().ordinal(), showDotFor().size()));
+        //screenPagerIndicator.setSelection(Math.min(getCurrentScreen().ordinal(), showDotFor().size()));
     }
 
     @Override
@@ -361,7 +366,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setProgressVisible(final boolean visible) {
         // testProgress.setVisibility(visible ? VISIBLE : GONE);
-        screenPagerIndicator.setVisibility(visible ? INVISIBLE : VISIBLE);
+        // screenPagerIndicator.setVisibility(visible ? INVISIBLE : VISIBLE);
     }
 
     @Override

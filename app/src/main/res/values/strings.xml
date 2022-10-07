@@ -384,4 +384,7 @@
     <string name="test.running.warning">WARNING\nDo not remove cassette.\nThis will interrupt the test.</string>
 
     <string name="main.button.export">Export results</string>
+
+    <string name="test.testcomplete.title">Test Complete</string>
+    <string name="test.testcomplete.message">Remove the cassette to see the result</string>
 </resources>
