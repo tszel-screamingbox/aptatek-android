@@ -72,4 +72,19 @@
         app:layout_constraintTop_toBottomOf="@id/topBarrier"
         app:layout_constraintVertical_bias="0.0" />
 
+    <TextView
+        android:id="@+id/self_check"
+        style="@style/General.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/general.distance.20dp"
+        android:paddingEnd="@dimen/general.distance.20dp"
+        android:text="@string/test.turnreaderon.selfcheck.info"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/testVideo"
+        tools:visibility="visible" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

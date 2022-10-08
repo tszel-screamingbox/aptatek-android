@@ -30,6 +30,7 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
 
     private boolean isDisclaimerPressed = false;
     private boolean isAnimationPressed = false;
+    private boolean incubationComplete = false;
 
     @Override
     protected void injectTestFragment(final @NonNull TestFragmentComponent fragmentComponent) {
@@ -48,6 +49,8 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
 
     @Override
     public boolean onNextPressed() {
+        if (incubationComplete) return false;
+
         if (BuildConfig.FLAVOR.equals("prod")) {
             return true;
         }
@@ -67,6 +70,15 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
         });
 
         return true;
+    }
+
+    @Override
+    public void setNextButtonVisible(boolean visible) {
+        super.setNextButtonVisible(visible);
+
+        if (visible) {
+            incubationComplete = true;
+        }
     }
 
     @Override

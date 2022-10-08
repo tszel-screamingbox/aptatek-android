@@ -21,7 +21,7 @@ public class MixSampleFragment extends TestBaseFragment<MixSampleView, MixSample
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_test_video;
+        return R.layout.fragment_mix_sample;
     }
 
     @NonNull

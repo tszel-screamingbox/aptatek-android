@@ -22,7 +22,7 @@ public class ConnectItAllFragment extends TestBaseFragment<ConnectItAllView, Con
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_test_video;
+        return R.layout.fragment_insert_cassette;
     }
 
     @NonNull

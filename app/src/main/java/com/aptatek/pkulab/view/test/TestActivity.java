@@ -27,6 +27,8 @@ import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.base.BaseFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
+import com.aptatek.pkulab.view.test.addsample.AddSampleFragment;
+import com.aptatek.pkulab.view.test.attachchamber.AttachChamberFragment;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 import com.aptatek.pkulab.view.test.breakfoil.BreakFoilFragment;
@@ -36,6 +38,7 @@ import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
 import com.aptatek.pkulab.view.test.connectitall.ConnectItAllFragment;
 import com.aptatek.pkulab.view.test.mixsample.MixSampleFragment;
 import com.aptatek.pkulab.view.test.pokefingertip.PokeFingertipFragment;
+import com.aptatek.pkulab.view.test.preparecassette.PrepareCassetteFragment;
 import com.aptatek.pkulab.view.test.prepbluecap.PrepareBlueCapFragment;
 import com.aptatek.pkulab.view.test.prepbuffer.PrepareBufferChamberFragment;
 import com.aptatek.pkulab.view.test.preptestkit.PrepareTestKitFragment;
@@ -240,6 +243,18 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
             }
             case COLLECT_BLOOD: {
                 fragment = new CollectBloodFragment();
+                break;
+            }
+            case ADD_SAMPLE: {
+                fragment = new AddSampleFragment();
+                break;
+            }
+            case PREPARE_CASSETTE: {
+                fragment = new PrepareCassetteFragment();
+                break;
+            }
+            case ATTACH_CHAMBER: {
+                fragment = new AttachChamberFragment();
                 break;
             }
             case MIX_SAMPLE: {

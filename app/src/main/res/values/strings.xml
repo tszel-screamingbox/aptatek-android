@@ -230,22 +230,27 @@
     <string name="test.pokefingertrip.title">Lance Fingertip</string>
     <string name="test.pokefingertrip.message">Using a lancet, lance your fingertip to draw a large, round drop of blood from your fingertip</string>
     <string name="test.collectblood.title">Collect Blood</string>
-    <string name="test.collectblood.message">Screw the cap off the chamber and draw a large sample of blood from your fingertip</string>
-    <string name="test.collectblood.disclaimer">Tap the suction tip onto blood so that it completely fills up beyond the edge with blood</string>
+    <string name="test.collectblood.message">Using the end cup on the blue cap, collect a blood sample from your fingertip</string>
+    <string name="test.collectblood.disclaimer">The end cup should look like this once enough blood has been collected.</string>
     <string name="test.mixsample.title">Mix Sample</string>
-    <string name="test.mixsample.message">Screw the cap on the chamber with the red tip inside and twist it to lock into place</string>
+    <string name="test.mixsample.message">Once the blue cap is screwed on tightly, take the chamber out for the stand and invert it 3 times to mix the sample.\nPlace back on to the green stand with the blue cap up</string>
     <string name="test.mixsample.warn">Once the cap is locked, shake the bottle 3 times to mix the blood</string>
-    <string name="test.wetting.title">Incubation Phase</string>
-    <string name="test.wetting.message">Wait until the sample\nincubation phase ends</string>
-    <string name="test.wetting.disclaimer">Keep chamber sitting upright by\nitself in a safe place, do not\nconnect it to anything yet</string>
+    <string name="test.wetting.title">Incubation</string>
+    <string name="test.wetting.message">Your sample needs to incubate before you can continue. The timer below will display the remaining waiting time.</string>
+    <string name="test.wetting.disclaimer">WARNING\nDo not continue until timer reaches 0:00min or the result will not be accurate!</string>
     <string name="test.wetting.alert.message">Are your sure the blood has finished soaking for the whole 5 minutes?</string>
     <string name="test.wetting.alert.title">Please confirm</string>
     <string name="test.wetting.countdown.format">mm:ss</string>
+    <string name="test.wetting.complete.title">Incubation Complete</string>
     <string name="test.turnreaderon.title">Turn Reader On</string>
-    <string name="test.turnreaderon.message">Press the button on the top of the reader to turn it on</string>
+    <string name="test.turnreaderon.message">Press the button on the top of the reader and hold until the light turns on</string>
     <string name="test.continue.turnreaderon.message">Press the button on the top of the reader to turn it on and wait until the yellow light turns blue</string>
-    <string name="test.connectitall.title">Connect It All</string>
-    <string name="test.connectitall.message">Push the chamber into the hole in the cassette and insert it into the reader immediately</string>
+    <string name="test.turnreaderon.selfcheck.info">Please wait. This should only take &lt;1 minute.</string>
+    <string name="test.turnreaderon.selfcheck.title">Self Checking</string>
+    <string name="test.turnreaderon.selfcheck.message">Reader is doing a self-check to make sure that it can function properly during testing</string>
+    <string name="test.connectitall.title">Insert Cassette</string>
+    <string name="test.connectitall.message">Immediately insert the cassette into the reader as shown</string>
+    <string name="test.connectitall.disclaimer">WARNING\nThis should be done as soon as possible to avoid a failed test!</string>
     <string name="test.testing.title">Testing&#8230;</string>
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
     <string name="test.selftest.title">Self Checking</string>
@@ -403,4 +408,14 @@
 
     <string name="test.cleanfingertip.title">Clean Fingertip</string>
     <string name="test.cleanfingertip.message">Using a sterile towelette, wipe the finger prior to lancing</string>
+
+    <string name="test.addsample.title">Add Sample</string>
+    <string name="test.addsample.message">Screw the blue cap with the blood sample onto the buffer chamber as shown to add the sample.\nEnsure the cap is on tight.</string>
+
+    <string name="test.prepare.cassette.title">Prepare Phe Cassette</string>
+    <string name="test.prepare.cassette.message">Open the "Phe Cassette" foil pouch and remove the Phe Cassette and place on table</string>
+
+    <string name="test.attach.chamber.title">Attach Chamber</string>
+    <string name="test.attach.chamber.message">Take the buffer chamber from the green stand and screw it onto the cassette. The blue cap remains upright. Ensure the buffer chamber is screwed on tightly to the Phe cassette.</string>
+    <string name="test.attach.chamber.disclaimer">WARNING\nProceed to next step within 30 seconds!</string>
 </resources>

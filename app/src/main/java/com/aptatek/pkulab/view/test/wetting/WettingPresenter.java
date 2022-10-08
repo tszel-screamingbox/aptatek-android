@@ -60,7 +60,12 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
                         Timber::e,
                         () -> {
                             analyticsManager.logEvent(new SampleWettingDone(Math.abs(System.currentTimeMillis() - screenDisplayedMs)));
-                            ifViewAttached(WettingView::showNextScreen);
+                            ifViewAttached(attachedView -> {
+                                attachedView.setDisclaimerViewVisible(false);
+                                attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_wetting_complete_title));
+                                attachedView.setMessage("");
+                                attachedView.setNextButtonVisible(true);
+                            });
                         }
                 )
         );

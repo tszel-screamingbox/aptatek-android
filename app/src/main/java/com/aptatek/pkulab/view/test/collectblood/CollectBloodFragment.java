@@ -21,7 +21,7 @@ public class CollectBloodFragment extends TestBaseFragment<CollectBloodView, Col
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_test_video;
+        return R.layout.fragment_collect_blood;
     }
 
     @NonNull

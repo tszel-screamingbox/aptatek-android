@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,6 +55,8 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     protected FrameVideoView videoView;
     @BindView(R.id.turnReaderOnNoDeviceAvailable)
     protected Button noReaderAvailable;
+    @BindView(R.id.self_check)
+    protected TextView selfCheck;
 
     @Inject
     ResourceInteractor resourceInteractor;
@@ -165,6 +168,10 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     public void displaySelfCheckAnimation() {
         playVideo(resourceInteractor.getUriForRawFile(R.raw.self_check), true);
         noReaderAvailable.setVisibility(View.GONE);
+
+        selfCheck.setVisibility(View.VISIBLE);
+        headerView.setTitle(resourceInteractor.getStringResource(R.string.test_turnreaderon_selfcheck_title));
+        headerView.setSubtitle(resourceInteractor.getStringResource(R.string.test_turnreaderon_selfcheck_message));
     }
 
     @Override
