@@ -7,12 +7,16 @@ import ix.Ix;
 
 public enum TestScreens {
 
-    TURN_READER_ON(true),
-    BREAK_FOIL(true),
+    PREP_TEST_KIT(true),
+    PREP_BUFFER(true),
+    UNSCREW_CAP(true),
+    PREP_BLUE_CAP(true),
+    CLEAN_FINGERTIP(true),
     POKE_FINGERTIP(true),
     COLLECT_BLOOD(true),
     MIX_SAMPLE(true),
     WETTING(true),
+    TURN_READER_ON(true),
     CONNECT_IT_ALL(true),
     TESTING(false),
     TEST_COMPLETE(false),

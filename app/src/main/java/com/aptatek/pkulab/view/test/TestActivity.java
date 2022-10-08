@@ -31,13 +31,18 @@ import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 import com.aptatek.pkulab.view.test.breakfoil.BreakFoilFragment;
 import com.aptatek.pkulab.view.test.canceltest.CancelTestFragment;
+import com.aptatek.pkulab.view.test.cleanfintertip.CleanFingertipFragment;
 import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
 import com.aptatek.pkulab.view.test.connectitall.ConnectItAllFragment;
 import com.aptatek.pkulab.view.test.mixsample.MixSampleFragment;
 import com.aptatek.pkulab.view.test.pokefingertip.PokeFingertipFragment;
+import com.aptatek.pkulab.view.test.prepbluecap.PrepareBlueCapFragment;
+import com.aptatek.pkulab.view.test.prepbuffer.PrepareBufferChamberFragment;
+import com.aptatek.pkulab.view.test.preptestkit.PrepareTestKitFragment;
 import com.aptatek.pkulab.view.test.testcomplete.TestCompleteFragment;
 import com.aptatek.pkulab.view.test.testing.TestingFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestFragment;
+import com.aptatek.pkulab.view.test.unscrewcap.UnscrewCapFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
 import com.aptatek.pkulab.widget.BatteryView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -207,6 +212,26 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         switch (screen) {
             case CANCEL: {
                 fragment = CancelTestFragment.createCancelFragment(getCurrentScreen() == TESTING);
+                break;
+            }
+            case PREP_TEST_KIT: {
+                fragment = new PrepareTestKitFragment();
+                break;
+            }
+            case PREP_BUFFER: {
+                fragment = new PrepareBufferChamberFragment();
+                break;
+            }
+            case PREP_BLUE_CAP: {
+                fragment = new PrepareBlueCapFragment();
+                break;
+            }
+            case UNSCREW_CAP: {
+                fragment = new UnscrewCapFragment();
+                break;
+            }
+            case CLEAN_FINGERTIP: {
+                fragment = new CleanFingertipFragment();
                 break;
             }
             case POKE_FINGERTIP: {

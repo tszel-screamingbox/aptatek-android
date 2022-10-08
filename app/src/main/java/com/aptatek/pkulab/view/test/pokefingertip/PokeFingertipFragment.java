@@ -21,7 +21,7 @@ public class PokeFingertipFragment extends TestBaseFragment<PokeFingertipView, P
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_test_video;
+        return R.layout.fragment_poke_fingertip;
     }
 
     @NonNull

@@ -32,6 +32,7 @@ public class BreakFoilFragment extends TestBaseFragment<BreakFoilView, BreakFoil
 
     @Override
     public TestScreens getScreen() {
-        return TestScreens.BREAK_FOIL;
+        //return TestScreens.BREAK_FOIL;
+        return TestScreens.PREP_TEST_KIT;
     }
 }

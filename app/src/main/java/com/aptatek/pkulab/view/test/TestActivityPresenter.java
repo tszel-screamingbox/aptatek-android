@@ -69,7 +69,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
     public void showProperScreen() {
         disposable = testInteractor.getLastScreen()
-                .onErrorReturnItem(TestScreens.TURN_READER_ON)
+                .onErrorReturnItem(TestScreens.PREP_TEST_KIT)
                 .flatMap(lastScreen -> {
                     if (lastScreen == TestScreens.WETTING) {
                         return wettingInteractor.getWettingStatus()
@@ -101,10 +101,6 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
                     final long elapsedScreenTimeMs = Math.abs(System.currentTimeMillis() - screenDisplayedAtMs);
                     final AnalyticsEvent event;
                     switch (current) {
-                        case BREAK_FOIL: {
-                            event = new BreakFoilDone(elapsedScreenTimeMs);
-                            break;
-                        }
                         case POKE_FINGERTIP: {
                             event = new PokeFingertipDone(elapsedScreenTimeMs);
                             break;
@@ -166,7 +162,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
     public void onShowPreviousScreen(@NonNull final TestScreens currentScreen) {
         ifViewAttached(attachedView -> {
-            if (currentScreen == TestScreens.TURN_READER_ON || currentScreen == TestScreens.WETTING || currentScreen == TestScreens.TESTING || currentScreen == TestScreens.BREAK_FOIL || currentScreen == TestScreens.CONNECT_IT_ALL) {
+            if (currentScreen == TestScreens.PREP_TEST_KIT || currentScreen == TestScreens.TURN_READER_ON || currentScreen == TestScreens.WETTING || currentScreen == TestScreens.TESTING || currentScreen == TestScreens.CONNECT_IT_ALL) {
                 attachedView.showScreen(TestScreens.CANCEL);
             } else {
                 attachedView.showPreviousScreen();

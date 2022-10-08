@@ -4,13 +4,18 @@ import com.aptatek.pkulab.injection.module.FragmentModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.test.breakfoil.BreakFoilFragment;
 import com.aptatek.pkulab.view.test.canceltest.CancelTestFragment;
+import com.aptatek.pkulab.view.test.cleanfintertip.CleanFingertipFragment;
 import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
 import com.aptatek.pkulab.view.test.connectitall.ConnectItAllFragment;
 import com.aptatek.pkulab.view.test.mixsample.MixSampleFragment;
 import com.aptatek.pkulab.view.test.pokefingertip.PokeFingertipFragment;
+import com.aptatek.pkulab.view.test.prepbluecap.PrepareBlueCapFragment;
+import com.aptatek.pkulab.view.test.prepbuffer.PrepareBufferChamberFragment;
+import com.aptatek.pkulab.view.test.preptestkit.PrepareTestKitFragment;
 import com.aptatek.pkulab.view.test.testcomplete.TestCompleteFragment;
 import com.aptatek.pkulab.view.test.testing.TestingFragment;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestFragment;
+import com.aptatek.pkulab.view.test.unscrewcap.UnscrewCapFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
 
 import dagger.Subcomponent;
@@ -37,4 +42,14 @@ public interface TestFragmentComponent {
     void inject(TestingFragment testingFragment);
 
     void inject(TestCompleteFragment testCompleteFragment);
+
+    void inject(PrepareTestKitFragment prepareTestKitFragment);
+
+    void inject(PrepareBufferChamberFragment prepareBufferChamberFragment);
+
+    void inject(UnscrewCapFragment unscrewCapFragment);
+
+    void inject(PrepareBlueCapFragment prepareBlueCapFragment);
+
+    void inject(CleanFingertipFragment cleanFingertipFragment);
 }

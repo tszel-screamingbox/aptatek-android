@@ -227,8 +227,8 @@
     <string name="test.breakfoil.message">Unwrap the cap from the foil and screw it on to the chamber to pierce the top seal</string>
     <string name="test.breakfoil.alert.title">Always Use In-App Timer!</string>
     <string name="test.breakfoil.alert.message">Timing is very important to get accurate results, always follow the testing workflow in the app.</string>
-    <string name="test.pokefingertrip.title">Poke Fingertip</string>
-    <string name="test.pokefingertrip.message">Take a thick lancet and poke your fingertip with it, enough to draw a large round drop of blood from your finger</string>
+    <string name="test.pokefingertrip.title">Lance Fingertip</string>
+    <string name="test.pokefingertrip.message">Using a lancet, lance your fingertip to draw a large, round drop of blood from your fingertip</string>
     <string name="test.collectblood.title">Collect Blood</string>
     <string name="test.collectblood.message">Screw the cap off the chamber and draw a large sample of blood from your fingertip</string>
     <string name="test.collectblood.disclaimer">Tap the suction tip onto blood so that it completely fills up beyond the edge with blood</string>
@@ -388,4 +388,19 @@
 
     <string name="test.testcomplete.title">Test Complete</string>
     <string name="test.testcomplete.message">Remove the cassette to see the result</string>
+
+    <string name="test.prep.testkit.title">Prepare Test Kit</string>
+    <string name="test.prep.testkit.message">Open the box and take 1 of each of the following components to perform a single test</string>
+
+    <string name="test.prep.buffer.title">Prepare Buffer Chamber</string>
+    <string name="test.prep.buffer.message">Open the "Buffer Chamber" foil pouch and place the buffer chamber into the green stand to keep the chamber upright</string>
+
+    <string name="test.unscrew.title">Unscrew Cap</string>
+    <string name="test.unscrew.message">Unscrew the orange cap from the buffer chamber</string>
+
+    <string name="test.prep.bluecap.title">Prepare Blue Collection Cap</string>
+    <string name="test.prep.bluecap.message">Open the "Collection Cap" foil pouch, remove the Blue Collection Cap and place on table as shown</string>
+
+    <string name="test.cleanfingertip.title">Clean Fingertip</string>
+    <string name="test.cleanfingertip.message">Using a sterile towelette, wipe the finger prior to lancing</string>
 </resources>
