@@ -17,7 +17,7 @@ public interface TestResultDataSource {
 
     TestResultDataModel getLatestData();
 
-    TestResultDataModel getLatestFromReader(@NonNull final String readerId);
+    TestResultDataModel getLatestFromReader(@NonNull final String readerMac);
 
     TestResultDataModel getById(final String id);
 
