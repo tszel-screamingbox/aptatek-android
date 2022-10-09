@@ -1,38 +1,29 @@
 package com.aptatek.pkulab.view.test.testing;
 
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Group;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
-import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.TestActivityView;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
-import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
-import com.aptatek.pkulab.view.test.result.TestResultActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class TestingFragment extends TestBaseFragment<TestingView, TestingPresenter> implements TestingView, LifecycleObserver {
 
@@ -76,6 +67,8 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     @Override
     public void onTestError(ErrorModel errorModel) {
         showAlertDialog(AlertDialogModel.builder()
+                        .setAlertHeader(true)
+                        .setErrorCode(errorModel.getErrorCode())
                         .setTitle(errorModel.getTitle())
                         .setMessage(errorModel.getMessage())
                         .setNegativeButtonText(getString(R.string.alertdialog_button_ok))

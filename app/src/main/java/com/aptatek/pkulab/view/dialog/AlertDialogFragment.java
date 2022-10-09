@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -69,10 +71,29 @@ public class AlertDialogFragment extends DialogFragment {
             }
         };
 
-        final AlertDialog alertDialog = new AlertDialog.Builder(requireActivity(), alertDialogModel.getTheme())
-                .setCancelable(alertDialogModel.isCancelable())
-                .setTitle(alertDialogModel.getTitle())
-                .setMessage(alertDialogModel.getMessage())
+        final AlertDialog.Builder alertDialogBuilder;
+
+        if (alertDialogModel.isAlertHeader()) {
+            final View content = LayoutInflater.from(requireActivity()).inflate(R.layout.layout_alert_error, null);
+            final TextView errorCode = content.findViewById(R.id.error_code);
+            final TextView title = content.findViewById(R.id.error_title);
+            final TextView message = content.findViewById(R.id.error_message);
+
+            errorCode.setText(alertDialogModel.getErrorCode());
+            title.setText(alertDialogModel.getTitle());
+            message.setText(alertDialogModel.getMessage());
+
+            alertDialogBuilder = new AlertDialog.Builder(requireActivity(), alertDialogModel.getTheme())
+                    .setCancelable(alertDialogModel.isCancelable())
+                    .setView(content);
+        } else {
+            alertDialogBuilder = new AlertDialog.Builder(requireActivity(), alertDialogModel.getTheme())
+                    .setCancelable(alertDialogModel.isCancelable())
+                    .setTitle(alertDialogModel.getTitle())
+                    .setMessage(alertDialogModel.getMessage());
+        }
+
+        final AlertDialog alertDialog = alertDialogBuilder
                 .setNegativeButton(alertDialogModel.getNegativeButtonText(), clickListener)
                 .setPositiveButton(alertDialogModel.getPositiveButtonText(), clickListener)
                 .setNeutralButton(alertDialogModel.getNeutralButtonText(), clickListener)

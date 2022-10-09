@@ -70,7 +70,7 @@ public class ErrorInteractor {
             }
         }
 
-
+        errorModelBuilder.setErrorCode(workflowState.name());
         return errorModelBuilder.build();
     }
 

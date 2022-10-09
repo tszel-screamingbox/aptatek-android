@@ -14,6 +14,9 @@ import com.google.auto.value.AutoValue;
 public abstract class AlertDialogModel implements Parcelable {
 
     @Nullable
+    public abstract String getErrorCode();
+
+    @Nullable
     public abstract String getTitle();
 
     @Nullable
@@ -42,9 +45,12 @@ public abstract class AlertDialogModel implements Parcelable {
 
     public abstract boolean isCancelable();
 
+    public abstract boolean isAlertHeader();
+
     public static Builder builder() {
         return new AutoValue_AlertDialogModel.Builder()
                 .setTheme(R.style.DefaultDialogTheme)
+                .setAlertHeader(false)
                 .setNegativeButtonTextColor(R.color.dialogButtonGrey)
                 .setPositiveButtonTextColor(R.color.dialogButtonGrey)
                 .setNeutralButtonTextColor(R.color.dialogButtonGrey);
@@ -52,6 +58,8 @@ public abstract class AlertDialogModel implements Parcelable {
 
     @AutoValue.Builder
     public abstract static class Builder {
+        public abstract Builder setErrorCode(@Nullable String errorCode);
+
         public abstract Builder setTitle(@NonNull String title);
 
         public abstract Builder setPositiveButtonTextColor(@ColorRes int positiveButtonTextColor);
@@ -71,6 +79,8 @@ public abstract class AlertDialogModel implements Parcelable {
         public abstract Builder setTheme(@StyleRes int theme);
 
         public abstract Builder setCancelable(boolean cancelable);
+
+        public abstract Builder setAlertHeader(boolean showAlertHeader);
 
         public abstract AlertDialogModel build();
     }

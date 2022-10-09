@@ -226,6 +226,8 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
     @Override
     public void showErrorScreen(ErrorModel errorModel) {
         showAlertDialog(AlertDialogModel.builder()
+                        .setErrorCode(errorModel.getErrorCode())
+                        .setAlertHeader(true)
                         .setTitle(errorModel.getTitle())
                         .setMessage(errorModel.getMessage())
                         .setNegativeButtonText(getString(R.string.alertdialog_button_ok))

@@ -9,6 +9,8 @@ public abstract class ErrorModel implements Parcelable {
 
    public abstract boolean isAfterChamberScrewedOn();
 
+   public abstract String getErrorCode();
+
    public abstract String getTitle();
 
    public abstract String getMessage();
@@ -21,6 +23,8 @@ public abstract class ErrorModel implements Parcelable {
    public abstract static class Builder {
 
       public abstract Builder setAfterChamberScrewedOn(final boolean isAfterChamberScrewedOn);
+
+      public abstract Builder setErrorCode(final String errorCode);
 
       public abstract Builder setTitle(final String title);
 
