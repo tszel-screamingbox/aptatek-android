@@ -18,6 +18,7 @@ public class CollectBloodPresenter extends TestBasePresenter<CollectBloodView> {
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_collectblood_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_collectblood_message));
+            attachedView.setInfoMessage(resourceInteractor.getStringAsHtml(R.string.test_collectblood_disclaimer));
         });
     }
 }

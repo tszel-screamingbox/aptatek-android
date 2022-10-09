@@ -112,7 +112,7 @@
 
     <style name="Test.Alert.Text" parent="General.Text">
         <item name="android:textColor">@color/applicationWhite</item>
-        <item name="android:maxLines">3</item>
+        <item name="android:maxLines">4</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/font.alert</item>
     </style>

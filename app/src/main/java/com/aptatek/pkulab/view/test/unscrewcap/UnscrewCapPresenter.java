@@ -18,7 +18,7 @@ public class UnscrewCapPresenter extends TestBasePresenter<TestFragmentBaseView>
     public void initUi() {
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_unscrew_title));
-            attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_unscrew_message));
+            attachedView.setMessageHtml(resourceInteractor.getStringAsHtml(R.string.test_unscrew_message));
         });
     }
 }

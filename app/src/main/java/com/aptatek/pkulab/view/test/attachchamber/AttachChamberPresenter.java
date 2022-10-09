@@ -18,7 +18,7 @@ public class AttachChamberPresenter extends TestBasePresenter<TestFragmentBaseVi
     public void initUi() {
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_attach_chamber_title));
-            attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_attach_chamber_message));
+            attachedView.setMessageHtml(resourceInteractor.getStringAsHtml(R.string.test_attach_chamber_message));
             attachedView.setDisclaimerViewVisible(true);
             attachedView.setDisclaimerMessage(resourceInteractor.getStringResource(R.string.test_attach_chamber_disclaimer));
         });

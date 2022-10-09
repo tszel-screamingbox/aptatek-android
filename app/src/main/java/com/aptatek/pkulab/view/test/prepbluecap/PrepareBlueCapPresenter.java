@@ -18,7 +18,7 @@ public class PrepareBlueCapPresenter extends TestBasePresenter<TestFragmentBaseV
     public void initUi() {
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_prep_bluecap_title));
-            attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_prep_bluecap_message));
+            attachedView.setMessageHtml(resourceInteractor.getStringAsHtml(R.string.test_prep_bluecap_message));
         });
     }
 }

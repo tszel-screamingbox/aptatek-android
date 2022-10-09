@@ -94,7 +94,7 @@
     <dimen name="font.size.34sp">34sp</dimen>
     <dimen name="font.size.xxlarge">42sp</dimen>
     <dimen name="font.size.enormous">48sp</dimen>
-    <dimen name="font.size.wetting">80sp</dimen>
+    <dimen name="font.size.wetting">64sp</dimen>
 
     <dimen name="font.alert">20sp</dimen>
     <dimen name="font.rangeinfo">42sp</dimen>
@@ -115,7 +115,7 @@
     <dimen name="pdf.line.spacing">-12dp</dimen>
 
     <dimen name="test.alert.corner">50dp</dimen>
-    <dimen name="test.alert.height">100dp</dimen>
+    <dimen name="test.alert.height">120dp</dimen>
     <dimen name="test.result.circle.width">20dp</dimen>
 
     <dimen name="test.progressbar.height">12dp</dimen>

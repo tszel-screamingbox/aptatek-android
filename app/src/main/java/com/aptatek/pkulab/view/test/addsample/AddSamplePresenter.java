@@ -18,7 +18,7 @@ public class AddSamplePresenter extends TestBasePresenter<TestFragmentBaseView> 
     public void initUi() {
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_addsample_title));
-            attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_addsample_message));
+            attachedView.setMessageHtml(resourceInteractor.getStringAsHtml(R.string.test_addsample_message));
         });
     }
 }

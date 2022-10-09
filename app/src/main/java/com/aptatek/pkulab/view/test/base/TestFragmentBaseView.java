@@ -1,6 +1,8 @@
 package com.aptatek.pkulab.view.test.base;
 
 import android.net.Uri;
+import android.text.Spanned;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -15,6 +17,8 @@ public interface TestFragmentBaseView extends MvpView, TestActivityCommonView {
     void setTitle(@NonNull String title);
 
     void setMessage(@NonNull String message);
+
+    void setMessageHtml(@NonNull Spanned spannable);
 
     void showAlertDialog(@NonNull AlertDialogModel alertDialogModel, @Nullable AlertDialogDecisionListener listener);
 

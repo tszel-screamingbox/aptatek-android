@@ -6,6 +6,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import android.text.Spannable;
+import android.text.Spanned;
 import android.view.View;
 
 import com.aptatek.pkulab.R;
@@ -74,6 +77,11 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     @Override
     public void setMessage(@NonNull final String message) {
         titleHeaderView.setSubtitle(message);
+    }
+
+    @Override
+    public void setMessageHtml(@NonNull Spanned spannable) {
+        titleHeaderView.setSubtitleSpanned(spannable);
     }
 
     @Override

@@ -6,6 +6,9 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.TypedValue;
 
 import androidx.annotation.RawRes;
@@ -52,6 +55,14 @@ public class ResourceInteractor {
      */
     public String getStringResource(final int resourceId) {
         return getResources().getString(resourceId);
+    }
+
+    public Spanned getStringAsHtml(final int resourceId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(resources.getString(resourceId), Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            return Html.fromHtml(resources.getString(resourceId));
+        }
     }
 
     /**

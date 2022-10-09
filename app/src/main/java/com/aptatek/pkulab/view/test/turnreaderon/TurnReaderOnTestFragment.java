@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.test.turnreaderon;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -129,6 +130,11 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
 
     @Override
     public void setMessage(@NonNull final String message) {
+        // do nothing here
+    }
+
+    @Override
+    public void setMessageHtml(@NonNull Spanned spannable) {
         // do nothing here
     }
 

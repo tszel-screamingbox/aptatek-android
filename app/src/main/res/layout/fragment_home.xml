@@ -107,8 +107,9 @@
             android:id="@+id/exportButton"
             style="@style/Grey.Settings.Button.Big"
             android:layout_width="0dp"
-            android:text="@string/main.button.export"
             android:layout_marginBottom="12dp"
+            android:drawableStart="@drawable/ic_pdf"
+            android:text="@string/main.button.export"
             app:layout_constraintBottom_toTopOf="@id/bigSettingsButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

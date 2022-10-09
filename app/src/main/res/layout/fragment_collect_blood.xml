@@ -18,9 +18,9 @@
         android:id="@+id/header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/general.distance.mini"
+        android:layout_marginStart="@dimen/general.distance.normal"
         android:layout_marginTop="@dimen/general.distance.small"
-        android:layout_marginEnd="@dimen/general.distance.mini"
+        android:layout_marginEnd="@dimen/general.distance.normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +33,6 @@
         app:constraint_referenced_ids="header,topSpace" />
 
     <ImageView
-        app:layout_constraintVertical_chainStyle="packed"
         android:id="@+id/collect_blood_image"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -41,19 +40,22 @@
         app:layout_constraintBottom_toTopOf="@id/collect_blood_info"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBarrier" />
+        app:layout_constraintTop_toBottomOf="@id/topBarrier"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/collect_blood_info"
         style="@style/General.Text"
-        app:layout_constraintVertical_bias="0"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/general.distance.20dp"
+        android:paddingStart="@dimen/general.distance.normal"
+        android:paddingEnd="@dimen/general.distance.normal"
         android:text="@string/test.collectblood.disclaimer"
-        app:layout_constraintTop_toBottomOf="@id/collect_blood_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/collect_blood_image"
+        app:layout_constraintVertical_bias="0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

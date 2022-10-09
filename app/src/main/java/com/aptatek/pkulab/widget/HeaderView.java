@@ -2,6 +2,7 @@ package com.aptatek.pkulab.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.TextView;
@@ -57,6 +58,11 @@ public class HeaderView extends ConstraintLayout {
 
     public void setSubtitle(final String subtitle) {
         subtitleTextView.setText(subtitle);
+        invalidate();
+    }
+
+    public void setSubtitleSpanned(final Spanned spannable) {
+        subtitleTextView.setText(spannable);
         invalidate();
     }
 
