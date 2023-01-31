@@ -35,7 +35,6 @@
   * Crahslytics [License](http://try.crashlytics.com/terms/)
   * Google/Auto [License](https://github.com/google/auto/blob/master/LICENSE.txt)
   * Parceler [License](https://github.com/johncarl81/parceler/blob/master/LICENSE)
-  * Leakcanary [License](https://github.com/square/leakcanary/blob/master/LICENSE.txt)
   * Timber [License](https://github.com/JakeWharton/timber/blob/master/LICENSE.txt)
   * Datafactory [License](https://github.com/andygibson/datafactory/blob/master/license.txt)
   * Cwac-saferoom [License](https://github.com/commonsguy/cwac-saferoom/blob/master/LICENSE)

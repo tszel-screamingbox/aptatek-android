@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@id/sync_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Space
+        android:id="@+id/topSpace"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/test.top.margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.aptatek.pkulab.widget.HeaderView
+        android:id="@+id/header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/general.distance.normal"
+        android:layout_marginTop="@dimen/general.distance.small"
+        android:layout_marginEnd="@dimen/general.distance.normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:subTitleText="@string/turnreaderon.sync.message"
+        app:titleText="@string/turnreaderon.sync.title" />
+
+    <ProgressBar
+        android:id="@+id/progressIndicator"
+        style="@style/Scan.Progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/syncText"
+        style="@style/General.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/applicationGreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressIndicator" />
+
+    <ProgressBar
+        android:id="@+id/syncProgress"
+        style="@style/Test.Progress"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/test.progressbar.height"
+        android:layout_marginTop="8dp"
+        android:max="100"
+        android:progressDrawable="@drawable/custom_progressbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/syncText"
+        app:layout_constraintWidth_percent="0.7" />
+</androidx.constraintlayout.widget.ConstraintLayout>

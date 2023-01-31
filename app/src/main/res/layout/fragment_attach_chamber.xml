@@ -17,8 +17,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.normal"
-        android:layout_marginEnd="@dimen/general.distance.normal"
         android:layout_marginTop="@dimen/general.distance.small"
+        android:layout_marginEnd="@dimen/general.distance.normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,13 +30,16 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="header,topSpace" />
 
-    <ImageView
+    <com.mklimek.frameviedoview.FrameVideoView
+        android:id="@+id/testVideo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/attach_chamber"
+        android:layout_marginTop="@dimen/general.distance.xxsmall"
+        android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="986:1080"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBarrier" />
-
+        app:layout_constraintTop_toBottomOf="@id/topBarrier"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

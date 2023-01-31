@@ -31,7 +31,7 @@
     <string name="connect.turnon.no.reader.available">No reader available?</string>
     <string name="connect.turnon.no.reader.available.hint">Please make sure the reader you are searching for is turned on</string>
     <string name="connect.permission.title">Location Permission Required</string>
-    <string name="connect.permission.message">In order for the device to connect with your Reader, you’ll need to enable location services. The app does not store or track location.</string>
+    <string name="connect.permission.message">In order for the device to connect with your Reader, you\'ll need to enable location services and other Bluetooth-related permissions. Please enable them, otherwise the app won\'t be able to communicate with your Reader.</string>
     <string name="connect.permission.button">Grant Missing Permissions</string>
     <string name="connect.scan.title">Available Readers</string>
     <string name="connect.scan.message">Hold on while we are looking for readers around you</string>
@@ -122,7 +122,7 @@
     <string name="rangeinfo.very.high">Very High</string>
     <string name="rangeinfo.veryhigh.value.prefix">over</string>
     <!-- Waste dispose -->
-    <string name="dispose.title">Discard\nSafely</string>
+    <string name="dispose.title">Dispose of Test Kit</string>
     <string name="dispose.message">Medical waste and needles should be disposed properly, do not place in regular garbage can.</string>
     <string name="dispose.done">Done</string>
     <!-- Reminder Notification-->
@@ -251,7 +251,7 @@
     <string name="test.connectitall.title">Insert Cassette</string>
     <string name="test.connectitall.message">Immediately insert the cassette into the reader as shown</string>
     <string name="test.connectitall.disclaimer">WARNING\nThis should be done as soon as possible to avoid a failed test!</string>
-    <string name="test.testing.title">Testing&#8230;</string>
+    <string name="test.testing.title">Testing In Progress</string>
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
     <string name="test.selftest.title">Self Checking</string>
     <string name="test.selftest.message">Reader is doing a self-check to make sure that it can function properly during testing</string>
@@ -418,4 +418,13 @@
     <string name="test.attach.chamber.title">Attach Chamber</string>
     <string name="test.attach.chamber.message">Take the &lt;font color="#8EAADB"&gt;buffer chamber&lt;/font&gt; from the green stand and screw it onto the cassette. The blue cap remains upright. &lt;font color="#8EAADB"&gt;Ensure the buffer chamber is screwed on tightly to the Phe cassette&lt;/font&gt;.</string>
     <string name="test.attach.chamber.disclaimer">WARNING\nProceed to next step within 30 seconds!</string>
+
+    <string name="turnreaderon.sync.message">"Please wait while the app synchronises records with the reader.\nThis may take a while…"</string>
+    <string name="turnreaderon.sync.title">Syncing Results</string>
+    <string name="turnreaderon.location.message">Please enable location services in the settings in order to use the application.</string>
+    <string name="turnreaderon.location.title">Location disabled</string>
+    <string name="test.wetting.complete.disclaimer">You can now proceed with your test</string>
+    <string name="test.testcomplete.message.timeout">Remove the cassette and press Next to see the result</string>
+    <string name="connect.turnon.no.reader.paired">Press the button on the top of the previously paired reader %s and hold it until the light turns on.</string>
+
 </resources>

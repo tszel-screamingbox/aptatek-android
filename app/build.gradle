@@ -28,8 +28,8 @@ android {
         minSdkVersion versions.minsdk
         targetSdkVersion versions.targetsdk
         vectorDrawables.useSupportLibrary = true
-        versionCode 34
-        versionName "0.0.34-fda"
+        versionCode 43
+        versionName "0.0.43-fda"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments disableAnalytics: 'true'
         testInstrumentationRunnerArguments clearPackageData: 'true'
@@ -166,11 +166,6 @@ dependencies {
     implementation uiDependencies.slidingPanel
     implementation scrollView.discreteScrollView
     implementation uiDependencies.flexBox
-
-    // LeakCanary
-    debugImplementation leakDependencies.debug
-    releaseImplementation leakDependencies.release
-    testImplementation leakDependencies.release
 
     // RootBeer
     implementation rootDetectionDependencies.rootBeer

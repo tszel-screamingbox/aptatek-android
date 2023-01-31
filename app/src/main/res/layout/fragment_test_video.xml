@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:keepScreenOn="true">
 
     <Space
         android:id="@+id/topSpace"
@@ -18,24 +18,38 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/general.distance.normal"
-        android:layout_marginEnd="@dimen/general.distance.normal"
         android:layout_marginTop="@dimen/general.distance.small"
+        android:layout_marginEnd="@dimen/general.distance.normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/time_remaining"
-        style="@style/General.Text"
+        style="@style/General.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/applicationGreen"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="@dimen/font.size.xxlarge"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@id/time_remaining_rest"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        tools:text="13:45 min remaining"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/time_remaining_rest"
+        style="@style/General.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/test.running.time.remaining.format"
+        android:textColor="@color/applicationBlack"
+        android:textSize="@dimen/font.size.large"
+        android:visibility="invisible"
+        app:layout_constraintBaseline_toBaselineOf="@id/time_remaining"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/time_remaining" />
 
     <ProgressBar
         android:id="@+id/testProgress"
@@ -44,13 +58,12 @@
         android:layout_height="@dimen/test.progressbar.height"
         android:layout_marginTop="8dp"
         android:progressDrawable="@drawable/custom_progressbar"
-        android:visibility="gone"
+        android:progressTint="@color/batteryLevelNormal"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/time_remaining"
-        app:layout_constraintWidth_percent="0.7"
-        tools:progress="10"
-        tools:visibility="visible" />
+        app:layout_constraintWidth_percent="0.7" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/topBarrier"
@@ -64,8 +77,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/general.distance.xxsmall"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@id/self_check"
         app:layout_constraintDimensionRatio="986:1080"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,14 +90,13 @@
         style="@style/General.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/general.distance.normal"
-        android:paddingEnd="@dimen/general.distance.normal"
+        android:layout_marginBottom="62dp"
+        android:background="@drawable/test_alert_background_yellow"
+        android:padding="32dp"
         android:text="@string/test.turnreaderon.selfcheck.info"
+        android:textColor="@color/applicationBlack"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/testVideo"
-        tools:visibility="visible" />
-
-
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
