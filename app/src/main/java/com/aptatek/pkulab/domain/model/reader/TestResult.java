@@ -49,7 +49,7 @@ public abstract class TestResult {
     @Nullable
     public abstract String getAssayHash();
 
-    public abstract long getAssayVersion();
+    public abstract String getAssayVersion();
 
     @Nullable
     public abstract String getAssay();
@@ -99,7 +99,7 @@ public abstract class TestResult {
 
         public abstract Builder setAssayHash(@Nullable String assayHash);
 
-        public abstract Builder setAssayVersion(long assayVersion);
+        public abstract Builder setAssayVersion(String assayVersion);
 
         public abstract Builder setAssay(@Nullable String assay);
 

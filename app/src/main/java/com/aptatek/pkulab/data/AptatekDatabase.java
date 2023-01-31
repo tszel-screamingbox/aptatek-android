@@ -21,7 +21,7 @@ import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
 import com.commonsware.cwac.saferoom.SafeHelperFactory;
 
 
-@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 6)
+@Database(entities = {ReminderDayDataModel.class, ReminderDataModel.class, TestResultDataModel.class}, version = 7)
 @TypeConverters({ReminderScheduleTypeConverter.class, PkuLevelTypeConverter.class})
 public abstract class AptatekDatabase extends RoomDatabase {
 
@@ -53,6 +53,7 @@ public abstract class AptatekDatabase extends RoomDatabase {
                 .addMigrations(MIGRATION_3_4)
                 .addMigrations(MIGRATION_4_5)
                 .addMigrations(MIGRATION_5_6)
+                .addMigrations(MIGRATION_6_7)
                 .build();
     }
 
@@ -106,6 +107,18 @@ public abstract class AptatekDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE `test_results` ADD COLUMN `rawResponse` TEXT");
             database.execSQL("ALTER TABLE `test_results` ADD COLUMN `readerMac` TEXT");
             database.execSQL("ALTER TABLE `test_results` ADD COLUMN `cassetteExpiry` INTEGER NOT NULL DEFAULT -1");
+        }
+    };
+
+    // assayVersion: int -> String
+    private static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        public void migrate(SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TEMPORARY TABLE `tmp_test_results`(`id` TEXT NOT NULL, `readerId` TEXT NOT NULL,`timestamp` INTEGER NOT NULL, `sick` INTEGER NOT NULL DEFAULT 0, `fasting` INTEGER NOT NULL DEFAULT 0, `valid` INTEGER NOT NULL DEFAULT 0,`endTimestamp` INTEGER NOT NULL DEFAULT -1,`overallResult` TEXT,`temperature` TEXT,`humidity` TEXT,`hardwareVersion` TEXT,`softwareVersion` TEXT,`firmwareVersion` TEXT,`configHash` TEXT,`cassetteLot` INTEGER NOT NULL DEFAULT -1,`assayHash` TEXT,`assayVersion` TEXT,`assay` TEXT,`numericValue` REAL NOT NULL DEFAULT -1.0,`unit` TEXT,`textResult` TEXT,`readerMode` TEXT,`rawResponse` TEXT,`readerMac` TEXT,`cassetteExpiry` INTEGER NOT NULL DEFAULT -1,PRIMARY KEY(`id`))");
+            database.execSQL("INSERT INTO `tmp_test_results` SELECT `id`,`readerId`,`timestamp`,`sick`,`fasting`,`valid`,`endTimestamp`,`overallResult`,`temperature`,`humidity`,`hardwareVersion`,`softwareVersion`,`firmwareVersion`,`configHash`,`cassetteLot`,`assayHash`,`assayVersion`,`assay`,`numericValue`,`unit`,`textResult`,`readerMode`,`rawResponse`,`readerMac`,`cassetteExpiry` FROM `test_results`");
+            database.execSQL("DROP TABLE `test_results`");
+            database.execSQL("CREATE TABLE `test_results`(`id` TEXT NOT NULL, `readerId` TEXT NOT NULL,`timestamp` INTEGER NOT NULL, `sick` INTEGER NOT NULL DEFAULT 0, `fasting` INTEGER NOT NULL DEFAULT 0, `valid` INTEGER NOT NULL DEFAULT 0,`endTimestamp` INTEGER NOT NULL DEFAULT -1,`overallResult` TEXT,`temperature` TEXT,`humidity` TEXT,`hardwareVersion` TEXT,`softwareVersion` TEXT,`firmwareVersion` TEXT,`configHash` TEXT,`cassetteLot` INTEGER NOT NULL DEFAULT -1,`assayHash` TEXT,`assayVersion` TEXT,`assay` TEXT,`numericValue` REAL NOT NULL DEFAULT -1.0,`unit` TEXT DEFAULT 'MABS',`textResult` TEXT,`readerMode` TEXT,`rawResponse` TEXT,`readerMac` TEXT,`cassetteExpiry` INTEGER NOT NULL DEFAULT -1,PRIMARY KEY(`id`))");
+            database.execSQL("INSERT INTO `test_results` SELECT `id`, `readerId`,`timestamp`, `sick`, `fasting`, `valid`,`endTimestamp`,`overallResult`,`temperature`,`humidity`,`hardwareVersion`,`softwareVersion`,`firmwareVersion`,`configHash`,`cassetteLot`,`assayHash`,`assayVersion`,`assay`,`numericValue`,`unit`,`textResult`,`readerMode`,`rawResponse`,`readerMac`,`cassetteExpiry` FROM `tmp_test_results`");
+            database.execSQL("DROP TABLE `tmp_test_results`");
         }
     };
 }

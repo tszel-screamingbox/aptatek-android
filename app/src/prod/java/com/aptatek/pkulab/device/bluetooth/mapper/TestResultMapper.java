@@ -39,7 +39,7 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
                 .setReaderId(dataModel.getProductSerial())
                 .setValid(dataModel.isValid())
                 .setAssay(dataModel.getAssay())
-                .setAssayVersion(dataModel.getAssayVersion() == null ? -1L : dataModel.getAssayVersion())
+                .setAssayVersion(dataModel.getAssayVersion())
                 .setAssayHash(dataModel.getAssayHash())
                 .setTemperature(dataModel.getTemperature())
                 .setHumidity(dataModel.getHumidity())

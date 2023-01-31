@@ -222,7 +222,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_testing_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_testing_message));
-            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.testing), true);
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.test_in_progress), true);
             attachedView.setDisclaimerMessage(resourceInteractor.getStringResource(R.string.test_running_warning));
             attachedView.setDisclaimerViewVisible(true);
             attachedView.setBatteryIndicatorVisible(true);

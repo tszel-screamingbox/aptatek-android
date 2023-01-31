@@ -41,7 +41,7 @@ public class TestResultDataModel {
     private long cassetteLot;
     @Nullable
     private String assayHash;
-    private long assayVersion;
+    private String assayVersion;
     @Nullable
     private String assay;
     @Nullable
@@ -211,11 +211,11 @@ public class TestResultDataModel {
         this.assayHash = assayHash;
     }
 
-    public long getAssayVersion() {
+    public String getAssayVersion() {
         return assayVersion;
     }
 
-    public void setAssayVersion(long assayVersion) {
+    public void setAssayVersion(String assayVersion) {
         this.assayVersion = assayVersion;
     }
 

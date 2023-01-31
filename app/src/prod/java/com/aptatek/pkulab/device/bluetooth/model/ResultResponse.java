@@ -25,7 +25,7 @@ public class ResultResponse {
     private String assayHash;
     private CassetteData cassette;
     @SerializedName("assay_version")
-    private Long assayVersion;
+    private String assayVersion;
     @SerializedName("software_version")
     private String softwareVersion;
     private String mode;
@@ -123,11 +123,11 @@ public class ResultResponse {
         this.cassette = cassette;
     }
 
-    public Long getAssayVersion() {
+    public String getAssayVersion() {
         return assayVersion;
     }
 
-    public void setAssayVersion(Long assayVersion) {
+    public void setAssayVersion(String assayVersion) {
         this.assayVersion = assayVersion;
     }
 
