@@ -1,5 +1,8 @@
 package com.aptatek.pkulab.view.main.home;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.view.MotionEvent;
@@ -52,9 +55,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
@@ -370,7 +370,7 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                     };
                 }
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING && getBaseActivity() == null) {
-                    runOnAttach = () -> getBaseActivity().launchActivity(TestActivity.createStarter(getBaseActivity()), false, BaseActivity.Animation.FADE);
+                runOnAttach = () -> getBaseActivity().launchActivity(TestActivity.createStarter(getBaseActivity()), false, BaseActivity.Animation.FADE);
             }
         }
     }

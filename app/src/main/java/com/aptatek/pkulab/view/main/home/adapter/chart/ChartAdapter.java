@@ -1,11 +1,12 @@
 package com.aptatek.pkulab.view.main.home.adapter.chart;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.animation.AnimationHelper;

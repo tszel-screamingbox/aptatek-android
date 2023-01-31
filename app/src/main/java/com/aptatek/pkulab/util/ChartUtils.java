@@ -1,10 +1,11 @@
 package com.aptatek.pkulab.util;
 
+import android.util.Pair;
+
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import android.util.Pair;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.time.TimeHelper;

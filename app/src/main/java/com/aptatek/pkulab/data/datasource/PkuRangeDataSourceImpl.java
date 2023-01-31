@@ -1,15 +1,15 @@
 package com.aptatek.pkulab.data.datasource;
 
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_HIGHEST_VALUE;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_HIGH_RANGE;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_CEIL;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_FLOOR;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_LEVEL_UNIT;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_LOWEST_VALUE;
+
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeDataSource;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
-
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_HIGHEST_VALUE;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_HIGH_RANGE;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_LEVEL_UNIT;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_LOWEST_VALUE;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_CEIL;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_FLOOR;
 
 public class PkuRangeDataSourceImpl implements PkuRangeDataSource {
 

@@ -1,11 +1,12 @@
 package com.aptatek.pkulab.widget;
 
 import android.content.Context;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.aptatek.pkulab.R;
 

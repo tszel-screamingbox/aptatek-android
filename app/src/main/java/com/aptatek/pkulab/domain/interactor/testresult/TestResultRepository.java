@@ -1,6 +1,9 @@
 package com.aptatek.pkulab.domain.interactor.testresult;
 
 
+import static com.aptatek.pkulab.device.time.TimeHelper.getEarliestTimeAtGivenDay;
+import static com.aptatek.pkulab.device.time.TimeHelper.getLatestTimeAtGivenDay;
+
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
@@ -19,9 +22,6 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.aptatek.pkulab.device.time.TimeHelper.getEarliestTimeAtGivenDay;
-import static com.aptatek.pkulab.device.time.TimeHelper.getLatestTimeAtGivenDay;
 
 public class TestResultRepository extends Repository<TestResult, TestResultDataModel> {
 

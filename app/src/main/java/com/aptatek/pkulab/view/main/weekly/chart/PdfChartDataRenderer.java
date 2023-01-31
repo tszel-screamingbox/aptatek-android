@@ -1,5 +1,9 @@
 package com.aptatek.pkulab.view.main.weekly.chart;
 
+import static com.github.mikephil.charting.utils.Utils.calcTextHeight;
+import static com.github.mikephil.charting.utils.Utils.convertDpToPixel;
+import static com.github.mikephil.charting.utils.Utils.drawImage;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -19,10 +23,6 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Transformer;
 
 import java.util.List;
-
-import static com.github.mikephil.charting.utils.Utils.calcTextHeight;
-import static com.github.mikephil.charting.utils.Utils.convertDpToPixel;
-import static com.github.mikephil.charting.utils.Utils.drawImage;
 
 // Simply copied the BubbleChartRenderer's source.
 // The difference are in this implementation:

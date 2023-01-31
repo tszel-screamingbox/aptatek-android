@@ -1,5 +1,9 @@
 package com.aptatek.pkulab.view.settings.reminder;
 
+import static com.aptatek.pkulab.util.Constants.REMINDER_AM_OR_PM;
+import static com.aptatek.pkulab.util.Constants.REMINDER_HALF_DAY;
+import static com.aptatek.pkulab.util.Constants.REMINDER_MIDNIGHT;
+
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
@@ -28,10 +32,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import static com.aptatek.pkulab.util.Constants.REMINDER_AM_OR_PM;
-import static com.aptatek.pkulab.util.Constants.REMINDER_HALF_DAY;
-import static com.aptatek.pkulab.util.Constants.REMINDER_MIDNIGHT;
 
 public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettingsView> {
 
@@ -244,12 +244,12 @@ public class ReminderSettingsPresenter extends MvpBasePresenter<ReminderSettings
                                 final String id,
                                 final ReminderScheduleType reminderScheduleType) {
         compositeDisposable.add(reminderInteractor.insertReminder(Reminder.builder()
-                .setId(id)
-                .setHour(hour)
-                .setMinute(minute)
-                .setReminderScheduleType(reminderScheduleType)
-                .setWeekDay(item.getWeekDay())
-                .build())
+                        .setId(id)
+                        .setHour(hour)
+                        .setMinute(minute)
+                        .setReminderScheduleType(reminderScheduleType)
+                        .setWeekDay(item.getWeekDay())
+                        .build())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe());

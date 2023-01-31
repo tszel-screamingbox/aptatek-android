@@ -11,11 +11,12 @@ import io.reactivex.functions.Predicate;
 
 public final class Countdown {
 
-    private Countdown() {}
+    private Countdown() {
+    }
 
     public static Flowable<Long> countdown(final long intervalMs,
-                                      @NonNull final Predicate<Long> until,
-                                      @NonNull final Function<Long, Long> calculateRemainingMs) {
+                                           @NonNull final Predicate<Long> until,
+                                           @NonNull final Function<Long, Long> calculateRemainingMs) {
         return Flowable.interval(intervalMs, TimeUnit.MILLISECONDS)
                 .takeUntil(until)
                 .map(calculateRemainingMs);

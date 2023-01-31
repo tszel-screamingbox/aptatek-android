@@ -1,10 +1,10 @@
 package com.aptatek.pkulab.view.base.list.adapter;
 
 import android.content.Context;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.View;
 
 import com.aptatek.pkulab.view.base.list.IListTypeProvider;
 import com.aptatek.pkulab.view.base.list.viewholder.BaseViewHolder;

@@ -1,5 +1,8 @@
 package com.aptatek.pkulab.domain.manager.analytic.events.settings;
 
+import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.USER_BEHAVIOUR;
+import static java.lang.System.currentTimeMillis;
+
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
@@ -7,9 +10,6 @@ import com.aptatek.pkulab.domain.model.ReminderScheduleType;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.USER_BEHAVIOUR;
-import static java.lang.System.currentTimeMillis;
 
 public class Reminder extends AnalyticsEvent {
 

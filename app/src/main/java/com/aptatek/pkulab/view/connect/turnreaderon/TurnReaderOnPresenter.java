@@ -11,9 +11,13 @@ import java.util.List;
 public interface TurnReaderOnPresenter<V extends TurnReaderOnView> extends BaseConnectPresenter<V> {
 
     void onResumed();
+
     void onPaused();
+
     void connectTo(@NonNull ReaderDevice readerDevice);
+
     void evaluatePermissionResults(List<PermissionResult> results);
+
     void logScreenDisplayed();
 
 }

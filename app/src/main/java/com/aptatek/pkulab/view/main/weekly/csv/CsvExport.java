@@ -46,32 +46,32 @@ public class CsvExport {
             final List<String[]> data = new ArrayList<>();
             data.add(new String[]{"ID", "Reader ID", "MAC", "Numeric value", "Units", "Text result", "Timestamp", "End Timestamp", "Valid", "Overall result", "Assay", "Assay version", "Temperature", "Humidity", "HW version", "SW version", "FW version", "Mode", "CassetteLot", "CassetteExpiry", "Config#", "Assay#", "Raw"});
             Ix.from(results).foreach(result -> {
-                    final PkuLevel level = result.getPkuLevel() == null ? PkuLevel.create(-1f, PkuLevelUnits.MABS) : result.getPkuLevel();
-                    data.add(new String[]{
-                            result.getId(),
-                            result.getReaderId(),
-                            result.getReaderMac(),
-                            String.valueOf(level.getValue()),
-                            level.getUnit().name(),
-                            TextUtils.isEmpty(level.getTextResult()) ? "N/A" : level.getTextResult(),
-                            formatter.getFormattedCsvColumn(result.getTimestamp()),
-                            formatter.getFormattedCsvColumn(result.getEndTimestamp()),
-                            result.isValid() ? "Y" : "N",
-                            TextUtils.isEmpty(result.getOverallResult()) ? "N/A" : result.getOverallResult(),
-                            TextUtils.isEmpty(result.getAssay()) ? "N/A" : result.getAssay(),
-                            String.valueOf(result.getAssayVersion()),
-                            TextUtils.isEmpty(result.getTemperature()) ? "N/A" : result.getTemperature(),
-                            TextUtils.isEmpty(result.getHumidity()) ? "N/A" : result.getHumidity(),
-                            TextUtils.isEmpty(result.getHardwareVersion()) ? "N/A" : result.getHardwareVersion(),
-                            TextUtils.isEmpty(result.getSoftwareVersion()) ? "N/A" : result.getSoftwareVersion(),
-                            TextUtils.isEmpty(result.getFirmwareVersion()) ? "N/A" : result.getFirmwareVersion(),
-                            TextUtils.isEmpty(result.getReaderMode()) ? "N/A" : result.getReaderMode(),
-                            String.valueOf(result.getCassetteLot()),
-                            String.valueOf(result.getCassetteExpiry()),
-                            TextUtils.isEmpty(result.getConfigHash()) ? "N/A" : result.getConfigHash(),
-                            TextUtils.isEmpty(result.getAssayHash()) ? "N/A" : result.getAssayHash(),
-                            result.getRawResponse()
-                    });
+                final PkuLevel level = result.getPkuLevel() == null ? PkuLevel.create(-1f, PkuLevelUnits.MABS) : result.getPkuLevel();
+                data.add(new String[]{
+                        result.getId(),
+                        result.getReaderId(),
+                        result.getReaderMac(),
+                        String.valueOf(level.getValue()),
+                        level.getUnit().name(),
+                        TextUtils.isEmpty(level.getTextResult()) ? "N/A" : level.getTextResult(),
+                        formatter.getFormattedCsvColumn(result.getTimestamp()),
+                        formatter.getFormattedCsvColumn(result.getEndTimestamp()),
+                        result.isValid() ? "Y" : "N",
+                        TextUtils.isEmpty(result.getOverallResult()) ? "N/A" : result.getOverallResult(),
+                        TextUtils.isEmpty(result.getAssay()) ? "N/A" : result.getAssay(),
+                        String.valueOf(result.getAssayVersion()),
+                        TextUtils.isEmpty(result.getTemperature()) ? "N/A" : result.getTemperature(),
+                        TextUtils.isEmpty(result.getHumidity()) ? "N/A" : result.getHumidity(),
+                        TextUtils.isEmpty(result.getHardwareVersion()) ? "N/A" : result.getHardwareVersion(),
+                        TextUtils.isEmpty(result.getSoftwareVersion()) ? "N/A" : result.getSoftwareVersion(),
+                        TextUtils.isEmpty(result.getFirmwareVersion()) ? "N/A" : result.getFirmwareVersion(),
+                        TextUtils.isEmpty(result.getReaderMode()) ? "N/A" : result.getReaderMode(),
+                        String.valueOf(result.getCassetteLot()),
+                        String.valueOf(result.getCassetteExpiry()),
+                        TextUtils.isEmpty(result.getConfigHash()) ? "N/A" : result.getConfigHash(),
+                        TextUtils.isEmpty(result.getAssayHash()) ? "N/A" : result.getAssayHash(),
+                        result.getRawResponse()
+                });
             });
 
             writer.writeAll(data);

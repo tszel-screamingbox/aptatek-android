@@ -7,11 +7,12 @@ import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
+import android.util.AttributeSet;
+import android.view.View;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import android.util.AttributeSet;
-import android.view.View;
 
 import com.aptatek.pkulab.R;
 

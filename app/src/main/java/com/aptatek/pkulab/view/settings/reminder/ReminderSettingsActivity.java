@@ -108,9 +108,9 @@ public class ReminderSettingsActivity extends BaseActivity<ReminderSettingsView,
             @Override
             public void modifyReminderTime(@NonNull final ReminderSettingsAdapterItem reminderSettingsItem, final @NonNull RemindersAdapterItem reminderItem) {
                 TimePickerDialog.createForEdit(reminderItem.getHour(),
-                        reminderItem.getMinute(),
-                        reminderItem.getReminderScheduleType(),
-                        getTimePickerDialogCallback(reminderSettingsItem, reminderItem))
+                                reminderItem.getMinute(),
+                                reminderItem.getReminderScheduleType(),
+                                getTimePickerDialogCallback(reminderSettingsItem, reminderItem))
                         .show(getSupportFragmentManager(), "");
             }
         });

@@ -7,7 +7,7 @@ import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
 
 import javax.inject.Inject;
 
-public class CleanFingertipPresenter  extends TestBasePresenter<TestFragmentBaseView> {
+public class CleanFingertipPresenter extends TestBasePresenter<TestFragmentBaseView> {
 
     @Inject
     public CleanFingertipPresenter(ResourceInteractor resourceInteractor) {

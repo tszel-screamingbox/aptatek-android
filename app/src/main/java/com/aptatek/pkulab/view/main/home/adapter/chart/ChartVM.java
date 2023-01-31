@@ -7,8 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.aptatek.pkulab.R;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.PkuLevel;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.view.base.list.IListTypeProvider;
 import com.google.auto.value.AutoValue;
 

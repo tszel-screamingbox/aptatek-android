@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.view.splash;
 
+import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -26,8 +28,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
 
 public class SplashActivity extends BaseActivity<SplashActivityView, SplashActivityPresenter> implements SplashActivityView {
 

@@ -1,5 +1,8 @@
 package com.aptatek.pkulab.util.animation;
 
+import static com.aptatek.pkulab.util.animation.AnimationHelper.Fade.IN;
+import static com.aptatek.pkulab.util.animation.AnimationHelper.Fade.OUT;
+
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.view.View;
@@ -11,9 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import javax.inject.Inject;
-
-import static com.aptatek.pkulab.util.animation.AnimationHelper.Fade.IN;
-import static com.aptatek.pkulab.util.animation.AnimationHelper.Fade.OUT;
 
 public final class AnimationHelper {
 

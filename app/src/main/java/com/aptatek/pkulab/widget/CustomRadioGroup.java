@@ -1,13 +1,13 @@
 package com.aptatek.pkulab.widget;
 
 import android.content.Context;
-import androidx.annotation.IdRes;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RadioButton;
+
+import androidx.annotation.IdRes;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class CustomRadioGroup extends ConstraintLayout implements OnClickListener {
 

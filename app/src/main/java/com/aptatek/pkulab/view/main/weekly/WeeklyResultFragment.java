@@ -1,5 +1,9 @@
 package com.aptatek.pkulab.view.main.weekly;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+import static android.view.View.inflate;
+
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.pdf.PdfDocument;
@@ -42,10 +46,6 @@ import butterknife.OnLongClick;
 import butterknife.OnPageChange;
 import ix.Ix;
 import timber.log.Timber;
-
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-import static android.view.View.inflate;
 
 public class WeeklyResultFragment extends BaseFragment implements WeeklyResultFragmentView, PdfExportDialog.PdfExportDialogCallback, MonthPickerDialog.MonthPickerDialogCallback {
 

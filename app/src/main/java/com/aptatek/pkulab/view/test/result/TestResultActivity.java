@@ -3,12 +3,12 @@ package com.aptatek.pkulab.view.test.result;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
-import android.view.View;
-import android.widget.TextView;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;

@@ -5,12 +5,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.aptatek.pkulab.data.model.converter.PkuLevelTypeConverter;
-import com.aptatek.pkulab.data.model.converter.ReminderScheduleTypeConverter;
-import com.aptatek.pkulab.domain.model.PkuLevel;
-import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 
 @Entity(tableName = "test_results")
 public class TestResultDataModel {

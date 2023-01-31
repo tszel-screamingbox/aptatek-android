@@ -1,10 +1,10 @@
 package com.aptatek.pkulab.view.connect.scan.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.aptatek.pkulab.R;
 

@@ -1,5 +1,10 @@
 package com.aptatek.pkulab.view.main;
 
+import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
+import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
+import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.COLLAPSED;
+import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.EXPANDED;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -17,11 +22,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
-import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
-import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.COLLAPSED;
-import static com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState.EXPANDED;
 
 public class MainHostActivity extends BaseActivity<MainHostActivityView, MainHostActivityPresenter> implements MainHostActivityView {
 

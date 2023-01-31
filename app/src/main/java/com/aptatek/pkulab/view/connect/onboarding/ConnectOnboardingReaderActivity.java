@@ -1,5 +1,9 @@
 package com.aptatek.pkulab.view.connect.onboarding;
 
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.from;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,10 +28,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
-
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.from;
 
 public class ConnectOnboardingReaderActivity extends BaseActivity<ConnectReaderView, ConnectReaderPresenter> implements ConnectReaderView {
 

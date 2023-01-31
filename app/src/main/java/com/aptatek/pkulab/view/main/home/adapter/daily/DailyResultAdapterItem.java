@@ -3,7 +3,6 @@ package com.aptatek.pkulab.view.main.home.adapter.daily;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 
-
 import com.aptatek.pkulab.view.base.AdapterItem;
 import com.google.auto.value.AutoValue;
 

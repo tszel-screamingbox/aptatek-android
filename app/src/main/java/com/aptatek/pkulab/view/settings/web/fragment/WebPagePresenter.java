@@ -73,12 +73,12 @@ public class WebPagePresenter extends MvpBasePresenter<WebPageView> {
                 .toList()
                 .subscribe(attachments ->
                         ifViewAttached(view -> view.sendIssueEmail(ReportIssue.create(attachments, resourceInteractor.getFormattedString(
-                                R.string.faq_report_issue_email_description,
-                                deviceHelper.getDeviceBrand(),
-                                deviceHelper.getDeviceModel(),
-                                deviceHelper.getAppVersion(),
-                                deviceHelper.getDeviceOsVersion(),
-                                deviceHelper.getAvailableBytes()),
+                                        R.string.faq_report_issue_email_description,
+                                        deviceHelper.getDeviceBrand(),
+                                        deviceHelper.getDeviceModel(),
+                                        deviceHelper.getAppVersion(),
+                                        deviceHelper.getDeviceOsVersion(),
+                                        deviceHelper.getAvailableBytes()),
                                 resourceInteractor.getFormattedString(R.string.faq_report_issue_email_title, getEmailTitle(reportIssueType)),
                                 resourceInteractor.getStringResource(R.string.faq_report_issue_email_target))))));
     }

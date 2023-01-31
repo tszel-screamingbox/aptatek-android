@@ -30,11 +30,11 @@ public class PermissionRequiredPresenterImpl extends MvpBasePresenter<Permission
         disposeSubscription();
 
         ifViewAttached(view ->
-            disposable = bluetoothInteractor.checkPermissions(((PermissionRequiredFragment) view).getActivity())
-                    .subscribe(() -> ifViewAttached(PermissionRequiredView::onConditionsMet),
-                            error -> {
-                                // ignored here
-                            })
+                disposable = bluetoothInteractor.checkPermissions(((PermissionRequiredFragment) view).getActivity())
+                        .subscribe(() -> ifViewAttached(PermissionRequiredView::onConditionsMet),
+                                error -> {
+                                    // ignored here
+                                })
         );
     }
 

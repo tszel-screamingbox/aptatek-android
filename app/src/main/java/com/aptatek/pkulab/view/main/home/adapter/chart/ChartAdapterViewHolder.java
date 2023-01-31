@@ -1,10 +1,11 @@
 package com.aptatek.pkulab.view.main.home.adapter.chart;
 
 import android.content.Context;
-import androidx.annotation.ColorInt;
-import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.core.content.ContextCompat;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.util.animation.AnimationHelper;

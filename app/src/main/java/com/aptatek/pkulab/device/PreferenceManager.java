@@ -42,11 +42,11 @@ public class PreferenceManager {
         sharedPreferences = applicationContext.getSharedPreferences(PreferenceManager.Constants.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
-    public void setAppKilledTimestamp(final long timestamp){
+    public void setAppKilledTimestamp(final long timestamp) {
         sharedPreferences.edit().putLong(PREF_APP_KILLED_DURING_TEST, timestamp).apply();
     }
 
-    public long getAppKilledTimestamp(){
+    public long getAppKilledTimestamp() {
         return sharedPreferences.getLong(PREF_APP_KILLED_DURING_TEST, 0L);
     }
 

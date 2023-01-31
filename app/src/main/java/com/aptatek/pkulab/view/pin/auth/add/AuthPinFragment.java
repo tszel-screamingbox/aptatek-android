@@ -1,5 +1,8 @@
 package com.aptatek.pkulab.view.pin.auth.add;
 
+import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.RISK_MITIGATION;
+import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.USER_BEHAVIOUR;
+
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,9 +18,6 @@ import com.aptatek.pkulab.view.pin.auth.AuthPinHostActivity;
 import com.aptatek.pkulab.view.pin.base.BasePinFragment;
 
 import javax.inject.Inject;
-
-import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.RISK_MITIGATION;
-import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.USER_BEHAVIOUR;
 
 
 public class AuthPinFragment extends BasePinFragment implements AuthPinView {

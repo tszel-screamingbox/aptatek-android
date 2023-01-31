@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation;
 
+import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.RISK_MITIGATION;
+
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
@@ -7,8 +9,6 @@ import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.aptatek.pkulab.domain.manager.analytic.EventCategory.RISK_MITIGATION;
 
 public class UnfinishedTest extends AnalyticsEvent {
 

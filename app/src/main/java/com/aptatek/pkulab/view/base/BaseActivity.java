@@ -134,7 +134,7 @@ public abstract class BaseActivity<V extends MvpView, P extends MvpPresenter<V>>
         analyticManager.logEvent(eventName, eventInfo, category);
     }
 
-    public void logEllapsedTime(final String eventName, final int seconds, final EventCategory category){
+    public void logEllapsedTime(final String eventName, final int seconds, final EventCategory category) {
         analyticManager.logElapsedTime(eventName, seconds, category);
     }
 

@@ -96,7 +96,7 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
 
     private void checkLastMeasure() {
         disposables.add(Single.zip(testResultInteractor.getLatest(), testInteractor.getAppKilledTimestamp(),
-                (testResult, appKilledTime) -> testResult.getTimestamp() > appKilledTime)
+                        (testResult, appKilledTime) -> testResult.getTimestamp() > appKilledTime)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribe(correct -> {

@@ -7,6 +7,14 @@ import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.TransitionManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
@@ -16,15 +24,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-
-import android.transition.TransitionManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.ReminderScheduleType;

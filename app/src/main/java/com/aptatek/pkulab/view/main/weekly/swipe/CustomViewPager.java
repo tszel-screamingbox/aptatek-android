@@ -1,11 +1,11 @@
 package com.aptatek.pkulab.view.main.weekly.swipe;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.ViewPager;
 
 public class CustomViewPager extends ViewPager {
 

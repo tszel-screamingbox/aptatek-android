@@ -1,6 +1,10 @@
 package com.aptatek.pkulab.device.formatter;
 
 
+import static com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter.convertTo;
+import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MICRO_MOL;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_MARGIN_MIN;
+
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
@@ -11,10 +15,6 @@ import com.aptatek.pkulab.domain.model.PkuRangeInfo;
 import com.aptatek.pkulab.view.settings.pkulevel.RangeSettingsValueFormatter;
 
 import java.util.Locale;
-
-import static com.aptatek.pkulab.domain.interactor.pkurange.PkuLevelConverter.convertTo;
-import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MICRO_MOL;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_MARGIN_MIN;
 
 public class RangeSettingsValueFormatterImpl implements RangeSettingsValueFormatter {
 

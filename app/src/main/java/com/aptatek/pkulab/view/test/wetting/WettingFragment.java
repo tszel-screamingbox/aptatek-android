@@ -1,8 +1,12 @@
 package com.aptatek.pkulab.view.test.wetting;
 
-import androidx.annotation.NonNull;
+import static android.view.MotionEvent.ACTION_DOWN;
+import static android.view.MotionEvent.ACTION_UP;
+
 import android.view.MotionEvent;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
@@ -16,9 +20,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnTouch;
-
-import static android.view.MotionEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_UP;
 
 public class WettingFragment extends TestBaseFragment<WettingView, WettingPresenter> implements WettingView {
 

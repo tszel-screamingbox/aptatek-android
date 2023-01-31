@@ -48,6 +48,7 @@ public class ScanDialogFragment extends DialogFragment {
 
     public interface ScanListener {
         void onDeviceChosen(@NonNull ReaderDevice device);
+
         void onConnectSkip();
     }
 

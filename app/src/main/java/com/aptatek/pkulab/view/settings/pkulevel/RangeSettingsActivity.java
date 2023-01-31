@@ -1,5 +1,10 @@
 package com.aptatek.pkulab.view.settings.pkulevel;
 
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_CEIL;
+import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_FLOOR;
+import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
+import static com.aptatek.pkulab.view.base.BaseActivity.Animation.LEFT_TO_RIGHT;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,11 +32,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_CEIL;
-import static com.aptatek.pkulab.util.Constants.DEFAULT_PKU_INCREASED_FLOOR;
-import static com.aptatek.pkulab.view.base.BaseActivity.Animation.FADE;
-import static com.aptatek.pkulab.view.base.BaseActivity.Animation.LEFT_TO_RIGHT;
 
 public class RangeSettingsActivity extends BaseActivity<RangeSettingsView, RangeSettingsPresenter> implements RangeSettingsView {
 

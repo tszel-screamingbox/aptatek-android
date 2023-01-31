@@ -28,7 +28,7 @@ public class TestInteractor {
         return Completable.fromAction(() -> preferenceManager.setAppKilledTimestamp(timestamp));
     }
 
-    public Single<Long> getAppKilledTimestamp(){
+    public Single<Long> getAppKilledTimestamp() {
         return Single.fromCallable(preferenceManager::getAppKilledTimestamp);
     }
 

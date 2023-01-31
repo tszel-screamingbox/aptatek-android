@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.parentalgate;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -14,7 +15,7 @@ import com.aptatek.pkulab.view.parentalgate.welcome.ParentalGateWelcomeFragment;
 import javax.inject.Inject;
 
 public class ParentalGateActivity extends BaseRootFrameActivity<ParentalGateView, ParentalGatePresenter>
-    implements ParentalGateView {
+        implements ParentalGateView {
 
     public static Intent starter(@NonNull final Context context) {
         return new Intent(context, ParentalGateActivity.class);

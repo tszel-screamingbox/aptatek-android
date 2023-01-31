@@ -1,11 +1,16 @@
 package com.aptatek.pkulab.view.parentalgate.welcome;
 
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 import android.app.DatePickerDialog;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.FragmentComponent;
@@ -22,10 +27,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.view.View.GONE;
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 
 public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcomeView, ParentalGateWelcomePresenter>
         implements ParentalGateWelcomeView {

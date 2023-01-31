@@ -184,7 +184,7 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
 
                     if (dataSet.isDrawValuesEnabled()) {
                         final float lineHeight = Utils.calcTextHeight(mValuePaint, "9999");
-                        drawValue(c, formatter.getBubbleLabel(entry), x,y + (0.5f * lineHeight), valueTextColor);
+                        drawValue(c, formatter.getBubbleLabel(entry), x, y + (0.5f * lineHeight), valueTextColor);
                     }
 
                     if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
@@ -194,8 +194,8 @@ public class CustomBubbleChartRenderer extends BubbleChartRenderer {
                         Utils.drawImage(
                                 c,
                                 icon,
-                                (int)(x + iconsOffset.x),
-                                (int)(y + iconsOffset.y),
+                                (int) (x + iconsOffset.x),
+                                (int) (y + iconsOffset.y),
                                 icon.getIntrinsicWidth(),
                                 icon.getIntrinsicHeight());
                     }

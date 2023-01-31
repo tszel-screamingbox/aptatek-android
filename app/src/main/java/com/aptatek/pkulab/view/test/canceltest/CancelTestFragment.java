@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.view.test.canceltest;
 
+import static com.aptatek.pkulab.view.test.TestScreens.CANCEL;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +22,6 @@ import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import javax.inject.Inject;
 
 import butterknife.OnClick;
-
-import static com.aptatek.pkulab.view.test.TestScreens.CANCEL;
 
 public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelTestPresenter> implements CancelTestView {
 

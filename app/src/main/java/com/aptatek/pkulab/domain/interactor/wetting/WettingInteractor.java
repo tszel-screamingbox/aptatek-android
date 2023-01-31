@@ -47,16 +47,16 @@ public class WettingInteractor {
                         return Flowable.fromCallable(wettingDataSource::getWettingStart)
                                 .flatMap(startTime ->
                                         com.aptatek.pkulab.domain.interactor.countdown.Countdown.countdown(
-                                            Constants.COUNTDOWN_REFRESH_PERIOD,
-                                            tick -> System.currentTimeMillis() - startTime > Constants.DEFAULT_WETTING_PERIOD,
-                                            tick -> Math.max(0, Constants.DEFAULT_WETTING_PERIOD - (System.currentTimeMillis() - startTime))
-                                        )
-                                        .map(remaining ->
-                                            Countdown.builder()
-                                                .setRemainingFormattedText(timeFormatter.getFormattedRemaining(remaining))
-                                                .setRemainingMillis(remaining)
-                                                .build()
-                                        )
+                                                        Constants.COUNTDOWN_REFRESH_PERIOD,
+                                                        tick -> System.currentTimeMillis() - startTime > Constants.DEFAULT_WETTING_PERIOD,
+                                                        tick -> Math.max(0, Constants.DEFAULT_WETTING_PERIOD - (System.currentTimeMillis() - startTime))
+                                                )
+                                                .map(remaining ->
+                                                        Countdown.builder()
+                                                                .setRemainingFormattedText(timeFormatter.getFormattedRemaining(remaining))
+                                                                .setRemainingMillis(remaining)
+                                                                .build()
+                                                )
                                 );
                     } else {
                         return Flowable.error(new WettingNotRunningError());

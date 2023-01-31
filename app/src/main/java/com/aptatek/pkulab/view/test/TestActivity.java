@@ -1,5 +1,14 @@
 package com.aptatek.pkulab.view.test;
 
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+import static com.aptatek.pkulab.view.test.TestScreens.CANCEL;
+import static com.aptatek.pkulab.view.test.TestScreens.TESTING;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.from;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -58,16 +67,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 import timber.log.Timber;
-
-import static android.view.View.GONE;
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-import static com.aptatek.pkulab.view.test.TestScreens.CANCEL;
-import static com.aptatek.pkulab.view.test.TestScreens.TESTING;
-import static com.aptatek.pkulab.view.test.TestScreens.showDotFor;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED;
-import static com.google.android.material.bottomsheet.BottomSheetBehavior.from;
 
 public class TestActivity extends BaseActivity<TestActivityView, TestActivityPresenter>
         implements TestActivityView {

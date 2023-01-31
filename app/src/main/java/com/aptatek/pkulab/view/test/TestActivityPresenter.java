@@ -10,7 +10,6 @@ import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.AnalyticsEvent;
 import com.aptatek.pkulab.domain.manager.analytic.events.appstart.AppStartFromWetting;
 import com.aptatek.pkulab.domain.manager.analytic.events.appstart.OpenFromBTNotification;
-import com.aptatek.pkulab.domain.manager.analytic.events.test.BreakFoilDone;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.CollectBloodDone;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.ConnectItAllDone;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.MixSampleDone;
@@ -98,36 +97,36 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
     public void onShowNextScreen(@NonNull final TestScreens current) {
         disposable =
                 Completable.fromAction(() -> {
-                    final long elapsedScreenTimeMs = Math.abs(System.currentTimeMillis() - screenDisplayedAtMs);
-                    final AnalyticsEvent event;
-                    switch (current) {
-                        case POKE_FINGERTIP: {
-                            event = new PokeFingertipDone(elapsedScreenTimeMs);
-                            break;
-                        }
-                        case COLLECT_BLOOD: {
-                            event = new CollectBloodDone(elapsedScreenTimeMs);
-                            break;
-                        }
-                        case MIX_SAMPLE: {
-                            event = new MixSampleDone(elapsedScreenTimeMs);
-                            break;
-                        }
-                        case CONNECT_IT_ALL: {
-                            event = new ConnectItAllDone(elapsedScreenTimeMs);
-                            break;
-                        }
-                        default: {
-                            event = null;
-                            break;
-                        }
-                    }
+                            final long elapsedScreenTimeMs = Math.abs(System.currentTimeMillis() - screenDisplayedAtMs);
+                            final AnalyticsEvent event;
+                            switch (current) {
+                                case POKE_FINGERTIP: {
+                                    event = new PokeFingertipDone(elapsedScreenTimeMs);
+                                    break;
+                                }
+                                case COLLECT_BLOOD: {
+                                    event = new CollectBloodDone(elapsedScreenTimeMs);
+                                    break;
+                                }
+                                case MIX_SAMPLE: {
+                                    event = new MixSampleDone(elapsedScreenTimeMs);
+                                    break;
+                                }
+                                case CONNECT_IT_ALL: {
+                                    event = new ConnectItAllDone(elapsedScreenTimeMs);
+                                    break;
+                                }
+                                default: {
+                                    event = null;
+                                    break;
+                                }
+                            }
 
-                    if (event != null) {
-                        analyticsManager.logEvent(event);
-                    }
+                            if (event != null) {
+                                analyticsManager.logEvent(event);
+                            }
 
-                })
+                        })
                         .andThen(Flowable.fromCallable(() -> TestScreens.values()[current.ordinal() + 1]))
                         .flatMap(nextScreen -> {
                             if (nextScreen == TestScreens.WETTING) {

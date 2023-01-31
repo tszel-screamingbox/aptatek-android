@@ -1,9 +1,9 @@
 package com.aptatek.pkulab.view.main.home;
 
-import androidx.annotation.NonNull;
-
 import android.text.format.DateUtils;
 import android.util.Pair;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.device.DeviceHelper;
@@ -238,7 +238,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         disposables.add(testResultInteractor.listAll()
                 .take(1)
                 .singleOrError()
-                .flatMap(results -> csvExport.generateAttachment(results, "Export_"+System.currentTimeMillis()+".csv"))
+                .flatMap(results -> csvExport.generateAttachment(results, "Export_" + System.currentTimeMillis() + ".csv"))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(attachment -> ifViewAttached(view -> view.onCsvReady(attachment)))
         );

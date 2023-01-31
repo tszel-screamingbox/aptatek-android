@@ -1,5 +1,10 @@
 package com.aptatek.pkulab.view.main.weekly;
 
+import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MICRO_MOL;
+import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_HALF_YEAR;
+import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_MONTH;
+import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_THREE_MONTHS;
+
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
@@ -35,11 +40,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
-
-import static com.aptatek.pkulab.domain.model.PkuLevelUnits.MICRO_MOL;
-import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_HALF_YEAR;
-import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_MONTH;
-import static com.aptatek.pkulab.view.main.weekly.pdf.PdfExportInterval.LAST_THREE_MONTHS;
 
 public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResultFragmentView> {
 

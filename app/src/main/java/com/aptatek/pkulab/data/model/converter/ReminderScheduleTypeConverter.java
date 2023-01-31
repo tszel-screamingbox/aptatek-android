@@ -1,13 +1,13 @@
 package com.aptatek.pkulab.data.model.converter;
 
 
-import androidx.room.TypeConverter;
-
-import com.aptatek.pkulab.data.model.ReminderScheduleDataType;
-
 import static com.aptatek.pkulab.data.model.ReminderScheduleDataType.BIWEEKLY;
 import static com.aptatek.pkulab.data.model.ReminderScheduleDataType.MONTHLY;
 import static com.aptatek.pkulab.data.model.ReminderScheduleDataType.WEEKLY;
+
+import androidx.room.TypeConverter;
+
+import com.aptatek.pkulab.data.model.ReminderScheduleDataType;
 
 public class ReminderScheduleTypeConverter {
 

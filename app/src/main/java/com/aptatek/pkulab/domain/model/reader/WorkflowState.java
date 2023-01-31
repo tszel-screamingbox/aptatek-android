@@ -1,6 +1,6 @@
 package com.aptatek.pkulab.domain.model.reader;
 
-public enum  WorkflowState {
+public enum WorkflowState {
 
     DEFAULT,
     POWER_ON,

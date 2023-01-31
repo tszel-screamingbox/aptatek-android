@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.device.formatter;
 
+import static java.util.Locale.getDefault;
+
 import androidx.annotation.StringRes;
 import androidx.core.util.Preconditions;
 
@@ -11,8 +13,6 @@ import com.aptatek.pkulab.view.main.weekly.WeeklyChartResourceFormatter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import static java.util.Locale.getDefault;
 
 public class WeeklyChartResourceFormatterImpl implements WeeklyChartResourceFormatter {
 
@@ -91,7 +91,8 @@ public class WeeklyChartResourceFormatterImpl implements WeeklyChartResourceForm
 
         final SimpleDateFormat df = new SimpleDateFormat(resourceInteractor.getStringResource(R.string.csv_export_file_name_format), getDefault());
         df.format(date);
-        return resourceInteractor.getStringResource(R.string.csv_export_pku_range_info_file_name, df.format(date));    }
+        return resourceInteractor.getStringResource(R.string.csv_export_pku_range_info_file_name, df.format(date));
+    }
 
     @StringRes
     private int getDayOfMothSuffix(final int dayOfMonth) {

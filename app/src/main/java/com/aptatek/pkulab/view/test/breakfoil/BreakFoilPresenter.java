@@ -22,11 +22,11 @@ public class BreakFoilPresenter extends TestBasePresenter<BreakFoilView> {
             attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.break_foil), true);
             attachedView.showAlertDialog(
                     AlertDialogModel.builder()
-                    .setTitle(resourceInteractor.getStringResource(R.string.test_breakfoil_alert_title))
-                    .setMessage(resourceInteractor.getStringResource(R.string.test_breakfoil_alert_message))
-                    .setCancelable(false)
-                    .setNeutralButtonText(resourceInteractor.getStringResource(android.R.string.ok))
-                    .build(), null);
+                            .setTitle(resourceInteractor.getStringResource(R.string.test_breakfoil_alert_title))
+                            .setMessage(resourceInteractor.getStringResource(R.string.test_breakfoil_alert_message))
+                            .setCancelable(false)
+                            .setNeutralButtonText(resourceInteractor.getStringResource(android.R.string.ok))
+                            .build(), null);
         });
     }
 

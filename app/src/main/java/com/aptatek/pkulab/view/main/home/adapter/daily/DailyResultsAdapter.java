@@ -1,8 +1,9 @@
 package com.aptatek.pkulab.view.main.home.adapter.daily;
 
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.view.base.BaseAdapter;

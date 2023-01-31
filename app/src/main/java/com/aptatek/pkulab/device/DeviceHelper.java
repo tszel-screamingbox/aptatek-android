@@ -1,5 +1,13 @@
 package com.aptatek.pkulab.device;
 
+import static android.content.Context.CONNECTIVITY_SERVICE;
+import static android.content.Intent.ACTION_BATTERY_CHANGED;
+import static android.net.NetworkInfo.State;
+import static android.net.NetworkInfo.State.CONNECTED;
+import static android.net.NetworkInfo.State.CONNECTING;
+import static android.os.BatteryManager.EXTRA_LEVEL;
+import static android.os.BatteryManager.EXTRA_SCALE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -19,14 +27,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import timber.log.Timber;
-
-import static android.content.Context.CONNECTIVITY_SERVICE;
-import static android.content.Intent.ACTION_BATTERY_CHANGED;
-import static android.net.NetworkInfo.State;
-import static android.net.NetworkInfo.State.CONNECTED;
-import static android.net.NetworkInfo.State.CONNECTING;
-import static android.os.BatteryManager.EXTRA_LEVEL;
-import static android.os.BatteryManager.EXTRA_SCALE;
 
 /**
  * Helper for easy access device provided data

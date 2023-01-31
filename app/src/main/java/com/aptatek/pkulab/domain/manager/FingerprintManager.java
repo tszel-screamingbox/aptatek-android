@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
+
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.core.os.CancellationSignal;
 
@@ -67,7 +68,9 @@ public class FingerprintManager {
                     .build();
             keyGenerator.init(spec);
             keyGenerator.generateKey();
-        } catch (KeyStoreException | IOException | CertificateException | InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchProviderException e) {
+        } catch (KeyStoreException | IOException | CertificateException |
+                 InvalidAlgorithmParameterException | NoSuchAlgorithmException |
+                 NoSuchProviderException e) {
             throw new RuntimeException("Failed to generate new key", e);
         }
 
@@ -82,7 +85,8 @@ public class FingerprintManager {
             final SecretKey key = (SecretKey) keyStore.getKey(KEY_NAME, null);
             cipher.init(Cipher.ENCRYPT_MODE, key);
             return cipher;
-        } catch (NoSuchAlgorithmException | UnrecoverableKeyException | KeyStoreException | NoSuchPaddingException | InvalidKeyException e) {
+        } catch (NoSuchAlgorithmException | UnrecoverableKeyException | KeyStoreException |
+                 NoSuchPaddingException | InvalidKeyException e) {
             throw new RuntimeException("Failed to init Cipher", e);
         }
     }

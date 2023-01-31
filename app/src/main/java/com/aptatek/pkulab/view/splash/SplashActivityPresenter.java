@@ -1,7 +1,8 @@
 package com.aptatek.pkulab.view.splash;
 
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;

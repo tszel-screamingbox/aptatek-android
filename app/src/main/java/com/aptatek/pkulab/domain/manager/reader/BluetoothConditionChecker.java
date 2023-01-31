@@ -7,9 +7,13 @@ import java.util.List;
 public interface BluetoothConditionChecker {
 
     boolean hasBleFeature();
+
     boolean hasAllPermissions();
+
     boolean shouldShowRationale(Activity activity);
+
     boolean isBluetoothEnabled();
+
     List<String> getMissingPermissions();
 
 }

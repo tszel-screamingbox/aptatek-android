@@ -3,13 +3,12 @@ package com.aptatek.pkulab.view.test.base;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spanned;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-
-import android.text.Spannable;
-import android.text.Spanned;
-import android.view.View;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;

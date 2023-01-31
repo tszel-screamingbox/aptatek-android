@@ -3,14 +3,12 @@ package com.aptatek.pkulab.data.mapper;
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.data.model.TestResultDataModel;
-import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.aptatek.pkulab.domain.base.Mapper;
 import com.aptatek.pkulab.domain.model.PkuLevel;
 import com.aptatek.pkulab.domain.model.PkuLevelUnits;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -32,7 +30,7 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
 
     @Override
     public TestResult mapToDomain(final TestResultDataModel dataModel) {
-        final TestResult result =  TestResult.builder()
+        final TestResult result = TestResult.builder()
                 .setReaderId(dataModel.getReaderId())
                 .setId(dataModel.getId())
                 .setReaderMac(dataModel.getReaderMac())

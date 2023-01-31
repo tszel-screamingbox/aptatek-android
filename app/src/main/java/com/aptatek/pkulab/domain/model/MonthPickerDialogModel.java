@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.domain.model;
 
 import android.os.Parcelable;
+
 import com.google.auto.value.AutoValue;
 
 @AutoValue

@@ -1,5 +1,8 @@
 package com.aptatek.pkulab.device.notifications;
 
+import static android.app.PendingIntent.FLAG_CANCEL_CURRENT;
+import static android.app.PendingIntent.getBroadcast;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,9 +19,6 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.remindersettings.ReminderNotificationFactory;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 import com.aptatek.pkulab.util.Constants;
-
-import static android.app.PendingIntent.FLAG_CANCEL_CURRENT;
-import static android.app.PendingIntent.getBroadcast;
 
 public class ReminderNotificationFactoryImpl extends BaseNotificationFactory implements ReminderNotificationFactory {
 

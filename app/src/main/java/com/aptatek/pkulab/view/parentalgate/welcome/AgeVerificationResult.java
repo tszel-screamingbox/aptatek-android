@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.parentalgate.welcome;
 
 import android.os.Parcelable;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 

@@ -15,7 +15,7 @@ public abstract class Repository<I, O> {
     protected final Mapper<I, O> mapper;
 
     @SuppressWarnings("unchecked")
-    protected Repository(final Provider<Map<Class<?>, Mapper<?,?>>> mapperProvider) {
+    protected Repository(final Provider<Map<Class<?>, Mapper<?, ?>>> mapperProvider) {
         mapper = (Mapper<I, O>) mapperProvider.get().get(getDomainClass());
     }
 

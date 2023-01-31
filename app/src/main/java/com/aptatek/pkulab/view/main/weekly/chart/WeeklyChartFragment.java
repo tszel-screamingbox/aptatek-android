@@ -2,9 +2,10 @@ package com.aptatek.pkulab.view.main.weekly.chart;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
-import android.view.View;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.FragmentComponent;

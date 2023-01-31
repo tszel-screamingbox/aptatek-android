@@ -1,5 +1,9 @@
 package com.aptatek.pkulab.view.settings.web.fragment;
 
+import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.CONNECTION;
+import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.DATA;
+import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.OTHER;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,10 +46,6 @@ import activitystarter.Arg;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.CONNECTION;
-import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.DATA;
-import static com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.ReportProblem.ReportType.OTHER;
 
 public class WebPageFragment extends BaseFragment<WebPageView, WebPagePresenter> implements WebPageView, ReportIssueDialog.ReportIssueDialogCallback {
 
