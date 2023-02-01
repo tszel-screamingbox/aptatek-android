@@ -112,7 +112,10 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         disposables.add(
                 readerInteractor.connect(readerDevice)
                         .andThen(bluetoothInteractor.stopScan())
-                        .subscribe(this::waitForWorkflowStateChange,
+                        .subscribe(() -> {
+                            ifViewAttached(av -> av.showConnectedToToast(readerDevice.getName()));
+                            waitForWorkflowStateChange();
+                                },
                                 error -> {
                                     Timber.d("connectTo error: %s", error);
 
@@ -289,6 +292,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 break;
             }
             case 1: {
+                ifViewAttached(av -> av.showConnectedToToast(devices.get(0).getName()));
                 waitForWorkflowStateChange();
                 break;
             }

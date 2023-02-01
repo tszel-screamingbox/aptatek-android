@@ -21,4 +21,5 @@ public interface TurnReaderOnView extends BaseConnectView {
 
     void displayNoReaderAvailable();        // after 5 sec of scan, when no readers were found
 
+    void showConnectedToToast(String name);
 }

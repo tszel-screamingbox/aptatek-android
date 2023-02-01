@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -288,5 +289,10 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
      */
     protected boolean isSkipable() {
         return false;
+    }
+
+    @Override
+    public void showConnectedToToast(String name) {
+        Toast.makeText(requireActivity(), getString(R.string.connect_turnon_connected, name), Toast.LENGTH_SHORT).show();
     }
 }

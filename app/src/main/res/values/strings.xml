@@ -427,5 +427,6 @@
     <string name="test.wetting.complete.disclaimer">You can now proceed with your test</string>
     <string name="test.testcomplete.message.timeout">Remove the cassette and press Next to see the result</string>
     <string name="connect.turnon.no.reader.paired">Press the button on the top of the previously paired reader %s and hold it until the light turns on.</string>
+    <string name="connect.turnon.connected">Connected to %1s</string>
 
 </resources>
