@@ -7,6 +7,7 @@ import androidx.core.content.PermissionChecker;
 
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
+import com.aptatek.pkulab.domain.interactor.reader.LocationServiceDisabledError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingBleFeatureError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
@@ -139,6 +140,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 disposables.add(
                         bluetoothInteractor.checkPermissions(((TurnReaderOnFragment) view).getActivity())
                                 .andThen(bluetoothInteractor.enableBluetoothWhenNecessary())
+                                .andThen(bluetoothInteractor.checkLocationServicesEnabled(((TurnReaderOnFragment) view).getActivity()))
                                 .andThen(readerInteractor.getConnectedReader()
                                         .toSingle())
                                 .flatMap(ignored ->
@@ -164,6 +166,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                             } else if (error instanceof NoSuchElementException) {
                                                 // no connected reader
                                                 startConnectionFlow();
+                                            } else if (error instanceof LocationServiceDisabledError) {
+                                                ifViewAttached(TurnReaderOnView::showEnableLocation);
                                             }
                                         }
                                 )

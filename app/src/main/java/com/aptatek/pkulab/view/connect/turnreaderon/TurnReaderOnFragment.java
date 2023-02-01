@@ -1,6 +1,8 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -14,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
@@ -27,7 +31,10 @@ import com.aptatek.pkulab.view.connect.onboarding.ConnectOnboardingReaderActivit
 import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectFragment;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
+import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
+import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
+import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.TestActivity;
 import com.aptatek.pkulab.widget.HeaderView;
 import com.mklimek.frameviedoview.FrameVideoView;
@@ -54,6 +61,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     private static final String TAG_SCAN = "pkulab.scan.devices";
     private static final String TAG_NOT_SUPPORTED = "pkulab.scan.devicenotsupported";
     private static final int REQ_PERMISSION = 737;
+    private static final String PKULAB_TEST_ALERT = "pkulab.test.alert";
 
     @BindView(R.id.header)
     protected HeaderView headerView;
@@ -294,5 +302,39 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     @Override
     public void showConnectedToToast(String name) {
         Toast.makeText(requireActivity(), getString(R.string.connect_turnon_connected, name), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void displayPairedReaderNotAvailable(String paired, String found) {
+        // TODO implement properly
+        Toast.makeText(requireActivity(), "paired reader not available: " + paired + ", " + found, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showEnableLocation() {
+        AlertDialogModel dialogModel = AlertDialogModel.builder()
+                .setTitle(getString(R.string.turnreaderon_location_title))
+                .setMessage(getString(R.string.turnreaderon_location_message))
+                .setNeutralButtonText(getString(R.string.alertdialog_button_ok))
+                .setCancelable(false)
+                .build();
+        showAlertDialog(dialogModel, decision -> {
+            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        });
+    }
+
+    @Override
+    public void showErrorScreen(ErrorModel paramErrorModel) {
+        Toast.makeText(requireActivity(), "show Error for " + paramErrorModel, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void showAlertDialog(AlertDialogModel alertDialogModel, AlertDialogDecisionListener listener) {
+        final Fragment fragmentByTag = getChildFragmentManager().findFragmentByTag(PKULAB_TEST_ALERT);
+        if (fragmentByTag instanceof DialogFragment) {
+            ((DialogFragment) fragmentByTag).dismiss();
+        } else {
+            AlertDialogFragment alertDialogFragment1 = AlertDialogFragment.create(alertDialogModel, listener);
+            alertDialogFragment1.show(getChildFragmentManager(), PKULAB_TEST_ALERT);
+        }
     }
 }

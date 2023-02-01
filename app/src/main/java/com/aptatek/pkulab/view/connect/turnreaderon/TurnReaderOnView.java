@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.view.connect.common.BaseConnectView;
+import com.aptatek.pkulab.view.error.ErrorModel;
 
 import java.util.List;
 
@@ -22,4 +23,11 @@ public interface TurnReaderOnView extends BaseConnectView {
     void displayNoReaderAvailable();        // after 5 sec of scan, when no readers were found
 
     void showConnectedToToast(String name);
+
+    void displayPairedReaderNotAvailable(String paired, String found);
+
+    void showEnableLocation();
+
+    void showErrorScreen(ErrorModel paramErrorModel);
+
 }

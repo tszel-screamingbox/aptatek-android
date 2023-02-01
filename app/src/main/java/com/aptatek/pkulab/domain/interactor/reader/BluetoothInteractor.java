@@ -1,6 +1,11 @@
 package com.aptatek.pkulab.domain.interactor.reader;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 
@@ -42,6 +47,23 @@ public class BluetoothInteractor {
         }
 
         return Completable.complete();
+    }
+
+    public Completable checkLocationServicesEnabled(Activity context) {
+        final boolean isLocationEnabled;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            final LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            isLocationEnabled = locationManager.isLocationEnabled();
+        } else {
+            final ContentResolver contentResolver = context.getContentResolver();
+            isLocationEnabled = Settings.Secure.getInt(contentResolver, Settings.Secure.LOCATION_MODE, 0) != Settings.Secure.LOCATION_MODE_OFF;
+        }
+
+        if (isLocationEnabled) {
+            return Completable.complete();
+        } else {
+            return Completable.error(new LocationServiceDisabledError());
+        }
     }
 
     public Completable enableBluetoothWhenNecessary() {
