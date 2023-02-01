@@ -316,8 +316,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     public void evaluatePermissionResults(final List<PermissionResult> results) {
         final Boolean hasAllPermissions = Ix.from(results)
                 .map(PermissionResult::getResult)
-                .map(result -> result == PermissionChecker.PERMISSION_GRANTED)
-                .scan((prev, current) -> prev && current)
+                .all(it -> it == PermissionChecker.PERMISSION_GRANTED)
                 .single(false);
 
         if (hasAllPermissions) {
