@@ -36,12 +36,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import ix.Ix;
+import timber.log.Timber;
 
 public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends TurnReaderOnPresenter<V>> extends BaseFragment<V, P> implements TurnReaderOnView, ScanDialogFragment.ScanListener {
 
@@ -63,6 +68,8 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @Inject
     IAnalyticsManager analyticsManager;
+
+    private Disposable restartVideoDisposable;
 
     private long screentime = 0L;
 
@@ -96,7 +103,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     protected void initObjects(final View view) {
         headerView.setTitle(resourceInteractor.getStringResource(R.string.test_turnreaderon_title));
         headerView.setSubtitle(resourceInteractor.getStringResource(R.string.test_turnreaderon_message));
-        playVideo(resourceInteractor.getUriForRawFile(R.raw.turn_reader_on), true);
+        playVideo(resourceInteractor.getUriForRawFile(R.raw.turn_reader_on), false);
 
         if (getActivity() instanceof TestActivity) {
             final ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) noReaderAvailable.getLayoutParams();
@@ -111,6 +118,20 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
             public void mediaPlayerPrepared(MediaPlayer mediaPlayer) {
                 mediaPlayer.setLooping(shouldLoop);
                 mediaPlayer.start();
+
+                if (!shouldLoop) {
+                    mediaPlayer.setOnCompletionListener(mp -> {
+                        restartVideoDisposable = Single.timer(5L, TimeUnit.SECONDS)
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(ignored -> {
+                                    try {
+                                        mediaPlayer.start();
+                                    } catch (Throwable t) {
+                                        Timber.e(t, "Failed to restart video loop!" );
+                                    }
+                                });
+                    });
+                }
             }
 
             @Override
@@ -121,8 +142,19 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     }
 
     @Override
-    public void onStop() {
+    public void onDestroyView() {
+        super.onDestroyView();
+
         videoView.setFrameVideoViewListener(null);
+    }
+
+    @Override
+    public void onStop() {
+        if (restartVideoDisposable != null && !restartVideoDisposable.isDisposed()) {
+            restartVideoDisposable.dispose();
+            restartVideoDisposable = null;
+        }
+
 
         super.onStop();
     }
