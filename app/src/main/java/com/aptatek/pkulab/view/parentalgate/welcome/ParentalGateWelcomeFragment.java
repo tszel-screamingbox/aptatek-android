@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -121,7 +122,6 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
@@ -239,5 +239,10 @@ public class ParentalGateWelcomeFragment extends BaseFragment<ParentalGateWelcom
     @OnClick(R.id.parentalBirthDate)
     public void onBirthDateClicked() {
         showDatePicker();
+    }
+
+    @Override
+    public void showToastWithMessage(int resId) {
+        Toast.makeText(requireActivity(), getString(resId), Toast.LENGTH_SHORT).show();
     }
 }

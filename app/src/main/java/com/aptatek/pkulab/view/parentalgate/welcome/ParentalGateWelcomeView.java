@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.parentalgate.welcome;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
@@ -25,5 +26,7 @@ public interface ParentalGateWelcomeView extends MvpView {
     void setKeypadActionText(@NonNull String text);
 
     void showResult(@NonNull AgeVerificationResult result);
+
+    void showToastWithMessage(@StringRes int resId);
 
 }

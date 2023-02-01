@@ -76,20 +76,24 @@ public class ParentalGateWelcomePresenter extends MvpBasePresenter<ParentalGateW
     }
 
     public void onBirthDateSet(final long birthDate) {
-        disposables.add(parentalGateInteractor.formatBirthDate(birthDate)
-                .subscribe(formatted -> {
-                    ageCheckModel = ageCheckModel.toBuilder()
-                            .setBirthDate(birthDate)
-                            .setBirthDateFormatted(formatted)
-                            .build();
+        if (birthDate > System.currentTimeMillis()) {
+            ifViewAttached(av -> av.showToastWithMessage(R.string.parental_birthday_invalid));
+        } else {
+            disposables.add(parentalGateInteractor.formatBirthDate(birthDate)
+                    .subscribe(formatted -> {
+                        ageCheckModel = ageCheckModel.toBuilder()
+                                .setBirthDate(birthDate)
+                                .setBirthDateFormatted(formatted)
+                                .build();
 
-                    ifViewAttached(attachedView -> {
-                        attachedView.setShowBirthDateField(true);
-                        attachedView.setBirthDateText(ageCheckModel.getBirthDateFormatted());
-                        attachedView.setAgeText("");
-                        attachedView.setButtonText(resourceInteractor.getStringResource(R.string.parental_welcome_how_old_are_you));
-                    });
-                }));
+                        ifViewAttached(attachedView -> {
+                            attachedView.setShowBirthDateField(true);
+                            attachedView.setBirthDateText(ageCheckModel.getBirthDateFormatted());
+                            attachedView.setAgeText("");
+                            attachedView.setButtonText(resourceInteractor.getStringResource(R.string.parental_welcome_how_old_are_you));
+                        });
+                    }));
+        }
     }
 
     public void verifyAge(final String ageText) {
