@@ -23,6 +23,7 @@ import com.aptatek.pkulab.device.bluetooth.error.NoValueReceivedError;
 import com.aptatek.pkulab.device.bluetooth.model.BluetoothReaderDevice;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
+import com.aptatek.pkulab.device.bluetooth.model.SyncProgress;
 import com.aptatek.pkulab.device.bluetooth.model.TestProgressResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
@@ -42,8 +43,11 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Predicate;
+import io.reactivex.processors.BehaviorProcessor;
+import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.schedulers.Schedulers;
 import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.data.Data;
@@ -55,6 +59,8 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     private final BleManagerGattCallback bleGattCallback;
     private final Map<String, CharacteristicReader> characteristicReaderMap;
     private final Map<String, CharacteristicDataProvider> characteristicDataProviderMap;
+
+    private final BehaviorProcessor<SyncProgress> syncProgressFlowableProcessor = BehaviorProcessor.create();
 
     @Inject
     LumosReaderManager(@ApplicationContext @NonNull final Context context,
@@ -344,14 +350,15 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 .andThen(concatSyncResponse()
                         .map(ResultSyncResponse::getIdentifiers)
                         .toFlowable()
+                        .doOnNext(list -> syncProgressFlowableProcessor.onNext(new SyncProgress(0, 0, list.size())))
                         .flatMapIterable(it -> it)
                 )
                 .observeOn(Schedulers.io())
-                .scan(new ArrayList<>(), (BiFunction<List<ResultResponse>, String, List<ResultResponse>>) (prevResults, identifier) -> {
-                    prevResults.add(getResult(identifier).blockingGet());
-                    return prevResults;
-                })
-                .lastOrError();
+                .concatMap(id -> getResult(id)
+                        .doOnSuccess(r -> syncProgressFlowableProcessor.onNext(syncProgressFlowableProcessor.getValue().increaseProgress()))
+                        .doOnError(ex -> syncProgressFlowableProcessor.onNext(syncProgressFlowableProcessor.getValue().failed()))
+                        .toFlowable())
+                .collectInto(new ArrayList<>(), List::add);
     }
 
     public Single<List<ResultResponse>> syncAllResults() {
@@ -428,5 +435,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                     return bluetoothReaderDevice;
                 }
         ).toMaybe());
+    }
+
+    public Flowable<SyncProgress> getSyncProgress() {
+        return syncProgressFlowableProcessor;
     }
 }

@@ -17,6 +17,7 @@ import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ErrorResponse;
 import com.aptatek.pkulab.device.bluetooth.model.NumPreviousResultsResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
+import com.aptatek.pkulab.device.bluetooth.model.SyncProgress;
 import com.aptatek.pkulab.device.bluetooth.model.TestProgressResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.base.Mapper;
@@ -61,6 +62,7 @@ public class ReaderManagerImpl implements ReaderManager {
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<TestProgress> testProgressProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<Integer> batteryLevelProcessor = BehaviorProcessor.create();
+
     private final Map<Class<?>, Mapper<?, ?>> mappers;
 
     public ReaderManagerImpl(final LumosReaderManager lumosReaderManager, final Map<Class<?>, Mapper<?, ?>> mappers) {
@@ -331,5 +333,10 @@ public class ReaderManagerImpl implements ReaderManager {
     @Override
     public Flowable<TestProgress> testProgress() {
         return testProgressProcessor;
+    }
+
+    @Override
+    public Flowable<SyncProgress> getSyncProgressFlowable() {
+        return lumosReaderManager.getSyncProgress();
     }
 }

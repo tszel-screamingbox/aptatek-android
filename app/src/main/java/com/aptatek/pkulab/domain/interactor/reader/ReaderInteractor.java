@@ -21,6 +21,7 @@ import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+import com.aptatek.pkulab.view.connect.turnreaderon.SyncProgress;
 
 import java.util.Collections;
 import java.util.List;
@@ -102,6 +103,10 @@ public class ReaderInteractor {
                     }
                 })
                 .subscribeOn(Schedulers.io());
+    }
+
+    public Flowable<SyncProgress> syncProgressFlowable() {
+        return readerManager.getSyncProgressFlowable().map(sp -> new SyncProgress(sp.getCurrentResults(), sp.getFailedResults(), sp.getTotalResults()));
     }
 
     @NonNull

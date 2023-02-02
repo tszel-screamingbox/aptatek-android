@@ -3,6 +3,7 @@ package com.aptatek.pkulab.domain.manager.reader;
 
 import androidx.annotation.NonNull;
 
+import com.aptatek.pkulab.device.bluetooth.model.SyncProgress;
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
 import com.aptatek.pkulab.domain.model.reader.Error;
@@ -53,5 +54,7 @@ public interface ReaderManager {
     Flowable<TestProgress> testProgress();
 
     Flowable<Integer> batteryLevel();
+
+    Flowable<SyncProgress> getSyncProgressFlowable();
 
 }

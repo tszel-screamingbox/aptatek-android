@@ -1,7 +1,6 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -9,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +32,6 @@ import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectFrag
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
-import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.TestActivity;
@@ -44,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -71,6 +71,18 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     protected Button noReaderAvailable;
     @BindView(R.id.self_check)
     protected TextView selfCheck;
+
+    @BindView(R.id.container)
+    protected ConstraintLayout container;
+
+    @BindView(R.id.sync_container)
+    protected ConstraintLayout syncContainer;
+
+    @BindView(R.id.syncProgress)
+    protected ProgressBar syncProgressBar;
+
+    @BindView(R.id.syncText)
+    protected TextView syncText;
 
     @Inject
     ResourceInteractor resourceInteractor;
@@ -136,7 +148,7 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
                                     try {
                                         mediaPlayer.start();
                                     } catch (Throwable t) {
-                                        Timber.e(t, "Failed to restart video loop!" );
+                                        Timber.e(t, "Failed to restart video loop!");
                                     }
                                 });
                     });
@@ -335,6 +347,22 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
         } else {
             AlertDialogFragment alertDialogFragment1 = AlertDialogFragment.create(alertDialogModel, listener);
             alertDialogFragment1.show(getChildFragmentManager(), PKULAB_TEST_ALERT);
+        }
+    }
+
+    @Override
+    public void showSyncResultsScreen(SyncProgress syncProgress) {
+        container.setVisibility(View.INVISIBLE);
+        syncContainer.setVisibility(View.VISIBLE);
+        syncProgressBar.setProgress((int) ((syncProgress.getCurrent() + syncProgress.getFailed()) / (float) syncProgress.getTotal() * 100));
+        if (syncProgress.getFailed() != 0) {
+            syncText.setText(
+                    String.format(Locale.getDefault(), "%d/%d (%d failed)", syncProgress.getCurrent(), syncProgress.getTotal(), syncProgress.getFailed())
+            );
+            syncText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.applicationRed));
+        } else {
+            syncText.setText(String.format(Locale.getDefault(), "%d/%d", syncProgress.getCurrent(), syncProgress.getTotal()));
+            syncText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.applicationGreen));
         }
     }
 }

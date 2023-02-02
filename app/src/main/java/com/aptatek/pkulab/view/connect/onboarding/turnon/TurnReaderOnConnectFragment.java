@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.connect.onboarding.turnon;
 
 import android.content.Intent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -93,5 +94,10 @@ public class TurnReaderOnConnectFragment extends TurnReaderOnFragment<TurnReader
     public void onPause() {
         presenter.onPaused();
         super.onPause();
+    }
+
+    @Override
+    public void showFailedToSync() {
+        Toast.makeText(requireActivity(), "Failed to sync devices", Toast.LENGTH_LONG).show();
     }
 }

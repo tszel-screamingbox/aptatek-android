@@ -9,4 +9,6 @@ public interface TurnReaderOnConnectView extends BaseConnectOnboardingScreenView
 
     void displaySkipButton();
 
+    void showFailedToSync();
+
 }

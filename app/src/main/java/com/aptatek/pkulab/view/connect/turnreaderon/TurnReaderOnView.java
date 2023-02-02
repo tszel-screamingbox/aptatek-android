@@ -30,4 +30,6 @@ public interface TurnReaderOnView extends BaseConnectView {
 
     void showErrorScreen(ErrorModel paramErrorModel);
 
+    void showSyncResultsScreen(SyncProgress syncProgress);
+
 }

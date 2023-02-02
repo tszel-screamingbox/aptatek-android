@@ -17,6 +17,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
@@ -26,6 +27,8 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     private final ReaderInteractor readerInteractor;
     private final IAnalyticsManager analyticsManager;
     private Disposable disposable;
+
+    private Disposable syncProgressDisposable;
 
     @Inject
     public TurnReaderOnConnectPresenter(final BluetoothInteractor bluetoothInteractor,
@@ -83,14 +86,29 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
         disposable = readerInteractor.syncResultsAfterLatest()
                 .subscribe(
                         ignored -> ifViewAttached(TurnReaderOnConnectView::navigateToHome),
-                        error -> Timber.d("Error while running syncAllResults: %s", error)
+                        error -> {
+                            Timber.d("Error while running syncAllResults: %s", error);
+                            ifViewAttached(TurnReaderOnConnectView::showFailedToSync);
+                        }
+                );
+
+        syncProgressDisposable = readerInteractor.syncProgressFlowable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        syncProgress -> ifViewAttached(av -> av.showSyncResultsScreen(syncProgress)),
+                        error -> Timber.d("Error while reading sync progress: %s", error)
                 );
     }
 
     private void disposeDisposable() {
-        if (disposable != null) {
+        if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
             disposable = null;
+        }
+
+        if (syncProgressDisposable != null && !syncProgressDisposable.isDisposed()) {
+            syncProgressDisposable.dispose();
+            syncProgressDisposable = null;
         }
     }
 
