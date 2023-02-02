@@ -53,7 +53,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
     }
 
     void checkBattery(final TestScreens screen) {
-        if (deviceHelper.isBatteryLow() && !(screen == TestScreens.CONNECT_IT_ALL || screen == TestScreens.TESTING || screen == TestScreens.CANCEL)) {
+        if (deviceHelper.isBatteryLow() && !deviceHelper.isBatteryCharging() && !(screen == TestScreens.CONNECT_IT_ALL || screen == TestScreens.TESTING || screen == TestScreens.CANCEL)) {
             cancelTest = testInteractor.resetTest()
                     .andThen(Completable.fromAction(() -> analyticsManager.logEvent(new TestCancelledDueToCriticalBattery(deviceHelper.getPhoneBattery()))))
                     .observeOn(AndroidSchedulers.mainThread())

@@ -15,6 +15,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
@@ -96,6 +97,14 @@ public class DeviceHelper {
         final int level = batteryStatus.getIntExtra(EXTRA_LEVEL, -1);
         final int scale = batteryStatus.getIntExtra(EXTRA_SCALE, -1);
         return level / (float) scale <= BATTERY_LEVEL_LOW;
+    }
+
+    public boolean isBatteryCharging() {
+        final IntentFilter intentFilter = new IntentFilter(ACTION_BATTERY_CHANGED);
+        final Intent intent = this.context.registerReceiver(null, intentFilter);
+        final int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        return status == BatteryManager.BATTERY_STATUS_CHARGING
+                || status == BatteryManager.BATTERY_STATUS_FULL;
     }
 
     public int getPhoneBattery() {
