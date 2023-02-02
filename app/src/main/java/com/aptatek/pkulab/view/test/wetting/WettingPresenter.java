@@ -65,6 +65,7 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
                                 attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_wetting_complete_title));
                                 attachedView.setMessage("");
                                 attachedView.setNextButtonVisible(true);
+                                attachedView.showWettingComplete();
                             });
                         }
                 )

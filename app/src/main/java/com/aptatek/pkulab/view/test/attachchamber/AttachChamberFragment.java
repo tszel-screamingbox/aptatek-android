@@ -25,7 +25,7 @@ public class AttachChamberFragment extends TestBaseFragment<TestFragmentBaseView
 
     @Override
     public TestScreens getScreen() {
-        return TestScreens.CLEAN_FINGERTIP;
+        return TestScreens.ATTACH_CHAMBER;
     }
 
     @Override

@@ -18,6 +18,7 @@ public class MixSamplePresenter extends TestBasePresenter<MixSampleView> {
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_mixsample_title));
             attachedView.setMessageHtml(resourceInteractor.getStringAsHtml(R.string.test_mixsample_message));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.mix_sample), true);
         });
     }
 }

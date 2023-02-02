@@ -4,6 +4,7 @@ import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_UP;
 
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,12 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
     @BindView(R.id.testWettingCountdown)
     TextView tvCountdown;
 
+    @BindView(R.id.testWettingMin)
+    TextView tvCountdownMin;
+
+    @BindView(R.id.greenDisclaimerText)
+    TextView greenDisclaimer;
+
     private boolean isDisclaimerPressed = false;
     private boolean isAnimationPressed = false;
     private boolean incubationComplete = false;
@@ -46,6 +53,7 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
     @Override
     public void showCountdown(@NonNull final String countdownRemaining) {
         tvCountdown.setText(countdownRemaining);
+        tvCountdownMin.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -143,5 +151,10 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void showWettingComplete() {
+        greenDisclaimer.setVisibility(View.VISIBLE);
     }
 }

@@ -21,6 +21,7 @@ public class AttachChamberPresenter extends TestBasePresenter<TestFragmentBaseVi
             attachedView.setMessageHtml(resourceInteractor.getStringAsHtml(R.string.test_attach_chamber_message));
             attachedView.setDisclaimerViewVisible(true);
             attachedView.setDisclaimerMessage(resourceInteractor.getStringResource(R.string.test_attach_chamber_disclaimer));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.attach_chamber), true);
         });
     }
 }

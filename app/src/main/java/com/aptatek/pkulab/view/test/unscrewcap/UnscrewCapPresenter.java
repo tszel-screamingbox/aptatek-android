@@ -19,6 +19,7 @@ public class UnscrewCapPresenter extends TestBasePresenter<TestFragmentBaseView>
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_unscrew_title));
             attachedView.setMessageHtml(resourceInteractor.getStringAsHtml(R.string.test_unscrew_message));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.unscrew_cap), true);
         });
     }
 }

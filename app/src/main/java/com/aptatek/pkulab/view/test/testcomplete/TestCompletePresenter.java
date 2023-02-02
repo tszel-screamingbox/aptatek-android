@@ -28,6 +28,7 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_testcomplete_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_testcomplete_message));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.test_complete), true);
             attachedView.setBatteryIndicatorVisible(false);
         });
     }

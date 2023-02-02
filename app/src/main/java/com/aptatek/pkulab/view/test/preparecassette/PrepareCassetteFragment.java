@@ -15,7 +15,7 @@ public class PrepareCassetteFragment extends TestBaseFragment<TestFragmentBaseVi
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_attach_chamber;
+        return R.layout.fragment_prepare_cassette;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class PrepareCassetteFragment extends TestBaseFragment<TestFragmentBaseVi
 
     @Override
     public TestScreens getScreen() {
-        return TestScreens.ATTACH_CHAMBER;
+        return TestScreens.PREPARE_CASSETTE;
     }
 
     @Override

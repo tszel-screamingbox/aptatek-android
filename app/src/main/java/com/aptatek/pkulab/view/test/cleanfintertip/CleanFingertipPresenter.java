@@ -19,6 +19,7 @@ public class CleanFingertipPresenter extends TestBasePresenter<TestFragmentBaseV
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_cleanfingertip_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_cleanfingertip_message));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.clean_fingertip), true);
         });
     }
 }

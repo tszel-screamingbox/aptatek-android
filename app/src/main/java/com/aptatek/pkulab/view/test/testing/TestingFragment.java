@@ -35,6 +35,8 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
 
     @BindView(R.id.time_remaining)
     TextView timeRemainingView;
+    @BindView(R.id.time_remaining_rest)
+    TextView timeRemainingRestView;
 
     @BindView(R.id.testProgress)
     ProgressBar testProgress;
@@ -54,6 +56,7 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
         headerView.setSubtitle(null);
 
         timeRemainingView.setVisibility(View.VISIBLE);
+        timeRemainingRestView.setVisibility(View.VISIBLE);
         timeRemainingView.setText(timeRemaining.getTimeRemaining());
         testProgress.setVisibility(View.VISIBLE);
         testProgress.setProgress(timeRemaining.getProgressPercent());

@@ -19,6 +19,7 @@ public class PrepareBufferChamberPresenter extends TestBasePresenter<TestFragmen
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_prep_buffer_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_prep_buffer_message));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.prepare_buffer_chamber), true);
         });
     }
 }

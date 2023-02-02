@@ -19,6 +19,7 @@ public class AddSamplePresenter extends TestBasePresenter<TestFragmentBaseView> 
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_addsample_title));
             attachedView.setMessageHtml(resourceInteractor.getStringAsHtml(R.string.test_addsample_message));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.add_sample), true);
         });
     }
 }

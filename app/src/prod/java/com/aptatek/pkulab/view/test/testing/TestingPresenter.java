@@ -202,7 +202,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         calendar.setTimeInMillis(Math.max(0, testProgress.getEnd() - now));
         final String formattedRemaining = simpleDateFormat.format(calendar.getTime());
         final int percent = dontCalculateProgress ? testProgress.getPercent () : (int) ((Math.abs(now - testProgress.getStart()) / (float) Math.abs(testProgress.getEnd() - testProgress.getStart())) * 100);
-        final TimeRemaining timeRemaining = new TimeRemaining(resourceInteractor.getFormattedString(R.string.test_running_time_remaining_format, formattedRemaining), percent);
+        final TimeRemaining timeRemaining = new TimeRemaining(formattedRemaining, percent);
         ifViewAttached(attachedView -> attachedView.showTimeRemaining(timeRemaining));
     }
 

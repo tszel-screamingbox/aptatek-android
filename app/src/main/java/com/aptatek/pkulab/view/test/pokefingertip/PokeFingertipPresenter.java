@@ -18,6 +18,7 @@ public class PokeFingertipPresenter extends TestBasePresenter<PokeFingertipView>
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_pokefingertrip_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_pokefingertrip_message));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.lance_fingertip), true);
         });
     }
 }

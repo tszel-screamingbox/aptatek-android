@@ -38,6 +38,7 @@ public class ConnectItAllPresenter extends TestBasePresenter<ConnectItAllView> {
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_connectitall_message));
             attachedView.setDisclaimerViewVisible(true);
             attachedView.setDisclaimerMessage(resourceInteractor.getStringResource(R.string.test_connectitall_disclaimer));
+            attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.insert_cassette), true);
         });
 
         disposables.add(

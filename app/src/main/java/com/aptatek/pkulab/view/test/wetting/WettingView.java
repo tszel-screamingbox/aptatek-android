@@ -8,4 +8,6 @@ public interface WettingView extends TestFragmentBaseView {
 
     void showCountdown(@NonNull String countdownRemaining);
 
+    void showWettingComplete();
+
 }
