@@ -252,7 +252,7 @@
     <string name="test.connectitall.title">Insert Cassette</string>
     <string name="test.connectitall.message">Immediately insert the cassette into the reader as shown</string>
     <string name="test.connectitall.disclaimer">WARNING\nThis should be done as soon as possible to avoid a failed test!</string>
-    <string name="test.testing.title">Testing In Progress</string>
+    <string name="test.testing.title">Test In Progress</string>
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
     <string name="test.selftest.title">Self Checking</string>
     <string name="test.selftest.message">Reader is doing a self-check to make sure that it can function properly during testing</string>

@@ -8,6 +8,7 @@ import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
 import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
+import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingDone;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingScreenDisplayed;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,14 +41,20 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     private final IAnalyticsManager analyticsManager;
     private final ErrorInteractor errorInteractor;
     private final TestInteractor testInteractor;
+
+    private final TestResultInteractor testResultInteractor;
+
     private CompositeDisposable disposables;
     private long screenDisplayedAtMs = 0L;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss", Locale.getDefault());
     private Disposable countdownDisposable;
 
+    private TestProgress firstProgress;
+
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
                             final ReaderInteractor readerInteractor,
+                            final TestResultInteractor testResultInteractor,
                             final IAnalyticsManager analyticsManager,
                             final ErrorInteractor errorInteractor,
                             final TestInteractor testInteractor) {
@@ -55,6 +63,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         this.analyticsManager = analyticsManager;
         this.errorInteractor = errorInteractor;
         this.testInteractor = testInteractor;
+        this.testResultInteractor = testResultInteractor;
 
         analyticsManager.logEvent(new TestingScreenDisplayed());
         screenDisplayedAtMs = System.currentTimeMillis();
@@ -68,7 +77,20 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .toSingle()
                         .toFlowable()
                         .flatMap(ignored ->
+                                // wait until we don't see a brand new test id
                                 readerInteractor.getTestProgress()
+                                        .doOnNext(tp -> Timber.d("--- testProgress: %s", tp))
+                                        .doOnError(e -> Timber.d("--- testProgress error: %s", e))
+                                        .flatMap(tp -> testResultInteractor.getById(tp.getTestId()).toFlowable()
+                                                .map(result -> false)
+                                                .onErrorReturnItem(true)
+                                                .doOnNext(valid -> Timber.d("--- found tp by id in database = %s", !valid ? "TRUE" : "FALSE"))
+                                                .filter(valid -> valid)
+                                                .map(valid -> tp)
+                                        )
+                                        .doOnNext(tp -> Timber.d("--- filtered TestProgress: %s", tp))
+                                        .doOnComplete(() -> Timber.d("--- filtered testProgress complete !!! should not happen"))
+                                        .doOnError(e -> Timber.d("--- filtered testProgress error %s !!! should not happen", e))
                                         .takeUntil(readerInteractor.getWorkflowState()
                                                 .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
                                                 .take(1)
@@ -84,8 +106,21 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                     } else {
                                         Timber.d("Unhandled exception during Test Progress update: %s", error);
                                     }
+                                    if (countdownDisposable != null && !countdownDisposable.isDisposed()) {
+                                        countdownDisposable.dispose();
+                                        countdownDisposable = null;
+                                    }
+                                    firstProgress = null;
                                 },
-                                () -> Timber.d("Test Progress updates complete")
+                                () -> {
+                                    firstProgress = null;
+
+                                    if (countdownDisposable != null && !countdownDisposable.isDisposed()) {
+                                        countdownDisposable.dispose();
+                                        countdownDisposable = null;
+                                    }
+                                    Timber.d("Test Progress updates complete");
+                                }
                         )
         );
 
@@ -114,7 +149,20 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .toSingle()
                         .toFlowable()
                         .flatMap(ignored ->
+                                // wait until we don't see a brand new test id
                                 readerInteractor.getTestProgress()
+                                        .doOnNext(tp -> Timber.d("--- sync trigger testProgress: %s", tp))
+                                        .doOnError(e -> Timber.d("--- sync trigger testProgress error: %s", e))
+                                        .flatMap(tp -> testResultInteractor.getById(tp.getTestId()).toFlowable()
+                                                .map(result -> false)
+                                                .onErrorReturnItem(true)
+                                                .doOnNext(valid -> Timber.d("--- sync trigger found tp by id in database = %s", !valid ? "TRUE" : "FALSE"))
+                                                .filter(valid -> valid)
+                                                .map(valid -> tp)
+                                        )
+                                        .doOnNext(tp -> Timber.d("--- sync trigger filtered TestProgress: %s", tp))
+                                        .doOnComplete(() -> Timber.d("--- sync trigger filtered testProgress complete !!! should not happen"))
+                                        .doOnError(e -> Timber.d("--- sync trigger filtered testProgress error %s !!! should not happen", e))
                                         .takeUntil(readerInteractor.getWorkflowState()
                                                 .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
                                                 .take(1)
@@ -182,31 +230,38 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             countdownDisposable = null;
         }
 
-        updateRemaining(testProgress, true);
+        if (firstProgress == null) {
+            firstProgress = testProgress;
+        }
 
-        countdownDisposable =
-                // delay 5 seconds, then update every second
-                Observable.timer(5L, TimeUnit.SECONDS)
-                        .flatMap(ignored -> Observable.interval(1L, TimeUnit.SECONDS))
+        updateRemaining(firstProgress);
+
+        // update progress every 1 seconds
+        countdownDisposable = Observable.interval(1L, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 tick -> {
-                                    updateRemaining(testProgress, false);
+                                    updateRemaining(firstProgress);
                                 }
                         );
     }
 
-    private void updateRemaining(final TestProgress testProgress, final boolean dontCalculateProgress) {
+    private void updateRemaining(final TestProgress testProgress) {
+        if (testProgress == null) return;
+
         final Calendar calendar = Calendar.getInstance();
         final long now = System.currentTimeMillis();
-        calendar.setTimeInMillis(Math.max(0, testProgress.getEnd() - now));
+        // add 1 minute offset to the remaining time
+        calendar.setTimeInMillis(Math.max(0, testProgress.getEnd() + 60 * 1000L- now));
         final String formattedRemaining = simpleDateFormat.format(calendar.getTime());
-        final int percent = dontCalculateProgress ? testProgress.getPercent () : (int) ((Math.abs(now - testProgress.getStart()) / (float) Math.abs(testProgress.getEnd() - testProgress.getStart())) * 100);
+        final int percent = (int) ((Math.abs(now - testProgress.getStart()) / (float) Math.abs(testProgress.getEnd() - testProgress.getStart())) * 100);
         final TimeRemaining timeRemaining = new TimeRemaining(formattedRemaining, percent);
         ifViewAttached(attachedView -> attachedView.showTimeRemaining(timeRemaining));
     }
 
     public void onStop() {
+        firstProgress = null;
+
         if (disposables != null) {
             disposables.dispose();
             disposables = null;
