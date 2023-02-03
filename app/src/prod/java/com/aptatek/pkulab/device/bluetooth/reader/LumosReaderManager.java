@@ -35,9 +35,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.CRC32;
 
 import javax.inject.Inject;
+import javax.xml.transform.Result;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -321,22 +323,17 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_REQUEST_RESULT, new RequestResultCharacteristicDataProvider.RequestResultData(id))
                 .delay(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS, TimeUnit.MILLISECONDS) // give some time for reader to settle Result characteristic...
                 .andThen(readResult()
-                        .onErrorResumeNext(error -> {
-                            Timber.d("onErrorResumeNext: %s", error);
-                            if (error instanceof JsonParseException) {  // if the good old initial value is read from Result char, give it a chance to settle and try again...
-                                Timber.d("Caught a JsonParseException, but no worries, will retry soon...");
-                                return Flowable.timer(LumosReaderConstants.DELAY_AFTER_DISCOVERY_MS, TimeUnit.MILLISECONDS)
-                                        .take(1)
-                                        .singleOrError()
-                                        .flatMap(ignored -> readResult());
-                            }
-
-                            return Single.error(error);
+                        // make sure we have the result we requested...
+                        .flatMap(result -> result.getDate().equals(id) ? Single.just(result) : Single.error(IllegalStateException::new))
+                        // retry 3 times max, with 200ms delay between each tries
+                        .retryWhen(errors -> {
+                            final AtomicInteger counter = new AtomicInteger();
+                            return errors
+                                    .doOnNext(e -> Timber.d("---- getResult retryWhen error: %s", e))
+                                    .takeWhile(e -> counter.getAndIncrement() < 3)
+                                    .flatMap(e -> Flowable.timer(200L, TimeUnit.MILLISECONDS).doOnNext(ignored -> Timber.d("---- getResult retry after delay...")));
                         })
-                        .repeat()
-                        .takeUntil((Predicate<ResultResponse>) resultResponse -> resultResponse.getDate().equals(id)) // make sure we have the result we requested...
                 )
-                .lastOrError()
                 .doOnSuccess(result -> Timber.d("Requested resultId: %s, result: %s", id, result));
     }
 
@@ -346,7 +343,13 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
     }
 
     private Single<List<ResultResponse>> syncResults(@Nullable final SyncRequestCharacteristicDataProvider.SyncAfterRequestData data) {
+        return syncResultsFlowable(data)
+                .collectInto(new ArrayList<>(), List::add);
+    }
+
+    private Flowable<ResultResponse> syncResultsFlowable(@Nullable final SyncRequestCharacteristicDataProvider.SyncAfterRequestData data) {
         return writeCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST, data)
+                .delay(200L, TimeUnit.MILLISECONDS)
                 .andThen(concatSyncResponse()
                         .map(ResultSyncResponse::getIdentifiers)
                         .toFlowable()
@@ -357,12 +360,21 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 .concatMap(id -> getResult(id)
                         .doOnSuccess(r -> syncProgressFlowableProcessor.onNext(syncProgressFlowableProcessor.getValue().increaseProgress()))
                         .doOnError(ex -> syncProgressFlowableProcessor.onNext(syncProgressFlowableProcessor.getValue().failed()))
-                        .toFlowable())
-                .collectInto(new ArrayList<>(), List::add);
+                        .toFlowable()
+                        .onErrorResumeNext(Flowable.empty())
+                );
     }
 
     public Single<List<ResultResponse>> syncAllResults() {
         return syncResults(null);
+    }
+
+    public Flowable<ResultResponse> syncAllResultsFlowable() {
+        return syncResultsFlowable(null);
+    }
+
+    public Flowable<ResultResponse> syncResultsAfterFlowable(final @NonNull String lastResultId) {
+        return syncResultsFlowable(new SyncRequestCharacteristicDataProvider.SyncAfterRequestData(lastResultId));
     }
 
     public Single<List<ResultResponse>> syncResultsAfter(final @NonNull String lastResultId) {

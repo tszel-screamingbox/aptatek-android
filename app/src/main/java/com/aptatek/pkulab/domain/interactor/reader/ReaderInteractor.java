@@ -105,6 +105,33 @@ public class ReaderInteractor {
                 .subscribeOn(Schedulers.io());
     }
 
+    public Completable syncAllResultsCompletable() {
+        return readerManager.syncAllResultsFlowable()
+                .flatMapCompletable(testResultRepository::insert).onErrorComplete()
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Completable syncResultsAfterLast() {
+        return readerManager.getConnectedDevice()
+                .toSingle()
+                .map(ReaderDevice::getMac)
+                .flatMap(testResultRepository::getLatestFromReader)
+                .map(TestResult::getId)
+                .onErrorReturnItem("invalid")
+                .toFlowable()
+                .flatMap(id -> {
+                    if (id.equals("invalid")) {
+                        return readerManager.syncAllResultsFlowable();
+                    } else {
+                        return readerManager.syncResultsAfterFlowable(id);
+                    }
+                })
+                .flatMapCompletable(testResultRepository::insert)
+                .onErrorComplete()
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io());
+    }
+
     public Flowable<SyncProgress> syncProgressFlowable() {
         return readerManager.getSyncProgressFlowable().map(sp -> new SyncProgress(sp.getCurrentResults(), sp.getFailedResults(), sp.getTotalResults()));
     }

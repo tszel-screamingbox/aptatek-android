@@ -100,4 +100,10 @@ public class TestResultRepository extends Repository<TestResult, TestResultDataM
                 .flatMapCompletable(dataModels -> Completable.fromAction(() -> testResultDataSource.insertAll(dataModels)))
                 .subscribeOn(Schedulers.io());
     }
+
+    public Completable insert(@NonNull TestResult result) {
+        return Single.just(result).map(mapper::mapToData)
+                .flatMapCompletable(model -> Completable.fromAction(() -> testResultDataSource.insert(model)))
+                .subscribeOn(Schedulers.io());
+    }
 }

@@ -40,6 +40,10 @@ public interface TestResultDao extends TestResultDataSource {
     @Override
     void insertAll(@NonNull final List<TestResultDataModel> testResultDataModels);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Override
+    void insert(@NonNull TestResultDataModel model);
+
     @Query("SELECT COUNT(*) FROM test_results")
     int getNumberOfRecords();
 

@@ -83,9 +83,10 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
         analyticsManager.logEvent(new OnboardingReaderConnected());
 
         disposeDisposable();
-        disposable = readerInteractor.syncResultsAfterLatest()
+        disposable = readerInteractor.syncResultsAfterLast()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        ignored -> ifViewAttached(TurnReaderOnConnectView::navigateToHome),
+                        () -> ifViewAttached(TurnReaderOnConnectView::navigateToHome),
                         error -> {
                             Timber.d("Error while running syncAllResults: %s", error);
                             ifViewAttached(TurnReaderOnConnectView::showFailedToSync);

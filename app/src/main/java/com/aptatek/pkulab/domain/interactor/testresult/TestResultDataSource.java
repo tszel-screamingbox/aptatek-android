@@ -23,5 +23,7 @@ public interface TestResultDataSource {
 
     void insertAll(@NonNull List<TestResultDataModel> dataModels);
 
+    void insert(TestResultDataModel dataModel);
+
     int getNumberOfRecords();
 }

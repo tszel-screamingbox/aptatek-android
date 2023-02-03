@@ -40,6 +40,10 @@ public interface ReaderManager {
 
     Single<List<TestResult>> syncResultsAfter(@NonNull String lastResultId);
 
+    Flowable<TestResult> syncAllResultsFlowable();
+
+    Flowable<TestResult> syncResultsAfterFlowable(@NonNull String lastResultId);
+
     Single<Error> getError();
 
     Maybe<ReaderDevice> getConnectedDevice();

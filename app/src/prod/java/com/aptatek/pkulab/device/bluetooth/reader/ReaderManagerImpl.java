@@ -279,6 +279,16 @@ public class ReaderManagerImpl implements ReaderManager {
         return syncResults(lastResultId);
     }
 
+    @Override
+    public Flowable<TestResult> syncAllResultsFlowable() {
+        return syncResultFlowable(null);
+    }
+
+    @Override
+    public Flowable<TestResult> syncResultsAfterFlowable(@NonNull String lastResultId) {
+        return syncResultFlowable(lastResultId);
+    }
+
     private Single<List<TestResult>> syncResults(final @Nullable String lastResultId) {
         return lumosReaderManager.getConnectedDevice()
                 .toSingle()
@@ -301,6 +311,17 @@ public class ReaderManagerImpl implements ReaderManager {
                             );
                         }
                 );
+    }
+
+    private Flowable<TestResult> syncResultFlowable(final @Nullable String lastResultId) {
+        final Mapper<TestResult, ResultResponse> mapper = (TestResultMapper) mappers.get(ResultResponse.class);
+        return lumosReaderManager.getConnectedDevice()
+                .toFlowable()
+                .map(ReaderDevice::getMac)
+                .flatMap(deviceId -> {
+                    final Flowable<ResultResponse> flowable = TextUtils.isEmpty(lastResultId) ? lumosReaderManager.syncAllResultsFlowable() : lumosReaderManager.syncResultsAfterFlowable(lastResultId);
+                    return flowable.map(mapper::mapToDomain).map(mod -> mod.toBuilder().setReaderMac(deviceId).build());
+                });
     }
 
     @Override
