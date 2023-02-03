@@ -28,6 +28,8 @@ public class PreferenceManager {
     public static final String PREF_PKU_RANGE_NORMAL_FLOOR = "aptatek.range.normal.floor";
     public static final String PREF_PKU_RANGE_UNIT = "aptatek.range.unit";
     public static final String PREF_PAIRED = "aptatek.device.paired";
+
+    public static final String PREF_PAIRED_ID = "aptatek.device.paired.id";
     public static final String PREF_TEST_STATUS = "aptatek.test.status";
     public static final String PREF_TEST_UNFINISHED = "aptatek.test.unfinished";
     public static final String PREF_DB_ENCRYPTED_WITH_PIN = "aptatek.database.encrypted";
@@ -128,8 +130,17 @@ public class PreferenceManager {
         return sharedPreferences.getString(PREF_PAIRED, null);
     }
 
+    @Nullable
+    public String getPairedDeviceName() {
+        return sharedPreferences.getString(PREF_PAIRED_ID, null);
+    }
+
     public void setPairedDevice(@Nullable final String device) {
         sharedPreferences.edit().putString(PREF_PAIRED, device).apply();
+    }
+
+    public void setPairedDeviceName(@Nullable final String deviceId) {
+        sharedPreferences.edit().putString(PREF_PAIRED_ID, deviceId).apply();
     }
 
     public TestScreens getTestStatus() {

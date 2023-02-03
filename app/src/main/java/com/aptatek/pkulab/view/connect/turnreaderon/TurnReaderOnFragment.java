@@ -322,9 +322,9 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     }
 
     @Override
-    public void displayPairedReaderNotAvailable(String paired, String found) {
-        // TODO implement properly
-        Toast.makeText(requireActivity(), "paired reader not available: " + paired + ", " + found, Toast.LENGTH_SHORT).show();
+    public void displayPairedReaderNotAvailable(String paired) {
+        headerView.setSubtitle(getString(R.string.connect_turnon_no_reader_paired, paired));
+        noReaderAvailable.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -41,6 +42,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import ix.Ix;
@@ -281,7 +283,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 bluetoothInteractor.stopScan()
                         .andThen(Completable.fromAction(() -> connectStartedAtMs = System.currentTimeMillis()))
                         .andThen(bluetoothInteractor.startScan())
-                        .andThen(processReaderDevicesFlowable())
+                        .andThen(processReaderDevicesFlowableAfterDelay())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -294,38 +296,64 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         );
     }
 
-    private Flowable<List<ReaderDevice>> processReaderDevicesFlowable() {
-        return Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
-                .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
-                        .take(1)
-                        .firstOrError()
-                        .map(devices -> Ix.from(devices).toList())
-                        .flatMap(devices -> {
-                            if (devices.size() == 1) {
-                                return readerInteractor.connect(devices.get(0))
-                                        .andThen(bluetoothInteractor.stopScan())
-                                        .andThen(Single.just(devices));
+    private Single<Pair<String, List<ReaderDevice>>> processReaderDevicesFlowableAfterDelay() {
+        return Completable.timer(1L, TimeUnit.SECONDS)
+                .andThen(
+                        Single.zip(
+                            readerInteractor.getLastConnectedName().toSingle().onErrorReturnItem("invalid"),
+                            bluetoothInteractor.getDiscoveredDevices()
+                                .take(1)
+                                .singleOrError()
+                                .map(devices -> Ix.from(devices).toList()),
+                            ((BiFunction<String, List<ReaderDevice>, Pair<String, List<ReaderDevice>>>) Pair::new))
+                        .flatMap(pair -> {
+                            final List<ReaderDevice> devices = pair.second;
+                            if (pair.first.equals("invalid")) {
+                                // not paired with anything before, connect to the only available reader
+                                if (devices.size() == 1) {
+                                    return readerInteractor.connect(devices.get(0))
+                                            .andThen(bluetoothInteractor.stopScan())
+                                            .andThen(Single.just(pair));
+                                } else {
+                                    return Single.just(pair);
+                                }
+                            } else {
+                                // connect to the only available device that is already paired
+                                if (devices.size() == 1 && Ix.from(devices).any(a -> a.getName().equals(pair.first)).first()) {
+                                    return readerInteractor.connect(devices.get(0))
+                                            .andThen(bluetoothInteractor.stopScan())
+                                            .andThen(Single.just(pair));
+                                } else {
+                                    return Single.just(pair);
+                                }
                             }
-
-                            return Single.just(devices);
                         })
                 );
     }
 
-    private void handleDiscoveredDevices(final List<ReaderDevice> devices) {
-        switch (devices.size()) {
+    private void handleDiscoveredDevices(final Pair<String, List<ReaderDevice>> pair) {
+        final String lastConnected = pair.first;
+        final List<ReaderDevice> foundDevices = pair.second;
+        switch (foundDevices.size()) {
             case 0: {
                 ifViewAttached(TurnReaderOnView::displayNoReaderAvailable);
+                if (!lastConnected.equals("invalid")) {
+                    ifViewAttached(av -> av.displayPairedReaderNotAvailable(lastConnected));
+                }
                 waitForScanResults();
                 break;
             }
             case 1: {
-                ifViewAttached(av -> av.showConnectedToToast(devices.get(0).getName()));
-                waitForWorkflowStateChange();
+                if (lastConnected.equals("invalid") || lastConnected.equals(foundDevices.get(0).getName())) {
+                    ifViewAttached(av -> av.showConnectedToToast(foundDevices.get(0).getName()));
+                    waitForWorkflowStateChange();
+                } else {
+                    ifViewAttached(av -> av.displayPairedReaderNotAvailable(lastConnected));
+                }
                 break;
             }
             default: {
-                ifViewAttached(attachedView -> attachedView.displayReaderSelector(devices));
+                ifViewAttached(attachedView -> attachedView.displayReaderSelector(foundDevices));
                 break;
             }
         }
@@ -337,7 +365,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         }
 
         scanResultsDisposable =
-                processReaderDevicesFlowable()
+                processReaderDevicesFlowableAfterDelay()
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 this::handleDiscoveredDevices,
                                 error -> Timber.d("Error in waitForScanResults: %s", error)

@@ -63,6 +63,7 @@ public class ReaderInteractor {
     public Completable connect(@NonNull final ReaderDevice readerDevice) {
         return readerManager.connect(readerDevice)
                 .andThen(Completable.fromAction(() -> preferenceManager.setPairedDevice(readerDevice.getMac())))
+                .andThen(Completable.fromAction(() -> preferenceManager.setPairedDeviceName(readerDevice.getName())))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -250,6 +251,17 @@ public class ReaderInteractor {
     @NonNull
     public Maybe<String> getLastConnectedMac() {
         final String pairedDevice = preferenceManager.getPairedDevice();
+
+        if (pairedDevice == null) {
+            return Maybe.empty();
+        }
+
+        return Maybe.just(pairedDevice);
+    }
+
+
+    public Maybe<String> getLastConnectedName() {
+        final String pairedDevice = preferenceManager.getPairedDeviceName();
 
         if (pairedDevice == null) {
             return Maybe.empty();

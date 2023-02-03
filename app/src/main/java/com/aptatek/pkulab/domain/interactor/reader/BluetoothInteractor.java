@@ -17,16 +17,16 @@ import com.aptatek.pkulab.domain.manager.reader.BluetoothScanner;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public class BluetoothInteractor {
-
-    private static final long DEFAULT_SCAN_PERIOD_IN_MS = 60 * 1000L;
 
     private final BluetoothScanner bluetoothScanner;
     private final BluetoothConditionChecker bluetoothConditionChecker;
@@ -82,24 +82,23 @@ public class BluetoothInteractor {
     public Completable startScan(final long period) {
         return bluetoothScanner.isScanning()
                 .take(1)
+                .lastOrError()
+                .onErrorReturnItem(false)
                 .flatMapCompletable(scanning -> {
                     if (scanning) {
                         return Completable.complete();
                     }
 
                     return bluetoothScanner.startScan()
-                            .doOnComplete(() -> Countdown.countdown(period, ignore -> true, ignore -> ignore)
-                                    .take(1)
-                                    .flatMapCompletable(ignore -> stopScan())
-                                    .subscribe()
-                            ).subscribeOn(Schedulers.computation());
+                            .andThen(period == 0L ? Completable.complete() : Completable.timer(period, TimeUnit.MILLISECONDS).andThen(stopScan()))
+                            .subscribeOn(Schedulers.computation());
                 });
     }
 
 
     @NonNull
     public Completable startScan() {
-        return startScan(DEFAULT_SCAN_PERIOD_IN_MS);
+        return startScan(0L);
     }
 
     @NonNull

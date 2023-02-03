@@ -82,7 +82,7 @@ public class BluetoothScannerImpl implements BluetoothScanner {
     public Completable startScan() {
         return Completable.fromAction(() -> {
             if (scanning) {
-                Timber.d("Attempting to call startScan while a scan is already running");
+                Timber.w("Attempting to call startScan while a scan is already running");
                 return;
             }
 
@@ -99,16 +99,14 @@ public class BluetoothScannerImpl implements BluetoothScanner {
     @Override
     public Completable stopScan() {
         return Completable.fromAction(() -> {
-            if (scanning) {
-                synchronized (BluetoothScannerImpl.class) {
-                    try {
-                        bluetoothLeScanner.stopScan(scanCallback);
-                    } catch (Exception ex) {
-                        Timber.e(ex);
-                    } finally {
-                        scanning = false;
-                        scanningProcessor.onNext(false);
-                    }
+            synchronized (BluetoothScannerImpl.class) {
+                try {
+                    bluetoothLeScanner.stopScan(scanCallback);
+                } catch (Exception ex) {
+                    Timber.e(ex);
+                } finally {
+                    scanning = false;
+                    scanningProcessor.onNext(false);
                 }
             }
         });

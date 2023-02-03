@@ -24,7 +24,7 @@ public interface TurnReaderOnView extends BaseConnectView {
 
     void showConnectedToToast(String name);
 
-    void displayPairedReaderNotAvailable(String paired, String found);
+    void displayPairedReaderNotAvailable(String paired);
 
     void showEnableLocation();
 

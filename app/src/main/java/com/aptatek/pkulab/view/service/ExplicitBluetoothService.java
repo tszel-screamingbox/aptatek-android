@@ -27,6 +27,7 @@ import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.error.ErrorModel;
 
 import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -129,7 +130,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
         disposables.add(
                 bluetoothInteractor.enableBluetoothWhenNecessary()
                         .andThen(bluetoothInteractor.stopScan())
-                        .andThen(bluetoothInteractor.startScan())
+                        .andThen(bluetoothInteractor.startScan(INITIAL_SCAN_PERIOD))
                         .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
                                 .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
                                         .take(1)
@@ -137,6 +138,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                                         .map(devices -> Ix.from(devices).toList())
                                 )
                         )
+                        .timeout(INITIAL_SCAN_PERIOD, TimeUnit.MILLISECONDS)
                         .firstOrError()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
