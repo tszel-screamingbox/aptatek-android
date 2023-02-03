@@ -214,7 +214,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                         .subscribe(wfs -> {
                             if (WorkflowStateUtils.isErrorState(wfs)) {
                                 try {
-                                    final ErrorModel errorModel = errorInteractor.createErrorModel(wfs, null);
+                                    final ErrorModel errorModel = errorInteractor.createErrorModel(wfs, null, false);
                                     final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.WorkflowStateError(errorModel));
                                     notificationManager.notify(notification.getId(), notification.getNotification());
                                 } catch (ErrorModelConversionError e) {

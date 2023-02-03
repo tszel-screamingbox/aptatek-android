@@ -24,54 +24,45 @@ public class ErrorInteractor {
     }
 
     @NotNull
-    public ErrorModel createErrorModel(@NonNull WorkflowState workflowState, @Nullable String errorCharReading) throws ErrorModelConversionError {
-        final ErrorModel.Builder errorModelBuilder = ErrorModel.builder();
-
-        switch (workflowState) {
-            case ENVIRONMENT_ERROR:
-            case HARDWARE_ERROR:
-            case SYSTEM_ERROR:
-            case POWER_ERROR:
-            case TEST_ERROR: {
-                errorModelBuilder
-                        .setAfterChamberScrewedOn(false)
-                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
-                        .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_1));
-                break;
-            }
-            case USED_CASSETTE_ERROR: {
-                errorModelBuilder
-                        .setAfterChamberScrewedOn(true)
-                        .setTitle(resourceInteractor.getStringResource(R.string.test_alert_used_cassette_title))
-                        .setMessage(resourceInteractor.getStringResource(R.string.test_alert_used_cassette_message));
-                break;
-            }
-            case INVALID_CASSETTE_ERROR:
-            case CONTAMINATED_CASSETTE_ERROR:
-            case EXPIRED_CASSETTE_ERROR: {
-                errorModelBuilder
-                        .setAfterChamberScrewedOn(true)
-                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2))
-                        .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2));
-                break;
-            }
-            default: {
-//                throw new ErrorModelConversionError(workflowState, errorCharReading);
-                if (workflowState.name().toLowerCase(Locale.getDefault()).contains("error")) {
-                    // default to generic 1
-                    errorModelBuilder
-                            .setAfterChamberScrewedOn(false)
-                            .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1))
-                            .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_1));
+    public ErrorModel createErrorModel(@NonNull WorkflowState workflowState, @Nullable String errorCharReading, boolean isAfterChamberScrewedOn) throws ErrorModelConversionError {
+        ErrorModel.Builder builder = ErrorModel.builder();
+        if (isAfterChamberScrewedOn) {
+            builder.setAfterChamberScrewedOn(true);
+            builder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2));
+            builder.setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2));
+            builder.setErrorCode(workflowState.name());
+        } else {
+            switch (workflowState) {
+                case EXPIRED_CASSETTE_ERROR:
+                case CASSETTE_REMOVED_DURING_HEATING_ERROR:
+                case CASSETTE_REMOVED_ERROR:
+                case FLUID_ALREADY_PRESENT_ERROR:
+                case FLUID_DETECTION_ERROR:
+                case INVALID_CASSETTE_ERROR:
+                case HEATER_OVER_TEMP_ERROR:
+                case TIME_ERROR:
+                case USED_CASSETTE_ERROR:
+                case CONTAMINATED_CASSETTE_ERROR:
+                case TEST_ERROR: {
+                    builder.setAfterChamberScrewedOn(true);
+                    builder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2));
+                    builder.setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2));
+                    builder.setErrorCode(workflowState.name());
                     break;
-                } else {
-                    throw new ErrorModelConversionError(workflowState, errorCharReading);
                 }
+                default:
+                    if (workflowState.name().toLowerCase(Locale.getDefault()).contains("error")) {
+                        builder.setAfterChamberScrewedOn(false);
+                        builder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2));
+                        builder.setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2));
+                        builder.setErrorCode(workflowState.name());
+                        break;
+                    } else {
+                        throw new ErrorModelConversionError(workflowState, errorCharReading);
+                    }
             }
         }
 
-        errorModelBuilder.setErrorCode(workflowState.name());
-        return errorModelBuilder.build();
+        return builder.build();
     }
-
 }

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
@@ -39,10 +40,11 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
                                              final ReaderInteractor readerInteractor,
                                              final TestResultInteractor testResultInteractor,
                                              final TestInteractor testInteractor,
-                                             final IAnalyticsManager analyticsManager) {
+                                             final IAnalyticsManager analyticsManager,
+                                             final ErrorInteractor errorInteractor) {
         this.testResultInteractor = testResultInteractor;
         this.testInteractor = testInteractor;
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager, errorInteractor);
         this.readerInteractor = readerInteractor;
     }
 
@@ -87,9 +89,10 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
     }
 
     void syncData() {
-        disposables.add(readerInteractor.syncAllResults()
+        disposables.add(readerInteractor.syncAllResultsCompletable()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        ignored -> checkLastMeasure(),
+                        this::checkLastMeasure,
                         error -> ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT))
                 ));
     }

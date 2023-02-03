@@ -210,7 +210,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .subscribe(
                                 errorPair -> {
                                     try {
-                                        final ErrorModel errorModel = errorInteractor.createErrorModel(errorPair.first, errorPair.second);
+                                        final ErrorModel errorModel = errorInteractor.createErrorModel(errorPair.first, errorPair.second, true);
                                         Timber.d("Test error: %s -> %s", errorPair, errorModel);
                                         ifViewAttached(attachedView -> {
                                             attachedView.onTestError(errorModel);

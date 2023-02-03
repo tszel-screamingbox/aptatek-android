@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.onboarding.OnboardingReaderConnected;
@@ -34,9 +35,10 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     public TurnReaderOnConnectPresenter(final BluetoothInteractor bluetoothInteractor,
                                         final ReaderInteractor readerInteractor,
                                         final TestInteractor testInteractor,
-                                        final IAnalyticsManager analyticsManager) {
+                                        final IAnalyticsManager analyticsManager,
+                                        final ErrorInteractor errorInteractor) {
         this.analyticsManager = analyticsManager;
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager, errorInteractor);
         this.readerInteractor = readerInteractor;
     }
 

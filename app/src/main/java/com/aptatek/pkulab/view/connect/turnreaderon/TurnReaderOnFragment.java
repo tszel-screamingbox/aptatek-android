@@ -133,6 +133,11 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     }
 
     protected void playVideo(@NonNull final Uri uri, final boolean shouldLoop) {
+        if (restartVideoDisposable != null && !restartVideoDisposable.isDisposed()) {
+            restartVideoDisposable.dispose();
+            restartVideoDisposable = null;
+        }
+
         videoView.setup(uri, ContextCompat.getColor(requireContext(), R.color.applicationWhite));
         videoView.setFrameVideoViewListener(new FrameVideoViewListener() {
             @Override

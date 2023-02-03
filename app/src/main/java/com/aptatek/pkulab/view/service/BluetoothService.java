@@ -176,7 +176,7 @@ public class BluetoothService extends BaseForegroundService {
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap((wfs -> Flowable.fromCallable(() -> {
                     try {
-                        return errorInteractor.createErrorModel(wfs, null);
+                        return errorInteractor.createErrorModel(wfs, null, false);
                     } catch (ErrorModelConversionError e) {
                         throw new Exception(e);
                     }

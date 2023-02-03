@@ -33,8 +33,6 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
 
     private final TurnReaderOnPresenterImpl wrapped;
     private final ReaderInteractor readerInteractor;
-    private final ErrorInteractor errorInteractor;
-
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Inject
@@ -45,9 +43,8 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                                      final IAnalyticsManager analyticsManager,
                                      final ErrorInteractor errorInteractor) {
         super(resourceInteractor);
-        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager);
+        wrapped = new TurnReaderOnPresenterImpl(bluetoothInteractor, readerInteractor, testInteractor, analyticsManager, errorInteractor);
         this.readerInteractor = readerInteractor;
-        this.errorInteractor = errorInteractor;
     }
 
     @Override
@@ -129,18 +126,6 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
             case READING_CASSETTE: {
                 handled = true;
                 ifViewAttached(TurnReaderOnTestView::showConnectItAllScreen);
-                break;
-            }
-            default: {
-                if (WorkflowStateUtils.isErrorState(workflowState)) {
-                    try {
-                        final ErrorModel errorModel = errorInteractor.createErrorModel(workflowState, null);
-                        ifViewAttached(view -> view.showErrorScreen(errorModel));
-                        handled = true;
-                    } catch (Exception | ErrorModelConversionError ex) {
-                        Timber.d("Failed to go to error screen: %s", ex);
-                    }
-                }
                 break;
             }
         }

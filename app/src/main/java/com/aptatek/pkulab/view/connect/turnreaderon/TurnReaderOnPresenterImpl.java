@@ -11,6 +11,8 @@ import com.aptatek.pkulab.domain.interactor.reader.LocationServiceDisabledError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingBleFeatureError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
+import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.DeniedPermission;
@@ -18,9 +20,12 @@ import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.Reader
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.TurnReaderOnDisplayed;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
+import com.aptatek.pkulab.domain.model.reader.WorkflowStateUtils;
 import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectView;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
+import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.main.continuetest.TurnReaderOnContinueTestView;
+import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestView;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -49,6 +54,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     private final ReaderInteractor readerInteractor;
     private final TestInteractor testInteractor;
     private final IAnalyticsManager analyticsManager;
+
+    private final ErrorInteractor errorInteractor;
     private CompositeDisposable disposables = null;
     private Disposable workflowDisposable = null;
     private Disposable scanResultsDisposable = null;
@@ -59,11 +66,13 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     public TurnReaderOnPresenterImpl(final BluetoothInteractor bluetoothInteractor,
                                      final ReaderInteractor readerInteractor,
                                      final TestInteractor testInteractor,
-                                     final IAnalyticsManager analyticsManager) {
+                                     final IAnalyticsManager analyticsManager,
+                                     final ErrorInteractor errorInteractor) {
         this.bluetoothInteractor = bluetoothInteractor;
         this.readerInteractor = readerInteractor;
         this.testInteractor = testInteractor;
         this.analyticsManager = analyticsManager;
+        this.errorInteractor = errorInteractor;
     }
 
     @Override
@@ -114,8 +123,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 readerInteractor.connect(readerDevice)
                         .andThen(bluetoothInteractor.stopScan())
                         .subscribe(() -> {
-                            ifViewAttached(av -> av.showConnectedToToast(readerDevice.getName()));
-                            waitForWorkflowStateChange();
+                                    ifViewAttached(av -> av.showConnectedToToast(readerDevice.getName()));
+                                    waitForWorkflowStateChange();
                                 },
                                 error -> {
                                     Timber.d("connectTo error: %s", error);
@@ -148,6 +157,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                         readerInteractor.getWorkflowState()
                                                 .take(1)
                                                 .singleOrError()
+                                                .flatMap(wfs -> testInteractor.getLastScreen().map(screen -> new Pair<>(wfs, screen)))
                                 )
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
@@ -185,12 +195,17 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                         .take(1)
                         .flatMap(ignored -> readerInteractor.getWorkflowState())
                         .take(1)
+                        .lastOrError()
+                        .flatMap(wfs -> testInteractor.getLastScreen().map(screen -> new Pair<>(wfs, screen)))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(this::handleWorkflowState, Timber::e);
     }
 
-    private void handleWorkflowState(final WorkflowState workflowState) {
+    private void handleWorkflowState(final Pair<WorkflowState, TestScreens> pair) {
+        Timber.d("--- handleWorkflowState: %s, %s", pair.first, pair.second);
+
         ifViewAttached(TurnReaderOnView::displaySelfCheckAnimation);
+        final WorkflowState workflowState = pair.first;
 
         switch (workflowState) {
             case READY: {
@@ -200,12 +215,21 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
             case SELF_TEST:
             default: {
                 try {
-                    final boolean handled = workflowStateHandler.apply(workflowState);
-                    if (!handled) {
-                        Timber.d("unhandled workflow state: %s", workflowState);
-                        waitForWorkflowStateChange();
-                    }
+                    if (WorkflowStateUtils.isErrorState(workflowState)) {
+                        try {
+                            final ErrorModel errorModel = errorInteractor.createErrorModel(workflowState, null, TestScreens.ATTACH_CHAMBER.ordinal() < pair.second.ordinal());
+                            ifViewAttached(av -> av.showErrorScreen(errorModel));
+                        } catch (ErrorModelConversionError e) {
+                            Timber.d("--- failed to convert error: %s", e);
+                        }
+                    } else {
+                        final boolean handled = workflowStateHandler.apply(workflowState);
+                        if (!handled) {
+                            Timber.d("unhandled workflow state: %s", workflowState);
+                            waitForWorkflowStateChange();
+                        }
 
+                    }
                 } catch (final Exception e) {
                     Timber.d("Unexpected error: %s", e);
                     waitForWorkflowStateChange();
