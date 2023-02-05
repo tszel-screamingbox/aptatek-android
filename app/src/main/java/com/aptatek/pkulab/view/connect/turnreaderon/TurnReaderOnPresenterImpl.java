@@ -18,6 +18,7 @@ import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.DeniedPermission;
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.ReaderConnectedFromTurnReaderOn;
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.TurnReaderOnDisplayed;
+import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.domain.model.reader.WorkflowStateUtils;
@@ -122,8 +123,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
     @Override
     public void connectTo(final @NonNull ReaderDevice readerDevice) {
         disposables.add(
-                readerInteractor.connect(readerDevice)
-                        .andThen(bluetoothInteractor.stopScan())
+                bluetoothInteractor.stopScan()
+                        .andThen(readerInteractor.connect(readerDevice))
                         .subscribe(() -> {
                                     ifViewAttached(av -> av.showConnectedToToast(readerDevice.getName()));
                                     waitForWorkflowStateChange();
@@ -193,14 +194,25 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         }
 
         workflowDisposable =
-                Countdown.countdown(5000L, tick -> tick >= 1, tick -> tick)
-                        .take(1)
-                        .flatMap(ignored -> readerInteractor.getWorkflowState())
-                        .take(1)
-                        .lastOrError()
-                        .flatMap(wfs -> testInteractor.getLastScreen().map(screen -> new Pair<>(wfs, screen)))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::handleWorkflowState, Timber::e);
+                // wait 2 seconds to receive ready state
+                readerInteractor.getReaderConnectionEvents()
+                .filter(it -> it.getConnectionState() == ConnectionState.READY)
+                .take(1)
+                .timeout(2, TimeUnit.SECONDS)
+                .ignoreElements()
+                // ignore error, will try with something else
+                .onErrorComplete()
+                .andThen(Single.zip(
+                        testInteractor.getLastScreen(),
+                        // wait for workflow state 1 sec at most
+                        readerInteractor.getWorkflowState().take(1).lastOrError().timeout(1, TimeUnit.SECONDS),
+                        (testScreens, workflowState) -> new Pair<>(workflowState, testScreens)
+                ))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::handleWorkflowState, error -> {
+                    Timber.d("--- waitForWorkflowState error: %s", error);
+                    waitForWorkflowStateChange();
+                });
     }
 
     private void handleWorkflowState(final Pair<WorkflowState, TestScreens> pair) {
@@ -300,34 +312,34 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         return Completable.timer(1L, TimeUnit.SECONDS)
                 .andThen(
                         Single.zip(
-                            readerInteractor.getLastConnectedName().toSingle().onErrorReturnItem("invalid"),
-                            bluetoothInteractor.getDiscoveredDevices()
-                                .take(1)
-                                .singleOrError()
-                                .map(devices -> Ix.from(devices).toList()),
-                            ((BiFunction<String, List<ReaderDevice>, Pair<String, List<ReaderDevice>>>) Pair::new))
-                        .flatMap(pair -> {
-                            final List<ReaderDevice> devices = pair.second;
-                            if (pair.first.equals("invalid")) {
-                                // not paired with anything before, connect to the only available reader
-                                if (devices.size() == 1) {
-                                    return readerInteractor.connect(devices.get(0))
-                                            .andThen(bluetoothInteractor.stopScan())
-                                            .andThen(Single.just(pair));
-                                } else {
-                                    return Single.just(pair);
-                                }
-                            } else {
-                                // connect to the only available device that is already paired
-                                if (devices.size() == 1 && Ix.from(devices).any(a -> a.getName().equals(pair.first)).first()) {
-                                    return readerInteractor.connect(devices.get(0))
-                                            .andThen(bluetoothInteractor.stopScan())
-                                            .andThen(Single.just(pair));
-                                } else {
-                                    return Single.just(pair);
-                                }
-                            }
-                        })
+                                        readerInteractor.getLastConnectedName().toSingle().onErrorReturnItem("invalid"),
+                                        bluetoothInteractor.getDiscoveredDevices()
+                                                .take(1)
+                                                .lastOrError()
+                                                .map(devices -> Ix.from(devices).toList()),
+                                        ((BiFunction<String, List<ReaderDevice>, Pair<String, List<ReaderDevice>>>) Pair::new))
+                                .flatMap(pair -> {
+                                    final List<ReaderDevice> devices = pair.second;
+                                    if (pair.first.equals("invalid")) {
+                                        // not paired with anything before, connect to the only available reader
+                                        if (devices.size() == 1) {
+                                            return bluetoothInteractor.stopScan()
+                                                    .andThen(readerInteractor.connect(devices.get(0)))
+                                                    .andThen(Single.just(pair));
+                                        } else {
+                                            return Single.just(pair);
+                                        }
+                                    } else {
+                                        // connect to the only available device that is already paired
+                                        if (devices.size() == 1 && Ix.from(devices).any(a -> a.getName().equals(pair.first)).first()) {
+                                            return bluetoothInteractor.stopScan()
+                                                    .andThen(readerInteractor.connect(devices.get(0)))
+                                                    .andThen(Single.just(pair));
+                                        } else {
+                                            return Single.just(pair);
+                                        }
+                                    }
+                                })
                 );
     }
 
@@ -346,6 +358,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
             case 1: {
                 if (lastConnected.equals("invalid") || lastConnected.equals(foundDevices.get(0).getName())) {
                     ifViewAttached(av -> av.showConnectedToToast(foundDevices.get(0).getName()));
+                    // at this point we should have already initiated connection
                     waitForWorkflowStateChange();
                 } else {
                     ifViewAttached(av -> av.displayPairedReaderNotAvailable(lastConnected));
