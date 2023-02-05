@@ -77,7 +77,7 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
         testResultDataModel.setTextResult(pkuLevel.getTextResult());
         testResultDataModel.setValid(domainModel.isValid());
         testResultDataModel.setAssay(domainModel.getAssay());
-        testResultDataModel.setCassetteLot(domainModel.getCassetteLot());
+        testResultDataModel.setCassetteLot(domainModel.getCassetteLot() == null ? -1L : domainModel.getCassetteLot());
         testResultDataModel.setOverallResult(domainModel.getOverallResult());
         testResultDataModel.setEndTimestamp(domainModel.getEndTimestamp());
         testResultDataModel.setAssayHash(domainModel.getAssayHash());

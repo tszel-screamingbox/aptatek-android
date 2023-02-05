@@ -42,7 +42,8 @@ public abstract class TestResult {
     @Nullable
     public abstract String getConfigHash();
 
-    public abstract long getCassetteLot();
+    @Nullable
+    public abstract Long getCassetteLot();
 
     public abstract long getCassetteExpiry();
 
@@ -95,11 +96,11 @@ public abstract class TestResult {
 
         public abstract Builder setConfigHash(@Nullable String configHash);
 
-        public abstract Builder setCassetteLot(long cassetteLot);
+        public abstract Builder setCassetteLot(@Nullable Long cassetteLot);
 
         public abstract Builder setAssayHash(@Nullable String assayHash);
 
-        public abstract Builder setAssayVersion(String assayVersion);
+        public abstract Builder setAssayVersion(@Nullable String assayVersion);
 
         public abstract Builder setAssay(@Nullable String assay);
 
