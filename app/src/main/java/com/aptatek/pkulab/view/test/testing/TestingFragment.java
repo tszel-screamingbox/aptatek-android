@@ -98,8 +98,9 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
 
         headerView.setSubtitle(getString(R.string.test_running_please_wait));
 
-        timeRemainingView.setVisibility(View.GONE);
-        testProgress.setVisibility(View.GONE);
+        timeRemainingView.setVisibility(View.INVISIBLE);
+        timeRemainingRestView.setVisibility(View.INVISIBLE);
+        testProgress.setVisibility(View.INVISIBLE);
     }
 
     @Override
