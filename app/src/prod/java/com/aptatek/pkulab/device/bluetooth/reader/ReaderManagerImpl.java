@@ -26,7 +26,6 @@ import com.aptatek.pkulab.domain.error.DeviceNotSupportedError;
 import com.aptatek.pkulab.domain.error.GeneralReaderError;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.error.ReaderError;
-import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
@@ -36,11 +35,12 @@ import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
-import com.google.gson.JsonParseException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -53,8 +53,6 @@ import timber.log.Timber;
 public class ReaderManagerImpl implements ReaderManager {
 
     private final LumosReaderManager lumosReaderManager;
-
-    private static final int MAX_RETRY_COUNT = 3;
 
     private final FlowableProcessor<ReaderError> readerErrorProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<ConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ConnectionEvent.create(null, ConnectionState.DISCONNECTED));
@@ -204,33 +202,30 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Single<Integer> getBatteryLevel() {
-        return withRetry(1, lumosReaderManager.readCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL));
+        Single<Integer> integerSingle = withRetry(1, lumosReaderManager.readCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL));
+        return integerSingle.onErrorReturnItem(-1);
     }
 
     @Override
     public Flowable<Integer> batteryLevel() {
-        return Flowable.concat(
-                getBatteryLevel().toFlowable(),
-                batteryLevelProcessor
+        return batteryLevelProcessor.startWith(
+                getBatteryLevel()
+                        .toFlowable()
         );
     }
 
     private <T> Single<T> withRetry(final int times, final Single<T> single) {
-        return single.onErrorResumeNext(error -> {
-            Timber.d("withRetry - count: %d", times);
-
-            if (times > MAX_RETRY_COUNT) {
-                return Single.error(error);
-            }
-
-            if (error instanceof JsonParseException) {
-                return Countdown.countdown(200L, it -> true, it -> it)
-                        .singleOrError()
-                        .flatMap(ignored -> withRetry(times + 1, single));
-            } else {
-                return Single.error(error);
-            }
-        });
+        return single.retryWhen(errors -> {
+                    final AtomicInteger atomicInteger = new AtomicInteger(0);
+                    return errors
+                            .doOnNext(e -> Timber.d("--- withRetry [%d] error received: [%s]", times, e))
+                            .takeWhile(e -> atomicInteger.getAndIncrement() < times)
+                            .flatMap(e -> {
+                                Timber.d("--- withRetry will retry [%d/%d] after delay...", atomicInteger.get(), times);
+                                return Flowable.timer(300L, TimeUnit.MILLISECONDS).doOnNext(ignored -> Timber.d("--- withRetry delay done!"));
+                            });
+                }
+        );
     }
 
     @Override
