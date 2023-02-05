@@ -75,7 +75,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
                                 .flatMap(wettingStatus -> {
                                     if (wettingStatus == WettingStatus.FINISHED) {
                                         analyticsManager.logEvent(new SampleWettingDone(Constants.DEFAULT_WETTING_PERIOD));
-                                        return Single.just(TestScreens.CONNECT_IT_ALL);
+                                        return Single.just(TestScreens.TURN_READER_ON);
                                     }
 
                                     return Single.just(lastScreen);
@@ -123,11 +123,17 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
                             }
 
                             if (event != null) {
-                                analyticsManager.logEvent(event);
+                                try {
+                                    analyticsManager.logEvent(event);
+                                } catch (Throwable t) {
+                                    Timber.d("--- swallowed analytics error: %s", t);
+                                }
                             }
 
                         })
                         .andThen(Flowable.fromCallable(() -> TestScreens.values()[current.ordinal() + 1]))
+                        .doOnError(e -> Timber.d("--- showNextScreen error: %s", e))
+                        .onErrorReturnItem(current)
                         .flatMap(nextScreen -> {
                             if (nextScreen == TestScreens.WETTING) {
                                 return wettingInteractor.startWetting()
@@ -161,7 +167,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
     public void onShowPreviousScreen(@NonNull final TestScreens currentScreen) {
         ifViewAttached(attachedView -> {
-            if (currentScreen == TestScreens.PREP_TEST_KIT || currentScreen == TestScreens.TURN_READER_ON || currentScreen == TestScreens.WETTING || currentScreen == TestScreens.TESTING || currentScreen == TestScreens.CONNECT_IT_ALL) {
+            if (currentScreen == TestScreens.PREP_TEST_KIT || currentScreen == TestScreens.PREPARE_CASSETTE || currentScreen == TestScreens.ATTACH_CHAMBER || currentScreen == TestScreens.TURN_READER_ON || currentScreen == TestScreens.TESTING || currentScreen == TestScreens.CONNECT_IT_ALL || currentScreen == TestScreens.TEST_COMPLETE) {
                 attachedView.showScreen(TestScreens.CANCEL);
             } else {
                 attachedView.showPreviousScreen();
