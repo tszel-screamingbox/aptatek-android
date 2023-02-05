@@ -202,7 +202,7 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Single<Integer> getBatteryLevel() {
-        Single<Integer> integerSingle = withRetry(1, lumosReaderManager.readCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL));
+        Single<Integer> integerSingle = withRetry(1, lumosReaderManager.readCharacteristic(LumosReaderConstants.BATTERY_CHAR_LEVEL), "getBatteryLevel");
         return integerSingle.onErrorReturnItem(-1);
     }
 
@@ -214,14 +214,14 @@ public class ReaderManagerImpl implements ReaderManager {
         );
     }
 
-    private <T> Single<T> withRetry(final int times, final Single<T> single) {
+    private <T> Single<T> withRetry(final int times, final Single<T> single, final String debugHelper) {
         return single.retryWhen(errors -> {
                     final AtomicInteger atomicInteger = new AtomicInteger(0);
                     return errors
-                            .doOnNext(e -> Timber.d("--- withRetry [%d] error received: [%s]", times, e))
+                            .doOnNext(e -> Timber.d("--- withRetry [%s] [%d] error received: [%s]", debugHelper, times, e))
                             .takeWhile(e -> atomicInteger.getAndIncrement() < times)
                             .flatMap(e -> {
-                                Timber.d("--- withRetry will retry [%d/%d] after delay...", atomicInteger.get(), times);
+                                Timber.d("--- withRetry [%s] will retry [%d/%d] after delay...", debugHelper, atomicInteger.get(), times);
                                 return Flowable.timer(300L, TimeUnit.MILLISECONDS).doOnNext(ignored -> Timber.d("--- withRetry delay done!"));
                             });
                 }
@@ -232,14 +232,16 @@ public class ReaderManagerImpl implements ReaderManager {
     public Single<CartridgeInfo> getCartridgeInfo() {
         return withRetry(1,
                 lumosReaderManager.<CartridgeIdResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_CARTRIDGE_ID)
-                        .map(cartridgeIdResponse -> ((CartridgeInfoMapper) mappers.get(CartridgeIdResponse.class)).mapToDomain(cartridgeIdResponse))
+                        .map(cartridgeIdResponse -> ((CartridgeInfoMapper) mappers.get(CartridgeIdResponse.class)).mapToDomain(cartridgeIdResponse)),
+                "getCartridgeInfo"
         );
     }
 
     @Override
     public Single<Integer> getNumberOfResults() {
         return withRetry(1, lumosReaderManager.<NumPreviousResultsResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_NUM_RESULTS)
-                .map(NumPreviousResultsResponse::getNumberOfResults)
+                .map(NumPreviousResultsResponse::getNumberOfResults),
+                "getNumberOfResults"
         );
     }
 
@@ -247,7 +249,8 @@ public class ReaderManagerImpl implements ReaderManager {
     public Single<TestResult> getResult(@NonNull final String id) {
         return withRetry(1,
                 lumosReaderManager.getResult(id)
-                        .map(resultResponse -> ((TestResultMapper) mappers.get(ResultResponse.class)).mapToDomain(resultResponse))
+                        .map(resultResponse -> ((TestResultMapper) mappers.get(ResultResponse.class)).mapToDomain(resultResponse)),
+                "getResult"
         );
     }
 
@@ -255,7 +258,8 @@ public class ReaderManagerImpl implements ReaderManager {
     public Single<Error> getError() {
         return withRetry(1,
                 lumosReaderManager.<ErrorResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_ERROR)
-                        .map(errorResponse -> ((ErrorMapper) mappers.get(ErrorResponse.class)).mapToDomain(errorResponse))
+                        .map(errorResponse -> ((ErrorMapper) mappers.get(ErrorResponse.class)).mapToDomain(errorResponse)),
+                "getError"
         );
     }
 
@@ -342,7 +346,8 @@ public class ReaderManagerImpl implements ReaderManager {
     private Single<WorkflowState> getWorkflowState() {
         return withRetry(1,
                 lumosReaderManager.<WorkflowStateResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_WORKFLOW_STATE)
-                        .map(workflowStateResponse -> ((WorkflowStateMapper) mappers.get(WorkflowStateResponse.class)).mapToDomain(workflowStateResponse))
+                        .map(workflowStateResponse -> ((WorkflowStateMapper) mappers.get(WorkflowStateResponse.class)).mapToDomain(workflowStateResponse)),
+                "getWorkflowState"
         );
     }
 
