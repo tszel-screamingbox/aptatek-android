@@ -25,6 +25,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class BluetoothInteractor {
 
@@ -104,6 +105,8 @@ public class BluetoothInteractor {
     @NonNull
     public Completable stopScan() {
         return bluetoothScanner.stopScan()
+                .doOnError(e -> Timber.d("--- stopScan onError %s", e))
+                .onErrorComplete()
                 .subscribeOn(Schedulers.computation());
     }
 
