@@ -5,7 +5,6 @@ import androidx.annotation.NonNull;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
-import com.aptatek.pkulab.domain.interactor.test.ErrorModelConversionError;
 import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
@@ -13,15 +12,12 @@ import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
-import com.aptatek.pkulab.domain.model.reader.WorkflowStateUtils;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenterImpl;
-import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -151,7 +147,8 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
         wrapped.logScreenDisplayed();
     }
 
+    @Override
     public void disposeTest() {
-        wrapped.cleanupTest();
+        wrapped.disposeTest();
     }
 }

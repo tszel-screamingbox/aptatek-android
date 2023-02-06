@@ -119,4 +119,9 @@ public class TurnReaderOnConnectPresenter extends MvpBasePresenter<TurnReaderOnC
     public void logScreenDisplayed() {
         wrapped.logScreenDisplayed();
     }
+
+    @Override
+    public void disposeTest() {
+        wrapped.disposeTest();
+    }
 }

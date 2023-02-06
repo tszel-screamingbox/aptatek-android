@@ -129,4 +129,9 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
     public void logScreenDisplayed() {
         wrapped.logScreenDisplayed();
     }
+
+    @Override
+    public void disposeTest() {
+        wrapped.disposeTest();
+    }
 }

@@ -5,7 +5,6 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.core.content.PermissionChecker;
 
-import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.LocationServiceDisabledError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingBleFeatureError;
@@ -38,7 +37,6 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
-import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -410,7 +408,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         analyticsManager.logEvent(new TurnReaderOnDisplayed());
     }
 
-    public void cleanupTest() {
+    @Override
+    public void disposeTest() {
         disposables.add(
                 testInteractor.resetTest().subscribe()
         );

@@ -32,6 +32,7 @@ import com.aptatek.pkulab.view.connect.onboarding.turnon.TurnReaderOnConnectFrag
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.scan.ScanDialogFragment;
 import com.aptatek.pkulab.view.dialog.AlertDialogDecisionListener;
+import com.aptatek.pkulab.view.dialog.AlertDialogDecisions;
 import com.aptatek.pkulab.view.dialog.AlertDialogFragment;
 import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.TestActivity;
@@ -341,8 +342,21 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
     }
 
     @Override
-    public void showErrorScreen(ErrorModel paramErrorModel) {
-        Toast.makeText(requireActivity(), "show Error for " + paramErrorModel, Toast.LENGTH_SHORT).show();
+    public void showErrorScreen(ErrorModel errorModel) {
+        showAlertDialog(AlertDialogModel.builder()
+                        .setAlertHeader(true)
+                        .setErrorCode(errorModel.getErrorCode())
+                        .setTitle(errorModel.getTitle())
+                        .setMessage(errorModel.getMessage())
+                        .setNegativeButtonText(getString(R.string.alertdialog_button_ok))
+                        .setCancelable(false)
+                        .build(),
+                decision -> {
+                    if (decision == AlertDialogDecisions.NEGATIVE) {
+                        presenter.disposeTest();
+                        requireActivity().finish();
+                    }
+                });
     }
 
     protected void showAlertDialog(AlertDialogModel alertDialogModel, AlertDialogDecisionListener listener) {

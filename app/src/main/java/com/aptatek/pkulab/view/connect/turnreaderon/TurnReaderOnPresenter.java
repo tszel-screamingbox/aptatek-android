@@ -20,4 +20,6 @@ public interface TurnReaderOnPresenter<V extends TurnReaderOnView> extends BaseC
 
     void logScreenDisplayed();
 
+    void disposeTest();
+
 }
