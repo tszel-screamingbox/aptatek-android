@@ -61,4 +61,10 @@ public class TestCompleteFragment extends TestBaseFragment<TestCompleteView, Tes
         presenter.onStop();
         super.onStop();
     }
+
+    @Override
+    public boolean onNextPressed() {
+        presenter.showResult();
+        return true;
+    }
 }
