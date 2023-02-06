@@ -4,20 +4,28 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
+import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
 
-import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class ConnectItAllPresenter extends TestBasePresenter<ConnectItAllView> {
 
     private final CompositeDisposable disposables = new CompositeDisposable();
+
+    private Disposable disconnectDisposable;
+
+    private Disposable workflowStateDisposable;
+
     private final TestInteractor testInteractor;
     private final ReaderInteractor readerInteractor;
 
@@ -40,30 +48,50 @@ public class ConnectItAllPresenter extends TestBasePresenter<ConnectItAllView> {
             attachedView.setDisclaimerMessage(resourceInteractor.getStringResource(R.string.test_connectitall_disclaimer));
             attachedView.playVideo(resourceInteractor.getUriForRawFile(R.raw.insert_cassette), true);
         });
-
-        disposables.add(
-                readerInteractor.getConnectedReader()
-                        .toSingle()
-                        .flatMap(device -> readerInteractor.getWorkflowState()
-                                .filter(workflowState -> workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.DETECTING_FLUID || workflowState == WorkflowState.TEST_RUNNING)
-                                .take(1)
-                                .singleOrError()
-                        )
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                ignored -> ifViewAttached(ConnectItAllView::showNextScreen),
-                                error -> {
-                                    if (error instanceof NoSuchElementException) { // reader not connected, need to show TurnReaderOn
-                                        ifViewAttached(ConnectItAllView::showTurnReaderOn);
-                                    }
-                                })
-        );
     }
 
     public void cancelWettingNotification() {
         disposables.add(testInteractor.cancelWettingFinishedNotifications()
                 .subscribe());
+    }
+
+    public void onStart() {
+        onStop();
+
+        // go to turn reader on when disconnect from reader is detected
+        disconnectDisposable = readerInteractor.getReaderConnectionEvents()
+                .filter(event -> event.getConnectionState() != ConnectionState.READY).take(1)
+                .ignoreElements()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> ifViewAttached(ConnectItAllView::showTurnReaderOn));
+
+        // wait for next wfs
+        workflowStateDisposable = readerInteractor.getWorkflowState()
+                .filter(workflowState -> workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.DETECTING_FLUID || workflowState == WorkflowState.TEST_RUNNING || workflowState == WorkflowState.TEST_COMPLETE)
+                .take(1)
+                .singleOrError()
+                .ignoreElement()
+                .timeout(5, TimeUnit.SECONDS)
+                .doOnError(error -> Timber.d("--- ConnectItAllPresenter WFS onError %s", error))
+                .retry()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> ifViewAttached(ConnectItAllView::showNextScreen),
+                        error -> Timber.d("--- ConnectItAllPresenter WFS error: %s", error)
+                );
+    }
+
+    public void onStop() {
+        if (disconnectDisposable != null && !disconnectDisposable.isDisposed()) {
+            disconnectDisposable.dispose();
+            disconnectDisposable = null;
+        }
+
+        if (workflowStateDisposable != null && !workflowStateDisposable.isDisposed()) {
+            workflowStateDisposable.dispose();
+            workflowStateDisposable = null;
+        }
     }
 
     @Override

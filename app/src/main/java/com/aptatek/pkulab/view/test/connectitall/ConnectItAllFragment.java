@@ -44,6 +44,18 @@ public class ConnectItAllFragment extends TestBaseFragment<ConnectItAllView, Con
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        presenter.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        presenter.onStop();
+        super.onStop();
+    }
+
+    @Override
     public void showTurnReaderOn() {
         if (getActivity() instanceof TestActivityView) {
             ((TestActivityView) getActivity()).showTurnReaderOn();
