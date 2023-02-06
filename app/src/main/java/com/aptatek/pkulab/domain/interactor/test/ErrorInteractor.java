@@ -53,8 +53,8 @@ public class ErrorInteractor {
                 default:
                     if (workflowState.name().toLowerCase(Locale.getDefault()).contains("error")) {
                         builder.setAfterChamberScrewedOn(false);
-                        builder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2));
-                        builder.setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2));
+                        builder.setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_1));
+                        builder.setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_1));
                         builder.setErrorCode(workflowState.name());
                         break;
                     } else {
