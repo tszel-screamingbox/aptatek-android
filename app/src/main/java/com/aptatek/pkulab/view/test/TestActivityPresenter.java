@@ -167,7 +167,7 @@ class TestActivityPresenter extends MvpBasePresenter<TestActivityView> {
 
     public void onShowPreviousScreen(@NonNull final TestScreens currentScreen) {
         ifViewAttached(attachedView -> {
-            if (currentScreen == TestScreens.PREP_TEST_KIT || currentScreen == TestScreens.PREPARE_CASSETTE || currentScreen == TestScreens.ATTACH_CHAMBER || currentScreen == TestScreens.TURN_READER_ON || currentScreen == TestScreens.TESTING || currentScreen == TestScreens.CONNECT_IT_ALL || currentScreen == TestScreens.TEST_COMPLETE) {
+            if (currentScreen == TestScreens.WETTING || currentScreen == TestScreens.PREP_TEST_KIT || currentScreen == TestScreens.PREPARE_CASSETTE || currentScreen == TestScreens.ATTACH_CHAMBER || currentScreen == TestScreens.TURN_READER_ON || currentScreen == TestScreens.TESTING || currentScreen == TestScreens.CONNECT_IT_ALL || currentScreen == TestScreens.TEST_COMPLETE) {
                 attachedView.showScreen(TestScreens.CANCEL);
             } else {
                 attachedView.showPreviousScreen();
