@@ -93,6 +93,8 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
     private boolean handleExtraWorkflowState(final WorkflowState workflowState) {
         boolean handled = false;
         switch (workflowState) {
+            case READING_CASSETTE:
+            case DETECTING_FLUID:
             case TEST_RUNNING: {
                 handled = true;
                 ifViewAttached(TurnReaderOnTestView::showTestingScreen);
@@ -117,11 +119,6 @@ public class TurnReaderOnTestPresenter extends TestBasePresenter<TurnReaderOnTes
                                         error -> Timber.d("Error while getting last result: %s", error)
                                 )
                 );
-                break;
-            }
-            case READING_CASSETTE: {
-                handled = true;
-                ifViewAttached(TurnReaderOnTestView::showConnectItAllScreen);
                 break;
             }
         }

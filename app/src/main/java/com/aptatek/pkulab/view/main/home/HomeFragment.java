@@ -55,6 +55,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 
 public class HomeFragment extends BaseFragment implements HomeFragmentView, DiscreteScrollView.ScrollStateChangeListener {
@@ -369,8 +370,15 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
                     };
                 }
-            } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING && getBaseActivity() == null) {
-                runOnAttach = () -> getBaseActivity().launchActivity(TestActivity.createStarter(getBaseActivity()), false, BaseActivity.Animation.FADE);
+            } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {
+                if (isVisible() || getActivity() != null) {
+                    getBaseActivity().launchActivity(TestActivity.createStarter(getBaseActivity()), false, BaseActivity.Animation.FADE);
+                } else {
+                    runOnAttach = () -> {
+                        Timber.d("--- finished with test running runOnAttach");
+                        getBaseActivity().launchActivity(TestActivity.createStarter(getBaseActivity()), false, BaseActivity.Animation.FADE);
+                    };
+                }
             }
         }
     }

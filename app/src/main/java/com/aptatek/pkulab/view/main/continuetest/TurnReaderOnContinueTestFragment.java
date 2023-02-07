@@ -90,6 +90,12 @@ public class TurnReaderOnContinueTestFragment extends TurnReaderOnFragment<TurnR
     }
 
     @Override
+    public void displaySelfCheckAnimation() {
+        super.displaySelfCheckAnimation();
+        btnSkip.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         presenter.onResumed();

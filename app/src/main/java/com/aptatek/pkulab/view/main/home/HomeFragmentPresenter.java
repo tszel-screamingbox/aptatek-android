@@ -99,8 +99,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         disposables.add(testResultInteractor.getLatest()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
-//                .subscribe(result -> ifViewAttached(view -> view.showLastResult(result.getId()))));
-                .subscribe(result -> ifViewAttached(HomeFragmentView::showNoResults)));
+                .subscribe(result -> ifViewAttached(view -> view.showLastResult(result.getId()))));
     }
 
     // TODO should load data on demand, per weeks / pages... Getting the whole dataSet will have perf impacts

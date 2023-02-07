@@ -10,10 +10,12 @@ import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.model.ContinueTestResultType;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
+import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.connect.permission.PermissionResult;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenter;
 import com.aptatek.pkulab.view.connect.turnreaderon.TurnReaderOnPresenterImpl;
+import com.aptatek.pkulab.view.test.turnreaderon.TurnReaderOnTestView;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.List;
@@ -24,6 +26,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnReaderOnContinueTestView>
         implements TurnReaderOnPresenter<TurnReaderOnContinueTestView> {
@@ -52,6 +55,30 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
     public void attachView(final @NonNull TurnReaderOnContinueTestView view) {
         super.attachView(view);
         wrapped.attachView(view);
+        wrapped.setWorkflowStateHandler(this::handleExtraWorkflowState);
+    }
+
+    private boolean handleExtraWorkflowState(final WorkflowState workflowState) {
+        boolean handled = false;
+        switch (workflowState) {
+            case READING_CASSETTE:
+            case DETECTING_FLUID:
+            case TEST_RUNNING: {
+                handled = true;
+                ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_TEST_RUNNING));
+
+                break;
+            }
+            case POST_TEST:
+            case TEST_COMPLETE: {
+                handled = true;
+
+                ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_CORRECT_RESULT));
+                break;
+            }
+        }
+
+        return handled;
     }
 
     @Override
