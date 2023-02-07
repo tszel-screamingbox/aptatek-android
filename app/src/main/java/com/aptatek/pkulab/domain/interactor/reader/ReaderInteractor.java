@@ -158,15 +158,15 @@ public class ReaderInteractor {
                         .andThen(Single.just(results))
                 )
                 .observeOn(Schedulers.io())
-                .doOnSuccess(list -> {
-                    try {
-                        final ReaderDevice device = getConnectedReader().blockingGet();
-                        analyticsManager.logEvent(new ReaderDataSynced(list.size(), Math.abs(System.currentTimeMillis() - syncStartedAtMs), device.getSerial(), device.getFirmwareVersion()));
-                        syncStartedAtMs = -1L;
-                    } catch (final Exception e) {
-                        Timber.d("Failed to report ReaderDataSynced event: %s", e);
-                    }
-                })
+//                .doOnSuccess(list -> {
+//                    try {
+//                        final ReaderDevice device = getConnectedReader().blockingGet();
+//                        analyticsManager.logEvent(new ReaderDataSynced(list.size(), Math.abs(System.currentTimeMillis() - syncStartedAtMs), device.getSerial(), device.getFirmwareVersion()));
+//                        syncStartedAtMs = -1L;
+//                    } catch (final Exception e) {
+//                        Timber.d("Failed to report ReaderDataSynced event: %s", e);
+//                    }
+//                })
                 .subscribeOn(Schedulers.io());
     }
 
@@ -209,30 +209,7 @@ public class ReaderInteractor {
     public Flowable<WorkflowState> getWorkflowState() {
         return readerManager.workflowState()
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .doOnNext(state -> {
-                    try {
-                        final ReaderDevice device = getConnectedReader().blockingGet();
-                        if (state == WorkflowState.USED_CASSETTE_ERROR) {
-                            analyticsManager.logEvent(new ReaderWorkflowStateError(device.getSerial(), device.getFirmwareVersion()));
-                        }
-
-                        if (state == WorkflowState.SELF_TEST) {
-                            selfTestStartedAtMs = System.currentTimeMillis();
-                        }
-
-                        if (lastWorkflowState == WorkflowState.SELF_TEST) {
-                            analyticsManager.logEvent(new ReaderSelfTestFinished(Math.abs(System.currentTimeMillis() - selfTestStartedAtMs), deviceHelper.getPhoneBattery()));
-                            selfTestStartedAtMs = -1L;
-                        }
-
-                        analyticsManager.logEvent(new WorkflowStateChanged(lastWorkflowState.toString(), state.toString(), device.getFirmwareVersion(), device.getSerial()));
-                        lastWorkflowState = state;
-                    } catch (final Exception e) {
-                        Timber.d("Failed to get connected device: %s", e);
-                    }
-
-                });
+                .observeOn(Schedulers.io());
     }
 
     @NonNull
@@ -244,8 +221,8 @@ public class ReaderInteractor {
     @NonNull
     public Maybe<ReaderDevice> getConnectedReader() {
         return readerManager.getConnectedDevice()
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(reader -> analyticsManager.logEvent(new DeviceInfoRead(reader.getFirmwareVersion(), reader.getSerial())));
+                .subscribeOn(Schedulers.io());
+                //.doOnSuccess(reader -> analyticsManager.logEvent(new DeviceInfoRead(reader.getFirmwareVersion(), reader.getSerial())));
     }
 
     @NonNull
