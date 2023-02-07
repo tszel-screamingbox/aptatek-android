@@ -151,7 +151,7 @@ public class PreferenceManager {
             return testScreens[screenIndex];
         }
 
-        throw new IllegalStateException("No running tess!");
+        throw new IllegalStateException("No running test!");
     }
 
     public void setTestStatus(final TestScreens testStatus) {

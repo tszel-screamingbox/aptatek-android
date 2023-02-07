@@ -116,7 +116,7 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
         disposables.add(readerInteractor.getWorkflowState()
                 .take(1)
                 .subscribe(workflowState -> {
-                    if (workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.TEST_RUNNING
+                    if (workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.DETECTING_FLUID || workflowState == WorkflowState.TEST_RUNNING
                             || workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST) {
                         ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_TEST_RUNNING));
                     } else {

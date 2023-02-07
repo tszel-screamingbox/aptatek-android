@@ -158,7 +158,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                         readerInteractor.getWorkflowState()
                                                 .take(1)
                                                 .singleOrError()
-                                                .flatMap(wfs -> testInteractor.getLastScreen().map(screen -> new Pair<>(wfs, screen)))
+                                                .flatMap(wfs -> testInteractor.getLastScreen().onErrorReturnItem(TestScreens.CANCEL).map(screen -> new Pair<>(wfs, screen)))
                                 )
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
@@ -201,7 +201,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 // ignore error, will try with something else
                 .onErrorComplete()
                 .andThen(Single.zip(
-                        testInteractor.getLastScreen(),
+                        testInteractor.getLastScreen().onErrorReturnItem(TestScreens.CANCEL),
                         // wait for workflow state 1 sec at most
                         readerInteractor.getWorkflowState().take(1).lastOrError().timeout(1, TimeUnit.SECONDS),
                         (testScreens, workflowState) -> new Pair<>(workflowState, testScreens)
