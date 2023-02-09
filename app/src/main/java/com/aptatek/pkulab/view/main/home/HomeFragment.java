@@ -369,6 +369,12 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
                         dialogFragment.setCancelable(false);
                         dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
                     };
+                } else {
+                    final AlertDialogFragment dialogFragment = AlertDialogFragment.create(
+                            TestContinueDialogModel.incorrectResultDialogModelCreate(getActivity()),
+                            decision -> getBaseActivity().launchActivity(new Intent(getActivity(), DisposeActivity.class)));
+                    dialogFragment.setCancelable(false);
+                    dialogFragment.show(getBaseActivity().getSupportFragmentManager(), TAG_TEST_CANNOT_BE_FINISHED_DIALOG);
                 }
             } else if (resultType == ContinueTestResultType.FINISHED_WITH_TEST_RUNNING) {
                 if (isVisible() || getActivity() != null) {

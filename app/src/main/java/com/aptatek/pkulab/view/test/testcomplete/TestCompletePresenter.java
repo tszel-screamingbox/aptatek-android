@@ -75,7 +75,7 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
         this.testId = testId;
 
         // wait until SELF_CHECK / READY Wfs
-        inactivityDisposable = readerInteractor.getWorkflowState()
+        inactivityDisposable = readerInteractor.getWorkflowState("TCP:onTestIdReceived = " + testId)
                 .filter(wfs -> WorkflowState.SELF_TEST == wfs || WorkflowState.READY == wfs)
                 .take(1)
                 .lastOrError()

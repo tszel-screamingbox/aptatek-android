@@ -173,7 +173,7 @@ public class BluetoothService extends BaseForegroundService {
     private void checkWorkflowErrorState() {
         disposeErrorState();
 
-        errorStateDisposable = readerInteractor.getWorkflowState()
+        errorStateDisposable = readerInteractor.getWorkflowState("BS: checkWorfklowStateError")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap((wfs -> Flowable.fromCallable(() -> {
@@ -200,7 +200,7 @@ public class BluetoothService extends BaseForegroundService {
         disposeTestComplete();
 
         testCompleteDisposable =
-                readerInteractor.getWorkflowState()
+                readerInteractor.getWorkflowState("BS:checkTestComplete")
                         .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE)
                         .take(1)
                         .flatMapSingle(ignored -> readerInteractor.getTestProgress()
@@ -321,7 +321,8 @@ public class BluetoothService extends BaseForegroundService {
                         .subscribe(() -> {
                                     Timber.d("connectTo: connected to %s", readerDevice.getMac());
                                     checkTestComplete();
-                                    syncData();
+                                    //syncData();
+                                    showConnectedNotification();
                                 },
                                 error -> {
                                     Timber.d("error during connection to %s", readerDevice.getMac());

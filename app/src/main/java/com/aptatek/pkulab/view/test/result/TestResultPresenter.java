@@ -68,7 +68,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                         .andThen(testInteractor.setTestContinueStatus(false))
                         .andThen(Single.zip(
                                 rangeInteractor.getInfo(),
-                                testResultInteractor.getById(testId),
+                                testResultInteractor.getById(testId).onErrorResumeNext(e -> testResultInteractor.getLatest()),
                                 (rangeInfo, result) -> TestResultState.builder()
                                         .setValid(result.isValid())
                                         .setTitle(getTitleForLevel(result.getPkuLevel(), rangeInfo))
@@ -79,7 +79,7 @@ public class TestResultPresenter extends MvpBasePresenter<TestResultView> {
                                         .build())
                         )
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)));
+                        .subscribe(state -> ifViewAttached(attachedView -> attachedView.render(state)), Timber::e);
     }
 
     public void resetTestScreen() {

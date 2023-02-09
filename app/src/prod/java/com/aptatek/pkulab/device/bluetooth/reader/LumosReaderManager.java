@@ -282,6 +282,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     public Completable connectCompletable(@NonNull final BluetoothDevice bluetoothDevice) {
         return Completable.fromAction(() ->
+                // TODO try - catch await
                 connect(bluetoothDevice)
                         .useAutoConnect(false)
                         .await()

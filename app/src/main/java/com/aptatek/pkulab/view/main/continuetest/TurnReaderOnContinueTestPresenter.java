@@ -122,6 +122,15 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
                         this::checkLastMeasure,
                         error -> ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT))
                 ));
+
+        disposables.add(
+                readerInteractor.syncProgressFlowable()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                syncProgress -> ifViewAttached(av -> av.showSyncResultsScreen(syncProgress)),
+                                error -> Timber.d("Error while reading sync progress: %s", error)
+                        )
+        );
     }
 
     private void checkLastMeasure() {
@@ -140,13 +149,19 @@ public class TurnReaderOnContinueTestPresenter extends MvpBasePresenter<TurnRead
     }
 
     private void getWorkflowState() {
-        disposables.add(readerInteractor.getWorkflowState()
+        disposables.add(readerInteractor.getWorkflowState("TROCTP: getWorkflowState")
                 .take(1)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(workflowState -> {
                     if (workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.DETECTING_FLUID || workflowState == WorkflowState.TEST_RUNNING
                             || workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST) {
                         ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_TEST_RUNNING));
                     } else {
+                        try {
+                            testInteractor.resetTest().blockingGet();
+                        } catch (Throwable a) {
+                            // ignore
+                        }
                         ifViewAttached(view -> view.finishTestContinue(ContinueTestResultType.FINISHED_WITH_WRONG_RESULT));
                     }
                 }));

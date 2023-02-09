@@ -2,6 +2,7 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,16 +47,33 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.processors.BehaviorProcessor;
 import io.reactivex.processors.FlowableProcessor;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class ReaderManagerImpl implements ReaderManager {
+
+    private class ConnectedDeviceHolder {
+        final ReaderDevice device;
+
+        private ConnectedDeviceHolder(ReaderDevice device) {
+            this.device = device;
+        }
+
+        public boolean isConnected() {
+            return device != null;
+        }
+    }
 
     private final LumosReaderManager lumosReaderManager;
 
     private final FlowableProcessor<ReaderError> readerErrorProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<ConnectionEvent> connectionStateProcessor = BehaviorProcessor.createDefault(ConnectionEvent.create(null, ConnectionState.DISCONNECTED));
+
+    private final FlowableProcessor<ConnectedDeviceHolder> connectedReaderProcessor = BehaviorProcessor.createDefault(new ConnectedDeviceHolder(null));
+
     private final FlowableProcessor<Integer> mtuSizeProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<WorkflowState> workflowStateProcessor = BehaviorProcessor.create();
     private final FlowableProcessor<TestProgress> testProgressProcessor = BehaviorProcessor.create();
@@ -84,12 +102,16 @@ public class ReaderManagerImpl implements ReaderManager {
             public void onDeviceDisconnecting(final @NonNull BluetoothDevice device) {
                 Timber.d("onDeviceDisconnecting: device [%s]", device.getAddress());
                 connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.DISCONNECTING));
+
+                connectedReaderProcessor.onNext(new ConnectedDeviceHolder(null));
             }
 
             @Override
             public void onDeviceDisconnected(final @NonNull BluetoothDevice device) {
                 Timber.d("onDeviceDisconnected: device [%s]", device.getAddress());
                 connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.DISCONNECTED));
+
+                connectedReaderProcessor.onNext(new ConnectedDeviceHolder(null));
             }
 
             @Override
@@ -102,6 +124,20 @@ public class ReaderManagerImpl implements ReaderManager {
                 Timber.d("onDeviceReady device [%s]", device.getAddress());
 //                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
                 connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
+
+                Single.zip(
+                        lumosReaderManager.readCharacteristic(LumosReaderConstants.DEVICE_INFO_FIRMWARE),
+                        lumosReaderManager.readCharacteristic(LumosReaderConstants.DEVICE_INFO_SERIAL),
+                        (BiFunction<String, String, ReaderDevice>) (firmwareVersion, serialNumber) -> {
+                            BluetoothReaderDevice bluetoothReaderDevice = new BluetoothReaderDevice(device);
+                            bluetoothReaderDevice.setFirmwareVersion(firmwareVersion);
+                            bluetoothReaderDevice.setSerialNumber(serialNumber);
+                            return bluetoothReaderDevice;
+                        }
+                )
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(a -> connectedReaderProcessor.onNext(new ConnectedDeviceHolder(a)), error -> Timber.d("--- onDeviceReady failed to read serial and firmware"));
+
 //                }
             }
 
@@ -265,7 +301,7 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Maybe<ReaderDevice> getConnectedDevice() {
-        return lumosReaderManager.getConnectedDevice();
+        return connectedReaderProcessor.take(1).filter(ConnectedDeviceHolder::isConnected).map(a -> a.device).lastElement().doOnSuccess(a -> Timber.d("--- got connected device=%s",a)).doOnError(a -> Timber.d("--- error connected device %s", a)).doOnComplete(() -> Timber.d("--- connected device oncomplete"));
     }
 
     @Override
@@ -334,13 +370,8 @@ public class ReaderManagerImpl implements ReaderManager {
     }
 
     @Override
-    public Flowable<WorkflowState> workflowState() {
-        return Flowable.concat(
-                connectionStateProcessor.filter(event -> event.getConnectionState() == ConnectionState.READY)
-                        .take(1)
-                        .flatMap(ignored -> getWorkflowState().toFlowable()),
-                workflowStateProcessor
-        );
+    public Flowable<WorkflowState> workflowState(String debug) {
+        return workflowStateProcessor.startWith(getWorkflowState().toFlowable().onErrorReturnItem(WorkflowState.DEFAULT).doOnNext(a -> Timber.d("--- debug %s", debug)));
     }
 
     private Single<WorkflowState> getWorkflowState() {
@@ -353,7 +384,16 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Flowable<TestProgress> testProgress() {
-        return testProgressProcessor;
+        return testProgressProcessor.startWith(
+                lumosReaderManager.<TestProgressResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_TEST_PROGRESS)
+                        .map(tpr -> ((TestProgressMapper) mappers.get(TestProgressResponse.class)).mapToDomain(tpr))
+                        // that means we don't have test progress yet!
+                        // try again in a second
+                        .retryWhen(errors -> errors
+                                .takeWhile(a -> a instanceof NullPointerException)
+                                .flatMap(a -> Flowable.timer(1, TimeUnit.SECONDS)))
+                        .toFlowable()
+        ).scan((prev, next) -> prev.getStart() > next.getStart() ? prev : next);
     }
 
     @Override

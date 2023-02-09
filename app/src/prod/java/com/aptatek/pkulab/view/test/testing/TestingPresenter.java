@@ -89,14 +89,11 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         disposables.add(
                 // wait until we don't see a brand new test id
                 readerInteractor.getTestProgress()
-                        .doOnNext(tp -> Timber.d("--- testProgress: %s", tp))
-                        .doOnError(e -> Timber.d("--- testProgress error: %s", e))
                         .flatMap(tp -> testResultInteractor.getById(tp.getTestId()).toFlowable()
                                 .map(result -> false)
-                                .onErrorReturnItem(tp.getPercent() != 100)
+                                .onErrorReturnItem(true)
                                 .doOnNext(valid -> Timber.d("--- found tp by id in database = %s", !valid ? "TRUE" : "FALSE"))
-                                .filter(valid -> valid)
-                                .map(valid -> tp)
+                                .map(valid -> new Pair<>(tp, valid))
                         )
                         .retryWhen(errors -> {
                             final AtomicInteger counter = new AtomicInteger(0);
@@ -107,6 +104,14 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                         return Flowable.timer(counter.get(), TimeUnit.SECONDS);
                                     }).doOnNext(i -> Timber.d("--- getTestProgress retryWhen error delayed retry"));
                         })
+                        .filter(a -> a.second)
+                        .map(a -> a.first)
+                        // attempt to filter out previous test progress
+                        .flatMap(tp -> readerInteractor.getWorkflowState("TestingPres to determine if test is running")
+                                .take(1)
+                                .filter(wfs -> tp.getPercent() != 100 || !(wfs == WorkflowState.TEST_RUNNING || wfs == WorkflowState.READING_CASSETTE || wfs == WorkflowState.DETECTING_FLUID)).map(
+                                        wfs -> tp
+                                ))
                         .doOnNext(tp -> Timber.d("--- filtered TestProgress: %s", tp))
                         .doOnComplete(() -> Timber.d("--- filtered testProgress complete !!! should not happen"))
                         .doOnError(e -> Timber.d("--- filtered testProgress error %s !!! should not happen", e))
@@ -136,7 +141,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         // take battery updates while we're connected and the wfs is test running
                         .takeUntil(Flowable.combineLatest(
                                         readerInteractor.getReaderConnectionEvents().map(event -> event.getConnectionState() == ConnectionState.READY),
-                                        readerInteractor.getWorkflowState().map(workflowState -> workflowState == WorkflowState.TEST_RUNNING || workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.DETECTING_FLUID),
+                                        readerInteractor.getWorkflowState("TP: watch battery updates").map(workflowState -> workflowState == WorkflowState.TEST_RUNNING || workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.DETECTING_FLUID),
                                         (aBoolean, aBoolean2) -> aBoolean && aBoolean2)
                                 .filter(a -> !a)
                                 .doOnNext(a -> Timber.d("--- battery updates takeUntil stop!"))
@@ -153,7 +158,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
         // watch for errors
         disposables.add(
-                readerInteractor.getWorkflowState()
+                readerInteractor.getWorkflowState("TP: watch errors")
                         .filter(state -> state.name().toLowerCase(Locale.getDefault()).endsWith("error"))
                         .take(1L)
                         .singleOrError()
@@ -192,7 +197,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private void startWatchingTestComplete() {
         disposables.add(
-                readerInteractor.getWorkflowState()
+                readerInteractor.getWorkflowState("TP:startWatchingTestComplete")
                         .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
                         .take(1)
                         .ignoreElements()
@@ -246,7 +251,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                             readerInteractor.getConnectedReader()
                                     .toSingle()
                                     .ignoreElement()
-                                    .andThen(readerInteractor.getWorkflowState().filter(wfs -> wfs == WorkflowState.TEST_COMPLETE || wfs == WorkflowState.POST_TEST || wfs == WorkflowState.READY || wfs == WorkflowState.SELF_TEST)
+                                    .andThen(readerInteractor.getWorkflowState("TP:startRemainingCountdown").filter(wfs -> wfs == WorkflowState.TEST_COMPLETE || wfs == WorkflowState.POST_TEST || wfs == WorkflowState.READY || wfs == WorkflowState.SELF_TEST)
                                             .take(1)
                                             .singleOrError()
                                             .ignoreElement())

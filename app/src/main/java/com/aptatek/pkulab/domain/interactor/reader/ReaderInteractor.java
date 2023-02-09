@@ -206,8 +206,8 @@ public class ReaderInteractor {
     }
 
     @NonNull
-    public Flowable<WorkflowState> getWorkflowState() {
-        return readerManager.workflowState()
+    public Flowable<WorkflowState> getWorkflowState(String debug) {
+        return readerManager.workflowState(debug)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io());
     }

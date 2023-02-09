@@ -220,7 +220,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
 
     private void watchErrorState() {
         disposables.add(
-                readerInteractor.getWorkflowState()
+                readerInteractor.getWorkflowState("EBS:watchError")
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(wfs -> {
@@ -241,7 +241,7 @@ public class ExplicitBluetoothService extends BaseForegroundService {
 
     private void waitUntilReady() {
         disposables.add(
-                readerInteractor.getWorkflowState()
+                readerInteractor.getWorkflowState("EBS:waitUntilReady")
                         .filter(workflowState -> workflowState == WorkflowState.READY)
                         .take(1)
                         .subscribeOn(Schedulers.io())
@@ -259,8 +259,11 @@ public class ExplicitBluetoothService extends BaseForegroundService {
     }
 
     private void waitUntilTestComplete() {
+        final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.ConnectedToDeviceTestWorkflow());
+        notificationManager.notify(notification.getId(), notification.getNotification());
+
         disposables.add(
-                readerInteractor.getWorkflowState()
+                readerInteractor.getWorkflowState("EBS:waitUntilTestComplete")
                         .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE)
                         .take(1)
                         .flatMapSingle(ignored ->
@@ -280,8 +283,8 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                                 testId -> {
                                     Timber.d("Test complete, result saved!");
 
-                                    final BluetoothNotificationFactory.DisplayNotification notification = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete(testId));
-                                    notificationManager.notify(notification.getId(), notification.getNotification());
+                                    final BluetoothNotificationFactory.DisplayNotification b = bluetoothNotificationFactory.createNotification(new BluetoothNotificationFactory.TestComplete(testId));
+                                    notificationManager.notify(b.getId(), b.getNotification());
 
                                     shutdown();
                                 },

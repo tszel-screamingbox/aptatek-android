@@ -53,7 +53,7 @@ public interface ReaderManager {
 
     Flowable<Integer> mtuSize();
 
-    Flowable<WorkflowState> workflowState();
+    Flowable<WorkflowState> workflowState(String debug);
 
     Flowable<TestProgress> testProgress();
 

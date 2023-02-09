@@ -66,7 +66,7 @@ public class ConnectItAllPresenter extends TestBasePresenter<ConnectItAllView> {
                 .subscribe(() -> ifViewAttached(ConnectItAllView::showTurnReaderOn));
 
         // wait for next wfs
-        workflowStateDisposable = readerInteractor.getWorkflowState()
+        workflowStateDisposable = readerInteractor.getWorkflowState("CIAP: onStart")
                 .filter(workflowState -> workflowState == WorkflowState.READING_CASSETTE || workflowState == WorkflowState.DETECTING_FLUID || workflowState == WorkflowState.TEST_RUNNING || workflowState == WorkflowState.TEST_COMPLETE)
                 .take(1)
                 .singleOrError()

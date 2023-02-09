@@ -156,7 +156,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                         .toSingle())
                                 .flatMap(ignored ->
                                         // we have a connected reader, lets check its workflow state...
-                                        readerInteractor.getWorkflowState()
+                                        readerInteractor.getWorkflowState("TROPI: checkPermission")
                                                 .take(1)
                                                 .singleOrError()
                                                 .flatMap(wfs -> testInteractor.getLastScreen().onErrorReturnItem(TestScreens.CANCEL).map(screen -> new Pair<>(wfs, screen)))
@@ -206,7 +206,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 .andThen(Single.zip(
                         testInteractor.getLastScreen().onErrorReturnItem(TestScreens.CANCEL),
                         // wait for workflow state 1 sec at most
-                        readerInteractor.getWorkflowState().take(1).lastOrError().timeout(1, TimeUnit.SECONDS),
+                        readerInteractor.getWorkflowState("TROPI:waitForWorkflowChange").take(1).lastOrError().timeout(1, TimeUnit.SECONDS),
                         (testScreens, workflowState) -> new Pair<>(workflowState, testScreens)
                 ))
                 .observeOn(AndroidSchedulers.mainThread())
