@@ -1,6 +1,7 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
 import android.annotation.TargetApi;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.aptatek.pkulab.R;
+import com.aptatek.pkulab.device.bluetooth.scanner.BluetoothAdapterImpl;
 import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.onboarding.OnboardingMultipleReaderFound;
@@ -383,5 +385,10 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
             syncText.setText(String.format(Locale.getDefault(), "%d/%d", syncProgress.getCurrent(), syncProgress.getTotal()));
             syncText.setTextColor(ContextCompat.getColor(requireActivity(), R.color.applicationGreen));
         }
+    }
+
+    @Override
+    public void showEnableBluetooth() {
+        startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE), 9);
     }
 }

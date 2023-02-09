@@ -5,6 +5,7 @@ import android.util.Pair;
 import androidx.annotation.NonNull;
 import androidx.core.content.PermissionChecker;
 
+import com.aptatek.pkulab.device.bluetooth.error.BluetoothDisabledError;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.LocationServiceDisabledError;
 import com.aptatek.pkulab.domain.interactor.reader.MissingBleFeatureError;
@@ -179,6 +180,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                                 startConnectionFlow();
                                             } else if (error instanceof LocationServiceDisabledError) {
                                                 ifViewAttached(TurnReaderOnView::showEnableLocation);
+                                            } else if (error instanceof BluetoothDisabledError) {
+                                                ifViewAttached(TurnReaderOnView::showEnableBluetooth);
                                             }
                                         }
                                 )

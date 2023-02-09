@@ -9,6 +9,7 @@ import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 
+import com.aptatek.pkulab.device.bluetooth.error.BluetoothDisabledError;
 import com.aptatek.pkulab.domain.error.DeviceDiscoveryError;
 import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
@@ -73,7 +74,12 @@ public class BluetoothInteractor {
         }
 
         if (!bluetoothConditionChecker.isBluetoothEnabled()) {
-            return Completable.fromAction(bluetoothAdapter::enable);
+            try {
+                bluetoothAdapter.enable();
+                return Completable.complete();
+            } catch (BluetoothDisabledError error) {
+                return Completable.error(error);
+            }
         }
 
         return Completable.complete();

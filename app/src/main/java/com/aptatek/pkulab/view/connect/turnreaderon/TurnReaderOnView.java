@@ -32,4 +32,5 @@ public interface TurnReaderOnView extends BaseConnectView {
 
     void showSyncResultsScreen(SyncProgress syncProgress);
 
+    void showEnableBluetooth();
 }

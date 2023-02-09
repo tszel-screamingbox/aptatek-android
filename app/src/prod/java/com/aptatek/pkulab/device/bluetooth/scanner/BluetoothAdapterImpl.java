@@ -1,5 +1,7 @@
 package com.aptatek.pkulab.device.bluetooth.scanner;
 
+import com.aptatek.pkulab.device.bluetooth.error.BluetoothDisabledError;
+import com.aptatek.pkulab.device.bluetooth.error.BluetoothError;
 import com.aptatek.pkulab.domain.manager.reader.BluetoothAdapter;
 
 import timber.log.Timber;
@@ -25,12 +27,15 @@ public class BluetoothAdapterImpl implements BluetoothAdapter {
     }
 
     @Override
-    public void enable() {
+    public void enable() throws BluetoothDisabledError {
         if (bluetoothAdapter == null) {
             // This should not happen since we strictly require the device to have Bluetooth in the Manifest.
             Timber.e("No bluetooth adapter!");
         } else {
-            bluetoothAdapter.enable();
+            final boolean isEnabled = bluetoothAdapter.enable();
+            if (!isEnabled) {
+                throw new BluetoothDisabledError();
+            }
         }
     }
 
