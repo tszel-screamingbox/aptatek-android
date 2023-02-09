@@ -60,7 +60,7 @@ public class AuthPinHostActivity extends BaseRootFrameActivity<AuthPinHostActivi
             launchActivity(intent, true, BaseActivity.Animation.RIGHT_TO_LEFT);
         }
 
-        startService(new Intent(this, BluetoothService.class));
+        //startService(new Intent(this, BluetoothService.class));
     }
 
     @Override

@@ -100,8 +100,8 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
             LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(Constants.PIN_IDLE_ACTION));
         }
 
-        stopService(ExplicitBluetoothService.createForDeviceReady(this));
-        stopService(ExplicitBluetoothService.createForTestComplete(this));
+//        stopService(ExplicitBluetoothService.createForDeviceReady(this));
+//        stopService(ExplicitBluetoothService.createForTestComplete(this));
 
         lastForegroundTime = 0L;
 
@@ -119,7 +119,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         Timber.d("Process.Lifecycle: background");
 
         startWettingServiceWhenPossible();
-        startExplicitBTServiceWhenPossible();
+        // startExplicitBTServiceWhenPossible();
 
         disposeKillServiceTimer();
         killServiceTimer = Countdown.countdown(Constants.BT_SERVICE_IDLE_TIMEOUT, ignore -> true, ignore -> ignore)
