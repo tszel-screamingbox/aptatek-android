@@ -35,7 +35,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
         final TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntentWithParentStack(starter);
 
-        return stackBuilder.getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
+        return stackBuilder.getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private String createCountdownChannel() {
@@ -62,6 +62,7 @@ public class WettingNotificationFactoryImpl extends BaseNotificationFactory impl
                 .setProgress(Constants.HUNDRED_PERCENT, getWettingProgress(countdown.getRemainingMillis()), false)
                 .setVibrate(new long[]{0L})
                 .setSound(null)
+                .setOngoing(true)
                 .setDefaults(0)
                 .setContentIntent(createContentIntent(false))
                 .build();

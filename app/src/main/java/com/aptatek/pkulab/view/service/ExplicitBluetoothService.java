@@ -2,13 +2,13 @@ package com.aptatek.pkulab.view.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
-import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.MissingPermissionsError;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
@@ -26,6 +26,7 @@ import com.aptatek.pkulab.injection.module.ServiceModule;
 import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.error.ErrorModel;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
@@ -131,18 +132,20 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                 bluetoothInteractor.enableBluetoothWhenNecessary()
                         .andThen(bluetoothInteractor.stopScan())
                         .andThen(bluetoothInteractor.startScan(INITIAL_SCAN_PERIOD))
-                        .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
-                                .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
-                                        .take(1)
-                                        .firstOrError()
-                                        .map(devices -> Ix.from(devices).toList())
-                                )
+                        .onErrorComplete()
+                        .andThen(bluetoothInteractor.getDiscoveredDevices()
+                                .take(1)
+                                .firstOrError()
+                                .map(devices -> Ix.from(devices).toList())
                         )
                         .timeout(INITIAL_SCAN_PERIOD, TimeUnit.MILLISECONDS)
-                        .firstOrError()
+                        .flatMap(devices -> readerInteractor.getLastConnectedMac().toSingle().onErrorReturnItem("invalid")
+                                .map(mac -> new Pair<>(mac, devices)))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(devices -> {
+                        .subscribe(pair -> {
+                                    final String lastConnectedMac = pair.first;
+                                    final List<ReaderDevice> devices = pair.second;
                                     switch (devices.size()) {
                                         case 0: {
                                             if (tryCount < MAX_CONNECT_RETRY) {
@@ -160,9 +163,14 @@ public class ExplicitBluetoothService extends BaseForegroundService {
                                         }
                                         case 1: {
                                             final ReaderDevice readerDevice = devices.get(0);
-                                            Timber.d("startConnect is connecting to device: %s", readerDevice.getMac());
 
-                                            connectTo(readerDevice);
+                                            if (readerDevice.getMac().equals(lastConnectedMac)) {
+                                                Timber.d("startConnect is connecting to device: %s", readerDevice.getMac());
+
+                                                connectTo(readerDevice);
+                                            } else {
+                                                shutdown();
+                                            }
 
                                             break;
                                         }
@@ -185,7 +193,9 @@ public class ExplicitBluetoothService extends BaseForegroundService {
 
     private void connectTo(@NonNull final ReaderDevice readerDevice) {
         disposables.add(
-                readerInteractor.connect(readerDevice)
+                bluetoothInteractor.stopScan()
+                        .onErrorComplete()
+                        .andThen(readerInteractor.connect(readerDevice))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(

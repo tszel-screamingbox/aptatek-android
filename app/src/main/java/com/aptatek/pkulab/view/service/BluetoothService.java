@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.service;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
@@ -10,7 +11,6 @@ import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.device.notifications.BluetoothNotificationFactory;
-import com.aptatek.pkulab.domain.interactor.countdown.Countdown;
 import com.aptatek.pkulab.domain.interactor.reader.BluetoothInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.test.ErrorInteractor;
@@ -27,6 +27,7 @@ import com.aptatek.pkulab.injection.module.BluetoothServiceModule;
 import com.aptatek.pkulab.injection.module.ServiceModule;
 import com.aptatek.pkulab.util.Constants;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
@@ -216,7 +217,7 @@ public class BluetoothService extends BaseForegroundService {
                                         }
                                 )
                         )
-                        // should only trigger checkTestComplete if a new READING_CASSETE has been seen
+                        // should only trigger checkTestComplete if a new READING_CASSETTE has been seen
                         // .takeUntil((a) -> a.getId() != null)
                         .singleOrError()
                         .flatMap(testResult ->
@@ -262,23 +263,30 @@ public class BluetoothService extends BaseForegroundService {
         disposables.add(
                 bluetoothInteractor.enableBluetoothWhenNecessary()
                         .andThen(bluetoothInteractor.startScan(INITIAL_SCAN_PERIOD))
-                        .andThen(Countdown.countdown(INITIAL_SCAN_PERIOD, tick -> tick >= 1, tick -> tick)
-                                .flatMapSingle(ignored -> bluetoothInteractor.getDiscoveredDevices()
-                                        .take(1)
-                                        .firstOrError()
-                                        .map(devices -> Ix.from(devices).toList())
-                                )
+                        .onErrorComplete()
+                        .andThen(bluetoothInteractor.getDiscoveredDevices()
+                                .doOnNext(a -> Timber.d("--- onDevices = %s", a))
+                                .take(1)
+                                .firstOrError()
+                                .map(devices -> Ix.from(devices).toList())
                         )
-                        .timeout(INITIAL_SCAN_PERIOD, TimeUnit.MILLISECONDS)
-                        .firstOrError()
+                        .timeout(10, TimeUnit.SECONDS)
+                        .flatMap(devices -> readerInteractor.getLastConnectedMac().toSingle().onErrorReturnItem("invalid").map(mac -> new Pair<>(mac, devices)))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(devices -> {
+                        .subscribe(pair -> {
+                                    final String lastMac = pair.first;
+                                    final List<ReaderDevice> devices = pair.second;
                                     switch (devices.size()) {
                                         case 1: {
                                             final ReaderDevice readerDevice = devices.get(0);
-                                            Timber.d("startScanAndAutoConnect is connecting to device: %s", readerDevice.getMac());
-                                            connectTo(readerDevice);
+
+                                            if (lastMac.equals(readerDevice.getMac())) {
+                                                Timber.d("startScanAndAutoConnect is connecting to device: %s", readerDevice.getMac());
+                                                connectTo(readerDevice);
+                                            } else {
+                                                failSilently();
+                                            }
                                             break;
                                         }
                                         default: {
@@ -297,13 +305,17 @@ public class BluetoothService extends BaseForegroundService {
     }
 
     private void failSilently() {
-        stopForeground(true);
-        stopSelf();
+        bluetoothInteractor.stopScan().onErrorComplete()
+                        .subscribe(() -> {
+                            stopForeground(true);
+                            stopSelf();
+                        });
     }
 
     private void connectTo(@NonNull final ReaderDevice readerDevice) {
         disposables.add(
-                readerInteractor.connect(readerDevice)
+                bluetoothInteractor.stopScan()
+                        .andThen(readerInteractor.connect(readerDevice))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {

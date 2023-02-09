@@ -106,7 +106,8 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_explicit_error_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_explicit_error_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setOngoing(true)
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE))
                 .build();
     }
 
@@ -114,7 +115,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_multiplereaders_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_multiplereaders_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE))
                 .build();
     }
 
@@ -122,7 +123,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_permission_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_permission_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "error"), PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE))
                 .build();
     }
 
@@ -130,7 +131,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_connected_test_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_connected_test_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "end_of_self_checking"), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestActivity.createStarterForNotificationWithReason(context, "end_of_self_checking"), PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE))
                 .build();
     }
 
@@ -138,6 +139,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createStatusChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_connecting_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_connecting_message)))
+                .setOngoing(true)
                 .build();
     }
 
@@ -152,6 +154,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createStatusChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_sync_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_sync_message)))
+                .setOngoing(true)
                 .build();
     }
 
@@ -159,7 +162,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_test_complete_title))
                 .setContentText(resourceInteractor.getStringResource(R.string.bluetooth_notification_test_complete_message)))
-                .setContentIntent(PendingIntent.getActivity(context, 0, TestResultActivity.starter(context, testComplete.getTestId(), true), PendingIntent.FLAG_CANCEL_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, TestResultActivity.starter(context, testComplete.getTestId(), true), PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE))
                 .build();
     }
 
@@ -169,7 +172,7 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
         return applyCommonProperties(new NotificationCompat.Builder(context, createChannel())
                 .setContentTitle(resourceInteractor.getStringResource(R.string.bluetooth_notification_error_title))
                 .setContentText(message.getReason()))
-                .setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT))
+                .setContentIntent(PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE))
                 .build();
     }
 
