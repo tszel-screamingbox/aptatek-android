@@ -301,7 +301,12 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Maybe<ReaderDevice> getConnectedDevice() {
-        return connectedReaderProcessor.take(1).filter(ConnectedDeviceHolder::isConnected).map(a -> a.device).lastElement().doOnSuccess(a -> Timber.d("--- got connected device=%s",a)).doOnError(a -> Timber.d("--- error connected device %s", a)).doOnComplete(() -> Timber.d("--- connected device oncomplete"));
+        return connectedReaderProcessor.take(1)
+                .filter(ConnectedDeviceHolder::isConnected)
+                .map(a -> a.device).lastElement()
+                .doOnSuccess(a -> Timber.d("--- got connected device=%s",a))
+                .doOnError(a -> Timber.d("--- error connected device %s", a))
+                .doOnComplete(() -> Timber.d("--- connected device oncomplete"));
     }
 
     @Override

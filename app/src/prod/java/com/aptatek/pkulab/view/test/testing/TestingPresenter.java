@@ -56,6 +56,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private TestProgress firstProgress;
 
+    private Disposable testCompleteDisposable;
+
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
                             final ReaderInteractor readerInteractor,
@@ -189,15 +191,21 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     private void onTestProgressReceived(final TestProgress testProgress) {
         if (firstProgress == null || !firstProgress.getTestId().equals(testProgress.getTestId())) {
             firstProgress = testProgress;
-        }
 
-        startRemainingCountdown();
-        startWatchingTestComplete();
+            Timber.d("---- !! onTestProgressReceived!!  %s", testProgress.getTestId());
+
+            startRemainingCountdown();
+            startWatchingTestComplete();
+        }
     }
 
     private void startWatchingTestComplete() {
-        disposables.add(
-                readerInteractor.getWorkflowState("TP:startWatchingTestComplete")
+        if (testCompleteDisposable != null && !testCompleteDisposable.isDisposed()) {
+            testCompleteDisposable.dispose();
+            testCompleteDisposable = null;
+        }
+
+        testCompleteDisposable = readerInteractor.getWorkflowState("TP:startWatchingTestComplete")
                         .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
                         .take(1)
                         .ignoreElements()
@@ -213,8 +221,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                 .andThen(Single.just(testProgress.getTestId()))
                         )
                         .onErrorResumeNext(error -> {
-                            Timber.d("--- testProgress getResult flow error %s", error);
-                            return testResultInteractor.getLatest().map(TestResult::getId);
+                            Timber.d("--- testProgress getResult flow error %s, fallback to latest!", error);
+                            return testResultInteractor.getLatest().map(TestResult::getId).doOnSuccess(a -> Timber.d("--- testProgress getResult fallback -> %s", a));
                         })
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -226,7 +234,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                     ifViewAttached(attachedView -> attachedView.onTestFinished(resultId));
                                 },
                                 error -> Timber.d("Error while getting test result: %s", error)
-                        ));
+                        );
     }
 
     private void startRemainingCountdown() {
@@ -296,6 +304,10 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         if (stillConnectedDisposable != null && !stillConnectedDisposable.isDisposed()) {
             stillConnectedDisposable.dispose();
             stillConnectedDisposable = null;
+        }
+        if (testCompleteDisposable != null && !testCompleteDisposable.isDisposed()) {
+            testCompleteDisposable.dispose();
+            testCompleteDisposable = null;
         }
     }
 

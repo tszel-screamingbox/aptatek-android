@@ -326,16 +326,17 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 .andThen(readResult()
                         // make sure we have the result we requested...
                         .flatMap(result -> result.getDate().equals(id) ? Single.just(result) : Single.error(IllegalStateException::new))
-                        // retry 3 times max, with 200ms delay between each tries
                         .retryWhen(errors -> {
-                            final AtomicInteger counter = new AtomicInteger();
+                            final AtomicInteger counter = new AtomicInteger(1);
                             return errors
                                     .doOnNext(e -> Timber.d("---- getResult retryWhen error: %s", e))
                                     .takeWhile(e -> counter.getAndIncrement() < 3)
-                                    .flatMap(e -> Flowable.timer(200L, TimeUnit.MILLISECONDS).doOnNext(ignored -> Timber.d("---- getResult retry after delay...")));
+                                    .flatMap(e -> Flowable.timer(counter.get(), TimeUnit.SECONDS)
+                                    .doOnNext(ignored -> Timber.d("---- getResult retry after delay...")));
                         })
                 )
-                .doOnSuccess(result -> Timber.d("Requested resultId: %s, result: %s", id, result));
+                .doOnSuccess(result -> Timber.d("Requested resultId: %s, result: %s", id, result))
+                .doOnError(error -> Timber.w("--- readResult %s, error %s", id, error));
     }
 
     private Single<ResultResponse> readResult() {
@@ -345,6 +346,8 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     private Single<List<ResultResponse>> syncResults(@Nullable final SyncRequestCharacteristicDataProvider.SyncAfterRequestData data) {
         return syncResultsFlowable(data)
+                .doOnNext(a -> Timber.d("--- syncResults progress %s", a))
+                .doOnError(a -> Timber.d("--- syncResults error %s", a))
                 .collectInto(new ArrayList<>(), List::add);
     }
 
@@ -354,9 +357,18 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 .andThen(concatSyncResponse()
                         .map(ResultSyncResponse::getIdentifiers)
                         .toFlowable()
-                        .doOnNext(list -> syncProgressFlowableProcessor.onNext(new SyncProgress(0, 0, list.size())))
-                        .flatMapIterable(it -> it)
                 )
+                .retryWhen(error -> {
+                    final AtomicInteger delayCounter = new AtomicInteger(1);
+                    return error
+                            .doOnNext(e -> Timber.d("--- syncResultsFlowable error = %s, delaying %d seconds...", e, delayCounter.get()))
+                            .flatMap(e -> Flowable.timer(delayCounter.getAndIncrement(), TimeUnit.SECONDS))
+                            .takeWhile(e -> delayCounter.get() < 3)
+                            .doOnNext(e -> Timber.d("--- syncResultsFlowable error delay done!"))
+                            .doOnComplete(() -> Timber.d("--- syncResultsFlowable error complete!"));
+                })
+                .doOnNext(list -> syncProgressFlowableProcessor.onNext(new SyncProgress(0, 0, list.size())))
+                .flatMapIterable(it -> it)
                 .observeOn(Schedulers.io())
                 .concatMap(id -> getResult(id)
                         .doOnSuccess(r -> syncProgressFlowableProcessor.onNext(syncProgressFlowableProcessor.getValue().increaseProgress()))

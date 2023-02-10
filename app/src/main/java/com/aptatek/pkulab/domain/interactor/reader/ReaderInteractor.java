@@ -139,10 +139,7 @@ public class ReaderInteractor {
 
     @NonNull
     public Single<List<TestResult>> syncResultsAfterLatest() {
-        return readerManager.getConnectedDevice()
-                .toSingle()
-                .doOnSubscribe(ignored -> syncStartedAtMs = System.currentTimeMillis())
-                .map(ReaderDevice::getMac)
+        return getLastConnectedMac().toSingle()
                 .flatMap(testResultRepository::getLatestFromReader)
                 .map(TestResult::getId)
                 .onErrorReturnItem("invalid")
@@ -154,19 +151,12 @@ public class ReaderInteractor {
                         return readerManager.syncResultsAfter(id);
                     }
                 })
+                .doOnSuccess(a -> Timber.d("--- syncResultsAfterLatest synced %d", a.size()))
+                .doOnError(a -> Timber.d("--- syncResultsAfterLatest error %s", a))
                 .flatMap(results -> testResultRepository.insertAll(results)
                         .andThen(Single.just(results))
                 )
                 .observeOn(Schedulers.io())
-//                .doOnSuccess(list -> {
-//                    try {
-//                        final ReaderDevice device = getConnectedReader().blockingGet();
-//                        analyticsManager.logEvent(new ReaderDataSynced(list.size(), Math.abs(System.currentTimeMillis() - syncStartedAtMs), device.getSerial(), device.getFirmwareVersion()));
-//                        syncStartedAtMs = -1L;
-//                    } catch (final Exception e) {
-//                        Timber.d("Failed to report ReaderDataSynced event: %s", e);
-//                    }
-//                })
                 .subscribeOn(Schedulers.io());
     }
 
