@@ -13,4 +13,8 @@ public interface TestingView extends TestFragmentBaseView {
 
     void onTestError(final ErrorModel errorModel);
 
+    void setProgressVisible(boolean visible);
+
+    void setProgressPercentage(int percentage);
+
 }

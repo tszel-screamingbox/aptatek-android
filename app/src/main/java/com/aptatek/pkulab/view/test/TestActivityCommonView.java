@@ -14,10 +14,6 @@ public interface TestActivityCommonView {
 
     void setBatteryPercentage(int percentage);
 
-    void setProgressVisible(boolean visible);
-
-    void setProgressPercentage(int percentage);
-
     void setDisclaimerViewVisible(boolean visible);
 
     void setDisclaimerMessage(@NonNull String message);

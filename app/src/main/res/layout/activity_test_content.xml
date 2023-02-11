@@ -46,36 +46,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.rd.PageIndicatorView
-            android:id="@+id/testPageIndicator"
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/General.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/general.distance.xxsmall"
-            android:layout_marginEnd="@dimen/general.distance.xxsmall"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/testCancelButton"
-            app:layout_constraintEnd_toStartOf="@id/testNextButton"
-            app:layout_constraintHorizontal_bias="0.5"
+            android:id="@+id/testStep"
             app:layout_constraintStart_toEndOf="@id/testCancelButton"
-            app:layout_constraintTop_toTopOf="@+id/testCancelButton"
-            app:layout_constraintVertical_bias="0.5"
-            app:piv_animationType="worm"
-            app:piv_interactiveAnimation="true"
-            app:piv_selectedColor="@color/testPageIndicatorBlue"
-            app:piv_unselectedColor="@color/testPageIndicatorGray" />
-
-        <ProgressBar
-            android:id="@+id/testProgress"
-            style="@style/Test.Progress"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/test.progressbar.height"
-            android:progressDrawable="@drawable/custom_progressbar"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/testCancelButton"
-            app:layout_constraintEnd_toEndOf="@id/testPageIndicator"
-            app:layout_constraintStart_toStartOf="@id/testPageIndicator"
-            app:layout_constraintTop_toTopOf="@+id/testCancelButton"
-            tools:progress="10" />
+            app:layout_constraintEnd_toStartOf="@id/testNextButton"
+            tools:text="Step 4 of 17"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <Button
             android:id="@+id/testNextButton"

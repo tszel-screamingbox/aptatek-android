@@ -137,4 +137,14 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
             ((TestActivityView) getActivity()).showTurnReaderOn();
         }
     }
+
+    @Override
+    public void setProgressVisible(boolean visible) {
+        testProgress.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @Override
+    public void setProgressPercentage(int percentage) {
+        testProgress.setProgress(percentage);
+    }
 }

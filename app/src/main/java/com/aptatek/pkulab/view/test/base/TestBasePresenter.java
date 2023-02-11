@@ -17,7 +17,6 @@ public abstract class TestBasePresenter<V extends TestFragmentBaseView> extends 
         ifViewAttached(attachedView -> {
             attachedView.setBottomBarVisible(true);
             attachedView.setBatteryIndicatorVisible(false);
-            attachedView.setProgressVisible(false);
             attachedView.setDisclaimerViewVisible(false);
             attachedView.setNextButtonVisible(true);
         });

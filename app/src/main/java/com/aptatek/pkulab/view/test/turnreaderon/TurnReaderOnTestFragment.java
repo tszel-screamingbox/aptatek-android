@@ -167,16 +167,6 @@ public class TurnReaderOnTestFragment extends TurnReaderOnFragment<TurnReaderOnT
     }
 
     @Override
-    public void setProgressVisible(final boolean visible) {
-        runOnTestTestActivityView(view -> view.setProgressVisible(visible));
-    }
-
-    @Override
-    public void setProgressPercentage(final int percentage) {
-        // do nothing here
-    }
-
-    @Override
     public void setDisclaimerViewVisible(final boolean visible) {
         runOnTestTestActivityView(view -> view.setDisclaimerViewVisible(visible));
     }

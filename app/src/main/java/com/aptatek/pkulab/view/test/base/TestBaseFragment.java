@@ -126,16 +126,6 @@ public abstract class TestBaseFragment<V extends TestFragmentBaseView, P extends
     }
 
     @Override
-    public void setProgressVisible(final boolean visible) {
-        runOnTestTestActivityView(view -> view.setProgressVisible(visible));
-    }
-
-    @Override
-    public void setProgressPercentage(final int percentage) {
-        runOnTestTestActivityView(view -> view.setProgressPercentage(percentage));
-    }
-
-    @Override
     public void showNextScreen() {
         runOnTestTestActivityView(TestActivityCommonView::showNextScreen);
     }

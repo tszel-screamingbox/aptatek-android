@@ -1,38 +1,31 @@
 package com.aptatek.pkulab.view.test;
 
-import java.util.Arrays;
-import java.util.List;
-
-import ix.Ix;
-
 public enum TestScreens {
 
-    PREP_TEST_KIT(true),
-    PREP_BUFFER(true),
-    UNSCREW_CAP(true),
-    PREP_BLUE_CAP(true),
-    CLEAN_FINGERTIP(true),
-    POKE_FINGERTIP(true),
-    COLLECT_BLOOD(true),
-    ADD_SAMPLE(true),
-    MIX_SAMPLE(true),
-    WETTING(true),
-    TURN_READER_ON(true),
-    PREPARE_CASSETTE(true),
-    ATTACH_CHAMBER(true),
-    CONNECT_IT_ALL(true),
-    TESTING(false),
-    TEST_COMPLETE(false),
-    CANCEL(false);
+    PREP_TEST_KIT(true, 1),
+    PREP_BUFFER(true, 2),
+    UNSCREW_CAP(true, 3),
+    PREP_BLUE_CAP(true,4),
+    CLEAN_FINGERTIP(true, 5),
+    POKE_FINGERTIP(true, 6),
+    COLLECT_BLOOD(true, 7),
+    ADD_SAMPLE(true, 8),
+    MIX_SAMPLE(true, 9),
+    WETTING(false, 10),
+    TURN_READER_ON(false, -1),
+    PREPARE_CASSETTE(true, 11),
+    ATTACH_CHAMBER(false, 12),
+    CONNECT_IT_ALL(false, 13),
+    TESTING(false, 14),
+    TEST_COMPLETE(false, 15),
+    CANCEL(false, -1);
 
-    TestScreens(final boolean showAsDot) {
-        this.showAsDot = showAsDot;
+    TestScreens(final boolean showTestStep, final int testStep) {
+        this.showTestStep = showTestStep;
+        this.testStep = testStep;
     }
 
-    final boolean showAsDot;
-
-    public static List<TestScreens> showDotFor() {
-        return Ix.from(Arrays.asList(values())).filter(item -> item.showAsDot).toList();
-    }
+    public final boolean showTestStep;
+    public final int testStep;
 
 }

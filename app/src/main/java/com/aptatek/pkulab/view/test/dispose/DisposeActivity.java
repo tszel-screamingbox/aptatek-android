@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.test.dispose;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,9 +11,11 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.main.MainHostActivity;
+import com.aptatek.pkulab.widget.HeaderView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -20,6 +23,9 @@ public class DisposeActivity extends BaseActivity<DisposeView, DisposePresenter>
 
     @Inject
     DisposePresenter presenter;
+
+    @BindView(R.id.dispose_header)
+    HeaderView headerView;
 
     @NonNull
     @Override
@@ -38,6 +44,8 @@ public class DisposeActivity extends BaseActivity<DisposeView, DisposePresenter>
         setContentView(R.layout.activity_dispose);
 
         ButterKnife.bind(this);
+
+        headerView.setSubtitleSpanned(Html.fromHtml(getString(R.string.dispose_message)));
     }
 
 

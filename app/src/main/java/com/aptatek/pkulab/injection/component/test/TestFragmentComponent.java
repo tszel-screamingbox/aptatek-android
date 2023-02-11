@@ -4,7 +4,6 @@ import com.aptatek.pkulab.injection.module.FragmentModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
 import com.aptatek.pkulab.view.test.addsample.AddSampleFragment;
 import com.aptatek.pkulab.view.test.attachchamber.AttachChamberFragment;
-import com.aptatek.pkulab.view.test.breakfoil.BreakFoilFragment;
 import com.aptatek.pkulab.view.test.canceltest.CancelTestFragment;
 import com.aptatek.pkulab.view.test.cleanfintertip.CleanFingertipFragment;
 import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
@@ -27,8 +26,6 @@ import dagger.Subcomponent;
 public interface TestFragmentComponent {
 
     void inject(CancelTestFragment fragment);
-
-    void inject(BreakFoilFragment fragment);
 
     void inject(PokeFingertipFragment pokeFingertipFragment);
 

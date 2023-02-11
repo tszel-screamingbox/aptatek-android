@@ -12,10 +12,10 @@ import static com.google.android.material.bottomsheet.BottomSheetBehavior.from;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,7 +40,6 @@ import com.aptatek.pkulab.view.test.addsample.AddSampleFragment;
 import com.aptatek.pkulab.view.test.attachchamber.AttachChamberFragment;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import com.aptatek.pkulab.view.test.base.TestFragmentBaseView;
-import com.aptatek.pkulab.view.test.breakfoil.BreakFoilFragment;
 import com.aptatek.pkulab.view.test.canceltest.CancelTestFragment;
 import com.aptatek.pkulab.view.test.cleanfintertip.CleanFingertipFragment;
 import com.aptatek.pkulab.view.test.collectblood.CollectBloodFragment;
@@ -58,7 +57,6 @@ import com.aptatek.pkulab.view.test.unscrewcap.UnscrewCapFragment;
 import com.aptatek.pkulab.view.test.wetting.WettingFragment;
 import com.aptatek.pkulab.widget.BatteryView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.rd.PageIndicatorView;
 
 import javax.inject.Inject;
 
@@ -92,14 +90,12 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     View cancelButton;
     @BindView(R.id.testNextButton)
     Button nextButton;
-    @BindView(R.id.testProgress)
-    ProgressBar testProgress;
     @BindView(R.id.testBattery)
     BatteryView battery;
     @BindView(R.id.bottomBar)
     ConstraintLayout bottomBar;
-    @BindView(R.id.testPageIndicator)
-    PageIndicatorView screenPagerIndicator;
+    @BindView(R.id.testStep)
+    TextView testStepView;
     @BindView(R.id.bottom_sheet)
     ConstraintLayout bottomConstraintLayout;
 
@@ -117,9 +113,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         ButterKnife.bind(this);
-
-        screenPagerIndicator.setDynamicCount(false);
-        //screenPagerIndicator.setCount(showDotFor().size());
 
         if (getIntent().hasExtra(EXTRA_NOTIF_REASON)) {
             presenter.logOpenFromNotification(getIntent().getStringExtra(EXTRA_NOTIF_REASON));
@@ -212,10 +205,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         boolean withAnimation = true;
 
         switch (screen) {
-            case CANCEL: {
-                fragment = CancelTestFragment.createCancelFragment(getCurrentScreen() == TESTING);
-                break;
-            }
             case PREP_TEST_KIT: {
                 fragment = new PrepareTestKitFragment();
                 break;
@@ -286,14 +275,18 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
                 addToBackStack = false;
                 break;
             }
+            case CANCEL:
             default: {
-                fragment = new BreakFoilFragment();
+                fragment = CancelTestFragment.createCancelFragment(getCurrentScreen() == TESTING);
                 break;
             }
         }
 
         showFragment(fragment, addToBackStack, withAnimation);
-        //screenPagerIndicator.setSelection(Math.min(screen.ordinal(), showDotFor().size()));
+
+        testStepView.setVisibility(screen.showTestStep ? VISIBLE : INVISIBLE);
+        testStepView.setText(Html.fromHtml(getString(R.string.step_format, screen.testStep, TestScreens.values().length)));
+
         presenter.checkBattery(screen);
     }
 
@@ -365,7 +358,9 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void showPreviousScreen() {
         onBackPressedHere();
-        //screenPagerIndicator.setSelection(Math.min(getCurrentScreen().ordinal(), showDotFor().size()));
+
+        testStepView.setVisibility(getCurrentScreen().showTestStep ? VISIBLE : INVISIBLE);
+        testStepView.setText(Html.fromHtml(getString(R.string.step_format, getCurrentScreen().testStep, TestScreens.values().length)));
     }
 
     @Override
@@ -400,17 +395,6 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     @Override
     public void setBatteryPercentage(final int percentage) {
         battery.setBatteryLevel(percentage);
-    }
-
-    @Override
-    public void setProgressVisible(final boolean visible) {
-        // testProgress.setVisibility(visible ? VISIBLE : GONE);
-        // screenPagerIndicator.setVisibility(visible ? INVISIBLE : VISIBLE);
-    }
-
-    @Override
-    public void setProgressPercentage(final int percentage) {
-        testProgress.setProgress(percentage);
     }
 
     @Override
