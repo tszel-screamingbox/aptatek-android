@@ -124,7 +124,7 @@
     <string name="rangeinfo.veryhigh.value.prefix">over</string>
     <!-- Waste dispose -->
     <string name="dispose.title">Dispose of Test Kit</string>
-    <string name="dispose.message">Medical waste and needles should be disposed properly, do not place in regular garbage can.</string>
+    <string name="dispose.message">All components shown below &lt;u&gt;cannot&lt;/u&gt; be reused. Throw away in a biohazard bin immediately.</string>
     <string name="dispose.done">Done</string>
     <!-- Reminder Notification-->
     <string name="reminder.notification.channel.name">Reminder</string>
@@ -220,7 +220,7 @@
     <string name="test.result.bubble.level.increased">Increased</string>
     <string name="test.result.bubble.level.standard">Standard</string>
     <string name="test.result.invalid.title">Invalid Test Result</string>
-    <string name="test.result.invalid.message">Disregard the test result. Please restart the reader by holding down the power button for 8 seconds.\n\nContact support if problem persists.</string>
+    <string name="test.result.invalid.message">Please remove and discard the cassette.\nRestart the reader by holding down the power button for 8 seconds.\n\nContact support if problem persists</string>
     <string name="test.result.success.title">Test Successful</string>
     <string name="test.result.success.message">Test successfully completed and result stored.</string>
 
@@ -232,9 +232,9 @@
     <string name="test.pokefingertrip.message">Using a lancet, lance your fingertip to draw a large, round drop of blood from your fingertip</string>
     <string name="test.collectblood.title">Collect Blood</string>
     <string name="test.collectblood.message">Using the end cup on the blue cap, collect a blood sample from your fingertip</string>
-    <string name="test.collectblood.disclaimer">The &lt;font color="#8EAADB"&gt;end cup&lt;/font&gt; should look like this once enough blood has been collected.</string>
+    <string name="test.collectblood.disclaimer">The end cup only requires a small drop of blood to perform the test</string>
     <string name="test.mixsample.title">Mix Sample</string>
-    <string name="test.mixsample.message">Once the blue cap is screwed on tightly, take the chamber out for the stand and invert it 3 times to mix the sample.\nPlace back on to the green stand &lt;font color="#8EAADB"&gt;with the blue cap up&lt;/font&gt;</string>
+    <string name="test.mixsample.message">Once the blue cap is screwed on tightly, take the chamber out for the stand and invert it 3 times to mix the sample.\nPlace back on to the green stand with the blue cap up</string>
     <string name="test.mixsample.warn">Once the cap is locked, shake the bottle 3 times to mix the blood</string>
     <string name="test.wetting.title">Incubation</string>
     <string name="test.wetting.message">Your sample needs to incubate before you can continue. The timer below will display the remaining waiting time.</string>
@@ -250,7 +250,7 @@
     <string name="test.turnreaderon.selfcheck.title">Self Checking</string>
     <string name="test.turnreaderon.selfcheck.message">Reader is doing a self-check to make sure that it can function properly during testing</string>
     <string name="test.connectitall.title">Insert Cassette</string>
-    <string name="test.connectitall.message">Immediately insert the cassette into the reader as shown</string>
+    <string name="test.connectitall.message">Immediately insert the cassette into the reader as shown.\nPush the cassette in until you hear a click</string>
     <string name="test.connectitall.disclaimer">WARNING\nThis should be done as soon as possible to avoid a failed test!</string>
     <string name="test.testing.title">Test In Progress</string>
     <string name="test.testing.message">Wait while reader processes test (10–15 min)</string>
@@ -399,25 +399,25 @@
     <string name="test.prep.testkit.message">Open the box and take 1 of each of the following components to perform a single test</string>
 
     <string name="test.prep.buffer.title">Prepare Buffer Chamber</string>
-    <string name="test.prep.buffer.message">Open the "Buffer Chamber" foil pouch and place the buffer chamber into the green stand to keep the chamber upright</string>
+    <string name="test.prep.buffer.message">Take the Buffer Chamber from its pouch and place into the green stand as shown. Do not pierce the foil at the bottom of the Buffer Chamber</string>
 
     <string name="test.unscrew.title">Unscrew Cap</string>
-    <string name="test.unscrew.message">&lt;font color="#FFA366"&gt;Unscrew&lt;/font&gt; the orange cap from the buffer chamber</string>
+    <string name="test.unscrew.message">Unscrew the orange cap from the buffer chamber\nPlease keep the buffer chamber upright and in the stand to prevent fluid spills</string>
 
     <string name="test.prep.bluecap.title">Prepare Blue Collection Cap</string>
-    <string name="test.prep.bluecap.message">Open the "Collection Cap" foil pouch, remove the Blue Collection Cap and place on table &lt;font color="#8EAADB"&gt;as shown&lt;/font&gt;</string>
+    <string name="test.prep.bluecap.message">Take the Blue Collection Cap from its pouch and place on a flat surface as shown</string>
 
     <string name="test.cleanfingertip.title">Clean Fingertip</string>
     <string name="test.cleanfingertip.message">Using a sterile towelette, wipe the finger prior to lancing</string>
 
     <string name="test.addsample.title">Add Sample</string>
-    <string name="test.addsample.message">Screw the blue cap with the blood sample onto the &lt;font color="#8EAADB"&gt;buffer&lt;/font&gt; chamber as shown to add the sample.\nEnsure the cap is on tight.</string>
+    <string name="test.addsample.message">Hold on to the buffer chamber and screw the blue cap, with the blood sample, onto the buffer chamber as shown to add the sample. Ensure the cap is on tight</string>
 
     <string name="test.prepare.cassette.title">Prepare Phe Cassette</string>
     <string name="test.prepare.cassette.message">Open the "Phe Cassette" foil pouch and remove the Phe Cassette and place on table</string>
 
     <string name="test.attach.chamber.title">Attach Chamber</string>
-    <string name="test.attach.chamber.message">Take the &lt;font color="#8EAADB"&gt;buffer chamber&lt;/font&gt; from the green stand and screw it onto the cassette. The blue cap remains upright. &lt;font color="#8EAADB"&gt;Ensure the buffer chamber is screwed on tightly to the Phe cassette&lt;/font&gt;.</string>
+    <string name="test.attach.chamber.message">Take the buffer chamber from the green stand and screw it onto the cassette. The blue cap remains upright. Ensure the buffer chamber is screwed on tightly to the Phe cassette.</string>
     <string name="test.attach.chamber.disclaimer">WARNING\nProceed to next step within 30 seconds!</string>
 
     <string name="turnreaderon.sync.message">"Please wait while the app synchronises records with the reader.\nThis may take a while…"</string>
