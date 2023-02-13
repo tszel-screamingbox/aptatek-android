@@ -14,7 +14,6 @@ import com.aptatek.pkulab.domain.interactor.pkurange.PkuRangeInteractor;
 import com.aptatek.pkulab.domain.interactor.test.TestInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.interactor.wetting.WettingInteractor;
-import com.aptatek.pkulab.domain.interactor.wetting.WettingStatus;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.test.TestFromHome;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
@@ -22,7 +21,6 @@ import com.aptatek.pkulab.util.ChartUtils;
 import com.aptatek.pkulab.view.main.home.adapter.chart.ChartVM;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyChartFormatter;
 import com.aptatek.pkulab.view.main.home.adapter.daily.DailyResultAdapterItem;
-import com.aptatek.pkulab.view.main.weekly.csv.CsvExport;
 import com.aptatek.pkulab.view.rangeinfo.PkuValueFormatter;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
@@ -54,7 +52,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
     private CompositeDisposable disposables;
     private final IAnalyticsManager analyticsManager;
     private final DeviceHelper deviceHelper;
-    private final CsvExport csvExport;
 
     @Inject
     HomeFragmentPresenter(final TestResultInteractor testResultInteractor,
@@ -66,8 +63,7 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                           final TestInteractor testInteractor,
                           final PkuValueFormatter pkuValueFormatter,
                           final IAnalyticsManager analyticsManager,
-                          final DeviceHelper deviceHelper,
-                          final CsvExport csvExport) {
+                          final DeviceHelper deviceHelper) {
         this.testResultInteractor = testResultInteractor;
         this.resourceInteractor = resourceInteractor;
         this.rangeInteractor = rangeInteractor;
@@ -78,7 +74,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         this.pkuValueFormatter = pkuValueFormatter;
         this.analyticsManager = analyticsManager;
         this.deviceHelper = deviceHelper;
-        this.csvExport = csvExport;
     }
 
     void initView() {
@@ -115,21 +110,20 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 }).map(list -> new Pair<>(rangeInfo, list)))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
-                            ifViewAttached(HomeFragmentView::showNoResults);
-//                            if (pair.second.isEmpty()) {
-//                                ifViewAttached(HomeFragmentView::showNoResults);
-//                            } else {
-//                                final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
-//                                final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
-//                                chartVMS.set(chartVMS.size() - 1, lastResult);
-//
-//                                ifViewAttached(attachedView -> {
-//                                    attachedView.updateTitles(
-//                                            formatTitle(lastResult),
-//                                            dailyChartFormatter.formatDate(lastResult.getDate().getTime(), lastResult.getNumberOfMeasures() > 0));
-//                                    attachedView.displayData(chartVMS);
-//                                });
-//                            }
+                            if (pair.second.isEmpty()) {
+                                ifViewAttached(HomeFragmentView::showNoResults);
+                            } else {
+                                final List<ChartVM> chartVMS = ChartUtils.asChartVMList(pair.second, pair.first);
+                                final ChartVM lastResult = chartVMS.get(chartVMS.size() - 1).toBuilder().setZoomed(true).build();
+                                chartVMS.set(chartVMS.size() - 1, lastResult);
+
+                                ifViewAttached(attachedView -> {
+                                    attachedView.updateTitles(
+                                            formatTitle(lastResult),
+                                            dailyChartFormatter.formatDate(lastResult.getDate().getTime(), lastResult.getNumberOfMeasures() > 0));
+                                    attachedView.displayData(chartVMS);
+                                });
+                            }
                         })
         );
     }
@@ -197,16 +191,6 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
         super.detachView();
     }
 
-    void checkRunningTest() {
-        disposables.add(
-                wettingInteractor.getWettingStatus()
-                        .filter(wettingStatus -> wettingStatus != WettingStatus.NOT_STARTED)
-                        .subscribe(ignored ->
-                                ifViewAttached(HomeFragmentView::navigateToTestScreen)
-                        )
-        );
-    }
-
     void startNewTest() {
         disposables.add(
                 Completable.fromAction(() -> analyticsManager.logEvent(new TestFromHome(deviceHelper.getPhoneBattery())))
@@ -231,15 +215,5 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
             title = dailyChartFormatter.getNameOfDay(chartVM.getDate().getTime());
         }
         return title;
-    }
-
-    void getCsvData() {
-        disposables.add(testResultInteractor.listAll()
-                .take(1)
-                .singleOrError()
-                .flatMap(results -> csvExport.generateAttachment(results, "Export_" + System.currentTimeMillis() + ".csv"))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(attachment -> ifViewAttached(view -> view.onCsvReady(attachment)))
-        );
     }
 }

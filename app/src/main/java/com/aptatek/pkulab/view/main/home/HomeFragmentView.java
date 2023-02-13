@@ -27,6 +27,4 @@ interface HomeFragmentView extends MvpView {
     void updateUnitText(String text);
 
     void showLastResult(String resultId);
-
-    void onCsvReady(Attachment attachment);
 }
