@@ -33,10 +33,6 @@ public class SettingsPresenter extends MvpBasePresenter<SettingsView> {
 
         final List<SettingsAdapterItem> data = Ix.from(Arrays.asList(SettingsItem.values()))
                 .filter(settingsItem -> {
-                    if (settingsItem == SettingsItem.PHE_PREFERENCES) {
-                        return false;
-                    }
-
                     if (settingsItem != SettingsItem.FINGERPRINT_AUTH) {
                         return true;
                     }
