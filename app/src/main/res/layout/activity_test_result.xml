@@ -28,7 +28,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.aptatek.pkulab.widget.BubbleTextView
-        android:visibility="gone"
         android:id="@+id/test_result_bubble"
         android:layout_width="@dimen/graph.item.size"
         android:layout_height="@dimen/graph.item.size"
@@ -39,19 +38,20 @@
 
     <FrameLayout
         android:id="@+id/test_result_bubble_fake"
-        android:background="@drawable/background_test_result"
         android:layout_width="@dimen/graph.item.size"
         android:layout_height="@dimen/graph.item.size"
+        android:background="@drawable/background_test_result"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/test_result_done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" >
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_checkmark"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_checkmark" />
 
     </FrameLayout>
 
@@ -69,7 +69,6 @@
     <Button
         android:id="@+id/test_result_range_info"
         style="@style/General.Rounded.Gray.Button.Secondary"
-        android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_marginTop="@dimen/general.distance.small"
         android:layout_marginBottom="@dimen/general.distance.small"
