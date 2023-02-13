@@ -11,13 +11,13 @@ public enum TestScreens {
     COLLECT_BLOOD(true, 7),
     ADD_SAMPLE(true, 8),
     MIX_SAMPLE(true, 9),
-    WETTING(false, 10),
+    WETTING(true, 10),
     TURN_READER_ON(false, -1),
-    PREPARE_CASSETTE(true, 11),
-    ATTACH_CHAMBER(false, 12),
-    CONNECT_IT_ALL(false, 13),
-    TESTING(false, 14),
-    TEST_COMPLETE(false, 15),
+    PREPARE_CASSETTE(true, 13),
+    ATTACH_CHAMBER(true, 14),
+    CONNECT_IT_ALL(true, 15),
+    TESTING(true, 16),
+    TEST_COMPLETE(true, 17),
     CANCEL(false, -1);
 
     TestScreens(final boolean showTestStep, final int testStep) {
