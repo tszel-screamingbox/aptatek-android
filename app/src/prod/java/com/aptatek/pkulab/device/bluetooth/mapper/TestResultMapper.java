@@ -1,7 +1,5 @@
 package com.aptatek.pkulab.device.bluetooth.mapper;
 
-import android.text.TextUtils;
-
 import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
@@ -53,7 +51,7 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
                 .setCassetteExpiry(tryParseCassetteExp(dataModel))
                 .setRawResponse(dataModel.getRawResponse())
                 .build();
-        return  result;
+        return result;
     }
 
     private long tryParseCassetteExp(final ResultResponse model) {
@@ -81,7 +79,13 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
     @Nullable
     private PkuLevel parsePkuLevel(final ResultResponse resultResponse) {
         try {
-            final ResultResponse.ResultData resultData = resultResponse.getResult().get(0);
+            final List<ResultResponse.ResultData> pheResults = Ix.from(resultResponse.getResult()).filter(res -> "Phe".equals(res.getName())).toList();
+            final ResultResponse.ResultData resultData;
+            if (pheResults.isEmpty()) {
+                resultData = resultResponse.getResult().get(0);
+            } else {
+                resultData = pheResults.get(0);
+            }
             final float value = resultData.getNumericalResult();
             final PkuLevelUnits unit = parseUnit(resultData.getUnits());
             return PkuLevel.builder()
@@ -102,9 +106,16 @@ public class TestResultMapper implements Mapper<TestResult, ResultResponse> {
 
     private PkuLevelUnits parseUnit(final String units) {
         switch (units.toLowerCase(Locale.getDefault())) {
-            case "umol/l": return PkuLevelUnits.MICRO_MOL;
-            case "mabs": return PkuLevelUnits.MABS;
-            default: throw new IllegalArgumentException("Unhandled unit received: " + units);
+            case "umol/l":
+            case "um/l":
+                return PkuLevelUnits.MICRO_MOL;
+            case "mg/dl":
+                return PkuLevelUnits.MILLI_GRAM;
+            case "mabs":
+            case "abs":
+                return PkuLevelUnits.MABS;
+            default:
+                throw new IllegalArgumentException("Unhandled unit received: " + units);
         }
     }
 
