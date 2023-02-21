@@ -17,6 +17,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> {
 
@@ -94,7 +95,11 @@ public class RangeSettingsPresenter extends MvpBasePresenter<RangeSettingsView> 
         compositeDisposable.add(pkuRangeInteractor.saveDisplayUnit(pkuLevelUnits)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> ifViewAttached(RangeSettingsView::showSettingsUpdateMessage)));
+                .subscribe(() -> ifViewAttached(
+                        av -> {
+                            av.showSettingsUpdateMessage();
+                            av.finish();
+                        }), Timber::e));
     }
 
     public void onBackPressed(final PkuLevelUnits pkuLevelUnits) {
