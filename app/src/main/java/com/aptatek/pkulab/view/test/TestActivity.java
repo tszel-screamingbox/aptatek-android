@@ -333,7 +333,11 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         fm.executePendingTransactions();
 
         if (fm.getBackStackEntryCount() > 0) {
-            fm.popBackStackImmediate();
+            if (fm.getBackStackEntryAt(0).getName().equals(String.valueOf(getCurrentScreen().ordinal()))) {
+                showScreen(CANCEL);
+            } else {
+                fm.popBackStackImmediate();
+            }
         } else {
             super.onBackPressed();
         }
@@ -359,8 +363,12 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
     public void showPreviousScreen() {
         onBackPressedHere();
 
-        testStepView.setVisibility(getCurrentScreen().showTestStep ? VISIBLE : INVISIBLE);
-        testStepView.setText(Html.fromHtml(getString(R.string.step_format, getCurrentScreen().testStep, TestScreens.values().length)));
+        try {
+            testStepView.setVisibility(getCurrentScreen().showTestStep ? VISIBLE : INVISIBLE);
+            testStepView.setText(Html.fromHtml(getString(R.string.step_format, getCurrentScreen().testStep, TestScreens.values().length)));
+        } catch (Exception ex) {
+            Timber.w("Exception on showPreviousScreen" + ex);
+        }
     }
 
     @Override
