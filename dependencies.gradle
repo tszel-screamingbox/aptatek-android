@@ -5,12 +5,13 @@ ext {
             buildToolsVersion : '33.0.1',
 
             // AndroidX
-            androidx          : '1.0.0',
+            androidx          : '1.4.0',
+            recylcerView      : '1.2.1',
             multidex          : '2.0.0',
             constraintlayout  : '1.1.3',
 
             // ArchitectureComponents
-            lifecycle         : '2.0.0',
+            lifecycle         : '2.2.0',
 
             // Mosby
             mosby             : '3.1.1',
@@ -69,7 +70,7 @@ ext {
             test              : '1.1.0',
             junit             : '4.12',
             mockito           : '2.8.9',
-            espresso          : '3.1.0',
+            espresso          : '3.4.0',
             hamcrest          : '1.3',
             orchestrator      : '1.1.0',
 
@@ -105,7 +106,7 @@ ext {
     androidSupportDependencies = [
             appcompat       : "androidx.appcompat:appcompat:${versions.androidx}",
             annotations     : "androidx.annotation:annotation:${versions.androidx}",
-            recyclerview    : "androidx.recyclerview:recyclerview:${versions.androidx}",
+            recyclerview    : "androidx.recyclerview:recyclerview:${versions.recylcerView}",
             design          : "com.google.android.material:material:${versions.androidx}",
             multidex        : "androidx.multidex:multidex:${versions.multidex}",
             constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
