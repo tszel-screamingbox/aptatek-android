@@ -124,6 +124,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         disposables.add(
                 bluetoothInteractor.stopScan()
                         .andThen(readerInteractor.connect(readerDevice))
+                        .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                                     ifViewAttached(av -> av.showConnectedToToast(readerDevice.getName()));
                                     waitForWorkflowStateChange();

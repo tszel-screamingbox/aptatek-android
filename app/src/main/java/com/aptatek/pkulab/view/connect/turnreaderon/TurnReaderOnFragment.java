@@ -321,7 +321,9 @@ public abstract class TurnReaderOnFragment<V extends TurnReaderOnView, P extends
 
     @Override
     public void showConnectedToToast(String name) {
-        Toast.makeText(requireActivity(), getString(R.string.connect_turnon_connected, name), Toast.LENGTH_SHORT).show();
+        headerView.post(() -> {
+            Toast.makeText(requireActivity(), getString(R.string.connect_turnon_connected, name), Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
