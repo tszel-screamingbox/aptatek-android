@@ -55,4 +55,6 @@ public final class Constants {
 
     public static final String EXTRA_RESTART_NOTIFICATION_ERROR = "restart.after.bt.error";
 
+    public static boolean showResults = false;
+
 }

@@ -3,6 +3,7 @@ package com.aptatek.pkulab.view.settings.basic;
 import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.manager.FingerprintManager;
+import com.aptatek.pkulab.util.Constants;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import java.util.Arrays;
@@ -33,6 +34,10 @@ public class SettingsPresenter extends MvpBasePresenter<SettingsView> {
 
         final List<SettingsAdapterItem> data = Ix.from(Arrays.asList(SettingsItem.values()))
                 .filter(settingsItem -> {
+                    if (!Constants.showResults && settingsItem == SettingsItem.PHE_PREFERENCES) {
+                        return false;
+                    }
+
                     if (settingsItem != SettingsItem.FINGERPRINT_AUTH) {
                         return true;
                     }

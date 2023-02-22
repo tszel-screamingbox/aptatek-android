@@ -14,6 +14,7 @@ import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.ActivityComponent;
 import com.aptatek.pkulab.injection.module.rangeinfo.RangeInfoModule;
 import com.aptatek.pkulab.injection.module.test.TestModule;
+import com.aptatek.pkulab.util.Constants;
 import com.aptatek.pkulab.view.base.BaseActivity;
 import com.aptatek.pkulab.view.rangeinfo.RangeInfoActivity;
 import com.aptatek.pkulab.view.test.dispose.DisposeActivity;
@@ -50,6 +51,8 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
     BubbleTextView bubbleTextView;
     @BindView(R.id.test_result_bubble_fake)
     View bubbleFake;
+    @BindView(R.id.test_result_range_info)
+    View rangeInfo;
 
     @Override
     protected void injectActivity(final ActivityComponent activityComponent) {
@@ -75,6 +78,9 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
 
         ActivityStarter.fill(this, savedInstanceState);
         ButterKnife.bind(this);
+
+        rangeInfo.setVisibility(Constants.showResults ? View.VISIBLE : View.INVISIBLE);
+
         UXCam.occludeSensitiveView(bubbleTextView);
 
         if (fromNotification) {
@@ -99,15 +105,23 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         titleTextView.setTextColor(state.getColor());
         subTitleTextView.setText(R.string.test_result_message);
 
-        bubbleTextView.setVisibility(state.isValid() ? View.VISIBLE : View.GONE);
-        bubbleTextView.setConfiguration(BubbleTextView.BubbleTextConfiguration.builder()
-                .setCircleColor(state.getColor())
-                .setCircleWidth((int) getResources().getDimension(R.dimen.test_result_circle_width))
-                .setFillColor(ContextCompat.getColor(this, R.color.applicationWhite))
-                .setTextColor(state.getColor())
-                .setPrimaryText(state.getFormattedPkuValue())
-                .setSecondaryText(state.getPkuUnit())
-                .build());
+        if (!Constants.showResults) {
+            titleTextView.setText(state.isValid() ? R.string.test_result_success_title : R.string.test_result_invalid_title);
+            titleTextView.setTextColor(ContextCompat.getColor(this, state.isValid() ? R.color.applicationGreen : R.color.applicationRed));
+            subTitleTextView.setText(state.isValid() ? R.string.test_result_success_message : R.string.test_result_invalid_message);
+
+            bubbleFake.setVisibility(state.isValid() ? View.VISIBLE : View.GONE);
+        } else {
+            bubbleTextView.setVisibility(state.isValid() ? View.VISIBLE : View.GONE);
+            bubbleTextView.setConfiguration(BubbleTextView.BubbleTextConfiguration.builder()
+                    .setCircleColor(state.getColor())
+                    .setCircleWidth((int) getResources().getDimension(R.dimen.test_result_circle_width))
+                    .setFillColor(ContextCompat.getColor(this, R.color.applicationWhite))
+                    .setTextColor(state.getColor())
+                    .setPrimaryText(state.getFormattedPkuValue())
+                    .setSecondaryText(state.getPkuUnit())
+                    .build());
+        }
     }
 
     @OnClick(R.id.test_result_done)
