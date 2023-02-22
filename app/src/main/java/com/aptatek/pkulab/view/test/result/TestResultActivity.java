@@ -98,7 +98,7 @@ public class TestResultActivity extends BaseActivity<TestResultView, TestResultP
         titleTextView.setText(state.getTitle());
         titleTextView.setTextColor(state.getColor());
         subTitleTextView.setText(R.string.test_result_message);
-        
+
         bubbleTextView.setVisibility(state.isValid() ? View.VISIBLE : View.GONE);
         bubbleTextView.setConfiguration(BubbleTextView.BubbleTextConfiguration.builder()
                 .setCircleColor(state.getColor())
