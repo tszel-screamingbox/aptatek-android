@@ -34,7 +34,7 @@
         style="@style/General.Text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="5"
+        android:maxLines="6"
         android:includeFontPadding="false"
         android:lineSpacingExtra="@dimen/header.title.spacing.extra"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -71,7 +71,6 @@ public class PreferencesManagerTest {
         preferenceManager.setPkuRangeNormalCeil(Constants.DEFAULT_PKU_INCREASED_CEIL);
         preferenceManager.setPkuRangeUnit(Constants.DEFAULT_PKU_LEVEL_UNIT);
         preferenceManager.setPairedDevice(TEST);
-        preferenceManager.setTestStatus(TestScreens.BREAK_FOIL);
 
         preferenceManager.clearPreference(PreferenceManager.PREF_ENCRYPTED_PIN);
         preferenceManager.clearPreference(PreferenceManager.PREF_INCUBATION_START);
