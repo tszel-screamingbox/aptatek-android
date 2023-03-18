@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 
@@ -24,7 +25,8 @@ public class TimeCharacteristicDataProvider implements CharacteristicDataProvide
 
     private UpdateTimeResponse createTimeResponse() {
         final UpdateTimeResponse updateTimeResponse = new UpdateTimeResponse();
-        final Calendar calendar = Calendar.getInstance();
+        final TimeZone timeZone = TimeZone.getTimeZone("UTC");
+        final Calendar calendar = Calendar.getInstance(timeZone);
         updateTimeResponse.setYear(calendar.get(Calendar.YEAR));
         updateTimeResponse.setMonth(calendar.get(Calendar.MONTH) + 1);
         updateTimeResponse.setDay(calendar.get(Calendar.DAY_OF_MONTH));
