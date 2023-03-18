@@ -279,6 +279,10 @@ public class WeeklyResultFragmentPresenter extends MvpBasePresenter<WeeklyResult
 
         return testResultInteractor.listBetween(start, end)
                 .take(1)
+                .map(list -> Ix.from(list)
+                        .filter(TestResult::isValid)
+                        .toList()
+                )
                 .map(list -> {
                     int low = 0;
                     int normal = 0;

@@ -2,6 +2,7 @@ package com.aptatek.pkulab.view.main.weekly.chart;
 
 import com.aptatek.pkulab.device.time.TimeHelper;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
+import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 
 import javax.inject.Inject;
@@ -33,6 +34,7 @@ class WeeklyChartPresenter extends MvpBasePresenter<WeeklyChartView> {
         disposables.add(testResultInteractor.listBetween(start, end)
                 .take(1)
                 .flatMapIterable(it -> it)
+                .filter(TestResult::isValid)
                 .flatMapSingle(weeklyChartDataTransformer::transform)
                 .toList()
                 .flatMap(weeklyChartDataTransformer::transformEntries)

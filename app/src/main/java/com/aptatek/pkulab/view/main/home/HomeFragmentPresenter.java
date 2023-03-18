@@ -111,7 +111,13 @@ class HomeFragmentPresenter extends MvpBasePresenter<HomeFragmentView> {
                                 .onErrorReturn(error -> System.currentTimeMillis())
                                 .flatMap(timeStamp -> {
                                     final long past = TimeHelper.addMonths(-NUMBERS_OF_MONTHS, timeStamp);
-                                    return testResultInteractor.listBetween(past, timeStamp).take(1).singleOrError();
+                                    return testResultInteractor.listBetween(past, timeStamp)
+                                            .take(1)
+                                            .map(list -> Ix.from(list)
+                                                    .filter(TestResult::isValid)
+                                                    .toList()
+                                            )
+                                            .singleOrError();
                                 }).map(list -> new Pair<>(rangeInfo, list)))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pair -> {
