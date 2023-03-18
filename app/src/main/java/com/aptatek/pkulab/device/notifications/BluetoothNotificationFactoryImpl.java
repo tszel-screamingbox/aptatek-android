@@ -40,10 +40,11 @@ public class BluetoothNotificationFactoryImpl extends BaseNotificationFactory im
 
     private String createStatusChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationManager.deleteNotificationChannel(READER_STATUS_CHANNEL);
             final NotificationChannel notificationChannel = new NotificationChannel(
                     READER_STATUS_CHANNEL,
                     resourceInteractor.getStringResource(R.string.notification_channel_reader_status),
-                    NotificationManager.IMPORTANCE_DEFAULT);
+                    NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.enableVibration(false);
             notificationChannel.setSound(null, null);
             notificationManager.createNotificationChannel(notificationChannel);
