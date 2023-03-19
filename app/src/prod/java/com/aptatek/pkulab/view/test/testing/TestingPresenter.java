@@ -178,7 +178,6 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         disposables.add(
                 wfsShared.filter(testRunningWithSafeTestProgress::contains)
                         .take(1)
-                        .ignoreElements()
                         .timeout(10, TimeUnit.SECONDS)
                         .retryWhen(err -> {
                             final AtomicInteger retryCount = new AtomicInteger(0);
@@ -188,6 +187,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                         return Flowable.timer(retryCount.get(), TimeUnit.SECONDS);
                                     }).doOnNext(i -> Timber.d("--- getTestProgress retryWhen error delayed retry"));
                         })
+                        .ignoreElements()
                         // it takes some time until testProgress gets updated ...
                         .delay(5, TimeUnit.SECONDS)
                         .andThen(readerInteractor.getTestProgress()
@@ -202,7 +202,9 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                             }).doOnNext(i -> Timber.d("--- getTestProgress <100 retryWhen error delayed retry"));
                                 })
                         )
-                        .onErrorResumeNext(readerInteractor.getTestProgress())
+                        .take(1)
+                        .singleOrError()
+                        .onErrorResumeNext(readerInteractor.getTestProgress().take(1).singleOrError())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -210,15 +212,6 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                 error -> {
                                     Timber.w("Unhandled exception during Test Progress update: %s", error);
                                     onStart();
-                                },
-                                () -> {
-                                    firstProgress = null;
-
-                                    if (countdownDisposable != null && !countdownDisposable.isDisposed()) {
-                                        countdownDisposable.dispose();
-                                        countdownDisposable = null;
-                                    }
-                                    Timber.d("Test Progress updates complete");
                                 }
                         )
 
@@ -246,9 +239,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                 .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
                 .take(1)
                 .ignoreElements()
-                .andThen(Single.just(firstProgress))
                 .observeOn(Schedulers.io())
-                .flatMap(testProgress -> readerInteractor.syncResultsAfterLatest()
+                .andThen(readerInteractor.syncResultsAfterLatest()
                         .retryWhen(err -> {
                             final AtomicInteger retryCounter = new AtomicInteger();
                             return err.takeWhile(e -> retryCounter.getAndIncrement() != 3)
@@ -260,10 +252,11 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .ignoreElement()
                         .doOnError(error -> Timber.w("--- testComplete syncResultsAfterLatest error: %s", error))
                         .onErrorComplete()
-                        .andThen(readerInteractor.getResult(testProgress.getTestId(), true)
-                                .flatMapCompletable(readerInteractor::saveResult)
-                        )
-                        .andThen(Single.just(testProgress.getTestId()))
+                )
+                .andThen(readerInteractor.getTestProgress().take(1).singleOrError())
+                .flatMap(testProg -> readerInteractor.getResult(testProg.getTestId(), true)
+                    .onErrorResumeNext(err -> readerInteractor.getResult(firstProgress.getTestId(), true))
+                    .map(TestResult::getId)
                 )
                 .onErrorResumeNext(error -> {
                     Timber.w("--- testProgress getResult flow error %s, fallback to latest!", error);
