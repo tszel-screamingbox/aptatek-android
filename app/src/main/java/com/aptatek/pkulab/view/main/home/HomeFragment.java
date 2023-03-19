@@ -258,7 +258,9 @@ public class HomeFragment extends BaseFragment implements HomeFragmentView, Disc
         bubbleScrollView.addScrollStateChangeListener(this);
         chartAdapter.setOnItemClickListener(chartVM -> {
             final int selectedIndex = chartAdapter.getItemPosition(chartVM);
-            bubbleScrollView.smoothScrollToPosition(selectedIndex);
+            if (selectedIndex >= 0 && selectedIndex < chartAdapter.getItemCount()) {
+                bubbleScrollView.smoothScrollToPosition(selectedIndex);
+            }
             if (chartVM.isZoomed() && chartVM.getNumberOfMeasures() > 1 && !isResultShown()) {
                 setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 presenter.measureListToAdapterList(chartVM.getMeasures());
