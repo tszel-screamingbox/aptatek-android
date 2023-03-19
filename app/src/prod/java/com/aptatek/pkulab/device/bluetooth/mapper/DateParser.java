@@ -1,23 +1,24 @@
 package com.aptatek.pkulab.device.bluetooth.mapper;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import timber.log.Timber;
 
 public class DateParser {
 
-    private static DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd'T'kkmmss");
+    private static DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd'T'kkmmss")
+            .withZone(DateTimeZone.UTC);
 
     public static long tryParseDate(final String date) {
         try {
-            final Date parse = dateFormat.parse(date);
-            return parse.getTime();
-        } catch (ParseException e) {
+            final DateTime parsed = DateTime.parse(date, formatter);
+            return parsed.getMillis();
+        } catch (Exception e) {
             Timber.d("Failed to parse date: %s", e);
-            return System.currentTimeMillis();
+            return DateTime.now(DateTimeZone.UTC).getMillis();
         }
     }
 

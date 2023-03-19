@@ -4,6 +4,10 @@ import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.device.bluetooth.model.UpdateTimeResponse;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeZone;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -25,14 +29,13 @@ public class TimeCharacteristicDataProvider implements CharacteristicDataProvide
 
     private UpdateTimeResponse createTimeResponse() {
         final UpdateTimeResponse updateTimeResponse = new UpdateTimeResponse();
-        final TimeZone timeZone = TimeZone.getTimeZone("UTC");
-        final Calendar calendar = Calendar.getInstance(timeZone);
-        updateTimeResponse.setYear(calendar.get(Calendar.YEAR));
-        updateTimeResponse.setMonth(calendar.get(Calendar.MONTH) + 1);
-        updateTimeResponse.setDay(calendar.get(Calendar.DAY_OF_MONTH));
-        updateTimeResponse.setHour(calendar.get(Calendar.HOUR_OF_DAY));
-        updateTimeResponse.setMinute(calendar.get(Calendar.MINUTE));
-        updateTimeResponse.setSecond(calendar.get(Calendar.SECOND));
+        final DateTime now = DateTime.now(DateTimeZone.UTC);
+        updateTimeResponse.setYear(now.getYear());
+        updateTimeResponse.setMonth(now.getMonthOfYear());
+        updateTimeResponse.setDay(now.getDayOfMonth());
+        updateTimeResponse.setHour(now.getHourOfDay());
+        updateTimeResponse.setMinute(now.getMinuteOfHour());
+        updateTimeResponse.setSecond(now.getSecondOfMinute());
 
         return updateTimeResponse;
     }
