@@ -15,6 +15,7 @@ import java.util.concurrent.TimeoutException;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
@@ -30,6 +31,8 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
     private Disposable watchDeviceConnectedDisposable = null;
 
     private Disposable inactivityDisposable = null;
+
+    private Disposable readyStateDisposable = null;
 
     private String testId;
 
@@ -75,10 +78,19 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
         this.testId = testId;
 
         // wait until SELF_CHECK / READY Wfs
-        inactivityDisposable = readerInteractor.getWorkflowState("TCP:onTestIdReceived = " + testId)
+        final Single<WorkflowState> readyStateSingle = readerInteractor.getWorkflowState("TCP:onTestIdReceived = " + testId)
+                .share()
                 .filter(wfs -> WorkflowState.SELF_TEST == wfs || WorkflowState.READY == wfs)
                 .take(1)
-                .lastOrError()
+                .lastOrError();
+
+        readyStateDisposable = readyStateSingle.observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        ignored -> ifViewAttached(av -> av.showResults(testId)),
+                        error -> Timber.w("--- readyState error: " + error)
+                );
+
+        inactivityDisposable = readyStateSingle
                 // wait 1 minute
                 .timeout(INACTIVITY_TIMEOUT_MIN, TimeUnit.MINUTES)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,6 +102,8 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
                     if (error instanceof TimeoutException) {
                         ifViewAttached(av -> av.setNextButtonVisible(true));
                     }
+
+
                 });
 
         // If we detect disconnect, instantly show next button
@@ -118,6 +132,11 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
             disposable = null;
+        }
+
+        if (readyStateDisposable != null && !readyStateDisposable.isDisposed()) {
+            readyStateDisposable.dispose();
+            readyStateDisposable = null;
         }
 
         if (watchDeviceConnectedDisposable != null && !watchDeviceConnectedDisposable.isDisposed()) {
