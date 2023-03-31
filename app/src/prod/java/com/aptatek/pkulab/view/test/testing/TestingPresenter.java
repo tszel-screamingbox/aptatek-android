@@ -1,5 +1,6 @@
 package com.aptatek.pkulab.view.test.testing;
 
+import android.util.Log;
 import android.util.Pair;
 
 import com.aptatek.pkulab.R;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
@@ -63,6 +65,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private Disposable testCompleteDisposable;
 
+    private AtomicBoolean stillOnThisScreen;
+
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
                             final ReaderInteractor readerInteractor,
@@ -85,6 +89,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         onStop();
         disposables = new CompositeDisposable();
 
+        stillOnThisScreen = new AtomicBoolean(true);
+
         final Completable disconnected = readerInteractor.getReaderConnectionEvents()
                 .share()
                 .filter(a -> a.getConnectionState() != ConnectionState.READY)
@@ -96,7 +102,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         final Flowable<WorkflowState> wfsShared = readerInteractor.getWorkflowState("TestingPresenter")
                 .doOnNext(wfs -> Timber.d("--- wfs = " + wfs))
                 .doOnError(e -> Timber.w("--- wfs error = " + e))
-                .share();
+                .doOnComplete(() -> Timber.w("--- wfs onComplete!!!"));
 
         final Single<WorkflowState> errors = wfsShared
                 .filter(state -> state.name().toLowerCase(Locale.getDefault()).endsWith("error"))
@@ -181,7 +187,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         .timeout(10, TimeUnit.SECONDS)
                         .retryWhen(err -> {
                             final AtomicInteger retryCount = new AtomicInteger(0);
-                            return err.takeWhile(e -> retryCount.getAndIncrement() != 3)
+                            return err.takeWhile(e -> retryCount.getAndIncrement() != 3 && stillOnThisScreen != null && stillOnThisScreen.get())
                                     .flatMap(e -> {
                                         Timber.d("--- getTestProgress retryWhen error = %s", e);
                                         return Flowable.timer(retryCount.get(), TimeUnit.SECONDS);
@@ -195,7 +201,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                 .timeout(10, TimeUnit.SECONDS)
                                 .retryWhen(err -> {
                                     final AtomicInteger retryCount = new AtomicInteger(0);
-                                    return err.takeWhile(e -> retryCount.getAndIncrement() != 3)
+                                    return err.takeWhile(e -> retryCount.getAndIncrement() != 3 && stillOnThisScreen != null && stillOnThisScreen.get())
                                             .flatMap(e -> {
                                                 Timber.d("--- getTestProgress <100 retryWhen error = %s", e);
                                                 return Flowable.timer(retryCount.get(), TimeUnit.SECONDS);
@@ -243,7 +249,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                 .andThen(readerInteractor.syncResultsAfterLatest()
                         .retryWhen(err -> {
                             final AtomicInteger retryCounter = new AtomicInteger();
-                            return err.takeWhile(e -> retryCounter.getAndIncrement() != 3)
+                            return err.takeWhile(e -> retryCounter.getAndIncrement() != 3 && stillOnThisScreen != null && stillOnThisScreen.get())
                                     .flatMap(e -> {
                                         Timber.w("--- testComplete syncAfter error = %s", e);
                                         return Flowable.timer(retryCounter.get(), TimeUnit.SECONDS);
@@ -331,6 +337,10 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     }
 
     public void onStop() {
+        if (stillOnThisScreen != null) {
+            stillOnThisScreen.set(false);
+        }
+
         firstProgress = null;
 
         if (disposables != null) {

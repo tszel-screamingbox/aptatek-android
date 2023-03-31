@@ -38,6 +38,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -204,12 +205,18 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                 .ignoreElements()
                 // ignore error, will try with something else
                 .onErrorComplete()
-                .andThen(Single.zip(
-                        testInteractor.getLastScreen().onErrorReturnItem(TestScreens.CANCEL),
+                .andThen(Flowable.combineLatest(
+                        testInteractor.getLastScreen()
+                                .toFlowable()
+                                .onErrorReturnItem(TestScreens.CANCEL),
                         // wait for workflow state 1 sec at most
-                        readerInteractor.getWorkflowState("TROPI:waitForWorkflowChange").take(1).lastOrError().timeout(1, TimeUnit.SECONDS),
+                        readerInteractor.getWorkflowState("TROPI:waitForWorkflowChange")
+                                .take(1)
+                                .timeout(1, TimeUnit.SECONDS),
                         (testScreens, workflowState) -> new Pair<>(workflowState, testScreens)
                 ))
+                .take(1)
+                .singleOrError()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleWorkflowState, error -> {
                     Timber.d("--- waitForWorkflowState error: %s", error);

@@ -376,7 +376,11 @@ public class ReaderManagerImpl implements ReaderManager {
 
     @Override
     public Flowable<WorkflowState> workflowState(String debug) {
-        return workflowStateProcessor.startWith(getWorkflowState().toFlowable().onErrorReturnItem(WorkflowState.DEFAULT).doOnNext(a -> Timber.d("--- debug %s", debug)));
+        return workflowStateProcessor.startWith(getWorkflowState().toFlowable().onErrorReturnItem(WorkflowState.DEFAULT))
+                .doOnSubscribe(a -> Timber.d("--- debug onSub %s", debug))
+                .doOnComplete(() -> Timber.d("--- debug onComplete %s", debug))
+                .doOnNext(a -> Timber.d("--- debug onNext %s -> %s", debug, a))
+                .doOnError(a -> Timber.d("--- debug onError %s -> %s", debug, a));
     }
 
     private Single<WorkflowState> getWorkflowState() {
