@@ -202,7 +202,11 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                             try {
                                 final T reading = (T) characteristicReaderMap.get(characteristicId).read(Data.from(payload));
                                 if (!emitter.isDisposed()) {
-                                    emitter.onSuccess(reading);
+                                    if (reading != null) {
+                                        emitter.onSuccess(reading);
+                                    } else {
+                                        emitter.onError(new CharacteristicReadError(device, 999, characteristicId));
+                                    }
                                 }
                             } catch (final Exception ex) {
                                 if (!emitter.isDisposed()) {
