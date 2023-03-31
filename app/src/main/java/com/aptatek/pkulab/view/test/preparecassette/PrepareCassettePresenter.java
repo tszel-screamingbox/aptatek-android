@@ -19,6 +19,7 @@ public class PrepareCassettePresenter extends TestBasePresenter<TestFragmentBase
         ifViewAttached(attachedView -> {
             attachedView.setTitle(resourceInteractor.getStringResource(R.string.test_prepare_cassette_title));
             attachedView.setMessage(resourceInteractor.getStringResource(R.string.test_prepare_cassette_message));
+            attachedView.setNextButtonVisible(true);
         });
     }
 }
