@@ -56,7 +56,10 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        countdown -> ifViewAttached(attachedView -> attachedView.showCountdown(countdown.getRemainingFormattedText())),
+                        countdown -> ifViewAttached(attachedView -> {
+                            attachedView.showCountdown(countdown.getRemainingFormattedText());
+                            attachedView.startWettingService();
+                        }),
                         Timber::e,
                         () -> {
                             analyticsManager.logEvent(new SampleWettingDone(Math.abs(System.currentTimeMillis() - screenDisplayedMs)));
@@ -118,7 +121,10 @@ public class WettingPresenter extends TestBasePresenter<WettingView> {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                             analyticsManager.logEvent(new SampleWettingSkipped(Math.abs(System.currentTimeMillis() - screenDisplayedMs)));
-                            ifViewAttached(WettingView::showNextScreen);
+                            ifViewAttached(av -> {
+                                av.showNextScreen();
+                                av.stopWettingService();
+                            });
                         })
         );
     }

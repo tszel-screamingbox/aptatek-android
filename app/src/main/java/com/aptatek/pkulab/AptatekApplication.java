@@ -1,5 +1,6 @@
 package com.aptatek.pkulab;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
@@ -92,7 +93,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
     public void onMoveToForeground() {
         inForeground = true;
         Timber.d("Process.Lifecycle: foreground");
-        stopService(new Intent(this, WettingForegroundService.class));
+        stopWettingService();
 
         if (shouldRequestPin()) {
             Timber.d("Requesting pin code due to exceeding max idle period");
@@ -106,6 +107,12 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         lastForegroundTime = 0L;
 
         disposeKillServiceTimer();
+    }
+
+    public void stopWettingService() {
+        stopService(new Intent(this, WettingForegroundService.class));
+        final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(Constants.WETTING_FINISHED_NOTIFICATION_ID);
     }
 
     public boolean shouldRequestPin() {
@@ -152,7 +159,7 @@ public class AptatekApplication extends MultiDexApplication implements Lifecycle
         }
     }
 
-    private void startWettingServiceWhenPossible() {
+    public void startWettingServiceWhenPossible() {
         final WettingStatus wettingStatus = wettingDataSource.getWettingStatus();
         if (wettingStatus == WettingStatus.RUNNING) {
             ContextCompat.startForegroundService(this, new Intent(this, WettingForegroundService.class));

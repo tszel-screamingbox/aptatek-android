@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.BuildConfig;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
@@ -58,7 +59,10 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
 
     @Override
     public boolean onNextPressed() {
-        if (incubationComplete) return false;
+        if (incubationComplete) {
+            stopWettingService();
+            return false;
+        }
 
         if (BuildConfig.FLAVOR.equals("prod")) {
             return true;
@@ -156,5 +160,15 @@ public class WettingFragment extends TestBaseFragment<WettingView, WettingPresen
     @Override
     public void showWettingComplete() {
         greenDisclaimer.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void startWettingService() {
+        AptatekApplication.get(requireActivity().getApplicationContext()).startWettingServiceWhenPossible();
+    }
+
+    @Override
+    public void stopWettingService() {
+        AptatekApplication.get(requireActivity().getApplicationContext()).stopWettingService();
     }
 }

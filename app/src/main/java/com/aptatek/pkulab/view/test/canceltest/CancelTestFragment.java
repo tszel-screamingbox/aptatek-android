@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.aptatek.pkulab.AptatekApplication;
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
 import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
@@ -70,6 +71,7 @@ public class CancelTestFragment extends TestBaseFragment<CancelTestView, CancelT
 
     @Override
     public void finishActivity() {
+        AptatekApplication.get(requireActivity()).stopWettingService();
         getActivity().finish();
     }
 

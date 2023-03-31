@@ -10,4 +10,8 @@ public interface WettingView extends TestFragmentBaseView {
 
     void showWettingComplete();
 
+    void startWettingService();
+
+    void stopWettingService();
+
 }

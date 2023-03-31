@@ -46,8 +46,7 @@ public class CancelTestPresenter extends TestBasePresenter<CancelTestView> {
                 .andThen(testInteractor.resetTest())
                 .andThen(testInteractor.setTestContinueStatus(false))
                 .andThen(Completable.fromAction(() -> ifViewAttached(view -> analyticsManager.logEvent(new TestCancelled(view.getPreviousScreen() == null ? "null" : view.getPreviousScreen().name())))))
-                .andThen(Completable.fromAction(() -> ifViewAttached(CancelTestView::finishActivity)))
-                .subscribe();
+                .subscribe(() -> ifViewAttached(CancelTestView::finishActivity));
     }
 
     @Override
