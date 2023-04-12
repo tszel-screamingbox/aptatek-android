@@ -1,6 +1,5 @@
 package com.aptatek.pkulab.view.test.testing;
 
-import android.util.Log;
 import android.util.Pair;
 
 import com.aptatek.pkulab.R;
@@ -29,6 +28,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -42,6 +42,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -65,6 +66,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private Disposable testCompleteDisposable;
 
+    private Disposable errorsDisposable;
+
     private AtomicBoolean stillOnThisScreen;
 
     @Inject
@@ -86,20 +89,21 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     }
 
     public void onStart() {
-        onStop();
+        onRestart();
         disposables = new CompositeDisposable();
 
         stillOnThisScreen = new AtomicBoolean(true);
 
         final Completable disconnected = readerInteractor.getReaderConnectionEvents()
-                .share()
                 .filter(a -> a.getConnectionState() != ConnectionState.READY)
                 .take(1)
                 .ignoreElements()
                 .onErrorComplete()
+                .doOnSubscribe(a -> Timber.d("--- disconnect onSubscribe"))
                 .doOnComplete(() -> Timber.d("--- disconnected stream completed"));
 
         final Flowable<WorkflowState> wfsShared = readerInteractor.getWorkflowState("TestingPresenter")
+                .doOnSubscribe(a -> Timber.d("--- wfs onSubscribe"))
                 .doOnNext(wfs -> Timber.d("--- wfs = " + wfs))
                 .doOnError(e -> Timber.w("--- wfs error = " + e))
                 .doOnComplete(() -> Timber.w("--- wfs onComplete!!!"));
@@ -107,7 +111,11 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         final Single<WorkflowState> errors = wfsShared
                 .filter(state -> state.name().toLowerCase(Locale.getDefault()).endsWith("error"))
                 .take(1L)
+                .replay()
+                .autoConnect()
                 .singleOrError()
+                .doOnDispose(() -> Timber.d("--- error stream onDispose"))
+                .doOnSubscribe(a -> Timber.d("--- error stream onSubscribe"))
                 .doOnSuccess(wfs -> Timber.d("--- error stream completed with " + wfs))
                 .doOnError(e -> Timber.w("--- error stream error: " + e));
 
@@ -156,72 +164,91 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         );
 
         // watch for errors
-        disposables.add(
-                errors.flatMap(errorState ->
-                                readerInteractor.getError()
-                                        .onErrorReturnItem(Error.create(""))
-                                        .map(error -> new Pair<>(errorState, error.getMessage()))
-                        )
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                errorPair -> {
-                                    try {
-                                        final ErrorModel errorModel = errorInteractor.createErrorModel(errorPair.first, errorPair.second, true);
-                                        Timber.d("Test error: %s -> %s", errorPair, errorModel);
-                                        ifViewAttached(attachedView -> {
-                                            attachedView.onTestError(errorModel);
-                                        });
-                                    } catch (ErrorModelConversionError error) {
-                                        Timber.d("Test error, failed to convert error model: %s", error);
-                                    }
-                                },
-                                error -> Timber.d("Error while listening for test error: %s", error)
-                        )
-        );
+        errorsDisposable = errors.flatMap(errorState ->
+                        readerInteractor.getError()
+                                .onErrorReturnItem(Error.create(""))
+                                .map(error -> new Pair<>(errorState, error.getMessage()))
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnDispose(() -> Timber.d("--- error onDispose"))
+                .doOnSubscribe(a -> Timber.d("--- error onSub"))
+                .doOnSuccess(a -> Timber.d("--- error onSuccess: %s", a))
+                .doOnError(a -> Timber.d("--- error onError: %s", a))
+                .subscribe(
+                        errorPair -> {
+                            try {
+                                final ErrorModel errorModel = errorInteractor.createErrorModel(errorPair.first, errorPair.second, true);
+                                Timber.d("Test error: %s -> %s", errorPair, errorModel);
+                                ifViewAttached(attachedView -> attachedView.onTestError(errorModel));
+                            } catch (ErrorModelConversionError error) {
+                                Timber.d("Test error, failed to convert error model: %s", error);
+                            }
+                        },
+                        error -> Timber.d("Error while listening for test error: %s", error)
+                );
 
         // watch test progress
         disposables.add(
                 wfsShared.filter(testRunningWithSafeTestProgress::contains)
+                        .takeUntil((Predicate<? super WorkflowState>) wfs -> stillOnThisScreen.get())
+                        .doOnComplete(() -> Timber.d("--- terminated watch test progress"))
                         .take(1)
                         .timeout(10, TimeUnit.SECONDS)
                         .retryWhen(err -> {
                             final AtomicInteger retryCount = new AtomicInteger(0);
                             return err.takeWhile(e -> retryCount.getAndIncrement() != 3 && stillOnThisScreen != null && stillOnThisScreen.get())
                                     .flatMap(e -> {
-                                        Timber.d("--- getTestProgress retryWhen error = %s", e);
+                                        Timber.d("--- getTestProgress retryWhen count = %d, error = %s", retryCount.get(), e);
                                         return Flowable.timer(retryCount.get(), TimeUnit.SECONDS);
                                     }).doOnNext(i -> Timber.d("--- getTestProgress retryWhen error delayed retry"));
                         })
+                        .doOnError(a -> Timber.d("--- getTestProgress onError: %s", a))
                         .ignoreElements()
+                        .doOnComplete(() -> Timber.d("--- getTestProgress onComplete"))
                         // it takes some time until testProgress gets updated ...
                         .delay(5, TimeUnit.SECONDS)
                         .andThen(readerInteractor.getTestProgress()
+                                .takeUntil(errors.toFlowable())
                                 .filter(tp -> tp.getPercent() < 100)
                                 .timeout(10, TimeUnit.SECONDS)
                                 .retryWhen(err -> {
                                     final AtomicInteger retryCount = new AtomicInteger(0);
                                     return err.takeWhile(e -> retryCount.getAndIncrement() != 3 && stillOnThisScreen != null && stillOnThisScreen.get())
                                             .flatMap(e -> {
-                                                Timber.d("--- getTestProgress <100 retryWhen error = %s", e);
+                                                Timber.d("--- getTestProgress <100 retryWhen count= %d, error = %s", retryCount.get(), e);
                                                 return Flowable.timer(retryCount.get(), TimeUnit.SECONDS);
                                             }).doOnNext(i -> Timber.d("--- getTestProgress <100 retryWhen error delayed retry"));
                                 })
                         )
+                        .takeUntil((Predicate<? super TestProgress>) wfs -> stillOnThisScreen.get())
                         .take(1)
+                        .doOnError(a -> Timber.d("--- getTestProgress <100 onError: %s", a))
+                        .doOnComplete(() -> Timber.d("--- getTestProgress <100 onComplete"))
                         .singleOrError()
-                        .onErrorResumeNext(readerInteractor.getTestProgress().take(1).singleOrError())
+                        .onErrorResumeNext(error ->
+                                stillOnThisScreen.get() ? readerInteractor.getTestProgress()
+                                        .takeUntil(errors.toFlowable())
+                                        .takeUntil((Predicate<? super TestProgress>) wfs -> stillOnThisScreen.get())
+                                        .doOnComplete(() -> Timber.d("--- terminated watch test progress"))
+                                        .take(1)
+                                        .singleOrError()
+                                        : Single.error(new IllegalStateException("left screen"))
+                        )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 this::onTestProgressReceived,
                                 error -> {
-                                    Timber.w("Unhandled exception during Test Progress update: %s", error);
-                                    onStart();
+                                    Timber.w("--- Unhandled exception during Test Progress update: %s", error);
+
+                                    if (!(error instanceof NoSuchElementException)) {
+                                        onStart();
+                                    }
                                 }
                         )
 
-                );
+        );
     }
 
     private void onTestProgressReceived(final TestProgress testProgress) {
@@ -261,8 +288,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                 )
                 .andThen(readerInteractor.getTestProgress().take(1).singleOrError())
                 .flatMap(testProg -> readerInteractor.getResult(testProg.getTestId(), true)
-                    .onErrorResumeNext(err -> readerInteractor.getResult(firstProgress.getTestId(), true))
-                    .map(TestResult::getId)
+                        .onErrorResumeNext(err -> readerInteractor.getResult(firstProgress.getTestId(), true))
+                        .map(TestResult::getId)
                 )
                 .onErrorResumeNext(error -> {
                     Timber.w("--- testProgress getResult flow error %s, fallback to latest!", error);
@@ -336,7 +363,9 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         ifViewAttached(attachedView -> attachedView.showTimeRemaining(timeRemaining));
     }
 
-    public void onStop() {
+    public void onRestart() {
+        Timber.d("--- onRestart");
+
         if (stillOnThisScreen != null) {
             stillOnThisScreen.set(false);
         }
@@ -358,6 +387,14 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         if (testCompleteDisposable != null && !testCompleteDisposable.isDisposed()) {
             testCompleteDisposable.dispose();
             testCompleteDisposable = null;
+        }
+    }
+
+    public void onStop() {
+        onRestart();
+        if (errorsDisposable != null && !errorsDisposable.isDisposed()) {
+            errorsDisposable.dispose();
+            errorsDisposable = null;
         }
     }
 
