@@ -19,6 +19,7 @@ android {
     buildToolsVersion versions.buildToolsVersion
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -89,11 +90,12 @@ android {
             returnDefaultValues = true
         }
     }
-
-    lintOptions {
+    namespace 'com.aptatek.pkulab'
+    lint {
         abortOnError false
         disable 'MissingTranslation', 'RestrictedApi'
     }
+
 }
 
 checkstyle {
@@ -102,6 +104,8 @@ checkstyle {
 }
 
 dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+
     // Support
     implementation androidSupportDependencies.appcompat
     implementation androidSupportDependencies.annotations
