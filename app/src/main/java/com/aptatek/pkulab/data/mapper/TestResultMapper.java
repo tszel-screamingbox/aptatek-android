@@ -47,7 +47,7 @@ public class TestResultMapper implements Mapper<TestResult, TestResultDataModel>
                 .setTemperature(dataModel.getTemperature())
                 .setEndTimestamp(dataModel.getEndTimestamp())
                 .setAssayHash(dataModel.getAssayHash())
-                .setAssayVersion(dataModel.getAssayVersion())
+                .setAssayVersion(dataModel.getAssayVersion() == null ? "null" : dataModel.getAssayVersion())
                 .setAssay(dataModel.getAssay())
                 .setRawResponse(dataModel.getRawResponse())
                 .setCassetteExpiry(dataModel.getCassetteExpiry())
