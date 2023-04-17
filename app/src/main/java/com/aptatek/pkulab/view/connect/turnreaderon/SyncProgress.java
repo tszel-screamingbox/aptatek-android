@@ -1,35 +1,19 @@
 package com.aptatek.pkulab.view.connect.turnreaderon;
 
-public class SyncProgress {
 
-    final int current;
-    final int failed;
-    final int total;
+import android.os.Parcelable;
 
-    public SyncProgress(int current, int failed, int total) {
-        this.current = current;
-        this.failed = failed;
-        this.total = total;
+import com.google.auto.value.AutoValue;
+
+@AutoValue
+public abstract class SyncProgress implements Parcelable {
+
+    public abstract int getCurrent();
+    public abstract int getFailed();
+    public abstract int getTotal();
+
+    public static SyncProgress create(final int current, final int failed, final int total) {
+        return new AutoValue_SyncProgress(current, failed, total);
     }
 
-    public int getCurrent() {
-        return current;
-    }
-
-    public int getFailed() {
-        return failed;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    @Override
-    public String toString() {
-        return "SyncProgress{" +
-                "current=" + current +
-                ", failed=" + failed +
-                ", total=" + total +
-                '}';
-    }
 }

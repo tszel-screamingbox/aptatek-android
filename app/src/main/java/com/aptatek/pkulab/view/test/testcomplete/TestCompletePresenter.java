@@ -5,7 +5,6 @@ import com.aptatek.pkulab.domain.interactor.ResourceInteractor;
 import com.aptatek.pkulab.domain.interactor.reader.ReaderInteractor;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultInteractor;
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
-import com.aptatek.pkulab.domain.model.reader.TestProgress;
 import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
@@ -34,6 +33,8 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
 
     private Disposable readyStateDisposable = null;
 
+    private Disposable syncProgressDisposable = null;
+
     private String testId;
 
     @Inject
@@ -55,23 +56,35 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
 
     public void onStart() {
         onStop();
-        disposable = readerInteractor.getTestProgress()
-                .takeUntil(tp -> tp.getPercent() == 100)
-                .map(TestProgress::getTestId)
-                .take(1)
-                .lastOrError()
-                .timeout(2, TimeUnit.SECONDS)
-                .onErrorResumeNext(a -> {
-                    Timber.d("--- testCompletePresenter failed to read testId from test progress char... falling back to latest from db! error=%s", a);
-                    return testResultInteractor.getLatest().map(TestResult::getId);
-                })
-                .doOnSuccess(a -> Timber.d("--- testCompletePresenter got latest result id: %s", a))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onTestIdReceived);
 
-        if (testId != null) {
-            onTestIdReceived(testId);
-        }
+        syncProgressDisposable = readerInteractor.syncProgressFlowable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        sp -> ifViewAttached(av -> av.showSyncProgressDialog(sp)),
+                        error -> Timber.w("--- syncProgress error: %s", error)
+                );
+
+        disposable = readerInteractor.syncMissingRecords()
+                .andThen(testResultInteractor.getLatest().map(TestResult::getId))
+                .subscribe(testId -> {
+                            ifViewAttached(TestCompleteView::dismissProgressDialog);
+                            onTestIdReceived(testId);
+                        },
+                        error -> Timber.w("--- syncMissingRecords error")
+                );
+
+        // If we detect disconnect, instantly show next button
+        watchDeviceConnectedDisposable = readerInteractor.getReaderConnectionEvents()
+                .filter(event -> event.getConnectionState() != ConnectionState.READY)
+                .take(1)
+                // wait 1 minute top!
+                .timeout(INACTIVITY_TIMEOUT_MIN, TimeUnit.MINUTES)
+                .ignoreElements()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> ifViewAttached(av -> av.setNextButtonVisible(true)),
+                        error -> Timber.d("--- onTestIdReceived error waiting for connection events: %s", error)
+                );
     }
 
     private void onTestIdReceived(final String testId) {
@@ -102,22 +115,7 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
                     if (error instanceof TimeoutException) {
                         ifViewAttached(av -> av.setNextButtonVisible(true));
                     }
-
-
                 });
-
-        // If we detect disconnect, instantly show next button
-        watchDeviceConnectedDisposable = readerInteractor.getReaderConnectionEvents()
-                .filter(event -> event.getConnectionState() != ConnectionState.READY)
-                .take(1)
-                // wait 1 minute top!
-                .timeout(INACTIVITY_TIMEOUT_MIN, TimeUnit.MINUTES)
-                .ignoreElements()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> ifViewAttached(av -> av.setNextButtonVisible(true)),
-                        error -> Timber.d("--- onTestIdReceived error waiting for connection events: %s", error)
-                );
     }
 
     public void showResult() {
@@ -147,6 +145,11 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
         if (inactivityDisposable != null && !inactivityDisposable.isDisposed()) {
             inactivityDisposable.dispose();
             inactivityDisposable = null;
+        }
+
+        if (syncProgressDisposable != null && !syncProgressDisposable.isDisposed()) {
+            syncProgressDisposable.dispose();
+            syncProgressDisposable = null;
         }
     }
 }

@@ -328,6 +328,7 @@ public class TestActivity extends BaseActivity<TestActivityView, TestActivityPre
         return ((TestFragmentBaseView) getActiveBaseFragment()).getScreen();
     }
 
+
     private void onBackPressedHere() {
         final FragmentManager fm = getSupportFragmentManager();
         fm.executePendingTransactions();

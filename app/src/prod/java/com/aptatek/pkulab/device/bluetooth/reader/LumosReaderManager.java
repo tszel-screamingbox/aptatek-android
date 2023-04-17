@@ -29,7 +29,6 @@ import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
 import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
-import com.google.gson.JsonParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,17 +38,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.CRC32;
 
 import javax.inject.Inject;
-import javax.xml.transform.Result;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
-import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Predicate;
 import io.reactivex.processors.BehaviorProcessor;
-import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.schedulers.Schedulers;
 import no.nordicsemi.android.ble.BleManager;
 import no.nordicsemi.android.ble.data.Data;
@@ -343,7 +338,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                 .doOnError(error -> Timber.w("--- readResult %s, error %s", id, error));
     }
 
-    private Single<ResultResponse> readResult() {
+    public Single<ResultResponse> readResult() {
         return readLongPayloadWithChecksum(LumosReaderConstants.READER_CHAR_RESULT)
                 .map(payload -> ((ResultReader) characteristicReaderMap.get(LumosReaderConstants.READER_CHAR_RESULT)).read(Data.from(payload)));
     }
@@ -396,6 +391,27 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     public Single<List<ResultResponse>> syncResultsAfter(final @NonNull String lastResultId) {
         return syncResults(new SyncRequestCharacteristicDataProvider.SyncAfterRequestData(lastResultId));
+    }
+
+    public Single<List<String>> readSyncIds() {
+        return writeCharacteristic(LumosReaderConstants.READER_CHAR_RESULT_SYNC_REQUEST, null)
+                .delay(200L, TimeUnit.MILLISECONDS)
+                .andThen(concatSyncResponse()
+                        .map(ResultSyncResponse::getIdentifiers)
+                );
+    }
+
+    public Flowable<ResultResponse> syncRecordsWithIds(List<String> recordIds) {
+        return Flowable.just(recordIds)
+        .doOnNext(list -> syncProgressFlowableProcessor.onNext(new SyncProgress(0, 0, list.size())))
+                .flatMapIterable(it -> it)
+                .observeOn(Schedulers.io())
+                .concatMap(id -> getResult(id)
+                        .doOnSuccess(r -> syncProgressFlowableProcessor.onNext(syncProgressFlowableProcessor.getValue().increaseProgress()))
+                        .doOnError(ex -> syncProgressFlowableProcessor.onNext(syncProgressFlowableProcessor.getValue().failed()))
+                        .toFlowable()
+                        .onErrorResumeNext(Flowable.empty())
+                );
     }
 
     private Single<ResultSyncResponse> concatSyncResponse() {

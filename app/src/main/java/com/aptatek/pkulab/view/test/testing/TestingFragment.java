@@ -63,7 +63,7 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     }
 
     @Override
-    public void onTestFinished(final String testId) {
+    public void onTestFinished(@Nullable final String testId) {
         showNextScreen();
     }
 

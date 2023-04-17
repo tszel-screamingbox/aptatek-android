@@ -3,16 +3,11 @@ package com.aptatek.pkulab.domain.interactor.reader;
 
 import androidx.annotation.NonNull;
 
-import com.aptatek.pkulab.device.DeviceHelper;
 import com.aptatek.pkulab.device.PreferenceManager;
 import com.aptatek.pkulab.domain.interactor.testresult.TestResultRepository;
 import com.aptatek.pkulab.domain.manager.analytic.IAnalyticsManager;
-import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.DeviceInfoRead;
 import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.ReaderDataSynced;
-import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.ReaderWorkflowStateError;
-import com.aptatek.pkulab.domain.manager.analytic.events.readerconnection.WorkflowStateChanged;
 import com.aptatek.pkulab.domain.manager.analytic.events.riskmitigation.UnfinishedTest;
-import com.aptatek.pkulab.domain.manager.analytic.events.test.ReaderSelfTestFinished;
 import com.aptatek.pkulab.domain.manager.reader.ReaderManager;
 import com.aptatek.pkulab.domain.model.reader.CartridgeInfo;
 import com.aptatek.pkulab.domain.model.reader.ConnectionEvent;
@@ -33,6 +28,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import ix.Ix;
 import timber.log.Timber;
 
 public class ReaderInteractor {
@@ -42,21 +38,16 @@ public class ReaderInteractor {
     private final TestResultRepository testResultRepository;
     private final IAnalyticsManager analyticsManager;
     private long syncStartedAtMs = -1L;
-    private WorkflowState lastWorkflowState = WorkflowState.DEFAULT;
-    private long selfTestStartedAtMs = -1L;
-    private final DeviceHelper deviceHelper;
 
     @Inject
     public ReaderInteractor(final PreferenceManager preferenceManager,
                             final ReaderManager readerManager,
                             final TestResultRepository testResultRepository,
-                            final IAnalyticsManager analyticsManager,
-                            final DeviceHelper deviceHelper) {
+                            final IAnalyticsManager analyticsManager) {
         this.preferenceManager = preferenceManager;
         this.readerManager = readerManager;
         this.testResultRepository = testResultRepository;
         this.analyticsManager = analyticsManager;
-        this.deviceHelper = deviceHelper;
     }
 
     @NonNull
@@ -133,8 +124,26 @@ public class ReaderInteractor {
                 .subscribeOn(Schedulers.io());
     }
 
+    public Completable syncMissingRecords() {
+        return readerManager.getConnectedDevice()
+                .toSingle()
+                .map(ReaderDevice::getMac)
+                .flatMap(mac -> testResultRepository.listAll()
+                        .take(1)
+                        .singleOrError()
+                        .map(records -> Ix.from(records)
+                                .filter(result -> result.getReaderMac().equals(mac))
+                                .map(TestResult::getId)
+                                .toList())
+                )
+                .onErrorReturnItem(Collections.emptyList())
+                .flatMapCompletable(idsInDb -> readerManager.syncResultsExcludingList(idsInDb)
+                        .flatMapCompletable(testResultRepository::insert).onErrorComplete())
+                .subscribeOn(Schedulers.io());
+    }
+
     public Flowable<SyncProgress> syncProgressFlowable() {
-        return readerManager.getSyncProgressFlowable().map(sp -> new SyncProgress(sp.getCurrentResults(), sp.getFailedResults(), sp.getTotalResults()));
+        return readerManager.getSyncProgressFlowable().map(sp -> SyncProgress.create(sp.getCurrentResults(), sp.getFailedResults(), sp.getTotalResults()));
     }
 
     @NonNull
@@ -157,6 +166,16 @@ public class ReaderInteractor {
                         .andThen(Single.just(results))
                 )
                 .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    public Single<TestResult> readAndStoreResult() {
+        return readerManager.readResult()
+                .flatMap(testResult ->
+                        testResultRepository.insert(testResult)
+                                .andThen(Single.just(testResult))
+                )
                 .subscribeOn(Schedulers.io());
     }
 
@@ -212,7 +231,7 @@ public class ReaderInteractor {
     public Maybe<ReaderDevice> getConnectedReader() {
         return readerManager.getConnectedDevice()
                 .subscribeOn(Schedulers.io());
-                //.doOnSuccess(reader -> analyticsManager.logEvent(new DeviceInfoRead(reader.getFirmwareVersion(), reader.getSerial())));
+        //.doOnSuccess(reader -> analyticsManager.logEvent(new DeviceInfoRead(reader.getFirmwareVersion(), reader.getSerial())));
     }
 
     @NonNull

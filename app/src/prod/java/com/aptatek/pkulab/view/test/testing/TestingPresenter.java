@@ -15,7 +15,6 @@ import com.aptatek.pkulab.domain.manager.analytic.events.test.TestingScreenDispl
 import com.aptatek.pkulab.domain.model.reader.ConnectionState;
 import com.aptatek.pkulab.domain.model.reader.Error;
 import com.aptatek.pkulab.domain.model.reader.TestProgress;
-import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.error.ErrorModel;
 import com.aptatek.pkulab.view.test.base.TestBasePresenter;
@@ -28,7 +27,6 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,6 +41,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
+import io.reactivex.processors.BehaviorProcessor;
+import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -70,6 +70,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private AtomicBoolean stillOnThisScreen;
 
+    private FlowableProcessor<WorkflowState> lastBehaviorSubject;
+
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
                             final ReaderInteractor readerInteractor,
@@ -93,6 +95,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         disposables = new CompositeDisposable();
 
         stillOnThisScreen = new AtomicBoolean(true);
+        lastBehaviorSubject = BehaviorProcessor.createDefault(WorkflowState.DEFAULT);
 
         final Completable disconnected = readerInteractor.getReaderConnectionEvents()
                 .filter(a -> a.getConnectionState() != ConnectionState.READY)
@@ -102,13 +105,16 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                 .doOnSubscribe(a -> Timber.d("--- disconnect onSubscribe"))
                 .doOnComplete(() -> Timber.d("--- disconnected stream completed"));
 
-        final Flowable<WorkflowState> wfsShared = readerInteractor.getWorkflowState("TestingPresenter")
-                .doOnSubscribe(a -> Timber.d("--- wfs onSubscribe"))
-                .doOnNext(wfs -> Timber.d("--- wfs = " + wfs))
-                .doOnError(e -> Timber.w("--- wfs error = " + e))
-                .doOnComplete(() -> Timber.w("--- wfs onComplete!!!"));
+        disposables.add(
+                readerInteractor.getWorkflowState("TestingPresenter")
+                        .subscribe(wfs -> {
+                            if (lastBehaviorSubject != null && !lastBehaviorSubject.hasComplete()) {
+                                lastBehaviorSubject.onNext(wfs);
+                            }
+                        })
+        );
 
-        final Single<WorkflowState> errors = wfsShared
+        final Single<WorkflowState> errors = lastBehaviorSubject
                 .filter(state -> state.name().toLowerCase(Locale.getDefault()).endsWith("error"))
                 .take(1L)
                 .replay()
@@ -140,10 +146,14 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         testMightBeRunning.add(WorkflowState.HEATING_CASSETTE);
         testMightBeRunning.add(WorkflowState.DETECTING_FLUID);
 
+        // terminal state =
+        //      either the device disconnects,
+        //      or we receive an error,
+        //      or we detect a workflow state that tells us that the test is no longer running.
         final Completable terminal = Completable.ambArray(
                         disconnected,
                         errors.ignoreElement(),
-                        wfsShared.filter(wfs -> !testMightBeRunning.contains(wfs))
+                        readerInteractor.getWorkflowState("Testing terminal").filter(wfs -> !testMightBeRunning.contains(wfs))
                                 .ignoreElements()
                                 .doOnComplete(() -> Timber.w("--- wfs terminated"))
                 )
@@ -188,52 +198,72 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         error -> Timber.d("Error while listening for test error: %s", error)
                 );
 
-        // watch test progress
+        // watch test complete
         disposables.add(
-                wfsShared.filter(testRunningWithSafeTestProgress::contains)
-                        .takeUntil((Predicate<? super WorkflowState>) wfs -> stillOnThisScreen.get())
-                        .doOnComplete(() -> Timber.d("--- terminated watch test progress"))
+                lastBehaviorSubject
+                        // take while we're connected and the test is running
+                        .takeUntil(terminal.toSingle(Object::new).toFlowable())
+                        // take while we're on this screen
+                        .takeUntil((Predicate<? super WorkflowState>) a -> !stillOnThisScreen.get())
+                        .filter(wfs -> wfs == WorkflowState.TEST_COMPLETE)
                         .take(1)
-                        .timeout(10, TimeUnit.SECONDS)
-                        .retryWhen(err -> {
-                            final AtomicInteger retryCount = new AtomicInteger(0);
-                            return err.takeWhile(e -> retryCount.getAndIncrement() != 3 && stillOnThisScreen != null && stillOnThisScreen.get())
-                                    .flatMap(e -> {
-                                        Timber.d("--- getTestProgress retryWhen count = %d, error = %s", retryCount.get(), e);
-                                        return Flowable.timer(retryCount.get(), TimeUnit.SECONDS);
-                                    }).doOnNext(i -> Timber.d("--- getTestProgress retryWhen error delayed retry"));
-                        })
-                        .doOnError(a -> Timber.d("--- getTestProgress onError: %s", a))
-                        .ignoreElements()
-                        .doOnComplete(() -> Timber.d("--- getTestProgress onComplete"))
-                        // it takes some time until testProgress gets updated ...
-                        .delay(5, TimeUnit.SECONDS)
-                        .andThen(readerInteractor.getTestProgress()
-                                .takeUntil(errors.toFlowable())
-                                .filter(tp -> tp.getPercent() < 100)
-                                .timeout(10, TimeUnit.SECONDS)
-                                .retryWhen(err -> {
-                                    final AtomicInteger retryCount = new AtomicInteger(0);
-                                    return err.takeWhile(e -> retryCount.getAndIncrement() != 3 && stillOnThisScreen != null && stillOnThisScreen.get())
-                                            .flatMap(e -> {
-                                                Timber.d("--- getTestProgress <100 retryWhen count= %d, error = %s", retryCount.get(), e);
-                                                return Flowable.timer(retryCount.get(), TimeUnit.SECONDS);
-                                            }).doOnNext(i -> Timber.d("--- getTestProgress <100 retryWhen error delayed retry"));
-                                })
-                        )
-                        .takeUntil((Predicate<? super TestProgress>) wfs -> stillOnThisScreen.get())
-                        .take(1)
-                        .doOnError(a -> Timber.d("--- getTestProgress <100 onError: %s", a))
-                        .doOnComplete(() -> Timber.d("--- getTestProgress <100 onComplete"))
                         .singleOrError()
-                        .onErrorResumeNext(error ->
-                                stillOnThisScreen.get() ? readerInteractor.getTestProgress()
-                                        .takeUntil(errors.toFlowable())
-                                        .takeUntil((Predicate<? super TestProgress>) wfs -> stillOnThisScreen.get())
-                                        .doOnComplete(() -> Timber.d("--- terminated watch test progress"))
-                                        .take(1)
-                                        .singleOrError()
-                                        : Single.error(new IllegalStateException("left screen"))
+                        .doOnDispose(() -> Timber.d("--- testCompleteWfs onDispose"))
+                        .doOnSubscribe(a -> Timber.d("--- testCompleteWfs onSub"))
+                        .doOnSuccess(wfs -> Timber.d("--- testCompleteWfs onComplete"))
+                        .doOnError(a -> Timber.d("--- testCompleteWfs onError: %s", a))
+                        .flatMap(ignored -> readerInteractor.readAndStoreResult())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                (testResult) -> {
+                                    Timber.d("Test complete: %s", testResult.getId());
+                                    analyticsManager.logEvent(new TestingDone(Math.abs(System.currentTimeMillis() - screenDisplayedAtMs)));
+
+                                    ifViewAttached(attachedView -> attachedView.onTestFinished(testResult.getId()));
+                                },
+                                error -> Timber.w("--- testComplete error %s", error)
+                        )
+        );
+
+        // watch test progress during test running
+        disposables.add(
+                lastBehaviorSubject
+                        .doOnNext(wfs -> Timber.wtf("--- lastBehavior onNext %s", wfs))
+                        // take updates while we're connected and the wfs is test running
+                        .takeUntil(terminal.toSingle(Object::new).toFlowable())
+                        // take updates while we're on this screen
+                        .takeUntil((Predicate<? super WorkflowState>) wfs -> !stillOnThisScreen.get())
+                        .doOnComplete(() -> Timber.wtf("--- lastBehavior onComplete!!"))
+                        .filter(wfs -> wfs == WorkflowState.TEST_RUNNING)
+                        .take(1)
+                        .singleOrError()
+                        .doOnSuccess(a -> Timber.d("--- test running detected"))
+                        // wait for a testProgress that has a recordId that is new to us
+                        .flatMap(ignored -> readerInteractor.getTestProgress()
+                                .doOnNext(tp -> Timber.d("--- testProgress=%s", tp))
+                                .doOnError(error -> Timber.d("--- testProgress error: %s", error))
+                                .takeUntil(errors.toFlowable())
+                                .takeUntil((Predicate<? super TestProgress>) a -> stillOnThisScreen.get())
+                                .flatMap(tp -> testResultInteractor.getById(tp.getTestId())
+                                        .map(tr -> false)
+                                        .onErrorReturn(a -> true)
+                                        .map(isNew -> new Pair<>(tp, isNew))
+                                        .toFlowable()
+                                )
+                                .doOnNext(pair -> Timber.d("--- pair: %s", pair))
+                                .filter(pair -> pair.second)
+                                .map(pair -> pair.first)
+                                .take(1)
+                                .singleOrError()
+                                .retryWhen(err -> {
+                                    final AtomicInteger retryCounter = new AtomicInteger(0);
+                                    return err.takeWhile(a -> retryCounter.incrementAndGet() <= 3 && stillOnThisScreen.get())
+                                            .flatMap(a -> {
+                                                Timber.w("--- testProgress retryWhen retry: %d", retryCounter.get());
+                                                return Flowable.timer(retryCounter.get(), TimeUnit.SECONDS);
+                                            });
+                                })
                         )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
@@ -241,13 +271,22 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                 this::onTestProgressReceived,
                                 error -> {
                                     Timber.w("--- Unhandled exception during Test Progress update: %s", error);
-
-                                    if (!(error instanceof NoSuchElementException)) {
-                                        onStart();
-                                    }
+                                    onStart();
                                 }
                         )
+        );
 
+        // watch other workflow states that tell us the test is no longer running
+        disposables.add(lastBehaviorSubject
+                // take updates while we're on this screen
+                .takeUntil((Predicate<? super WorkflowState>) wfs -> !stillOnThisScreen.get())
+                .filter(wfs -> !testMightBeRunning.contains(wfs))
+                .ignoreElements()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> ifViewAttached(av -> av.onTestFinished(null)),
+                        error -> Timber.w("--- NOT test workflow state error %s", error)
+                )
         );
     }
 
@@ -258,54 +297,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             Timber.d("---- !! onTestProgressReceived!!  %s", testProgress.getTestId());
 
             startRemainingCountdown();
-            startWatchingTestComplete();
         }
-    }
-
-    private void startWatchingTestComplete() {
-        if (testCompleteDisposable != null && !testCompleteDisposable.isDisposed()) {
-            testCompleteDisposable.dispose();
-            testCompleteDisposable = null;
-        }
-
-        testCompleteDisposable = readerInteractor.getWorkflowState("TP:startWatchingTestComplete")
-                .filter(workflowState -> workflowState == WorkflowState.TEST_COMPLETE || workflowState == WorkflowState.POST_TEST || workflowState == WorkflowState.READY)
-                .take(1)
-                .ignoreElements()
-                .observeOn(Schedulers.io())
-                .andThen(readerInteractor.syncResultsAfterLatest()
-                        .retryWhen(err -> {
-                            final AtomicInteger retryCounter = new AtomicInteger();
-                            return err.takeWhile(e -> retryCounter.getAndIncrement() != 3 && stillOnThisScreen != null && stillOnThisScreen.get())
-                                    .flatMap(e -> {
-                                        Timber.w("--- testComplete syncAfter error = %s", e);
-                                        return Flowable.timer(retryCounter.get(), TimeUnit.SECONDS);
-                                    }).doOnNext(i -> Timber.d("--- testComplete syncAfter retryWhen error delayed retry"));
-                        })
-                        .ignoreElement()
-                        .doOnError(error -> Timber.w("--- testComplete syncResultsAfterLatest error: %s", error))
-                        .onErrorComplete()
-                )
-                .andThen(readerInteractor.getTestProgress().take(1).singleOrError())
-                .flatMap(testProg -> readerInteractor.getResult(testProg.getTestId(), true)
-                        .onErrorResumeNext(err -> readerInteractor.getResult(firstProgress.getTestId(), true))
-                        .map(TestResult::getId)
-                )
-                .onErrorResumeNext(error -> {
-                    Timber.w("--- testProgress getResult flow error %s, fallback to latest!", error);
-                    return testResultInteractor.getLatest().map(TestResult::getId).doOnSuccess(a -> Timber.d("--- testProgress getResult fallback -> %s", a));
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        resultId -> {
-                            Timber.d("Test complete: %s", resultId);
-                            analyticsManager.logEvent(new TestingDone(Math.abs(System.currentTimeMillis() - screenDisplayedAtMs)));
-
-                            ifViewAttached(attachedView -> attachedView.onTestFinished(resultId));
-                        },
-                        error -> Timber.w("Error while getting test result: %s", error)
-                );
     }
 
     private void startRemainingCountdown() {
@@ -330,20 +322,24 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                             readerInteractor.getConnectedReader()
                                     .toSingle()
                                     .ignoreElement()
-                                    .andThen(readerInteractor.getWorkflowState("TP:startRemainingCountdown").filter(wfs -> wfs == WorkflowState.TEST_COMPLETE || wfs == WorkflowState.POST_TEST || wfs == WorkflowState.READY || wfs == WorkflowState.SELF_TEST)
+                                    .andThen(readerInteractor.getWorkflowState("TP:startRemainingCountdown")
+                                            .timeout(2, TimeUnit.SECONDS)
+                                            .filter(wfs -> wfs == WorkflowState.TEST_COMPLETE || wfs == WorkflowState.POST_TEST || wfs == WorkflowState.READY || wfs == WorkflowState.SELF_TEST)
                                             .take(1)
                                             .singleOrError()
-                                            .ignoreElement())
+                                    )
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(() -> ifViewAttached(av -> av.onTestFinished(firstProgress.getTestId())), error -> {
-                                        Timber.d("--- startRemainingCountdown complete safeguard error: %s", error);
-                                        ifViewAttached(av -> av.onTestError(ErrorModel.builder()
-                                                .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2))
-                                                .setAfterChamberScrewedOn(true)
-                                                .setErrorCode("Unknown error")
-                                                .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2))
-                                                .build()));
-                                    });
+                                    .subscribe(
+                                            ignored -> ifViewAttached(av -> av.onTestFinished(null)),
+                                            error -> {
+                                                Timber.d("--- startRemainingCountdown complete safeguard error: %s", error);
+                                                ifViewAttached(av -> av.onTestError(ErrorModel.builder()
+                                                        .setTitle(resourceInteractor.getStringResource(R.string.error_title_generic_2))
+                                                        .setAfterChamberScrewedOn(true)
+                                                        .setErrorCode("Unknown error")
+                                                        .setMessage(resourceInteractor.getStringResource(R.string.error_message_generic_2))
+                                                        .build()));
+                                            });
                         }
                 );
     }

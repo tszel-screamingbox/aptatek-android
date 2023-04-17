@@ -2,7 +2,6 @@ package com.aptatek.pkulab.device.bluetooth.reader;
 
 import android.bluetooth.BluetoothDevice;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +17,7 @@ import com.aptatek.pkulab.device.bluetooth.model.CartridgeIdResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ErrorResponse;
 import com.aptatek.pkulab.device.bluetooth.model.NumPreviousResultsResponse;
 import com.aptatek.pkulab.device.bluetooth.model.ResultResponse;
+import com.aptatek.pkulab.device.bluetooth.model.ResultSyncResponse;
 import com.aptatek.pkulab.device.bluetooth.model.SyncProgress;
 import com.aptatek.pkulab.device.bluetooth.model.TestProgressResponse;
 import com.aptatek.pkulab.device.bluetooth.model.WorkflowStateResponse;
@@ -126,15 +126,15 @@ public class ReaderManagerImpl implements ReaderManager {
                 connectionStateProcessor.onNext(ConnectionEvent.create(new BluetoothReaderDevice(device), ConnectionState.READY));
 
                 Single.zip(
-                        lumosReaderManager.readCharacteristic(LumosReaderConstants.DEVICE_INFO_FIRMWARE),
-                        lumosReaderManager.readCharacteristic(LumosReaderConstants.DEVICE_INFO_SERIAL),
-                        (BiFunction<String, String, ReaderDevice>) (firmwareVersion, serialNumber) -> {
-                            BluetoothReaderDevice bluetoothReaderDevice = new BluetoothReaderDevice(device);
-                            bluetoothReaderDevice.setFirmwareVersion(firmwareVersion);
-                            bluetoothReaderDevice.setSerialNumber(serialNumber);
-                            return bluetoothReaderDevice;
-                        }
-                )
+                                lumosReaderManager.readCharacteristic(LumosReaderConstants.DEVICE_INFO_FIRMWARE),
+                                lumosReaderManager.readCharacteristic(LumosReaderConstants.DEVICE_INFO_SERIAL),
+                                (BiFunction<String, String, ReaderDevice>) (firmwareVersion, serialNumber) -> {
+                                    BluetoothReaderDevice bluetoothReaderDevice = new BluetoothReaderDevice(device);
+                                    bluetoothReaderDevice.setFirmwareVersion(firmwareVersion);
+                                    bluetoothReaderDevice.setSerialNumber(serialNumber);
+                                    return bluetoothReaderDevice;
+                                }
+                        )
                         .subscribeOn(Schedulers.io())
                         .subscribe(a -> connectedReaderProcessor.onNext(new ConnectedDeviceHolder(a)), error -> Timber.d("--- onDeviceReady failed to read serial and firmware"));
 
@@ -276,8 +276,17 @@ public class ReaderManagerImpl implements ReaderManager {
     @Override
     public Single<Integer> getNumberOfResults() {
         return withRetry(1, lumosReaderManager.<NumPreviousResultsResponse>readCharacteristic(LumosReaderConstants.READER_CHAR_NUM_RESULTS)
-                .map(NumPreviousResultsResponse::getNumberOfResults),
+                        .map(NumPreviousResultsResponse::getNumberOfResults),
                 "getNumberOfResults"
+        );
+    }
+
+    @Override
+    public Single<TestResult> readResult() {
+        return withRetry(1,
+                lumosReaderManager.readResult()
+                        .map(resultResponse -> ((TestResultMapper) mappers.get(ResultResponse.class)).mapToDomain(resultResponse)),
+                "readResult"
         );
     }
 
@@ -304,7 +313,7 @@ public class ReaderManagerImpl implements ReaderManager {
         return connectedReaderProcessor.take(1)
                 .filter(ConnectedDeviceHolder::isConnected)
                 .map(a -> a.device).lastElement()
-                .doOnSuccess(a -> Timber.d("--- got connected device=%s",a))
+                .doOnSuccess(a -> Timber.d("--- got connected device=%s", a))
                 .doOnError(a -> Timber.d("--- error connected device %s", a))
                 .doOnComplete(() -> Timber.d("--- connected device oncomplete"));
     }
@@ -327,6 +336,23 @@ public class ReaderManagerImpl implements ReaderManager {
     @Override
     public Flowable<TestResult> syncResultsAfterFlowable(@NonNull String lastResultId) {
         return syncResultFlowable(lastResultId);
+    }
+
+    @Override
+    public Flowable<TestResult> syncResultsExcludingList(List<String> excludeIdList) {
+        return lumosReaderManager.readSyncIds()
+                .toFlowable()
+                .flatMapIterable(it -> it)
+                .filter(id -> !excludeIdList.contains(id))
+                .toList()
+                .toFlowable()
+                .flatMap(ids -> lumosReaderManager.syncRecordsWithIds(ids)
+                        .map(response -> {
+                            final Mapper<TestResult, ResultResponse> mapper = (TestResultMapper) mappers.get(ResultResponse.class);
+                            return mapper.mapToDomain(response)
+                                        .toBuilder()
+                                        .build();
+                        }));
     }
 
     private Single<List<TestResult>> syncResults(final @Nullable String lastResultId) {

@@ -34,6 +34,8 @@ public interface ReaderManager {
 
     Single<Integer> getNumberOfResults();
 
+    Single<TestResult> readResult();
+
     Single<TestResult> getResult(@NonNull String id);
 
     Single<List<TestResult>> syncAllResults();
@@ -41,6 +43,8 @@ public interface ReaderManager {
     Single<List<TestResult>> syncResultsAfter(@NonNull String lastResultId);
 
     Flowable<TestResult> syncAllResultsFlowable();
+
+    Flowable<TestResult> syncResultsExcludingList(List<String> excludeIdList);
 
     Flowable<TestResult> syncResultsAfterFlowable(@NonNull String lastResultId);
 

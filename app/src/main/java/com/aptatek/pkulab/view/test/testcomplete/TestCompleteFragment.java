@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.injection.component.test.TestFragmentComponent;
+import com.aptatek.pkulab.view.connect.turnreaderon.SyncProgress;
+import com.aptatek.pkulab.view.dialog.SyncProgressDialogFragment;
 import com.aptatek.pkulab.view.test.TestScreens;
 import com.aptatek.pkulab.view.test.base.TestBaseFragment;
 import com.aptatek.pkulab.view.test.result.TestResultActivity;
@@ -14,6 +16,7 @@ import com.aptatek.pkulab.view.test.result.TestResultActivity;
 import javax.inject.Inject;
 
 public class TestCompleteFragment extends TestBaseFragment<TestCompleteView, TestCompletePresenter> implements TestCompleteView {
+    private static final String TAG_SYNC_DIALOG = "syncDialog";
 
     @Inject
     TestCompletePresenter testCompletePresenter;
@@ -66,5 +69,23 @@ public class TestCompleteFragment extends TestBaseFragment<TestCompleteView, Tes
     public boolean onNextPressed() {
         presenter.showResult();
         return true;
+    }
+
+    @Override
+    public void showSyncProgressDialog(SyncProgress syncProgress) {
+        final SyncProgressDialogFragment dialogFragment = (SyncProgressDialogFragment) getChildFragmentManager().findFragmentByTag(TAG_SYNC_DIALOG);
+        if (dialogFragment == null) {
+            SyncProgressDialogFragment.create(syncProgress).show(getChildFragmentManager(), TAG_SYNC_DIALOG);
+        } else {
+            dialogFragment.updateSyncProgress(syncProgress);
+        }
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        final SyncProgressDialogFragment dialogFragment = (SyncProgressDialogFragment) getChildFragmentManager().findFragmentByTag(TAG_SYNC_DIALOG);
+        if (dialogFragment != null) {
+            dialogFragment.dismiss();
+        }
     }
 }
