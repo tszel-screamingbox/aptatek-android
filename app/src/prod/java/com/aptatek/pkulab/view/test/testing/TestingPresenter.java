@@ -27,6 +27,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -153,7 +154,9 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         final Completable terminal = Completable.ambArray(
                         disconnected,
                         errors.ignoreElement(),
-                        readerInteractor.getWorkflowState("Testing terminal").filter(wfs -> !testMightBeRunning.contains(wfs))
+                        lastBehaviorSubject
+                                .filter(wfs -> wfs != WorkflowState.DEFAULT)
+                                .filter(wfs -> !testMightBeRunning.contains(wfs))
                                 .ignoreElements()
                                 .doOnComplete(() -> Timber.w("--- wfs terminated"))
                 )
@@ -271,7 +274,9 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                                 this::onTestProgressReceived,
                                 error -> {
                                     Timber.w("--- Unhandled exception during Test Progress update: %s", error);
-                                    onStart();
+                                    if (!(error instanceof NoSuchElementException)) {
+                                        onStart();
+                                    }
                                 }
                         )
         );
