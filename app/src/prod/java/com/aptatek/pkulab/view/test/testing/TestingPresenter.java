@@ -162,6 +162,11 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             testCompleteDisposable.dispose();
         }
 
+        // stop countdown
+        if (countdownDisposable != null && !countdownDisposable.isDisposed()) {
+            countdownDisposable.dispose();
+        }
+
         testCompleteDisposable = readerInteractor.readAndStoreResult()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -226,6 +231,11 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         // we don't want to receive any more workflow updates!
         if (workflowStateDisposable != null && !workflowStateDisposable.isDisposed()) {
             workflowStateDisposable.dispose();
+        }
+
+        // stop countdown as well
+        if (countdownDisposable != null && !countdownDisposable.isDisposed()) {
+            stillConnectedDisposable.dispose();
         }
 
         if (errorsDisposable != null && !errorsDisposable.isDisposed()) {
