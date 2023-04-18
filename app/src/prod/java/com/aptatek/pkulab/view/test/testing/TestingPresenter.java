@@ -37,13 +37,9 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
-import io.reactivex.processors.BehaviorProcessor;
-import io.reactivex.processors.FlowableProcessor;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -56,12 +52,15 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private final TestResultInteractor testResultInteractor;
 
-    private CompositeDisposable disposables;
     private long screenDisplayedAtMs = 0L;
     private final DateTimeFormatter formatter = DateTimeFormat.forPattern("mm:ss");
     private Disposable countdownDisposable;
 
     private Disposable stillConnectedDisposable;
+
+    private Disposable batteryUpdatesDisposable;
+
+    private Disposable workflowStateDisposable;
 
     private TestProgress firstProgress;
 
@@ -69,9 +68,10 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private Disposable errorsDisposable;
 
+    private Disposable testRunningDisposable;
+
     private AtomicBoolean stillOnThisScreen;
 
-    private FlowableProcessor<WorkflowState> lastBehaviorSubject;
 
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
@@ -92,102 +92,151 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     }
 
     public void onStart() {
-        onRestart();
-        disposables = new CompositeDisposable();
-
+        onStop();
         stillOnThisScreen = new AtomicBoolean(true);
-        lastBehaviorSubject = BehaviorProcessor.createDefault(WorkflowState.DEFAULT);
 
-        final Completable disconnected = readerInteractor.getReaderConnectionEvents()
+
+        // watch for active connection
+        stillConnectedDisposable = readerInteractor.getReaderConnectionEvents()
                 .filter(a -> a.getConnectionState() != ConnectionState.READY)
                 .take(1)
                 .ignoreElements()
                 .onErrorComplete()
-                .doOnSubscribe(a -> Timber.d("--- disconnect onSubscribe"))
-                .doOnComplete(() -> Timber.d("--- disconnected stream completed"));
-
-        disposables.add(
-                readerInteractor.getWorkflowState("TestingPresenter")
-                        .subscribe(wfs -> {
-                            if (lastBehaviorSubject != null && !lastBehaviorSubject.hasComplete()) {
-                                lastBehaviorSubject.onNext(wfs);
-                            }
-                        })
-        );
-
-        final Single<WorkflowState> errors = lastBehaviorSubject
-                .filter(state -> state.name().toLowerCase(Locale.getDefault()).endsWith("error"))
-                .take(1L)
-                .replay()
-                .autoConnect()
-                .singleOrError()
-                .doOnDispose(() -> Timber.d("--- error stream onDispose"))
-                .doOnSubscribe(a -> Timber.d("--- error stream onSubscribe"))
-                .doOnSuccess(wfs -> Timber.d("--- error stream completed with " + wfs))
-                .doOnError(e -> Timber.w("--- error stream error: " + e));
-
-        // watch for active connection
-        stillConnectedDisposable = disconnected
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        () -> ifViewAttached(TestingView::showTurnReaderOn),
+                        () -> {
+                            ifViewAttached(TestingView::showTurnReaderOn);
+                            onStop();
+                        },
                         error -> Timber.d("--- testingPresenter stillConnectedDisposable error: %s", error)
                 );
 
-        // we can safely read the TestProgress char while in this state
-        final List<WorkflowState> testRunningWithSafeTestProgress = new ArrayList<>();
-        testRunningWithSafeTestProgress.add(WorkflowState.TEST_RUNNING);
-        testRunningWithSafeTestProgress.add(WorkflowState.TEST_COMPLETE);
-        testRunningWithSafeTestProgress.add(WorkflowState.TEST_VALIDATION);
-        testRunningWithSafeTestProgress.add(WorkflowState.POST_TEST);
-
-        // test process have been started, but testProgress may contain previous data
-        final List<WorkflowState> testMightBeRunning = new ArrayList<>(testRunningWithSafeTestProgress);
-        testMightBeRunning.add(WorkflowState.READING_CASSETTE);
-        testMightBeRunning.add(WorkflowState.HEATING_CASSETTE);
-        testMightBeRunning.add(WorkflowState.DETECTING_FLUID);
-
-        // terminal state =
-        //      either the device disconnects,
-        //      or we receive an error,
-        //      or we detect a workflow state that tells us that the test is no longer running.
-        final Completable terminal = Completable.ambArray(
-                        disconnected,
-                        errors.ignoreElement(),
-                        lastBehaviorSubject
-                                .filter(wfs -> wfs != WorkflowState.DEFAULT)
-                                .filter(wfs -> !testMightBeRunning.contains(wfs))
-                                .ignoreElements()
-                                .doOnComplete(() -> Timber.w("--- wfs terminated"))
-                )
-                .observeOn(AndroidSchedulers.mainThread());
+        // watch workflow state
+        workflowStateDisposable = readerInteractor.getWorkflowState("TestingPresenter")
+                .takeUntil(a -> !stillOnThisScreen.get())
+                .subscribe(
+                        this::handleWorkflowState,
+                        error -> Timber.wtf("--- getWorkflowState error! %s", error),
+                        () -> Timber.wtf("--- stopped workflowState updates")
+                );
 
         // watch battery updates
-        disposables.add(
-                readerInteractor.batteryLevelUpdates()
-                        // take battery updates while we're connected and the wfs is test running
-                        .takeUntil(terminal.toSingle(Object::new).toFlowable())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                batteryPercent -> ifViewAttached(attachedView -> attachedView.setBatteryPercentage(batteryPercent)),
-                                error -> Timber.d("Error during battery level update: %s", error),
-                                () -> Timber.d("Battery level updates complete")
-                        )
-        );
+        batteryUpdatesDisposable = readerInteractor.batteryLevelUpdates()
+                // stop updates once we left the screen
+                .takeUntil((Predicate<? super Integer>) a -> !stillOnThisScreen.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        batteryPercent -> ifViewAttached(attachedView -> attachedView.setBatteryPercentage(batteryPercent)),
+                        error -> Timber.d("Error during battery level update: %s", error),
+                        () -> Timber.d("Battery level updates complete")
+                );
+    }
 
-        // watch for errors
-        errorsDisposable = errors.flatMap(errorState ->
-                        readerInteractor.getError()
-                                .onErrorReturnItem(Error.create(""))
-                                .map(error -> new Pair<>(errorState, error.getMessage()))
+    private void handleWorkflowState(WorkflowState workflowState) {
+        final List<WorkflowState> testMayBeRunning = new ArrayList<>();
+        testMayBeRunning.add(WorkflowState.TEST_RUNNING);
+        testMayBeRunning.add(WorkflowState.TEST_COMPLETE);
+        testMayBeRunning.add(WorkflowState.TEST_VALIDATION);
+        testMayBeRunning.add(WorkflowState.POST_TEST);
+        testMayBeRunning.add(WorkflowState.READING_CASSETTE);
+        testMayBeRunning.add(WorkflowState.DETECTING_FLUID);
+        testMayBeRunning.add(WorkflowState.HEATING_CASSETTE);
+
+        if (workflowState.name().toLowerCase(Locale.getDefault()).endsWith("error")) {
+            handleError(workflowState);
+        } else if (workflowState == WorkflowState.TEST_RUNNING) {
+            handleTestRunning();
+        } else if (workflowState == WorkflowState.TEST_COMPLETE) {
+            handleTestComplete();
+        } else if (!testMayBeRunning.contains(workflowState)) {
+            Timber.wtf("--- test not running: %s", workflowState);
+            ifViewAttached(av -> av.onTestFinished(null));
+        } else {
+            Timber.wtf("--- other workflow state caught: %s", workflowState);
+        }
+    }
+
+    private void handleTestComplete() {
+        if (testCompleteDisposable != null && !testCompleteDisposable.isDisposed()) {
+            testCompleteDisposable.dispose();
+        }
+
+        testCompleteDisposable = readerInteractor.readAndStoreResult()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (testResult) -> {
+                            Timber.d("Test complete: %s", testResult.getId());
+                            analyticsManager.logEvent(new TestingDone(Math.abs(System.currentTimeMillis() - screenDisplayedAtMs)));
+
+                            ifViewAttached(attachedView -> attachedView.onTestFinished(testResult.getId()));
+                        },
+                        error -> Timber.w("--- testComplete error %s", error)
+                );
+    }
+
+    private void handleTestRunning() {
+        if (testRunningDisposable != null && !testRunningDisposable.isDisposed()) {
+            testRunningDisposable.dispose();
+        }
+
+        // wait 2 seconds to make sure that the testProgress holds data of the currently running test
+        // without this delay, we might see the previous data with progressPercent=100
+        testRunningDisposable = Completable.timer(2, TimeUnit.SECONDS)
+                // wait for a testProgress that has a recordId that is new to us
+                .andThen(readerInteractor.getTestProgress()
+                        .doOnNext(tp -> Timber.d("--- testProgress=%s", tp))
+                        .doOnError(error -> Timber.d("--- testProgress error: %s", error))
+                        .takeUntil((Predicate<? super TestProgress>) a -> stillOnThisScreen.get())
+                        .flatMap(tp -> testResultInteractor.getById(tp.getTestId())
+                                .map(tr -> false)
+                                .onErrorReturn(a -> true)
+                                .map(isNew -> new Pair<>(tp, isNew))
+                                .toFlowable()
+                        )
+                        .doOnNext(pair -> Timber.d("--- pair: %s", pair))
+                        .filter(pair -> pair.second)
+                        .map(pair -> pair.first)
+                        .take(1)
+                        .singleOrError()
+                        .retryWhen(err -> {
+                            final AtomicInteger retryCounter = new AtomicInteger(0);
+                            return err.takeWhile(a -> retryCounter.incrementAndGet() <= 3 && stillOnThisScreen.get())
+                                    .flatMap(a -> {
+                                        Timber.w("--- testProgress retryWhen retry: %d", retryCounter.get());
+                                        return Flowable.timer(retryCounter.get(), TimeUnit.SECONDS);
+                                    });
+                        })
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnDispose(() -> Timber.d("--- error onDispose"))
-                .doOnSubscribe(a -> Timber.d("--- error onSub"))
-                .doOnSuccess(a -> Timber.d("--- error onSuccess: %s", a))
-                .doOnError(a -> Timber.d("--- error onError: %s", a))
+                .subscribe(
+                        this::onTestProgressReceived,
+                        error -> {
+                            Timber.w("--- Unhandled exception during Test Progress update: %s", error);
+                            if (!(error instanceof NoSuchElementException)) {
+                                onStart();
+                            }
+                        }
+                );
+    }
+
+    private void handleError(WorkflowState workflowState) {
+        // we don't want to receive any more workflow updates!
+        if (workflowStateDisposable != null && !workflowStateDisposable.isDisposed()) {
+            workflowStateDisposable.dispose();
+        }
+
+        if (errorsDisposable != null && !errorsDisposable.isDisposed()) {
+            errorsDisposable.dispose();
+        }
+
+        errorsDisposable = readerInteractor.getError()
+                .onErrorReturnItem(Error.create(""))
+                .map(error -> new Pair<>(workflowState, error.getMessage()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         errorPair -> {
                             try {
@@ -200,99 +249,6 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         },
                         error -> Timber.d("Error while listening for test error: %s", error)
                 );
-
-        // watch test complete
-        disposables.add(
-                lastBehaviorSubject
-                        // take while we're connected and the test is running
-                        .takeUntil(terminal.toSingle(Object::new).toFlowable())
-                        // take while we're on this screen
-                        .takeUntil((Predicate<? super WorkflowState>) a -> !stillOnThisScreen.get())
-                        .filter(wfs -> wfs == WorkflowState.TEST_COMPLETE)
-                        .take(1)
-                        .singleOrError()
-                        .doOnDispose(() -> Timber.d("--- testCompleteWfs onDispose"))
-                        .doOnSubscribe(a -> Timber.d("--- testCompleteWfs onSub"))
-                        .doOnSuccess(wfs -> Timber.d("--- testCompleteWfs onComplete"))
-                        .doOnError(a -> Timber.d("--- testCompleteWfs onError: %s", a))
-                        .flatMap(ignored -> readerInteractor.readAndStoreResult())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                (testResult) -> {
-                                    Timber.d("Test complete: %s", testResult.getId());
-                                    analyticsManager.logEvent(new TestingDone(Math.abs(System.currentTimeMillis() - screenDisplayedAtMs)));
-
-                                    ifViewAttached(attachedView -> attachedView.onTestFinished(testResult.getId()));
-                                },
-                                error -> Timber.w("--- testComplete error %s", error)
-                        )
-        );
-
-        // watch test progress during test running
-        disposables.add(
-                lastBehaviorSubject
-                        .doOnNext(wfs -> Timber.wtf("--- lastBehavior onNext %s", wfs))
-                        // take updates while we're connected and the wfs is test running
-                        .takeUntil(terminal.toSingle(Object::new).toFlowable())
-                        // take updates while we're on this screen
-                        .takeUntil((Predicate<? super WorkflowState>) wfs -> !stillOnThisScreen.get())
-                        .doOnComplete(() -> Timber.wtf("--- lastBehavior onComplete!!"))
-                        .filter(wfs -> wfs == WorkflowState.TEST_RUNNING)
-                        .take(1)
-                        .singleOrError()
-                        .doOnSuccess(a -> Timber.d("--- test running detected"))
-                        // wait for a testProgress that has a recordId that is new to us
-                        .flatMap(ignored -> readerInteractor.getTestProgress()
-                                .doOnNext(tp -> Timber.d("--- testProgress=%s", tp))
-                                .doOnError(error -> Timber.d("--- testProgress error: %s", error))
-                                .takeUntil(errors.toFlowable())
-                                .takeUntil((Predicate<? super TestProgress>) a -> stillOnThisScreen.get())
-                                .flatMap(tp -> testResultInteractor.getById(tp.getTestId())
-                                        .map(tr -> false)
-                                        .onErrorReturn(a -> true)
-                                        .map(isNew -> new Pair<>(tp, isNew))
-                                        .toFlowable()
-                                )
-                                .doOnNext(pair -> Timber.d("--- pair: %s", pair))
-                                .filter(pair -> pair.second)
-                                .map(pair -> pair.first)
-                                .take(1)
-                                .singleOrError()
-                                .retryWhen(err -> {
-                                    final AtomicInteger retryCounter = new AtomicInteger(0);
-                                    return err.takeWhile(a -> retryCounter.incrementAndGet() <= 3 && stillOnThisScreen.get())
-                                            .flatMap(a -> {
-                                                Timber.w("--- testProgress retryWhen retry: %d", retryCounter.get());
-                                                return Flowable.timer(retryCounter.get(), TimeUnit.SECONDS);
-                                            });
-                                })
-                        )
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                this::onTestProgressReceived,
-                                error -> {
-                                    Timber.w("--- Unhandled exception during Test Progress update: %s", error);
-                                    if (!(error instanceof NoSuchElementException)) {
-                                        onStart();
-                                    }
-                                }
-                        )
-        );
-
-        // watch other workflow states that tell us the test is no longer running
-        disposables.add(lastBehaviorSubject
-                // take updates while we're on this screen
-                .takeUntil((Predicate<? super WorkflowState>) wfs -> !stillOnThisScreen.get())
-                .filter(wfs -> !testMightBeRunning.contains(wfs))
-                .ignoreElements()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        () -> ifViewAttached(av -> av.onTestFinished(null)),
-                        error -> Timber.w("--- NOT test workflow state error %s", error)
-                )
-        );
     }
 
     private void onTestProgressReceived(final TestProgress testProgress) {
@@ -364,19 +320,13 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         ifViewAttached(attachedView -> attachedView.showTimeRemaining(timeRemaining));
     }
 
-    public void onRestart() {
-        Timber.d("--- onRestart");
-
+    public void onStop() {
         if (stillOnThisScreen != null) {
             stillOnThisScreen.set(false);
         }
 
         firstProgress = null;
 
-        if (disposables != null) {
-            disposables.dispose();
-            disposables = null;
-        }
         if (countdownDisposable != null && !countdownDisposable.isDisposed()) {
             countdownDisposable.dispose();
             countdownDisposable = null;
@@ -389,13 +339,20 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             testCompleteDisposable.dispose();
             testCompleteDisposable = null;
         }
-    }
 
-    public void onStop() {
-        onRestart();
         if (errorsDisposable != null && !errorsDisposable.isDisposed()) {
             errorsDisposable.dispose();
             errorsDisposable = null;
+        }
+
+        if (batteryUpdatesDisposable != null && !batteryUpdatesDisposable.isDisposed()) {
+            batteryUpdatesDisposable.dispose();
+            batteryUpdatesDisposable = null;
+        }
+
+        if (workflowStateDisposable != null && !workflowStateDisposable.isDisposed()) {
+            workflowStateDisposable.dispose();
+            workflowStateDisposable = null;
         }
     }
 
@@ -414,8 +371,6 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     }
 
     public void disposeTest() {
-        disposables.add(
-                testInteractor.resetTest().subscribe()
-        );
+        testInteractor.resetTest().subscribe();
     }
 }
