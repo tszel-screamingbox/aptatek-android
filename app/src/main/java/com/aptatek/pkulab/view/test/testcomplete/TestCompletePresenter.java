@@ -60,7 +60,11 @@ public class TestCompletePresenter extends TestBasePresenter<TestCompleteView> {
         syncProgressDisposable = readerInteractor.syncProgressFlowable()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        sp -> ifViewAttached(av -> av.showSyncProgressDialog(sp)),
+                        sp -> {
+                            if (sp.getTotal() > 0) {
+                                ifViewAttached(av -> av.showSyncProgressDialog(sp));
+                            }
+                        },
                         error -> Timber.w("--- syncProgress error: %s", error)
                 );
 
