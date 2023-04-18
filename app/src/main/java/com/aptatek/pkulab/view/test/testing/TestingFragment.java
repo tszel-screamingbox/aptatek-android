@@ -79,8 +79,7 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
                         .build(),
                 decision -> {
                     if (decision == AlertDialogDecisions.NEGATIVE) {
-                        presenter.disposeTest();
-                        requireActivity().finish();
+                        presenter.disposeTest(() -> requireActivity().finish());
                     }
                 });
     }

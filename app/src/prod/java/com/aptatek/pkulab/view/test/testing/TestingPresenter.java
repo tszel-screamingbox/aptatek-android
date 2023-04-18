@@ -72,6 +72,8 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
     private AtomicBoolean stillOnThisScreen;
 
+    private AtomicBoolean showCountdown = new AtomicBoolean(false);
+
 
     @Inject
     public TestingPresenter(final ResourceInteractor resourceInteractor,
@@ -166,6 +168,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         if (countdownDisposable != null && !countdownDisposable.isDisposed()) {
             countdownDisposable.dispose();
         }
+        showCountdown.set(false);
 
         testCompleteDisposable = readerInteractor.readAndStoreResult()
                 .subscribeOn(Schedulers.io())
@@ -237,6 +240,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         if (countdownDisposable != null && !countdownDisposable.isDisposed()) {
             stillConnectedDisposable.dispose();
         }
+        showCountdown.set(false);
 
         if (errorsDisposable != null && !errorsDisposable.isDisposed()) {
             errorsDisposable.dispose();
@@ -276,6 +280,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             countdownDisposable.dispose();
             countdownDisposable = null;
         }
+        showCountdown.set(true);
 
         updateRemaining(firstProgress);
 
@@ -316,7 +321,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
     }
 
     private void updateRemaining(final TestProgress testProgress) {
-        if (testProgress == null) return;
+        if (testProgress == null || !showCountdown.get()) return;
 
         final DateTime now = new DateTime();
         // add 1 minute offset to the remaining time
@@ -380,7 +385,14 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         });
     }
 
-    public void disposeTest() {
-        testInteractor.resetTest().subscribe();
+    public void disposeTest(Runnable andThen) {
+        testInteractor.resetTest()
+                .andThen(testInteractor.setTestContinueStatus(false))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    if (andThen != null) {
+                        andThen.run();
+                    }
+                });
     }
 }
