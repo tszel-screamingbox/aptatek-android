@@ -1,6 +1,8 @@
 package com.aptatek.pkulab.domain.interactor.reader;
 
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 
 import com.aptatek.pkulab.device.PreferenceManager;
@@ -18,6 +20,7 @@ import com.aptatek.pkulab.domain.model.reader.TestResult;
 import com.aptatek.pkulab.domain.model.reader.WorkflowState;
 import com.aptatek.pkulab.view.connect.turnreaderon.SyncProgress;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -128,17 +131,20 @@ public class ReaderInteractor {
         return readerManager.getConnectedDevice()
                 .toSingle()
                 .map(ReaderDevice::getMac)
-                .flatMap(mac -> testResultRepository.listAll()
+                .flatMapCompletable(mac -> testResultRepository.listAll()
+                        .doOnNext(a -> Timber.wtf("--- dbRecords=%s", Arrays.toString(Ix.from(a).map(TestResult::getId).toList().toArray())))
                         .take(1)
                         .singleOrError()
                         .map(records -> Ix.from(records)
-                                .filter(result -> result.getReaderMac().equals(mac))
+                                .filter(result -> TextUtils.equals(mac, result.getReaderMac()))
                                 .map(TestResult::getId)
                                 .toList())
+                        .onErrorReturnItem(Collections.emptyList())
+                        .flatMapCompletable(idsInDb -> readerManager.syncResultsExcludingList(idsInDb)
+                                .map(result -> result.toBuilder().setReaderMac(mac).build())
+                                .doOnNext(tr -> Timber.wtf("--- record to be inserted=%s", tr))
+                                .flatMapCompletable(testResultRepository::insert).onErrorComplete())
                 )
-                .onErrorReturnItem(Collections.emptyList())
-                .flatMapCompletable(idsInDb -> readerManager.syncResultsExcludingList(idsInDb)
-                        .flatMapCompletable(testResultRepository::insert).onErrorComplete())
                 .subscribeOn(Schedulers.io());
     }
 
@@ -173,8 +179,15 @@ public class ReaderInteractor {
     public Single<TestResult> readAndStoreResult() {
         return readerManager.readResult()
                 .flatMap(testResult ->
-                        testResultRepository.insert(testResult)
-                                .andThen(Single.just(testResult))
+                        readerManager.getConnectedDevice()
+                                .map(ReaderDevice::getMac)
+                                .toSingle()
+                                .onErrorReturnItem("")
+                                .map(mac -> testResult.toBuilder().setReaderMac(mac).build())
+                                .flatMap(resultToInsert ->
+                                        testResultRepository.insert(resultToInsert)
+                                                .andThen(Single.just(resultToInsert))
+                                )
                 )
                 .subscribeOn(Schedulers.io());
     }
