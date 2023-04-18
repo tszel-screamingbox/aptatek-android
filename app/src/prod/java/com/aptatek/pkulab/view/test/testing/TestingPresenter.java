@@ -170,7 +170,9 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         }
         showCountdown.set(false);
 
-        testCompleteDisposable = readerInteractor.readAndStoreResult()
+        // wait 1 second to make sure that result char holds the result...
+        testCompleteDisposable = Completable.timer(1, TimeUnit.SECONDS)
+                .andThen(readerInteractor.readAndStoreResult())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
