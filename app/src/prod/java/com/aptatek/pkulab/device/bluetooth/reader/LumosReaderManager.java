@@ -305,12 +305,12 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                                     }
                                 }
                         ).fail((device, status) -> {
-                    Timber.d("Mtu change failed: status [%d]", status);
-                    mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
-                    if (!emitter.isDisposed()) {
-                        emitter.onError(new MtuChangeFailedError());
-                    }
-                })
+                            Timber.d("Mtu change failed: status [%d]", status);
+                            mCallbacks.onError(device, "Failed to change MTU", LumosReaderConstants.ERROR_MTU_CHANGE_FAILED);
+                            if (!emitter.isDisposed()) {
+                                emitter.onError(new MtuChangeFailedError());
+                            }
+                        })
                         .enqueue()
         );
     }
@@ -331,7 +331,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                                     .doOnNext(e -> Timber.d("---- getResult retryWhen error: %s", e))
                                     .takeWhile(e -> counter.getAndIncrement() < 3)
                                     .flatMap(e -> Flowable.timer(counter.get(), TimeUnit.SECONDS)
-                                    .doOnNext(ignored -> Timber.d("---- getResult retry after delay...")));
+                                            .doOnNext(ignored -> Timber.d("---- getResult retry after delay...")));
                         })
                 )
                 .doOnSuccess(result -> Timber.d("Requested resultId: %s, result: %s", id, result))
@@ -403,7 +403,7 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     public Flowable<ResultResponse> syncRecordsWithIds(List<String> recordIds) {
         return Flowable.just(recordIds)
-        .doOnNext(list -> syncProgressFlowableProcessor.onNext(new SyncProgress(0, 0, list.size())))
+                .doOnNext(list -> syncProgressFlowableProcessor.onNext(new SyncProgress(0, 0, list.size())))
                 .flatMapIterable(it -> it)
                 .observeOn(Schedulers.io())
                 .concatMap(id -> getResult(id)
@@ -411,7 +411,9 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                         .doOnError(ex -> syncProgressFlowableProcessor.onNext(syncProgressFlowableProcessor.getValue().failed()))
                         .toFlowable()
                         .onErrorResumeNext(Flowable.empty())
-                );
+                ).doOnComplete(() -> {
+                    syncProgressFlowableProcessor.onNext(new SyncProgress(0, 0, 0));
+                });
     }
 
     private Single<ResultSyncResponse> concatSyncResponse() {
@@ -421,34 +423,34 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
 
     private Single<String> readLongPayloadWithChecksum(final String characteristicId) {
         return Single.<String>create(emitter ->
-                readCharacteristic(characteristicsHolder.getCharacteristic(characteristicId))
-                        .with((device, data) -> {
-                            final String rawString = data.getStringValue(0);
+                        readCharacteristic(characteristicsHolder.getCharacteristic(characteristicId))
+                                .with((device, data) -> {
+                                    final String rawString = data.getStringValue(0);
 
-                            if (!emitter.isDisposed()) {
-                                Timber.d("readLongPayloadWithChecksum -- %s -- partial: [%s]", characteristicId, rawString);
-                                emitter.onSuccess(rawString);
-                            }
-                        })
-                        .fail((device, status) -> {
-                            Timber.d("Failed to read partial response -- %s --: device [%s], status [%d]", characteristicId, device.getAddress(), status);
+                                    if (!emitter.isDisposed()) {
+                                        Timber.d("readLongPayloadWithChecksum -- %s -- partial: [%s]", characteristicId, rawString);
+                                        emitter.onSuccess(rawString);
+                                    }
+                                })
+                                .fail((device, status) -> {
+                                    Timber.d("Failed to read partial response -- %s --: device [%s], status [%d]", characteristicId, device.getAddress(), status);
 
-                            if (!emitter.isDisposed()) {
-                                emitter.onError(new CharacteristicReadError(device, status, LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE));
-                            }
-                        })
-                        .done(device -> {
-                            Timber.d("Done reading partial response -- %s -- : device [%s]", characteristicId, device.getAddress());
+                                    if (!emitter.isDisposed()) {
+                                        emitter.onError(new CharacteristicReadError(device, status, LumosReaderConstants.READER_CHAR_RESULT_SYNC_RESPONSE));
+                                    }
+                                })
+                                .done(device -> {
+                                    Timber.d("Done reading partial response -- %s -- : device [%s]", characteristicId, device.getAddress());
 
-                            if (!emitter.isDisposed()) {
-                                emitter.tryOnError(new NoValueReceivedError(device));
-                            }
-                        })
-                        .enqueue())
+                                    if (!emitter.isDisposed()) {
+                                        emitter.tryOnError(new NoValueReceivedError(device));
+                                    }
+                                })
+                                .enqueue())
                 .repeatWhen(objectFlowable -> objectFlowable)
                 .delay(300L, TimeUnit.MILLISECONDS)
                 .takeUntil(s ->
-                           s.length() < getMTUPayloadLength() || TextUtils.isEmpty(s.trim())
+                        s.length() < getMTUPayloadLength() || TextUtils.isEmpty(s.trim())
                 )
                 .scan((current, next) -> current + next)
                 .lastOrError()
