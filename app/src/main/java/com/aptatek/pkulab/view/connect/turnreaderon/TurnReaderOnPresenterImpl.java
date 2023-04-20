@@ -110,7 +110,7 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                             Timber.d("Stopped bt scan");
                             disposeSubscription();
                         },
-                        Timber::e
+                        error -> Timber.wtf("--- onPause stopScan error %s", error)
                 ));
     }
 
@@ -142,8 +142,10 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
         disposables.add(
                 readerInteractor.disconnect()
                         .onErrorComplete()
-                        .subscribe(this::checkPermissions,
-                                Timber::e)
+                        .subscribe(
+                                this::checkPermissions,
+                                error -> Timber.wtf("--- resetFlow disconnect error %s", error)
+                        )
         );
     }
 
@@ -271,7 +273,8 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                         readerInteractor.getConnectedReader().toSingle(),
                                         readerInteractor.getBatteryLevel(),
                                         Pair::new
-                                ))
+                                )
+                        )
                         .subscribe(
                                 pair -> {
                                     analyticsManager.logEvent(new ReaderConnectedFromTurnReaderOn(pair.first.getSerial(), pair.first.getFirmwareVersion(), getStepId(), Math.abs(System.currentTimeMillis() - connectStartedAtMs), pair.second));
@@ -279,7 +282,10 @@ public class TurnReaderOnPresenterImpl extends MvpBasePresenter<TurnReaderOnView
                                     Timber.d("Cancelled all test notifications");
                                     ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
                                 },
-                                Timber::e
+                                error -> {
+                                    Timber.wtf("--- dismissTestNotification error %s", error);
+                                    ifViewAttached(TurnReaderOnView::onSelfCheckComplete);
+                                }
                         )
         );
     }
