@@ -7,9 +7,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.OnLifecycleEvent;
 
 import com.aptatek.pkulab.R;
 import com.aptatek.pkulab.domain.model.AlertDialogModel;
@@ -24,8 +21,9 @@ import com.aptatek.pkulab.widget.HeaderView;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import timber.log.Timber;
 
-public class TestingFragment extends TestBaseFragment<TestingView, TestingPresenter> implements TestingView, LifecycleObserver {
+public class TestingFragment extends TestBaseFragment<TestingView, TestingPresenter> implements TestingView {
 
     @Inject
     TestingPresenter presenter;
@@ -69,6 +67,7 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
 
     @Override
     public void onTestError(ErrorModel errorModel) {
+        Timber.wtf("--- view.onTestError error=%s", errorModel);
         showAlertDialog(AlertDialogModel.builder()
                         .setAlertHeader(true)
                         .setErrorCode(errorModel.getErrorCode())
@@ -85,13 +84,6 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     }
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        requireActivity().getLifecycle().addObserver(this);
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -103,20 +95,17 @@ public class TestingFragment extends TestBaseFragment<TestingView, TestingPresen
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
 
-        requireActivity().getLifecycle().removeObserver(this);
-    }
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public void onActivityStart() {
         presenter.onStart();
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    public void onActivityStop() {
+    @Override
+    public void onStop() {
         presenter.onStop();
+
+        super.onStop();
     }
 
     @NonNull

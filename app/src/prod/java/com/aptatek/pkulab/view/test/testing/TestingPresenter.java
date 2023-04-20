@@ -100,15 +100,18 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
 
         // watch for active connection
         stillConnectedDisposable = readerInteractor.getReaderConnectionEvents()
-                .filter(a -> a.getConnectionState() != ConnectionState.READY)
+                .filter(a -> {
+                    Timber.wtf("--- testingPresenter readerConnEvent %s", a);
+                    return a.getConnectionState() != ConnectionState.READY;
+                })
                 .take(1)
                 .ignoreElements()
                 .onErrorComplete()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {
+                            Timber.wtf("--- testingPresenter stillConnected complete => showTurnReaderOn");
                             ifViewAttached(TestingView::showTurnReaderOn);
-                            onStop();
                         },
                         error -> Timber.d("--- testingPresenter stillConnectedDisposable error: %s", error)
                 );
@@ -157,6 +160,18 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
         } else {
             Timber.wtf("--- other workflow state caught: %s", workflowState);
         }
+    }
+
+    @Override
+    public void attachView(TestingView view) {
+        super.attachView(view);
+        Timber.wtf("--- attachView %s", view);
+    }
+
+    @Override
+    public void detachView() {
+        Timber.w("--- detachView");
+        super.detachView();
     }
 
     private void handleTestComplete() {
@@ -257,7 +272,7 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
                         errorPair -> {
                             try {
                                 final ErrorModel errorModel = errorInteractor.createErrorModel(errorPair.first, errorPair.second, true);
-                                Timber.d("Test error: %s -> %s", errorPair, errorModel);
+                                Timber.d("Test error: %s -> %s, thread=%s, isAttached=%s", errorPair, errorModel, Thread.currentThread().getName(), isViewAttached() ? "true" : "false");
                                 ifViewAttached(attachedView -> attachedView.onTestError(errorModel));
                             } catch (ErrorModelConversionError error) {
                                 Timber.d("Test error, failed to convert error model: %s", error);
