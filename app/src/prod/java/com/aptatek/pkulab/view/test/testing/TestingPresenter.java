@@ -263,7 +263,11 @@ public class TestingPresenter extends TestBasePresenter<TestingView> {
             errorsDisposable.dispose();
         }
 
-        errorsDisposable = readerInteractor.getError()
+        errorsDisposable = Completable.timer(1, TimeUnit.SECONDS)
+                .andThen(readerInteractor.readAndStoreResult()
+                        .ignoreElement()
+                        .onErrorComplete())
+                .andThen(readerInteractor.getError())
                 .onErrorReturnItem(Error.create(""))
                 .map(error -> new Pair<>(workflowState, error.getMessage()))
                 .subscribeOn(Schedulers.io())
