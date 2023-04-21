@@ -30,6 +30,8 @@ import com.aptatek.pkulab.domain.error.MtuChangeFailedError;
 import com.aptatek.pkulab.domain.model.reader.ReaderDevice;
 import com.aptatek.pkulab.injection.qualifier.ApplicationContext;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -447,10 +449,13 @@ public class LumosReaderManager extends BleManager<LumosReaderCallbacks> {
                                     }
                                 })
                                 .enqueue())
-                .repeatWhen(objectFlowable -> objectFlowable)
                 .delay(300L, TimeUnit.MILLISECONDS)
-                .takeUntil(s ->
-                        s.length() < getMTUPayloadLength() || TextUtils.isEmpty(s.trim())
+                .repeat()
+                .takeUntil(s -> {
+                            final String strippedTrail = StringUtils.stripEnd(s, null);
+                            Timber.wtf("--- takeUntil s.length=[%d], stripped.length=[%d]", s.length(), strippedTrail.length());
+                            return Math.abs(s.length() - strippedTrail.length()) > 2 || TextUtils.isEmpty(s.trim());
+                        }
                 )
                 .scan((current, next) -> current + next)
                 .lastOrError()
